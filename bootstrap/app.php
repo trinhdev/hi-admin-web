@@ -15,6 +15,12 @@ $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'../.env.'.getenv('APP_ENV'));
+$dotenv->load();
+date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces
