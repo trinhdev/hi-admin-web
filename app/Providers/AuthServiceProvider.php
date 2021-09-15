@@ -24,7 +24,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
+       
+        // Gate::define('ability', function (User $user) { return $user->is_admin}) 
+        // cooperate with @can('ability) @endcan in blade view
+        // this->authorize('ability') in controller
+        // Keywords: policy
+        // php artisan make:policy
     }
 }
