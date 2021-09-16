@@ -10,5 +10,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         echo 'Xin chào User, '. $user->name;
+        // // var_dump($user);
+        // echo $user->is_admin;
     }
 }

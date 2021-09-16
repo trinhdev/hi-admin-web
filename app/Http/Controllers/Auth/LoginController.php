@@ -10,6 +10,7 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
+        // nếu gọi bằng phương thức get trả về view login
         if ($request->getMethod() == 'GET') {
             return view('login');
         }
