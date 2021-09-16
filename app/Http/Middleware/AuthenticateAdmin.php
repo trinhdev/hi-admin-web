@@ -18,7 +18,7 @@ class AuthenticateAdmin
     public function handle($request, Closure $next)
     {
         if(Auth::check()){
-            if(Auth::user()->is_admin = 1){
+            if(Auth::user()->is_admin == 1){
                 return $next($request);
             }
             return redirect()->route('user.dashboard');
