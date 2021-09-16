@@ -16,11 +16,13 @@ class AuthenticateUser
      */
     public function handle($request, Closure $next)
     {
+        // Redirect user by role
+        // Role: 1 is admin, 0 is user
         if(Auth::check()){
             if(Auth::user()->is_admin == 0){
                 return $next($request);
             }
-            return redirect()->route('admin.dashboard');
+            return back()->withInput();
         }
         return redirect(RouteServiceProvider::LOGIN);
     }

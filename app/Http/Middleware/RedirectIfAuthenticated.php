@@ -17,15 +17,15 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
-            if(Auth::user()->is_admin == 1){
-                return redirect()->route('admin.dashboard');
-            }
-            else {
+        if(!Auth::check()){
+            return $next($request);
+        }
+        else{
+            if(Auth::user()->is_admin == 0){
                 return redirect()->route('user.dashboard');
             }
+            return redirect()->route('admin.dashboard');
         }
-
-        return $next($request);
+            
     }
 }

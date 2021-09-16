@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -23,12 +23,15 @@ class LoginController extends Controller
                 return redirect()->route('user.dashboard');
             }
         } else {
-            return redirect()->back()->withInput();
+            return back()->withInput();
         }
     }
 
     public function logout(){
-        Auth::logout();
-        return redirect()->route('login');
+        if(Auth::check()){
+            Auth::logout();
+            return redirect()->route('index');
+        }
+        return back();
     }
 }

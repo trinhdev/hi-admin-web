@@ -19,7 +19,6 @@ class AuthenticateBasic
         if(Auth::check()){
             return $next($request);
         }
-        return redirect(RouteServiceProvider::LOGIN);
-        
+        return back()->withInput(['error'=>'You need to authenticate to access this resource!']);
     }
 }
