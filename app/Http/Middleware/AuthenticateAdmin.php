@@ -18,10 +18,12 @@ class AuthenticateAdmin
     public function handle($request, Closure $next)
     {
         // Redirect user by role
-        // Role: 1 is admin, 0 is user
+        // Role: 2 is admin, 1 is user
+
         if(Auth::check()){
-            if(Auth::user()->is_admin == 1){
+            if(Auth::user()->group_id == 2){
                 return $next($request);
+
             }
             return back()->withInput(['error'=>'You dont have permission to access this resource']);
         }

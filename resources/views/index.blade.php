@@ -24,13 +24,13 @@ License: For each use you must have a valid license purchased only from above li
 		<meta property="og:url" content="https://keenthemes.com/metronic" />
 		<meta property="og:site_name" content="Keenthemes | Metronic" />
 		<link rel="canonical" href="Https://preview.keenthemes.com/metronic8" />
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="{{asset('assets/media/logos/favicon.ico')}}" />
 		<!--begin::Fonts-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Global Stylesheets Bundle(used by all pages)-->
-		<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="{{asset('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
+		<link href="{{asset('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 	</head>
 	<!--end::Head-->
@@ -41,7 +41,7 @@ License: For each use you must have a valid license purchased only from above li
 			<!--begin::Header Section-->
 			<div class="mb-0" id="home">
 				<!--begin::Wrapper-->
-				<div class="bgi-no-repeat bgi-size-contain bgi-position-x-center bgi-position-y-bottom landing-dark-bg" style="background-image: url(assets/media/svg/illustrations/landing.svg)">
+				<div class="bgi-no-repeat bgi-size-contain bgi-position-x-center bgi-position-y-bottom landing-dark-bg" style="background-image: url('../assets/media/svg/illustrations/landing.svg')">
 					<!--begin::Header-->
 					<div class="landing-header" data-kt-sticky="true" data-kt-sticky-name="landing-header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
 						<!--begin::Container-->
@@ -64,8 +64,8 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Mobile menu toggle-->
 									<!--begin::Logo image-->
 									<a href="../../demo13/dist/landing.html">
-										<img alt="Logo" src="assets/media/logos/logo-landing.svg" class="logo-default h-25px h-lg-30px" />
-										<img alt="Logo" src="assets/media/logos/logo-landing-dark.svg" class="logo-sticky h-20px h-lg-25px" />
+										<img alt="Logo" src="{{asset('assets/media/logos/logo-landing.svg')}}" class="logo-default h-25px h-lg-30px" />
+										<img alt="Logo" src="{{asset('assets/media/logos/logo-landing-dark.svg')}}" class="logo-sticky h-20px h-lg-25px" />
 									</a>
 									<!--end::Logo image-->
 								</div>
@@ -124,7 +124,7 @@ License: For each use you must have a valid license purchased only from above li
 								<!--end::Menu wrapper-->
 								<!--begin::Toolbar-->
 								<div class="flex-equal text-end ms-1">
-									<a href="../../demo13/dist/authentication/flows/basic/sign-in.html" class="btn btn-success">Sign In</a>
+									<a href="{{ route('login')}}" class="btn btn-success">Sign In</a>
 								</div>
 								<!--end::Toolbar-->
 							</div>
@@ -153,42 +153,42 @@ License: For each use you must have a valid license purchased only from above li
 						<div class="d-flex flex-center flex-wrap position-relative px-5">
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Fujifilm">
-								<img src="assets/media/svg/brand-logos/fujifilm.svg" class="mh-30px mh-lg-40px" alt="" />
+								<img src="{{asset('assets/media/svg/brand-logos/fujifilm.svg')}}" class="mh-30px mh-lg-40px" alt="" />
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Vodafone">
-								<img src="assets/media/svg/brand-logos/vodafone.svg" class="mh-30px mh-lg-40px" alt="" />
+								<img src="{{asset('assets/media/svg/brand-logos/vodafone.svg')}}" class="mh-30px mh-lg-40px" alt="" />
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="KPMG International">
-								<img src="assets/media/svg/brand-logos/kpmg.svg" class="mh-30px mh-lg-40px" alt="" />
+								<img src="{{asset('assets/media/svg/brand-logos/kpmg.svg')}}" class="mh-30px mh-lg-40px" alt="" />
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Nasa">
-								<img src="assets/media/svg/brand-logos/nasa.svg" class="mh-30px mh-lg-40px" alt="" />
+								<img src="{{asset('assets/media/svg/brand-logos/nasa.svg')}}" class="mh-30px mh-lg-40px" alt="" />
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Aspnetzero">
-								<img src="assets/media/svg/brand-logos/aspnetzero.svg" class="mh-30px mh-lg-40px" alt="" />
+								<img src="{{asset('assets/media/svg/brand-logos/aspnetzero.svg')}}" class="mh-30px mh-lg-40px" alt="" />
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="AON - Empower Results">
-								<img src="assets/media/svg/brand-logos/aon.svg" class="mh-30px mh-lg-40px" alt="" />
+								<img src="{{asset('assets/media/svg/brand-logos/aon.svg')}}" class="mh-30px mh-lg-40px" alt="" />
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Hewlett-Packard">
-								<img src="assets/media/svg/brand-logos/hp-3.svg" class="mh-30px mh-lg-40px" alt="" />
+								<img src="{{asset('assets/media/svg/brand-logos/hp-3.svg')}}" class="mh-30px mh-lg-40px" alt="" />
 							</div>
 							<!--end::Client-->
 							<!--begin::Client-->
 							<div class="d-flex flex-center m-3 m-md-6" data-bs-toggle="tooltip" title="Truman">
-								<img src="assets/media/svg/brand-logos/truman.svg" class="mh-30px mh-lg-40px" alt="" />
+								<img src="{{asset('assets/media/svg/brand-logos/truman.svg')}}" class="mh-30px mh-lg-40px" alt="" />
 							</div>
 							<!--end::Client-->
 						</div>
@@ -228,7 +228,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Story-->
 							<div class="text-center mb-10 mb-md-0">
 								<!--begin::Illustration-->
-								<img src="assets/media/illustrations/unitedpalms-1/2.png" class="mh-125px mb-9" alt="" />
+								<img src="{{asset('assets/media/illustrations/unitedpalms-1/2.png')}}" class="mh-125px mb-9" alt="" />
 								<!--end::Illustration-->
 								<!--begin::Heading-->
 								<div class="d-flex flex-center mb-5">
@@ -254,7 +254,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Story-->
 							<div class="text-center mb-10 mb-md-0">
 								<!--begin::Illustration-->
-								<img src="assets/media/illustrations/unitedpalms-1/8.png" class="mh-125px mb-9" alt="" />
+								<img src="{{asset('assets/media/illustrations/unitedpalms-1/8.png')}}" class="mh-125px mb-9" alt="" />
 								<!--end::Illustration-->
 								<!--begin::Heading-->
 								<div class="d-flex flex-center mb-5">
@@ -280,7 +280,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Story-->
 							<div class="text-center mb-10 mb-md-0">
 								<!--begin::Illustration-->
-								<img src="assets/media/illustrations/unitedpalms-1/12.png" class="mh-125px mb-9" alt="" />
+								<img src="{{asset('assets/media/illustrations/unitedpalms-1/12.png')}}" class="mh-125px mb-9" alt="" />
 								<!--end::Illustration-->
 								<!--begin::Heading-->
 								<div class="d-flex flex-center mb-5">
@@ -309,22 +309,22 @@ License: For each use you must have a valid license purchased only from above li
 						<div data-tns="true" data-tns-loop="true" data-tns-swipe-angle="false" data-tns-speed="2000" data-tns-autoplay="true" data-tns-autoplay-timeout="18000" data-tns-controls="true" data-tns-nav="false" data-tns-items="1" data-tns-center="false" data-tns-dots="false" data-tns-prev-button="#kt_team_slider_prev1" data-tns-next-button="#kt_team_slider_next1">
 							<!--begin::Item-->
 							<div class="text-center px-5 pt-5 pt-lg-10 px-lg-10">
-								<img src="assets/media/product-demos/demo1.png" class="card-rounded shadow mw-100" alt="" />
+								<img src="{{asset('assets/media/product-demos/demo1.png')}}" class="card-rounded shadow mw-100" alt="" />
 							</div>
 							<!--end::Item-->
 							<!--begin::Item-->
 							<div class="text-center px-5 pt-5 pt-lg-10 px-lg-10">
-								<img src="assets/media/product-demos/demo2.png" class="card-rounded shadow mw-100" alt="" />
+								<img src="{{asset('assets/media/product-demos/demo2.png')}}" class="card-rounded shadow mw-100" alt="" />
 							</div>
 							<!--end::Item-->
 							<!--begin::Item-->
 							<div class="text-center px-5 pt-5 pt-lg-10 px-lg-10">
-								<img src="assets/media/product-demos/demo4.png" class="card-rounded shadow mw-100" alt="" />
+								<img src="{{asset('assets/media/product-demos/demo4.png')}}" class="card-rounded shadow mw-100" alt="" />
 							</div>
 							<!--end::Item-->
 							<!--begin::Item-->
 							<div class="text-center px-5 pt-5 pt-lg-10 px-lg-10">
-								<img src="assets/media/product-demos/demo5.png" class="card-rounded shadow mw-100" alt="" />
+								<img src="{{asset('assets/media/product-demos/demo5.png')}}" class="card-rounded shadow mw-100" alt="" />
 							</div>
 							<!--end::Item-->
 						</div>
@@ -386,7 +386,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Items-->
 							<div class="d-flex flex-wrap flex-center justify-content-lg-between mb-15 mx-auto w-xl-900px">
 								<!--begin::Item-->
-								<div class="d-flex flex-column flex-center h-200px w-200px h-lg-250px w-lg-250px m-3 bgi-no-repeat bgi-position-center bgi-size-contain" style="background-image: url('assets/media/svg/misc/octagon.svg')">
+								<div class="d-flex flex-column flex-center h-200px w-200px h-lg-250px w-lg-250px m-3 bgi-no-repeat bgi-position-center bgi-size-contain" style="background-image: url('../assets/media/svg/misc/octagon.svg')">
 									<!--begin::Symbol-->
 									<!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
 									<span class="svg-icon svg-icon-2tx svg-icon-white mb-3">
@@ -414,7 +414,7 @@ License: For each use you must have a valid license purchased only from above li
 								</div>
 								<!--end::Item-->
 								<!--begin::Item-->
-								<div class="d-flex flex-column flex-center h-200px w-200px h-lg-250px w-lg-250px m-3 bgi-no-repeat bgi-position-center bgi-size-contain" style="background-image: url('assets/media/svg/misc/octagon.svg')">
+								<div class="d-flex flex-column flex-center h-200px w-200px h-lg-250px w-lg-250px m-3 bgi-no-repeat bgi-position-center bgi-size-contain" style="background-image: url('../assets/media/svg/misc/octagon.svg')">
 									<!--begin::Symbol-->
 									<!--begin::Svg Icon | path: icons/duotune/graphs/gra008.svg-->
 									<span class="svg-icon svg-icon-2tx svg-icon-white mb-3">
@@ -441,7 +441,7 @@ License: For each use you must have a valid license purchased only from above li
 								</div>
 								<!--end::Item-->
 								<!--begin::Item-->
-								<div class="d-flex flex-column flex-center h-200px w-200px h-lg-250px w-lg-250px m-3 bgi-no-repeat bgi-position-center bgi-size-contain" style="background-image: url('assets/media/svg/misc/octagon.svg')">
+								<div class="d-flex flex-column flex-center h-200px w-200px h-lg-250px w-lg-250px m-3 bgi-no-repeat bgi-position-center bgi-size-contain" style="background-image: url('../assets/media/svg/misc/octagon.svg')">
 									<!--begin::Symbol-->
 									<!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm002.svg-->
 									<span class="svg-icon svg-icon-2tx svg-icon-white mb-3">
@@ -519,7 +519,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Item-->
 							<div class="text-center">
 								<!--begin::Photo-->
-								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('assets/media/avatars/150-2.jpg')"></div>
+								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('../assets/media/avatars/150-2.jpg')"></div>
 								<!--end::Photo-->
 								<!--begin::Person-->
 								<div class="mb-0">
@@ -536,7 +536,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Item-->
 							<div class="text-center">
 								<!--begin::Photo-->
-								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('assets/media/avatars/150-3.jpg')"></div>
+								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('../assets/media/avatars/150-3.jpg')"></div>
 								<!--end::Photo-->
 								<!--begin::Person-->
 								<div class="mb-0">
@@ -553,7 +553,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Item-->
 							<div class="text-center">
 								<!--begin::Photo-->
-								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('assets/media/avatars/150-4.jpg')"></div>
+								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('../assets/media/avatars/150-4.jpg')"></div>
 								<!--end::Photo-->
 								<!--begin::Person-->
 								<div class="mb-0">
@@ -570,7 +570,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Item-->
 							<div class="text-center">
 								<!--begin::Photo-->
-								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('assets/media/avatars/150-5.jpg')"></div>
+								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('../assets/media/avatars/150-5.jpg')"></div>
 								<!--end::Photo-->
 								<!--begin::Person-->
 								<div class="mb-0">
@@ -587,7 +587,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Item-->
 							<div class="text-center">
 								<!--begin::Photo-->
-								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('assets/media/avatars/150-6.jpg')"></div>
+								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('../assets/media/avatars/150-6.jpg')"></div>
 								<!--end::Photo-->
 								<!--begin::Person-->
 								<div class="mb-0">
@@ -604,7 +604,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Item-->
 							<div class="text-center">
 								<!--begin::Photo-->
-								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('assets/media/avatars/150-7.jpg')"></div>
+								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('../assets/media/avatars/150-7.jpg')"></div>
 								<!--end::Photo-->
 								<!--begin::Person-->
 								<div class="mb-0">
@@ -621,7 +621,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Item-->
 							<div class="text-center">
 								<!--begin::Photo-->
-								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('assets/media/avatars/150-8.jpg')"></div>
+								<div class="octagon mx-auto mb-5 d-flex w-200px h-200px bgi-no-repeat bgi-size-contain bgi-position-center" style="background-image:url('../assets/media/avatars/150-8.jpg')"></div>
 								<!--end::Photo-->
 								<!--begin::Person-->
 								<div class="mb-0">
@@ -709,9 +709,9 @@ License: For each use you must have a valid license purchased only from above li
 										<!--begin::Col-->
 										<div class="col-lg-6">
 											<!--begin::Item-->
-											<a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-23.jpg">
+											<a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-23.jpg')}}">
 												<!--begin::Image-->
-												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px" style="background-image:url('assets/media/stock/600x600/img-23.jpg')"></div>
+												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px" style="background-image:url('../assets/media/stock/600x600/img-23.jpg')"></div>
 												<!--end::Image-->
 												<!--begin::Action-->
 												<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -729,9 +729,9 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin::Col-->
 												<div class="col-lg-6">
 													<!--begin::Item-->
-													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-22.jpg">
+													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-22.jpg')}}">
 														<!--begin::Image-->
-														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-22.jpg')"></div>
+														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-22.jpg')"></div>
 														<!--end::Image-->
 														<!--begin::Action-->
 														<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -745,9 +745,9 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin::Col-->
 												<div class="col-lg-6">
 													<!--begin::Item-->
-													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-21.jpg">
+													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-21.jpg')}}">
 														<!--begin::Image-->
-														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-21.jpg')"></div>
+														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-21.jpg')"></div>
 														<!--end::Image-->
 														<!--begin::Action-->
 														<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -761,9 +761,9 @@ License: For each use you must have a valid license purchased only from above li
 											</div>
 											<!--end::Row-->
 											<!--begin::Item-->
-											<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x400/img-20.jpg">
+											<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x400/img-20.jpg')}}">
 												<!--begin::Image-->
-												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-20.jpg')"></div>
+												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-20.jpg')"></div>
 												<!--end::Image-->
 												<!--begin::Action-->
 												<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -785,9 +785,9 @@ License: For each use you must have a valid license purchased only from above li
 										<!--begin::Col-->
 										<div class="col-lg-6">
 											<!--begin::Item-->
-											<a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-11.jpg">
+											<a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-11.jpg')}}">
 												<!--begin::Image-->
-												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px" style="background-image:url('assets/media/stock/600x600/img-11.jpg')"></div>
+												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px" style="background-image:url('../assets/media/stock/600x600/img-11.jpg')"></div>
 												<!--end::Image-->
 												<!--begin::Action-->
 												<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -805,9 +805,9 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin::Col-->
 												<div class="col-lg-6">
 													<!--begin::Item-->
-													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-12.jpg">
+													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-12.jpg')}}">
 														<!--begin::Image-->
-														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-12.jpg')"></div>
+														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-12.jpg')"></div>
 														<!--end::Image-->
 														<!--begin::Action-->
 														<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -821,9 +821,9 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin::Col-->
 												<div class="col-lg-6">
 													<!--begin::Item-->
-													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-21.jpg">
+													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-21.jpg')}}">
 														<!--begin::Image-->
-														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-21.jpg')"></div>
+														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-21.jpg')"></div>
 														<!--end::Image-->
 														<!--begin::Action-->
 														<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -837,9 +837,9 @@ License: For each use you must have a valid license purchased only from above li
 											</div>
 											<!--end::Row-->
 											<!--begin::Item-->
-											<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x400/img-20.jpg">
+											<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x400/img-20.jpg')}}">
 												<!--begin::Image-->
-												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-20.jpg')"></div>
+												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-20.jpg')"></div>
 												<!--end::Image-->
 												<!--begin::Action-->
 												<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -865,9 +865,9 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin::Col-->
 												<div class="col-lg-6">
 													<!--begin::Item-->
-													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-16.jpg">
+													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-16.jpg')}}">
 														<!--begin::Image-->
-														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-16.jpg')"></div>
+														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-16.jpg')"></div>
 														<!--end::Image-->
 														<!--begin::Action-->
 														<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -881,9 +881,9 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin::Col-->
 												<div class="col-lg-6">
 													<!--begin::Item-->
-													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-12.jpg">
+													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-12.jpg')}}">
 														<!--begin::Image-->
-														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-12.jpg')"></div>
+														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-12.jpg')"></div>
 														<!--end::Image-->
 														<!--begin::Action-->
 														<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -897,9 +897,9 @@ License: For each use you must have a valid license purchased only from above li
 											</div>
 											<!--end::Row-->
 											<!--begin::Item-->
-											<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x400/img-15.jpg">
+											<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x400/img-15.jpg')}}">
 												<!--begin::Image-->
-												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-15.jpg')"></div>
+												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-15.jpg')"></div>
 												<!--end::Image-->
 												<!--begin::Action-->
 												<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -913,9 +913,9 @@ License: For each use you must have a valid license purchased only from above li
 										<!--begin::Col-->
 										<div class="col-lg-6">
 											<!--begin::Item-->
-											<a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-23.jpg">
+											<a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-23.jpg')}}">
 												<!--begin::Image-->
-												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px" style="background-image:url('assets/media/stock/600x600/img-23.jpg')"></div>
+												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px" style="background-image:url('../assets/media/stock/600x600/img-23.jpg')"></div>
 												<!--end::Image-->
 												<!--begin::Action-->
 												<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -937,9 +937,9 @@ License: For each use you must have a valid license purchased only from above li
 										<!--begin::Col-->
 										<div class="col-lg-6">
 											<!--begin::Item-->
-											<a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-15.jpg">
+											<a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-15.jpg')}}">
 												<!--begin::Image-->
-												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px" style="background-image:url('assets/media/stock/600x600/img-15.jpg')"></div>
+												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px" style="background-image:url('../assets/media/stock/600x600/img-15.jpg')"></div>
 												<!--end::Image-->
 												<!--begin::Action-->
 												<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -957,9 +957,9 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin::Col-->
 												<div class="col-lg-6">
 													<!--begin::Item-->
-													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-22.jpg">
+													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-22.jpg')}}">
 														<!--begin::Image-->
-														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-22.jpg')"></div>
+														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-22.jpg')"></div>
 														<!--end::Image-->
 														<!--begin::Action-->
 														<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -973,9 +973,9 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin::Col-->
 												<div class="col-lg-6">
 													<!--begin::Item-->
-													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x600/img-21.jpg">
+													<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x600/img-21.jpg')}}">
 														<!--begin::Image-->
-														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-21.jpg')"></div>
+														<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-21.jpg')"></div>
 														<!--end::Image-->
 														<!--begin::Action-->
 														<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -989,9 +989,9 @@ License: For each use you must have a valid license purchased only from above li
 											</div>
 											<!--end::Row-->
 											<!--begin::Item-->
-											<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="assets/media/stock/600x400/img-14.jpg">
+											<a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects" href="{{asset('assets/media/stock/600x400/img-14.jpg')}}">
 												<!--begin::Image-->
-												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('assets/media/stock/600x600/img-14.jpg')"></div>
+												<div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px" style="background-image:url('../assets/media/stock/600x600/img-14.jpg')"></div>
 												<!--end::Image-->
 												<!--begin::Action-->
 												<div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -1423,7 +1423,7 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="d-flex align-items-center">
 									<!--begin::Avatar-->
 									<div class="symbol symbol-circle symbol-50px me-5">
-										<img src="assets/media/avatars/150-2.jpg" class="" alt="" />
+										<img src="{{asset('assets/media/avatars/150-2.jpg')}}" class="" alt="" />
 									</div>
 									<!--end::Avatar-->
 									<!--begin::Name-->
@@ -1476,7 +1476,7 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="d-flex align-items-center">
 									<!--begin::Avatar-->
 									<div class="symbol symbol-circle symbol-50px me-5">
-										<img src="assets/media/avatars/150-3.jpg" class="" alt="" />
+										<img src="{{asset('assets/media/avatars/150-3.jpg')}}" class="" alt="" />
 									</div>
 									<!--end::Avatar-->
 									<!--begin::Name-->
@@ -1529,7 +1529,7 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="d-flex align-items-center">
 									<!--begin::Avatar-->
 									<div class="symbol symbol-circle symbol-50px me-5">
-										<img src="assets/media/avatars/150-18.jpg" class="" alt="" />
+										<img src="{{asset('assets/media/avatars/150-18.jpg')}}" class="" alt="" />
 									</div>
 									<!--end::Avatar-->
 									<!--begin::Name-->
@@ -1645,31 +1645,31 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end::Subtitle-->
 										<!--begin::Link-->
 										<a href="#" class="mb-6">
-											<img src="assets/media/svg/brand-logos/facebook-4.svg" class="h-20px me-2" alt="" />
+											<img src="{{asset('assets/media/svg/brand-logos/facebook-4.svg" class="h-20px me-2" alt="" />
 											<span class="text-white opacity-50 text-hover-primary fs-5 mb-6">Facebook</span>
 										</a>
 										<!--end::Link-->
 										<!--begin::Link-->
 										<a href="#" class="mb-6">
-											<img src="assets/media/svg/brand-logos/github.svg" class="h-20px me-2" alt="" />
+											<img src="{{asset('assets/media/svg/brand-logos/github.svg" class="h-20px me-2" alt="" />
 											<span class="text-white opacity-50 text-hover-primary fs-5 mb-6">Github</span>
 										</a>
 										<!--end::Link-->
 										<!--begin::Link-->
 										<a href="#" class="mb-6">
-											<img src="assets/media/svg/brand-logos/twitter.svg" class="h-20px me-2" alt="" />
+											<img src="{{asset('assets/media/svg/brand-logos/twitter.svg" class="h-20px me-2" alt="" />
 											<span class="text-white opacity-50 text-hover-primary fs-5 mb-6">Twitter</span>
 										</a>
 										<!--end::Link-->
 										<!--begin::Link-->
 										<a href="#" class="mb-6">
-											<img src="assets/media/svg/brand-logos/dribbble-icon-1.svg" class="h-20px me-2" alt="" />
+											<img src="{{asset('assets/media/svg/brand-logos/dribbble-icon-1.svg" class="h-20px me-2" alt="" />
 											<span class="text-white opacity-50 text-hover-primary fs-5 mb-6">Dribbble</span>
 										</a>
 										<!--end::Link-->
 										<!--begin::Link-->
 										<a href="#" class="mb-6">
-											<img src="assets/media/svg/brand-logos/instagram-2-1.svg" class="h-20px me-2" alt="" />
+											<img src="{{asset('assets/media/svg/brand-logos/instagram-2-1.svg" class="h-20px me-2" alt="" />
 											<span class="text-white opacity-50 text-hover-primary fs-5 mb-6">Instagram</span>
 										</a>
 										<!--end::Link-->
@@ -1694,7 +1694,7 @@ License: For each use you must have a valid license purchased only from above li
 							<div class="d-flex align-items-center order-2 order-md-1">
 								<!--begin::Logo-->
 								<a href="../../demo13/dist/landing.html">
-									<img alt="Logo" src="assets/media/logos/logo-landing.svg" class="h-15px h-md-20px" />
+									<img alt="Logo" src="{{asset('assets/media/logos/logo-landing.svg" class="h-15px h-md-20px" />
 								</a>
 								<!--end::Logo image-->
 								<!--begin::Logo image-->
@@ -1740,16 +1740,16 @@ License: For each use you must have a valid license purchased only from above li
 		<script>var hostUrl = "assets/";</script>
 		<!--begin::Javascript-->
 		<!--begin::Global Javascript Bundle(used by all pages)-->
-		<script src="assets/plugins/global/plugins.bundle.js"></script>
-		<script src="assets/js/scripts.bundle.js"></script>
+		<script src="{{asset('assets/plugins/global/plugins.bundle.js"></script>
+		<script src="{{asset('assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Page Vendors Javascript(used by this page)-->
-		<script src="assets/plugins/custom/fslightbox/fslightbox.bundle.js"></script>
-		<script src="assets/plugins/custom/typedjs/typedjs.bundle.js"></script>
+		<script src="{{asset('assets/plugins/custom/fslightbox/fslightbox.bundle.js"></script>
+		<script src="{{asset('assets/plugins/custom/typedjs/typedjs.bundle.js"></script>
 		<!--end::Page Vendors Javascript-->
 		<!--begin::Page Custom Javascript(used by this page)-->
-		<script src="assets/js/custom/landing.js"></script>
-		<script src="assets/js/custom/pages/company/pricing.js"></script>
+		<script src="{{asset('assets/js/custom/landing.js"></script>
+		<script src="{{asset('assets/js/custom/pages/company/pricing.js"></script>
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

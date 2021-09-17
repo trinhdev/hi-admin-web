@@ -16,7 +16,7 @@ class LoginController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            if(Auth::user()->is_admin == 1){
+            if(Auth::user()->group_id == 2){
                 return redirect()->route('admin.dashboard');
             }
             else{

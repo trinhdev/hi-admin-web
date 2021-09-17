@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
             return $next($request);
         }
         else{
-            if(Auth::user()->is_admin == 0){
+            if(Auth::user()->group_id == 1){
                 return redirect()->route('user.dashboard');
             }
             return redirect()->route('admin.dashboard');

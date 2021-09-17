@@ -17,9 +17,10 @@ class AuthenticateUser
     public function handle($request, Closure $next)
     {
         // Redirect user by role
-        // Role: 1 is admin, 0 is user
+        // Role: 2 is admin, 1 is user
+
         if(Auth::check()){
-            if(Auth::user()->is_admin == 0){
+            if(Auth::user()->group_id == 1){
                 return $next($request);
             }
             return back()->withInput();

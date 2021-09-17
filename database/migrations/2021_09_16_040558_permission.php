@@ -13,8 +13,16 @@ class Permission extends Migration
      */
     public function up()
     {
-        Schema::table('permission', function (Blueprint $table) {
+        Schema::create('permission', function (Blueprint $table) {
             //
+            $table->id('permission_id');
+            $table->string('permission_type');
+            $table->string('permission_code');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('p_category_id');
+            $table->boolean('permitted')->default(true);
+            $table->timestamps();
+
         });
     }
 
@@ -25,8 +33,6 @@ class Permission extends Migration
      */
     public function down()
     {
-        Schema::table('permission', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('permission');
     }
 }
