@@ -55,7 +55,7 @@ class UsersController extends Controller
             'email'    => 'required|email',
             'password' => 'required|min:6'
         ]);
-        
+
         if($validator->fails()){
             return redirect()->route('admin.user_create')
             ->withErrors($validator)
@@ -122,6 +122,6 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        return "ok";
     }
 }
