@@ -4,10 +4,15 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-
+use Illuminate\Support\Facades\Auth;
 class UserPolicy
 {
     use HandlesAuthorization;
+
+    public const UPDATE = 'USER_UPDATE';
+    public const VIEW = 'USER_VIEW';
+    public const ADMIN = 1;
+
 
     /**
      * Determine whether the user can view any models.
@@ -50,9 +55,11 @@ class UserPolicy
      * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $model)
     {
         //
+        $user = Auth::user();
+        return $user->group_id === 2 || $model->user_id === $user->user_id;
     }
 
     /**

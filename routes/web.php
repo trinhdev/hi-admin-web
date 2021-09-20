@@ -3,6 +3,8 @@
 use App\Http\Controllers\Main\IndexController;
 use App\Http\Controllers\Main\LoginController;
 use App\Http\Controllers\Main\HomeController;
+use App\Http\Controllers\User\UsersController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::any('/', [IndexController::class, 'index'])->middleware('guest')->name('index');
@@ -17,4 +19,6 @@ Route::group([
             ],
     function (){
         Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+        Route::get('/{user}', [UsersController::class, 'edit'])->name('edit');
+        Route::put('/{user}', [UsersController::class, 'update'])->name('update');
 });

@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        User::class => UserPolicy::class,
     ];
 
     /**
@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
        
-        // Gate::define('ability', function (User $user) { return $user->is_admin}) 
+        Gate::define('update-user', 'App\Policies\UserPolicy@update');
         // cooperate with @can('ability) @endcan in blade view
         // this->authorize('ability') in controller
         // Keywords: policy

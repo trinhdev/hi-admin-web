@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Main;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
@@ -35,6 +36,7 @@ class UsersController extends Controller
     public function create()
     {
         //
+        return view('admin.user-create');
     }
 
     /**
@@ -46,6 +48,20 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(),[
+            'group_id' => 'required',
+            'name'     => 'required',
+            'username' => 'required',
+            'email'    => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+        
+        if($validator->fails()){
+            return redirect()->route('admin.user_create')
+            ->withErrors($validator)
+            ->withInput();
+        }
+
     }
 
     /**
@@ -69,6 +85,11 @@ class UsersController extends Controller
     public function edit(User $user)
     {
         //
+        if($user->can('update-user', User::class)){
+            // dd(view('user.user-edit'));
+            return view('user.user-edit',['user'=>$user]);
+        }
+        abort(403);
     }
 
     /**
@@ -81,6 +102,16 @@ class UsersController extends Controller
     public function update(Request $request, User $user)
     {
         //
+        $validator = Validator::make($request->all(),[
+            'group_id' => 'required',
+            'name'     => 'required|min:20',
+        ]);
+        if($validator->fails()){
+            return back()
+            ->withErrors($validator)
+            ->withInput();
+        }
+
     }
 
     /**
