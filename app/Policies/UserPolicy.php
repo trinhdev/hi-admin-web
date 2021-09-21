@@ -35,26 +35,27 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      *
+     * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function view(User $model)
+    public function view(User $user, User $model)
     {
-        $user = Auth::user();
         // Check xem trong bảng permission user có quyền xem model này HOẶC có phải là chính user này ko?
-        return in_array($this->VIEW,$this->userPermissions) || $model->user_id === $user->user_id;
+        return in_array(UserPolicy::VIEW,$this->userPermissions) || $model->user_id === $user->user_id;
     }
 
     /**
      * Determine whether the user can create models.
      *
+     * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
      * @return mixed
      */
     public function create()
     {
         // Check xem trong bảng permission user có quyền tạo record mới ko?
-        return in_array($this->CREATE,$this->userPermissions);
+        return in_array(UserPolicy::CREATE,$this->userPermissions);
     }
 
     /**
@@ -63,11 +64,10 @@ class UserPolicy
      * @param  \App\Models\User $model
      * @return mixed
      */
-    public function update(User $model)
+    public function update(User $user, User $model)
     {
         // Check xem trong bảng permission user có quyền update model này HOẶC có phải là user này ko?
-        $user = Auth::user();
-        return in_array($this->UPDATE,$this->userPermissions) || $model->user_id === $user->user_id;
+        return in_array(UserPolicy::UPDATE,$this->userPermissions) || $model->user_id === $user->user_id;
     }
 
     /**
@@ -79,7 +79,7 @@ class UserPolicy
     public function delete(User $model)
     {
         // Check xem trong bảng permission user có quyền delete model này ko?
-        return in_array($this->DELETE,$this->userPermissions);
+        return in_array(UserPolicy::DELETE,$this->userPermissions);
     }
 
     /**

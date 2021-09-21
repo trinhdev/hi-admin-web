@@ -12,7 +12,9 @@ class Permission extends Model
     }
     //
     public function getUserPermissions(){
-        $result = Permission::where('user_id', $this->userId)->get()->toArray();
+        $result = Permission::where('user_id', $this->userId)
+                                                        ->where('permitted',1)
+                                                        ->pluck('permission_code')->toArray();
         return $result;
     }
 }

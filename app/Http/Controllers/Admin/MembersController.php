@@ -108,7 +108,7 @@ class MembersController extends Controller
     public function edit(User $user)
     {
         //
-        if($user->can('update-user', User::class)){
+        if($this->authorize('update-user', User::class)){
             // dd(view('user.user-edit'));
             return view('admin.user-edit',['user'=>$user]);
         }

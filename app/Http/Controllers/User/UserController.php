@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if($user->can('view-user', User::class)){
+        if($this->authorize('view-user', $user)){
             return view('user.profile',['user' => $user]);
         }
         abort(403);
@@ -39,7 +39,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         // Kiểm tra quyền thưc thi của user
-        if(!$user->can('update-user', User::class)){
+        if(!$this->authorize('update-user', User::class)){
             abort(403);
         }
 
