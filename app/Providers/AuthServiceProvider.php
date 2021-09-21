@@ -26,6 +26,9 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
        
         Gate::define('update-user', 'App\Policies\UserPolicy@update');
+        Gate::define('view-user', 'App\Policies\UserPolicy@view');
+        Gate::define('create-user', 'App\Policies\UserPolicy@create');
+
         // cooperate with @can('ability) @endcan in blade view
         // this->authorize('ability') in controller
         // Keywords: policy

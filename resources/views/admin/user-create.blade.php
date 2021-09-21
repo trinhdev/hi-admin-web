@@ -9,7 +9,7 @@
     </div>
 @endif
 
-<form action="{{ route('admin.user_store')}}" method="POST">
+<form action="{{ route('admin.user_create')}}" method="POST">
     @csrf
     <div class="form-group">
         <label for="username"> User name</label>

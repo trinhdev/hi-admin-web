@@ -20,7 +20,7 @@ class AuthenticateUser
         // Role: 2 is admin, 1 is user
 
         if(Auth::check()){
-            if(Auth::user()->group_id == 1){
+            if(Auth::user()->group_id != 2){
                 return $next($request);
             }
             return back()->withInput();
