@@ -168,16 +168,16 @@
 												<div class="d-flex flex-center flex-column py-5">
 													<!--begin::Avatar-->
 													<div class="symbol symbol-100px symbol-circle mb-7">
-														<img src="assets/media/avatars/150-1.jpg" alt="image">
+														<img src="{{ asset('assets/media/avatars/150-1.jpg') }}" alt="image">
 													</div>
 													<!--end::Avatar-->
 													<!--begin::Name-->
-													<a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">Emma Smith</a>
+													<a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">{{ $user->name ?? $user->name}}</a>
 													<!--end::Name-->
 													<!--begin::Position-->
 													<div class="mb-9">
 														<!--begin::Badge-->
-														<div class="badge badge-lg badge-light-primary d-inline">Administrator</div>
+														<div class="badge badge-lg badge-light-primary d-inline">{{ ($user->group_id != 2) ? "User" : "Administrator" }}</div>
 														<!--begin::Badge-->
 													</div>
 													<!--end::Position-->
@@ -263,12 +263,12 @@
 													<div class="pb-5 fs-6">
 														<!--begin::Details item-->
 														<div class="fw-bolder mt-5">Account ID</div>
-														<div class="text-gray-600">ID-45453423</div>
+														<div class="text-gray-600">{{ $user->user_id}}</div>
 														<!--begin::Details item-->
 														<!--begin::Details item-->
 														<div class="fw-bolder mt-5">Email</div>
 														<div class="text-gray-600">
-															<a href="#" class="text-gray-600 text-hover-primary">info@keenthemes.com</a>
+															<a href="#" class="text-gray-600 text-hover-primary">{{ $user->email}}</a>
 														</div>
 														<!--begin::Details item-->
 														<!--begin::Details item-->
@@ -4214,9 +4214,9 @@
 						<!--end::Post-->
 					</div>
 
-<p>Tên: {{ $user->name ?? $user->name}}</p>
-<p>User Name: {{ $user->username ?? $user->username}} </p>
+<p>Tên: </p>
+<p>User Name: </p>
 <p>Email: {{ $user->email ?? $user->email}} </p>
 <p>Ngày tham gia: {{ $user->created_at ?? date('d-m-Y H:i',strtotime($user->created_at))}}</p>
-<p>Nhóm: {{ ($user->group_id == 1) ? "User" : "Admin" }}</p>
+<p>Nhóm: </p>
 @endsection
