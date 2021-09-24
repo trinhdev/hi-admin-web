@@ -8,7 +8,8 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
-
+    protected $table = 'users';
+    protected $primaryKey = 'user_id';
     /**
      * The attributes that are mass assignable.
      *
@@ -35,4 +36,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function group()
+    {
+        return $this->belongsTo('App\Models\UsersGroup','group_id');
+    }
+
+    public function getAllUsers($perPage = 10){
+        return User::paginate($perPage);
+    }
 }
