@@ -9,8 +9,9 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        echo 'Xin chào User, '. $user->name;
-        // // var_dump($user);
-        // echo $user->is_admin;
+        if($user->group_id == 2){
+            return view('admin.dashboard', ['user' => $user,'account'=>'admin']);
+        }
+        return view('user.dashboard', ['user' => $user,'account'=>'user']);
     }
 }

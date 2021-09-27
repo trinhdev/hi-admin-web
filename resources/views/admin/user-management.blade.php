@@ -1,7 +1,6 @@
 @extends('app')
 
 @section('content')
-{{ print_r($users) }}
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
@@ -143,7 +142,7 @@
 									</div>
 									<!--end::Wrapper-->
 									<!--begin::Button-->
-									<a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app" id="kt_toolbar_primary_button">Create</a>
+									<a href="{{ route('admin.user_create') }}" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app" id="kt_toolbar_primary_button">Create</a>
 									<!--end::Button-->
 								</div>
 								<!--end::Actions-->
@@ -247,6 +246,7 @@
 												<!--end::Svg Icon-->Export</button>
 												<!--end::Export-->
 												<!--begin::Add user-->
+                                                <a href="{{ route('admin.user_create')}}">
 												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
 												<!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
 												<span class="svg-icon svg-icon-2">
@@ -255,7 +255,7 @@
 														<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black"></rect>
 													</svg>
 												</span>
-												<!--end::Svg Icon-->Add User</button>
+												<!--end::Svg Icon-->Add User</button></a>
 												<!--end::Add user-->
 											</div>
 											<!--end::Toolbar-->
@@ -567,9 +567,9 @@
 											<thead>
 												<!--begin::Table row-->
 												<tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0" role="row"><th class="w-10px pe-2 sorting_disabled" rowspan="1" colspan="1" aria-label="
-														
-															
-														
+
+
+
 													" style="width: 29.25px;">
 														<div class="form-check form-check-sm form-check-custom form-check-solid me-3">
 															<input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1">
@@ -581,69 +581,70 @@
 											<!--begin::Table body-->
 											<tbody class="text-gray-600 fw-bold">
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
 												<!--begin::Table row-->
-												
+
 												<!--end::Table row-->
-											<tr class="odd">
+												@foreach($users as $user)
+												<tr class="odd">
 													<!--begin::Checkbox-->
 													<td>
 														<div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -664,14 +665,14 @@
 														<!--end::Avatar-->
 														<!--begin::User details-->
 														<div class="d-flex flex-column">
-															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">Emma Smith</a>
-															<span>e.smith@kpmg.com.au</span>
+															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">{{ $user->name}}</a>
+															<span>{{ $user->email}}</span>
 														</div>
 														<!--begin::User details-->
 													</td>
 													<!--end::User=-->
 													<!--begin::Role=-->
-													<td>Administrator</td>
+													<td>{{ $user->group_id}}</td>
 													<!--end::Role=-->
 													<!--begin::Last login=-->
 													<td data-order="2021-09-16T16:36:05+07:00">
@@ -682,7 +683,7 @@
 													<td></td>
 													<!--end::Two step=-->
 													<!--begin::Joined-->
-													<td data-order="2021-02-21T14:40:00+07:00">21 Feb 2021, 2:40 pm</td>
+													<td data-order="2021-02-21T14:40:00+07:00">{{ date('d-m-Y H:i',strtotime($user->created_at)) }}</td>
 													<!--begin::Joined-->
 													<!--begin::Action=-->
 													<td class="text-end">
@@ -710,610 +711,9 @@
 														<!--end::Menu-->
 													</td>
 													<!--end::Action=-->
-												</tr><tr class="even">
-													<!--begin::Checkbox-->
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1">
-														</div>
-													</td>
-													<!--end::Checkbox-->
-													<!--begin::User=-->
-													<td class="d-flex align-items-center">
-														<!--begin:: Avatar -->
-														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-															<a href="../../demo13/dist/apps/user-management/users/view.html">
-																<div class="symbol-label fs-3 bg-light-danger text-danger">M</div>
-															</a>
-														</div>
-														<!--end::Avatar-->
-														<!--begin::User details-->
-														<div class="d-flex flex-column">
-															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">Melody Macy</a>
-															<span>melody@altbox.com</span>
-														</div>
-														<!--begin::User details-->
-													</td>
-													<!--end::User=-->
-													<!--begin::Role=-->
-													<td>Analyst</td>
-													<!--end::Role=-->
-													<!--begin::Last login=-->
-													<td data-order="2021-09-17T16:16:05+07:00">
-														<div class="badge badge-light fw-bolder">20 mins ago</div>
-													</td>
-													<!--end::Last login=-->
-													<!--begin::Two step=-->
-													<td>
-														<div class="badge badge-light-success fw-bolder">Enabled</div>
-													</td>
-													<!--end::Two step=-->
-													<!--begin::Joined-->
-													<td data-order="2021-08-19T17:20:00+07:00">19 Aug 2021, 5:20 pm</td>
-													<!--begin::Joined-->
-													<!--begin::Action=-->
-													<td class="text-end">
-														<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-														<span class="svg-icon svg-icon-5 m-0">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="black"></path>
-															</svg>
-														</span>
-														<!--end::Svg Icon--></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="../../demo13/dist/apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-													<!--end::Action=-->
-												</tr><tr class="odd">
-													<!--begin::Checkbox-->
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1">
-														</div>
-													</td>
-													<!--end::Checkbox-->
-													<!--begin::User=-->
-													<td class="d-flex align-items-center">
-														<!--begin:: Avatar -->
-														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-															<a href="../../demo13/dist/apps/user-management/users/view.html">
-																<div class="symbol-label">
-																	<img src="assets/media/avatars/150-26.jpg" alt="Max Smith" class="w-100">
-																</div>
-															</a>
-														</div>
-														<!--end::Avatar-->
-														<!--begin::User details-->
-														<div class="d-flex flex-column">
-															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">Max Smith</a>
-															<span>max@kt.com</span>
-														</div>
-														<!--begin::User details-->
-													</td>
-													<!--end::User=-->
-													<!--begin::Role=-->
-													<td>Developer</td>
-													<!--end::Role=-->
-													<!--begin::Last login=-->
-													<td data-order="2021-09-14T16:36:05+07:00">
-														<div class="badge badge-light fw-bolder">3 days ago</div>
-													</td>
-													<!--end::Last login=-->
-													<!--begin::Two step=-->
-													<td></td>
-													<!--end::Two step=-->
-													<!--begin::Joined-->
-													<td data-order="2021-12-20T17:30:00+07:00">20 Dec 2021, 5:30 pm</td>
-													<!--begin::Joined-->
-													<!--begin::Action=-->
-													<td class="text-end">
-														<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-														<span class="svg-icon svg-icon-5 m-0">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="black"></path>
-															</svg>
-														</span>
-														<!--end::Svg Icon--></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="../../demo13/dist/apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-													<!--end::Action=-->
-												</tr><tr class="even">
-													<!--begin::Checkbox-->
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1">
-														</div>
-													</td>
-													<!--end::Checkbox-->
-													<!--begin::User=-->
-													<td class="d-flex align-items-center">
-														<!--begin:: Avatar -->
-														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-															<a href="../../demo13/dist/apps/user-management/users/view.html">
-																<div class="symbol-label">
-																	<img src="assets/media/avatars/150-4.jpg" alt="Sean Bean" class="w-100">
-																</div>
-															</a>
-														</div>
-														<!--end::Avatar-->
-														<!--begin::User details-->
-														<div class="d-flex flex-column">
-															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">Sean Bean</a>
-															<span>sean@dellito.com</span>
-														</div>
-														<!--begin::User details-->
-													</td>
-													<!--end::User=-->
-													<!--begin::Role=-->
-													<td>Support</td>
-													<!--end::Role=-->
-													<!--begin::Last login=-->
-													<td data-order="2021-09-17T11:36:05+07:00">
-														<div class="badge badge-light fw-bolder">5 hours ago</div>
-													</td>
-													<!--end::Last login=-->
-													<!--begin::Two step=-->
-													<td>
-														<div class="badge badge-light-success fw-bolder">Enabled</div>
-													</td>
-													<!--end::Two step=-->
-													<!--begin::Joined-->
-													<td data-order="2021-10-25T17:30:00+07:00">25 Oct 2021, 5:30 pm</td>
-													<!--begin::Joined-->
-													<!--begin::Action=-->
-													<td class="text-end">
-														<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-														<span class="svg-icon svg-icon-5 m-0">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="black"></path>
-															</svg>
-														</span>
-														<!--end::Svg Icon--></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="../../demo13/dist/apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-													<!--end::Action=-->
-												</tr><tr class="odd">
-													<!--begin::Checkbox-->
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1">
-														</div>
-													</td>
-													<!--end::Checkbox-->
-													<!--begin::User=-->
-													<td class="d-flex align-items-center">
-														<!--begin:: Avatar -->
-														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-															<a href="../../demo13/dist/apps/user-management/users/view.html">
-																<div class="symbol-label">
-																	<img src="assets/media/avatars/150-15.jpg" alt="Brian Cox" class="w-100">
-																</div>
-															</a>
-														</div>
-														<!--end::Avatar-->
-														<!--begin::User details-->
-														<div class="d-flex flex-column">
-															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">Brian Cox</a>
-															<span>brian@exchange.com</span>
-														</div>
-														<!--begin::User details-->
-													</td>
-													<!--end::User=-->
-													<!--begin::Role=-->
-													<td>Developer</td>
-													<!--end::Role=-->
-													<!--begin::Last login=-->
-													<td data-order="2021-09-15T16:36:05+07:00">
-														<div class="badge badge-light fw-bolder">2 days ago</div>
-													</td>
-													<!--end::Last login=-->
-													<!--begin::Two step=-->
-													<td>
-														<div class="badge badge-light-success fw-bolder">Enabled</div>
-													</td>
-													<!--end::Two step=-->
-													<!--begin::Joined-->
-													<td data-order="2021-04-15T11:05:00+07:00">15 Apr 2021, 11:05 am</td>
-													<!--begin::Joined-->
-													<!--begin::Action=-->
-													<td class="text-end">
-														<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-														<span class="svg-icon svg-icon-5 m-0">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="black"></path>
-															</svg>
-														</span>
-														<!--end::Svg Icon--></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="../../demo13/dist/apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-													<!--end::Action=-->
-												</tr><tr class="even">
-													<!--begin::Checkbox-->
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1">
-														</div>
-													</td>
-													<!--end::Checkbox-->
-													<!--begin::User=-->
-													<td class="d-flex align-items-center">
-														<!--begin:: Avatar -->
-														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-															<a href="../../demo13/dist/apps/user-management/users/view.html">
-																<div class="symbol-label fs-3 bg-light-warning text-warning">M</div>
-															</a>
-														</div>
-														<!--end::Avatar-->
-														<!--begin::User details-->
-														<div class="d-flex flex-column">
-															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">Mikaela Collins</a>
-															<span>mikaela@pexcom.com</span>
-														</div>
-														<!--begin::User details-->
-													</td>
-													<!--end::User=-->
-													<!--begin::Role=-->
-													<td>Administrator</td>
-													<!--end::Role=-->
-													<!--begin::Last login=-->
-													<td data-order="2021-09-12T16:36:05+07:00">
-														<div class="badge badge-light fw-bolder">5 days ago</div>
-													</td>
-													<!--end::Last login=-->
-													<!--begin::Two step=-->
-													<td></td>
-													<!--end::Two step=-->
-													<!--begin::Joined-->
-													<td data-order="2021-03-10T06:43:00+07:00">10 Mar 2021, 6:43 am</td>
-													<!--begin::Joined-->
-													<!--begin::Action=-->
-													<td class="text-end">
-														<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-														<span class="svg-icon svg-icon-5 m-0">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="black"></path>
-															</svg>
-														</span>
-														<!--end::Svg Icon--></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="../../demo13/dist/apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-													<!--end::Action=-->
-												</tr><tr class="odd">
-													<!--begin::Checkbox-->
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1">
-														</div>
-													</td>
-													<!--end::Checkbox-->
-													<!--begin::User=-->
-													<td class="d-flex align-items-center">
-														<!--begin:: Avatar -->
-														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-															<a href="../../demo13/dist/apps/user-management/users/view.html">
-																<div class="symbol-label">
-																	<img src="assets/media/avatars/150-8.jpg" alt="Francis Mitcham" class="w-100">
-																</div>
-															</a>
-														</div>
-														<!--end::Avatar-->
-														<!--begin::User details-->
-														<div class="d-flex flex-column">
-															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">Francis Mitcham</a>
-															<span>f.mitcham@kpmg.com.au</span>
-														</div>
-														<!--begin::User details-->
-													</td>
-													<!--end::User=-->
-													<!--begin::Role=-->
-													<td>Trial</td>
-													<!--end::Role=-->
-													<!--begin::Last login=-->
-													<td data-order="2021-08-27T16:36:05+07:00">
-														<div class="badge badge-light fw-bolder">3 weeks ago</div>
-													</td>
-													<!--end::Last login=-->
-													<!--begin::Two step=-->
-													<td></td>
-													<!--end::Two step=-->
-													<!--begin::Joined-->
-													<td data-order="2021-08-19T11:30:00+07:00">19 Aug 2021, 11:30 am</td>
-													<!--begin::Joined-->
-													<!--begin::Action=-->
-													<td class="text-end">
-														<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-														<span class="svg-icon svg-icon-5 m-0">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="black"></path>
-															</svg>
-														</span>
-														<!--end::Svg Icon--></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="../../demo13/dist/apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-													<!--end::Action=-->
-												</tr><tr class="even">
-													<!--begin::Checkbox-->
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1">
-														</div>
-													</td>
-													<!--end::Checkbox-->
-													<!--begin::User=-->
-													<td class="d-flex align-items-center">
-														<!--begin:: Avatar -->
-														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-															<a href="../../demo13/dist/apps/user-management/users/view.html">
-																<div class="symbol-label fs-3 bg-light-danger text-danger">O</div>
-															</a>
-														</div>
-														<!--end::Avatar-->
-														<!--begin::User details-->
-														<div class="d-flex flex-column">
-															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">Olivia Wild</a>
-															<span>olivia@corpmail.com</span>
-														</div>
-														<!--begin::User details-->
-													</td>
-													<!--end::User=-->
-													<!--begin::Role=-->
-													<td>Administrator</td>
-													<!--end::Role=-->
-													<!--begin::Last login=-->
-													<td data-order="2021-09-16T16:36:05+07:00">
-														<div class="badge badge-light fw-bolder">Yesterday</div>
-													</td>
-													<!--end::Last login=-->
-													<!--begin::Two step=-->
-													<td></td>
-													<!--end::Two step=-->
-													<!--begin::Joined-->
-													<td data-order="2021-07-25T06:43:00+07:00">25 Jul 2021, 6:43 am</td>
-													<!--begin::Joined-->
-													<!--begin::Action=-->
-													<td class="text-end">
-														<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-														<span class="svg-icon svg-icon-5 m-0">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="black"></path>
-															</svg>
-														</span>
-														<!--end::Svg Icon--></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="../../demo13/dist/apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-													<!--end::Action=-->
-												</tr><tr class="odd">
-													<!--begin::Checkbox-->
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1">
-														</div>
-													</td>
-													<!--end::Checkbox-->
-													<!--begin::User=-->
-													<td class="d-flex align-items-center">
-														<!--begin:: Avatar -->
-														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-															<a href="../../demo13/dist/apps/user-management/users/view.html">
-																<div class="symbol-label fs-3 bg-light-primary text-primary">N</div>
-															</a>
-														</div>
-														<!--end::Avatar-->
-														<!--begin::User details-->
-														<div class="d-flex flex-column">
-															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">Neil Owen</a>
-															<span>owen.neil@gmail.com</span>
-														</div>
-														<!--begin::User details-->
-													</td>
-													<!--end::User=-->
-													<!--begin::Role=-->
-													<td>Analyst</td>
-													<!--end::Role=-->
-													<!--begin::Last login=-->
-													<td data-order="2021-09-17T16:16:05+07:00">
-														<div class="badge badge-light fw-bolder">20 mins ago</div>
-													</td>
-													<!--end::Last login=-->
-													<!--begin::Two step=-->
-													<td>
-														<div class="badge badge-light-success fw-bolder">Enabled</div>
-													</td>
-													<!--end::Two step=-->
-													<!--begin::Joined-->
-													<td data-order="2021-04-15T17:30:00+07:00">15 Apr 2021, 5:30 pm</td>
-													<!--begin::Joined-->
-													<!--begin::Action=-->
-													<td class="text-end">
-														<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-														<span class="svg-icon svg-icon-5 m-0">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="black"></path>
-															</svg>
-														</span>
-														<!--end::Svg Icon--></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="../../demo13/dist/apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-													<!--end::Action=-->
-												</tr><tr class="even">
-													<!--begin::Checkbox-->
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1">
-														</div>
-													</td>
-													<!--end::Checkbox-->
-													<!--begin::User=-->
-													<td class="d-flex align-items-center">
-														<!--begin:: Avatar -->
-														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-															<a href="../../demo13/dist/apps/user-management/users/view.html">
-																<div class="symbol-label">
-																	<img src="assets/media/avatars/150-6.jpg" alt="Dan Wilson" class="w-100">
-																</div>
-															</a>
-														</div>
-														<!--end::Avatar-->
-														<!--begin::User details-->
-														<div class="d-flex flex-column">
-															<a href="../../demo13/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">Dan Wilson</a>
-															<span>dam@consilting.com</span>
-														</div>
-														<!--begin::User details-->
-													</td>
-													<!--end::User=-->
-													<!--begin::Role=-->
-													<td>Developer</td>
-													<!--end::Role=-->
-													<!--begin::Last login=-->
-													<td data-order="2021-09-14T16:36:05+07:00">
-														<div class="badge badge-light fw-bolder">3 days ago</div>
-													</td>
-													<!--end::Last login=-->
-													<!--begin::Two step=-->
-													<td></td>
-													<!--end::Two step=-->
-													<!--begin::Joined-->
-													<td data-order="2021-10-25T11:05:00+07:00">25 Oct 2021, 11:05 am</td>
-													<!--begin::Joined-->
-													<!--begin::Action=-->
-													<td class="text-end">
-														<a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-														<span class="svg-icon svg-icon-5 m-0">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="black"></path>
-															</svg>
-														</span>
-														<!--end::Svg Icon--></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="../../demo13/dist/apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-													<!--end::Action=-->
-												</tr></tbody>
+												</tr>
+												@endforeach
+											</tbody>
 											<!--end::Table body-->
 										</table></div><div class="row"><div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"></div><div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end"><div class="dataTables_paginate paging_simple_numbers" id="kt_table_users_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="kt_table_users_previous"><a href="#" aria-controls="kt_table_users" data-dt-idx="0" tabindex="0" class="page-link"><i class="previous"></i></a></li><li class="paginate_button page-item active"><a href="#" aria-controls="kt_table_users" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="kt_table_users" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="kt_table_users" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item next" id="kt_table_users_next"><a href="#" aria-controls="kt_table_users" data-dt-idx="4" tabindex="0" class="page-link"><i class="next"></i></a></li></ul></div></div></div></div>
 										<!--end::Table-->

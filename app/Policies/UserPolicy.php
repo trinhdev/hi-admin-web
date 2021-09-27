@@ -2,25 +2,32 @@
 
 namespace App\Policies;
 
-use App\Models\User;
+use App\Models\Permission;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 class UserPolicy
 {
     use HandlesAuthorization;
 
-    public const UPDATE = 'USER_UPDATE';
-    public const VIEW = 'USER_VIEW';
-    public const ADMIN = 1;
+    private const CREATE = 'USER_CREATE';
+    private const VIEW   = 'USER_VIEW';
+    private const UPDATE = 'USER_UPDATE';
+    private const DELETE = 'USER_DEL';
 
+    public $userPermissions;
 
+    public function __construct($data = null){
+        $userPermission = new Permission();
+        $this->userPermissions = $userPermission->getUserPermissions();
+    }
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $model)
     {
         //
     }
@@ -34,54 +41,54 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        //
+        // Check xem trong bảng permission user có quyền xem model này HOẶC có phải là chính user này ko?
+        return in_array(UserPolicy::VIEW,$this->userPermissions) || $model->user_id === $user->user_id;
     }
 
     /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function create(User $user)
+    public function create()
     {
-        //
+        // Check xem trong bảng permission user có quyền tạo record mới ko?
+        return in_array(UserPolicy::CREATE,$this->userPermissions);
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\User $model
      * @return mixed
      */
-    public function update(User $model)
+    public function update(User $user, User $model)
     {
-        //
-        $user = Auth::user();
-        return $user->group_id === 2 || $model->user_id === $user->user_id;
+        // Check xem trong bảng permission user có quyền update model này HOẶC có phải là user này ko?
+        return in_array(UserPolicy::UPDATE,$this->userPermissions) || $model->user_id === $user->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $model)
     {
-        //
+        // Check xem trong bảng permission user có quyền delete model này ko?
+        return in_array(UserPolicy::DELETE,$this->userPermissions);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function restore(User $user, User $model)
+    public function restore(User $model)
     {
         //
     }
@@ -89,11 +96,10 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete(User $model)
     {
         //
     }
