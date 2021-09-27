@@ -1,4 +1,5 @@
 <!--begin::Header-->
+@php $us = Auth::user() @endphp
 <div id="kt_header" style="" class="header align-items-stretch">
     <!--begin::Container-->
     <div class="container-fluid d-flex align-items-stretch justify-content-between">
@@ -26,7 +27,7 @@
                     <div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
                         <div class="menu-item me-lg-1" id="">
                             <a class="menu-link active py-3" href="
-                            @if($user->group_id == 1)
+                            @if($us->group_id == 1)
                                 {{ route('user.dashboard')}}
                             @else
                                 {{ route('admin.dashboard')}}
@@ -37,8 +38,8 @@
                         </div>
                         <div class="menu-item me-lg-1">
                             <a class="menu-link py-3" href="
-                            @if ($user->group_id == 1)
-                                {{ route('user.check_otp', $user->user_id) }}
+                            @if ($us->group_id == 1)
+                                {{ route('user.check_otp', $us->user_id) }}
                             @else
                                 {{ route('admin.check_otp') }}
                             @endif">
@@ -46,7 +47,7 @@
                             </a>
                         </div>
 
-                        @if ($user->group_id == 2)
+                        @if ($us->group_id == 2)
                             @php
                             echo '<div class="menu-item me-lg-1">
                                 <a class="menu-link py-3" href=" '.route('admin.user_list').'">
