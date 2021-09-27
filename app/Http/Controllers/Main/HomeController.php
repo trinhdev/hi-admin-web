@@ -10,8 +10,8 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         if($user->group_id == 2){
-            return view('admin.dashboard', ['user' => $user,'account'=>'admin']);
+            return view('admin.dashboard', ['user' => $user]);
         }
-        return view('user.dashboard', ['user' => $user,'account'=>'user']);
+        return view('user.dashboard', ['user' => $user]);
     }
 }

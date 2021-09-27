@@ -22,17 +22,15 @@ class CheckOTPController extends Controller
         if($us->group_id == 2){
             //Make default page size is 10
             $perPage = (!empty($this->params['perPage'])) ? $this->params['perPage'] : 10;
-            $us = new User();
-            $result = $us->getAllUsers($perPage);
+            $users = new User();
+            $result = $users->getAllUsers($perPage);
             return view('admin.checkOTP',[
-                'users' => $result,
-                'account'=>'admin'
+                'user' => $us
             ]);
         }
         if($this->authorize('view-user', $user)){
             return view('user.checkOTP',[
-                'user' => $user,
-                'account'=>'user'
+                'user' => $us
             ]);
         }
         abort(403);
