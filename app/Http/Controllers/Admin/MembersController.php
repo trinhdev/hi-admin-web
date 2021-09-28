@@ -36,17 +36,13 @@ class MembersController extends Controller
      */
     public function create(Request $request)
     {
-        // if(!$this->authorize('create-user')) {
-        //     abort(403);
-        // }
-
         if($request->getMethod() == "GET") {
-            return view('admin.user-create',['account'=>'admin']);
+            return view('admin.user-create');
         }
 
         $validator = Validator::make($request->all(),[
             'username' => 'required',
-            'name'     => 'required|min:20',
+            'name'     => 'required',
             'email'     => 'required|email',
             'group_id'     => 'required|numeric',
             'password'     => 'required|min:8',
@@ -71,7 +67,7 @@ class MembersController extends Controller
             return back()->withErrors("There is an error while creating user!");
         }
 
-        return redirect()->route('admin.user_list',['account'=>'admin']);
+        return redirect()->route('admin.user_list');
     }
 
     /**

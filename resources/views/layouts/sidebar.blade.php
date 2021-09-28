@@ -1127,6 +1127,7 @@
                     </span>
                     <div class="menu-sub menu-sub-accordion">
                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
+                            @can('delete-user', Auth::user())
                             <span class="menu-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
@@ -1152,6 +1153,8 @@
                                     </a>
                                 </div>
                             </div>
+                            @endcan
+
                         </div>
                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                             <span class="menu-link">

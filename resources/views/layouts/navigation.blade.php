@@ -25,29 +25,19 @@
                     <!--begin::Menu-->
                     <div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
                         <div class="menu-item me-lg-1">
-                            <a class="menu-link active py-3" href="{{ route($account.'.dashboard')}}">
+                            <a class="menu-link active py-3" href="{{ route('index')}}">
                                 <span class="menu-title">Dashboard</span>
                             </a>
                         </div>
                         <div class="menu-item me-lg-1">
-                            <a class="menu-link py-3" href="
-                            @if ($account == 'user')
-                                {{ route($account.'.check_otp', $user->user_id) }}
-                            @else
-                                {{ route($account.'.check_otp') }}
-                            @endif">
-                                <span class="menu-title">Check OTP</span>
+                            <a class="menu-link py-3" href="">Check OTP</span>
                             </a>
                         </div>
-                        @if ($account == 'admin')
-                            @php
-                            echo '<div class="menu-item me-lg-1">
+                            <div class="menu-item me-lg-1">
                                 <a class="menu-link py-3" href=" '.route('admin.user_list').'">
                                     <span class="menu-title">list user</span>
                                 </a>
-                            </div>';
-                            @endphp
-                        @endif
+                            </div>;
                         <div class="menu-item me-lg-1">
                             <a class="menu-link py-3" href="{{ route('logout')}}">
                                 <span class="menu-title">Logout</span>
