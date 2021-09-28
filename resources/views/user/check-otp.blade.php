@@ -43,7 +43,8 @@
                 </div>
                 <!--end::Page title-->
                 <!--begin::Toolbar-->
-                <form action="" >
+                <form action="{{ route('user.check_otp') }}" method="post">
+                    @csrf
                     <div class="card-toolbar">
                         <!--begin::Toolbar-->
                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
@@ -57,7 +58,7 @@
                                     </svg>
                                 </span>
                                 <!--end::Svg Icon-->
-                                <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search user">
+                                <input type="text" name="phone" id="phone" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search user">
                             </div>
                             <!--end::Search-->
                             <!--begin::Filter-->

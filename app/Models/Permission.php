@@ -10,11 +10,12 @@ class Permission extends Model
     public function __construct(){
         $this->userId = Auth::user()->user_id;
     }
-    //
+    //Get all permissions of current user.
     public function getUserPermissions(){
         $result = Permission::where('user_id', $this->userId)
                                                         ->where('permitted',1)
                                                         ->pluck('permission_code')->toArray();
         return $result;
     }
+    
 }

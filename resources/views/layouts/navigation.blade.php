@@ -1,4 +1,5 @@
 <!--begin::Header-->
+@php $us = Auth::user() @endphp
 <div id="kt_header" style="" class="header align-items-stretch">
     <!--begin::Container-->
     <div class="container-fluid d-flex align-items-stretch justify-content-between">
@@ -25,24 +26,12 @@
                     <!--begin::Menu-->
                     <div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
                         <div class="menu-item me-lg-1">
-                            <a class="menu-link active py-3" href="{{ route('index')}}">
+                            <a class="menu-link active py-3" href="{{ route('landing')}}">
                                 <span class="menu-title">Dashboard</span>
                             </a>
                         </div>
-                        <div class="menu-item me-lg-1">
-                            <a class="menu-link py-3" href="">Check OTP</span>
-                            </a>
-                        </div>
-                            <div class="menu-item me-lg-1">
-                                <a class="menu-link py-3" href=" '.route('admin.user_list').'">
-                                    <span class="menu-title">list user</span>
-                                </a>
-                            </div>;
-                        <div class="menu-item me-lg-1">
-                            <a class="menu-link py-3" href="{{ route('logout')}}">
-                                <span class="menu-title">Logout</span>
-                            </a>
-                        </div>
+
+ 
 
                     </div>
                     <!--end::Menu-->
@@ -1466,7 +1455,7 @@
                             <!--end::Menu separator-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-5">
-                                <a href="../../demo13/dist/account/overview.html" class="menu-link px-5">My Profile</a>
+                                <a href="{{ route('user.profile')}}" class="menu-link px-5">My Profile</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
@@ -1593,7 +1582,7 @@
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-5">
-                                <a href="../../demo13/dist/authentication/flows/basic/sign-in.html" class="menu-link px-5">Sign Out</a>
+                                <a href="{{ route('logout')}}" class="menu-link px-5">Sign Out</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu separator-->
@@ -1603,7 +1592,7 @@
                             <div class="menu-item px-5">
                                 <div class="menu-content px-5">
                                     <label class="form-check form-switch form-check-custom form-check-solid pulse pulse-success" for="kt_user_menu_dark_mode_toggle">
-                                        <input class="form-check-input w-30px h-20px" type="checkbox" value="1" name="mode" id="kt_user_menu_dark_mode_toggle" data-kt-url="../../demo13/dist/index.html" />
+                                        <input class="form-check-input w-30px h-20px" type="checkbox" value="1" name="mode" id="kt_user_menu_dark_mode_toggle" data-kt-url="{{ asset('admin-template/dist/index.html') }}" />
                                         <span class="pulse-ring ms-n1"></span>
                                         <span class="form-check-label text-gray-600 fs-7">Dark Mode</span>
                                     </label>

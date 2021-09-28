@@ -14,6 +14,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         User::class => UserPolicy::class,
+        User::class => HiCustomerPolicy::class,
+        User::class => HdiPolicy::class,
     ];
 
     /**
@@ -26,6 +28,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
        
         $this->userGate();
+        $this->hiCustomerGate();
+        $this->hdiGate();
 
         // cooperate with @can('ability) @endcan in blade view
         // this->authorize('ability') in controller
@@ -35,13 +39,20 @@ class AuthServiceProvider extends ServiceProvider
 
     public function userGate(){
         Gate::define('view-user', 'App\Policies\UserPolicy@view');
-        Gate::define('create-user', 'App\Policies\UserPolicy@create');
-        Gate::define('update-user', 'App\Policies\UserPolicy@update');
+        Gate::define('manage-users', 'App\Policies\UserPolicy@manage');
+        Gate::define('force-del-user', 'App\Policies\UserPolicy@forceDelete');
     }
 
-    public function otpGate(){
-        Gate::define('view-otp', 'App\Policies\OTPPolicy@view');
-        Gate::define('set-otp', 'App\Policies\OTPPolicy@create');
-        Gate::define('delete-otp', 'App\Policies\OTPPolicy@update');
+    public function hiCustomerGate(){
+        Gate::define('check-otp', 'App\Policies\HiCustomerPolicy@lookup');
+        Gate::define('manage-otp', 'App\Policies\HiCustomerPolicy@manage');
+        Gate::define('delete-otp', 'App\Policies\HiCustomerPolicy@delete');
+    }
+
+    public function hdiGate(){
+        Gate::define('lookup-hdi', 'App\Policies\HdiPolicy@lookup');
+        Gate::define('manage-hdi', 'App\Policies\HdiPolicy@manage');
+        Gate::define('analyze-hdi', 'App\Policies\HdiPolicy@analyze');
+        Gate::define('del-hdi', 'App\Policies\HdiPolicy@delete');
     }
 }

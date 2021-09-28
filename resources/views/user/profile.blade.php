@@ -1,5 +1,6 @@
 @extends('app')
 
+@section('title','Profile')
 @section('content')
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">

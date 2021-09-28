@@ -26,7 +26,7 @@ class MembersController extends Controller
         $perPage = (!empty($this->params['perPage'])) ? $this->params['perPage'] : 10;
         $user = new User();
         $result = $user->getAllUsers($perPage);
-        return view('admin.user-management',['users' => $result, 'account'=>'admin']);
+        return view('admin.user-management',['users' => $result]);
     }
 
     /**
@@ -119,7 +119,7 @@ class MembersController extends Controller
         //
         if($this->authorize('update-user', User::class)){
             // dd(view('user.user-edit'));
-            return view('admin.user-edit',['user'=>$user, 'account'=>'admin']);
+            return view('admin.user-edit',['user'=>$user]);
         }
         abort(403);
     }

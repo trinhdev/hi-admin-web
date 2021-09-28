@@ -4,10 +4,9 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Models\Permission;
+use App\Policies\MasterPolicy;
 
-
-class HdiPolicy
+class HdiPolicy extends MasterPolicy
 {
     use HandlesAuthorization;
 
@@ -16,36 +15,38 @@ class HdiPolicy
      *
      * @return void
      */
-    private const VIEW    = 'HDI_LOOKUP';
-    private const UPDATE  = 'HDI_UPDATE';
-    private const DELETE  = 'HDI_DEL';
-    private const ANALYZE  = 'HDI_ANALYZE';
+    private const LOOKUP  = 'HDI_LOOKUP';
+    private const MANAGE  = 'HDI_MANAGE';
+    private const ANALYZE = 'HDI_ANALYZE';
     private const ISADMIN = 2;
 
-    public function __construct()
+    public function __construct($data = null)
     {
         //
-        $userPermission = new Permission();
-        $this->userPermissions = $userPermission->getUserPermissions();
+        parent::__construct($data);
     }
     
-    // Set up policy for view permission
-    public function view(User $user){
-        return $user->group_id == HdiPolicy::ISADMIN || in_array(HdiPolicy::VIEW,$this->userPermissions);
+    // Set up policy for lookup permission
+    public function lookup(User $user){
+        return $user->group_id == HdiPolicy::ISADMIN 
+        || in_array(HdiPolicy::LOOKUP,$this->userPermissions);
     }
 
     // Set up policy for analyze permission
     public function analyze(User $user){
-        return $user->group_id == HdiPolicy::ISADMIN || in_array(HdiPolicy::ANALYZE,$this->userPermissions);
+        return $user->group_id == HdiPolicy::ISADMIN 
+        || in_array(HdiPolicy::ANALYZE,$this->userPermissions);
     }
 
     // Set up policy for update permission
-    public function update(User $user){
-        return $user->group_id == HdiPolicy::ISADMIN || in_array(HdiPolicy::UPDATE,$this->userPermissions);
+    public function manage(User $user){
+        return $user->group_id == HdiPolicy::ISADMIN 
+        || in_array(HdiPolicy::MANAGE,$this->userPermissions);
     }
     
     // Set up policy for delete permission
     public function delete(User $user){
-        return $user->group_id == HdiPolicy::ISADMIN || in_array(HdiPolicy::DELETE,$this->userPermissions);
+        return $user->group_id == HdiPolicy::ISADMIN 
+        || in_array(HdiPolicy::MANAGE,$this->userPermissions);
     }
 }
