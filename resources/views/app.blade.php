@@ -44,7 +44,10 @@ License: For each use you must have a valid license purchased only from above li
 			<!--end::Page-->
 		</div>
 		<!--end::Main-->
-	
+
+		<!-- begin script -->
+		@include('layouts.scripts')
+		<!-- end script --> 
 	</body>
 	<!--end::Body-->
 </html>

@@ -14,6 +14,7 @@ class UserPolicy
     private const VIEW   = 'USER_VIEW';
     private const UPDATE = 'USER_UPDATE';
     private const DELETE = 'USER_DEL';
+    private const ISADMIN = 2;
 
     public $userPermissions;
 
@@ -41,8 +42,8 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        // Check xem trong bảng permission user có quyền xem model này HOẶC có phải là chính user này ko?
-        return in_array(UserPolicy::VIEW,$this->userPermissions) || $model->user_id === $user->user_id;
+        // Check xem trong bảng permission user có quyền xem model này HOẶC có phải là chính user này HOẶC là admin hay ko?
+        return in_array(UserPolicy::VIEW,$this->userPermissions) || $model->user_id === $user->user_id || $user->group_id === UserPolicy::ISADMIN ;
     }
 
     /**
@@ -52,10 +53,10 @@ class UserPolicy
      * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function create()
+    public function create(User $user)
     {
-        // Check xem trong bảng permission user có quyền tạo record mới ko?
-        return in_array(UserPolicy::CREATE,$this->userPermissions);
+        // Check xem trong bảng permission user có quyền tạo record mới  HOẶC là admin hay ko? 
+        return in_array(UserPolicy::CREATE,$this->userPermissions) || $user->group_id === UserPolicy::ISADMIN;
     }
 
     /**
@@ -66,20 +67,20 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        // Check xem trong bảng permission user có quyền update model này HOẶC có phải là user này ko?
-        return in_array(UserPolicy::UPDATE,$this->userPermissions) || $model->user_id === $user->user_id;
+        // Check xem trong bảng permission user có quyền update model này HOẶC có phải là user này HOẶC là admin hay ko? 
+        return in_array(UserPolicy::UPDATE,$this->userPermissions) || $model->user_id === $user->user_id || $user->group_id === UserPolicy::ISADMIN;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function delete(User $model)
+    public function delete(User $user)
     {
-        // Check xem trong bảng permission user có quyền delete model này ko?
-        return in_array(UserPolicy::DELETE,$this->userPermissions);
+        // Check xem trong bảng permission user có quyền delete model này HOẶC là admin hay ko? 
+        return $user->group_id === UserPolicy::ISADMIN;
     }
 
     /**

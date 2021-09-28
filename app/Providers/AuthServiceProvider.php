@@ -25,13 +25,23 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
        
-        Gate::define('update-user', 'App\Policies\UserPolicy@update');
-        Gate::define('view-user', 'App\Policies\UserPolicy@view');
-        Gate::define('create-user', 'App\Policies\UserPolicy@create');
+        $this->userGate();
 
         // cooperate with @can('ability) @endcan in blade view
         // this->authorize('ability') in controller
         // Keywords: policy
         // php artisan make:policy
+    }
+
+    public function userGate(){
+        Gate::define('view-user', 'App\Policies\UserPolicy@view');
+        Gate::define('create-user', 'App\Policies\UserPolicy@create');
+        Gate::define('update-user', 'App\Policies\UserPolicy@update');
+    }
+
+    public function otpGate(){
+        Gate::define('view-otp', 'App\Policies\OTPPolicy@view');
+        Gate::define('set-otp', 'App\Policies\OTPPolicy@create');
+        Gate::define('delete-otp', 'App\Policies\OTPPolicy@update');
     }
 }
