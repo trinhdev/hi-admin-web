@@ -23,7 +23,7 @@ class ManageOTPController extends Controller
             $validatedData = $request->validate([
                 'phone' => 'required|digits_between:10,11',
             ]);
-
+            dd($validatedData);
             $hiCustomer = new HdiCustomer();
             $result = $hiCustomer->postOTPByPhone($request["phone"]);
             return "Mã OTP của bạn là : ".$result["data"];

@@ -42,6 +42,8 @@
                     <!--end::Breadcrumb-->
                 </div>
                 <!--end::Page title-->
+
+             
                 <!--begin::Toolbar-->
                 <form action="{{ route('user.check_otp') }}" method="post">
                     @csrf
@@ -417,7 +419,7 @@
             <!--end::Container-->
         </div>
         <!--end::Toolbar-->
-
+       
         <!--begin::Post-->
         <div class="post d-flex flex-column-fluid" id="kt_post">
             <!--begin::Container-->
@@ -426,7 +428,15 @@
                 <!--begin::Login sessions-->
                 <div class="card mb-5 mb-xxl-10">
                     <!--begin::Card header-->
-
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="card-header">
                         <!--begin::Heading-->
                         <div class="card-title">
