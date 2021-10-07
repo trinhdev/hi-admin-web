@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 
 class MembersController extends Controller
 {
     public $params;
-    public function __contruct(Request $request){
-        parent::__contruct($request);
+    public function __construct(Request $request){
+        parent::__construct($request);
         $this->params = $request->all();
     }
     /**
@@ -26,52 +24,7 @@ class MembersController extends Controller
         $perPage = (!empty($this->params['perPage'])) ? $this->params['perPage'] : 10;
         $user = new User();
         $result = $user->getAllUsers($perPage);
-        return view('admin.user-management',['users' => $result]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-        if(!$this->authorize('create-user')) {
-            abort(403);
-        }
-
-        if($request->getMethod() == "GET") {
-            return view('admin.user-create');
-        }
-
-        $validator = Validator::make($request->all(),[
-            'username' => 'required',
-            'name'     => 'required|min:20',
-            'email'     => 'required|email',
-            'group_id'     => 'required|numeric',
-            'password'     => 'required|min:8',
-        ]);
-
-        // Quay về trang trước và thông báo lỗi nếu validate fail
-        if($validator->fails()){
-            return back()
-            ->withErrors($validator)
-            ->withInput();
-        }
-        $checkSave = User::create([
-            'username'      => $request['username'],
-            'name'          => $request['name'],
-            'email'         => $request['email'],
-            'group_id'      => $request['group_id'],
-            'password'      => \Hash::make($request['password'])
-        ]);
-        
-        // Nếu trong quá trình query xảy ra lỗi thì quay về trang trước và thông báo lỗi
-        if(!$checkSave){
-            return back()->withErrors("There is an error while creating user!");
-        }
-
-        return redirect()->route('admin.user_list');
+        return view('admin.user-management.user-list',['users' => $result]);
     }
 
     /**
@@ -82,9 +35,33 @@ class MembersController extends Controller
      */
     public function store(Request $request)
     {
-        //
-       
+        $validator = \Validator::make($request->all(),[
+            'username' => 'required',
+            'name'     => 'required',
+            'email'     => 'required|email',
+            'group_id'     => 'required|numeric',
+            'password'     => 'required|min:8',
+        ]);
 
+        // Quay về trang trước và thông báo lỗi nếu validate fail
+        if($validator->fails()){
+            return $this->apiJsonResponse("RESPONSE_INVALID_INPUT",null,$validator->messages());
+        }
+
+        $checkSave = User::create([
+            'username'      => $request['username'],
+            'name'          => $request['name'],
+            'email'         => $request['email'],
+            'group_id'      => $request['group_id'],
+            'password'      => \Hash::make($request['password'])
+        ]);
+
+        // Nếu trong quá trình query xảy ra lỗi thì quay về trang trước và thông báo lỗi
+        if(!$checkSave){
+            return $this->apiJsonResponse("RESPONSE_ERROR",null);
+        }
+
+        return $this->apiJsonResponse("RESPONSE_SUCCESS",null);
     }
 
     /**
@@ -96,23 +73,7 @@ class MembersController extends Controller
     public function show(User $user)
     {
         //
-        return $user;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-        if($this->authorize('update-user', User::class)){
-            // dd(view('user.user-edit'));
-            return view('admin.user-edit',['user'=>$user]);
-        }
-        abort(403);
+        return view('admin.user-management.user-profile',['user'=>$user]);
     }
 
     /**
@@ -124,17 +85,34 @@ class MembersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        // Validate input
         $validator = Validator::make($request->all(),[
-            'group_id' => 'required',
-            'name'     => 'required|min:20',
+            'group_id' => 'string|numeric',
+            'name'     => 'string',
+            'username' => 'string',
+            'password' => 'string|min:8',
+            'enabled'  => 'numeric|in:1,0'
         ]);
+
         if($validator->fails()){
-            return back()
-            ->withErrors($validator)
-            ->withInput();
+            return $this->apiJsonResponse("RESPONSE_INVALID_INPUT",null,$validator->messages());
+        }
+        
+        // Format params before update
+        $params = array();
+        foreach($request->all() as $key => $item){
+            if(!empty($item)){
+                $params[$key] = $item;
+            }
         }
 
+        // Update user model
+        $user = new User();
+        $result = $user->updateUserByParams($user->user_id,$params);
+        if(!$result){
+            return $this->apiJsonResponse("RESPONSE_ERROR",null);
+        }
+        return $this->apiJsonResponse("RESPONSE_SUCCESS",null);
     }
 
     /**
@@ -146,6 +124,5 @@ class MembersController extends Controller
     public function destroy(User $user)
     {
         //
-        // Create conflict
     }
 }

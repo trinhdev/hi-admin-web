@@ -10,8 +10,12 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         if($user->group_id == 2){
-            return view('admin.dashboard');
+            return view('admin.dashboard', ['user' => $user]);
         }
-        return view('user.dashboard');
+        return view('user.dashboard', ['user' => $user]);
+    }
+
+    public function landing(){
+        return view('landing');
     }
 }

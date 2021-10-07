@@ -10,6 +10,7 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
+        // nếu gọi bằng phương thức get trả về view login
         if ($request->getMethod() == 'GET') {
             return view('login');
         }
@@ -30,7 +31,7 @@ class LoginController extends Controller
     public function logout(){
         if(Auth::check()){
             Auth::logout();
-            return redirect()->route('index');
+            return redirect()->route('landing');
         }
         return back();
     }

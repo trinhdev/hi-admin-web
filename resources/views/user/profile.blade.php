@@ -1,5 +1,6 @@
 @extends('app')
 
+@section('title','Profile')
 @section('content')
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -172,12 +173,12 @@
 													</div>
 													<!--end::Avatar-->
 													<!--begin::Name-->
-													<a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">{{ $user->name ?? $user->name}}</a>
+													<a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">{{ $user['user']->name ?? $user['user']->name}}</a>
 													<!--end::Name-->
 													<!--begin::Position-->
 													<div class="mb-9">
 														<!--begin::Badge-->
-														<div class="badge badge-lg badge-light-primary d-inline">{{ ($user->group_id != 2) ? "User" : "Administrator" }}</div>
+														<div class="badge badge-lg badge-light-primary d-inline">{{ $user['group']->group_name ?? $user['group']->group_name }}</div>
 														<!--begin::Badge-->
 													</div>
 													<!--end::Position-->
@@ -263,12 +264,12 @@
 													<div class="pb-5 fs-6">
 														<!--begin::Details item-->
 														<div class="fw-bolder mt-5">Account ID</div>
-														<div class="text-gray-600">{{ $user->user_id}}</div>
+														<div class="text-gray-600">{{ $user['user']->user_id}}</div>
 														<!--begin::Details item-->
 														<!--begin::Details item-->
 														<div class="fw-bolder mt-5">Email</div>
 														<div class="text-gray-600">
-															<a href="#" class="text-gray-600 text-hover-primary">{{ $user->email}}</a>
+															<a href="#" class="text-gray-600 text-hover-primary">{{ $user['user']->email}}</a>
 														</div>
 														<!--begin::Details item-->
 														<!--begin::Details item-->
@@ -4214,9 +4215,4 @@
 						<!--end::Post-->
 					</div>
 
-<p>Tên: </p>
-<p>User Name: </p>
-<p>Email: {{ $user->email ?? $user->email}} </p>
-<p>Ngày tham gia: {{ $user->created_at ?? date('d-m-Y H:i',strtotime($user->created_at))}}</p>
-<p>Nhóm: </p>
 @endsection

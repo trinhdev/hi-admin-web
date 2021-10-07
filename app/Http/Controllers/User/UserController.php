@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public $params;
-    public function __contruct(Request $request){
-        parent::__contruct($request);
+    public $curUser;
+    public function __construct(Request $request){
+        parent::__construct($request);
         $this->params = $request->all();
     }
   
@@ -21,10 +23,15 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(User $user = null)
     {
-        if($this->authorize('view-user', $user)){
-            return view('user.profile',['user' => $user]);
+        $user = ($user) ? $user : Auth::user();
+        if($this->authorize('read-user', $user)){
+            $userDetails = [
+                'user' => $user,
+                'group' => User::find($user->user_id)->group()->first()
+            ];
+            return view('user.profile',['user' => $userDetails]);
         }
         abort(403);
     }
