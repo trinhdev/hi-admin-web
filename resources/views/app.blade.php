@@ -29,7 +29,7 @@ License: For each use you must have a valid license purchased only from above li
 					@include('layouts.navigation')
 					<!--end::Header-->
 					<!--begin::Content-->
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+					<div class="content d-flex flex-column flex-column-fluid" id="app">
 						@yield('content')
 					</div>
 					<!--end::Content-->

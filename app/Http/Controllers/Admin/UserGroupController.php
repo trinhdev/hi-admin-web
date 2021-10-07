@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\UsersGroup;
+use App\Models\RoleGroup;
 use Illuminate\Http\Request;
 
 class UsersGroupController extends Controller
@@ -15,7 +16,24 @@ class UsersGroupController extends Controller
      */
     public function index()
     {
-        //
+        // Get users group with role list
+        $roleGroup = new UsersGroup();
+        $data = $roleGroup->getRoleListByUsersGroup();
+        // Group role by users group
+        foreach($data as $item){
+            $roleLists[$item->group_code]["group"] = [
+                "name" => $item->group_name,
+                "code" => $item->group_code,
+            ];
+            $roleLists[$item->group_code]["data"][] = 
+            [
+                'role_name'       => $item->role_name,
+                'role_code'       => $item->role_code,
+                'permission_code' => $item->permission_code
+            ]; 
+        }
+
+        return view('admin.user-management.role-management',['roleLists' => $roleLists]);
     }
 
     /**
@@ -42,12 +60,13 @@ class UsersGroupController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\UsersGroup  $usersGroup
+     * @param  $usersGroup
      * @return \Illuminate\Http\Response
      */
-    public function show(UsersGroup $usersGroup)
+    public function show($usersGroup)
     {
         //
+
     }
 
     /**

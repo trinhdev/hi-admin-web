@@ -45,4 +45,14 @@ class User extends Authenticatable
     public function getAllUsers($perPage = 10){
         return User::paginate($perPage);
     }
+
+    public function updateUserByParams($user ,$params){
+    
+        $checkSave = User::where('user_id',$user)->update($params);
+
+        if(!$checkSave){
+            return false;
+        }
+        return true;
+    }
 }

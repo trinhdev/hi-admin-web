@@ -2,10 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Models\Permission;
-
+use App\Models\RoleGroup;
+use Illuminate\Support\Facades\Log;
 class MasterPolicy
 {
     use HandlesAuthorization;
@@ -15,30 +14,36 @@ class MasterPolicy
      *
      * @return void
      */
-    private const LOOKUP   = 'LOOKUP';
-    private const MANAGE   = 'MANAGE';
-    private const ISADMIN  = 2;
-    public $userPermission;
+    protected const READ     = "READ";
+    protected const WRITE    = "WRITE";
+    protected const DESTROY  = "DESTROY";
+    protected const ISADMIN  = "ADMIN";
+    
+    public $roles;
+    public $curUserGroup;
+    
     public function __construct($data = null)
     {
-        $userPermission = new Permission();
-        $this->userPermissions = $userPermission->getUserPermissions();
+        $this->roles = new RoleGroup();
+        $this->curUserGroup = $this->roles->userGroup;
     }
     
-    // Set up policy for view permission
-    public function lookup(User $user){
-        return $user->group_id == MasterPolicy::ISADMIN;    
-    }
 
-    // Set up policy for update permission
-    public function manage(User $user){
-        return $user->group_id == MasterPolicy::ISADMIN 
-        || in_array(MasterPolicy::MANAGE,$this->userPermissions);
-    }
+    // Set up policy for read permission
+    public function read($roleCode = ""){
+        return in_array(MasterPolicy::READ,$this->roles->getPermissionCodeOfCurUserByRoleCode($roleCode)) 
+            || $this->curUserGroup->group_code == MasterPolicy::ISADMIN;
+    } 
 
-    // Set up policy for view permission
-    public function delete(User $user){
-        return $user->group_id == MasterPolicy::ISADMIN;
-    }
+    // Set up policy for write permission
+    public function write($roleCode = ""){
+        return in_array(MasterPolicy::WRITE,$this->roles->getPermissionCodeOfCurUserByRoleCode($roleCode)) 
+            || $this->curUserGroup->group_code == MasterPolicy::ISADMIN;
+    } 
 
+    // Set up policy for destroy permission
+    public function destroy($roleCode = ""){
+        return in_array(MasterPolicy::DESTROY,$this->roles->getPermissionCodeOfCurUserByRoleCode($roleCode)) 
+            || $this->curUserGroup->group_code == MasterPolicy::ISADMIN;
+    } 
 }

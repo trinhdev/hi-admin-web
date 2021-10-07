@@ -12,8 +12,8 @@ class UserController extends Controller
 {
     public $params;
     public $curUser;
-    public function __contruct(Request $request){
-        parent::__contruct($request);
+    public function __construct(Request $request){
+        parent::__construct($request);
         $this->params = $request->all();
     }
   
@@ -26,8 +26,12 @@ class UserController extends Controller
     public function show(User $user = null)
     {
         $user = ($user) ? $user : Auth::user();
-        if($this->authorize('view-user', $user)){
-            return view('user.profile',['user' => $user]);
+        if($this->authorize('read-user', $user)){
+            $userDetails = [
+                'user' => $user,
+                'group' => User::find($user->user_id)->group()->first()
+            ];
+            return view('user.profile',['user' => $userDetails]);
         }
         abort(403);
     }

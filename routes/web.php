@@ -14,7 +14,7 @@ Route::match(['get', 'post'], '/login', [LoginController::class, 'login'])->midd
 Route::get('/logout', [LoginController::class, 'logout'])->middleware('auth.basic')->name('logout');
 
 Route::group([
-                'middleware'=>'auth.user',
+                'middleware'=>['auth.user','throttle:10'],
                 'prefix' => 'user',
                 'as' => 'user.'
             ],function (){
@@ -24,5 +24,7 @@ Route::group([
         Route::put('/{user}', [UserController::class, 'update'])->name('update');
 
         Route::match(['get', 'post'],'/check-otp', [ManageOTPController::class, 'checkOTP'])->name('check_otp');
+        Route::post('/reset-otp', [ManageOTPController::class, 'resetOTP'])->name('reset_otp');
+
         Route::get('/manage-otp', [ManageOTPController::class, 'manageOTP'])->name('manage_otp');
 });

@@ -48,15 +48,14 @@
                         <span class="menu-title">Dashboard</span>
                     </a>
                 </div>
-                
+                @if(Auth::user()->group_id == 2)
                 <div class="menu-item">
                     <div class="menu-content pt-8 pb-2">
                         <span class="menu-section text-muted text-uppercase fs-8 ls-1">Admin Management</span>
                     </div>
                 </div>
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                <!-- Manage user management permission  -->
-                @can('manage-users',Auth::user())
+                    <!-- Manage user management permission  -->
                     <span class="menu-link">
                         <span class="menu-icon">
                             <i class="bi bi-people fs-3"></i>
@@ -82,14 +81,14 @@
                                         <span class="menu-title">Users List</span>
                                     </a>
                                 </div>
-                                <div class="menu-item">
+                                <!-- <div class="menu-item">
                                     <a class="menu-link" href="../../../admin-template/dist/apps/user-management/users/view.html">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
                                         <span class="menu-title">View User</span>
                                     </a>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
@@ -102,21 +101,21 @@
                             </span>
                             <div class="menu-sub menu-sub-accordion">
                                 <div class="menu-item">
-                                    <a class="menu-link" href="../../../admin-template/dist/apps/user-management/roles/list.html">
+                                    <a class="menu-link" href="{{ route('admin.role_management') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
-                                        <span class="menu-title">Roles List</span>
+                                        <span class="menu-title">Roles Management</span>
                                     </a>
                                 </div>
-                                <div class="menu-item">
+                                <!-- <div class="menu-item">
                                     <a class="menu-link" href="../../../admin-template/dist/apps/user-management/roles/view.html">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
                                         <span class="menu-title">View Role</span>
                                     </a>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="menu-item">
@@ -128,8 +127,8 @@
                             </a>
                         </div>
                     </div>
-                    @endcan
                 </div>
+                @endif
 
                 <div class="menu-item">
                     <div class="menu-content pt-8 pb-2">
@@ -146,7 +145,7 @@
                     </span>
                     <div class="menu-sub menu-sub-accordion">
                         <!-- Check if current user have check-otp permission -->
-                        @can('check-otp', Auth::user())
+                        @can('read-otp')
                             <div class="menu-item">
                                 <a class="menu-link" href="{{ route('user.check_otp')}}">
                                     <span class="menu-bullet">
@@ -158,7 +157,7 @@
                         @endcan
 
                         <!-- Check if current user have manage-otp permission -->
-                        @can('manage-otp', Auth::user())
+                        @can('write-otp')
                         <div class="menu-item">
                             <a class="menu-link" href="{{ route('user.manage_otp') }}">
                                 <span class="menu-bullet">
@@ -179,30 +178,39 @@
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion">
+                        @can('read-analyze')
                         <div class="menu-item">
                             <a class="menu-link" href="../../../admin-template/dist/apps/subscriptions/getting-started.html">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Overview</span>
+                                <span class="menu-title">Revenue</span>
                             </a>
                         </div>
+                        @endcan
+
+                        @can('write-analyze')
                         <div class="menu-item">
                             <a class="menu-link" href="../../../admin-template/dist/apps/subscriptions/list.html">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Statistic Details</span>
+                                <span class="menu-title">Update Information</span>
                             </a>
                         </div>
+                        @endcan
+
+                        @can('delete-analyze')
                         <div class="menu-item">
                             <a class="menu-link" href="../../../admin-template/dist/apps/subscriptions/add.html">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Manage HDI Orders</span>
+                                <span class="menu-title">Delete Information</span>
                             </a>
                         </div>
+                        @endcan
+
                     </div>
                 </div>
            
