@@ -10,13 +10,14 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
+        // nếu gọi bằng phương thức get trả về view login
         if ($request->getMethod() == 'GET') {
             return view('login');
         }
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            if(Auth::user()->is_admin == 1){
+            if(Auth::user()->group_id == 2){
                 return redirect()->route('admin.dashboard');
             }
             else{
@@ -30,7 +31,7 @@ class LoginController extends Controller
     public function logout(){
         if(Auth::check()){
             Auth::logout();
-            return redirect()->route('index');
+            return redirect()->route('landing');
         }
         return back();
     }

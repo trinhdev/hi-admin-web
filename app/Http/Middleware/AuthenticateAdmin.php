@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use App\Models\UsersGroup;
 
 class AuthenticateAdmin
 {
@@ -18,14 +19,16 @@ class AuthenticateAdmin
     public function handle($request, Closure $next)
     {
         // Redirect user by role
-        // Role: 1 is admin, 0 is user
         if(Auth::check()){
-            if(Auth::user()->is_admin == 1){
+            $user = new UsersGroup();
+            $userGroup = $user->getCurrentUserGroup();
+            if($userGroup->group_code == "ADMIN"){
                 return $next($request);
+
             }
             return back()->withInput(['error'=>'You dont have permission to access this resource']);
         }
-        
+
         return redirect(RouteServiceProvider::LOGIN);
     }
 }
