@@ -17,7 +17,7 @@ class Permission extends Model
         
         $permission = Permission::create([
             'permission_code' => $params['permission_code'],
-            'role_code'       => $params['role_code'],
+            'permission_code'       => $params['permission_code'],
             'role_name'       => (isset($params['role_name']) ? $params['role_name'] : 'Default'),
             'service_code'    => (isset($params['service_code']) ? $params['service_code'] : 'SERVICE_DEFAULT'),
             'service_name'    => (isset($params['service_name']) ? $params['service_name'] : 'Service Name'),
@@ -43,7 +43,7 @@ class Permission extends Model
 
     // Get all current permisisons
     public function getAllPermissions(){
-        $data = Permission::select('permission_code','role_code','role_name','service_name','service_code')
+        $data = Permission::select('permission_code','permission_code','role_name','service_name','service_code')
                             ->where('permitted',1)
                             ->get();
         return $data;

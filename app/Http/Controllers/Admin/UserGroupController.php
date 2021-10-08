@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\UsersGroup;
-use App\Models\RoleGroup;
+use App\Models\PermissionsGroup;
 use Illuminate\Http\Request;
 
 class UsersGroupController extends Controller
@@ -17,23 +17,9 @@ class UsersGroupController extends Controller
     public function index()
     {
         // Get users group with role list
-        $roleGroup = new UsersGroup();
-        $data = $roleGroup->getRoleListByUsersGroup();
-        // Group role by users group
-        foreach($data as $item){
-            $roleLists[$item->group_code]["group"] = [
-                "name" => $item->group_name,
-                "code" => $item->group_code,
-            ];
-            $roleLists[$item->group_code]["data"][] = 
-            [
-                'role_name'       => $item->role_name,
-                'role_code'       => $item->role_code,
-                'permission_code' => $item->permission_code
-            ]; 
-        }
-
-        return view('admin.user-management.role-management',['roleLists' => $roleLists]);
+        $PermissionsGroup = new UsersGroup();
+        $data = $PermissionsGroup->getRoleListByUsersGroup();
+        return view('admin.user-management.role-management',['roleLists' => $data]);
     }
 
     /**

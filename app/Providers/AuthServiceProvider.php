@@ -38,14 +38,14 @@ class AuthServiceProvider extends ServiceProvider
 
     public function bootHdiPolicy(){
         Gate::define('read-analyze','App\Policies\HiHdiPolicy@readAnalysis');
-        Gate::define('write-analyze', 'App\Policies\HiHdiPolicy@writeAnalysis');
-        Gate::define('delete-analyze', 'App\Policies\HiHdiPolicy@destroyAnalysis');
+        Gate::define('write-analyze', 'App\Policies\HiHdiPolicy@updateAnalysis');
+        Gate::define('delete-analyze', 'App\Policies\HiHdiPolicy@deleteAnalysis');
     }
 
     public function bootHiCustomerPolicy(){
         Gate::define('read-otp','App\Policies\HiCustomerPolicy@readOTP');
-        Gate::define('write-otp', 'App\Policies\HiCustomerPolicy@writeOTP');
-        Gate::define('delete-otp', 'App\Policies\HiCustomerPolicy@destroyOTP');
+        Gate::define('write-otp', 'App\Policies\HiCustomerPolicy@updateOTP');
+        Gate::define('delete-otp', 'App\Policies\HiCustomerPolicy@deleteOTP');
     }
 
 }

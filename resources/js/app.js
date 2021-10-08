@@ -21,15 +21,16 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('check-otp-component', require('./components/hicustomer/CheckOTP.vue').default);
 Vue.component('manage-otp-component', require('./components/hicustomer/ManageOTP.vue').default);
-Vue.component('edit-role-component', require('./components/user-management/EditRole.vue').default);
+Vue.component('role-management', require('./components/user-management/RoleList.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+import vuetify from 'vuetify';
 const app = new Vue({
+    vuetify,
     el: '#app'
 });
 app.$mount('#app');

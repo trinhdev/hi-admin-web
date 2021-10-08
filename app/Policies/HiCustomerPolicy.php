@@ -24,11 +24,11 @@ class HiCustomerPolicy extends MasterPolicy
         return $this->read("OTP");
     }
 
-    public function writeOTP(){
-        return $this->write("OTP");
+    public function updateOTP(){
+        return $this->update("OTP");
     }
 
-    public function destroyOTP(){
-        return $this->destroy("OTP");
+    public function deleteOTP(){
+        return $this->delete("OTP");
     }
 }

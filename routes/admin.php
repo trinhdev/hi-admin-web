@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Main\HomeController;
 use App\Http\Controllers\Admin\MembersController;
-use App\Http\Controllers\Admin\RoleGroupController;
+use App\Http\Controllers\Admin\PermissionsGroupController;
 use App\Http\Controllers\Admin\UsersGroupController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +20,7 @@ Route::group([
         Route::put('/user-edit/{user}', [MembersController::class, 'update'])->name('user_update');
 
         Route::get('/role-management', [UsersGroupController::class, 'index'])->name('role_management');
-        Route::get('/role-management/{groupCode}', [RoleGroupController::class, 'show'])->name('role_edit');
+        Route::post('/role-edit', [PermissionsGroupController::class, 'update'])->name('role_edit');
+        Route::get('/role-management/{groupCode}', [PermissionsGroupController::class, 'show'])->name('role_edit');
 
 });

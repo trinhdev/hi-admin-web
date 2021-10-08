@@ -24,11 +24,11 @@ class HiHdiPolicy extends MasterPolicy
         return $this->read("HDI_ANALYZE");
     }
 
-    public function writeAnalysis(){
-        return $this->write("HDI_ANALYZE");
+    public function updateAnalysis(){
+        return $this->update("HDI_ANALYZE");
     }
 
-    public function destroyAnalysis(){
-        return $this->destroy("HDI_ANALYZE");
+    public function deleteAnalysis(){
+        return $this->delete("HDI_ANALYZE");
     }
 }

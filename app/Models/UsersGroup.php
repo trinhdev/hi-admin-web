@@ -34,10 +34,20 @@ class UsersGroup extends Model
     }    
 
     public function getRoleListByUsersGroup(){
-        $data = DB::select(DB::raw("SELECT users_group.group_code, users_group.group_name, role_group.permission_code, permissions.role_name, role_group.role_code 
+        $data = DB::select(DB::raw("SELECT users_group.group_code, users_group.group_name, permissions.permission_name, permissions_group.permission_code 
                                     FROM hifpt_admin_local.users_group
-                                    LEFT JOIN role_group on users_group.group_code = role_group.group_code
-                                    LEFT JOIN permissions on role_group.role_code = permissions.role_code and role_group.permission_code = permissions.permission_code"));
-        return $data;
+                                    LEFT JOIN permissions_group on users_group.group_code = permissions_group.group_code
+                                    LEFT JOIN permissions on permissions_group.permission_code = permissions.permission_code"));
+        foreach($data as $item){
+            $result[$item->group_code]["group_name"] = $item->group_name;
+            $result[$item->group_code]["group_code"] = $item->group_code;
+            $result[$item->group_code]["permissions"][] = [
+                "permission_name" => $item->permission_name,
+                "permission_code" => $item->permission_code,
+            ];
+        }
+        
+        return array_values($result);
     }
+
 }
