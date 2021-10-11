@@ -182,7 +182,6 @@ export default ({
                 default:
                     break;
             }
-            console.log(this.rolegroup.data[index].permissions[permission]);
         }
        
     }

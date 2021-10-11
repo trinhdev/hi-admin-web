@@ -22,6 +22,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('check-otp-component', require('./components/hicustomer/CheckOTP.vue').default);
 Vue.component('manage-otp-component', require('./components/hicustomer/ManageOTP.vue').default);
 Vue.component('role-management', require('./components/user-management/RoleList.vue').default);
+Vue.component('permission-list', require('./components/user-management/PermissionList.vue').default);
+Vue.component('role-detail', require('./components/user-management/RoleDetail.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

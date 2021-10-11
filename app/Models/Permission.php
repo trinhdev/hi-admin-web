@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 class Permission extends Model
 {
     public $groupId;
@@ -41,11 +42,25 @@ class Permission extends Model
         return true;
     }
 
-    // Get all current permisisons
+    // Get all permisisons
     public function getAllPermissions(){
-        $data = Permission::select('permission_code','permission_code','role_name','service_name','service_code')
+        $data = Permission::select('permission_code','permission_name','service_name','service_code')
                             ->where('permitted',1)
                             ->get();
         return $data;
+    }
+
+    // Get all permission not assigned
+    public function getAllPermissionsNotAssigned(){
+        $data = Permission::select('permission_code','permission_name','service_name', 'service_code')
+                            ->whereNotIn('permission_code', DB::table('permissions_group')->select('permission_code')->distinct())
+                            ->get();
+        return $data;
+    }
+
+    // Get permission info
+    public function getPermissionInfoByPermissionCode($permissionCode){
+        $permission = Permission::where('permission_code',$permissionCode)->first();
+        return $permission;
     }
 }

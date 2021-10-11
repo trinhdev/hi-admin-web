@@ -119,11 +119,11 @@
                             </div>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="../../../admin-template/dist/apps/user-management/permissions.html">
+                            <a class="menu-link" href="{{ route('admin.permisson_list')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Permissions</span>
+                                <span class="menu-title">Permissions Manager</span>
                             </a>
                         </div>
                     </div>

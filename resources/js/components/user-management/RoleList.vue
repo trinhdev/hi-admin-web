@@ -189,7 +189,7 @@
                             <!--end::Card body-->
                             <!--begin::Card footer-->
                             <div class="card-footer flex-wrap pt-0">
-                                <a href="#" class="btn btn-light btn-active-primary my-1 me-2">View Role</a>
+                                <a :href="'/admin/role-detail/'+item.group_code" class="btn btn-light btn-active-primary my-1 me-2">View Role</a>
                                 <button type="button" class="btn btn-light btn-active-light-primary my-1" @click="openEditRoleGroup(item)" data-bs-toggle="modal" data-bs-target="#kt_modal_update_role">Edit Role</button>
                             </div>
                             <!--end::Card footer-->
@@ -246,7 +246,7 @@ export default {
     },
     props:['group'],
     mounted(){
-      console.log(this.group);  
+        
     },
     data(){
         return{
@@ -255,15 +255,16 @@ export default {
     },
     methods:{
         openEditRoleGroup(group){
+            console.log(group)
             axios.get('/admin/role-management/'+group.group_code)
             .then((val)=>{
                 if(val.data.statusCode == 0){
+                    console.log(val.data.data)
                     this.role_group = {
                         "group_name": group.group_name,
                         "group_code": group.group_code,
                         "data":val.data.data
                     }
-                    console.log(this.role_group);
                 }
                 else{
                     alert("Có lỗi trong quá trình xử lý");
@@ -271,6 +272,7 @@ export default {
                 
             })
         }
+       
     }
 }
 </script>

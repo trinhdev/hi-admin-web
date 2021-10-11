@@ -79,15 +79,38 @@ class PermissionsGroup extends Model
 
     // Get role list by group
     public function getPermissionListByGroupCode($groupCode){
-        $data = PermissionsGroup::select('permissions_group.permission_code', 'permissions_group.service_code', 'permissions.service_name', 'permissions.permission_name',
+        $data = PermissionsGroup::select('users_group.group_name','users_group.group_code','permissions_group.permission_code', 'permissions_group.service_code', 'permissions.service_name', 'permissions.permission_name',
                                 'permissions_group.permission_create','permissions_group.permission_read','permissions_group.permission_update','permissions_group.permission_del')
                         ->leftJoin('permissions', function($join)
                          {
                             $join->on('permissions_group.permission_code', '=', 'permissions.permission_code');
                             $join->on('permissions_group.permission_code', '=', 'permissions.permission_code');
                          })
+                        ->leftJoin('users_group','permissions_group.group_code','=','users_group.group_code')
                         ->where('permissions_group.group_code','=',$groupCode)
                         ->get();
         return $data;
+    }
+
+    // Save new permissions group
+    public function saveNewPermissionGroup($data){
+        $save = PermissionsGroup::insert($data);
+        return $save;
+    }
+
+    // Get all permission assigned
+    public function getAllPermissionsAssigned(){
+        $data = PermissionsGroup::select('permissions_group.permission_code','permissions_group.service_code','permissions_group.permission_read','permissions_group.permission_create','permissions_group.permission_update','permissions_group.permission_update',
+                                'permissions.permission_name','permissions.service_name','permissions.created_at',
+                                'users_group.group_name','users_group.group_code')
+                                ->leftJoin('permissions','permissions.permission_code','=','permissions_group.permission_code')
+                                ->leftJoin('users_group','users_group.group_code','=','permissions_group.group_code')
+                                ->get();
+        return $data;
+    }
+
+    // assign permission to group
+    public function assignPermissionToGroup($data){
+        return PermissionsGroup::insert($data);
     }
 }
