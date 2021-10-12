@@ -140,7 +140,7 @@ CREATE TABLE `permissions` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`permission_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +149,7 @@ CREATE TABLE `permissions` (
 
 LOCK TABLES `permissions` WRITE;
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
-INSERT INTO `permissions` VALUES (1,NULL,'USER',NULL,NULL,1,NULL,NULL),(7,'HDI Analysis','HDI_ANALYZE','Hi HDI','HI_HDI',1,NULL,NULL),(10,'OTP Lookup','OTP','Hi Customer','HI_CUSTOMER',1,NULL,NULL),(12,'Customer Growth Report','CUSTOMER_REPORT','Hi Customer','HI_CUSTOMER',1,NULL,NULL);
+INSERT INTO `permissions` VALUES (1,'Complete Support Request','REPORT_COMPLETE','Hi Report','HI_REPORT',1,'2021-10-08 08:46:00','2021-10-08 08:46:00'),(7,'HDI Analysis','HDI_ANALYZE','Hi HDI','HI_HDI',1,'2021-10-08 08:46:00','2021-10-08 08:46:00'),(10,'OTP Lookup','OTP','Hi Authen','HI_AUTHEN',1,'2021-10-08 08:46:00','2021-10-08 08:46:00'),(12,'Customer Growth Report','CUSTOMER_REPORT','Hi Customer','HI_CUSTOMER',1,'2021-10-08 08:46:00','2021-10-08 08:46:00');
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +172,7 @@ CREATE TABLE `permissions_group` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +181,7 @@ CREATE TABLE `permissions_group` (
 
 LOCK TABLES `permissions_group` WRITE;
 /*!40000 ALTER TABLE `permissions_group` DISABLE KEYS */;
-INSERT INTO `permissions_group` VALUES (1,0,1,1,0,'OTP','HI_CUSTOMER','DEVELOPER','2021-10-08 08:46:00','2021-10-01 03:57:28'),(2,0,1,1,0,'HDI_ANALYZE','HI_HDI','DEVELOPER','2021-10-08 08:46:00','2021-10-01 03:57:28'),(5,0,1,1,0,'HDI_ANALYZE','HI_HDI','ANALYSIS','2021-10-08 08:46:00','0000-00-00 00:00:00');
+INSERT INTO `permissions_group` VALUES (1,0,1,1,0,'OTP','HI_CUSTOMER','DEVELOPER','2021-10-08 08:46:00','2021-10-01 03:57:28'),(2,0,1,1,0,'HDI_ANALYZE','HI_HDI','DEVELOPER','2021-10-08 08:46:00','2021-10-01 03:57:28'),(5,0,1,1,0,'HDI_ANALYZE','HI_HDI','ANALYSIS','2021-10-08 08:46:00','0000-00-00 00:00:00'),(15,0,0,0,0,'CUSTOMER_REPORT','HI_CUSTOMER','SUPPORT',NULL,'0000-00-00 00:00:00'),(16,0,0,0,0,'CUSTOMER_REPORT','HI_CUSTOMER','ADMIN',NULL,'0000-00-00 00:00:00'),(17,0,0,0,0,'CUSTOMER_REPORT','HI_CUSTOMER','ANALYSIS',NULL,'0000-00-00 00:00:00'),(18,0,0,0,0,'REPORT_COMPLETE','HI_REPORT','SUPPORT',NULL,'0000-00-00 00:00:00'),(19,0,0,0,0,'REPORT_COMPLETE','HI_REPORT','ADMIN',NULL,'0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `permissions_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,7 +215,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,4,'User','khang2312','user@gmail.com',NULL,'$2y$10$Cu/LojMPmxqsI9zvFQausuDYM0cI1n99XYrW5gON4U8gBrbU3GMsW',1,NULL,NULL,NULL),(2,2,'Admin','khang2312','admin@gmail.com',NULL,'$2y$10$LwK/SW6S4fS5ioYbx.3Dgu/BhXlrWgXVQ54ufPxFfVOARrxqhR1hG',1,NULL,NULL,NULL),(5,3,'Khang  Nguyen Tien 12','khang2312','khangnguyen24298@gmail.com',NULL,'$2y$10$bICXMysBxYXeuEbyCEu31.gK09ywcjVtyeUx2Bk7MZ1WWf7qdnwdy',1,NULL,'2021-09-20 03:35:36','2021-09-20 03:35:36'),(6,4,'Nguyen Khang','khang2312','khang24298@gmail.com',NULL,'$2y$10$C/54aUdqaETjp3qGiaqOSur3Hw/RIrSQXFi.ISiWwa.kQsCfxdXhO',1,NULL,'2021-09-28 00:43:09','2021-09-28 00:43:09'),(7,4,'Emma Smith','khang2312','khang1998@gmail.com',NULL,'$2y$10$meCiRbBiZIx..WiFKM6ipOprnbBq7bWOG6Xai23dBAfB3DSiIfMO2',1,NULL,'2021-09-29 04:58:06','2021-09-29 04:58:06');
+INSERT INTO `users` VALUES (1,4,'User','khang2312','user@gmail.com',NULL,'$2y$10$Cu/LojMPmxqsI9zvFQausuDYM0cI1n99XYrW5gON4U8gBrbU3GMsW',1,NULL,'2021-09-20 03:35:36','2021-09-20 03:35:36'),(2,2,'Admin','khang2312','admin@gmail.com',NULL,'$2y$10$LwK/SW6S4fS5ioYbx.3Dgu/BhXlrWgXVQ54ufPxFfVOARrxqhR1hG',1,NULL,'2021-09-20 03:35:36','2021-09-20 03:35:36'),(5,3,'Khang  Nguyen Tien 12','khang2312','khangnguyen24298@gmail.com',NULL,'$2y$10$bICXMysBxYXeuEbyCEu31.gK09ywcjVtyeUx2Bk7MZ1WWf7qdnwdy',1,NULL,'2021-09-20 03:35:36','2021-09-20 03:35:36'),(6,4,'Nguyen Khang','khang2312','khang24298@gmail.com',NULL,'$2y$10$C/54aUdqaETjp3qGiaqOSur3Hw/RIrSQXFi.ISiWwa.kQsCfxdXhO',1,NULL,'2021-09-28 00:43:09','2021-09-28 00:43:09'),(7,4,'Emma Smith','khang2312','khang1998@gmail.com',NULL,'$2y$10$meCiRbBiZIx..WiFKM6ipOprnbBq7bWOG6Xai23dBAfB3DSiIfMO2',1,NULL,'2021-09-29 04:58:06','2021-09-29 04:58:06');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -233,7 +233,7 @@ CREATE TABLE `users_group` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -255,4 +255,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-08 23:19:41
+-- Dump completed on 2021-10-12 14:34:25
