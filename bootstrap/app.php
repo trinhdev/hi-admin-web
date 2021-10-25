@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application(
 );
 
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'/../.env.'.getenv('APP_ENV'));
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'.env.'.getenv('APP_ENV'));
 $dotenv->load();
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 
