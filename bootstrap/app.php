@@ -1,5 +1,5 @@
 <?php
-// require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 // try {
 //     if (getenv ( 'APP_ENV' ) && file_exists ( __DIR__ . '/../.env.' . getenv ( 'APP_ENV' ) )) {
@@ -24,15 +24,9 @@
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
-// $a = '/../.env.'.getenv('APP_ENV');
-die(__DIR__);
-
-// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'/../.env.'.getenv('APP_ENV'));
-// $dotenv->load();
-// date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'../.env.'.getenv('APP_ENV'));
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'/../.env.'.getenv('APP_ENV'));
 $dotenv->load();
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 
