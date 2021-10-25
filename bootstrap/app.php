@@ -24,17 +24,17 @@
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
-$a = '/../.env.'.getenv('APP_ENV');
-die($a);
+// $a = '/../.env.'.getenv('APP_ENV');
+// die($a);
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'/../.env.'.getenv('APP_ENV'));
-$dotenv->load();
-date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
-
-
-// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'../.env.'.getenv('APP_ENV'));
+// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'/../.env.'.getenv('APP_ENV'));
 // $dotenv->load();
 // date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'../.env.'.getenv('APP_ENV'));
+$dotenv->load();
+date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 
 
 /*
