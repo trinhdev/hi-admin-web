@@ -24,8 +24,8 @@
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
-
-die("server test");
+$a = '/../.env.'.getenv('APP_ENV');
+die($a);
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'/../.env.'.getenv('APP_ENV'));
 $dotenv->load();
