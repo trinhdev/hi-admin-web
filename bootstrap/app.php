@@ -1,5 +1,15 @@
 <?php
+require_once __DIR__.'/../vendor/autoload.php';
 
+try {
+    if (getenv ( 'APP_ENV' ) && file_exists ( __DIR__ . '/../.env.' . getenv ( 'APP_ENV' ) )) {
+        (new Dotenv\Dotenv(__DIR__ . '/../', '.env.' . getenv ( 'APP_ENV' )))->load();
+    } else {
+        (new Dotenv\Dotenv(__DIR__ . '/../', '.env.production'))->load();
+    }
+} catch (Dotenv\Exception\InvalidPathException $e) {
+    //
+}
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -16,8 +26,8 @@ $app = new Illuminate\Foundation\Application(
 );
 
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'../.env.'.getenv('APP_ENV'));
-$dotenv->load();
+// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__,'../.env.'.getenv('APP_ENV'));
+// $dotenv->load();
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 
 
