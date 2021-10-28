@@ -33,13 +33,13 @@
 				<div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
 					<!--begin::Logo-->
 					<a href="../../demo13/dist/index.html" class="mb-12">
-						<img alt="Logo" src="assets/media/logos/logo-1.svg" class="h-40px" />
+						<img alt="Logo" src="{{ asset('images/ftel-l.png') }}" class="h-40px" />
 					</a>
 					<!--end::Logo-->
 					<!--begin::Wrapper-->
 					<div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
 						<!--begin::Form-->
-						<form class="form w-100" novalidate="novalidate" action="{{ route('login') }}" method="POST"> 
+						<form class="form w-100" novalidate="novalidate" action="{{ route('login') }}" method="POST">
                             @csrf
                             <!--begin::Heading-->
 							<div class="text-center mb-10">
@@ -90,15 +90,15 @@
 								<!--end::Separator-->
 								<!--begin::Google link-->
 								<a href="#" class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5">
-								<img alt="Logo" src="assets/media/svg/brand-logos/google-icon.svg" class="h-20px me-3" />Continue with Google</a>
+								<img alt="Logo" src="{{ asset('assets/media/svg/brand-logos/google-icon.svg') }}" class="h-20px me-3" />Continue with Google</a>
 								<!--end::Google link-->
 								<!--begin::Google link-->
 								<a href="#" class="btn btn-flex flex-center btn-light btn-lg w-100 mb-5">
-								<img alt="Logo" src="assets/media/svg/brand-logos/facebook-4.svg" class="h-20px me-3" />Continue with Facebook</a>
+								<img alt="Logo" src="{{ asset('assets/media/svg/brand-logos/facebook-4.svg') }}" class="h-20px me-3" />Continue with Facebook</a>
 								<!--end::Google link-->
 								<!--begin::Google link-->
 								<a href="#" class="btn btn-flex flex-center btn-light btn-lg w-100">
-								<img alt="Logo" src="assets/media/svg/brand-logos/apple-black.svg" class="h-20px me-3" />Continue with Apple</a>
+								<img alt="Logo" src="{{ asset('assets/media/svg/brand-logos/apple-black.svg') }}" class="h-20px me-3" />Continue with Apple</a>
 								<!--end::Google link-->
 							</div>
 							<!--end::Actions-->
