@@ -1,30 +1,61 @@
 <?php
+
+use App\Http\Controllers\HomeController;
+use App\Models\Roles;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 
-use App\Http\Controllers\Main\LoginController;
-use App\Http\Controllers\Main\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RolesController;
+use App\Http\Controllers\ModulesController;
+use App\Http\Controllers\GroupsController;
+use App\Http\Controllers\AclRoleController;
+use App\Http\Controllers\Auth\LoginController;
 
-use App\Http\Controllers\User\ManageOTPController;
-use App\Http\Controllers\User\UserController;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
 
-Route::any('/', [HomeController::class, 'landing'])->middleware('guest')->name('landing');
-Route::match(['get', 'post'], '/login', [LoginController::class, 'login'])->middleware('guest')->name('login');
-
-Route::get('/logout', [LoginController::class, 'logout'])->middleware('auth.basic')->name('logout');
-
+Auth::routes();
 Route::group([
-                'middleware'=>['auth.user','throttle:10'],
-                'prefix' => 'user',
-                'as' => 'user.'
-            ],function (){
-        Route::get('/', [HomeController::class, 'index'])->name('dashboard');
-
-        Route::get('/profile/{user?}', [UserController::class, 'show'])->name('profile');
-        Route::put('/{user}', [UserController::class, 'update'])->name('update');
-
-        Route::match(['get', 'post'],'/check-otp', [ManageOTPController::class, 'checkOTP'])->name('check_otp');
-        Route::post('/reset-otp', [ManageOTPController::class, 'resetOTP'])->name('reset_otp');
-
-        Route::get('/manage-otp', [ManageOTPController::class, 'manageOTP'])->name('manage_otp');
+    'middleware' => ['auth','can:role-permission'],
+    ],
+    function (){      
+        // $protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === true ? 'https://' : 'http://';
+        // $url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        // $url_base = $protocol . $_SERVER['HTTP_HOST'];
+        $action = 'index';
+        $controller = 'Index';
+        // dd(Auth::user() );
+        if (!empty($_SERVER['REQUEST_URI'])) {
+            $uri = $_SERVER['REQUEST_URI'];
+            $segments = explode(env('APP_URL'), $uri);
+            $action = 'index';
+            $controller = 'Home';
+            if (!empty($segments[0])) {
+                $arr_segments = explode('/', $segments[0]);
+                if (!empty($arr_segments[1])) {
+                    $controller = explode('?', ucfirst($arr_segments[1]))[0];
+                }
+                if (!empty($arr_segments[2])) {
+                    $action = explode('?', $arr_segments[2])[0];
+                }
+            }
+            if(!in_array($controller, ['Login', 'Logout'])) {
+                Route::any("/" . strtolower($controller), 'App\\Http\\Controllers\\' . $controller . 'Controller@index');
+                Route::any("/" . strtolower($controller) . "/$action", 'App\\Http\\Controllers\\' . $controller . 'Controller@' . $action);
+                Route::any("/" . strtolower($controller) . "/$action/{param}", 'App\\Http\\Controllers\\' . $controller . 'Controller@' . $action);
+                Route::get('/', [HomeController::class, 'index'])->name('home');
+                Route::get('/home', [HomeController::class, 'index'])->name('home');
+            }
+        }
 });

@@ -1,0 +1,171 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Modules;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
+
+class MY_Controller extends Controller
+{
+    //
+    protected $groupModule;
+    protected $user;
+    protected $module_name;
+    protected $model;
+    /**
+     * model of module
+     * @var $model_name
+     */
+    protected $model_name;
+    /**
+     * current controller name
+     * @var $controller_name
+     */
+    protected $controller_name;
+
+    /**
+     * current action name
+     * @var $action_name
+     */
+
+    /**
+     * @var string
+     */
+    protected $action_list = 'view';
+    /**
+     * @var string
+     */
+    protected $action_detail = 'detail';
+    /**
+     * @var string
+     */
+    protected $action_edit = 'edit';
+    /**
+     * @var string
+     */
+    protected $action_delete = 'delete';
+
+
+
+    /**
+     * @var null
+     */
+    protected $link_detail = null;
+    /**
+     * @var null
+     */
+    protected $link_action = null;
+
+    protected $action_name;
+    public function __construct()
+    {
+        $this->beforeExecuteRoute();
+        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->getListModule();
+            return $next($request);
+        });
+    }
+
+    public function getListModule()
+    {
+        $this->groupModule = (new Modules())->getModulesGroupByParent();
+        View::share('groupModule', $this->groupModule);
+    }
+    public function beforeExecuteRoute()
+    {
+        $this->controller_name = request()->segment(1);
+        $this->action_name = request()->segment(2);
+        $this->action_name = ($this->action_name == '') ? 'list' : $this->action_name;
+    }
+    protected function getModel($model_name = null)
+    {
+        $model_focus = $this->model_name;
+        if ($model_name) {
+            $model_focus = $model_name;
+        }
+
+        if ($model_focus) {
+            $model_path = 'App\\Models\\' . ucfirst($model_focus);
+            $model = new $model_path();
+            /**
+             * @var ModelBase $model
+             */
+            return $model;
+        } else {
+            return null;
+        }
+    }
+    public function list1()
+    {
+        $data = null;
+        $title = 'List ' . $this->model_name;
+
+        $data['title'] = $title;
+
+        $controller = strtolower($this->controller_name);
+        $action = strtolower($this->action_name);
+
+        $data['model_name'] = strtolower($this->model_name);
+        $data['module_mane'] = strtolower($this->module_name);
+
+        $data['controller'] = $controller;
+        $data['action'] = $action;
+        $data['action_list'] = $this->action_list;
+        $data['action_detail'] = $this->action_detail;
+        $data['action_edit'] = $this->action_edit;
+        $data['action_delete'] = $this->action_delete;
+
+        $data['link_action'] = $this->link_action;
+        return $data;
+    }
+    public function edit1()
+    {
+        $data = func_get_args();
+        if (!is_array($data)) {
+            $data = array();
+        }
+        $id = request()->segment(3);
+        // get model
+        $model = $this->getModel();
+        $result = null;
+
+        if ($id) {
+            $result = $model::find($id);
+            // permission for edit action.
+//            if (isset($result->created_by) && !$this->auth_permission($result->created_by)) {
+//                return $this->redirect('auth/denied');
+//            }
+            $view_title = !empty($model->edit_view['title']) ? $model->edit_view['title'] : 'name';
+            $title = 'Edit ' . $this->model_name . ': ' . $result->$view_title;
+
+        } else {
+            $title = 'Create ' . $this->model_name;
+        }
+        $data['title'] = $title;
+        $data['edit_view'] = $model->edit_view;
+        $data['model'] = $model;
+        if (isset(session()->all()['data'])) {
+            $result = (object)session()->all()['data'];
+        }
+        $data['data'] = $result;
+
+        $controller = strtolower($this->controller_name);
+        $action = strtolower($this->action_name);
+
+        $data['model_name'] = $this->model_name;
+        $data['controller'] = $controller;
+        $data['action'] = $action;
+        $data['menu'] = $model->menu;
+        $data['action_detail'] = $this->action_detail;
+        return $data;
+    }
+
+    public function redirect($url = null)
+    {
+        return redirect('/' . $url);
+    }
+}

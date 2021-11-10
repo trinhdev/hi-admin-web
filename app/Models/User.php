@@ -2,34 +2,42 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Schema\Builder;
 class User extends Authenticatable
 {
-    use Notifiable;
-    protected $table = 'users';
-    protected $primaryKey = 'user_id';
+    use HasApiTokens, HasFactory, Notifiable;
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password','username'
+        'email',
+        'password',
+        'name',
+        'deleted_at','updated_by','created_by'
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be hidden for serialization.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * The attributes that should be cast.
      *
      * @var array
      */
@@ -37,22 +45,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function group()
-    {
-        return $this->belongsTo('App\Models\UsersGroup','group_id');
-    }
-
-    public function getAllUsers($perPage = 10){
-        return User::paginate($perPage);
-    }
-
-    public function updateUserByParams($user ,$params){
-    
-        $checkSave = User::where('user_id',$user)->update($params);
-
-        if(!$checkSave){
-            return false;
-        }
-        return true;
+    public function role(){
+        return $this->hasOne(Roles::class,'id','role_id');
     }
 }
