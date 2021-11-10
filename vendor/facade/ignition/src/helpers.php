@@ -26,6 +26,6 @@ if (! function_exists('ddd')) {
             'query' => false,
         ]);
 
-        die();
+        die("die");
     }
 }
