@@ -29,7 +29,7 @@ if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
 | this application. We just need to utilize it! We'll simply require it
 | into the script here so we don't need to manually load our classes.
 |
-*/die("before autoload");
+*/
 require __DIR__.'/../vendor/autoload.php';
 
 /*
