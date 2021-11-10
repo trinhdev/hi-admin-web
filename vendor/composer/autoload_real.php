@@ -55,10 +55,10 @@ class ComposerAutoloaderInit6f117cb46fd2d477c86c18729fd55bd5
         } else {
             $includeFiles = require __DIR__ . '/autoload_files.php';
         }
+        dd($includeFiles);
         foreach ($includeFiles as $fileIdentifier => $file) {
             composerRequire6f117cb46fd2d477c86c18729fd55bd5($fileIdentifier, $file);
         }
-        die('pass');
         return $loader;
     }
 }
