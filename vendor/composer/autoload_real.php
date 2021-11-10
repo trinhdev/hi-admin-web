@@ -57,8 +57,8 @@ class ComposerAutoloaderInit6f117cb46fd2d477c86c18729fd55bd5
         }
         foreach ($includeFiles as $fileIdentifier => $file) {
             composerRequire6f117cb46fd2d477c86c18729fd55bd5($fileIdentifier, $file);
-            die('dong 60');
         }
+        die('pass');
         return $loader;
     }
 }
