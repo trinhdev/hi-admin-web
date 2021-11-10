@@ -49,12 +49,14 @@ class ComposerAutoloaderInit6f117cb46fd2d477c86c18729fd55bd5
         }
 
         $loader->register(true);
-        die("dong 52");
+        
         if ($useStaticLoader) {
             $includeFiles = Composer\Autoload\ComposerStaticInit6f117cb46fd2d477c86c18729fd55bd5::$files;
+            die("dong 55");
         } else {
             $includeFiles = require __DIR__ . '/autoload_files.php';
         }
+        die("dong 58");
         foreach ($includeFiles as $fileIdentifier => $file) {
             composerRequire6f117cb46fd2d477c86c18729fd55bd5($fileIdentifier, $file);
         }
