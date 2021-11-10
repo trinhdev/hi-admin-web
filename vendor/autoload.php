@@ -4,4 +4,5 @@
 
 require_once __DIR__ . '/composer/autoload_real.php';
 
+die("buf 7");
 return ComposerAutoloaderInit6f117cb46fd2d477c86c18729fd55bd5::getLoader();
