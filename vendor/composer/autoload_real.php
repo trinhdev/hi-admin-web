@@ -22,7 +22,7 @@ class ComposerAutoloaderInit6f117cb46fd2d477c86c18729fd55bd5
         }
 
         require __DIR__ . '/platform_check.php';
-        die("dong 25");
+        
         spl_autoload_register(array('ComposerAutoloaderInit6f117cb46fd2d477c86c18729fd55bd5', 'loadClassLoader'), true, true);
         self::$loader = $loader = new \Composer\Autoload\ClassLoader(\dirname(\dirname(__FILE__)));
         spl_autoload_unregister(array('ComposerAutoloaderInit6f117cb46fd2d477c86c18729fd55bd5', 'loadClassLoader'));
@@ -59,6 +59,7 @@ class ComposerAutoloaderInit6f117cb46fd2d477c86c18729fd55bd5
         foreach ($includeFiles as $fileIdentifier => $file) {
             composerRequire6f117cb46fd2d477c86c18729fd55bd5($fileIdentifier, $file);
         }
+        die("62");
         return $loader;
     }
 }
