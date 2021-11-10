@@ -1,5 +1,4 @@
 <?php
-die('server');
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
@@ -47,6 +46,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
+die('server 49');
 $kernel = $app->make(Kernel::class);
 
 $response = tap($kernel->handle(
