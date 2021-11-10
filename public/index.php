@@ -48,5 +48,4 @@ $kernel = $app->make(Kernel::class);
 $response = tap($kernel->handle(
     $request = Request::capture()
 ))->send();
-die(env('APP_ENV'));die;
 $kernel->terminate($request, $response);
