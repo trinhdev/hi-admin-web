@@ -81,7 +81,8 @@ function initModule() {
         },
         "initComplete": function (setting, json) {
             $('#modules').show();
-        }
+        },
+        searchDelay: 500
     });
 }
 
@@ -132,7 +133,8 @@ function initGroupModule() {
         },
         "initComplete": function (setting, json) {
             $('#modules').show();
-        }
+        },
+        searchDelay: 500
     });
 }
 
@@ -183,6 +185,7 @@ function initUser() {
         "initComplete": function (setting, json) {
             $('#userTable').show();
         },
+        searchDelay: 500,
         dom: 'Bfrtip',
         buttons: [
             'excelHtml5',
@@ -204,6 +207,7 @@ function initGroup() {
             type: 'POST',
             dataType: 'JSON',
         },
+        searchDelay: 500,
         columns: [
             { data: 'id' },
             { data: 'group_name' },
@@ -229,6 +233,7 @@ function initRoles() {
             type: 'POST',
             dataType: 'JSON',
         },
+        searchDelay: 500,
         columns: [
             { data: 'id' },
             { data: 'role_name' },
