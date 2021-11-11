@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Traits\DataTrait;
 use App\Models\Acl_Roles;
 use App\Models\Modules;
+use App\Models\Roles;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -38,6 +39,7 @@ class RolesController extends MY_Controller
         // get view edit
         $data = parent::edit1();
         $data['modules'] = Modules::query()->get();
+        $data['acls'] = Roles::find($data['data']['id'])->acls;
         return view('roles.edit')->with($data);
     }
     public function save(){
