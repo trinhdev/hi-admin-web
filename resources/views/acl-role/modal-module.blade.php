@@ -16,11 +16,13 @@
                          </tr>
                      </thead>
                      <tbody>
-                         <tr>
-                             <td>1</td>
-                             <td>Test</td>
+                     @foreach($modules as $module)
+                        <tr>
+                             <td>{{ $module->id}}</td>
+                             <td>{{ $module->module_name}}</td>
                              <td><button class="btn btn-success">Select</button></td>
                          </tr>
+                     @endforeach
                      </tbody>
                  </table>
              </div>

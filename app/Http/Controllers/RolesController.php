@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Traits\DataTrait;
+use App\Models\Modules;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -33,6 +34,7 @@ class RolesController extends MY_Controller
     {
         // get view edit
         $data = parent::edit1();
+        $data['modules'] = Modules::query()->get();
         return view('roles.edit')->with($data);
     }
     public function save(){
