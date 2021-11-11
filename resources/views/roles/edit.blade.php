@@ -57,6 +57,7 @@
                 </div>
             </div>
         </section>
+        @include('acl-role.edit')
         <!-- /.content -->
     </div>
 @endsection
