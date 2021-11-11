@@ -26,6 +26,8 @@ class CreateAclRolesTable extends Migration
             $table->integer('status')->default(1);
             $table->bigInteger('updated_by')->nullable()->unsigned();
             $table->bigInteger('created_by')->nullable()->unsigned();
+            $table->unique(['role_id','module_id']); 
+
         });
     }
 

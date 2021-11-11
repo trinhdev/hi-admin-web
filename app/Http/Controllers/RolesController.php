@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Traits\DataTrait;
+use App\Models\Acl_Roles;
 use App\Models\Modules;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -57,9 +58,19 @@ class RolesController extends MY_Controller
                 //create and update permission
                 // dd($request);
                 if(isset($request['module_id'])){
+                    $arrayDataAcl = [];
                     foreach($request['module_id'] as $key => $val){
-                        
+                        $dataAcl = [];
+                        $dataAcl['role_id'] = $role->id;
+                        $dataAcl['module_id'] = $val;
+                        $dataAcl['view'] = $request['view'][$key];
+                        $dataAcl['delete'] = $request['delete'][$key];
+                        $dataAcl['create'] = $request['create'][$key];
+                        $dataAcl['update'] = $request['update'][$key];
+                        $arrayDataAcl[] = $dataAcl;
                     }
+                    DB::table('acl_roles')->upsert($arrayDataAcl,['role_id','module_id'],['view','delete','create','update']);
+                    // dd($arrayDataAcl);
                 }
                 
             });

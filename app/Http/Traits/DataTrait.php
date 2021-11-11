@@ -94,4 +94,8 @@ trait DataTrait
         $params['updated_by'] = Auth::user()->id;
         return $model::where('id', $id)->update($params);
     }
+
+    // public function upSert($model,$params = array(),$keys){
+    //     return $model::upsert($params,$keys);
+    // }
 }

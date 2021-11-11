@@ -33,38 +33,26 @@ function insertModuleToTable(_this) {
             <td><input name="module_id[]" value="${moduleObj.id}" hidden/>${moduleObj.name}</td>
             <td>
                  <select name="view[]" id="view" record="8" class="options_Module form-control">
-                     <option value="0">None</option>
+                     <option value="0" selected>None</option>
                      <option value="1">All</option>
-                     <option value="2" selected="">Owner</option>
-                     <option value="3">Group</option>
-                     <option value="4">Denied</option>
                  </select>
             </td>
             <td>
                  <select name="create[]" id="create" record="8" class="options_Module form-control">
-                     <option value="0">None</option>
+                     <option value="0" selected>None</option>
                      <option value="1">All</option>
-                     <option value="2" selected="">Owner</option>
-                     <option value="3">Group</option>
-                     <option value="4">Denied</option>
                  </select>
             </td>
             <td>
                  <select name="update[]" id="update" record="8" class="options_Module form-control">
                      <option value="0" selected="">None</option>
                      <option value="1">All</option>
-                     <option value="2">Owner</option>
-                     <option value="3">Group</option>
-                     <option value="4">Denied</option>
                  </select>
              </td>
              <td>
                  <select name="delete[]" id="delete" record="8" class="options_Module form-control">
                      <option value="0" selected="">None</option>
                      <option value="1">All</option>
-                     <option value="2">Owner</option>
-                     <option value="3">Group</option>
-                     <option value="4">Denied</option>
                  </select>
              </td>
              <td class="td-actions">
