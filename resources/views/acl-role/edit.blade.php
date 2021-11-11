@@ -1,42 +1,30 @@
  <section class="content">
      <div class="container-fluid">
-         <div class="col-sm-12">
+     {{-- <div class="form-group row"> --}}
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Permissions Role</label>
              <div class="ibox float-e-margins">
                  <div class="ibox-title">
-                     <h5>Permissions of Role</h5>
                      <div class="ibox-tools">
                          <!-- Acl role modal -->
-                        @include('acl-role.modal-module')
+                         @include('acl-role.modal-module')
                      </div>
                  </div>
-                 <div class="ibox-content" id="subpanel_table_content_Module">
+                 <div class="ibox-content justify-content-center" id="subpanel_table_content_Module">
                      <div class="subpanel_table_content" id="table_content_Module">
-                         <table class="table table-hover">
+                         <table class="table table-striped table-responsive" align="center">
                              <thead>
                                  <tr>
-                                     <th class="header">Name</th>
-                                     <th class="header">List</th>
+                                     <th class="header">Module</th>
                                      <th class="header">View</th>
                                      <th class="header">Edit</th>
                                      <th class="header">Delete</th>
                                      <th class="header">Save</th>
-                                     <th class="header">Set User Permissions</th>
                                      <th class="header">Action</th>
                                  </tr>
                              </thead>
-
                              <tbody>
                                  <tr>
                                      <td>Users</td>
-                                     <td>
-                                         <select name="list" id="list" record="8" class="options_Module form-control">
-                                             <option value="0">None</option>
-                                             <option value="1">All</option>
-                                             <option value="2" selected="">Owner</option>
-                                             <option value="3">Group</option>
-                                             <option value="4">Denied</option>
-                                         </select>
-                                     </td>
                                      <td>
                                          <select name="view" id="view" record="8" class="options_Module form-control">
                                              <option value="0">None</option>
@@ -95,9 +83,8 @@
                                          </a>
                                      </td>
                                  </tr>
-
-
                              </tbody>
+
                          </table>
                          {{-- <div class="subpanel-pagination">
                              <input type="hidden" id="Module_current_page" name="Module_current_page" value="1">
@@ -112,6 +99,5 @@
                      </div>
                  </div>
              </div>
-         </div>
      </div>
  </section>

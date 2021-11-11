@@ -44,7 +44,7 @@ class RolesController extends MY_Controller
             if (empty($request['id']))
                 $this->createSingleRecord($model_groups, $request);
             else {
-                $data['roles_name'] = $request['roles_name'];
+                $data['role_name'] = $request['role_name'];
                 $this->updateById($model_groups, $request['id'], $data);
             }
         }

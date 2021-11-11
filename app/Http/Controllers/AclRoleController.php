@@ -61,6 +61,7 @@ class AclRoleController extends MY_Controller
     public function edit($id)
     {
         //
+        return;
     }
 
     /**
