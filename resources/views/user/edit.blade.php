@@ -55,6 +55,15 @@
                                             <label for="email">Email</label>
                                             <input type="email" class="form-control" placeholder="User Email" value="{{ $user->email}}">
                                         </div>
+                                        <div class="form-group">
+                                            <label for="role">Role</label>
+                                            <select id="role_id" name="role_id" class="form-control" placeholder="User Email" >
+                                                <option value selected>None</option>
+                                                @foreach($roleList as $role)
+                                                <option value="{{$role->id}}" {{$user->role_id == $role->id ? 'selected':''}}>{{$role->role_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-footer" style="text-align: center">

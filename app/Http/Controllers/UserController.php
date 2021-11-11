@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Traits\DataTrait;
+use App\Models\Roles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -37,7 +38,8 @@ class UserController extends MY_Controller
     public function create()
     {
         //
-        return view('user.create');
+        $roleList = Roles::get();
+        return view('user.create')->with(['roleList'=>$roleList]);
     }
 
     /**
@@ -76,8 +78,9 @@ class UserController extends MY_Controller
     public function edit($id)
     {
         //
+        $roleList = Roles::get();
         $user = $this->getSigleRecord($this->model, $id);
-        return view('user.edit', compact('user'));
+        return view('user.edit', compact('user'))->with(['roleList'=>$roleList]);
     }
 
     /**
