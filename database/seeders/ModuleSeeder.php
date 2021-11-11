@@ -20,12 +20,6 @@ class ModuleSeeder extends Seeder
             'group_module_id'=>1
         ]);
         DB::table('modules')->insert([
-            'module_name' => 'Permission',
-            'uri' =>'permission',
-            'icon' =>'fas fa-user-tag',
-            'group_module_id'=>1
-        ]);
-        DB::table('modules')->insert([
             'module_name' => 'User',
             'uri' =>'user',
             'icon' =>'fas fa-user',
