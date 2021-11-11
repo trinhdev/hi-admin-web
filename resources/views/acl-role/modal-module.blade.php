@@ -18,9 +18,9 @@
                      <tbody>
                      @foreach($modules as $module)
                         <tr>
-                             <td>{{ $module->id}}</td>
-                             <td>{{ $module->module_name}}</td>
-                             <td><button class="btn btn-success">Select</button></td>
+                             <td class="module_id">{{ $module->id}}</td>
+                             <td class="module_name">{{ $module->module_name}}</td>
+                             <td><a type="button" class="btn btn-success" onclick ="insertModuleToTable(this)">Select</a></td>
                          </tr>
                      @endforeach
                      </tbody>

@@ -6,6 +6,8 @@ use App\Http\Traits\DataTrait;
 use App\Models\Modules;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class RolesController extends MY_Controller
 {
@@ -41,12 +43,26 @@ class RolesController extends MY_Controller
         $model_groups = $this->getModel('roles');
         $request = request()->all();
         if (request()->isMethod("post")) {
-            if (empty($request['id']))
-                $this->createSingleRecord($model_groups, $request);
-            else {
-                $data['role_name'] = $request['role_name'];
-                $this->updateById($model_groups, $request['id'], $data);
-            }
+            DB::transaction(function() use($request,$model_groups)
+            {
+
+                $role = new stdClass();
+                if (empty($request['id']))
+                    $role = $this->createSingleRecord($model_groups, $request);
+                else {
+                    $data['role_name'] = $request['role_name'];
+                    $this->updateById($model_groups, $request['id'], $data);
+                    $role->id = $request['id'];
+                }  
+                //create and update permission
+                // dd($request);
+                if(isset($request['module_id'])){
+                    foreach($request['module_id'] as $key => $val){
+                        
+                    }
+                }
+                
+            });
         }
         return $this->redirect($this->controller_name);
     }
