@@ -24,7 +24,7 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     @foreach($groupModule as $group)
-                        @if(isset($group->children))
+                        @if(isset($group->children) && !empty($group->children))
                            <li class="nav-item menu">
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -44,7 +44,7 @@
                                 @endforeach
                                 </ul>
                             </li>
-                        @else
+                        @elseif(!isset($group->children))
                             <li class="nav-item">
                                 <a href="/{{ $group->uri }}" class="nav-link {{ request()->is($group->uri.'*') ? 'active' : '' }}">
                                 <i class="nav-icon {{ $group->icon}}"></i>

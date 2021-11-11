@@ -171,7 +171,7 @@ function initUser() {
         {
             data: "created_at",
             name: "created_at",
-            title: "Create at"
+            title: "Created at"
         },
         {
             data: "action",
