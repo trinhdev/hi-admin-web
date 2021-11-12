@@ -21,7 +21,11 @@ class RolePermissionPolicy
     }
     public function rolePermissionPolicy(){
         $moduleUri = request()->segment(1);
-        if(!empty($moduleUri) && $moduleUri !='home' && Auth::user()->role_id != 1){
+        $user_role = Auth::user()->role_id;
+        if($moduleUri=='groupmodule' && $user_role != 1){
+            return false;
+        }
+        if(!empty($moduleUri) && $moduleUri !='home' && $user_role != 1){
             $listModuleByUser =(new Modules())->getAllModulesByUser();
             $listUriModule = array_map(function ($module){
                 return $module->uri;

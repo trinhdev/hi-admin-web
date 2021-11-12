@@ -21,6 +21,7 @@ function initModule() {
         "select": true,
         "dataSrc": "tableData",
         "bDestroy": true,
+        "scrollX": true,
         "ajax": {
             url: "/modules/initDatatable"
         },
@@ -73,7 +74,8 @@ function initModule() {
             {
                 data: "action",
                 name: "action",
-                title: "Action"
+                title: "Action",
+                sortable:false
             }
         ],
         "language": {
@@ -93,6 +95,7 @@ function initGroupModule() {
         "select": true,
         "dataSrc": "tableData",
         "bDestroy": true,
+        "scrollX": true,
         "ajax": {
             url: "/groupmodule/initDatatable"
         },
@@ -150,6 +153,8 @@ function initUser() {
         "select": true,
         "dataSrc": "tableData",
         "bDestroy": true,
+        responsive: true,
+        "scrollX": true,
         "ajax": {
             url: "/user/initDatatable"
         },
@@ -169,9 +174,9 @@ function initUser() {
             title: "Email"
         },
         {
-            data: "role_name",
-            name: "role_name",
-            title: "Role Name"
+            data: "role_id",
+            name: "role_id",
+            title: "Role"
         },
         {
             data: "created_at",
@@ -181,7 +186,8 @@ function initUser() {
         {
             data: "action",
             name: "action",
-            title: "Action"
+            title: "Action",
+            sortable:false
         }
         ],
         "language": {
@@ -206,6 +212,7 @@ function initGroup() {
         searchDelay: 500,
         processing: true,
         serverSide: true,
+        "scrollX": true,
         ajax: {
             headers: { 'X-CSRF-Token': $('meta[name=csrf-token]').attr('content') },
             url: base_url + '/groups/getList',
@@ -220,7 +227,8 @@ function initGroup() {
             {
                 data: "action",
                 name: "action",
-                title: "Action"
+                title: "Action",
+                sortable:false
             }
         ],
     });
@@ -232,6 +240,7 @@ function initRoles() {
         searchDelay: 500,
         processing: true,
         serverSide: true,
+        "scrollX": true,
         ajax: {
             headers: { 'X-CSRF-Token': $('meta[name=csrf-token]').attr('content') },
             url: base_url + '/roles/getList',
@@ -246,7 +255,8 @@ function initRoles() {
             {
                 data: "action",
                 name: "action",
-                title: "Action"
+                title: "Action",
+                sortable:false
             }
         ],
     });

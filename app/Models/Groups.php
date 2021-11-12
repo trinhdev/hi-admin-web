@@ -15,7 +15,7 @@ class Groups extends Model
     protected $fillable = ['group_name','deleted_at','updated_by','created_by'];
 
     protected $casts = [
-        'created_at'=> 'datetime:Y-m-d H:00',
-        'updated_at'=> 'datetime:Y-m-d H:00'
+        'created_at'=> 'datetime:H:i:s d-m-Y',
+        'updated_at'=> 'datetime:H:i:s d-m-Y'
     ];
 }

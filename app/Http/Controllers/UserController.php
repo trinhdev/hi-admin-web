@@ -116,10 +116,10 @@ class UserController extends MY_Controller
                 ->addColumn('action', function ($row) {
                     return view('layouts.button.action')->with(['row' => $row, 'module' => 'user']);
                 })
-                ->addColumn('role_name', function ($row) {
+                ->editColumn('role_id', function ($row) {
                     return !empty($row->role) ? $row->role->role_name : '';
                 })
-                ->rawColumns(['action', 'role_name'])
+                ->rawColumns(['action'])
                 ->make(true);
             return $json;
         }
