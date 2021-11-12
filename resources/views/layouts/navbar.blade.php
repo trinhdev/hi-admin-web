@@ -5,7 +5,11 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
     </ul>
-
+    @if ($errors->any())
+    <p class="alert alert-danger">
+        {{$errors->first()}} !
+    </p>
+    @endif
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
@@ -73,9 +77,11 @@
                 <li class="user-footer">
                     <div class="pull-left">
                         <a href="#" class="btn btn-default btn-flat">Profile</a>
+                        <a class="btn btn-default btn-flat" href="#" data-toggle="modal" data-target="#changePasswordModal"><i class="fas fa-key"></i> Change Password</a>
                     </div>
                 </li>
             </ul>
+
         </li>
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -94,3 +100,31 @@
         </li>
     </ul>
 </nav>
+<div id="changePasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span></button>
+            </div>
+            <form action="/profile/changePassword" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input placeholder="Current Password" type="password" name="current_password" class="form-control" data-toggle="password" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="New Password" type="password" name="password" class="form-control" data-toggle="password" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Confirm New Password" type="password" name="password_confirmation" class="form-control" data-toggle="password" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordReqest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Traits\DataTrait;
 use App\Models\Roles;

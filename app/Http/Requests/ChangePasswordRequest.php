@@ -3,9 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class UserStoreRequest extends FormRequest
+class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +25,15 @@ class UserStoreRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
-            'name' => 'required',
-            'email' => ['required','email:rfc','unique:users,email',
-                Rule::unique('users')->ignore($this->email)],
             'password' => 'required|min:1',
-            'password_confirmation' => 'required|same:password'
+            'password_confirmation' => 'required|same:password',
+            'current_password' =>['required', function ($attribute, $value, $fail){
+                if (!Hash::check($value, Auth::user()->password)) {
+                    return $fail(__('The current password is incorrect.'));
+                }
+            }]
         ];
     }
 }
