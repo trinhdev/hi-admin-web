@@ -1,18 +1,12 @@
 $(document).ready(function () {
     $(document).pjax('a', '#pjax');
-    $('aside li.nav-item a').on('click', function () {
-        // $('li.menu-open').map(() => {
-
-        // });
-        var menu_open = $('li.menu-open');
-
-        if (menu_open.length > 1) {
-            console.log(menu_open);
-            $(menu_open[0]).removeClass('menu-is-opening');
-            $(menu_open[0]).removeClass('menu-open');
-            $(menu_open[0]).collapse();
+    $('aside li.nav-item a').on('click', function (e) {
+        if ($(this).attr('href') != '#') {
+            $('aside').find(".menu-open > .nav-treeview").not($(this).parents('.menu-open > .nav-treeview')).slideUp()
+            $('aside').find(".menu-open").not($(this).parents('.menu-open')).removeClass("menu-is-opening menu-open");
+            $('li a').removeClass("active");
         }
-        $('li a').removeClass("active");
+
         $(this).parents('.nav-treeview').prevAll('.nav-link').addClass('active');
         $(this).addClass("active");
     });
