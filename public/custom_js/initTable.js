@@ -212,6 +212,7 @@ function initGroup() {
         searchDelay: 500,
         processing: true,
         serverSide: true,
+        "bDestroy": true,
         "scrollX": true,
         ajax: {
             headers: { 'X-CSRF-Token': $('meta[name=csrf-token]').attr('content') },
@@ -239,6 +240,7 @@ function initRoles() {
         responsive: true,
         searchDelay: 500,
         processing: true,
+        "bDestroy": true,
         serverSide: true,
         "scrollX": true,
         ajax: {
