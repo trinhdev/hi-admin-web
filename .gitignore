@@ -6,6 +6,7 @@ composer.lock
 
 /storage/*.key
 /vendor
+# ignore env
 .env
 .env.backup
 .phpunit.result.cache
