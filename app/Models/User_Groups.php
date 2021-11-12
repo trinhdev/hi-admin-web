@@ -13,4 +13,9 @@ class User_Groups extends Model
     protected $table = 'user_groups';
     protected $primaryKey = 'id';
     protected $fillable = ['user_id','group_id','deleted_at','updated_by','created_by'];
+
+    protected $casts = [
+        'created_at'=> 'datetime:H:i:s d-m-Y',
+        'updated_at'=> 'datetime:H:i:s d-m-Y'
+    ];
 }
