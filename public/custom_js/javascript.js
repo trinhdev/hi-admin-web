@@ -1,8 +1,19 @@
 $(document).ready(function () {
     $(document).pjax('a', '#pjax');
     $('aside li.nav-item a').on('click', function () {
+        // $('li.menu-open').map(() => {
+
+        // });
+        var menu_open = $('li.menu-open');
+
+        if (menu_open.length > 1) {
+            console.log(menu_open);
+            $(menu_open[0]).removeClass('menu-is-opening');
+            $(menu_open[0]).removeClass('menu-open');
+            $(menu_open[0]).collapse();
+        }
         $('li a').removeClass("active");
-        $(this).parents('.nav-treeview').prevAll('.nav-link').addClass('active')
+        $(this).parents('.nav-treeview').prevAll('.nav-link').addClass('active');
         $(this).addClass("active");
     });
     reloadPjax();

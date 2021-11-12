@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Traits\DataTrait;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use \stdClass;
+
+use App\Models\Group_Module;
 
 class GroupmoduleController extends MY_Controller
 {
@@ -46,11 +50,10 @@ class GroupmoduleController extends MY_Controller
      */
     public function store(Request $request)
     {
-        dd($request);
         $validated = $request->validate([
-            'group_module_name' => 'required|unique:group_module_name|max:255',
+            'group_module_name' => 'required|unique:group_module|max:255',
         ]);
-        $module = $this->createSingleRecord($this->model, $request->all());
+        $group_module = $this->createSingleRecord($this->model, $request->all());
         return redirect('/groupmodule');
     }
 
@@ -73,7 +76,8 @@ class GroupmoduleController extends MY_Controller
      */
     public function edit($id)
     {
-        //
+        $group_module = $this->getSigleRecord($this->model, $id);
+        return view('groupmodule.form')->with('groupmodule', $group_module);
     }
 
     /**
@@ -85,7 +89,8 @@ class GroupmoduleController extends MY_Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $group_module = $this->updateById($this->model, $id, $request->all());
+        return redirect('/groupmodule');
     }
 
     /**
@@ -96,7 +101,8 @@ class GroupmoduleController extends MY_Controller
      */
     public function destroy($id)
     {
-        //
+        $this->deleteById($this->model, $id);
+        return redirect('/groupmodule');
     }
 
     public function initDatatable(Request $request){

@@ -129,6 +129,11 @@ function initGroupModule() {
                 data: "updated_by",
                 name: "updated_by",
                 title: "Updated by"
+            },
+            {
+                data: "action",
+                name: "action",
+                title: "Action"
             }
         ],
         "language": {

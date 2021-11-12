@@ -26,7 +26,7 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        <form action="/modules{{(!$groupmodule->id) ? '/store' : '/update'}}{{ (!$groupmodule->id) ? '' : '/' . $groupmodule->id }}" method="POST" novalidate="novalidate" autocomplete="off">
+                        <form action="/groupmodule{{(!$groupmodule->id) ? '/store' : '/update'}}{{ (!$groupmodule->id) ? '' : '/' . $groupmodule->id }}" method="POST" novalidate="novalidate" autocomplete="off">
                             @csrf
             
                             @if (isset($groupmodule->id) && $groupmodule->id)
@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer" style="text-align: center">
-                                    <a href="/modules" type="button" class="btn btn-default">Cancel</a>
+                                    <a href="/groupmodule" type="button" class="btn btn-default">Cancel</a>
                                     <button type="submit" class="btn btn-info">Save</button>
                                 </div>
                             </div>
