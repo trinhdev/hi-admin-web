@@ -42,13 +42,13 @@ class RolesController extends MY_Controller
         $data['acls'] = Roles::find($data['data']['id'])->acls;
         return view('roles.edit')->with($data);
     }
-    public function save(){
+    public function save()
+    {
         $model_groups = $this->getModel('roles');
         $request = request()->all();
         if (request()->isMethod("post")) {
-            DB::transaction(function() use($request,$model_groups)
-            {
-
+            DB::transaction(function () use ($request, $model_groups) {
+                $listModuleAclInput = [];
                 $role = new stdClass();
                 if (empty($request['id']))
                     $role = $this->createSingleRecord($model_groups, $request);
@@ -56,12 +56,12 @@ class RolesController extends MY_Controller
                     $data['role_name'] = $request['role_name'];
                     $this->updateById($model_groups, $request['id'], $data);
                     $role->id = $request['id'];
-                }  
+                }
                 //create and update permission
                 // dd($request);
-                if(isset($request['module_id'])){
+                if (isset($request['module_id'])) {
                     $arrayDataAcl = [];
-                    foreach($request['module_id'] as $key => $val){
+                    foreach ($request['module_id'] as $key => $val) {
                         $dataAcl = [];
                         $dataAcl['role_id'] = $role->id;
                         $dataAcl['module_id'] = $val;
@@ -69,12 +69,14 @@ class RolesController extends MY_Controller
                         $dataAcl['delete'] = $request['delete'][$key];
                         $dataAcl['create'] = $request['create'][$key];
                         $dataAcl['update'] = $request['update'][$key];
+                        $dataAcl['deleted_at'] = NULL;
                         $arrayDataAcl[] = $dataAcl;
+                        $listModuleAclInput[] = $val;
                     }
-                    DB::table('acl_roles')->upsert($arrayDataAcl,['role_id','module_id'],['view','delete','create','update']);
+                    DB::table('acl_roles')->upsert($arrayDataAcl, ['role_id', 'module_id'], ['view', 'delete', 'create', 'update', 'deleted_at']);
                     // dd($arrayDataAcl);
                 }
-                
+                Acl_Roles::deleteEmptyAclRole($role->id, $listModuleAclInput);
             });
         }
         return $this->redirect($this->controller_name);
@@ -91,7 +93,8 @@ class RolesController extends MY_Controller
         $this->deleteById($this->model, $id);
         return redirect('/roles');
     }
-    public function getList(Request $request){
+    public function getList(Request $request)
+    {
         if ($request->ajax()) {
             $data = $this->model::query();
             $json =   DataTables::of($data)
@@ -101,6 +104,5 @@ class RolesController extends MY_Controller
                 ->make(true);
             return $json;
         }
-
     }
 }
