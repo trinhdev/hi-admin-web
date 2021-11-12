@@ -74,7 +74,8 @@ function initModule() {
             {
                 data: "action",
                 name: "action",
-                title: "Action"
+                title: "Action",
+                sortable:false
             }
         ],
         "language": {
@@ -180,7 +181,8 @@ function initUser() {
         {
             data: "action",
             name: "action",
-            title: "Action"
+            title: "Action",
+            sortable:false
         }
         ],
         "language": {
@@ -220,7 +222,8 @@ function initGroup() {
             {
                 data: "action",
                 name: "action",
-                title: "Action"
+                title: "Action",
+                sortable:false
             }
         ],
     });
@@ -247,7 +250,8 @@ function initRoles() {
             {
                 data: "action",
                 name: "action",
-                title: "Action"
+                title: "Action",
+                sortable:false
             }
         ],
     });

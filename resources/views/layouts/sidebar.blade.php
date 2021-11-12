@@ -23,6 +23,14 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
+                    @if(Auth::user()->role_id == 1)
+                        <li class="nav-item">
+                                <a href="/groupmodule" class="nav-link">
+                                <i class="nav-icon"></i>
+                                <p>Group Module</p>
+                                </a>
+                        </li>
+                    @endif
                     @foreach($groupModule as $group)
                         @if(isset($group->children) && !empty($group->children))
                            <li class="nav-item menu">
