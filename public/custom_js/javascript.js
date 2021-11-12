@@ -1,11 +1,9 @@
 $(document).ready(function () {
     $(document).pjax('a', '#pjax');
-    // if ($.support.pjax) {
-    //     $.pjax.defaults.timeout = 500; // time in milliseconds
-    // }
-    $('ul.nav li.nav-item').click(function () {
-        $(this).find('a').addClass('active');
-        $(this).siblings().find('a').removeClass('active');
+    $('aside li.nav-item a').on('click', function () {
+        $('li a').removeClass("active");
+        $(this).parents('.nav-treeview').prevAll('.nav-link').addClass('active')
+        $(this).addClass("active");
     });
     reloadPjax();
 });
@@ -26,8 +24,8 @@ function insertModuleToTable(_this) {
         id: row.querySelector('.module_id').innerHTML,
         name: row.querySelector('.module_name').innerHTML
     };
-    let check = table.querySelector('tr[name="'+moduleObj.id+'"');
-    if(check == null){
+    let check = table.querySelector('tr[name="' + moduleObj.id + '"');
+    if (check == null) {
         table.innerHTML += ` 
         <tr name="${moduleObj.id}">
             <td><input name="module_id[]" value="${moduleObj.id}" hidden/>${moduleObj.name}</td>
@@ -71,7 +69,7 @@ function deleteRow(btn) {
     row.parentNode.removeChild(row);
 }
 
-function handleSubmit(e){
+function handleSubmit(e) {
     // e.preventDefault();
     let data = $(e).serialize();
     console.log(data);
