@@ -164,9 +164,9 @@ function initUser() {
             title: "Email"
         },
         {
-            data: "role_name",
-            name: "role_name",
-            title: "Role Name"
+            data: "role_id",
+            name: "role_id",
+            title: "Role"
         },
         {
             data: "created_at",
