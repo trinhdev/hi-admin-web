@@ -21,6 +21,7 @@ function initModule() {
         "select": true,
         "dataSrc": "tableData",
         "bDestroy": true,
+        "scrollX": true,
         "ajax": {
             url: "/modules/initDatatable"
         },
@@ -93,6 +94,7 @@ function initGroupModule() {
         "select": true,
         "dataSrc": "tableData",
         "bDestroy": true,
+        "scrollX": true,
         "ajax": {
             url: "/groupmodule/initDatatable"
         },
@@ -145,6 +147,8 @@ function initUser() {
         "select": true,
         "dataSrc": "tableData",
         "bDestroy": true,
+        responsive: true,
+        "scrollX": true,
         "ajax": {
             url: "/user/initDatatable"
         },
@@ -201,6 +205,7 @@ function initGroup() {
         searchDelay: 500,
         processing: true,
         serverSide: true,
+        "scrollX": true,
         ajax: {
             headers: { 'X-CSRF-Token': $('meta[name=csrf-token]').attr('content') },
             url: base_url + '/groups/getList',
@@ -227,6 +232,7 @@ function initRoles() {
         searchDelay: 500,
         processing: true,
         serverSide: true,
+        "scrollX": true,
         ajax: {
             headers: { 'X-CSRF-Token': $('meta[name=csrf-token]').attr('content') },
             url: base_url + '/roles/getList',
