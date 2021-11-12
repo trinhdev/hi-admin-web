@@ -29,7 +29,7 @@ class Modules extends Model
             ->join('acl_roles','acl_roles.module_id','modules.id')
             ->where('acl_roles.view',1)
             ->where('acl_roles.role_id',$user->role_id)
-            ->where('deleted_at',null)
+            ->where('modules.deleted_at',null)
             ->get()
             ->toArray();
         }else{
@@ -48,7 +48,7 @@ class Modules extends Model
             ->join('acl_roles','acl_roles.module_id','modules.id')
             ->where('acl_roles.view',1)
             ->where('acl_roles.role_id',$user->role_id)
-            ->where('deleted_at',null)
+            ->where('modules.deleted_at',null)
             ->get()
             ->toArray();
         }else{

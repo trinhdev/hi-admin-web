@@ -55,6 +55,15 @@
                                             <input type="email" id="email" name="email" class="form-control" placeholder="User Email" >
                                         </div>
                                         <div class="form-group">
+                                            <label for="role">Role</label>
+                                            <select id="role_id" name="role_id" class="form-control" placeholder="User Email" >
+                                                <option value selected>None</option>
+                                                @foreach($roleList as $role)
+                                                <option value="{{$role->id}}">{{$role->role_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="password">Password</label>
                                             <input type="password" id="password" name="password" class="form-control" placeholder="User Password" >
                                         </div>

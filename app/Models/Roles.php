@@ -17,8 +17,7 @@ class Roles extends Model
         'created_at'=> 'datetime:Y-m-d H:00',
         'updated_at'=> 'datetime:Y-m-d H:00'
     ];
-
-    public function users(){
-        return $this->belongsToMany(User::class);
+    public function acls(){
+        return $this->hasMany(Acl_Roles::class,'role_id','id');
     }
 }

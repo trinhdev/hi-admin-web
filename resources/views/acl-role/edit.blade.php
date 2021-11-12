@@ -24,7 +24,42 @@
                         </tr>
                     </thead>
                     <tbody id="aclRoletableBody">
-
+                        @foreach($acls as $acl)
+                        @php
+                            $module = $modules->where('id',$acl->module_id)->first();
+                        @endphp
+                             <tr name="{{$acl->module_id}}">
+                                <td><input name="module_id[]" value="{{$acl->module_id}}" hidden/>{{$module->module_name}}</td>
+                                <td>
+                                    <select name="view[]" id="view" record="8" class="options_Module form-control">
+                                        <option value="0" selected>None</option>
+                                        <option value="1">All</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="create[]" id="create" record="8" class="options_Module form-control">
+                                        <option value="0" selected>None</option>
+                                        <option value="1">All</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="update[]" id="update" record="8" class="options_Module form-control">
+                                        <option value="0" selected="">None</option>
+                                        <option value="1">All</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="delete[]" id="delete" record="8" class="options_Module form-control">
+                                        <option value="0" selected="">None</option>
+                                        <option value="1">All</option>
+                                    </select>
+                                </td>
+                                <td class="td-actions">
+                                    <a type="button" onclick="deleteRow(this)" class="btn btn-danger">
+                                    <i class="fa fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
 
                 </table>
