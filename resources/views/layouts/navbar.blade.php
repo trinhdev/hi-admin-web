@@ -101,7 +101,7 @@
     </ul>
 </nav>
 <div id="changePasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
