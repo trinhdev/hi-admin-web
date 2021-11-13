@@ -15,20 +15,10 @@ class ProfileController extends Controller
     use DataTrait;
     public function changePassword(ChangePasswordRequest $request)
     {
-        //     if(Hash::check($request->current_password,Auth::user()->password)){
-        //         $paramUpdate = [
-        //             'password'=>Hash::make($request->password)
-        //         ];
-        //         $this->updateById(new User(),Auth::user()->id,$paramUpdate);
-        //         return redirect()->back()->withSuccess('Success');
-        //     }else{
-        //         return redirect()->back()->withErrors('Fail');
-        //     }
-        // }
         $paramUpdate = [
             'password' => Hash::make($request->password)
         ];
         $this->updateById(new User(), Auth::user()->id, $paramUpdate);
-        return redirect()->back();
+        return redirect()->back()->withSuccess('success');
     }
 }

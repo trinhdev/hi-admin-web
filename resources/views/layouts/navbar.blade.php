@@ -5,11 +5,6 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
     </ul>
-    @if ($errors->any())
-    <p class="alert alert-danger">
-        {{$errors->first()}} !
-    </p>
-    @endif
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
@@ -128,3 +123,18 @@
         </div>
     </div>
 </div>
+<script>
+@if($errors->any())
+    swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '{{$errors->first()}}',
+    });
+@endif
+@if (session()->has('success'))
+   swal.fire({
+        icon: 'success',
+        title: 'Success!',
+    });
+@endif
+</script>
