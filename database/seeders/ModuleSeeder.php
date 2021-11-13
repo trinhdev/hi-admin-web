@@ -37,5 +37,11 @@ class ModuleSeeder extends Seeder
             'icon' =>'fas fa-users',
             'group_module_id'=>1
         ]);
+        DB::table('modules')->insert([
+            'module_name' => 'Group Module',
+            'uri' =>'groupmodule',
+            'icon' =>'fa fa-cogs',
+            'group_module_id'=>1
+        ]);
     }
 }
