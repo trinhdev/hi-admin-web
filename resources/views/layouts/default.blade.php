@@ -14,7 +14,6 @@
         <!-- Navbar -->
         @include('layouts.navbar')
         <!-- /.navbar -->
-
         <!-- Sidebar -->
         @include('layouts.sidebar')
         <!-- /.sidebar -->

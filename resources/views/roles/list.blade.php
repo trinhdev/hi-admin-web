@@ -8,9 +8,11 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 style="float: left; margin-right: 20px">{{$title}}</h1>
+                         @if($aclCurrentModule->create == 1 || strtolower(Auth::user()->role->role_name) == "admin")
                         <a href="{{$controller}}/{{$action_edit}}" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Add new {{$controller}}
                         </a>
+                        @endif
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">

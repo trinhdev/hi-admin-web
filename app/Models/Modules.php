@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class Modules extends Model
 {
@@ -42,6 +43,7 @@ class Modules extends Model
     }
     public function getModulesGroupByParent()
     {
+        $result = new stdClass();
         $user = Auth::user();
         if($user->role_id != 1){
             $listModule = DB::table('modules')
@@ -53,11 +55,13 @@ class Modules extends Model
             ->toArray();
         }else{
             $listModule = DB::table('modules')
-            ->where('deleted_at',null)
+            ->join('acl_roles','acl_roles.module_id','modules.id')
+            ->where('modules.deleted_at',null)
             ->get()
             ->toArray();
             // $listModule = Modules::query()->with('parent')->get()->toArray();
         }
+
         $listGroupModule = DB::table('group_module')->get()->toArray();
         $arrayGroupKey = [];
         foreach($listGroupModule as $groupModule){
@@ -71,8 +75,10 @@ class Modules extends Model
                 $arrayGroupKey[] = $val;
             }
         });
+        $result->listModule = $listModule;
+        $result->arrayGroupkey = $arrayGroupKey;
         // dd($arrayGroupKey);
-        return $arrayGroupKey;
+        return $result;
     }
     
     public function parent(){
