@@ -16,10 +16,10 @@ $(document).ready(function () {
 function reloadPjax() {
     const pathArray = window.location.pathname.split("/");
     let segment2 = pathArray[2];
-    let segment1 = pathArray[1];
-    if (segment2 == undefined && segment1 != '') {
+    if (segment2 == undefined) {
         $.pjax.reload('#pjax');
     }
+
 }
 
 function insertModuleToTable(_this) {

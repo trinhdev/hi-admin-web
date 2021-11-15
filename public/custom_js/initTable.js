@@ -5,6 +5,7 @@ $(document).ready(function () {
         initGroupModule();
         initGroup();
         initRoles();
+        drawChart();
     });
     $(document).on('pjax:popstate', function (event) {
         event.preventDefault();

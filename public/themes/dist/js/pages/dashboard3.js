@@ -1,6 +1,6 @@
 /* global Chart:false */
 
-$(function () {
+function drawChart() {
   'use strict'
 
   var ticksStyle = {
@@ -142,6 +142,6 @@ $(function () {
       }
     }
   })
-})
+};
 
 // lgtm [js/unused-local-variable]
