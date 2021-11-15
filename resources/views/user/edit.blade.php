@@ -49,11 +49,11 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="name">User name</label>
-                                            <input type="text" id="name" name="name" class="form-control" value ="{{ $user->name }}">
+                                            <input type="text" id="name" class="form-control" value ="{{ $user->name }}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="email" class="form-control" placeholder="User Email" value="{{ $user->email}}">
+                                            <input type="email" class="form-control" placeholder="User Email" value="{{ $user->email}}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="role">Role</label>
