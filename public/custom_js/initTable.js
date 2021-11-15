@@ -1,11 +1,15 @@
 $(document).ready(function () {
     $(document).on('pjax:end', function () {
+        const pathArray = window.location.pathname.split("/");
+        let segment = pathArray[1];
         initUser();
         initModule();
         initGroupModule();
         initGroup();
         initRoles();
-        drawChart();
+        if(segment =='' || segment =='home'){
+            drawChart();
+        }
     });
     $(document).on('pjax:popstate', function (event) {
         event.preventDefault();
