@@ -16,7 +16,8 @@ $(document).ready(function () {
 function reloadPjax() {
     const pathArray = window.location.pathname.split("/");
     let segment2 = pathArray[2];
-    if (segment2 == undefined) {
+    let segment1 = pathArray[1];
+    if (segment2 == undefined && segment1 != '') {
         $.pjax.reload('#pjax');
     }
 }

@@ -25,7 +25,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/dist/js/pages/dashboard.js"></script>
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/dist/js/pages/dashboard3.js"></script>
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/select2/js/select2.full.min.js"></script>
 <script src= "{{asset('custom_js/jquery.pjax.js')}}"></script>
 <!-- DataTables -->
