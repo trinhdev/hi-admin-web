@@ -24,6 +24,7 @@
                             </tr>
                         </thead>
                         <tbody id="aclRoletableBody">
+                            @if(isset($acls))
                             @foreach($acls as $acl)
                             @php
                             $module = $modules->where('id',$acl->module_id)->first();
@@ -60,6 +61,7 @@
                                 </td>
                             </tr>
                             @endforeach
+                            @endif
                         </tbody>
 
                     </table>

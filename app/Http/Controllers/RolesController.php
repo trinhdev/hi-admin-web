@@ -39,7 +39,9 @@ class RolesController extends MY_Controller
         // get view edit
         $data = parent::edit1();
         $data['modules'] = Modules::query()->get();
-        $data['acls'] = Roles::find($data['data']['id'])->acls;
+        if(isset($data['data']['id'])){
+            $data['acls'] = Roles::find($data['data']['id'])->acls;
+        }
         return view('roles.edit')->with($data);
     }
     public function save()
