@@ -57,6 +57,7 @@ class Modules extends Model
             $listModule = DB::table('modules')
             ->join('acl_roles','acl_roles.module_id','modules.id')
             ->where('modules.deleted_at',null)
+            ->where('acl_roles.role_id',$user->role_id)
             ->get()
             ->toArray();
             // $listModule = Modules::query()->with('parent')->get()->toArray();
