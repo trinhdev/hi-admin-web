@@ -1,13 +1,13 @@
- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".acl-modal">+</button>
+ <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".acl-modal"><i class="fas fa-plus"></i> Add new role</button>
  <div class="modal fade acl-modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
      <div class="modal-dialog modal-lg">
          <div class="modal-content">
              <div class="modal-header">
                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                     <span aria-hidden="true">X</span></button>
+                     <span aria-hidden="true">&times;</span></button>
              </div>
              <div class="modal-body">
-                 <table class="table table-striped">
+                 <table class="table table-striped table-borderless">
                      <thead>
                          <tr>
                              <th>id</th>

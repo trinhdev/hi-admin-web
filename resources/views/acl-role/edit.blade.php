@@ -1,5 +1,5 @@
 <div class="form-group row">
-    <label for="inputEmail3" class="col-sm-2 col-form-label">Permissions Role</label>
+    {{-- <label for="inputEmail3" class="col-sm-2 col-form-label">Permissions Role</label> --}}
     <div class="container-fluid">
         {{-- <div class="form-group row"> --}}
         <div class="ibox float-e-margins">
@@ -12,7 +12,7 @@
             <br>
             <div class="ibox-content justify-content-center" id="subpanel_table_content_Module">
                 <div class="subpanel_table_content" id="table_content_Module">
-                    <table class="table table-striped table-responsive" align="center" id="aclRoleTable">
+                    <table class="table table-striped" align="center" id="aclRoleTable">
                         <thead>
                             <tr>
                                 <th class="header">Module</th>
