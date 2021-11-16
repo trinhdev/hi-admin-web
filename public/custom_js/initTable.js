@@ -38,7 +38,7 @@ $(document).ready(function () {
 });
 
 function initSelect() {
-    $('select').selectpicker();
+    $('form select').selectpicker();
 }
 
 function initModule() {

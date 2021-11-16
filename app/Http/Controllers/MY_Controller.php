@@ -71,6 +71,9 @@ class MY_Controller extends Controller
             if(!$request->ajax()){
                 LogactivitiesHelper::addToLog($request);
             }
+            // elseif(isset($request->draw) && $request->draw == 1){
+            //     LogactivitiesHelper::addToLog($request);
+            // }
             return $next($request);
         });
     }
