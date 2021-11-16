@@ -30,10 +30,10 @@ class LogactivitiesController extends MY_Controller
                     return view('log.label')->with(['row' => $row]);
                 })
                 ->editColumn('url', function ($row) {
-                    return '<p class="text-success font-weight-bolder">' . $row->url . '</p>';
+                    return '<span class="text-success font-weight-bolder">' . $row->url . '</span>';
                 })
                 ->editColumn('ip', function ($row) {
-                    return '<p class="text-danger font-weight-bolder">' . $row->ip . '</p>';
+                    return '<span class="text-danger font-weight-bolder">' . $row->ip . '</span>';
                 })
                 ->addColumn('action', function ($row) {
                     return view('layouts.button.action')->with(['row' => $row, 'module' => 'logactivities']);
