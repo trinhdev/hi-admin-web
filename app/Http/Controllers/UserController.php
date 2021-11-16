@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LogactivitiesHelper;
 use App\Http\Requests\ChangePasswordReqest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Traits\DataTrait;
@@ -38,7 +39,6 @@ class UserController extends MY_Controller
      */
     public function create()
     {
-        //
         $roleList = Roles::get();
         return view('user.create')->with(['roleList'=>$roleList]);
     }

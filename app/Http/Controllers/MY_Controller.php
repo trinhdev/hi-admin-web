@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LogactivitiesHelper;
 use App\Models\Modules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,6 +68,9 @@ class MY_Controller extends Controller
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             $this->getListModule();
+            if(!$request->ajax()){
+                LogactivitiesHelper::addToLog($request);
+            }
             return $next($request);
         });
     }
