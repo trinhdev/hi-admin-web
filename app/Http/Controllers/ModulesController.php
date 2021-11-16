@@ -43,15 +43,18 @@ class ModulesController extends MY_Controller
         }
         $module_list = $this->getAll(new Modules);
         $list_group_module = $this->getAll(new Group_Module);
+        $list_icon = explode(",", file_get_contents(public_path('fontawsome.txt')));
         $module = new stdClass();
         $module->id = '';
         $module->module_name = '';
         $module->uri = '';
         $module->group_module_id = '';
+        $module->icon = '';
         $module->status = True;
         $module->list_uri = array_unique($controllers);
         $module->list_modules = $module_list;
         $module->list_group_module = $list_group_module;
+        $module->list_icon = $list_icon;
         return view('modules.form')->with('module', $module);
     }
 
@@ -99,10 +102,12 @@ class ModulesController extends MY_Controller
             $controllers[] = strtolower(str_replace('Controller.php', '', $path));
         }
         $list_group_module = $this->getAll(new Group_Module);
+        $list_icon = explode(",", file_get_contents(public_path('fontawsome.txt')));
         $module = $this->getSigleRecord(new Modules, $id);
         // dd($module);
         $module->list_uri = array_unique($controllers);
         $module->list_group_module = $list_group_module;
+        $module->list_icon = $list_icon;
         return view('modules.form')->with('module', $module);
     }
 

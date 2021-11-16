@@ -6,6 +6,7 @@ $(document).ready(function () {
         initGroup();
         initRoles();
         drawChart();
+        initSelect();
     });
     $(document).on('pjax:popstate', function (event) {
         event.preventDefault();
@@ -15,6 +16,11 @@ $(document).ready(function () {
     });
 
 });
+
+function initSelect() {
+    $('select').selectpicker();
+}
+
 function initModule() {
     $('#modules').DataTable({
         "processing": true,

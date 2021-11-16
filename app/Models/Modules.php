@@ -15,7 +15,7 @@ class Modules extends Model
     use SoftDeletes;
     protected $table = 'modules';
     protected $primaryKey = 'id';
-    protected $fillable = ['module_name','group_module_id', 'uri', 'status','deleted_at','updated_by','created_by'];
+    protected $fillable = ['module_name','group_module_id', 'uri', 'icon', 'status', 'deleted_at', 'updated_by', 'created_by'];
 
     protected $casts = [
         'created_at'=> 'datetime:H:i:s d-m-Y',

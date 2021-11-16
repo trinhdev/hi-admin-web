@@ -48,7 +48,7 @@
                                         <div class="form-group">
                                             <label for="uri">Uri</label>
                                             
-                                            <select name="uri" id="uri" class="form-control select2bs4 @error('module_name') is-invalid @enderror">
+                                            <select name="uri" id="uri" class="form-control selectpicker @error('module_name') is-invalid @enderror" data-live-search="true" data-size="10">
                                                 <option value="">Please choose uri</option>
                                                 @foreach ($module->list_uri as $uri)
                                                     <option value="{{ $uri }}" {{ ($module->uri == $uri) ? 'selected' : '' }}>{{ $uri }}</option>
@@ -60,10 +60,22 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="uri">Group module</label>
-                                            <select name="group_module_id" id="group_module" class="form-control select2bs4">
+                                            <select name="group_module_id" id="group_module" class="form-control selectpicker" data-live-search="true" data-size="10">
                                                 <option value="">Please choose group module</option>
                                                 @foreach ($module->list_group_module as $group_module)
                                                     <option value="{{ $group_module->id }}" {{ ($group_module->id == $module->group_module_id) ? 'selected' : '' }}>{{ $group_module->group_module_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('uri')
+                                                <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="uri">Icon</label>
+                                            <select name="icon" id="icon" class="form-control selectpicker" data-live-search="true" data-size="10">
+                                                <option value="">Please choose icon</option>
+                                                @foreach ($module->list_icon as $icon)
+                                                    <option value="fas fa-{{ $icon }}" {{ ("fas fa-" . $icon == $module->icon) ? 'selected' : '' }} data-icon="fas fa-{{ $icon }}">fas fa-{{ $icon }}</option>
                                                 @endforeach
                                             </select>
                                             @error('uri')
@@ -91,12 +103,9 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+    <style>
+        select {
+            font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
+        }
+    </style>
 @endsection
-
-@push('scripts')
-    <script>
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        });
-    </script>
-@endpush
