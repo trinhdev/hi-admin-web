@@ -29,6 +29,7 @@
                             @php
                             $module = $modules->where('id',$acl->module_id)->first();
                             @endphp
+                            @if(isset($module))
                             <tr name="{{$acl->module_id}}">
                                 <td><input name="module_id[]" value="{{$acl->module_id}}" hidden />{{$module->module_name}}</td>
                                 <td>
@@ -59,7 +60,8 @@
                                     <a type="button" onclick="deleteRow(this)" class="btn btn-danger">
                                         <i class="fa fa-trash-alt"></i></a>
                                 </td>
-                            </tr>
+                            </tr>                                                        
+                            @endif
                             @endforeach
                             @endif
                         </tbody>

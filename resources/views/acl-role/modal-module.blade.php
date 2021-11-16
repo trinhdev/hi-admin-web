@@ -1,4 +1,4 @@
- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".acl-modal"><i class="fas fa-plus"></i> Add new role</button>
+ <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".acl-modal"><i class="fas fa-plus"></i> Add new permission</button>
  <div class="modal fade acl-modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
      <div class="modal-dialog modal-lg">
          <div class="modal-content">
