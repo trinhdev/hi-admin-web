@@ -41,7 +41,7 @@
                         <form action="/user/update/{{$user->id}}" method="POST">
                             @csrf
                             @method('PUT')
-                            <div class="card card-default">
+                            <div class="card card-info">
                                 <div class="card-header">
                                     <h3 class="card-title">User Info</h3>
                                 </div>
