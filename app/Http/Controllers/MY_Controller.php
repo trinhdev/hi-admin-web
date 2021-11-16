@@ -68,7 +68,9 @@ class MY_Controller extends Controller
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             $this->getListModule();
-            // LogactivitiesHelper::addToLog($request);
+            if(!$request->ajax()){
+                LogactivitiesHelper::addToLog($request);
+            }
             return $next($request);
         });
     }

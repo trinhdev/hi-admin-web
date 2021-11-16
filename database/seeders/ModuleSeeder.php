@@ -43,5 +43,11 @@ class ModuleSeeder extends Seeder
             'icon' =>'fa fa-cogs',
             'group_module_id'=>1
         ]);
+        DB::table('modules')->insert([
+            'module_name' => 'Log',
+            'uri' =>'logactivities',
+            'icon' =>'fa fa-cogs',
+            'group_module_id'=>1
+        ]);
     }
 }

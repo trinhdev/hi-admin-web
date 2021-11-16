@@ -1,4 +1,4 @@
-@if($aclCurrentModule->update == 1 || strtolower(Auth::user()->role->role_name) == "admin")
+@if(($aclCurrentModule->update == 1 || strtolower(Auth::user()->role->role_name) == "admin") && $module!='logactivities')
 <a style="float: left; margin-right: 5px" href="/{{$module}}/edit/{{$row->id}}" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
 @endif
 {{-- @if($module =='roles')

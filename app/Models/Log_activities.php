@@ -15,6 +15,10 @@ class Log_activities extends Model
      * @var array
      */
     protected $fillable = [
-        'subject', 'url', 'method', 'ip', 'agent', 'user_id'
+        'param', 'url', 'method', 'ip', 'agent', 'user_id'
     ];
+
+    // protected $casts = [
+    //     'param' => 'array',
+    // ];
 }

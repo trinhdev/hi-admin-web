@@ -9,18 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class LogactivitiesHelper
 {
-    public static function addToLog(Request $request)
+	public static function addToLog(Request $request)
     {
     	$log = [];
-    	$log['subject'] = !empty($request->input()) ? json_encode($request->input()) : 'NULL';
+    	$log['param'] = !empty($request->input()) ? json_encode($request->input()) : '';
     	$log['url'] = request()->url();
     	$log['method'] = request()->method();
     	$log['ip'] = request()->ip();
     	$log['agent'] = request()->header('user-agent');
     	$log['user_id'] = Auth::check() ? Auth::user()->id : 1;
-    	// LogActivityModel::create($log);
         Log_activities::create($log);
-
     }
 
 

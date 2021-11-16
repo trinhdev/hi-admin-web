@@ -20,7 +20,7 @@ $(document).ready(function () {
             case 'groupmodule':
                 initGroupModule();
                 break;
-            case 'logactivites':
+            case 'logactivities':
                 initLogActivities();
                 break;    
             default: //home
@@ -308,19 +308,34 @@ function initLogActivities(){
         retrieve: true,
         ajax: {
             headers: { 'X-CSRF-Token': $('meta[name=csrf-token]').attr('content') },
-            url: base_url + '/logactivites/initDatatable',
+            url: base_url + '/logactivities/initDatatable',
             type: 'POST',
             dataType: 'JSON',
         },
         searchDelay: 500,
         columns: [
-            { data: 'id' },
-            { data: 'subject' },
-            { data: 'url' },
-            { data: 'method' },
-            { data: 'ip' },
+            { 
+                data: 'id',
+            },
+            {
+                data: 'method',
+                className: "text-center"
+            },
+            {
+                data: 'url',
+                class: 'text-success'
+            },
+            { data: 'param' },
+            {
+                data: 'ip',
+                class:'text-warning',
+                className: "text-center"
+            },
             { data: 'agent' },
-            { data: 'user_id' },
+            {
+                data: 'user_id',
+                className: "text-center"
+            },
             {
                 data: "action",
                 name: "action",
