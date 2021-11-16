@@ -314,28 +314,26 @@ function initLogActivities(){
         },
         searchDelay: 500,
         columns: [
-            { 
-                data: 'id',
+            { data: 'id',},
+            {
+                data: 'user_id',
+                className: "text-center"
             },
             {
                 data: 'method',
                 className: "text-center"
             },
+            {data: 'url'},
             {
-                data: 'url',
-                class: 'text-success'
+                data: 'created_at',
+                class: 'font-weight-bold'
             },
             { data: 'param' },
             {
                 data: 'ip',
-                class:'text-warning',
-                className: "text-center"
+                className: "text-center",
             },
             { data: 'agent' },
-            {
-                data: 'user_id',
-                className: "text-center"
-            },
             {
                 data: "action",
                 name: "action",

@@ -51,16 +51,17 @@
                             @endforeach
                         @endif
                     </table> --}}
-                    <table id="logTable" class="display" style="width:100%;word-wrap: break-word;">
+                    <table id="logTable" class="display" style="width:100%;word-wrap:no-wrap;">
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>User Id</th>
                             <th>Method</th>
                             <th>URL</th>
+                            <th>Time</th>
                             <th>Param</th>
                             <th>Ip</th>
                             <th>User Agent</th>
-                            <th>User Id</th>
                             <th>Action</th>
                         </tr>
                         </thead>

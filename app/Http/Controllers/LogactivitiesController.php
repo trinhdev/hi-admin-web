@@ -27,10 +27,16 @@ class LogactivitiesController extends MY_Controller
                 ->editColumn('method', function($row){
                     return view('log.label')->with(['row' => $row]);
                 })
+                ->editColumn('url', function($row){
+                    return '<p class="text-success font-weight-bolder">'.$row->url.'</p>';
+                })
+                ->editColumn('ip', function($row){
+                    return '<p class="text-danger font-weight-bolder">'.$row->ip.'</p>';
+                })
                 ->addColumn('action', function ($row) {
                     return view('layouts.button.action')->with(['row' => $row, 'module' => 'logactivities']);
                 })
-                ->rawColumns(['method'])
+                ->rawColumns(['method','url','ip'])
                 ->make(true);
             return $json;
         }
