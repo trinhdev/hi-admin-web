@@ -1,5 +1,7 @@
 $(document).ready(function () {
+    initSelect();
     $(document).on('pjax:end', function () {
+        initSelect();
         const pathArray = window.location.pathname.split("/");
         let segment = pathArray[1]; //first uri param
         switch(segment){
@@ -21,7 +23,7 @@ $(document).ready(function () {
             default: //home
                 drawChart();    
         }
-        initSelect();
+        
     });
     $(document).on('pjax:popstate', function (event) {
         event.preventDefault();

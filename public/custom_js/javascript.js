@@ -33,7 +33,7 @@ function insertModuleToTable(_this) {
     let check = table.querySelector('tr[name="' + moduleObj.id + '"');
     if (check == null) {
         table.innerHTML += ` 
-        <tr name="${moduleObj.id}">
+        <tr name="${moduleObj.id}" id="${moduleObj.id}">
             <td><input name="module_id[]" value="${moduleObj.id}" hidden/>${moduleObj.name}</td>
             <td>
                  <select name="view[]" record="8" class="options_Module form-control">
@@ -64,6 +64,7 @@ function insertModuleToTable(_this) {
                  <i class="fa fa-trash-alt"></i></a>
              </td>
          </tr>`;
+         $(`#${moduleObj.id} select`).selectpicker();
     }
 }
 
@@ -76,4 +77,8 @@ function handleSubmit(e) {
     // e.preventDefault();
     let data = $(e).serialize();
     console.log(data);
+}
+
+function initSelect() {
+    $('select').selectpicker();
 }
