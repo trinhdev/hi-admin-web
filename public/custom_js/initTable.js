@@ -1,17 +1,27 @@
 $(document).ready(function () {
     $(document).on('pjax:end', function () {
         const pathArray = window.location.pathname.split("/");
-        let segment = pathArray[1];
-        initUser();
-        initModule();
-        initGroupModule();
-        initGroup();
-        initRoles();
-        initSelect();
-        initSelect();
-        if(segment =='' || segment =='home'){
-            drawChart();
+        let segment = pathArray[1]; //first uri param
+        switch(segment){
+            case 'user':
+                initUser();
+                break;
+            case 'modules':
+                initModule();
+                break;
+            case 'groups':
+                initGroup();
+                break;
+            case 'roles':
+                initRoles();
+                break;
+            case 'groupmodule':
+                initGroupModule();
+                break;
+            default: //home
+                drawChart();    
         }
+        initSelect();
     });
     $(document).on('pjax:popstate', function (event) {
         event.preventDefault();
