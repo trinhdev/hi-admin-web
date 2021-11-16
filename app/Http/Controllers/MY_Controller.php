@@ -68,12 +68,11 @@ class MY_Controller extends Controller
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             $this->getListModule();
-            if(!$request->ajax()){
+            if (!$request->ajax()) {
+                LogactivitiesHelper::addToLog($request);
+            } elseif (isset($request->draw) && $request->draw == 1) {
                 LogactivitiesHelper::addToLog($request);
             }
-            // elseif(isset($request->draw) && $request->draw == 1){
-            //     LogactivitiesHelper::addToLog($request);
-            // }
             return $next($request);
         });
     }
@@ -83,12 +82,12 @@ class MY_Controller extends Controller
         $getModuleData = (new Modules())->getModulesGroupByParent();
         $this->groupModule = $getModuleData->arrayGroupkey;
         $moduleUri = request()->segment(1);
-        $key =  array_search($moduleUri, array_column(json_decode(json_encode($getModuleData->listModule),TRUE), 'uri'));
-        if(!isset($getModuleData->listModule[$key])){
+        $key =  array_search($moduleUri, array_column(json_decode(json_encode($getModuleData->listModule), TRUE), 'uri'));
+        if (!isset($getModuleData->listModule[$key])) {
             abort(403);
         }
         $this->aclCurrentModule = $getModuleData->listModule[$key];
-        View::share(['groupModule'=> $this->groupModule,'aclCurrentModule' => $this->aclCurrentModule]);
+        View::share(['groupModule' => $this->groupModule, 'aclCurrentModule' => $this->aclCurrentModule]);
     }
     public function beforeExecuteRoute()
     {
@@ -151,12 +150,11 @@ class MY_Controller extends Controller
         if ($id) {
             $result = $model::find($id);
             // permission for edit action.
-//            if (isset($result->created_by) && !$this->auth_permission($result->created_by)) {
-//                return $this->redirect('auth/denied');
-//            }
+            //            if (isset($result->created_by) && !$this->auth_permission($result->created_by)) {
+            //                return $this->redirect('auth/denied');
+            //            }
             $view_title = !empty($model->edit_view['title']) ? $model->edit_view['title'] : 'name';
             $title = 'Edit ' . $this->model_name . ': ' . $result->$view_title;
-
         } else {
             $title = 'Create ' . $this->model_name;
         }

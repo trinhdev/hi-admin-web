@@ -18,10 +18,14 @@ class Log_activities extends Model
         'param', 'url', 'method', 'ip', 'agent', 'user_id'
     ];
     protected $casts = [
-        'created_at'=> 'datetime:H:i:s d-m-Y',
-        'updated_at'=> 'datetime:H:i:s d-m-Y'
+        'created_at' => 'datetime:H:i:s d-m-Y',
+        'updated_at' => 'datetime:H:i:s d-m-Y'
     ];
     // protected $casts = [
     //     'param' => 'array',
     // ];
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
