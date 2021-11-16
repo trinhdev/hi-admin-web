@@ -36,25 +36,25 @@ function insertModuleToTable(_this) {
         <tr name="${moduleObj.id}">
             <td><input name="module_id[]" value="${moduleObj.id}" hidden/>${moduleObj.name}</td>
             <td>
-                 <select name="view[]" id="view" record="8" class="options_Module form-control">
+                 <select name="view[]" record="8" class="options_Module form-control">
                      <option value="0" selected>None</option>
                      <option value="1">All</option>
                  </select>
             </td>
             <td>
-                 <select name="create[]" id="create" record="8" class="options_Module form-control">
+                 <select name="create[]" record="8" class="options_Module form-control">
                      <option value="0" selected>None</option>
                      <option value="1">All</option>
                  </select>
             </td>
             <td>
-                 <select name="update[]" id="update" record="8" class="options_Module form-control">
+                 <select name="update[]"  record="8" class="options_Module form-control">
                      <option value="0" selected="">None</option>
                      <option value="1">All</option>
                  </select>
              </td>
              <td>
-                 <select name="delete[]" id="delete" record="8" class="options_Module form-control">
+                 <select name="delete[]" record="8" class="options_Module form-control">
                      <option value="0" selected="">None</option>
                      <option value="1">All</option>
                  </select>
@@ -65,9 +65,6 @@ function insertModuleToTable(_this) {
              </td>
          </tr>`;
     }
-
-    // console.log(table);
-    // console.log(row);
 }
 
 function deleteRow(btn) {

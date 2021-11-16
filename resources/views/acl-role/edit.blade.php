@@ -32,25 +32,25 @@
                             <tr name="{{$acl->module_id}}">
                                 <td><input name="module_id[]" value="{{$acl->module_id}}" hidden />{{$module->module_name}}</td>
                                 <td>
-                                    <select name="view[]" id="view" record="8" class="options_Module form-control">
+                                    <select name="view[]" record="8" class="options_Module form-control">
                                         <option value="0">None</option>
                                         <option value="1" {{$acl->view =='1' ? 'selected':''}}>All</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="create[]" id="create" record="8" class="options_Module form-control">
+                                    <select name="create[]" record="8" class="options_Module form-control">
                                         <option value="0">None</option>
                                         <option value="1" {{$acl->create == '1' ? 'selected':''}}>All</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="update[]" id="update" record="8" class="options_Module form-control">
+                                    <select name="update[]" record="8" class="options_Module form-control">
                                         <option value="0" selected="">None</option>
                                         <option value="1" {{$acl->update == '1' ? 'selected':''}}>All</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="delete[]" id="delete" record="8" class="options_Module form-control">
+                                    <select name="delete[]" record="8" class="options_Module form-control">
                                         <option value="0" selected="">None</option>
                                         <option value="1" {{$acl->delete == '1' ? 'selected':''}}>All</option>
                                     </select>
