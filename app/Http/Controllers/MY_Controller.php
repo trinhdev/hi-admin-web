@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\View;
 
 class MY_Controller extends Controller
 {
-    //
-    protected $groupModule;
-    protected $aclCurrentModule;
     protected $user;
     protected $module_name;
     protected $model;
@@ -80,14 +77,12 @@ class MY_Controller extends Controller
     public function getListModule()
     {
         $getModuleData = (new Modules())->getModulesGroupByParent();
-        $this->groupModule = $getModuleData->arrayGroupkey;
         $moduleUri = request()->segment(1);
         $key =  array_search($moduleUri, array_column(json_decode(json_encode($getModuleData->listModule), TRUE), 'uri'));
         if (!isset($getModuleData->listModule[$key])) {
             abort(403);
         }
-        $this->aclCurrentModule = $getModuleData->listModule[$key];
-        View::share(['groupModule' => $this->groupModule, 'aclCurrentModule' => $this->aclCurrentModule]);
+        View::share(['groupModule' => $getModuleData->arrayGroupkey, 'aclCurrentModule' => $getModuleData->listModule[$key]]);
     }
     public function beforeExecuteRoute()
     {
