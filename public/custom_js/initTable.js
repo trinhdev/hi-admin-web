@@ -20,6 +20,9 @@ $(document).ready(function () {
             case 'groupmodule':
                 initGroupModule();
                 break;
+            case 'logactivites':
+                initLogActivities();
+                break;    
             default: //home
                 drawChart();    
         }
@@ -283,6 +286,41 @@ function initRoles() {
             { data: 'id' },
             { data: 'role_name' },
             { data: 'created_by' },
+            {
+                data: "action",
+                name: "action",
+                title: "Action",
+                sortable:false
+            }
+        ],
+    });
+}
+
+function initLogActivities(){
+    $('#logTable').DataTable({
+        "order": [[0, "desc"]],
+        responsive: true,
+        searchDelay: 500,
+        processing: true,
+        "bDestroy": true,
+        serverSide: true,
+        "scrollX": true,
+        retrieve: true,
+        ajax: {
+            headers: { 'X-CSRF-Token': $('meta[name=csrf-token]').attr('content') },
+            url: base_url + '/logactivites/initDatatable',
+            type: 'POST',
+            dataType: 'JSON',
+        },
+        searchDelay: 500,
+        columns: [
+            { data: 'id' },
+            { data: 'subject' },
+            { data: 'url' },
+            { data: 'method' },
+            { data: 'ip' },
+            { data: 'agent' },
+            { data: 'user_id' },
             {
                 data: "action",
                 name: "action",
