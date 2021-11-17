@@ -6,6 +6,7 @@ use App\Helpers\LogactivitiesHelper;
 use App\Http\Traits\DataTrait;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class LogactivitiesController extends MY_Controller
 {
@@ -18,13 +19,12 @@ class LogactivitiesController extends MY_Controller
     }
     public function index()
     {
-        // $logs = LogactivitiesHelper::logActivityLists();
         return view('log.list');
     }
     public function initDatatable(Request $request)
     {
         if ($request->ajax()) {
-            $data = $this->model::query()->with('user','User.role');
+            $data = $this->model::query()->with('user', 'User.role');
             $json =   DataTables::of($data)
                 ->editColumn('method', function ($row) {
                     return view('log.label')->with(['row' => $row]);
@@ -54,5 +54,16 @@ class LogactivitiesController extends MY_Controller
     {
         $this->deleteById($this->model, $id);
         return redirect()->back();
+    }
+
+    public function clearLog(Request $request)
+    {
+        $request->validate([
+            'clear_log_option' => 'required'
+        ]);
+        DB::transaction(function () use ($request) {
+            $this->model->clearLog($request->clear_log_option);
+        });
+        return redirect()->back()->withSuccess('success');
     }
 }

@@ -14,11 +14,17 @@ class Log_activities extends Model
      *
      * @var array
      */
+    protected $table = 'log_activities';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'param', 'url', 'method', 'ip', 'agent', 'user_id'
     ];
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function clearLog($dateBefore){
+        return Log_activities::whereDate('created_at','<=',now()->subDays($dateBefore))->delete();
     }
 }

@@ -24,11 +24,17 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid ">
-            <form>
+            <form action="logactivities/clearLog" method="POST" onsubmit="var formData = new FormData(this);if(formData.get('clear_log_option') != '')return false;">
+                @csrf
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <select class="form-control"></select>
+                            <select class="form-control" name ="clear_log_option">
+                            <option value="" selected>None</option>
+                            @foreach(config('constants.ClEAR_LOG_OPTIONS') as $option)
+                                <option value={{$option}}>Clear {{$option}} days before</option>
+                            @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-sm-6">
