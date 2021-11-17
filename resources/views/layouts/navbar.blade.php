@@ -135,6 +135,14 @@
    swal.fire({
         icon: 'success',
         title: 'Success!',
+        html: `{{ (session()->has('html')) ? session()->get('html') : '' }}`
+    });
+@endif
+@if (session()->has('error'))
+   swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        html: `{{ (session()->has('html')) ? session()->get('html') : '' }}`
     });
 @endif
 </script>
