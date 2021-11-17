@@ -30,7 +30,10 @@ class RolePermissionPolicy
             return false;
         }
         if(!empty($moduleUri) && !in_array($moduleUri,$this->listControllerDontNeedPolicy) && $user_role != config('constants.ADMIN')){
-            $listModuleByUser =(new Modules())->getAllModulesByUser(Auth::user()->role_id);
+            $listModuleByUser =(new Modules())->getAllModgetModulesGroupByParentulesByUser(Auth::user()->role_id)->listModule;
+            if(empty($listModuleByUser)){
+                return true;
+            }
             $listUriModule = array_map(function ($module){
                 return $module->uri;
             }, $listModuleByUser);

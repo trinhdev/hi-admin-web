@@ -9,7 +9,7 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 style="float: left; margin-right: 20px">Modules Tables</h1>
-                        @if($aclCurrentModule->create == 1 || Auth::user()->role_id == config('constants.ADMIN'))
+                        @if(Auth::user()->role_id == config('constants.ADMIN') || $aclCurrentModule->create == 1)
                         <a href="/modules/create" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Add new module
                         </a>

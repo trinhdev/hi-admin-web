@@ -17,28 +17,6 @@ class Modules extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['module_name','group_module_id', 'uri', 'icon', 'status', 'deleted_at', 'updated_by', 'created_by'];
 
-    public function getAllModulesByUser($role_id)
-    {
-        if($role_id != config('constants.ADMIN')){
-            $listModule = DB::table('modules')
-            ->join('acl_roles','acl_roles.module_id','modules.id')
-            ->where('acl_roles.view',1)
-            ->where('acl_roles.role_id',$role_id)
-            ->whereNull('modules.deleted_at')
-            ->whereNull('acl_roles.deleted_at')
-            ->get()
-            ->toArray();
-        }else{
-            $listModule = DB::table('modules')
-            ->join('acl_roles','acl_roles.module_id','modules.id')
-            ->whereNull('modules.deleted_at')
-            ->whereNull('acl_roles.deleted_at')
-            ->where('acl_roles.role_id',$role_id)
-            ->get()
-            ->toArray();
-        }
-        return $listModule;
-    }
     public function getModulesGroupByParent($role_id)
     {
         $result = new stdClass();
@@ -53,12 +31,13 @@ class Modules extends Model
             ->toArray();
         }else{
             $listModule = DB::table('modules')
-            ->join('acl_roles','acl_roles.module_id','modules.id')
+            // ->leftJoin('acl_roles','acl_roles.module_id','modules.id')
             ->whereNull('modules.deleted_at')
-            ->whereNull('acl_roles.deleted_at')
-            ->where('acl_roles.role_id',$role_id)
+            // ->whereNull('acl_roles.deleted_at')
+            // ->where('acl_roles.role_id',$role_id)
             ->get()
             ->toArray();
+            // dd($listModule);
         }
 
         $listGroupModule = DB::table('group_module')->get()->toArray();
