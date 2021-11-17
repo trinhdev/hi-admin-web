@@ -24,6 +24,7 @@ class HdiCustomer
         // Call api to get OTP by phone
         $url = $this->baseUrl . $this->version . $method_name;
         $result = json_decode($this->sendRequest($url, $params, $this->token), true);
+        dd($result);
         
         if(isset($result) && $result['statusCode'] == 0){
             $data['status']     = true;
