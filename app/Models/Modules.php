@@ -17,14 +17,13 @@ class Modules extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['module_name','group_module_id', 'uri', 'icon', 'status', 'deleted_at', 'updated_by', 'created_by'];
 
-    public function getAllModulesByUser()
+    public function getAllModulesByUser($role_id)
     {
-        $user = Auth::user();
-        if($user->role_id != 1){
+        if($role_id != 1){
             $listModule = DB::table('modules')
             ->join('acl_roles','acl_roles.module_id','modules.id')
             ->where('acl_roles.view',1)
-            ->where('acl_roles.role_id',$user->role_id)
+            ->where('acl_roles.role_id',$role_id)
             ->where('modules.deleted_at',null)
             ->get()
             ->toArray();
@@ -36,26 +35,26 @@ class Modules extends Model
         }
         return $listModule;
     }
-    public function getModulesGroupByParent()
+    public function getModulesGroupByParent($role_id)
     {
         $result = new stdClass();
-        $user = Auth::user();
-        if($user->role_id != 1){
+        if($role_id != 1){
             $listModule = DB::table('modules')
             ->join('acl_roles','acl_roles.module_id','modules.id')
             ->where('acl_roles.view',1)
-            ->where('acl_roles.role_id',$user->role_id)
-            ->where('modules.deleted_at',null)
+            ->where('acl_roles.role_id',$role_id)
+            ->whereNull('modules.deleted_at')
+            ->whereNull('acl_roles.deleted_at')
             ->get()
             ->toArray();
         }else{
             $listModule = DB::table('modules')
             ->join('acl_roles','acl_roles.module_id','modules.id')
-            ->where('modules.deleted_at',null)
-            ->where('acl_roles.role_id',$user->role_id)
+            ->whereNull('modules.deleted_at')
+            ->whereNull('acl_roles.deleted_at')
+            ->where('acl_roles.role_id',$role_id)
             ->get()
             ->toArray();
-            // $listModule = Modules::query()->with('parent')->get()->toArray();
         }
 
         $listGroupModule = DB::table('group_module')->get()->toArray();
@@ -73,7 +72,6 @@ class Modules extends Model
         });
         $result->listModule = $listModule;
         $result->arrayGroupkey = $arrayGroupKey;
-        // dd($arrayGroupKey);
         return $result;
     }
     
