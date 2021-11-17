@@ -99,7 +99,7 @@ class ManageOtpController extends MY_Controller
     public function request_otp(Request $request) {
         $executed = RateLimiter::attempt(
             'request-otp-with-phone' . $request['phone'],
-            $perMinute = 10,
+            $perMinute = 2,
             function() {
                 
             }

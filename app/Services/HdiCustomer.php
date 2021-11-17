@@ -75,7 +75,6 @@ class HdiCustomer
         $time = microtime(true);
         $output = curl_exec($ch);
         $timeRun = microtime(true) - $time;
-        // dd($output);
         curl_close($ch);
         return $output;
     }
