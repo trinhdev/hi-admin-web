@@ -25,6 +25,8 @@ $(document).ready(function () {
             case 'logactivities':
                 initLogActivities();
                 break;
+            case 'manageotp':
+                break;    
             default: //home
                 drawChart();
         }
