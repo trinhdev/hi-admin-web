@@ -20,14 +20,11 @@ $(document).ready(function () {
             case 'groupmodule':
                 initGroupModule();
                 break;
-<<<<<<< HEAD
             case 'manageotp':
                 initManageOtp();
-=======
             case 'logactivities':
                 initLogActivities();
                 break;
->>>>>>> b4a4326a88aa9dd080043407108edf3b0ebcdc8e
             default: //home
                 drawChart();
         }
