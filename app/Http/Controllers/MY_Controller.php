@@ -6,6 +6,7 @@ use App\Helpers\LogactivitiesHelper;
 use App\Models\Modules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\View;
 
 class MY_Controller extends Controller
@@ -13,6 +14,7 @@ class MY_Controller extends Controller
     protected $user;
     protected $module_name;
     protected $model;
+    protected $redis;
     /**
      * model of module
      * @var $model_name
@@ -64,6 +66,7 @@ class MY_Controller extends Controller
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
+            $this->redis = Redis::connection();
             $this->getListModule();
             if (!$request->ajax()) {
                 LogactivitiesHelper::addToLog($request);
@@ -76,7 +79,15 @@ class MY_Controller extends Controller
 
     public function getListModule()
     {
-        $getModuleData = (new Modules())->getModulesGroupByParent();
+        // $keyName = 'module-list-'.$this->user->role->id;
+        // $data = $this->redis->get($keyName);
+        // if(!is_null($data)) {
+        //     $getModuleData = unserialize($data);
+        // }else{
+        //     $getModuleData = (new Modules())->getModulesGroupByParent($this->user->role_id);
+        //     $this->redis->set($keyName, serialize($getModuleData));
+        // }
+        $getModuleData = (new Modules())->getModulesGroupByParent($this->user->role_id);
         $moduleUri = request()->segment(1);
         $key =  array_search($moduleUri, array_column(json_decode(json_encode($getModuleData->listModule), TRUE), 'uri'));
         if (!isset($getModuleData->listModule[$key])) {

@@ -25,6 +25,8 @@ $(document).ready(function () {
             case 'logactivities':
                 initLogActivities();
                 break;
+            case 'manageotp':
+                break;    
             default: //home
                 drawChart();
         }
@@ -248,12 +250,7 @@ function initGroup() {
         "scrollX": true,
         retrieve: true,
         ajax: {
-            headers: {
-                'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
-            },
             url: base_url + '/groups/getList',
-            type: 'POST',
-            dataType: 'JSON',
         },
         searchDelay: 500,
         columns: [{
@@ -288,12 +285,7 @@ function initRoles() {
         "scrollX": true,
         retrieve: true,
         ajax: {
-            headers: {
-                'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
-            },
             url: base_url + '/roles/getList',
-            type: 'POST',
-            dataType: 'JSON',
         },
         searchDelay: 500,
         columns: [{
@@ -328,12 +320,7 @@ function initLogActivities() {
         "scrollX": true,
         retrieve: true,
         ajax: {
-            headers: {
-                'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
-            },
             url: base_url + '/logactivities/initDatatable',
-            type: 'POST',
-            dataType: 'JSON',
         },
         searchDelay: 500,
         columns: [{

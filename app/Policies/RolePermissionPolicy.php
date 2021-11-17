@@ -26,7 +26,7 @@ class RolePermissionPolicy
             return false;
         }
         if(!empty($moduleUri) && $moduleUri !='home'&& $moduleUri !='profile' && $user_role != 1){
-            $listModuleByUser =(new Modules())->getAllModulesByUser();
+            $listModuleByUser =(new Modules())->getAllModulesByUser(Auth::user()->role_id);
             $listUriModule = array_map(function ($module){
                 return $module->uri;
             }, $listModuleByUser);
