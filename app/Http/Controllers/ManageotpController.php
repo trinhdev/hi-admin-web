@@ -22,7 +22,7 @@ class ManageOtpController extends MY_Controller
 
     public function index()
     {
-        //
+        return view('otp.request');
     }
 
     /**
@@ -91,11 +91,6 @@ class ManageOtpController extends MY_Controller
         //
     }
 
-    public function request_otp_view() {
-        // dd('here');
-        return view('otp.request');
-    }
-
     public function request_otp(Request $request) {
         $executed = RateLimiter::attempt(
             'request-otp-with-phone' . $request['phone'],
@@ -120,7 +115,7 @@ class ManageOtpController extends MY_Controller
         else {
             $result = ['error' => 'error', 'html' => $data['message']];
         }
-        return redirect('manageotp/request_otp_view')->with($result);
+        return redirect('/manageotp')->with($result);
     }
 
     public function reset_otp_view() {
@@ -152,6 +147,6 @@ class ManageOtpController extends MY_Controller
             $result = ['error' => 'error', 'html' => $data['message']];
         }
         
-        return redirect('manageotp/reset_otp_view')->with($result);
+        return redirect('/manageotp/reset_otp_view')->with($result);
     }
 }

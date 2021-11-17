@@ -46,8 +46,8 @@
                                 </div>
                                 
                                 <div class="card-footer" style="text-align: center">
-                                    {{-- <a href="/modules" type="button" class="btn btn-default">Cancel</a> --}}
-                                    <button type="submit" class="btn btn-info">Save</button>
+                                    <button type="submit" class="btn btn-info">Get OTP</button>
+                                    <a href="/manageotp/reset_otp_view" type="button" class="btn btn-default">Reset OTP</a>
                                 </div>
                             </div>
                         </form>
