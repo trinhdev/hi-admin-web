@@ -33,38 +33,42 @@ function insertModuleToTable(_this) {
     let check = table.querySelector('tr[name="' + moduleObj.id + '"');
     if (check == null) {
         table.innerHTML += ` 
-        <tr name="${moduleObj.id}" id="${moduleObj.id}">
+        <tr name="${moduleObj.id}">
             <td><input name="module_id[]" value="${moduleObj.id}" hidden/>${moduleObj.name}</td>
             <td>
-                 <select name="view[]" record="8" class="options_Module form-control">
-                     <option value="0" selected>None</option>
-                     <option value="1">All</option>
-                 </select>
+                <select name="view[]" id="${moduleObj.id}-view" record="8" class="options_Module form-control">
+                    <option value="0" selected>None</option>
+                    <option value="1">All</option>
+                </select>
             </td>
             <td>
-                 <select name="create[]" record="8" class="options_Module form-control">
-                     <option value="0" selected>None</option>
-                     <option value="1">All</option>
-                 </select>
+                <select name="create[]" id="${moduleObj.id}-create" record="8" class="options_Module form-control">
+                    <option value="0" selected>None</option>
+                    <option value="1">All</option>
+                </select>
             </td>
             <td>
-                 <select name="update[]"  record="8" class="options_Module form-control">
-                     <option value="0" selected="">None</option>
-                     <option value="1">All</option>
-                 </select>
-             </td>
-             <td>
-                 <select name="delete[]" record="8" class="options_Module form-control">
-                     <option value="0" selected="">None</option>
-                     <option value="1">All</option>
-                 </select>
-             </td>
-             <td class="td-actions">
-                 <a type="button" onclick="deleteRow(this)" class="btn btn-danger">
-                 <i class="fa fa-trash-alt"></i></a>
-             </td>
-         </tr>`;
-         $(`#${moduleObj.id} select`).selectpicker();
+                <select name="update[]" id="${moduleObj.id}-update" record="8" class="options_Module form-control">
+                    <option value="0" selected="">None</option>
+                    <option value="1">All</option>
+                </select>
+            </td>
+            <td>
+                <select name="delete[]" id="${moduleObj.id}-delete" record="8" class="options_Module form-control">
+                    <option value="0" selected="">None</option>
+                    <option value="1">All</option>
+                </select>
+            </td>
+            <td class="td-actions">
+                <a type="button" onclick="deleteRow(this)" class="btn btn-danger">
+                <i class="fa fa-trash-alt"></i></a>
+            </td>
+        </tr>`;
+        console.log(`#${moduleObj.id}-view`);
+         $(`#${moduleObj.id}-view`).selectpicker();
+         $(`#${moduleObj.id}-create`).selectpicker();
+         $(`#${moduleObj.id}-update`).selectpicker();
+         $(`#${moduleObj.id}-delete`).selectpicker();
     }
 }
 
@@ -77,8 +81,4 @@ function handleSubmit(e) {
     // e.preventDefault();
     let data = $(e).serialize();
     console.log(data);
-}
-
-function initSelect() {
-    $('select').selectpicker();
 }

@@ -20,6 +20,8 @@ $(document).ready(function () {
             case 'groupmodule':
                 initGroupModule();
                 break;
+            case 'manageotp':
+                initManageOtp();
             case 'logactivities':
                 initLogActivities();
                 break;
@@ -362,5 +364,75 @@ function initLogActivities() {
                 sortable: false
             }
         ],
+    });
+}
+
+function initManageOtp() {
+    $('#manage-otp').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "select": true,
+        "dataSrc": "tableData",
+        "bDestroy": true,
+        "scrollX": true,
+        retrieve: true,
+        "ajax": {
+            url: "/modules/initDatatable"
+        },
+        "columns": [
+            {
+                data: 'otp',
+                name: "otp",
+                title: "OTP"
+            },
+            {
+                data: 'otp_time',
+                name: "otp_time",
+                title: "Time OTP"
+            },
+            {
+                data: "phone",
+                name: "phone",
+                title: "Phone number"
+            },
+            {
+                data: "status",
+                name: "status",
+                title: "Status"
+            },
+            {
+                data: "created_at",
+                name: "created_at",
+                title: "Created at"
+            },
+            {
+                data: "created_by",
+                name: "created_by",
+                title: "Created By"
+            },
+            {
+                data: "updated_at",
+                name: "updated_at",
+                title: "Updated at"
+            },
+            {
+                data: "updated_by",
+                name: "updated_by",
+                title: "Updated By"
+            },
+            {
+                data: "action",
+                name: "action",
+                title: "Action",
+                sortable:false
+            }
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#manage-otp').show();
+        },
+        searchDelay: 500
     });
 }
