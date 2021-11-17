@@ -19,17 +19,21 @@ class Modules extends Model
 
     public function getAllModulesByUser($role_id)
     {
-        if($role_id != 1){
+        if($role_id != config('constants.ADMIN')){
             $listModule = DB::table('modules')
             ->join('acl_roles','acl_roles.module_id','modules.id')
             ->where('acl_roles.view',1)
             ->where('acl_roles.role_id',$role_id)
-            ->where('modules.deleted_at',null)
+            ->whereNull('modules.deleted_at')
+            ->whereNull('acl_roles.deleted_at')
             ->get()
             ->toArray();
         }else{
             $listModule = DB::table('modules')
-            ->where('deleted_at',null)
+            ->join('acl_roles','acl_roles.module_id','modules.id')
+            ->whereNull('modules.deleted_at')
+            ->whereNull('acl_roles.deleted_at')
+            ->where('acl_roles.role_id',$role_id)
             ->get()
             ->toArray();
         }
@@ -38,7 +42,7 @@ class Modules extends Model
     public function getModulesGroupByParent($role_id)
     {
         $result = new stdClass();
-        if($role_id != 1){
+        if($role_id != config('constants.ADMIN')){
             $listModule = DB::table('modules')
             ->join('acl_roles','acl_roles.module_id','modules.id')
             ->where('acl_roles.view',1)

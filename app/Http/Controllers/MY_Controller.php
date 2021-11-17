@@ -87,13 +87,19 @@ class MY_Controller extends Controller
         //     $getModuleData = (new Modules())->getModulesGroupByParent($this->user->role_id);
         //     $this->redis->set($keyName, serialize($getModuleData));
         // }
+        $data = [];
         $getModuleData = (new Modules())->getModulesGroupByParent($this->user->role_id);
-        $moduleUri = request()->segment(1);
-        $key =  array_search($moduleUri, array_column(json_decode(json_encode($getModuleData->listModule), TRUE), 'uri'));
-        if (!isset($getModuleData->listModule[$key])) {
-            abort(403);
+        if (!empty($getModuleData->listModule)) {
+            $moduleUri = request()->segment(1);
+            $key =  array_search($moduleUri, array_column(json_decode(json_encode($getModuleData->listModule), TRUE), 'uri'));
+            if (!isset($getModuleData->listModule[$key])) {
+                abort(403);
+            }
+            $data = $getModuleData->listModule[$key];
+        } else {
+            $data = [];
         }
-        View::share(['groupModule' => $getModuleData->arrayGroupkey, 'aclCurrentModule' => $getModuleData->listModule[$key]]);
+        View::share(['groupModule' => $getModuleData->arrayGroupkey, 'aclCurrentModule' => $data]);
     }
     public function beforeExecuteRoute()
     {

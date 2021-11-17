@@ -15,7 +15,7 @@ class RolePermissionPolicy
      *
      * @return void
      */
-    private $listControllerDontNeedPolicy =['home','profile'];
+    private $listControllerDontNeedPolicy =[null,'home','profile'];
     public function __construct()
     {
         //
@@ -23,6 +23,9 @@ class RolePermissionPolicy
     public function rolePermissionPolicy(){
         $moduleUri = request()->segment(1);
         $user_role = Auth::user()->role_id;
+        if($user_role == config('constants.ADMIN') || in_array($moduleUri,$this->listControllerDontNeedPolicy)){
+            return true;
+        }
         if($moduleUri=='groupmodule' && $user_role != config('constants.ADMIN')){
             return false;
         }

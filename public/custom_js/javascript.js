@@ -33,6 +33,7 @@ function insertModuleToTable(_this) {
     let check = table.querySelector('tr[name="' + moduleObj.id + '"');
     if (check == null) {
         var new_row = table.insertRow(-1);
+        new_row.setAttribute('name',moduleObj.id);
         var cell1 = new_row.insertCell(0);
         var cell2 = new_row.insertCell(1);
         var cell3 = new_row.insertCell(2);
