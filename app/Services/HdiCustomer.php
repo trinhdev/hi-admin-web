@@ -57,7 +57,7 @@ class HdiCustomer
     public function sendRequest($url, $params, $token = null){
         $headers[] = "Content-Type: application/json";
         $headers[] = (!empty($token)) ? "Authorization: " . $token : null;
-        dd($url);
+        dd($params);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
