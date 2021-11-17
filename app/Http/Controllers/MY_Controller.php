@@ -66,7 +66,7 @@ class MY_Controller extends Controller
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
-            $this->redis = Redis::connection();
+            // $this->redis = Redis::connection();
             $this->getListModule();
             if (!$request->ajax()) {
                 LogactivitiesHelper::addToLog($request);

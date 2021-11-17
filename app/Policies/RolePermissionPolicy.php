@@ -15,6 +15,7 @@ class RolePermissionPolicy
      *
      * @return void
      */
+    private $listControllerDontNeedPolicy =['home','profile'];
     public function __construct()
     {
         //
@@ -25,7 +26,7 @@ class RolePermissionPolicy
         if($moduleUri=='groupmodule' && $user_role != 1){
             return false;
         }
-        if(!empty($moduleUri) && $moduleUri !='home'&& $moduleUri !='profile' && $user_role != 1){
+        if(!empty($moduleUri) && !in_array($moduleUri,$this->listControllerDontNeedPolicy) && $user_role != 1){
             $listModuleByUser =(new Modules())->getAllModulesByUser(Auth::user()->role_id);
             $listUriModule = array_map(function ($module){
                 return $module->uri;
