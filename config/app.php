@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -233,6 +233,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Theme' => Igaster\LaravelTheme\Facades\Theme::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'LogactivitiesHelper' => App\Helpers\LogactivitiesHelper::class,
     ],
 
 ];

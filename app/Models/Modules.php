@@ -17,11 +17,6 @@ class Modules extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['module_name','group_module_id', 'uri', 'icon', 'status', 'deleted_at', 'updated_by', 'created_by'];
 
-    protected $casts = [
-        'created_at'=> 'datetime:H:i:s d-m-Y',
-        'updated_at'=> 'datetime:H:i:s d-m-Y'
-    ];
-
     public function getAllModulesByUser()
     {
         $user = Auth::user();

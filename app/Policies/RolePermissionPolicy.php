@@ -25,7 +25,7 @@ class RolePermissionPolicy
         if($moduleUri=='groupmodule' && $user_role != 1){
             return false;
         }
-        if(!empty($moduleUri) && $moduleUri !='home' && $user_role != 1){
+        if(!empty($moduleUri) && $moduleUri !='home'&& $moduleUri !='profile' && $user_role != 1){
             $listModuleByUser =(new Modules())->getAllModulesByUser();
             $listUriModule = array_map(function ($module){
                 return $module->uri;

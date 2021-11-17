@@ -13,10 +13,5 @@ class Group_Module extends Model
     protected $table = 'group_module';
     protected $primaryKey = 'id';
     protected $fillable = ['group_module_name','deleted_at','updated_by','created_by'];
-
-    protected $casts = [
-        'created_at'=> 'datetime:H:i:s d-m-Y',
-        'updated_at'=> 'datetime:H:i:s d-m-Y'
-    ];
 }
 

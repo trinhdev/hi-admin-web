@@ -4,7 +4,7 @@ $(document).ready(function () {
         initSelect();
         const pathArray = window.location.pathname.split("/");
         let segment = pathArray[1]; //first uri param
-        switch(segment){
+        switch (segment) {
             case 'user':
                 initUser();
                 break;
@@ -20,12 +20,18 @@ $(document).ready(function () {
             case 'groupmodule':
                 initGroupModule();
                 break;
+<<<<<<< HEAD
             case 'manageotp':
                 initManageOtp();
+=======
+            case 'logactivities':
+                initLogActivities();
+                break;
+>>>>>>> b4a4326a88aa9dd080043407108edf3b0ebcdc8e
             default: //home
-                drawChart();    
+                drawChart();
         }
-        
+
     });
     $(document).on('pjax:popstate', function (event) {
         event.preventDefault();
@@ -52,8 +58,7 @@ function initModule() {
         "ajax": {
             url: "/modules/initDatatable"
         },
-        "columns": [
-            {
+        "columns": [{
                 data: 'id',
                 name: "id",
                 title: "Id"
@@ -102,7 +107,7 @@ function initModule() {
                 data: "action",
                 name: "action",
                 title: "Action",
-                sortable:false
+                sortable: false
             }
         ],
         "language": {
@@ -127,8 +132,7 @@ function initGroupModule() {
         "ajax": {
             url: "/groupmodule/initDatatable"
         },
-        "columns": [
-            {
+        "columns": [{
                 data: 'id',
                 name: "id",
                 title: "Id"
@@ -188,36 +192,36 @@ function initUser() {
             url: "/user/initDatatable"
         },
         "columns": [{
-            data: "id",
-            name: "id",
-            title: "Id"
-        },
-        {
-            data: "name",
-            name: "name",
-            title: "Name"
-        },
-        {
-            data: "email",
-            name: "email",
-            title: "Email"
-        },
-        {
-            data: "role_id",
-            name: "role_id",
-            title: "Role"
-        },
-        {
-            data: "created_at",
-            name: "created_at",
-            title: "Created at"
-        },
-        {
-            data: "action",
-            name: "action",
-            title: "Action",
-            sortable:false
-        }
+                data: "id",
+                name: "id",
+                title: "Id"
+            },
+            {
+                data: "name",
+                name: "name",
+                title: "Name"
+            },
+            {
+                data: "email",
+                name: "email",
+                title: "Email"
+            },
+            {
+                data: "role_id",
+                name: "role_id",
+                title: "Role"
+            },
+            {
+                data: "created_at",
+                name: "created_at",
+                title: "Created at"
+            },
+            {
+                data: "action",
+                name: "action",
+                title: "Action",
+                sortable: false
+            }
         ],
         "language": {
             "emptyTable": "No Record..."
@@ -236,7 +240,9 @@ function initUser() {
 
 function initGroup() {
     $('#groupTable').DataTable({
-        "order": [[0, "desc"]],
+        "order": [
+            [0, "desc"]
+        ],
         responsive: true,
         searchDelay: 500,
         processing: true,
@@ -245,28 +251,38 @@ function initGroup() {
         "scrollX": true,
         retrieve: true,
         ajax: {
-            headers: { 'X-CSRF-Token': $('meta[name=csrf-token]').attr('content') },
+            headers: {
+                'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
+            },
             url: base_url + '/groups/getList',
             type: 'POST',
             dataType: 'JSON',
         },
         searchDelay: 500,
-        columns: [
-            { data: 'id' },
-            { data: 'group_name' },
-            { data: 'created_by' },
+        columns: [{
+                data: 'id'
+            },
+            {
+                data: 'group_name'
+            },
+            {
+                data: 'created_by'
+            },
             {
                 data: "action",
                 name: "action",
                 title: "Action",
-                sortable:false
+                sortable: false
             }
         ],
     });
 }
+
 function initRoles() {
     $('#rolesTable').DataTable({
-        "order": [[0, "desc"]],
+        "order": [
+            [0, "desc"]
+        ],
         responsive: true,
         searchDelay: 500,
         processing: true,
@@ -275,21 +291,95 @@ function initRoles() {
         "scrollX": true,
         retrieve: true,
         ajax: {
-            headers: { 'X-CSRF-Token': $('meta[name=csrf-token]').attr('content') },
+            headers: {
+                'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
+            },
             url: base_url + '/roles/getList',
             type: 'POST',
             dataType: 'JSON',
         },
         searchDelay: 500,
-        columns: [
-            { data: 'id' },
-            { data: 'role_name' },
-            { data: 'created_by' },
+        columns: [{
+                data: 'id'
+            },
+            {
+                data: 'role_name'
+            },
+            {
+                data: 'created_by'
+            },
             {
                 data: "action",
                 name: "action",
                 title: "Action",
-                sortable:false
+                sortable: false
+            }
+        ],
+    });
+}
+
+function initLogActivities() {
+    $('#logTable').DataTable({
+        "order": [
+            [0, "desc"]
+        ],
+        responsive: true,
+        searchDelay: 500,
+        processing: true,
+        "bDestroy": true,
+        serverSide: true,
+        "scrollX": true,
+        retrieve: true,
+        ajax: {
+            headers: {
+                'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')
+            },
+            url: base_url + '/logactivities/initDatatable',
+            type: 'POST',
+            dataType: 'JSON',
+        },
+        searchDelay: 500,
+        columns: [{
+                data: 'id',
+            },
+            {
+                data: 'user_id',
+                className: "text-center"
+            },
+            {
+                data: 'email',
+                className: "text-center"
+            },
+            {
+                data: 'user_role',
+                className: "text-center"
+            },
+            {
+                data: 'method',
+                className: "text-center"
+            },
+            {
+                data: 'url'
+            },
+            {
+                data: 'created_at',
+                class: 'font-weight-bold'
+            },
+            {
+                data: 'param'
+            },
+            {
+                data: 'ip',
+                className: "text-center",
+            },
+            {
+                data: 'agent'
+            },
+            {
+                data: "action",
+                name: "action",
+                title: "Action",
+                sortable: false
             }
         ],
     });
