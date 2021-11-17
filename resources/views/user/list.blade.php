@@ -9,7 +9,7 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 style="float: left; margin-right: 20px">Users Tables</h1>
-                         @if($aclCurrentModule->create == 1 || strtolower(Auth::user()->role->role_name) == "admin")
+                         @if($aclCurrentModule->create == 1 || Auth::user()->role_id == config('constants.ADMIN'))
                         <a href="user/create" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Add New User
                         </a>

@@ -23,7 +23,19 @@
 
     <!-- Main content -->
     <section class="content">
-        <div class="container-fluid">
+        <div class="container-fluid ">
+            <form>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <select class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-warning">Clear Log</button>
+                    </div>
+                </div>
+            </form>
             <div class="col-sm-12">
                 <table id="logTable" class="display" style="width:100%;word-wrap:no-wrap;">
                     <thead>
