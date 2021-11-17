@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -42,14 +43,13 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'created_at'=> 'datetime:H:i:s d-m-Y',
-        'updated_at'=> 'datetime:H:i:s d-m-Y'
-
-    ];
-
     public function role(){
         return $this->hasOne(Roles::class,'id','role_id');
     }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('H:i:s d-m-Y');
+    }
+
 }
