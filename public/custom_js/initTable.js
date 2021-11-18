@@ -374,7 +374,7 @@ function initLogActivities() {
                     if (content.length > showChar) {
                         var c = content.substr(0, showChar);
                         var h = content.substr(showChar, content.length - showChar);
-                        var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink">' + moretext + '</a></span>'; //here call the read() function
+                        var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink" style="cursor: pointer;">' + moretext + '</a></span>'; //here call the read() function
                         return html.toString();
                     }
                     return data;

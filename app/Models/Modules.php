@@ -37,7 +37,6 @@ class Modules extends Model
             // ->where('acl_roles.role_id',$role_id)
             ->get()
             ->toArray();
-            // dd($listModule);
         }
 
         $listGroupModule = DB::table('group_module')->get()->toArray();

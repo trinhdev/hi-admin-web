@@ -79,10 +79,10 @@ class RolesController extends MY_Controller
                     // dd($arrayDataAcl);
                 }
                 Acl_Roles::deleteEmptyAclRole($role->id, $listModuleAclInput);
-                //update redis data;
-                // $getModuleData = (new Modules())->getModulesGroupByParent($request['id']);
-                // $keyName = 'module-list-'.$request['id'];
-                // $this->redis->set($keyName, serialize($getModuleData));
+                // update redis data;
+                $getModuleData = (new Modules())->getModulesGroupByParent($request['id']);
+                $keyName = config('constants.REDIS_KEY.MODULE_BY_ROLE_ID').$request['id']; // redis key: acl role module
+                $this->redis->set($keyName, serialize($getModuleData));
             });
         }
         return $this->redirect($this->controller_name);

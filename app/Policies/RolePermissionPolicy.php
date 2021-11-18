@@ -15,7 +15,7 @@ class RolePermissionPolicy
      *
      * @return void
      */
-    private $listControllerDontNeedPolicy =[null,'home','profile'];
+    private $listControllerDontNeedPolicy =[null,'home','profile']; // danh sách uri-controller không cần check acl
     public function __construct()
     {
         //
@@ -26,11 +26,8 @@ class RolePermissionPolicy
         if($user_role == config('constants.ADMIN') || in_array($moduleUri,$this->listControllerDontNeedPolicy)){
             return true;
         }
-        if($moduleUri=='groupmodule' && $user_role != config('constants.ADMIN')){
-            return false;
-        }
         if(!empty($moduleUri) && !in_array($moduleUri,$this->listControllerDontNeedPolicy) && $user_role != config('constants.ADMIN')){
-            $listModuleByUser =(new Modules())->getAllModgetModulesGroupByParentulesByUser(Auth::user()->role_id)->listModule;
+            $listModuleByUser =(new Modules())->getModulesGroupByParent(Auth::user()->role_id)->listModule;
             if(empty($listModuleByUser)){
                 return true;
             }
