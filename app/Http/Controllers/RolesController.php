@@ -9,6 +9,7 @@ use App\Models\Roles;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use stdClass;
 
 class RolesController extends MY_Controller
@@ -82,7 +83,7 @@ class RolesController extends MY_Controller
                 // update redis data;
                 $getModuleData = (new Modules())->getModulesGroupByParent($request['id']);
                 $keyName = config('constants.REDIS_KEY.MODULE_BY_ROLE_ID').$request['id']; // redis key: acl role module
-                $this->redis->set($keyName, serialize($getModuleData));
+                Redis::set($keyName, serialize($getModuleData));
             });
         }
         return $this->redirect($this->controller_name);
