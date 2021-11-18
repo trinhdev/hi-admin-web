@@ -365,7 +365,7 @@ function initLogActivities() {
             {
                 data: 'param',
                 render: function (data, type, full) {
-                    var showChar = 100;
+                    var showChar = 200;
                     var ellipsestext = "...";
                     var moretext = "Show More";
                     var lesstext = "Show Less";
