@@ -25,10 +25,10 @@ $(document).ready(function () {
             case 'logactivities':
                 initLogActivities();
                 break;
-            case 'manageotp':
-                break;    
-            default: //home
+            case '':
+            case 'home':
                 drawChart();
+                break
         }
 
     });
@@ -43,6 +43,19 @@ $(document).ready(function () {
 
 function initSelect() {
     $('form select').selectpicker();
+}
+
+function read(obj) {
+    if ($(obj).hasClass("less")) {
+        $(obj).removeClass("less");
+        $(obj).html("Showmore");
+    } else {
+        $(obj).addClass("less");
+        $(obj).html("Showless");
+    }
+    $(obj).parent().prev().toggle();
+    $(obj).prev().toggle();
+    return false;
 }
 
 function initModule() {
@@ -350,7 +363,22 @@ function initLogActivities() {
                 class: 'font-weight-bold'
             },
             {
-                data: 'param'
+                data: 'param',
+                render: function (data, type, full) {
+                    var showChar = 100;
+                    var ellipsestext = "...";
+                    var moretext = "Show More";
+                    var lesstext = "Show Less";
+                    var contentt = JSON.stringify(data);
+                    var content = contentt.replace(/["]+/g, '').substring(0, contentt.length - 1);
+                    if (content.length > showChar) {
+                        var c = content.substr(0, showChar);
+                        var h = content.substr(showChar, content.length - showChar);
+                        var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink">' + moretext + '</a></span>'; //here call the read() function
+                        return html.toString();
+                    }
+                    return data;
+                }
             },
             {
                 data: 'ip',
@@ -381,8 +409,7 @@ function initManageOtp() {
         "ajax": {
             url: "/modules/initDatatable"
         },
-        "columns": [
-            {
+        "columns": [{
                 data: 'otp',
                 name: "otp",
                 title: "OTP"
@@ -426,7 +453,7 @@ function initManageOtp() {
                 data: "action",
                 name: "action",
                 title: "Action",
-                sortable:false
+                sortable: false
             }
         ],
         "language": {
