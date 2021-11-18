@@ -83,7 +83,7 @@ class MY_Controller extends Controller
         $keyName = config('constants.REDIS_KEY.MODULE_BY_ROLE_ID').$this->user->role->id; // redis key: acl role module
         $data = $this->redis->get($keyName);
         if(!is_null($data)) {
-            dd(now()->format('h:i:s'));
+            // dd(now()->format('h:i:s'));
             $getModuleData = unserialize($data);
         }else{
             $getModuleData = (new Modules())->getModulesGroupByParent($this->user->role_id);
