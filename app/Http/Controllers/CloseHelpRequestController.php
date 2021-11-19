@@ -26,8 +26,11 @@ class CloseHelpRequestController extends MY_Controller
         ]);
         
         $contractService = new ContractService();
-        $contract_info = $contractService->getContractInfo($request);
-        // dd($contract_info_reponse);
+        $contract_info_response = $contractService->getContractInfo($request);
+        if(empty($contract_info_response->data)){
+            return redirect()->back()->withErrors(['error'=>"Không có yêu cầu hỗ trợ nào!"]);
+        }
+        return view('helprequest.list_request')->with(['data'=>$contract_info_response->data]);
     }
 
     public function closeHelpRequest(Request $request)

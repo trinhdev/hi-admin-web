@@ -30,6 +30,6 @@ class CallApiHelper
         $output = curl_exec($ch);
         $timeRun = microtime(true) - $time;
         curl_close($ch);
-        return $output;
+        return json_decode($output);
     }
 }

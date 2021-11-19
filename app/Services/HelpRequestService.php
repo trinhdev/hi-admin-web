@@ -12,7 +12,7 @@ class HelpRequestService
     private $token;
     private $baseUrl;
     private $version;
-
+    private $listMethod;
     public function __construct(){
         $api_config         = config('configDomain.DOMAIN_REPORT.' . env('APP_ENV'));
         $this->baseUrl      = $api_config['URL'];
@@ -20,9 +20,14 @@ class HelpRequestService
         $this->clientKey    = $api_config['CLIENT_KEY'];
         $this->secretKey    = $api_config['SECRET_KEY'];
         $this->token        = md5($this->clientKey . "::" . $this->secretKey . date("Y-d-m"));
+        $this->listMethod = config('configMethod.DOMAIN_REPORT');
     }
 
-    public function getContractInfo(Request $request){
+    public function getListReportByContract(Request $request){
+        $url = $this->baseUrl . $this->version .'/'. $this->listMethod['GET_LIST_REPORT'];
+        $postParam = [
 
+        ];
+        return CallApiHelper::sendRequest($url, $postParam,$this->token);
     }
 }
