@@ -38,6 +38,9 @@ $(document).ready(function () {
         // location = event.currentTarget.URL;
         $.pjax.reload('#pjax');
     });
+    $(document).on('pjax:error', function (event, xhr, textStatus, errorThrown, options) {
+        $.pjax.reload('#pjax');
+    });
 
 });
 
@@ -128,6 +131,9 @@ function initModule() {
         "initComplete": function (setting, json) {
             $('#modules').show();
         },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
         searchDelay: 500
     });
 }
@@ -186,6 +192,9 @@ function initGroupModule() {
         "initComplete": function (setting, json) {
             $('#modules').show();
         },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
         searchDelay: 500
     });
 }
@@ -241,6 +250,9 @@ function initUser() {
         "initComplete": function (setting, json) {
             $('#userTable').show();
         },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
         searchDelay: 500,
         dom: 'Bfrtip',
         buttons: [
@@ -282,6 +294,9 @@ function initGroup() {
                 sortable: false
             }
         ],
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
     });
 }
 
@@ -317,6 +332,9 @@ function initRoles() {
                 sortable: false
             }
         ],
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
     });
 }
 
@@ -394,6 +412,9 @@ function initLogActivities() {
                 sortable: false
             }
         ],
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
     });
 }
 
@@ -461,6 +482,9 @@ function initManageOtp() {
         },
         "initComplete": function (setting, json) {
             $('#manage-otp').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
         },
         searchDelay: 500
     });
