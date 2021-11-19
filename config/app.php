@@ -234,6 +234,7 @@ return [
         'Theme' => Igaster\LaravelTheme\Facades\Theme::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'LogactivitiesHelper' => App\Helpers\LogactivitiesHelper::class,
+        'CallApiHelper' => App\Helpers\CallApiHelper::class,
     ],
 
 ];
