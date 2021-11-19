@@ -38,16 +38,13 @@ Route::group([
         // dd(Auth::user() );
         if (!empty($_SERVER['REQUEST_URI'])) {
             $uri = $_SERVER['REQUEST_URI'];
-            $segments = explode(env('APP_URL'), $uri);
+            $segments = request()->segments();
             $action = 'index';
             $controller = 'Home';
             if (!empty($segments[0])) {
-                $arr_segments = explode('/', $segments[0]);
-                if (!empty($arr_segments[1])) {
-                    $controller = explode('?', ucfirst($arr_segments[1]))[0];
-                }
-                if (!empty($arr_segments[2])) {
-                    $action = explode('?', $arr_segments[2])[0];
+                    $controller = explode('?', ucfirst($segments[0]))[0];
+                if (!empty($segments[1])) {
+                    $action = explode('?', $segments[1])[0];
                 }
             }
             if(!in_array($controller, ['Login', 'Logout'])) {
