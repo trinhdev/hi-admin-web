@@ -27,7 +27,7 @@ class ContractService
         $url = $this->baseUrl . $this->version .'/'. $this->listMethod['GET_CONTRACT_BY_NUMBER'];
         // dd($url);
         $response = CallApiHelper::sendRequest($url, array('contractNo'=> $request->contractNo),$this->token);
-        dd($response);
+        dd($response); 
         // $result = json_decode($this->sendRequest($url, $phone, $this->token), true);
     }
 }
