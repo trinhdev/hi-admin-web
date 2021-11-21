@@ -25,16 +25,18 @@ class CloseHelpRequestController extends MY_Controller
         
         $contractService = new ContractService();
         $helpReqeustService = new HelpRequestService();
-        $contract_info_response = $contractService->getContractInfo($request);
+        $tmp = $helpReqeustService->closeRequestByListReportId([1]);
+
+        $contract_info_response = $contractService->getContractInfo($request); // call api get contract info
         if(empty($contract_info_response->data)){
             return redirect()->back()->withErrors(['error'=>"Hợp đồng không tồn tại!"]);
         }
         $contract_info = $contract_info_response->data[0];
-        $list_report_response = $helpReqeustService->getListReportByContract($contract_info);
+        $list_report_response = $helpReqeustService->getListReportByContract($contract_info); // call api get list report by contract
         if(empty($list_report_response->data)){
             return redirect()->back()->withErrors(['error'=>"Không có yêu cầu hỗ trợ nào!"]);
         }
-        
+        // continue
         return view('helprequest.list_request')->with(['data'=>$list_report_response->data]);
     }
 

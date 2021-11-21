@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\CallApiHelper;
 use Illuminate\Http\Request;
+use stdClass;
 
 class HelpRequestService
 {
@@ -37,6 +38,25 @@ class HelpRequestService
             )
         ];
         $response =  CallApiHelper::sendRequest($url, $postParam,$this->token);
+        return $response;
+    }
+
+    public function closeRequestByListReportId($listReportId = array()){
+        // $url = $this->baseUrl . $this->version .'/'. $this->listMethod['CLOSE_REQUEST_BY_REPORT_ID'];
+        $url = $this->baseUrl . 'report-local' .'/'. $this->listMethod['CLOSE_REQUEST_BY_REPORT_ID'];
+        $listReport = [];
+        if(empty($listReportId)){
+            return false;
+        }
+        foreach( $listReportId as $reportId){
+            $report_info  = new stdClass();
+            $report_info->reportId = $reportId;
+            $listReport[] = $report_info;
+        }
+        $postParam = [
+            'listReportId' => $listReport
+        ];
+        $response  = CallApiHelper::sendRequest($url, $postParam,$this->token);
         return $response;
     }
 }
