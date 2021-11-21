@@ -23,11 +23,20 @@ class HelpRequestService
         $this->listMethod = config('configMethod.DOMAIN_REPORT');
     }
 
-    public function getListReportByContract(Request $request){
+    public function getListReportByContract($contract_info){
         $url = $this->baseUrl . $this->version .'/'. $this->listMethod['GET_LIST_REPORT'];
         $postParam = [
-
+            'contractId' => $contract_info->Id,
+            'customerId' => 555,
+            'listContractHiFPT' => array(
+                [
+                    'contractNo' => $contract_info->Contract,
+                    'contractId' => $contract_info->Id,
+                    'customerIsActive' => 1
+                ]
+            )
         ];
-        return CallApiHelper::sendRequest($url, $postParam,$this->token);
+        $response =  CallApiHelper::sendRequest($url, $postParam,$this->token);
+        return $response;
     }
 }
