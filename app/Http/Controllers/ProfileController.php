@@ -10,10 +10,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileController extends Controller
+class ProfileController extends MY_Controller
 {
     //
     use DataTrait;
+    public function __construct()
+    {
+        parent::__construct();
+    }
     public function changePassword(ChangePasswordRequest $request)
     {
         $paramUpdate = [

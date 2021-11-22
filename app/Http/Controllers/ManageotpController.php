@@ -14,12 +14,11 @@ class ManageOtpController extends MY_Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-    // public function __construct()
-    // {
-    //     $this->middleware('throttle:20,1,recents');
-    // }
-
+    public function __construct()
+    {
+        parent::__construct();
+        //     $this->middleware('throttle:20,1,recents');
+    }
     public function index()
     {
         return view('otp.request');
