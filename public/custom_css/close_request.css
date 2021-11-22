@@ -1,8 +1,3 @@
-body{
-    background: #f6f9fc;
-    margin-top:20px;}
-/* booking */
-
 .bg-light-blue {
     background-color: #e9f7fe !important;
     color: #3184ae;
@@ -74,7 +69,7 @@ body{
     }
 }
 
-.card {
+/* .card {
     margin-bottom: 20px;
     background-color: #fff;
     border-radius: 4px;
@@ -84,7 +79,7 @@ body{
     box-shadow: none;
     border: none;
     padding: 25px;
-}
+} */
 .mb-5, .my-5 {
     margin-bottom: 3rem!important;
 }
