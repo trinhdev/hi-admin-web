@@ -83,9 +83,10 @@ function dialogConfirmWithAjax(sureCallbackFunction,data){
         text: "Please Confirm This Action",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Confirmed!'
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Confirmed!',
+        reverseButtons: true
         
     }).then((result) => {
         if (result.isConfirmed) {

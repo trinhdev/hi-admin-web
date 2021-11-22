@@ -69,8 +69,7 @@
     }
 }
 
-/* .card {
-    margin-bottom: 20px;
+.card {
     background-color: #fff;
     border-radius: 4px;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -79,7 +78,7 @@
     box-shadow: none;
     border: none;
     padding: 25px;
-} */
+}
 .mb-5, .my-5 {
     margin-bottom: 3rem!important;
 }
