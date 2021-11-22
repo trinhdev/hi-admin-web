@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Traits\DataTrait;
 use App\Models\Modules;
 use App\Models\Group_Module;
+use App\Models\Settings;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use \stdClass;
 
 class ModulesController extends MY_Controller
@@ -36,12 +38,15 @@ class ModulesController extends MY_Controller
      */
     public function create()
     {
-        $controllers = [];
-        $list_controller = array_diff(scandir(app_path('Http/Controllers')), ['.', '..', 'Auth', 'Controller.php', 'MY_Controller.php']);
-        foreach ($list_controller as $path) {
-            $controllers[] = strtolower(str_replace('Controller.php', '', $path));
-        }
-        $module_list = $this->getAll(new Modules);
+        // $controllers = [];
+        // $list_controller = array_diff(scandir(app_path('Http/Controllers')), ['.', '..', 'Auth', 'Controller.php', 'MY_Controller.php']);
+        // foreach ($list_controller as $path) {
+        //     $controllers[] = strtolower(str_replace('Controller.php', '', $path));
+        // };
+
+        //checking redis
+
+        $module_list = $this->getAll($this->model);
         $list_group_module = $this->getAll(new Group_Module);
         $list_icon = explode(",", file_get_contents(public_path('fontawsome.txt')));
         $module = new stdClass();
@@ -51,7 +56,7 @@ class ModulesController extends MY_Controller
         $module->group_module_id = '';
         $module->icon = '';
         $module->status = True;
-        $module->list_uri = array_unique($controllers);
+        // $module->list_uri = array_unique($controllers);
         $module->list_modules = $module_list;
         $module->list_group_module = $list_group_module;
         $module->list_icon = $list_icon;
@@ -96,16 +101,16 @@ class ModulesController extends MY_Controller
      */
     public function edit($id)
     {
-        $controllers = [];
-        $list_controller = array_diff(scandir(app_path('Http/Controllers')), ['.', '..', 'Auth', 'Controller.php', 'MY_Controller.php']);
-        foreach ($list_controller as $path) {
-            $controllers[] = strtolower(str_replace('Controller.php', '', $path));
-        }
+        // $controllers = [];
+        // $list_controller = array_diff(scandir(app_path('Http/Controllers')), ['.', '..', 'Auth', 'Controller.php', 'MY_Controller.php']);
+        // foreach ($list_controller as $path) {
+        //     $controllers[] = strtolower(str_replace('Controller.php', '', $path));
+        // }
         $list_group_module = $this->getAll(new Group_Module);
         $list_icon = explode(",", file_get_contents(public_path('fontawsome.txt')));
-        $module = $this->getSigleRecord(new Modules, $id);
+        $module = $this->getSigleRecord($this->model, $id);
         // dd($module);
-        $module->list_uri = array_unique($controllers);
+        // $module->list_uri = array_unique($controllers);
         $module->list_group_module = $list_group_module;
         $module->list_icon = $list_icon;
         return view('modules.form')->with('module', $module);

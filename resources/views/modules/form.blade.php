@@ -1,6 +1,13 @@
 @extends('layouts.default')
 
 @section('content')
+@php
+    $uri_config = $Settings->firstWhere('name','uri_config');
+    $list_uri = [];
+    if(!empty($uri_config)){
+        $list_uri = json_decode($uri_config->value);
+    }
+@endphp
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -50,8 +57,8 @@
                                             
                                             <select name="uri" id="uri" class="form-control selectpicker @error('module_name') is-invalid @enderror" data-live-search="true" data-size="10">
                                                 <option value="">Please choose uri</option>
-                                                @foreach ($module->list_uri as $uri)
-                                                    <option value="{{ $uri }}" {{ ($module->uri == $uri) ? 'selected' : '' }}>{{ $uri }}</option>
+                                                @foreach ($list_uri as $uri)
+                                                    <option value="{{ $uri->uri }}" {{ ($module->uri == $uri->uri) ? 'selected' : '' }}>{{ $uri->uri }}</option>
                                                 @endforeach
                                             </select>
                                             @error('uri')
