@@ -37,11 +37,19 @@ class CloseHelpRequestController extends MY_Controller
             return redirect()->back()->withErrors(['error'=>"Không có yêu cầu hỗ trợ nào!"]);
         }
         // continue
-        return view('helprequest.list_request')->with(['data'=>$list_report_response->data]);
+        return view('helprequest.list_request')->with(['listReport'=>$list_report_response->data]);
     }
 
-    public function closeHelpRequest(Request $request)
+    public function closeRequest(Request $request)
     {
-
+        if(!$request->ajax()){
+            return false;
+        }
+        $request->validate([
+            'report_id' =>'required'
+        ]);
+        $helpReqeustService = new HelpRequestService();
+        $reponse = $helpReqeustService->closeRequestByListReportId([$request->report_id]);
+        return true;
     }
 }

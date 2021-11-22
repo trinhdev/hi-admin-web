@@ -36,3 +36,4 @@
 <script src="{{ asset('js/jszip.min.js') }}"></script>
 <script src ='/custom_js/javascript.js'></script>
 <script src ='/custom_js/initTable.js'></script>
+<script src ='/custom_js/callAjaxCloseRequest.js'></script>
