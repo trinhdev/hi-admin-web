@@ -203,7 +203,7 @@ class MY_Controller extends Controller
         // if(!is_null($setting_data)) {
         //     $setting_data = unserialize($setting_data);
         // }else{
-            $setting_data = $this->getAll(new Settings());
+            $setting_data = Settings::get();
         //     Redis::set($keyName, serialize($setting_data));
         // }
         View::share(['Settings'=>$setting_data]);
