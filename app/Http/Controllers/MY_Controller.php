@@ -198,14 +198,14 @@ class MY_Controller extends Controller
         return redirect('/' . $url);
     }
     private function getSetting(){
-        $keyName = config('constants.REDIS_KEY.SETTINGS');
-        $setting_data = Redis::get($keyName);
-        if(!is_null($setting_data)) {
-            $setting_data = unserialize($setting_data);
-        }else{
+        // $keyName = config('constants.REDIS_KEY.SETTINGS');
+        // $setting_data = Redis::get($keyName);
+        // if(!is_null($setting_data)) {
+        //     $setting_data = unserialize($setting_data);
+        // }else{
             $setting_data = $this->getAll(new Settings());
-            Redis::set($keyName, serialize($setting_data));
-        }
+        //     Redis::set($keyName, serialize($setting_data));
+        // }
         View::share(['Settings'=>$setting_data]);
     }
 }
