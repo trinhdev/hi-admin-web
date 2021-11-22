@@ -31,13 +31,13 @@ $domainInsideConfig = [
         'URL'           => 'http://hi-inside.fpt.vn/',
         'VERSION'       => 'v1',
         'CLIENT_KEY'    => 'hifpt_inside',
-        'SECRET_KEy'    => 'xxxxxxhifpt2018'
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
     ],
     'production'        => [
         'URL'           => 'http://hi-inside.fpt.vn/',
         'VERSION'       => 'v1',
         'CLIENT_KEY'    => 'hifpt_inside',
-        'SECRET_KEy'    => 'xxxxxxhifpt2018'
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
     ],
 ];
 return [
