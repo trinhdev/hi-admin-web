@@ -2,6 +2,7 @@
 <html>
 <head>
     @include('layouts.header')
+    @stack('header')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
