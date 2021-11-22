@@ -77,3 +77,19 @@ function handleSubmit(e) {
     let data = $(e).serialize();
     console.log(data);
 }
+function dialogConfirmWithAjax(sureCallbackFunction,data){
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Please Confirm This Action",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Confirmed!'
+        
+    }).then((result) => {
+        if (result.isConfirmed) {
+            sureCallbackFunction(data);
+        }
+    });
+}

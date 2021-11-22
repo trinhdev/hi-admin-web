@@ -21,7 +21,13 @@ function closeRequest(_this){ // button in li
                 html: `Close Fail!`
             });
           }
-        }
+        },
+        error: function(err){
+          swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            html: `Close Fail!`
+        });
+      }
     });
-
 }

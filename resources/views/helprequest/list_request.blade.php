@@ -88,7 +88,7 @@
                             </div>
                         </li> --}}
                         @php
-                            $listColor = ['warning','primary','sucess'];
+                            $listColor = ['warning','info','primary','sucess'];
                         @endphp
                         @foreach($listReport as $report)
                         <li class="position-relative booking" id ="{{$report->reportId}}">
