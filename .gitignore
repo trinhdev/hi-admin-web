@@ -5,7 +5,7 @@
 composer.lock
 
 /storage/*.key
-#/vendor
+/vendor
 # ignore env
 .env
 .env.backup
