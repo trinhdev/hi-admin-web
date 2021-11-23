@@ -39,12 +39,12 @@ class ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
-        '198ca788260cba849b8d9061ef2afeb7' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/Id.php',
-        '1078d5a0858ccde97f683b735c9f5473' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Timestamp.php',
-        '948c9b6b6a769d2db468357f07afb9ed' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Kind.php',
-        'f99ca7ab6b69ea13de674def3146fa4b' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Tags.php',
-        '809f512612033e8c2eaab5c48aa38d39' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Annotations.php',
-        '0956408cbb3b629c2aedbc429d54f919' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/SpanName.php',
+        // '198ca788260cba849b8d9061ef2afeb7' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/Id.php',
+        // '1078d5a0858ccde97f683b735c9f5473' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Timestamp.php',
+        // '948c9b6b6a769d2db468357f07afb9ed' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Kind.php',
+        // 'f99ca7ab6b69ea13de674def3146fa4b' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Tags.php',
+        // '809f512612033e8c2eaab5c48aa38d39' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Annotations.php',
+        // '0956408cbb3b629c2aedbc429d54f919' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/SpanName.php',
     );
 
     public static $prefixLengthsPsr4 = array (
