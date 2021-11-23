@@ -52,9 +52,9 @@ class HidepaymentController extends MY_Controller
             'isUpStoreAndroid' => (!isset($request->isUpStoreAndroid)) ? "0" : "1",
             'isUpStoreIos' => (!isset($request->isUpStoreIos)) ? "0" : "1",
         ]);
-
+        dd($request->all());
         $data = ApiService::hidePayment($request->all());
-        dd($data);
+        
 
         if(!empty($data['status'])) {
             $result = ['success' => 'success', 'html' => $data['message']];
