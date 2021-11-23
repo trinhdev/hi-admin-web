@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Acl_Roles extends Model
+class Acl_Roles extends MY_Model
 {
-    use HasFactory;
     use SoftDeletes;
     protected $table = 'acl_roles';
     protected $primaryKey = 'id';

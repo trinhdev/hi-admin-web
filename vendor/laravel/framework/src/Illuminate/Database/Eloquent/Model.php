@@ -2180,9 +2180,4 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
 
         $this->initializeTraits();
     }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('H:i:s d-m-Y');
-    }
 }
