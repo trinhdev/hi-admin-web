@@ -21,6 +21,7 @@ class ApiService
         $url = $baseUrl . $subDomain . 'change-config-version';
         $result_raw = CallApiHelper::sendRequest($url, $param, $token);
         echo $url;
+        var_dump($clientKey . "::" . $secretKey . date("Y-d-m"));
         var_dump($param);
         dd($token);
         
