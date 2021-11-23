@@ -34,7 +34,6 @@ class HidepaymentController extends MY_Controller
     }
 
     public function hide(Request $request) {
-        dd($request);
         $executed = RateLimiter::attempt(
             'hide-payment' . $request['version'],
             $perMinute = 2,
@@ -55,6 +54,7 @@ class HidepaymentController extends MY_Controller
         ]);
 
         $data = ApiService::hidePayment($request->all());
+        dd($data);
 
         if(!empty($data['status'])) {
             $result = ['success' => 'success', 'html' => $data['message']];
