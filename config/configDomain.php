@@ -40,7 +40,31 @@ $domainInsideConfig = [
         'SECRET_KEy'    => 'xxxxxxhifpt2018'
     ],
 ];
+
+$domainCustomerConfig = [
+    'local'             => [
+        'URL'           => 'http://hi-customer-stag.fpt.vn/',
+        'CLIENT_KEY'    => 'hifpt_customer_local',
+        'SUB_DOMAIN'    => ['hi-customer-local', 'swagger'],
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+    ],
+    'staging'           => [
+        'URL'           => 'http://hi-customer-stag.fpt.vn/',
+        'CLIENT_KEY'    => 'hifpt_customer_local',
+        'SUB_DOMAIN'    => ['hi-customer-local', 'swagger'],
+        'SECRET_KEy'    => 'xxxxxxhifpt2018'
+    ],
+    'production'        => [
+        'URL'           => 'http://hi-customer.fpt.vn/',
+        // 'URL'           => 'http://hi-customer-stag.fpt.vn/',
+        'CLIENT_KEY'    => 'hifpt_customer_local',
+        'SUB_DOMAIN'    => ['hi-customer-local', 'swagger'],
+        'SECRET_KEy'    => 'xxxxxxhifpt2018'
+    ],
+];
+
 return [
     'DOMAIN_REPORT'         => $domainReportConfig,
     'DOMAIN_INSIDE'         => $domainInsideConfig,
+    'DOMAIN_CUSTOMER'       => $domainCustomerConfig,
 ];
