@@ -6,9 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Log_activities extends Model
+class Log_activities extends MY_Model
 {
-    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *

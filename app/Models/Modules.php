@@ -9,9 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
-class Modules extends Model
+class Modules extends MY_Model
 {
-    use HasFactory;
     use SoftDeletes;
     protected $table = 'modules';
     protected $primaryKey = 'id';
