@@ -48,7 +48,7 @@
 
             </form>
 
-            <div class="login100-more" style="background-image: url({{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/login/ung-dung-hi-fpt.jpeg);background-size: 100% 100%">
+            <div class="login100-more" style="background-image: url({{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/login/ung-dung-fpt.png);background-size: 100% 100%">
             </div>
         </div>
     </div>
