@@ -23,12 +23,11 @@ class HidePaymentController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->model = $this->getModel('Modules');
+        // dd('26 - Hidepayment controller');
     }
 
     public function index()
     {
-        dd('31 - Hidepayment controller');
         $hidepayment = new stdClass();
         $hidepayment->versions = ['6.2.1'];
         return view('hidepayment.hide')->with('hidepayment', $hidepayment);
