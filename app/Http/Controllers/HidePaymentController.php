@@ -11,7 +11,7 @@ use \stdClass;
 use App\Services\ApiService;
 use Illuminate\Support\Facades\RateLimiter;
 
-class HidePaymentController extends MY_Controller
+class HidepaymentController extends MY_Controller
 {
     /**
      * Display a listing of the resource.
