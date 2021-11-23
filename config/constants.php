@@ -1,6 +1,7 @@
 <?php
 $listRedisKey = [
-    'MODULE_BY_ROLE_ID' => 'acl_role_module'
+    'MODULE_BY_ROLE_ID' => 'acl_role_module', // acl_role_moduleX , X là role_id
+    'SETTINGS' => 'settings',
 ];
 return [
     'ADMIN' => 1, // role_id of admin

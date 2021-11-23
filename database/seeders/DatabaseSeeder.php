@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             GroupSeeder::class,
             ModuleSeeder::class,
             UserSeeder::class,
-            AclRoleSeeder::class
+            AclRoleSeeder::class,
+            SettingsSeeder::class,
         ]);
     }
 }

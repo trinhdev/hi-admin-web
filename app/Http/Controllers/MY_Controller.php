@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\LogactivitiesHelper;
 use App\Models\Modules;
+use App\Models\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
@@ -68,6 +69,7 @@ class MY_Controller extends Controller
             $this->user = Auth::user();
             // $this->redis = Redis::connection();
             $this->getListModule();
+            $this->getSetting();
             if (!$request->ajax()) {
                 LogactivitiesHelper::addToLog($request);
             } elseif (isset($request->draw) && $request->draw == 1) {
@@ -194,5 +196,16 @@ class MY_Controller extends Controller
     public function redirect($url = null)
     {
         return redirect('/' . $url);
+    }
+    private function getSetting(){
+        // $keyName = config('constants.REDIS_KEY.SETTINGS');
+        // $setting_data = Redis::get($keyName);
+        // if(!is_null($setting_data)) {
+        //     $setting_data = unserialize($setting_data);
+        // }else{
+            $setting_data = Settings::get();
+        //     Redis::set($keyName, serialize($setting_data));
+        // }
+        View::share(['Settings'=>$setting_data]);
     }
 }
