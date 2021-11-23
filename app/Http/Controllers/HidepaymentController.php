@@ -34,6 +34,7 @@ class HidepaymentController extends MY_Controller
     }
 
     public function hide(Request $request) {
+        dd($request);
         $executed = RateLimiter::attempt(
             'hide-payment' . $request['version'],
             $perMinute = 2,
