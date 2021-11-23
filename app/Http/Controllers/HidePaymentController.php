@@ -23,7 +23,7 @@ class HidePaymentController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        dd('26 - Hidepayment controller');
+        // dd('26 - Hidepayment controller');
     }
 
     public function index()
