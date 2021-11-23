@@ -9,6 +9,7 @@ class ApiService
 {
     public function hidePayment($param) {
         $api_config     = config('configDomain.DOMAIN_CUSTOMER.' . env('APP_ENV'));
+        dd($api_config);
         $baseUrl        = $api_config['URL'];
         $clientKey      = $api_config['CLIENT_KEY'];
         $subDomain      = (!empty($api_config['SUB_DOMAIN'])) ? implode('/', $api_config['SUB_DOMAIN']) . '/' : ''; 
