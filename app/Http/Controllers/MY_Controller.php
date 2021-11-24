@@ -70,11 +70,9 @@ class MY_Controller extends Controller
             // $this->redis = Redis::connection();
             $this->getListModule();
             $this->getSetting();
-            if (!$request->ajax()) {
+            if(!isset($request->draw) ){
                 LogactivitiesHelper::addToLog($request);
-            } elseif (isset($request->draw) && $request->draw == 1) {
-                LogactivitiesHelper::addToLog($request);
-            }
+            };
             return $next($request);
         });
     }

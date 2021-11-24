@@ -2,6 +2,7 @@
 
 namespace Illuminate\Foundation\Auth;
 
+use App\Helpers\LogactivitiesHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -107,6 +108,7 @@ trait AuthenticatesUsers
      */
     protected function sendLoginResponse(Request $request)
     {
+        LogactivitiesHelper::addToLog($request);
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
@@ -165,6 +167,7 @@ trait AuthenticatesUsers
      */
     public function logout(Request $request)
     {
+        LogactivitiesHelper::addToLog($request);
         $this->guard()->logout();
 
         $request->session()->invalidate();
