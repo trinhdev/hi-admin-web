@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 use App\Services\ContractService;
 use App\Services\HelpRequestService;
-use Illuminate\Http\Request;;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
+
+;
 
 class ChecklistmanageController extends MY_Controller
 {
@@ -14,7 +17,8 @@ class ChecklistmanageController extends MY_Controller
     }
     public function index()
     {
-        return view('checklist.inputContract');
+        $listCheckList = $this->getListCheckList();
+        return view('checklist.inputContract')->with(['list_checklist_id'=>$listCheckList]);
     }
 
     public function sendStaff(Request $request)
@@ -33,11 +37,12 @@ class ChecklistmanageController extends MY_Controller
         }
         $contract_info = $contract_info_response->data[0];
         $list_report_response = $helpReqeustService->updateEmployeeByContract($contract_info); // call api get list report by contract
+        $listCheckList = $this->getListCheckList();
         if($list_report_response->statusCode != 0){
-            return redirect()->back()->withErrors(['error'=>$list_report_response->message]);
+            return redirect()->back()->withErrors(['error'=>$list_report_response->message,'list_checklist_id'=>$listCheckList]);
         }
         // continue
-        return redirect()->back()->withSuccess('success');
+        return redirect()->back()->withSuccess(['success'=>'success','list_checklist_id'=>$listCheckList]);
     }
 
     public function completeChecklist(Request $request)
@@ -45,14 +50,19 @@ class ChecklistmanageController extends MY_Controller
         if(!$request->ajax()){
             $request->validate([
                 'checkListId' =>'required'
-            ]);
-            
+            ]);       
             $helpReqeustService = new HelpRequestService();
             $completeChecklist_reponse = $helpReqeustService->completeChecklist($request->checkListId);
+            $listCheckList = $this->getListCheckList();
             if($completeChecklist_reponse->statusCode != 0){
-                return redirect()->back()->withErrors(['error'=>$completeChecklist_reponse->message]);
+                return redirect()->back()->withErrors(['error'=>$completeChecklist_reponse->message,'list_checklist_id'=>$listCheckList]);
             }
-            return redirect()->back()->withSuccess('success');
+            return redirect()->back()->withSuccess(['success'=>'success','list_checklist_id'=>$listCheckList]);
         }
+    }
+    private function getListCheckList(){
+        $keyName = config('constants.REDIS_KEY.LIST_CHECKLIST_ID');
+        $list = Redis::command('ZRANGE', [$keyName,0,-1]);
+        return $list;
     }
 }

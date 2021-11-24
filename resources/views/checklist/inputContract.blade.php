@@ -50,7 +50,7 @@
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control" name="contractNo" placeholder="Enter Contract Number...">
                                             <div class="input-group-append">
-                                                <button class="btn btn-primary">Submit</button>
+                                                <button class="btn btn-warning">Submit</button>
                                             </div>
                                         </div>
                                     </div>
@@ -60,7 +60,7 @@
                         <!-- Accordion card -->
 
                         <!-- Accordion card -->
-                        <div class="card card-info">
+                        <div class="card card-success">
 
                             <!-- Card header -->
                             <div class="card-header" role="tab">
@@ -82,7 +82,7 @@
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control" name="checkListId"placeholder="Enter Checklist Id...">
                                             <div class="input-group-append">
-                                                <button class="btn btn-primary">Submit</button>
+                                                <button class="btn btn-warning">Submit</button>
                                             </div>
                                         </div>
                                     </div>
@@ -94,6 +94,11 @@
                     <!--/.Accordion wrapper-->
                 </div>
             </div>
+        </div>
+        <div>
+        @foreach($list_checklist_id as $checklist)
+            <div>{{$checklist}}</div>
+        @endforeach
         </div>
     </section>
     <!-- /.content -->

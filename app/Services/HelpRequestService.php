@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\CallApiHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use stdClass;
 
 class HelpRequestService
@@ -66,11 +67,12 @@ class HelpRequestService
     public function updateEmployeeByContract($contract_info)
     {
         $url = $this->baseUrl . 'report-local' . '/' . $this->listMethod['MY_UPDATE_EMPLOYEE'];
+        $random_checklist_id = '4444' . random_int(10000, 99999);
         $postParam = [
             [
                 "GroupId" => "TIN11.KHUONGDV",
                 "Contract" => $contract_info->Id,
-                "IdCheckList" => '4444' . random_int(10000, 99999),
+                "IdCheckList" => $random_checklist_id,
                 "contractNo" => $contract_info->Contract,
                 "employeeCode" => "00069708",
                 "checkListType" => 2,
@@ -79,7 +81,18 @@ class HelpRequestService
             ]
         ];
         $response =  CallApiHelper::sendRequest($url, $postParam, $this->token);
+        if($response->statusCode == 0){
+            $keyName = config('constants.REDIS_KEY.LIST_CHECKLIST_ID');
+            // Redis::zadd($keyName,$random_checklist_id);
+            Redis::command('ZADD', [$keyName, 1,$random_checklist_id]);
+        }
         return $response;
+    }
+    public function splitCheckListValueRedis($value){
+        $checklist = new stdClass;
+        $checklist->id = substr($value, 0, 9);
+        $checklist->contract = substr($value,10);
+        return $checklist;
     }
     public function completeChecklist($checklist_Id)
     {
@@ -92,6 +105,8 @@ class HelpRequestService
             ]
         ];
         $response =  CallApiHelper::sendRequest($url, $postParam, $this->token);
+        $keyName = config('constants.REDIS_KEY.LIST_CHECKLIST_ID');
+        Redis::command('ZREM', [$keyName,$checklist_Id]);
         return $response;
     }
 }
