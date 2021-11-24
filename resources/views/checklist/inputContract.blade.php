@@ -30,7 +30,7 @@
                     <div class="accordion md-accordion accordion-blocks" id="accordionEx78" role="tablist" aria-multiselectable="true">
 
                         <!-- Accordion card -->
-                        <div class="card">
+                        <div class="card card-info">
 
                             <!-- Card header -->
                             <div class="card-header" role="tab">
@@ -60,7 +60,7 @@
                         <!-- Accordion card -->
 
                         <!-- Accordion card -->
-                        <div class="card">
+                        <div class="card card-info">
 
                             <!-- Card header -->
                             <div class="card-header" role="tab">
