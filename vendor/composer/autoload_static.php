@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4
+class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
 {
     public static $files = array (
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
@@ -813,6 +813,7 @@ class ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4
         'Database\\Seeders\\GroupSeeder' => __DIR__ . '/../..' . '/database/seeders/GroupSeeder.php',
         'Database\\Seeders\\ModuleSeeder' => __DIR__ . '/../..' . '/database/seeders/ModuleSeeder.php',
         'Database\\Seeders\\RoleSeeder' => __DIR__ . '/../..' . '/database/seeders/RoleSeeder.php',
+        'Database\\Seeders\\SettingsSeeder' => __DIR__ . '/../..' . '/database/seeders/SettingsSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',
         'DeepCopy\\DeepCopy' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
         'DeepCopy\\Exception\\CloneException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',
@@ -1082,6 +1083,7 @@ class ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4
         'Facade\\Ignition\\Logger\\FlareHandler' => __DIR__ . '/..' . '/facade/ignition/src/Logger/FlareHandler.php',
         'Facade\\Ignition\\Middleware\\AddDumps' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddDumps.php',
         'Facade\\Ignition\\Middleware\\AddEnvironmentInformation' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddEnvironmentInformation.php',
+        'Facade\\Ignition\\Middleware\\AddExceptionInformation' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddExceptionInformation.php',
         'Facade\\Ignition\\Middleware\\AddGitInformation' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddGitInformation.php',
         'Facade\\Ignition\\Middleware\\AddJobInformation' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddJobInformation.php',
         'Facade\\Ignition\\Middleware\\AddLogs' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddLogs.php',
@@ -2616,6 +2618,7 @@ class ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4
         'Illuminate\\Foundation\\Testing\\RefreshDatabase' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php',
         'Illuminate\\Foundation\\Testing\\RefreshDatabaseState' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabaseState.php',
         'Illuminate\\Foundation\\Testing\\TestCase' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/TestCase.php',
+        'Illuminate\\Foundation\\Testing\\Traits\\CanConfigureMigrationCommands' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/Traits/CanConfigureMigrationCommands.php',
         'Illuminate\\Foundation\\Testing\\WithFaker' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/WithFaker.php',
         'Illuminate\\Foundation\\Testing\\WithoutEvents' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/WithoutEvents.php',
         'Illuminate\\Foundation\\Testing\\WithoutMiddleware' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/WithoutMiddleware.php',
@@ -3037,6 +3040,7 @@ class ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4
         'Illuminate\\View\\Compilers\\Concerns\\CompilesHelpers' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesHelpers.php',
         'Illuminate\\View\\Compilers\\Concerns\\CompilesIncludes' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesIncludes.php',
         'Illuminate\\View\\Compilers\\Concerns\\CompilesInjections' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesInjections.php',
+        'Illuminate\\View\\Compilers\\Concerns\\CompilesJs' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesJs.php',
         'Illuminate\\View\\Compilers\\Concerns\\CompilesJson' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesJson.php',
         'Illuminate\\View\\Compilers\\Concerns\\CompilesLayouts' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesLayouts.php',
         'Illuminate\\View\\Compilers\\Concerns\\CompilesLoops' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesLoops.php',
@@ -7015,10 +7019,10 @@ class ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595::$classMap;
 
         }, null, ClassLoader::class);
     }
