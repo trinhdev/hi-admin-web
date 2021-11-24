@@ -26,6 +26,7 @@ class Modules extends MY_Model
             ->where('acl_roles.role_id',$role_id)
             ->whereNull('modules.deleted_at')
             ->whereNull('acl_roles.deleted_at')
+            ->where('modules.status',1)
             ->get()
             ->toArray();
         }else{
