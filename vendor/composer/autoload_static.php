@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
+class ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4
 {
     public static $files = array (
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
@@ -39,6 +39,12 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
+        // '198ca788260cba849b8d9061ef2afeb7' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/Id.php',
+        // '1078d5a0858ccde97f683b735c9f5473' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Timestamp.php',
+        // '948c9b6b6a769d2db468357f07afb9ed' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Kind.php',
+        // 'f99ca7ab6b69ea13de674def3146fa4b' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Tags.php',
+        // '809f512612033e8c2eaab5c48aa38d39' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Annotations.php',
+        // '0956408cbb3b629c2aedbc429d54f919' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/SpanName.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -52,6 +58,7 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
         ),
         'Z' => 
         array (
+            'Zipkin\\' => 7,
             'ZipStream\\' => 10,
         ),
         'Y' => 
@@ -213,6 +220,10 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'Zipkin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin',
         ),
         'ZipStream\\' => 
         array (
@@ -627,6 +638,7 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Helpers\\CallApiHelper' => __DIR__ . '/../..' . '/app/Helpers/CallApiHelper.php',
         'App\\Helpers\\LogactivitiesHelper' => __DIR__ . '/../..' . '/app/Helpers/LogactivitiesHelper.php',
+        'App\\Helpers\\ZipkinTracingHelper' => __DIR__ . '/../..' . '/app/Helpers/ZipkinTracingHelper.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
@@ -638,6 +650,7 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\GroupmoduleController' => __DIR__ . '/../..' . '/app/Http/Controllers/GroupmoduleController.php',
         'App\\Http\\Controllers\\GroupsController' => __DIR__ . '/../..' . '/app/Http/Controllers/GroupsController.php',
+        'App\\Http\\Controllers\\HelperController' => __DIR__ . '/../..' . '/app/Http/Controllers/HelperController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\LogactivitiesController' => __DIR__ . '/../..' . '/app/Http/Controllers/LogactivitiesController.php',
         'App\\Http\\Controllers\\MY_Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/MY_Controller.php',
@@ -655,6 +668,7 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
         'App\\Http\\Middleware\\TrustHosts' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustHosts.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Http\\Middleware\\ZipkinTracing' => __DIR__ . '/../..' . '/app/Http/Middleware/ZipkinTracing.php',
         'App\\Http\\Requests\\ChangePasswordRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ChangePasswordRequest.php',
         'App\\Http\\Requests\\UpdateProfileRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateProfileRequest.php',
         'App\\Http\\Requests\\UserStoreRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UserStoreRequest.php',
@@ -799,7 +813,6 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
         'Database\\Seeders\\GroupSeeder' => __DIR__ . '/../..' . '/database/seeders/GroupSeeder.php',
         'Database\\Seeders\\ModuleSeeder' => __DIR__ . '/../..' . '/database/seeders/ModuleSeeder.php',
         'Database\\Seeders\\RoleSeeder' => __DIR__ . '/../..' . '/database/seeders/RoleSeeder.php',
-        'Database\\Seeders\\SettingsSeeder' => __DIR__ . '/../..' . '/database/seeders/SettingsSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',
         'DeepCopy\\DeepCopy' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
         'DeepCopy\\Exception\\CloneException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',
@@ -1069,7 +1082,6 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
         'Facade\\Ignition\\Logger\\FlareHandler' => __DIR__ . '/..' . '/facade/ignition/src/Logger/FlareHandler.php',
         'Facade\\Ignition\\Middleware\\AddDumps' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddDumps.php',
         'Facade\\Ignition\\Middleware\\AddEnvironmentInformation' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddEnvironmentInformation.php',
-        'Facade\\Ignition\\Middleware\\AddExceptionInformation' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddExceptionInformation.php',
         'Facade\\Ignition\\Middleware\\AddGitInformation' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddGitInformation.php',
         'Facade\\Ignition\\Middleware\\AddJobInformation' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddJobInformation.php',
         'Facade\\Ignition\\Middleware\\AddLogs' => __DIR__ . '/..' . '/facade/ignition/src/Middleware/AddLogs.php',
@@ -2604,7 +2616,6 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
         'Illuminate\\Foundation\\Testing\\RefreshDatabase' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabase.php',
         'Illuminate\\Foundation\\Testing\\RefreshDatabaseState' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/RefreshDatabaseState.php',
         'Illuminate\\Foundation\\Testing\\TestCase' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/TestCase.php',
-        'Illuminate\\Foundation\\Testing\\Traits\\CanConfigureMigrationCommands' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/Traits/CanConfigureMigrationCommands.php',
         'Illuminate\\Foundation\\Testing\\WithFaker' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/WithFaker.php',
         'Illuminate\\Foundation\\Testing\\WithoutEvents' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/WithoutEvents.php',
         'Illuminate\\Foundation\\Testing\\WithoutMiddleware' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/WithoutMiddleware.php',
@@ -3026,7 +3037,6 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
         'Illuminate\\View\\Compilers\\Concerns\\CompilesHelpers' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesHelpers.php',
         'Illuminate\\View\\Compilers\\Concerns\\CompilesIncludes' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesIncludes.php',
         'Illuminate\\View\\Compilers\\Concerns\\CompilesInjections' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesInjections.php',
-        'Illuminate\\View\\Compilers\\Concerns\\CompilesJs' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesJs.php',
         'Illuminate\\View\\Compilers\\Concerns\\CompilesJson' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesJson.php',
         'Illuminate\\View\\Compilers\\Concerns\\CompilesLayouts' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesLayouts.php',
         'Illuminate\\View\\Compilers\\Concerns\\CompilesLoops' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/Compilers/Concerns/CompilesLoops.php',
@@ -6841,6 +6851,72 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
         'ZipStream\\Option\\Version' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Option/Version.php',
         'ZipStream\\Stream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Stream.php',
         'ZipStream\\ZipStream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/ZipStream.php',
+        'Zipkin\\DefaultErrorParser' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/DefaultErrorParser.php',
+        'Zipkin\\DefaultTracing' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/DefaultTracing.php',
+        'Zipkin\\Endpoint' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Endpoint.php',
+        'Zipkin\\ErrorParser' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/ErrorParser.php',
+        'Zipkin\\Instrumentation\\Http\\Client\\DefaultHttpClientParser' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Client/DefaultHttpClientParser.php',
+        'Zipkin\\Instrumentation\\Http\\Client\\HttpClientParser' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Client/HttpClientParser.php',
+        'Zipkin\\Instrumentation\\Http\\Client\\HttpClientTracing' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Client/HttpClientTracing.php',
+        'Zipkin\\Instrumentation\\Http\\Client\\Psr18\\Client' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Client/Psr18/Client.php',
+        'Zipkin\\Instrumentation\\Http\\Client\\Psr18\\Propagation\\RequestHeaders' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Client/Psr18/Propagation/RequestHeaders.php',
+        'Zipkin\\Instrumentation\\Http\\Client\\Psr18\\Request' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Client/Psr18/Request.php',
+        'Zipkin\\Instrumentation\\Http\\Client\\Psr18\\Response' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Client/Psr18/Response.php',
+        'Zipkin\\Instrumentation\\Http\\Client\\Request' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Client/Request.php',
+        'Zipkin\\Instrumentation\\Http\\Client\\Response' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Client/Response.php',
+        'Zipkin\\Instrumentation\\Http\\Request' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Request.php',
+        'Zipkin\\Instrumentation\\Http\\Response' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Response.php',
+        'Zipkin\\Instrumentation\\Http\\Server\\DefaultHttpServerParser' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Server/DefaultHttpServerParser.php',
+        'Zipkin\\Instrumentation\\Http\\Server\\HttpServerParser' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Server/HttpServerParser.php',
+        'Zipkin\\Instrumentation\\Http\\Server\\HttpServerTracing' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Server/HttpServerTracing.php',
+        'Zipkin\\Instrumentation\\Http\\Server\\Psr15\\Middleware' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Server/Psr15/Middleware.php',
+        'Zipkin\\Instrumentation\\Http\\Server\\Psr15\\Propagation\\RequestHeaders' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Server/Psr15/Propagation/RequestHeaders.php',
+        'Zipkin\\Instrumentation\\Http\\Server\\Psr15\\Request' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Server/Psr15/Request.php',
+        'Zipkin\\Instrumentation\\Http\\Server\\Psr15\\Response' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Server/Psr15/Response.php',
+        'Zipkin\\Instrumentation\\Http\\Server\\Request' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Server/Request.php',
+        'Zipkin\\Instrumentation\\Http\\Server\\Response' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Http/Server/Response.php',
+        'Zipkin\\Instrumentation\\Mysqli\\Mysqli' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Instrumentation/Mysqli/Mysqli.php',
+        'Zipkin\\NoopSpan' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/NoopSpan.php',
+        'Zipkin\\NoopSpanCustomizer' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/NoopSpanCustomizer.php',
+        'Zipkin\\Propagation\\B3' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/B3.php',
+        'Zipkin\\Propagation\\CurrentTraceContext' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/CurrentTraceContext.php',
+        'Zipkin\\Propagation\\DefaultSamplingFlags' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/DefaultSamplingFlags.php',
+        'Zipkin\\Propagation\\Exceptions\\InvalidPropagationCarrier' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/Exceptions/InvalidPropagationCarrier.php',
+        'Zipkin\\Propagation\\Exceptions\\InvalidPropagationKey' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/Exceptions/InvalidPropagationKey.php',
+        'Zipkin\\Propagation\\Exceptions\\InvalidTraceContextArgument' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/Exceptions/InvalidTraceContextArgument.php',
+        'Zipkin\\Propagation\\Getter' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/Getter.php',
+        'Zipkin\\Propagation\\Map' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/Map.php',
+        'Zipkin\\Propagation\\Propagation' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/Propagation.php',
+        'Zipkin\\Propagation\\RemoteSetter' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/RemoteSetter.php',
+        'Zipkin\\Propagation\\RequestHeaders' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/RequestHeaders.php',
+        'Zipkin\\Propagation\\SamplingFlags' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/SamplingFlags.php',
+        'Zipkin\\Propagation\\ServerHeaders' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/ServerHeaders.php',
+        'Zipkin\\Propagation\\Setter' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/Setter.php',
+        'Zipkin\\Propagation\\TraceContext' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Propagation/TraceContext.php',
+        'Zipkin\\RealSpan' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/RealSpan.php',
+        'Zipkin\\Recorder' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Recorder.php',
+        'Zipkin\\Recording\\ReadbackSpan' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Recording/ReadbackSpan.php',
+        'Zipkin\\Recording\\Span' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Recording/Span.php',
+        'Zipkin\\Recording\\SpanMap' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Recording/SpanMap.php',
+        'Zipkin\\Reporter' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Reporter.php',
+        'Zipkin\\Reporters\\Http' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Reporters/Http.php',
+        'Zipkin\\Reporters\\Http\\ClientFactory' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Reporters/Http/ClientFactory.php',
+        'Zipkin\\Reporters\\Http\\CurlFactory' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Reporters/Http/CurlFactory.php',
+        'Zipkin\\Reporters\\InMemory' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Reporters/InMemory.php',
+        'Zipkin\\Reporters\\JsonV2Serializer' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Reporters/JsonV2Serializer.php',
+        'Zipkin\\Reporters\\Log' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Reporters/Log.php',
+        'Zipkin\\Reporters\\Log\\LogSerializer' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Reporters/Log/LogSerializer.php',
+        'Zipkin\\Reporters\\Noop' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Reporters/Noop.php',
+        'Zipkin\\Reporters\\SpanSerializer' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Reporters/SpanSerializer.php',
+        'Zipkin\\Sampler' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Sampler.php',
+        'Zipkin\\Samplers\\BinarySampler' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Samplers/BinarySampler.php',
+        'Zipkin\\Samplers\\PercentageSampler' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Samplers/PercentageSampler.php',
+        'Zipkin\\Span' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Span.php',
+        'Zipkin\\SpanCustomizer' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/SpanCustomizer.php',
+        'Zipkin\\SpanCustomizerShield' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/SpanCustomizerShield.php',
+        'Zipkin\\Tracer' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Tracer.php',
+        'Zipkin\\Tracing' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/Tracing.php',
+        'Zipkin\\TracingBuilder' => __DIR__ . '/..' . '/openzipkin/zipkin/src/Zipkin/TracingBuilder.php',
         'phpDocumentor\\Reflection\\DocBlock' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlock.php',
         'phpDocumentor\\Reflection\\DocBlockFactory' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlockFactory.php',
         'phpDocumentor\\Reflection\\DocBlockFactoryInterface' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlockFactoryInterface.php',
@@ -6939,10 +7015,10 @@ class ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit30f338ecf6f9655b1a554c840ca3c595::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4::$classMap;
 
         }, null, ClassLoader::class);
     }

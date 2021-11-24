@@ -9,9 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
-class Modules extends Model
+class Modules extends MY_Model
 {
-    use HasFactory;
     use SoftDeletes;
     protected $table = 'modules';
     protected $primaryKey = 'id';
@@ -27,6 +26,7 @@ class Modules extends Model
             ->where('acl_roles.role_id',$role_id)
             ->whereNull('modules.deleted_at')
             ->whereNull('acl_roles.deleted_at')
+            ->where('modules.status',1)
             ->get()
             ->toArray();
         }else{

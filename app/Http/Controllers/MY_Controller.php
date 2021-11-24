@@ -70,11 +70,9 @@ class MY_Controller extends Controller
             // $this->redis = Redis::connection();
             $this->getListModule();
             $this->getSetting();
-            if (!$request->ajax()) {
+            if(!isset($request->draw) ){
                 LogactivitiesHelper::addToLog($request);
-            } elseif (isset($request->draw) && $request->draw == 1) {
-                LogactivitiesHelper::addToLog($request);
-            }
+            };
             return $next($request);
         });
     }
@@ -82,15 +80,15 @@ class MY_Controller extends Controller
     public function getListModule()
     {
         //checking redis
-        // $keyName = config('constants.REDIS_KEY.MODULE_BY_ROLE_ID').$this->user->role->id; // redis key: acl role module
-        // $data = Redis::get($keyName);
-        // if(!is_null($data)) {
+        $keyName = config('constants.REDIS_KEY.MODULE_BY_ROLE_ID').$this->user->role->id; // redis key: acl role module
+        $data = Redis::get($keyName);
+        if(!is_null($data)) {
             // dd(now()->format('h:i:s'));
-        //     $getModuleData = unserialize($data);
-        // }else{
+            $getModuleData = unserialize($data);
+        }else{
             $getModuleData = (new Modules())->getModulesGroupByParent($this->user->role_id);
-        //     Redis::set($keyName, serialize($getModuleData));
-        // }
+            Redis::set($keyName, serialize($getModuleData));
+        }
         $data = [];
         $getModuleData = (new Modules())->getModulesGroupByParent($this->user->role_id);
         if (!empty($getModuleData->listModule)) {
