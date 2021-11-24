@@ -17,7 +17,7 @@
     <link href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/login/main.css?v=7.0.6"
           rel="stylesheet" type="text/css"/>
 
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="gray-bg">
 <div id="eagle-alert"></div>
