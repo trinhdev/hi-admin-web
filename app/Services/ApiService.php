@@ -20,10 +20,6 @@ class ApiService
         
         $url = $baseUrl . $subDomain . 'change-config-version';
         $result_raw = CallApiHelper::sendRequest($url, $param, $token);
-        echo $url;
-        var_dump($clientKey . "::" . $secretKey . date("Y-d-m"));
-        var_dump($param);
-        dd($token);
         
         $result = (!is_int($result_raw) && !is_string($result_raw)) ? json_decode(json_encode($result_raw), true) : $result_raw;
         if(isset($result['statusCode']) && $result['statusCode'] == 0){
