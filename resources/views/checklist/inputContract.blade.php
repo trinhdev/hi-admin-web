@@ -1,6 +1,7 @@
 @extends('layouts.default')
 
 @section('content')
+@if(env('APP_ENV') == 'staging' || env('APP_ENV') == 'local' )
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -8,7 +9,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">CLOSE HELP REQUEST</h1>
+                    <h1 class="m-0">CHECK LIST MANAGE</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -44,15 +45,15 @@
                             </div>
                             <!-- Card body -->
                             <div id="collapseUnfiled" class="collapse" role="tabpanel" data-parent="#accordionEx78">
-                                <form action="/checklistmanage/sendStaff" action="POST">
+                                <form action="/checklistmanage/sendStaff" action="POST" onsubmit="handleSubmit(event,this)">
                                     @csrf
                                     <div class="card-body">
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control" name="contractNo" placeholder="Enter Contract Number...">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-warning">Submit</button>
-                                            </div>
                                         </div>
+                                    </div>
+                                    <div class="card-footer" style="text-align: center">
+                                        <button class="btn btn-info">Submit</button>
                                     </div>
                                 </form>
                             </div>
@@ -60,14 +61,14 @@
                         <!-- Accordion card -->
 
                         <!-- Accordion card -->
-                        <div class="card card-success">
+                        <div class="card card-info">
 
                             <!-- Card header -->
                             <div class="card-header" role="tab">
                                 <!-- Heading -->
                                 <a data-toggle="collapse" data-parent="#accordionEx78" href="#completeChecklist" aria-expanded="true" aria-controls="collapseUnfiled">
                                     <h5 class="mt-1 mb-0">
-                                        <span>Complete Checklist</span>
+                                        <span>Complete</span>
                                         <i class="fas fa-angle-down rotate-icon"></i>
                                     </h5>
                                 </a>
@@ -76,15 +77,15 @@
 
                             <!-- Card body -->
                             <div id="completeChecklist" class="collapse" role="tabpanel" data-parent="#accordionEx78">
-                                <form action="/checklistmanage/completeChecklist" action="POST">
+                                <form action="/checklistmanage/completeChecklist" action="POST" onsubmit="handleSubmit(event,this)">
                                     @csrf
                                     <div class="card-body">
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" name="checkListId"placeholder="Enter Checklist Id...">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-warning">Submit</button>
-                                            </div>
+                                            <input type="text" class="form-control" name="checkListId" placeholder="Enter Id...">
                                         </div>
+                                    </div>
+                                    <div class="card-footer" style="text-align: center">
+                                        <button class="btn btn-info">Submit</button>
                                     </div>
                                 </form>
                             </div>
@@ -94,11 +95,28 @@
                     <!--/.Accordion wrapper-->
                 </div>
             </div>
-        </div>
-        <div>
-        @foreach($list_checklist_id as $checklist)
-            <div>{{$checklist}}</div>
-        @endforeach
+            <h4 class="text-muted text-center">List Id</h4>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <ul class="list-group">
+                    @php
+                        $checklistLength = count($list_checklist_id);
+                    @endphp
+                        @foreach($list_checklist_id as $key=>$checklist)
+                        <li class="list-group-item d-flex justify-content-around align-items-center">
+                        <div class="badge badge-primary">No. {{$checklistLength--}}</div>
+                            {{$checklist}}
+                            <form  action="/checklistmanage/completeChecklist" action="POST" onsubmit="handleSubmit(event,this)">
+                            @csrf
+                                <input type="text" class="form-control" name="checkListId" hidden value="{{$checklist}}">
+                                <button class="btn btn-sm btn-outline-success"><i class="fa fa-check" aria-hidden="true"></i></button>
+                            </form>
+                        </li>
+                        @endforeach
+
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
     <!-- /.content -->
@@ -110,4 +128,18 @@
     }
 
 </style>
+@else
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">ONLY AVAILABLE ON STAGING</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 @endsection

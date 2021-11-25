@@ -1,9 +1,8 @@
 @extends('layouts.default')
-
+@section('content')
 @push('header')
 <link rel="stylesheet" href="{{asset('custom_css/close_request.css')}}">
 @endpush
-@section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -28,7 +27,7 @@
     <section class="content">
         <div class="container">
             <div class="col-md-12">
-                <div class="card card-white mb-5">
+                <div class="card2 card-white mb-5">
                     <ul class="list-unstyled">
                         @php
                             $listColor = ['warning','info','primary','sucess'];

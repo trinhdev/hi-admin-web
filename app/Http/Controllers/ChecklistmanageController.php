@@ -62,7 +62,7 @@ class ChecklistmanageController extends MY_Controller
     }
     private function getListCheckList(){
         $keyName = config('constants.REDIS_KEY.LIST_CHECKLIST_ID');
-        $list = Redis::command('ZRANGE', [$keyName,0,-1]);
+        $list = Redis::command('ZREVRANGE', [$keyName,0,-1]);
         return $list;
     }
 }
