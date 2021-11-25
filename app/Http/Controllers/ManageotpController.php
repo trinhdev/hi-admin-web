@@ -24,6 +24,48 @@ class ManageOtpController extends MY_Controller
         return view('otp.request');
     }
 
+    public function handle(Request $request) {
+        $executed = RateLimiter::attempt(
+            'request-otp-with-phone' . $request['phone'],
+            $perMinute = 2,
+            function() {
+                
+            }
+        );
+        if (! $executed) {
+            return view('error419');
+        }
+
+        $validated = $request->validate([
+            'phone' => 'required|digits_between:10,11',
+        ]);
+
+        switch($request->action) {
+            case 'get_otp':
+                $hiCustomer = new HdiCustomer();
+                $data = $hiCustomer->postOTPByPhone('/help-tool/otp-by-phone', ["phone" => $request["phone"]]);
+                if(!empty($data['status'])) {
+                    $result = ['success' => 'success', 'html' => $data['data']['otp']];
+                }
+                else {
+                    $result = ['error' => 'error', 'html' => $data['message']];
+                }
+                break;
+            case 'reset_otp':
+                $hiCustomer = new HdiCustomer();
+                $data = $hiCustomer->postResetOTPByPhone('/help-tool/reset-otp', ["phone" => $request["phone"]]);
+                if(!empty($data['status'])) {
+                    $result = ['success' => 'success', 'html' => $data['message']];
+                }
+                else {
+                    $result = ['error' => 'error', 'html' => $data['message']];
+                }
+                break;
+        }
+
+        return redirect('/manageotp')->with($result);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -88,64 +130,5 @@ class ManageOtpController extends MY_Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function request_otp(Request $request) {
-        $executed = RateLimiter::attempt(
-            'request-otp-with-phone' . $request['phone'],
-            $perMinute = 2,
-            function() {
-                
-            }
-        );
-        if (! $executed) {
-            return view('error419');
-        }
-
-        $validated = $request->validate([
-            'phone' => 'required|digits_between:10,11',
-        ]);
-
-        $hiCustomer = new HdiCustomer();
-        $data = $hiCustomer->postOTPByPhone('/help-tool/otp-by-phone', ["phone" => $request["phone"]]);
-        if(!empty($data['status'])) {
-            $result = ['success' => 'success', 'html' => $data['data']['otp']];
-        }
-        else {
-            $result = ['error' => 'error', 'html' => $data['message']];
-        }
-        return redirect('/manageotp')->with($result);
-    }
-
-    public function reset_otp_view() {
-        return view('otp.reset');
-    }
-
-    public function reset_otp(Request $request) {
-        $executed = RateLimiter::attempt(
-            'request-otp-with-phone' . $request['phone'],
-            $perMinute = 2,
-            function() {
-                
-            }
-        );
-        if (! $executed) {
-            return view('error419');
-        }
-
-        $validated = $request->validate([
-            'phone' => 'required|digits_between:10,11',
-        ]);
-
-        $hiCustomer = new HdiCustomer();
-        $data = $hiCustomer->postOTPByPhone('/help-tool/reset-otp', ["phone" => $request["phone"]]);
-        if(!empty($data['status'])) {
-            $result = ['success' => 'success', 'html' => $data['message']];
-        }
-        else {
-            $result = ['error' => 'error', 'html' => $data['message']];
-        }
-        
-        return redirect('/manageotp/reset_otp_view')->with($result);
     }
 }
