@@ -38,4 +38,3 @@
 <script src="{{ asset('custom_js/javascript.js')}}"></script>
 <script src="{{ asset('custom_js/initTable.js')}}"></script>
 <script src="{{ asset('/custom_js/callAjaxCloseRequest.js')}}"></script>
-<script src="{{ asset('/custom_js/settings.js')}}"></script>
