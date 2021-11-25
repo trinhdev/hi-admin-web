@@ -55,10 +55,11 @@ class SettingsController extends MY_Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|unique:settings|max:255',
+            'name'  => 'required|unique:settings|max:255',
+            'value' => 'json'
         ]);
         $request->merge([
-            'value' => (isset($request->value)) ? json_encode(json_decode($request->value, true)) : "[]"
+            'value' => (isset($request->value)) ? '[' . implode(",", $request->value) . ']' : "[]"
         ]);
         $setting = $this->createSingleRecord($this->model, $request->all());
         return redirect('/settings');
@@ -99,9 +100,9 @@ class SettingsController extends MY_Controller
         $validated = $request->validate([
             'name' => 'required|max:255',
         ]);
-        // dd();
         $request->merge([
-            'value' => (isset($request->value)) ? '[' . implode(",", $request->value) . ']' : "[]"
+            'value' => (isset($request->value)) ? '[' . implode(",", $request->value) . ']' : "[]",
+            'value' => 'json'
         ]);
         $setting = $this->updateById($this->model, $id, $request->all());
         return redirect('/settings');
