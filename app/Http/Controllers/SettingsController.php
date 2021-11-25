@@ -128,9 +128,6 @@ class SettingsController extends MY_Controller
             ->addColumn('action', function($row){
                 return view('layouts.button.action')->with(['row'=>$row,'module'=>'settings']);
             })
-            ->editColumn('group_module_id',function($row){
-                return !empty($row->group_module_id) ? $row->parent->group_module_name : '';
-            })
             ->rawColumns(['action'])
             ->make(true);
         }
