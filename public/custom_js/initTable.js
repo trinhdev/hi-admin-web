@@ -590,6 +590,7 @@ function initHidePaymentLogs() {
         "bDestroy": true,
         "scrollX": true,
         "pageLength": 5,
+        "lengthMenu": [ 5, 10, 25, 50, 75, 100 ],
         "order": [[ 6, "desc" ]],
         retrieve: true,
         "ajax": {
