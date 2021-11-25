@@ -25,6 +25,9 @@ $(document).ready(function () {
             case 'logactivities':
                 initLogActivities();
                 break;
+            case 'settings':
+                initSettings();
+                break;
             case 'hidepayment':
                 initHidePaymentLogs();
                 break;
@@ -493,6 +496,91 @@ function initManageOtp() {
     });
 }
 
+function initSettings() {
+    $('#settings').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "select": true,
+        "dataSrc": "tableData",
+        "bDestroy": true,
+        "scrollX": true,
+        "retrieve": true,
+        // "autoWidth": false,
+        "fixedColumns": true,
+        "ajax": {
+            url: "/settings/initDatatable"
+        },
+        "columnDefs": [
+            { "width": 20, "targets": 2 },
+        ],
+        "columns": [{
+                data: 'id',
+                name: "id",
+                title: "Id"
+            },
+            {
+                data: 'name',
+                name: "name",
+                title: "Unique name"
+            },
+            {
+                data: "value",
+                name: "value",
+                title: "Value",
+                render: function(data, type, row) {
+                    const htmlEntities = {
+                        "&": "&amp;",
+                        "<": "&lt;",
+                        ">": "&gt;",
+                        '"': "&quot;",
+                        "'": "&apos;"
+                    };
+                    var value = JSON.parse(String(data).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"'));
+                    var template = badgeArrayView(value);
+                    return template;
+                },
+                width: 20
+            },
+            {
+                data: "created_at",
+                name: "created_at",
+                title: "Created at"
+            },
+            {
+                data: "created_by",
+                name: "created_by",
+                title: "Created By"
+            },
+            {
+                data: "updated_at",
+                name: "updated_at",
+                title: "Updated at"
+            },
+            {
+                data: "updated_by",
+                name: "updated_by",
+                title: "Updated By"
+            },
+            {
+                data: "action",
+                name: "action",
+                title: "Action",
+                sortable: false
+            }
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#settings').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500
+    });
+}
+
 function initHidePaymentLogs() {
     $('#hide-payment').DataTable({
         "processing": true,
@@ -501,6 +589,7 @@ function initHidePaymentLogs() {
         "dataSrc": "tableData",
         "bDestroy": true,
         "scrollX": true,
+        "pageLength": 5,
         "order": [[ 6, "desc" ]],
         retrieve: true,
         "ajax": {
@@ -519,12 +608,18 @@ function initHidePaymentLogs() {
             {
                 data: "isUpStoreAndroid",
                 name: "isUpStoreAndroid",
-                title: "Android"
+                title: "Android",
+                render: function(data, type, row) {
+                    return (data == "0") ? "Show Payment" : "Hide Payment";
+                },
             },
             {
                 data: "isUpStoreIos",
                 name: "isUpStoreIos",
-                title: "IOS"
+                title: "IOS",
+                render: function(data, type, row) {
+                    return (data == "0") ? "Show Payment" : "Hide Payment";
+                },
             },
             {
                 data: "api_status",
