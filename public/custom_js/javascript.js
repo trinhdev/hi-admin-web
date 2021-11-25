@@ -72,10 +72,25 @@ function deleteRow(btn) {
     row.parentNode.removeChild(row);
 }
 
-function handleSubmit(e) {
-    // e.preventDefault();
-    let data = $(e).serialize();
-    console.log(data);
+function handleSubmit(e,form) {
+    e.preventDefault();
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Please Confirm This Action",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Confirmed!',
+        reverseButtons: true
+        
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+            let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+            $('form').find(':button').prop('disabled', true);
+        }
+    });
 }
 function dialogConfirmWithAjax(sureCallbackFunction,data){
     Swal.fire({

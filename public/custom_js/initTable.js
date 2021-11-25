@@ -25,6 +25,9 @@ $(document).ready(function () {
             case 'logactivities':
                 initLogActivities();
                 break;
+            case 'hidepayment':
+                initHidePaymentLogs();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -488,4 +491,86 @@ function initManageOtp() {
         },
         searchDelay: 500
     });
+}
+
+function initHidePaymentLogs() {
+    $('#hide-payment').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "select": true,
+        "dataSrc": "tableData",
+        "bDestroy": true,
+        "scrollX": true,
+        "order": [[ 6, "desc" ]],
+        retrieve: true,
+        "ajax": {
+            url: "/hidepayment/initDatatable"
+        },
+        "columns": [{
+                data: 'id',
+                name: "id",
+                title: "Id"
+            },
+            {
+                data: 'version',
+                name: "version",
+                title: "Version"
+            },
+            {
+                data: "isUpStoreAndroid",
+                name: "isUpStoreAndroid",
+                title: "Android"
+            },
+            {
+                data: "isUpStoreIos",
+                name: "isUpStoreIos",
+                title: "IOS"
+            },
+            {
+                data: "api_status",
+                name: "api_status",
+                title: "API status"
+            },
+            {
+                data: "error_mesg",
+                name: "error_mesg",
+                title: "Error message"
+            },
+            {
+                data: "created_at",
+                name: "created_at",
+                title: "Created at"
+            },
+            {
+                data: "created_by",
+                name: "created_by",
+                title: "Created By"
+            },
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#hide-payment').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500
+    });
+}
+
+function badgeArrayView(arrayInput) {
+    var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];
+    var count_badge = 0;
+    var template = ``;
+    $.map( arrayInput, function( n, i ) {
+        if (count_badge == badge.length) {
+            count_badge = 0;
+        }
+        template += `<span class="badge ${badge[count_badge]}">${JSON.stringify(n)}</span> `;
+        count_badge++;
+        // return template
+    });
+    return template;
 }
