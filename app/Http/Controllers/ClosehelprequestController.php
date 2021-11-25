@@ -25,8 +25,6 @@ class ClosehelprequestController extends MY_Controller
         
         $contractService = new ContractService();
         $helpReqeustService = new HelpRequestService();
-        $tmp = $helpReqeustService->closeRequestByListReportId([1]);
-
         $contract_info_response = $contractService->getContractInfo($request); // call api get contract info
         if(empty($contract_info_response->data)){
             return redirect()->back()->withErrors(['error'=>"Hợp đồng không tồn tại!"]);
