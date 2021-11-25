@@ -150,7 +150,7 @@ class ModulesController extends MY_Controller
     
     public function initDatatable(Request $request){
         if($request->ajax()){
-            $data = $this->model::query();
+            $data = $this->model::query()->with('parent');
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
