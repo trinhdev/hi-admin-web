@@ -26,7 +26,7 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        <form action="/manageotp/request_otp" method="POST" autocomplete="off">
+                        <form action="/manageotp/handle" method="POST" autocomplete="off">
                             @csrf
 
                             <div class="card card-info">
@@ -46,8 +46,9 @@
                                 </div>
                                 
                                 <div class="card-footer" style="text-align: center">
-                                    <button type="submit" class="btn btn-info">Get OTP</button>
-                                    <a href="/manageotp/reset_otp_view" type="button" class="btn btn-default">Reset OTP</a>
+                                    <button name="action" value="get_otp" type="submit" class="btn btn-info">Get OTP</button>
+                                    <button name="action" value="reset_otp" type="submit" class="btn btn-primary">Reset OTP</button>
+                                    <!-- <a href="/manageotp/reset_otp_view" type="button" class="btn btn-default">Reset OTP</a> -->
                                 </div>
                             </div>
                         </form>
