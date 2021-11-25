@@ -32,6 +32,9 @@ class ApiService
             $data['data']       = (!empty($result['data'])) ? $result['data'] : '';
             $data['message']    = (!empty($result['message'])) ? $result['message'] : "Error";
         }
+
+        $data['statusCode'] = (isset($result['statusCode'])) ? $result['statusCode'] : -1;
+
         return $data;
     }
 }
