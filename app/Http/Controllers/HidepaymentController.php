@@ -32,16 +32,12 @@ class HidepaymentController extends MY_Controller
 
     public function index()
     {
-        return view('hidepayment.list');
-    }
-
-    public function hide_view() {
         $version = Settings::where('name', 'hide_payment_version')->get();
         $hidepayment = new stdClass();
         $hidepayment->versions = json_decode($version[0]['value'], true);
-        return view('hidepayment.hide')->with('hidepayment', $hidepayment);
+        return view('hidepayment.list')->with('hidepayment', $hidepayment);
     }
-
+    
     public function hide(Request $request) {
         $executed = RateLimiter::attempt(
             'hide-payment' . $request['version'],
