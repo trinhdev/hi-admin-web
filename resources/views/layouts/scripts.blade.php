@@ -4,6 +4,7 @@
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
     $.widget.bridge('uibutton', $.ui.button)
+
 </script>
 <!-- Bootstrap 4 -->
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -28,12 +29,12 @@
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/dist/js/pages/dashboard3.js"></script>
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/select2/js/select2.full.min.js"></script>
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/bootstrap-select-1.13.14/dist/js/bootstrap-select.js"></script>
-<script src= "{{asset('custom_js/jquery.pjax.js')}}"></script>
+<script src="{{asset('custom_js/jquery.pjax.js')}}"></script>
 <!-- DataTables -->
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables/jquery.dataTables.js"></script>
 <script src="{{ asset('js/dataTablebutton.min.js') }}"></script>
 <script src="{{ asset('js/buttonHtml5.js') }}"></script>
 <script src="{{ asset('js/jszip.min.js') }}"></script>
-<script src ='/custom_js/javascript.js'></script>
-<script src ='/custom_js/initTable.js'></script>
-<script src ='/custom_js/callAjaxCloseRequest.js'></script>
+<script src="{{ asset('custom_js/javascript.js')}}"></script>
+<script src="{{ asset('custom_js/initTable.js')}}"></script>
+<script src="{{ asset('/custom_js/callAjaxCloseRequest.js')}}"></script>
