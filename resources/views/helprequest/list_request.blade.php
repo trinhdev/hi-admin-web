@@ -59,7 +59,7 @@
                             </div>
                             @if($report->reportType === 'HT-KYTHUAT' && $report->isShowBtnCancel == 1)
                             <div class="buttons-to-right">
-                                <a onclick="closeRequest(this)" type="button"class="btn-red mr-2"><i class="far fa-times-circle mr-2"></i>Close</a>
+                                <a onclick="dialogConfirmWithAjax(callAPI,this)" type="button"class="btn-red mr-2"><i class="far fa-times-circle mr-2"></i>Close</a>
                             </div>
                             @endif
                         </li>

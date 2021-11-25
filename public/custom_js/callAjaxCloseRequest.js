@@ -1,6 +1,3 @@
-function closeRequest(_this){ // button in li
-  dialogConfirmWithAjax(callAPI,_this);
-}
 function callAPI(_this){
   let li_tag = $(_this).closest("li");
   let _report_id = $(li_tag).attr('id')
