@@ -11,6 +11,10 @@ use \stdClass;
 use App\Services\ApiService;
 use Illuminate\Support\Facades\RateLimiter;
 
+use Yajra\DataTables\DataTables;
+
+use App\Models\Settings;
+
 class HidepaymentController extends MY_Controller
 {
     /**
@@ -23,13 +27,18 @@ class HidepaymentController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        // dd('26 - Hidepayment controller');
+        $this->model = $this->getModel('Hidepayments');
     }
 
     public function index()
     {
+        return view('hidepayment.list');
+    }
+
+    public function hide_view() {
+        $version = Settings::where('name', 'hide_payment_version')->get();
         $hidepayment = new stdClass();
-        $hidepayment->versions = ['6.2.1'];
+        $hidepayment->versions = json_decode($version[0]['value'], true);
         return view('hidepayment.hide')->with('hidepayment', $hidepayment);
     }
 
@@ -54,7 +63,6 @@ class HidepaymentController extends MY_Controller
         ]);
         
         $data = ApiService::hidePayment($request->all());
-        
 
         if(!empty($data['status'])) {
             $result = ['success' => 'success', 'html' => $data['message']];
@@ -62,6 +70,14 @@ class HidepaymentController extends MY_Controller
         else {
             $result = ['error' => 'error', 'html' => $data['message']];
         }
+
+        $request->merge([
+            'api_status'    => $data['statusCode'],
+            'error_mesg'    => $data['message']
+        ]);
+
+        $hidepayment = $this->createSingleRecord($this->model, $request->all());
+
         return redirect('/hidepayment')->with($result);
     }
 
@@ -129,5 +145,14 @@ class HidepaymentController extends MY_Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function initDatatable(Request $request){
+        if($request->ajax()){
+            $data = $this->model::query();
+            return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+        }
     }
 }
