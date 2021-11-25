@@ -88,7 +88,7 @@ function handleSubmit(e,form) {
         if (result.isConfirmed) {
             form.submit();
             let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
-            $('form').find('button').prop('disabled', true);
+            $('form').find(':button').prop('disabled', true);
         }
     });
 }

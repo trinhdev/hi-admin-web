@@ -108,7 +108,11 @@ trait AuthenticatesUsers
      */
     protected function sendLoginResponse(Request $request)
     {
-        LogactivitiesHelper::addToLog($request);
+        $logParam = $request;
+        $logParam->merge([
+            'password' => '*****'
+        ]);
+        LogactivitiesHelper::addToLog($logParam);
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
