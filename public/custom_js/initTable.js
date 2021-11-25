@@ -27,6 +27,7 @@ $(document).ready(function () {
                 break;
             case 'settings':
                 initSettings();
+                settings_on_search();
                 break;
             case 'hidepayment':
                 initHidePaymentLogs();
@@ -44,9 +45,9 @@ $(document).ready(function () {
         // location = event.currentTarget.URL;
         $.pjax.reload('#pjax');
     });
-    $(document).on('pjax:error', function (event, xhr, textStatus, errorThrown, options) {
-        $.pjax.reload('#pjax');
-    });
+    // $(document).on('pjax:error', function (event, xhr, textStatus, errorThrown, options) {
+    //     $.pjax.reload('#pjax');
+    // });
 
 });
 
@@ -669,4 +670,19 @@ function badgeArrayView(arrayInput) {
         // return template
     });
     return template;
+}
+
+function settings_on_search() {
+    $('form .bs-searchbox input').keyup(function(e) {
+        if (e.which == 13) {
+            var search = $(".bs-searchbox input").val();
+            console.log(search);
+            $("#value").append($('<option>', {
+                value: search,
+                text: search
+            }));
+            $('#value').selectpicker('refresh');
+            $('#value').selectpicker('selectAll');
+        }
+    });
 }
