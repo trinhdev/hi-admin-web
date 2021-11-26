@@ -15,6 +15,8 @@ use Yajra\DataTables\DataTables;
 
 use App\Models\Settings;
 
+use Illuminate\Support\Facades\Gate;
+
 class HidepaymentController extends MY_Controller
 {
     /**
@@ -35,10 +37,15 @@ class HidepaymentController extends MY_Controller
         $version = Settings::where('name', 'hide_payment_version')->get();
         $hidepayment = new stdClass();
         $hidepayment->versions = json_decode($version[0]['value'], true);
+
         return view('hidepayment.list')->with('hidepayment', $hidepayment);
     }
     
     public function hide(Request $request) {
+        if (Gate::denies('hide-payment')) {
+            abort(403);
+        }
+
         $executed = RateLimiter::attempt(
             'hide-payment' . $request['version'],
             $perMinute = 2,
@@ -47,7 +54,7 @@ class HidepaymentController extends MY_Controller
             }
         );
         if (! $executed) {
-            return view('error419');
+            abort(419);
         }
 
         $validated = $request->validate([

@@ -62,9 +62,11 @@
                                     </div>
                                 </div>
                                 
-                                <div class="card-footer" style="text-align: center">
-                                    <button type="submit" class="btn btn-info">Hide payment</button>
-                                </div>
+                                @can('hide-payment')
+                                    <div class="card-footer" style="text-align: center">
+                                        <button type="submit" class="btn btn-info">Hide payment</button>
+                                    </div>
+                                @endcan
                             </div>
                         </form>
                     </div>
