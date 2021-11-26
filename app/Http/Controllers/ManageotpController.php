@@ -33,7 +33,7 @@ class ManageOtpController extends MY_Controller
             }
         );
         if (! $executed) {
-            return view('error419');
+            abort(419);
         }
 
         $validated = $request->validate([
