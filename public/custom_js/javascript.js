@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(document).pjax('a', '#pjax');
-    $('aside li.nav-item a').on('click', function (e) {
+    $('aside .nav-treeview li.nav-item a').on('click', function (e) {
         if ($(this).attr('href') != '#') {
             $('aside').find(".menu-open > .nav-treeview").not($(this).parents('.menu-open > .nav-treeview')).slideUp()
             $('aside').find(".menu-open").not($(this).parents('.menu-open')).removeClass("menu-is-opening menu-open");
