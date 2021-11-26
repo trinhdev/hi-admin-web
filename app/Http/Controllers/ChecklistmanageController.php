@@ -35,12 +35,11 @@ class ChecklistmanageController extends MY_Controller
         }
         $contract_info = $contract_info_response->data[0];
         $list_report_response = $helpReqeustService->updateEmployeeByContract($contract_info); // call api get list report by contract
-        $listCheckList = $this->getListCheckList();
         if($list_report_response->statusCode != 0){
-            return redirect()->back()->withErrors(['error'=>$list_report_response->message,'list_checklist_id'=>$listCheckList]);
+            return redirect('/checklistmanage')->withErrors(['error'=>$list_report_response->message]);
         }
         // continue
-        return redirect()->back()->withSuccess(['success'=>'success','list_checklist_id'=>$listCheckList]);
+        return redirect('/checklistmanage')->withSuccess(['success'=>'success']);
     }
 
     public function completeChecklist(Request $request)
@@ -51,11 +50,10 @@ class ChecklistmanageController extends MY_Controller
             ]);       
             $helpReqeustService = new HelpRequestService();
             $completeChecklist_reponse = $helpReqeustService->completeChecklist($request->checkListId);
-            $listCheckList = $this->getListCheckList();
             if($completeChecklist_reponse->statusCode != 0){
-                return redirect()->back()->withErrors(['error'=>$completeChecklist_reponse->message,'list_checklist_id'=>$listCheckList]);
+                return redirect('/checklistmanage')->withErrors(['error'=>$completeChecklist_reponse->message]);
             }
-            return redirect()->back()->withSuccess(['success'=>'success','list_checklist_id'=>$listCheckList]);
+            return redirect('/checklistmanage')->withSuccess(['success'=>'success']);
         }
     }
     private function getListCheckList(){

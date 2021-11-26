@@ -70,6 +70,12 @@ class SettingsSeeder extends Seeder
                 'uri' =>'logactivities',
                 'status' =>'1'
             ],
+            [
+                'name'=>'Setting',
+                'vi_name' => '',
+                'uri' =>'settings',
+                'status' =>'1'
+            ],
         ];
         DB::table('settings')->insert([
             'name' => 'uri_config',

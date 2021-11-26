@@ -26,7 +26,7 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        <form action="/groupmodule{{(!$groupmodule->id) ? '/store' : '/update'}}{{ (!$groupmodule->id) ? '' : '/' . $groupmodule->id }}" method="POST" novalidate="novalidate" autocomplete="off">
+                        <form action="/groupmodule{{(!$groupmodule->id) ? '/store' : '/update'}}{{ (!$groupmodule->id) ? '' : '/' . $groupmodule->id }}" method="POST" novalidate="novalidate" autocomplete="off" onSubmit="handleSubmit(event,this)">
                             @csrf
             
                             @if (isset($groupmodule->id) && $groupmodule->id)

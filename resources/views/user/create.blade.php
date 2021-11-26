@@ -38,7 +38,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <form action="/user/store" method="POST">
+                        <form action="/user/store" method="POST" onSubmit="handleSubmit(event,this)">
                             @csrf
                             <div class="card card-default">
                                 <div class="card-header">

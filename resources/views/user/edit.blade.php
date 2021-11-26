@@ -38,7 +38,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <form action="/user/update/{{$user->id}}" method="POST">
+                        <form action="/user/update/{{$user->id}}" method="POST" onSubmit="handleSubmit(event,this)">
                             @csrf
                             @method('PUT')
                             <div class="card card-info">

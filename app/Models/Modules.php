@@ -45,15 +45,17 @@ class Modules extends MY_Model
             $groupModule->children = [];
             $arrayGroupKey[$groupModule->id] = $groupModule;
         };
-        array_walk_recursive($listModule, function($val, $key) use(&$arrayGroupKey) {
+        $lastData = [];
+        array_walk_recursive($listModule, function($val, $key) use(&$arrayGroupKey,&$lastData) {
             if(array_key_exists($val->group_module_id,$arrayGroupKey)){
                 $arrayGroupKey[$val->group_module_id]->children[] = $val;
+                $lastData[$val->group_module_id] = $arrayGroupKey[$val->group_module_id];
             }else{
-                $arrayGroupKey[] = $val;
+                $lastData[] = $val;
             }
         });
         $result->listModule = $listModule;
-        $result->arrayGroupkey = $arrayGroupKey;
+        $result->arrayGroupkey = $lastData;
         return $result;
     }
     

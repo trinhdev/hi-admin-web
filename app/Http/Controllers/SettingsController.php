@@ -4,20 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Http\Traits\DataTrait;
-use \stdClass;
-
-use App\Services\ApiService;
-use Illuminate\Support\Facades\RateLimiter;
-
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Route;
+use \stdClass;
 
 use App\Models\Settings;
 
-use Illuminate\Support\Facades\Gate;
-
-class HidepaymentController extends MY_Controller
+class SettingsController extends MY_Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,59 +24,12 @@ class HidepaymentController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->model = $this->getModel('Hidepayments');
+        $this->model = $this->getModel('Settings');
     }
 
     public function index()
     {
-        $version = Settings::where('name', 'hide_payment_version')->get();
-        $hidepayment = new stdClass();
-        $hidepayment->versions = json_decode($version[0]['value'], true);
-
-        return view('hidepayment.list')->with('hidepayment', $hidepayment);
-    }
-    
-    public function hide(Request $request) {
-        if (Gate::denies('hide-payment')) {
-            abort(403);
-        }
-
-        $executed = RateLimiter::attempt(
-            'hide-payment' . $request['version'],
-            $perMinute = 2,
-            function() {
-                
-            }
-        );
-        if (! $executed) {
-            abort(419);
-        }
-
-        $validated = $request->validate([
-            'version' => 'required',
-        ]);
-        $request->merge([
-            'isUpStoreAndroid' => (!isset($request->isUpStoreAndroid)) ? "0" : "1",
-            'isUpStoreIos' => (!isset($request->isUpStoreIos)) ? "0" : "1",
-        ]);
-        
-        $data = ApiService::hidePayment($request->all());
-
-        if(!empty($data['status'])) {
-            $result = ['success' => 'success', 'html' => $data['message']];
-        }
-        else {
-            $result = ['error' => 'error', 'html' => $data['message']];
-        }
-
-        $request->merge([
-            'api_status'    => $data['statusCode'],
-            'error_mesg'    => $data['message']
-        ]);
-
-        $hidepayment = $this->createSingleRecord($this->model, $request->all());
-
-        return redirect('/hidepayment')->with($result);
+        return view('settings.list');
     }
 
     /**
@@ -91,7 +39,11 @@ class HidepaymentController extends MY_Controller
      */
     public function create()
     {
-        //
+        $setting = new stdClass();
+        $setting->id = '';
+        $setting->name = '';
+        $setting->value = '[]';
+        return view('settings.form')->with('setting', $setting);
     }
 
     /**
@@ -102,7 +54,13 @@ class HidepaymentController extends MY_Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name'  => 'required|unique:settings|max:255',
+            'value' => 'required|json'
+        ]);
+        
+        $setting = $this->createSingleRecord($this->model, $request->all());
+        return redirect('/settings');
     }
 
     /**
@@ -124,7 +82,8 @@ class HidepaymentController extends MY_Controller
      */
     public function edit($id)
     {
-        //
+        $setting = $this->getSigleRecord($this->model, $id);
+        return view('settings.form')->with('setting', $setting);
     }
 
     /**
@@ -136,7 +95,13 @@ class HidepaymentController extends MY_Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name'  => 'required|max:255',
+            'value' => 'required|json'
+        ]);
+
+        $setting = $this->updateById($this->model, $id, $request->all());
+        return redirect('/settings');
     }
 
     /**
@@ -147,7 +112,8 @@ class HidepaymentController extends MY_Controller
      */
     public function destroy($id)
     {
-        //
+        $this->deleteById($this->model, $id);
+        return redirect('/settings');
     }
 
     public function initDatatable(Request $request){
@@ -155,6 +121,10 @@ class HidepaymentController extends MY_Controller
             $data = $this->model::query();
             return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('action', function($row){
+                return view('layouts.button.action')->with(['row'=>$row,'module'=>'settings']);
+            })
+            ->rawColumns(['action'])
             ->make(true);
         }
     }

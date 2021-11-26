@@ -1,5 +1,6 @@
 $(document).ready(function () {
     initSelect();
+    settings_on_search();
     $(document).on('pjax:end', function () {
         initSelect();
         const pathArray = window.location.pathname.split("/");
@@ -25,6 +26,10 @@ $(document).ready(function () {
             case 'logactivities':
                 initLogActivities();
                 break;
+            case 'settings':
+                initSettings();
+                settings_on_search();
+                break;
             case 'hidepayment':
                 initHidePaymentLogs();
                 break;
@@ -41,9 +46,9 @@ $(document).ready(function () {
         // location = event.currentTarget.URL;
         $.pjax.reload('#pjax');
     });
-    $(document).on('pjax:error', function (event, xhr, textStatus, errorThrown, options) {
-        $.pjax.reload('#pjax');
-    });
+    // $(document).on('pjax:error', function (event, xhr, textStatus, errorThrown, options) {
+    //     $.pjax.reload('#pjax');
+    // });
 
 });
 
@@ -493,6 +498,91 @@ function initManageOtp() {
     });
 }
 
+function initSettings() {
+    $('#settings').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "select": true,
+        "dataSrc": "tableData",
+        "bDestroy": true,
+        "scrollX": true,
+        "retrieve": true,
+        // "autoWidth": false,
+        "fixedColumns": true,
+        "ajax": {
+            url: "/settings/initDatatable"
+        },
+        "columnDefs": [
+            { "width": 20, "targets": 2 },
+        ],
+        "columns": [{
+                data: 'id',
+                name: "id",
+                title: "Id"
+            },
+            {
+                data: 'name',
+                name: "name",
+                title: "Unique name"
+            },
+            {
+                data: "value",
+                name: "value",
+                title: "Value",
+                render: function(data, type, row) {
+                    const htmlEntities = {
+                        "&": "&amp;",
+                        "<": "&lt;",
+                        ">": "&gt;",
+                        '"': "&quot;",
+                        "'": "&apos;"
+                    };
+                    var value = JSON.parse(String(data).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"'));
+                    var template = badgeArrayView(value);
+                    return template;
+                },
+                width: 20
+            },
+            {
+                data: "created_at",
+                name: "created_at",
+                title: "Created at"
+            },
+            {
+                data: "created_by",
+                name: "created_by",
+                title: "Created By"
+            },
+            {
+                data: "updated_at",
+                name: "updated_at",
+                title: "Updated at"
+            },
+            {
+                data: "updated_by",
+                name: "updated_by",
+                title: "Updated By"
+            },
+            {
+                data: "action",
+                name: "action",
+                title: "Action",
+                sortable: false
+            }
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#settings').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500
+    });
+}
+
 function initHidePaymentLogs() {
     $('#hide-payment').DataTable({
         "processing": true,
@@ -501,6 +591,8 @@ function initHidePaymentLogs() {
         "dataSrc": "tableData",
         "bDestroy": true,
         "scrollX": true,
+        "pageLength": 5,
+        "lengthMenu": [ 5, 10, 25, 50, 75, 100 ],
         "order": [[ 6, "desc" ]],
         retrieve: true,
         "ajax": {
@@ -519,12 +611,18 @@ function initHidePaymentLogs() {
             {
                 data: "isUpStoreAndroid",
                 name: "isUpStoreAndroid",
-                title: "Android"
+                title: "Android",
+                render: function(data, type, row) {
+                    return (data == "0") ? "Show Payment" : "Hide Payment";
+                },
             },
             {
                 data: "isUpStoreIos",
                 name: "isUpStoreIos",
-                title: "IOS"
+                title: "IOS",
+                render: function(data, type, row) {
+                    return (data == "0") ? "Show Payment" : "Hide Payment";
+                },
             },
             {
                 data: "api_status",
@@ -570,7 +668,24 @@ function badgeArrayView(arrayInput) {
         }
         template += `<span class="badge ${badge[count_badge]}">${JSON.stringify(n)}</span> `;
         count_badge++;
-        // return template
     });
     return template;
+}
+
+function settings_on_search() {
+    $('form .bs-searchbox input').keyup(function(e) {
+        if (e.which == 13) {
+            var search = $(".bs-searchbox input").val();
+            $("#value").append($('<option>', {
+                value: search,
+                text: search
+            }));
+            $('#value').selectpicker('refresh');
+            $('#value').selectpicker('selectAll');
+        }
+    });
+
+    $('#value').on('changed.bs.select', function (e) {
+        $("#hidden-value").val('[' + $("#value").val().join() + ']');
+    });
 }

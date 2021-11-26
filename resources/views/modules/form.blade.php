@@ -33,7 +33,7 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        <form action="/modules{{(!$module->id) ? '/store' : '/update'}}{{ (!$module->id) ? '' : '/' . $module->id }}" method="POST" novalidate="novalidate" autocomplete="off">
+                        <form action="/modules{{(!$module->id) ? '/store' : '/update'}}{{ (!$module->id) ? '' : '/' . $module->id }}" method="POST" novalidate="novalidate" autocomplete="off" onSubmit="handleSubmit(event,this)">
                             @csrf
             
                             @if (isset($module->id) && $module->id)
