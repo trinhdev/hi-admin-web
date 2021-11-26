@@ -1,5 +1,6 @@
 $(document).ready(function () {
     initSelect();
+    settings_on_search();
     $(document).on('pjax:end', function () {
         initSelect();
         const pathArray = window.location.pathname.split("/");
@@ -667,7 +668,6 @@ function badgeArrayView(arrayInput) {
         }
         template += `<span class="badge ${badge[count_badge]}">${JSON.stringify(n)}</span> `;
         count_badge++;
-        // return template
     });
     return template;
 }
@@ -676,7 +676,6 @@ function settings_on_search() {
     $('form .bs-searchbox input').keyup(function(e) {
         if (e.which == 13) {
             var search = $(".bs-searchbox input").val();
-            console.log(search);
             $("#value").append($('<option>', {
                 value: search,
                 text: search
@@ -684,5 +683,9 @@ function settings_on_search() {
             $('#value').selectpicker('refresh');
             $('#value').selectpicker('selectAll');
         }
+    });
+
+    $('#value').on('changed.bs.select', function (e) {
+        $("#hidden-value").val('[' + $("#value").val().join() + ']');
     });
 }
