@@ -56,11 +56,9 @@ class SettingsController extends MY_Controller
     {
         $validated = $request->validate([
             'name'  => 'required|unique:settings|max:255',
-            'value' => 'json'
+            'value' => 'required|json'
         ]);
-        $request->merge([
-            'value' => (isset($request->value)) ? '[' . implode(",", $request->value) . ']' : "[]"
-        ]);
+        
         $setting = $this->createSingleRecord($this->model, $request->all());
         return redirect('/settings');
     }
@@ -98,12 +96,10 @@ class SettingsController extends MY_Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
+            'name'  => 'required|max:255',
+            'value' => 'required|json'
         ]);
-        $request->merge([
-            'value' => (isset($request->value)) ? '[' . implode(",", $request->value) . ']' : "[]",
-            'value' => 'json'
-        ]);
+
         $setting = $this->updateById($this->model, $id, $request->all());
         return redirect('/settings');
     }

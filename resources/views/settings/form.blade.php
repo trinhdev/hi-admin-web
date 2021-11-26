@@ -33,7 +33,7 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        <form id="setting-id" action="/settings{{(!$setting->id) ? '/store' : '/update'}}{{ (!$setting->id) ? '' : '/' . $setting->id }}" method="POST" novalidate="novalidate" autocomplete="off">
+                        <form id="setting-id" action="/settings{{(!$setting->id) ? '/store' : '/update'}}{{ (!$setting->id) ? '' : '/' . $setting->id }}" method="POST" novalidate="novalidate" autocomplete="off" onsubmit="handleSubmit(event,this)">
                             @csrf
             
                             @if (isset($setting->id) && $setting->id)
@@ -54,7 +54,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="value">Value</label>
-                                            <select name="value[]" id="value" class="form-control selectpicker" data-live-search="true" data-size="10" multiple>
+                                            <input type="hidden" name="value" id="hidden-value" value="{{ $setting->value }}" />
+                                            <select id="value" class="form-control selectpicker" data-live-search="true" data-size="10" multiple>
                                                 @foreach (json_decode($setting->value) as $one_value)
                                                     <option value="{{ json_encode($one_value) }}" selected>{{ json_encode($one_value) }}</option>
                                                 @endforeach
