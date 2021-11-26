@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">419 Error Page</h1>
+                        <h1 class="m-0">403 Error Page</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -24,14 +24,15 @@
         <!-- Main content -->
         <section class="content">
             <div class="error-page">
-                <h2 class="headline text-danger">419</h2>
+                <h2 class="headline text-danger">403</h2>
                 <div class="error-content">
                     <h3>
                         <i class="fas fa-exclamation-triangle text-danger"></i>
-                        Oops! Too many request.
+                        Oops! Permission denied
                     </h3>
                     <p>
-                        You just send too many request in 1 minute. Please wait for few minutes and retry again.
+                        You don't have permission to access this page. You may return to dashboard or try another page.
+
                     </p>
                 </div>
             </div>
