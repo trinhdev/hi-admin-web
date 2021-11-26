@@ -14,6 +14,11 @@ class ModuleSeeder extends Seeder
     public function run()
     {
         DB::table('modules')->insert([
+            'module_name' => 'Home',
+            'uri' =>'',
+            'icon' =>'fas fa-home',
+        ]);
+        DB::table('modules')->insert([
             'module_name' => 'Role',
             'uri' =>'roles',
             'icon' =>'fas fa-tachometer-alt',
