@@ -5,10 +5,10 @@ $(document).ready(function () {
             $('aside').find(".menu-open > .nav-treeview").not($(this).parents('.menu-open > .nav-treeview')).slideUp()
             $('aside').find(".menu-open").not($(this).parents('.menu-open')).removeClass("menu-is-opening menu-open");
             $('li a').removeClass("active");
+            $(this).addClass("active");
         }
-
         $(this).parents('.nav-treeview').prevAll('.nav-link').addClass('active');
-        $(this).addClass("active");
+
     });
     reloadPjax();
 });
