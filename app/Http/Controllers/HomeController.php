@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Services\ChartService;
 use Illuminate\Support\Facades\Redis;
 
+use function PHPSTORM_META\map;
+
 class HomeController extends MY_Controller
 {
     /**
@@ -30,20 +32,34 @@ class HomeController extends MY_Controller
     {
 
         $charService = new ChartService();
+        $result = [];
         $keyName = config('constants.REDIS_KEY.CHART_DOANH_THU_BAO_HIEM_HDI');
         if (Redis::exists($keyName)) {
-            $data = unserialize(Redis::get($keyName));
-            if (!array_search(date('d-m-Y',strtotime("-1 days")), array_column($data, 'date'))) {
+            $result = unserialize(Redis::get($keyName));
+            $prev_date = date('d-m-Y', strtotime("-1 days"));
+            if (!array_search($prev_date, array_column($result, 'date'))) {
                 $data_prev_day = $charService->getDataChartADayAgo();
-                if (!empty($data_prev_day)) {
-                    $data[] = $data_prev_day[0];
-                    Redis::set($keyName, serialize($data));
+                if (empty($data_prev_day)) {
+                    $data_prev_day[0] = [
+                        'REVENUE' => 0,
+                        'REVENUE_XEMAY' => 0,
+                        'REVENUE_XEOTO' => 0,
+                        'TOTAL' => 0,
+                        'XEMAY' => 0,
+                        'XEOTO' => 0,
+                        'date' => $prev_date
+                    ];
                 }
+                $result[$prev_date] = $data_prev_day[0];
+                Redis::set($keyName, serialize($result));
             }
         } else {
             $data = $charService->getDataChart30DaysAgo();
-            Redis::set($keyName, serialize($data));
+            foreach($data as $doanhthu){
+                $result[$doanhthu->date] = $doanhthu;
+            }
+            Redis::set($keyName, serialize($result));
         }
-        return $data;
+        return $result;
     }
 }
