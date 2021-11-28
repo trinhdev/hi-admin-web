@@ -44,12 +44,20 @@ function drawchart1(reponse) {
         pointBackgroundColor: '#ced4da',
         fill: false
     };
-    reponse.forEach(element => {
-        dates.push(element.date);
-        xeoto.data.push(element['XEOTO']);
-        xemay.data.push(element['XEMAY']);
-        total += element['TOTAL'];
-    });
+    for(var i = 30;i>=1;i--){
+        var d = new Date();
+        d.setDate(d.getDate()-i);
+        let date = formatDate(d);
+        if(reponse[date] != undefined){
+            let value = reponse[date];
+            xeoto.data.push(value['XEOTO']);
+            xemay.data.push(value['XEMAY']);
+        }else{
+            xeoto.data.push(0);
+            xemay.data.push(0);
+        }
+        dates.push(date);
+    }
     total_oto_xemay.innerHTML = total;
     // eslint-disable-next-line no-unused-vars
     var revenueChart = new Chart($revenueChart, {
@@ -81,7 +89,7 @@ function drawchart1(reponse) {
                     },
                     ticks: $.extend({
                         beginAtZero: true,
-                        suggestedMax: 10
+                        suggestedMax: 10,
                     }, ticksStyle)
                 }],
                 xAxes: [{
@@ -89,7 +97,9 @@ function drawchart1(reponse) {
                     gridLines: {
                         display: false
                     },
-                    ticks: ticksStyle
+                    ticks: $.extend({
+                        autoSkip:false
+                    }, ticksStyle)
                 }]
             }
         }
@@ -169,5 +179,19 @@ function drawchart2() {
             }
         }
     })
+}
+function formatDate(date) {
+    if(date != null && date!= undefined){
+        var day = date.getDate(); 
+        if (day < 10) { 
+            day = "0" + day; 
+        } 
+        var month = date.getMonth() + 1; 
+        if (month < 10) { 
+            month = "0" + month; 
+        } 
+        var year = date.getFullYear();
+        return day + "-" + month + "-" + year; 
+    }
 }
 // lgtm [js/unused-local-variable]
