@@ -55,7 +55,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">X</span></button>
             </div>
-            <form action="/profile/changePassword" method="POST">
+            <form action="/profile/changePassword" method="POST" onsubmit="handleSubmit(event,this)">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-success" onclick="dialogConfirmWithAjax(changePassWord, this)">Submit</button>
                 </div>
             </form>
 
@@ -86,7 +86,7 @@
                     <span aria-hidden="true">X</span></button>
             </div>
             <div class="modal-body">
-                <form action="/profile/updateprofile" method="POST">
+                <form action="/profile/updateprofile" method="POST" onsubmit="handleSubmit(event,this)">
                     @csrf
                     <div class="container">
                         <div class="row gutters">
@@ -130,23 +130,6 @@
                                                 <div class="form-group"> <label for="website">Website URL</label> <input type="text" class="form-control" id="website" placeholder="Website url"></div>
                                             </div>
                                         </div>
-                                        {{-- <div class="row gutters">
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <h6 class="mt-3 mb-2 text-primary">Address</h6>
-                                            </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group"> <label for="Street">Street</label> <input type="name" class="form-control" id="Street" placeholder="Enter Street"></div>
-                                            </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group"> <label for="ciTy">City</label> <input type="name" class="form-control" id="ciTy" placeholder="Enter City"></div>
-                                            </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group"> <label for="sTate">State</label> <input type="text" class="form-control" id="sTate" placeholder="Enter State"></div>
-                                            </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group"> <label for="zIp">Zip Code</label> <input type="text" class="form-control" id="zIp" placeholder="Zip Code"></div>
-                                            </div>
-                                        </div> --}}
                                         <div class="row gutters">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                 <div class="text-right">

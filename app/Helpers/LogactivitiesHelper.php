@@ -11,8 +11,16 @@ class LogactivitiesHelper
 {
 	public static function addToLog(Request $request)
     {
+		$tmpStr = '******';
+		$listNeedProtect = ['password','current_password','password_confirmation'];
+		$data = $request->input();
+		foreach($listNeedProtect as $key){
+			if($request->$key){
+				$data[$key] = $tmpStr;
+			}
+		};
     	$log = [];
-    	$log['param'] = !empty($request->input()) ? json_encode($request->input()) : '';
+    	$log['param'] = !empty($data) ? json_encode($data) : '';
     	$log['url'] = request()->url();
     	$log['method'] = request()->method();
     	$log['ip'] = request()->ip();
@@ -20,12 +28,4 @@ class LogactivitiesHelper
     	$log['user_id'] = Auth::check() ? Auth::user()->id : 1;
         Log_activities::create($log);
     }
-
-
-    public static function logActivityLists()
-    {
-    	return Log_activities::latest()->get();
-    }
-
-
 }
