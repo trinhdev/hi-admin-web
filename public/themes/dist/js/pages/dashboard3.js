@@ -52,6 +52,7 @@ function drawchart1(reponse) {
             let value = reponse[date];
             xeoto.data.push(value['XEOTO']);
             xemay.data.push(value['XEMAY']);
+            total+=value['TOTAL'];
         }else{
             xeoto.data.push(0);
             xemay.data.push(0);
