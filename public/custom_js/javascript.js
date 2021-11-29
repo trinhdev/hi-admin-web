@@ -36,7 +36,7 @@ function insertModuleToTable(_this) {
     let check = table.querySelector('tr[name="' + moduleObj.id + '"');
     if (check == null) {
         var new_row = table.insertRow(-1);
-        new_row.setAttribute('name',moduleObj.id);
+        new_row.setAttribute('name', moduleObj.id);
         var cell1 = new_row.insertCell(0);
         var cell2 = new_row.insertCell(1);
         var cell3 = new_row.insertCell(2);
@@ -51,17 +51,17 @@ function insertModuleToTable(_this) {
         cell3.innerHTML = `<select name="create[]" id="${moduleObj.id}-create" record="8" class="options_Module form-control">
                                 <option value="0" selected>None</option>
                                 <option value="1">All</option>
-                            </select>`; 
+                            </select>`;
         cell4.innerHTML = `<select name="update[]" id="${moduleObj.id}-update" record="8" class="options_Module form-control">
                                 <option value="0" selected="">None</option>
                                 <option value="1">All</option>
-                            </select>`; 
+                            </select>`;
         cell5.innerHTML = `<select name="delete[]" id="${moduleObj.id}-delete" record="8" class="options_Module form-control">
                                 <option value="0" selected="">None</option>
                                 <option value="1">All</option>
-                            </select>`; 
+                            </select>`;
         cell6.innerHTML = `<a type="button" onclick="deleteRow(this)" class="btn btn-danger">
-                            <i class="fa fa-trash-alt"></i></a>`; 
+                            <i class="fa fa-trash-alt"></i></a>`;
         // console.log(`#${moduleObj.id}-view`);
         $(`#${moduleObj.id}-view`).selectpicker();
         $(`#${moduleObj.id}-create`).selectpicker();
@@ -75,7 +75,7 @@ function deleteRow(btn) {
     row.parentNode.removeChild(row);
 }
 
-function handleSubmit(e,form) {
+function handleSubmit(e, form) {
     e.preventDefault();
     Swal.fire({
         title: 'Are you sure?',
@@ -86,7 +86,7 @@ function handleSubmit(e,form) {
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'Yes, Confirmed!',
         reverseButtons: true
-        
+
     }).then((result) => {
         if (result.isConfirmed) {
             form.submit();
@@ -95,7 +95,8 @@ function handleSubmit(e,form) {
         }
     });
 }
-function dialogConfirmWithAjax(sureCallbackFunction,data){
+
+function dialogConfirmWithAjax(sureCallbackFunction, data) {
     Swal.fire({
         title: 'Are you sure?',
         text: "Please Confirm This Action",
@@ -105,10 +106,45 @@ function dialogConfirmWithAjax(sureCallbackFunction,data){
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'Yes, Confirmed!',
         reverseButtons: true
-        
+
     }).then((result) => {
         if (result.isConfirmed) {
             sureCallbackFunction(data);
         }
+    });
+}
+
+function callAPIHelper(url, param, method, callback) {
+    $.ajax({
+        url: url,
+        type: method,
+        data: param,
+        success: function (data) {
+            callback(data);
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+        }
+    });
+}
+
+function showSuccess() {
+    swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        html: `Sucess!`
+    });
+}
+
+function showError(error) {
+    swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        html: error
     });
 }

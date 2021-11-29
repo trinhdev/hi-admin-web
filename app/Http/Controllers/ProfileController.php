@@ -24,7 +24,8 @@ class ProfileController extends MY_Controller
             'password' => Hash::make($request->password)
         ];
         $this->updateById(new User(), Auth::user()->id, $paramUpdate);
-        return redirect()->back()->withSuccess('success');
+        auth()->setUser(User::find(Auth::user()->id));
+        return true;
     }
     public function  updateprofile(UpdateProfileRequest $request)
     {

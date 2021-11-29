@@ -38,10 +38,12 @@
                         Login
                     </button>
                 </div>
-
-
+                @if ($error = $errors->first())
+                <div class="alert alert-danger" style="color:red">
+                    {{ $error }}
+                </div>
+                @endif
             </form>
-
             <div class="login100-more" style="background-image: url({{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/login/ung-dung-fpt.PNG);background-size: 100% 100%">
             </div>
         </div>
