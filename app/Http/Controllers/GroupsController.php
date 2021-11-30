@@ -40,14 +40,13 @@ class GroupsController extends MY_Controller
         return view('groups.edit')->with($data);
     }
     public function save(){
-        $model_groups = $this->getModel('groups');
         $request = request()->all();
         if (request()->isMethod("post")) {
             if (empty($request['id']))
-                $this->createSingleRecord($model_groups, $request);
+                $this->createSingleRecord($this->model, $request);
             else {
                 $data['group_name'] = $request['group_name'];
-                $this->updateById($model_groups, $request['id'], $data);
+                $this->updateById($this->model, $request['id'], $data);
             }
         }
         return $this->redirect($this->controller_name);

@@ -12,9 +12,15 @@ class LogactivitiesHelper
 	public static function addToLog(Request $request)
     {
 		$tmpStr = '******';
-		$listNeedProtect = ['password','current_password','password_confirmation'];
+		$listParamNeedProtect = ['password','current_password','password_confirmation'];
+		$listParamNeedRemove = ['_token','_pjax'];
 		$data = $request->input();
-		foreach($listNeedProtect as $key){
+		foreach($listParamNeedRemove as $key){
+			if($request->$key){
+				unset($data[$key]);
+			}
+		};
+		foreach($listParamNeedProtect as $key){
 			if($request->$key){
 				$data[$key] = $tmpStr;
 			}
