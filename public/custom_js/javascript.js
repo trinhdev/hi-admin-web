@@ -83,18 +83,18 @@ function callAPIHelper(url, param, method, callback,passingData = null) {
     });
 }
 
-function showSuccess() {
+function showSuccess(message = null) {
     swal.fire({
         icon: 'success',
         title: 'Success!',
-        html: `Sucess!`
+        html: (message == null) ? 'Success!' : message
     });
 }
 
-function showError(error) {
+function showError(error = null) {
     swal.fire({
         icon: 'error',
         title: 'Oops...',
-        html: error
+        html: (error == null) ? 'Error!' : error
     });
 }

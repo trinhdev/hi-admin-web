@@ -40,3 +40,22 @@
 <script src="{{ asset('/custom_js/rolemanage.js')}}"></script>
 <script src="{{ asset('/custom_js/closerequest.js')}}"></script>
 <script src="{{ asset('/custom_js/updateprofile.js')}}"></script>
+<script>
+@if($errors->any())
+    showError('{{$errors->first()}}');
+@endif
+@if (session()->has('success'))
+   swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        html: `{{ (session()->has('html')) ? session()->get('html') : '' }}`
+    });
+@endif
+@if (session()->has('error'))
+   swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        html: `{{ (session()->has('html')) ? session()->get('html') : '' }}`
+    });
+@endif
+</script>

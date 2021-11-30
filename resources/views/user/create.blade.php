@@ -29,15 +29,6 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
                         <form action="/user/store" method="POST" onSubmit="handleSubmit(event,this)">
                             @csrf
                             <div class="card card-default">
