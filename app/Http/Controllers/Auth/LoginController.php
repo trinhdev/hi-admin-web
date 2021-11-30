@@ -57,11 +57,7 @@ class LoginController extends Controller
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }
-            $logParam = $request;
-            $logParam->merge([
-                'password' => '*****'
-            ]);
-            LogactivitiesHelper::addToLog($logParam);
+            LogactivitiesHelper::addToLog($request);
             return $this->sendLoginResponse($request);
         }
         $this->incrementLoginAttempts($request);
