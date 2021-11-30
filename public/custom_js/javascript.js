@@ -64,13 +64,13 @@ function dialogConfirmWithAjax(sureCallbackFunction, data) {
     });
 }
 
-function callAPIHelper(url, param, method, callback) {
+function callAPIHelper(url, param, method, callback,passingData = null) {
     $.ajax({
         url: url,
         type: method,
         data: param,
         success: function (data) {
-            callback(data);
+            callback(data,passingData);
         },
         error: function (xhr) {
             var errorString = '';

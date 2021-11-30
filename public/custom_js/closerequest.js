@@ -6,10 +6,10 @@ function closeRequest(_this) {
         _token: $('meta[name="csrf-token"]').attr('content'),
         report_id: _report_id
     };
-    callAPIHelper("/closehelprequest/closeRequest", param, 'POST', successChangePassword);
+    callAPIHelper("/closehelprequest/closeRequest", param, 'POST', successCloseRequest,li_tag);
 }
 
-function successCloseRequest(response) {
+function successCloseRequest(response,li_tag) {
     if (response == true) {
         $(li_tag).remove();
         swal.fire({
