@@ -37,5 +37,6 @@
 <script src="{{ asset('js/jszip.min.js') }}"></script>
 <script src="{{ asset('custom_js/javascript.js')}}"></script>
 <script src="{{ asset('custom_js/initTable.js')}}"></script>
-<script src="{{ asset('/custom_js/callAjaxCloseRequest.js')}}"></script>
+<script src="{{ asset('/custom_js/rolemanage.js')}}"></script>
+<script src="{{ asset('/custom_js/closerequest.js')}}"></script>
 <script src="{{ asset('/custom_js/updateprofile.js')}}"></script>
