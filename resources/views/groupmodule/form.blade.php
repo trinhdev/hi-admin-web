@@ -13,7 +13,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Modules v1</li>
+                            <li class="breadcrumb-item active">Group Module</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -61,11 +61,3 @@
     </div>
     <!-- /.content-wrapper -->
 @endsection
-
-@push('scripts')
-    <script>
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        });
-    </script>
-@endpush
