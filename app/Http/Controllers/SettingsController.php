@@ -60,6 +60,7 @@ class SettingsController extends MY_Controller
         ]);
         
         $setting = $this->createSingleRecord($this->model, $request->all());
+        $this->addToLog(request());
         return redirect('/settings');
     }
 
@@ -101,6 +102,7 @@ class SettingsController extends MY_Controller
         ]);
 
         $setting = $this->updateById($this->model, $id, $request->all());
+        $this->addToLog(request());
         return redirect('/settings');
     }
 
@@ -113,6 +115,7 @@ class SettingsController extends MY_Controller
     public function destroy($id)
     {
         $this->deleteById($this->model, $id);
+        $this->addToLog(request());
         return redirect('/settings');
     }
 

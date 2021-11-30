@@ -26,7 +26,7 @@ class ChecklistmanageController extends MY_Controller
         $request->validate([
             'contractNo' =>'required'
         ]);
-        
+        $this->addToLog(request());
         $contractService = new ContractService();
         $helpReqeustService = new HelpRequestService();
         $contract_info_response = $contractService->getContractInfo($request); // call api get contract info
@@ -53,6 +53,7 @@ class ChecklistmanageController extends MY_Controller
             if($completeChecklist_reponse->statusCode != 0){
                 return redirect('/checklistmanage')->withErrors(['error'=>$completeChecklist_reponse->message]);
             }
+            $this->addToLog(request());
             return redirect('/checklistmanage')->withSuccess(['success'=>'success']);
         }
     }

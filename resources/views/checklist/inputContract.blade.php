@@ -26,7 +26,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <!--Accordion wrapper-->
                     <div class="accordion md-accordion accordion-blocks" id="accordionEx78" role="tablist" aria-multiselectable="true">
 
@@ -97,7 +97,7 @@
             </div>
             <h4 class="text-muted text-center">List Id</h4>
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-md-10">
                     <ul class="list-group">
                     @php
                         $checklistLength = count($list_checklist_id);

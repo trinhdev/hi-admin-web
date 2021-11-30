@@ -70,6 +70,7 @@ class ModulesController extends MY_Controller
             'status' => (!isset($request->status)) ? false : true
         ]);
         $module = $this->createSingleRecord($this->model, $request->all());
+        $this->addToLog(request());
         return redirect('/modules');
     }
 
@@ -117,6 +118,7 @@ class ModulesController extends MY_Controller
             'status' => (!isset($request->status)) ? false : true
         ]);
         $module = $this->updateById($this->model, $id, $request->all());
+        $this->addToLog(request());
         return redirect('/modules');
     }
 
@@ -129,6 +131,7 @@ class ModulesController extends MY_Controller
     public function destroy($id)
     {
         $this->deleteById($this->model, $id);
+        $this->addToLog(request());
         return redirect('/modules');
     }
     

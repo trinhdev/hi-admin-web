@@ -84,6 +84,7 @@ class RolesController extends MY_Controller
                 $getModuleData = (new Modules())->getModulesGroupByParent($request['id']);
                 $keyName = config('constants.REDIS_KEY.MODULE_BY_ROLE_ID').$request['id']; // redis key: acl role module
                 Redis::set($keyName, serialize($getModuleData));
+                $this->addToLog(request());
             });
         }
         return $this->redirect($this->controller_name);
@@ -98,6 +99,7 @@ class RolesController extends MY_Controller
     {
         //
         $this->deleteById($this->model, $id);
+        $this->addToLog(request());
         return redirect('/roles');
     }
     public function getList(Request $request)

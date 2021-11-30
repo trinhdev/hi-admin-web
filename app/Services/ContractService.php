@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Services;
-
-use App\Helpers\CallApiHelper;
 use Illuminate\Http\Request;
 
 class ContractService
@@ -25,7 +23,7 @@ class ContractService
 
     public function getContractInfo(Request $request){
         $url = $this->baseUrl . $this->version .'/'. $this->listMethod['GET_CONTRACT_BY_NUMBER'];
-        $response =  CallApiHelper::sendRequest($url, array('contractNo'=> $request->contractNo),$this->token);
+        $response =  sendRequest($url, array('contractNo'=> $request->contractNo),$this->token);
         return $response;
     }
 }

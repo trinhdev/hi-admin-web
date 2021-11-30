@@ -62,7 +62,7 @@ class ManageOtpController extends MY_Controller
                 }
                 break;
         }
-
+        $this->addToLog(request());
         return redirect('/manageotp')->with($result);
     }
 

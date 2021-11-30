@@ -25,7 +25,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <form action="/closehelprequest/getListReportByContract" method="POST" autocomplete="off">
                             @csrf
                             <div class="card card-info">

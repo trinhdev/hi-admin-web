@@ -48,6 +48,7 @@ class GroupsController extends MY_Controller
                 $data['group_name'] = $request['group_name'];
                 $this->updateById($this->model, $request['id'], $data);
             }
+            $this->addToLog(request());
         }
         return $this->redirect($this->controller_name);
     }
@@ -61,6 +62,7 @@ class GroupsController extends MY_Controller
     {
         //
         $this->deleteById($this->model, $id);
+        $this->addToLog(request());
         return redirect('/groups');
     }
     public function getList(Request $request){

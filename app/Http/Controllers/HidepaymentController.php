@@ -80,7 +80,7 @@ class HidepaymentController extends MY_Controller
         ]);
 
         $hidepayment = $this->createSingleRecord($this->model, $request->all());
-
+        $this->addToLog(request());
         return redirect('/hidepayment')->with($result);
     }
 

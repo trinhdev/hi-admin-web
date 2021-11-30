@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Helpers\LogactivitiesHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MY_Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class LoginController extends MY_Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -57,7 +58,7 @@ class LoginController extends Controller
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }
-            LogactivitiesHelper::addToLog($request);
+            $this->addToLog($request);
             return $this->sendLoginResponse($request);
         }
         $this->incrementLoginAttempts($request);
@@ -66,6 +67,6 @@ class LoginController extends Controller
     }
     public function loggedOut(Request $request)
     {
-        LogactivitiesHelper::addToLog($request);
+        $this->addToLog($request);
     }
 }

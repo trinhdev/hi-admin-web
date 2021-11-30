@@ -412,12 +412,6 @@ function initLogActivities() {
             },
             {
                 data: 'agent'
-            },
-            {
-                data: "action",
-                name: "action",
-                title: "Action",
-                sortable: false
             }
         ],
         error: function (xhr, error, code) {

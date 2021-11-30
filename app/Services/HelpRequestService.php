@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Helpers\CallApiHelper;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use stdClass;
 
@@ -40,7 +38,7 @@ class HelpRequestService
                 ]
             )
         ];
-        $response =  CallApiHelper::sendRequest($url, $postParam, $this->token);
+        $response = sendRequest($url, $postParam, $this->token);
         return $response;
     }
 
@@ -60,7 +58,7 @@ class HelpRequestService
         $postParam = [
             'listReportId' => $listReport
         ];
-        $response  = CallApiHelper::sendRequest($url, $postParam, $this->token);
+        $response  = sendRequest($url, $postParam, $this->token);
         return $response;
     }
 
@@ -80,7 +78,7 @@ class HelpRequestService
                 "Time" => " ; " . date('d-m-y')
             ]
         ];
-        $response =  CallApiHelper::sendRequest($url, $postParam, $this->token);
+        $response =  sendRequest($url, $postParam, $this->token);
         if($response->statusCode == 0){
             $keyName = config('constants.REDIS_KEY.LIST_CHECKLIST_ID');
             // Redis::zadd($keyName,$random_checklist_id);
@@ -104,7 +102,7 @@ class HelpRequestService
                 "code" => 0
             ]
         ];
-        $response =  CallApiHelper::sendRequest($url, $postParam, $this->token);
+        $response =  sendRequest($url, $postParam, $this->token);
         $keyName = config('constants.REDIS_KEY.LIST_CHECKLIST_ID');
         Redis::command('ZREM', [$keyName,$checklist_Id]);
         return $response;
