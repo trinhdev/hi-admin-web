@@ -52,7 +52,6 @@ Route::group([
                 Route::any("/" . strtolower($controller) . "/$action", 'App\\Http\\Controllers\\' . $controller . 'Controller@' . $action);
                 Route::any("/" . strtolower($controller) . "/$action/{param}", 'App\\Http\\Controllers\\' . $controller . 'Controller@' . $action);
                 Route::get('/', [HomeController::class, 'index'])->name('home');
-                Route::get('/home', [HomeController::class, 'index'])->name('home');
             }
         }
 });
