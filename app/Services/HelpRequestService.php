@@ -82,7 +82,7 @@ class HelpRequestService
         if($response->statusCode == 0){
             $keyName = config('constants.REDIS_KEY.LIST_CHECKLIST_ID');
             // Redis::zadd($keyName,$random_checklist_id);
-            Redis::command('ZADD', [$keyName, strtotime(now()),$random_checklist_id]);
+            Redis::command('ZADD', [$keyName, strtotime(now()),$random_checklist_id.' - HD:'.$contract_info->Contract]);
         }
         return $response;
     }
