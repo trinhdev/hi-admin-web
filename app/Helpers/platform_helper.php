@@ -131,7 +131,11 @@ if (!function_exists('sendRequest')) {
         $time = microtime(true);
         $output = curl_exec($ch);
         $timeRun = microtime(true) - $time;
+        if (curl_errno($ch)) {
+            my_debug($url.'</br>'.curl_error($ch));
+        }
         curl_close($ch);
+        my_debug($output.'</br>'.$url);
         return json_decode($output);
     }
 }
