@@ -159,10 +159,6 @@ class MY_Controller extends Controller
 
         if ($id) {
             $result = $model::find($id);
-            // permission for edit action.
-            //            if (isset($result->created_by) && !$this->auth_permission($result->created_by)) {
-            //                return $this->redirect('auth/denied');
-            //            }
             $view_title = !empty($model->edit_view['title']) ? $model->edit_view['title'] : 'name';
             $title = 'Edit ' . $this->model_name . ': ' . $result->$view_title;
         } else {
