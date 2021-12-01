@@ -43,7 +43,7 @@ class SettingsController extends MY_Controller
         $setting->id = '';
         $setting->name = '';
         $setting->value = '[]';
-        return view('settings.form')->with('setting', $setting);
+        return view('settings.edit')->with('setting', $setting);
     }
 
     /**
@@ -84,7 +84,7 @@ class SettingsController extends MY_Controller
     public function edit($id)
     {
         $setting = $this->getSigleRecord($this->model, $id);
-        return view('settings.form')->with('setting', $setting);
+        return view('settings.edit')->with('setting', $setting);
     }
 
     /**
