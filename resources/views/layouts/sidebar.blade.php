@@ -23,6 +23,7 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false" id="sidebar">
+                    @if(!empty($groupModule))
                     @foreach($groupModule as $group)
                         @if(isset($group->children) && !empty($group->children))
                            <li class="nav-item menu">
@@ -53,7 +54,7 @@
                             </li>
                         @endif
                     @endforeach
-                    
+                    @endif
                 </ul>
             </nav>
             

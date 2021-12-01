@@ -19,9 +19,13 @@
         @include('layouts.sidebar')
         <!-- /.sidebar -->
 
+        @can('role-permission')
         <div id="pjax">
             @yield('content')
         </div>
+        @else
+        @yield('content')
+        @endcan
         @include('layouts.footer')
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

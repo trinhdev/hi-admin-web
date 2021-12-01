@@ -29,7 +29,7 @@ class RolePermissionPolicy
         if(!empty($moduleUri) && !in_array($moduleUri,$this->listControllerDontNeedPolicy) && $user_role != config('constants.ADMIN')){
             $listModuleByUser =(new Modules())->getModulesGroupByParent(Auth::user()->role_id)->listModule;
             if(empty($listModuleByUser)){
-                return true;
+                return false;
             }
             $listUriModule = array_map(function ($module){
                 return $module->uri;
