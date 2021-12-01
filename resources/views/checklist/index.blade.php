@@ -102,13 +102,13 @@
                     @php
                         $checklistLength = count($list_checklist_id);
                     @endphp
-                        @foreach($list_checklist_id as $key=>$checklist)
+                        @foreach(array_reverse($list_checklist_id) as $key=>$checklist)
                         <li class="list-group-item d-flex justify-content-around align-items-center">
                         <div class="badge badge-primary">No. {{$checklistLength--}}</div>
-                            {{$checklist}}
+                            {{'ID: '. $checklist->ID.' - Hợp đồng: '.$checklist->HD}}
                             <form  action="/checklistmanage/completeChecklist" method="POST" onsubmit="handleSubmit(event,this)">
                             @csrf
-                                <input type="text" class="form-control" name="checkListId" hidden value="{{$checklist}}">
+                                <input type="text" class="form-control" name="checkListId" hidden value="{{$checklist->ID}}">
                                 <button class="btn btn-sm btn-outline-success"><i class="fa fa-check" aria-hidden="true"></i></button>
                             </form>
                         </li>
