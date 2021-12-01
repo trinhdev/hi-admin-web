@@ -14,7 +14,7 @@ class ClosehelprequestController extends MY_Controller
     }
     public function index()
     {
-        return view('helprequest.inputContract');
+        return view('helprequest.index');
     }
 
     public function getListReportByContract(Request $request)

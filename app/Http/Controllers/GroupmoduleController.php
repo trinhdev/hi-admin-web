@@ -39,7 +39,7 @@ class GroupmoduleController extends MY_Controller
         $groupmodule = new stdClass();
         $groupmodule->id = '';
         $groupmodule->group_module_name = '';
-        return view('groupmodule.form')->with('groupmodule', $groupmodule);
+        return view('groupmodule.edit')->with('groupmodule', $groupmodule);
     }
 
     /**
@@ -78,7 +78,7 @@ class GroupmoduleController extends MY_Controller
     public function edit($id)
     {
         $group_module = $this->getSigleRecord($this->model, $id);
-        return view('groupmodule.form')->with('groupmodule', $group_module);
+        return view('groupmodule.edit')->with('groupmodule', $group_module);
     }
 
     /**

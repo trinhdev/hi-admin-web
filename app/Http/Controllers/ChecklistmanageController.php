@@ -18,7 +18,7 @@ class ChecklistmanageController extends MY_Controller
     public function index()
     {
         $listCheckList = $this->getListCheckList();
-        return view('checklist.inputContract')->with(['list_checklist_id'=>$listCheckList]);
+        return view('checklist.index')->with(['list_checklist_id'=>$listCheckList]);
     }
 
     public function sendStaff(Request $request)
