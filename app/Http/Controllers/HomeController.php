@@ -51,14 +51,16 @@ class HomeController extends MY_Controller
                     ];
                 }
                 $result[$prev_date] = $data_prev_day[0];
-                Redis::set($keyName, serialize($result));
+                $ttl = Redis::ttl($keyName);
+                Redis::setex($keyName,$ttl, serialize($result));
             }
+            
         } else {
             $data = $charService->getDataChart30DaysAgo();
             foreach($data as $doanhthu){
                 $result[$doanhthu->date] = $doanhthu;
             }
-            Redis::set($keyName, serialize($result));
+            Redis::setex($keyName,604800, serialize($result));
         }
         return $result;
     }
