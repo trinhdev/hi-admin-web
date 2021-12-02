@@ -76,17 +76,18 @@ class MY_Controller extends Controller
     public function getListModule()
     {
         //checking redis
+        $moduleModel = $this->getModel("Modules");
         $keyName = config('constants.REDIS_KEY.MODULE_BY_ROLE_ID').$this->user->role->id; // redis key: acl role module
         $data = Redis::get($keyName);
         if(!is_null($data)) {
             // dd(now()->format('h:i:s'));
             $getModuleData = unserialize($data);
         }else{
-            $getModuleData = (new Modules())->getModulesGroupByParent($this->user->role_id);
+            $getModuleData = $moduleModel->getModulesGroupByParent($this->user->role_id);
             Redis::set($keyName, serialize($getModuleData));
         }
         $data = [];
-        $getModuleData = (new Modules())->getModulesGroupByParent($this->user->role_id);
+        $getModuleData = $moduleModel->getModulesGroupByParent($this->user->role_id);
         if (!empty($getModuleData->listModule)) {
             $moduleUri = request()->segment(1);
             $key =  array_search($moduleUri, array_column(json_decode(json_encode($getModuleData->listModule), TRUE), 'uri'));
