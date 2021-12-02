@@ -62,7 +62,6 @@
                             <th>Param</th>
                             <th>Ip</th>
                             <th>User Agent</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\LogactivitiesHelper;
+use App\Models\Log_activities;
 use App\Models\Modules;
 use App\Models\Settings;
 use Illuminate\Http\Request;
@@ -67,12 +67,8 @@ class MY_Controller extends Controller
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
-            // $this->redis = Redis::connection();
             $this->getListModule();
             $this->getSetting();
-            if(!isset($request->draw) ){
-                LogactivitiesHelper::addToLog($request);
-            };
             return $next($request);
         });
     }
@@ -163,10 +159,6 @@ class MY_Controller extends Controller
 
         if ($id) {
             $result = $model::find($id);
-            // permission for edit action.
-            //            if (isset($result->created_by) && !$this->auth_permission($result->created_by)) {
-            //                return $this->redirect('auth/denied');
-            //            }
             $view_title = !empty($model->edit_view['title']) ? $model->edit_view['title'] : 'name';
             $title = 'Edit ' . $this->model_name . ': ' . $result->$view_title;
         } else {
@@ -196,14 +188,32 @@ class MY_Controller extends Controller
         return redirect('/' . $url);
     }
     private function getSetting(){
-        // $keyName = config('constants.REDIS_KEY.SETTINGS');
-        // $setting_data = Redis::get($keyName);
-        // if(!is_null($setting_data)) {
-        //     $setting_data = unserialize($setting_data);
-        // }else{
-            $setting_data = Settings::get();
-        //     Redis::set($keyName, serialize($setting_data));
-        // }
+        $setting_data = Settings::get();
         View::share(['Settings'=>$setting_data]);
+    }
+    public function addToLog(Request $request)
+    {
+		$tmpStr = '******';
+		$listParamNeedProtect = ['password','current_password','password_confirmation'];
+		$listParamNeedRemove = ['_token','_pjax','_method'];
+		$data = $request->input();
+		foreach($listParamNeedRemove as $key){
+			if($request->$key){
+				unset($data[$key]);
+			}
+		};
+		foreach($listParamNeedProtect as $key){
+			if($request->$key){
+				$data[$key] = $tmpStr;
+			}
+		};
+    	$log = [];
+    	$log['param'] = !empty($data) ? json_encode($data) : '';
+    	$log['url'] = request()->url();
+    	$log['method'] = request()->method();
+    	$log['ip'] = request()->ip();
+    	$log['agent'] = request()->header('user-agent');
+    	$log['user_id'] = Auth::check() ? Auth::user()->id : 1;
+        Log_activities::create($log);
     }
 }

@@ -14,7 +14,7 @@ class ClosehelprequestController extends MY_Controller
     }
     public function index()
     {
-        return view('helprequest.inputContract');
+        return view('helprequest.index');
     }
 
     public function getListReportByContract(Request $request)
@@ -35,6 +35,7 @@ class ClosehelprequestController extends MY_Controller
             return redirect()->back()->withErrors(['error'=>"Không có yêu cầu hỗ trợ nào!"]);
         }
         // continue
+        $this->addToLog(request());
         return view('helprequest.list_request')->with(['listReport'=>$list_report_response->data]);
     }
 
@@ -48,6 +49,7 @@ class ClosehelprequestController extends MY_Controller
         ]);
         $helpReqeustService = new HelpRequestService();
         $reponse = $helpReqeustService->closeRequestByListReportId([$request->report_id]);
+        $this->addToLog(request());
         return true;
     }
 }

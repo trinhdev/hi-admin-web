@@ -32,7 +32,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <form id="setting-id" action="/settings{{(!$setting->id) ? '/store' : '/update'}}{{ (!$setting->id) ? '' : '/' . $setting->id }}" method="POST" novalidate="novalidate" autocomplete="off" onsubmit="handleSubmit(event,this)">
                             @csrf
             

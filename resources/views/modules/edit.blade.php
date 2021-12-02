@@ -20,7 +20,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Modules v1</li>
+                            <li class="breadcrumb-item active">Module</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -32,7 +32,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <form action="/modules{{(!$module->id) ? '/store' : '/update'}}{{ (!$module->id) ? '' : '/' . $module->id }}" method="POST" novalidate="novalidate" autocomplete="off" onSubmit="handleSubmit(event,this)">
                             @csrf
             

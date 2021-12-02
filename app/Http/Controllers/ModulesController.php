@@ -28,7 +28,7 @@ class ModulesController extends MY_Controller
      */
     public function index()
     {
-        return view('modules.index');
+        return view('modules.list');
     }
 
     /**
@@ -51,7 +51,7 @@ class ModulesController extends MY_Controller
         $module->list_modules = $module_list;
         $module->list_group_module = $list_group_module;
         $module->list_icon = $list_icon;
-        return view('modules.form')->with('module', $module);
+        return view('modules.edit')->with('module', $module);
     }
 
     /**
@@ -70,6 +70,7 @@ class ModulesController extends MY_Controller
             'status' => (!isset($request->status)) ? false : true
         ]);
         $module = $this->createSingleRecord($this->model, $request->all());
+        $this->addToLog(request());
         return redirect('/modules');
     }
 
@@ -97,7 +98,7 @@ class ModulesController extends MY_Controller
         $module = $this->getSigleRecord($this->model, $id);
         $module->list_group_module = $list_group_module;
         $module->list_icon = $list_icon;
-        return view('modules.form')->with('module', $module);
+        return view('modules.edit')->with('module', $module);
     }
 
     /**
@@ -117,6 +118,7 @@ class ModulesController extends MY_Controller
             'status' => (!isset($request->status)) ? false : true
         ]);
         $module = $this->updateById($this->model, $id, $request->all());
+        $this->addToLog(request());
         return redirect('/modules');
     }
 
@@ -129,6 +131,7 @@ class ModulesController extends MY_Controller
     public function destroy($id)
     {
         $this->deleteById($this->model, $id);
+        $this->addToLog(request());
         return redirect('/modules');
     }
     

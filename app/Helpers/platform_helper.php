@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File: platformm_helper.php
  * @package Helper
@@ -87,19 +88,54 @@ if (!function_exists('my_debug')) {
 if (!function_exists('generate_uuid')) {
     function generate_uuid()
     {
-        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
             mt_rand(0, 0xffff),
             mt_rand(0, 0x0fff) | 0x4000,
             mt_rand(0, 0x3fff) | 0x8000,
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff)
         );
     }
 }
-if (!function_exists('mb_ucwords'))
-{
-	function mb_ucwords($str)
-	{
-		return mb_convert_case($str, MB_CASE_TITLE, "UTF-8");
-	}
+if (!function_exists('mb_ucwords')) {
+    function mb_ucwords($str)
+    {
+        return mb_convert_case($str, MB_CASE_TITLE, "UTF-8");
+    }
+}
+
+if (!function_exists('sendRequest')) {
+    function sendRequest($url, $params, $token = null)
+    {
+        $headers[] = "Content-Type: application/json";
+        $headers[] = (!empty($token)) ? "Authorization: " . $token : null;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30); //timeout in seconds
+
+        // if(env('APP_ENV') !== 'local'){
+        //     curl_setopt($ch, CURLOPT_PROXY, 'proxy.hcm.fpt.vn:80');
+        //     curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
+        // }
+
+        $time = microtime(true);
+        $output = curl_exec($ch);
+        $timeRun = microtime(true) - $time;
+        // if (curl_errno($ch)) {
+        //     my_debug($url.'</br>'.curl_error($ch));
+        // }
+        curl_close($ch);
+        // my_debug($output.'</br>'.$url);
+        return json_decode($output);
+    }
 }

@@ -26,7 +26,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <!--Accordion wrapper-->
                     <div class="accordion md-accordion accordion-blocks" id="accordionEx78" role="tablist" aria-multiselectable="true">
 
@@ -45,7 +45,7 @@
                             </div>
                             <!-- Card body -->
                             <div id="collapseUnfiled" class="collapse" role="tabpanel" data-parent="#accordionEx78">
-                                <form action="/checklistmanage/sendStaff" action="POST" onsubmit="handleSubmit(event,this)">
+                                <form action="/checklistmanage/sendStaff" method="POST" onsubmit="handleSubmit(event,this)">
                                     @csrf
                                     <div class="card-body">
                                         <div class="input-group mb-3">
@@ -77,7 +77,7 @@
 
                             <!-- Card body -->
                             <div id="completeChecklist" class="collapse" role="tabpanel" data-parent="#accordionEx78">
-                                <form action="/checklistmanage/completeChecklist" action="POST" onsubmit="handleSubmit(event,this)">
+                                <form action="/checklistmanage/completeChecklist" method="POST" onsubmit="handleSubmit(event,this)">
                                     @csrf
                                     <div class="card-body">
                                         <div class="input-group mb-3">
@@ -97,18 +97,18 @@
             </div>
             <h4 class="text-muted text-center">List Id</h4>
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-md-10">
                     <ul class="list-group">
                     @php
                         $checklistLength = count($list_checklist_id);
                     @endphp
-                        @foreach($list_checklist_id as $key=>$checklist)
+                        @foreach(array_reverse($list_checklist_id) as $key=>$checklist)
                         <li class="list-group-item d-flex justify-content-around align-items-center">
                         <div class="badge badge-primary">No. {{$checklistLength--}}</div>
-                            {{$checklist}}
-                            <form  action="/checklistmanage/completeChecklist" action="POST" onsubmit="handleSubmit(event,this)">
+                            {{'ID: '. $checklist->ID.' - Hợp đồng: '.$checklist->HD}}
+                            <form  action="/checklistmanage/completeChecklist" method="POST" onsubmit="handleSubmit(event,this)">
                             @csrf
-                                <input type="text" class="form-control" name="checkListId" hidden value="{{$checklist}}">
+                                <input type="text" class="form-control" name="checkListId" hidden value="{{$checklist->ID}}">
                                 <button class="btn btn-sm btn-outline-success"><i class="fa fa-check" aria-hidden="true"></i></button>
                             </form>
                         </li>

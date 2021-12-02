@@ -40,7 +40,7 @@ class UserController extends MY_Controller
     public function create()
     {
         $roleList = Roles::get();
-        return view('user.create')->with(['roleList'=>$roleList]);
+        return view('user.edit')->with(['roleList'=>$roleList]);
     }
 
     /**
@@ -56,7 +56,8 @@ class UserController extends MY_Controller
             'password' => Hash::make($request->password)
         ]);
         $this->createSingleRecord($this->model, $request->all());
-        return redirect('/user')->with(['message'=>'Create Successful']);
+        $this->addToLog(request());
+        return redirect('/user')->withSuccess('Success!');
     }
 
     /**
@@ -94,7 +95,8 @@ class UserController extends MY_Controller
     public function update(Request $request, $id)
     {
         $this->updateById($this->model,$id,$request->all());
-        return redirect('/user'); 
+        $this->addToLog(request());
+        return redirect('/user')->withSuccess('Success!');
     }
 
     /**
@@ -106,6 +108,7 @@ class UserController extends MY_Controller
     public function destroy($id)
     {
         $this->deleteById($this->model, $id);
+        $this->addToLog(request());
         return redirect('/user');
     }
     public function initDatatable(Request $request)

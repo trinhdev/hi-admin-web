@@ -36,9 +36,9 @@ class HidepaymentController extends MY_Controller
     {
         $version = Settings::where('name', 'hide_payment_version')->get();
         $hidepayment = new stdClass();
-        $hidepayment->versions = json_decode($version[0]['value'], true);
+        $hidepayment->versions = (!empty($version[0]['value'])) ? json_decode($version[0]['value'], true) : [];
 
-        return view('hidepayment.list')->with('hidepayment', $hidepayment);
+        return view('hidepayment.index')->with('hidepayment', $hidepayment);
     }
     
     public function hide(Request $request) {
@@ -80,7 +80,7 @@ class HidepaymentController extends MY_Controller
         ]);
 
         $hidepayment = $this->createSingleRecord($this->model, $request->all());
-
+        $this->addToLog(request());
         return redirect('/hidepayment')->with($result);
     }
 

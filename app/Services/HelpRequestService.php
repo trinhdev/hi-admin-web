@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Helpers\CallApiHelper;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use stdClass;
 
@@ -40,7 +38,7 @@ class HelpRequestService
                 ]
             )
         ];
-        $response =  CallApiHelper::sendRequest($url, $postParam, $this->token);
+        $response = sendRequest($url, $postParam, $this->token);
         return $response;
     }
 
@@ -60,7 +58,7 @@ class HelpRequestService
         $postParam = [
             'listReportId' => $listReport
         ];
-        $response  = CallApiHelper::sendRequest($url, $postParam, $this->token);
+        $response  = sendRequest($url, $postParam, $this->token);
         return $response;
     }
 
@@ -80,13 +78,12 @@ class HelpRequestService
                 "Time" => " ; " . date('d-m-y')
             ]
         ];
-        $response =  CallApiHelper::sendRequest($url, $postParam, $this->token);
-        if($response->statusCode == 0){
-            $keyName = config('constants.REDIS_KEY.LIST_CHECKLIST_ID');
-            // Redis::zadd($keyName,$random_checklist_id);
-            Redis::command('ZADD', [$keyName, strtotime(now()),$random_checklist_id]);
-        }
-        return $response;
+        $response =  sendRequest($url, $postParam, $this->token);
+        $result = [
+            'response'=>$response,
+            'random_checklist_id'=>$random_checklist_id
+        ];
+        return $result;
     }
     public function splitCheckListValueRedis($value){
         $checklist = new stdClass;
@@ -94,19 +91,27 @@ class HelpRequestService
         $checklist->contract = substr($value,10);
         return $checklist;
     }
-    public function completeChecklist($checklist_Id)
+    public function completeChecklist($checkId)
     {
         $url = $this->baseUrl . 'report-local' . '/' . $this->listMethod['MY_UPDATE_COMPLETE_CHECKLIST'];
         $postParam = [
             [
-                "idCheckList" => $checklist_Id,
+                "idCheckList" =>$checkId,
                 "checkListType" => 2,
                 "code" => 0
             ]
         ];
-        $response =  CallApiHelper::sendRequest($url, $postParam, $this->token);
+        $response =  sendRequest($url, $postParam, $this->token);
         $keyName = config('constants.REDIS_KEY.LIST_CHECKLIST_ID');
-        Redis::command('ZREM', [$keyName,$checklist_Id]);
+        if (Redis::exists($keyName)) {
+            $data = unserialize(Redis::get($keyName));
+
+            $find_check_id = array_search($checkId, array_column($data, 'ID'));
+            if($find_check_id !== false){
+                unset($data[$find_check_id]);
+                Redis::set($keyName, serialize(array_values($data)));
+            }
+        }
         return $response;
     }
 }

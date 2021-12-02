@@ -39,7 +39,7 @@ class GroupmoduleController extends MY_Controller
         $groupmodule = new stdClass();
         $groupmodule->id = '';
         $groupmodule->group_module_name = '';
-        return view('groupmodule.form')->with('groupmodule', $groupmodule);
+        return view('groupmodule.edit')->with('groupmodule', $groupmodule);
     }
 
     /**
@@ -54,6 +54,7 @@ class GroupmoduleController extends MY_Controller
             'group_module_name' => 'required|unique:group_module|max:255',
         ]);
         $group_module = $this->createSingleRecord($this->model, $request->all());
+        $this->addToLog(request());
         return redirect('/groupmodule');
     }
 
@@ -77,7 +78,7 @@ class GroupmoduleController extends MY_Controller
     public function edit($id)
     {
         $group_module = $this->getSigleRecord($this->model, $id);
-        return view('groupmodule.form')->with('groupmodule', $group_module);
+        return view('groupmodule.edit')->with('groupmodule', $group_module);
     }
 
     /**
@@ -90,6 +91,7 @@ class GroupmoduleController extends MY_Controller
     public function update(Request $request, $id)
     {
         $group_module = $this->updateById($this->model, $id, $request->all());
+        $this->addToLog(request());
         return redirect('/groupmodule');
     }
 
@@ -102,6 +104,7 @@ class GroupmoduleController extends MY_Controller
     public function destroy($id)
     {
         $this->deleteById($this->model, $id);
+        $this->addToLog(request());
         return redirect('/groupmodule');
     }
 

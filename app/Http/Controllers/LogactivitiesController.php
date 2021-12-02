@@ -35,9 +35,6 @@ class LogactivitiesController extends MY_Controller
                 ->editColumn('ip', function ($row) {
                     return '<span class="text-danger font-weight-bolder">' . $row->ip . '</span>';
                 })
-                ->addColumn('action', function ($row) {
-                    return view('layouts.button.action')->with(['row' => $row, 'module' => 'logactivities']);
-                })
                 ->addColumn('email', function ($row) {
                     return !empty($row->user) ? $row->user->email : '';
                 })

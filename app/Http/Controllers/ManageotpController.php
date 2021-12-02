@@ -21,7 +21,7 @@ class ManageOtpController extends MY_Controller
     }
     public function index()
     {
-        return view('otp.request');
+        return view('otp.index');
     }
 
     public function handle(Request $request) {
@@ -62,7 +62,7 @@ class ManageOtpController extends MY_Controller
                 }
                 break;
         }
-
+        $this->addToLog(request());
         return redirect('/manageotp')->with($result);
     }
 

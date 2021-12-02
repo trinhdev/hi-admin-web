@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Services;
-
-use App\Helpers\CallApiHelper;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ChartService

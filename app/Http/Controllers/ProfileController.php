@@ -25,6 +25,7 @@ class ProfileController extends MY_Controller
         ];
         $this->updateById(new User(), Auth::user()->id, $paramUpdate);
         auth()->setUser(User::find(Auth::user()->id));
+        $this->addToLog(request());
         return true;
     }
     public function  updateprofile(UpdateProfileRequest $request)
@@ -33,6 +34,7 @@ class ProfileController extends MY_Controller
             'name' => $request->name
         ];
         $this->updateById(new User(), Auth::user()->id, $paramUpdate);
+        $this->addToLog(request());
         return redirect()->back()->withSuccess('success');
     }
 }
