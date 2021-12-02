@@ -12,7 +12,7 @@
                 <img src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/dist/img/avatar5.png" class="user-image" alt="User Image">
                 <span class="hidden-xs">{{ Auth::user()->name }}</span>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" style="transform: translate(-25%, 0px);">
                 <!-- User image -->
                 <li class="user-header">
                     <img src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/dist/img/avatar5.png" class="img-circle" alt="User Image">
