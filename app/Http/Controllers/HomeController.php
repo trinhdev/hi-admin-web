@@ -52,7 +52,7 @@ class HomeController extends MY_Controller
                 }
                 $result[$prev_date] = $data_prev_day[0];
                 $ttl = Redis::ttl($keyName);
-                Redis::setex($keyName,$ttl, serialize($result));
+                Redis::setex($keyName,($ttl <= 1) ? 86400 : $ttl, serialize($result));
             }
             
         } else {
@@ -60,7 +60,7 @@ class HomeController extends MY_Controller
             foreach($data as $doanhthu){
                 $result[$doanhthu->date] = $doanhthu;
             }
-            Redis::setex($keyName,604800, serialize($result));
+            Redis::setex($keyName,86400, serialize($result));
         }
         return $result;
     }
