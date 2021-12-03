@@ -17,6 +17,9 @@ use App\Models\Settings;
 
 use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 class HidepaymentController extends MY_Controller
 {
     /**
@@ -57,9 +60,12 @@ class HidepaymentController extends MY_Controller
             abort(419);
         }
 
+        $version_setting = Settings::where('name', 'hide_payment_version')->get();
+        $version = (!empty($version_setting[0]['value'])) ? json_decode($version_setting[0]['value'], true) : [];
         $validated = $request->validate([
-            'version' => 'required',
+            'version' => 'required|in:' . implode(',', $version),
         ]);
+
         $request->merge([
             'isUpStoreAndroid' => (!isset($request->isUpStoreAndroid)) ? "0" : "1",
             'isUpStoreIos' => (!isset($request->isUpStoreIos)) ? "0" : "1",
