@@ -22,6 +22,7 @@ class SettingsController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = 'Settings';
         $this->model = $this->getModel('Settings');
     }
 
@@ -92,7 +93,7 @@ class SettingsController extends MY_Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
         $request = request();
         $validated = $request->validate([

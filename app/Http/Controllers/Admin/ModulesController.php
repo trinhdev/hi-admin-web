@@ -15,6 +15,7 @@ class ModulesController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = 'List Module';
         $this->model = $this->getModel('Modules');
     }
     /**
@@ -104,9 +105,8 @@ class ModulesController extends MY_Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {   
-        $request = request();
         $validated = $request->validate([
             'module_name' => 'required|max:255',
             'uri' => 'required',

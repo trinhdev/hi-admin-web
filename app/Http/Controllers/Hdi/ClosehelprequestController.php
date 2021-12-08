@@ -12,6 +12,7 @@ class ClosehelprequestController extends MY_Controller
     //
     public function __construct()
     {
+        $this->title = 'Close Request';
         parent::__construct();
     }
     public function index()
@@ -37,7 +38,7 @@ class ClosehelprequestController extends MY_Controller
             return redirect()->back()->withErrors(['error'=>"Không có yêu cầu hỗ trợ nào!"]);
         }
         // continue
-        $this->addToLog(request());
+        $this->addToLog($request);
         return view('helprequest.list_request')->with(['listReport'=>$list_report_response->data]);
     }
 
@@ -51,7 +52,7 @@ class ClosehelprequestController extends MY_Controller
         ]);
         $helpReqeustService = new HelpRequestService();
         $reponse = $helpReqeustService->closeRequestByListReportId([$request->report_id]);
-        $this->addToLog(request());
+        $this->addToLog($request);
         return true;
     }
 }

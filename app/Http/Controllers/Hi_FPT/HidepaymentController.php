@@ -29,6 +29,7 @@ class HidepaymentController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = 'Hide Payment';
         $this->model = $this->getModel('Hidepayments');
     }
 
@@ -83,8 +84,8 @@ class HidepaymentController extends MY_Controller
         ]);
 
         $hidepayment = $this->createSingleRecord($this->model, $request->all());
-        $this->addToLog(request());
-        return redirect('/hidepayment')->with($result);
+        $this->addToLog($request);
+        return redirect()->route('hidepayment.index')->with($result);
     }
     public function initDatatable(Request $request){
         if($request->ajax()){

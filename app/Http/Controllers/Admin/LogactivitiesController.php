@@ -15,6 +15,7 @@ class LogactivitiesController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = 'Log Activites';
         $this->model = $this->getModel('Log_activities');
     }
     public function index()

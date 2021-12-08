@@ -16,6 +16,7 @@ class GroupsController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = 'List Group';
         $this->model = $this->getModel('Groups');
     }
     /**

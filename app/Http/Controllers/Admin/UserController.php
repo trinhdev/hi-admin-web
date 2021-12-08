@@ -16,6 +16,7 @@ class UserController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = 'List User';
         $this->model = $this->getModel('User');
     }
     /**
@@ -88,9 +89,8 @@ class UserController extends MY_Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        $request = request();
         $this->updateById($this->model,$id,$request->all());
         $this->addToLog($request);
         return redirect()->route('user.index')->withSuccess('Success!');

@@ -16,6 +16,7 @@ class GroupmoduleController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = 'Group Module';
         $this->model = $this->getModel('Group_Module');
     }
     /**
@@ -90,7 +91,7 @@ class GroupmoduleController extends MY_Controller
     public function update(Request $request, $id)
     {
         $group_module = $this->updateById($this->model, $id, $request->all());
-        $this->addToLog(request());
+        $this->addToLog($request);
         return redirect()->route('groupmodule.index');
     }
 

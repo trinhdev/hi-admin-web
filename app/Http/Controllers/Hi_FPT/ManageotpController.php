@@ -16,6 +16,7 @@ class ManageOtpController extends MY_Controller
      */
     public function __construct()
     {
+        $this->title = 'Manage OTP';
         parent::__construct();
     }
     public function index()
@@ -61,7 +62,7 @@ class ManageOtpController extends MY_Controller
                 }
                 break;
         }
-        $this->addToLog(request());
+        $this->addToLog($request);
         return redirect()->route('manageotp.index')->with($result);
     }
 }
