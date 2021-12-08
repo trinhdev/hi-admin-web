@@ -26,9 +26,11 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-12">
-                        <form action="/groupmodule{{(!$groupmodule->id) ? '/store' : '/update'}}{{ (!$groupmodule->id) ? '' : '/' . $groupmodule->id }}" method="POST" novalidate="novalidate" autocomplete="off" onSubmit="handleSubmit(event,this)">
+                    @php
+                        $action = (isset($groupmodule->id) && $groupmodule->id) ? route('groupmodule.update',$groupmodule->id) : route('groupmodule.store');
+                    @endphp
+                        <form action="{{$action}}" method="POST" novalidate="novalidate" autocomplete="off" onSubmit="handleSubmit(event,this)">
                             @csrf
-            
                             @if (isset($groupmodule->id) && $groupmodule->id)
                                 @method('PUT')
                             @endif
@@ -48,7 +50,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer" style="text-align: center">
-                                    <a href="/groupmodule" type="button" class="btn btn-default">Cancel</a>
+                                    <a href="{{route('groupmodule.index') }}" type="button" class="btn btn-default">Cancel</a>
                                     <button type="submit" class="btn btn-info">Save</button>
                                 </div>
                             </div>

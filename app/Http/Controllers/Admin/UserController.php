@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Helpers\LogactivitiesHelper;
-use App\Http\Requests\ChangePasswordReqest;
+use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Traits\DataTrait;
 use App\Models\Roles;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Hash;
-use Symfony\Component\VarDumper\Cloner\Data;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends MY_Controller
 {
@@ -57,7 +53,7 @@ class UserController extends MY_Controller
         ]);
         $this->createSingleRecord($this->model, $request->all());
         $this->addToLog(request());
-        return redirect('/user')->withSuccess('Success!');
+        return redirect()->route('user.index')->withSuccess('Success!');
     }
 
     /**
@@ -92,11 +88,12 @@ class UserController extends MY_Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
+        $request = request();
         $this->updateById($this->model,$id,$request->all());
-        $this->addToLog(request());
-        return redirect('/user')->withSuccess('Success!');
+        $this->addToLog($request);
+        return redirect()->route('user.index')->withSuccess('Success!');
     }
 
     /**
@@ -109,11 +106,12 @@ class UserController extends MY_Controller
     {
         $this->deleteById($this->model, $id);
         $this->addToLog(request());
-        return redirect('/user');
+        return redirect()->route('user.index')->withSuccess('Success!');
     }
     public function initDatatable(Request $request)
-    {
+    {    
         if ($request->ajax()) {
+
             $data = $this->model::query()->with('role');
             $json =   DataTables::of($data)
                 ->addIndexColumn()

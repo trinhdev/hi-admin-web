@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
-use App\Models\Roles;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\DB;
 
 class GroupsController extends MY_Controller
 {
@@ -33,7 +31,7 @@ class GroupsController extends MY_Controller
     }
 
 
-    public function edit()
+    public function edit($id = null)
     {
         // get view edit
         $data = parent::edit1();
@@ -50,7 +48,7 @@ class GroupsController extends MY_Controller
             }
             $this->addToLog(request());
         }
-        return $this->redirect($this->controller_name);
+        return redirect()->route('groups.index');
     }
     /**
      * Remove the specified resource from storage.
@@ -63,7 +61,7 @@ class GroupsController extends MY_Controller
         //
         $this->deleteById($this->model, $id);
         $this->addToLog(request());
-        return redirect('/groups');
+        return redirect()->route('groups.index');
     }
     public function getList(Request $request){
         if ($request->ajax()) {

@@ -1,17 +1,12 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Models\Roles;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\RolesController;
-use App\Http\Controllers\ModulesController;
-use App\Http\Controllers\GroupsController;
-use App\Http\Controllers\AclRoleController;
-use App\Http\Controllers\Auth\LoginController;
+use PHPUnit\TextUI\XmlConfiguration\Group;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,30 +23,101 @@ use App\Http\Controllers\Auth\LoginController;
 Auth::routes();
 Route::group([
     'middleware' => ['auth','can:role-permission'],
+    'namespace' =>'App\Http\Controllers'
     ],
     function (){      
-        // $protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === true ? 'https://' : 'http://';
-        // $url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-        // $url_base = $protocol . $_SERVER['HTTP_HOST'];
-        $action = 'index';
-        $controller = 'Index';
-        // dd(Auth::user() );
-        if (!empty($_SERVER['REQUEST_URI'])) {
-            $uri = $_SERVER['REQUEST_URI'];
-            $segments = request()->segments();
-            $action = 'index';
-            $controller = 'Home';
-            if (!empty($segments[0])) {
-                    $controller = explode('?', ucfirst($segments[0]))[0];
-                if (!empty($segments[1])) {
-                    $action = explode('?', $segments[1])[0];
-                }
-            }
-            if(!in_array($controller, ['Login', 'Logout'])) {
-                Route::any("/" . strtolower($controller), 'App\\Http\\Controllers\\' . $controller . 'Controller@index');
-                Route::any("/" . strtolower($controller) . "/$action", 'App\\Http\\Controllers\\' . $controller . 'Controller@' . $action);
-                Route::any("/" . strtolower($controller) . "/$action/{param}", 'App\\Http\\Controllers\\' . $controller . 'Controller@' . $action);
-                Route::get('/', [HomeController::class, 'index'])->name('home');
-            }
-        }
+        Route::namespace('Admin')->group(function () {
+            Route::prefix('settings')->group(function () {
+                Route::get('/','SettingsController@index')->name('settings.index');
+                Route::get('/edit/{id}','SettingsController@edit')->name('settings.edit');
+                Route::get('/create','SettingsController@create')->name('settings.create');
+                Route::post('/store','SettingsController@store')->name('settings.store');
+                Route::put('/update/{id}','SettingsController@update')->name('settings.update');
+                Route::delete('/destroy/{id}','SettingsController@destroy')->name('settings.destroy');
+                Route::get('/initDatatable','SettingsController@initDatatable')->name('settings.initDatatable');
+            });
+            Route::prefix('user')->group(function () {
+                Route::get('/','UserController@index')->name('user.index');
+                Route::get('/edit/{id}','UserController@edit')->name('user.edit');
+                Route::get('/create','UserController@create')->name('user.create');
+                Route::post('/store','UserController@store')->name('user.store');
+                Route::put('/update/{id}','UserController@update')->name('user.update');
+                Route::delete('/destroy/{id}','UserController@destroy')->name('user.destroy');
+                Route::get('/initDatatable','UserController@initDatatable')->name('user.initDatatable');
+            });
+            Route::prefix('groups')->group(function () {
+                Route::get('/','GroupsController@index')->name('groups.index');
+                Route::get('/edit/{id?}','GroupsController@edit')->name('groups.edit');
+                Route::get('/create','GroupsController@create')->name('groups.create');
+                Route::post('/save','GroupsController@save')->name('groups.store');
+                Route::delete('/destroy/{id}','GroupsController@destroy')->name('groups.destroy');
+                Route::get('/getList','GroupsController@getList')->name('groups.getList');
+            });
+            Route::prefix('modules')->group(function () {
+                Route::get('/','ModulesController@index')->name('modules.index');
+                Route::get('/edit/{id}','ModulesController@edit')->name('modules.edit');
+                Route::get('/create','ModulesController@create')->name('modules.create');
+                Route::post('/store','ModulesController@store')->name('modules.store');
+                Route::put('/update/{id}','ModulesController@update')->name('modules.update');
+                Route::delete('/destroy/{id}','ModulesController@destroy')->name('modules.destroy');
+                Route::get('/initDatatable','ModulesController@initDatatable')->name('modules.initDatatable');
+            });
+
+            Route::prefix('groupmodule')->group(function () {
+                Route::get('/','GroupmoduleController@index')->name('groupmodule.index');
+                Route::get('/edit/{id}','GroupmoduleController@edit')->name('groupmodule.edit');
+                Route::get('/create','GroupmoduleController@create')->name('groupmodule.create');
+                Route::post('/store','GroupmoduleController@store')->name('groupmodule.store');
+                Route::put('/update/{id}','GroupmoduleController@update')->name('groupmodule.update');
+                Route::delete('/destroy/{id}','GroupmoduleController@destroy')->name('groupmodule.destroy');
+                Route::get('/initDatatable','GroupmoduleController@initDatatable')->name('groupmodule.initDatatable');
+            });
+            Route::prefix('roles')->group(function () {
+                Route::get('/','RolesController@index')->name('roles.index');
+                Route::get('/edit/{id?}','RolesController@edit')->name('roles.edit');
+                Route::get('/create','RolesController@create')->name('roles.create');
+                Route::post('/save','RolesController@save')->name('roles.save');
+                Route::delete('/destroy/{id}','RolesController@destroy')->name('roles.destroy');
+                Route::get('/getList','RolesController@getList')->name('roles.getList');
+            });
+
+            Route::prefix('logactivities')->group(function () {
+                Route::get('/','LogactivitiesController@index')->name('logactivities.index');
+                Route::post('/clearLog','LogactivitiesController@clearLog')->name('logactivities.clearLog');
+                Route::delete('/destroy/{id}','LogactivitiesController@destroy')->name('logactivities.destroy');
+                Route::get('/initDatatable','LogactivitiesController@initDatatable')->name('logactivities.initDatatable');
+            });
+
+        });
+        Route::namespace('Hdi')->group(function () {
+            Route::prefix('checklistmanage')->group(function () {
+                Route::get('/','ChecklistmanageController@index')->name('checklistmanage.index');
+                Route::post('/sendStaff','ChecklistmanageController@sendStaff')->name('checklistmanage.sendStaff');
+                Route::post('/completeChecklist','ChecklistmanageController@completeChecklist')->name('checklistmanage.completeChecklist');
+            });
+            Route::prefix('closehelprequest')->group(function () {
+                Route::get('/','ClosehelprequestController@index')->name('closehelprequest.index');
+                Route::post('/getListReportByContract','ClosehelprequestController@getListReportByContract')->name('closehelprequest.getListReportByContract');
+                Route::post('/closeRequest','ClosehelprequestController@closeRequest')->name('closehelprequest.closeRequest');
+            });
+
+        });
+        Route::namespace('Hi_FPT')->group(function () {
+            Route::prefix('manageotp')->group(function () {
+                Route::get('/','ManageOtpController@index')->name('manageotp.index');
+                Route::post('/handle','ManageOtpController@handle')->name('manageotp.handle');
+            });
+            Route::prefix('hidepayment')->group(function () {
+                Route::get('/','HidepaymentController@index')->name('hidepayment.index');
+                Route::post('/hide','HidepaymentController@hide')->name('hidepayment.hide');
+                Route::get('/initDatatable','HidepaymentController@initDatatable')->name('hidepayment.initDatatable');
+            });
+            
+        });
+        Route::prefix('profile')->group(function () {
+            Route::post('/changePassword','ProfileController@changePassword')->name('profile.changePassword');
+            Route::post('/updateprofile','ProfileController@updateprofile')->name('profile.updateprofile');
+        });
+        Route::get('/', [HomeController::class, 'index'])->name('home');
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
 });

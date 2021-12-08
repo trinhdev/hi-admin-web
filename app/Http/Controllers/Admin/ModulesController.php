@@ -1,16 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Traits\DataTrait;
-use App\Models\Modules;
 use App\Models\Group_Module;
-use App\Models\Settings;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redis;
 use \stdClass;
 
 class ModulesController extends MY_Controller
@@ -71,7 +67,7 @@ class ModulesController extends MY_Controller
         ]);
         $module = $this->createSingleRecord($this->model, $request->all());
         $this->addToLog(request());
-        return redirect('/modules');
+        return redirect()->route('modules.index');
     }
 
     /**
@@ -108,8 +104,9 @@ class ModulesController extends MY_Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update($id)
+    {   
+        $request = request();
         $validated = $request->validate([
             'module_name' => 'required|max:255',
             'uri' => 'required',
@@ -118,8 +115,8 @@ class ModulesController extends MY_Controller
             'status' => (!isset($request->status)) ? false : true
         ]);
         $module = $this->updateById($this->model, $id, $request->all());
-        $this->addToLog(request());
-        return redirect('/modules');
+        $this->addToLog($request);
+        return redirect()->route('modules.index');
     }
 
     /**
@@ -132,7 +129,7 @@ class ModulesController extends MY_Controller
     {
         $this->deleteById($this->model, $id);
         $this->addToLog(request());
-        return redirect('/modules');
+        return redirect()->route('modules.index');
     }
     
     public function initDatatable(Request $request){

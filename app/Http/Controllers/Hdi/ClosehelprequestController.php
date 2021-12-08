@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Hdi;
+
+use App\Http\Controllers\MY_Controller;
 use App\Services\ContractService;
 use App\Services\HelpRequestService;
 use Illuminate\Http\Request;;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Helpers\LogactivitiesHelper;
+use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;

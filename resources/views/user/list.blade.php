@@ -10,7 +10,7 @@
                     <div class="col-sm-6">
                         <h1 style="float: left; margin-right: 20px">Users Tables</h1>
                          @if( Auth::user()->role_id == config('constants.ADMIN') || $aclCurrentModule->create == 1)
-                        <a href="user/create" class="btn btn-primary btn-sm">
+                        <a href="{{route('user.create')}}" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Add New User
                         </a>
                         @endif

@@ -1,32 +1,33 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Traits\DataTrait;
-use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use \stdClass;
 
-use App\Models\Group_Module;
+use App\Models\Settings;
 
-class GroupmoduleController extends MY_Controller
+class SettingsController extends MY_Controller
 {
-    use DataTrait;
-    public function __construct()
-    {
-        parent::__construct();
-        $this->model = $this->getModel('Group_Module');
-    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    use DataTrait;
+    public function __construct()
+    {
+        parent::__construct();
+        $this->model = $this->getModel('Settings');
+    }
+
     public function index()
     {
-        return view('groupmodule.index');
+        return view('settings.list');
     }
 
     /**
@@ -36,10 +37,11 @@ class GroupmoduleController extends MY_Controller
      */
     public function create()
     {
-        $groupmodule = new stdClass();
-        $groupmodule->id = '';
-        $groupmodule->group_module_name = '';
-        return view('groupmodule.edit')->with('groupmodule', $groupmodule);
+        $setting = new stdClass();
+        $setting->id = '';
+        $setting->name = '';
+        $setting->value = '[]';
+        return view('settings.edit')->with('setting', $setting);
     }
 
     /**
@@ -51,11 +53,13 @@ class GroupmoduleController extends MY_Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'group_module_name' => 'required|unique:group_module|max:255',
+            'name'  => 'required|unique:settings|max:255',
+            'value' => 'required|json'
         ]);
-        $group_module = $this->createSingleRecord($this->model, $request->all());
+        
+        $setting = $this->createSingleRecord($this->model, $request->all());
         $this->addToLog(request());
-        return redirect('/groupmodule');
+        return redirect()->route('settings.index');
     }
 
     /**
@@ -77,8 +81,8 @@ class GroupmoduleController extends MY_Controller
      */
     public function edit($id)
     {
-        $group_module = $this->getSigleRecord($this->model, $id);
-        return view('groupmodule.edit')->with('groupmodule', $group_module);
+        $setting = $this->getSigleRecord($this->model, $id);
+        return view('settings.edit')->with('setting', $setting);
     }
 
     /**
@@ -88,11 +92,17 @@ class GroupmoduleController extends MY_Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        $group_module = $this->updateById($this->model, $id, $request->all());
-        $this->addToLog(request());
-        return redirect('/groupmodule');
+        $request = request();
+        $validated = $request->validate([
+            'name'  => 'required|max:255',
+            'value' => 'required|json'
+        ]);
+
+        $setting = $this->updateById($this->model, $id, $request->all());
+        $this->addToLog($request);
+        return redirect()->route('settings.index');
     }
 
     /**
@@ -105,7 +115,7 @@ class GroupmoduleController extends MY_Controller
     {
         $this->deleteById($this->model, $id);
         $this->addToLog(request());
-        return redirect('/groupmodule');
+        return redirect()->route('settings.index');
     }
 
     public function initDatatable(Request $request){
@@ -114,7 +124,7 @@ class GroupmoduleController extends MY_Controller
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
-                return view('layouts.button.action')->with(['row'=>$row,'module'=>'groupmodule']);
+                return view('layouts.button.action')->with(['row'=>$row,'module'=>'settings']);
             })
             ->rawColumns(['action'])
             ->make(true);
