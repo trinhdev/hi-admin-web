@@ -29,7 +29,10 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-12">
-                    <form action="{!! !empty($user)?'/user/update/'.$user->id:'/user/store'!!}" method="POST" onSubmit="handleSubmit(event,this)">
+                    @php
+                        $action = (empty($user)) ? route('user.store') : route('user.update',$user->id);
+                    @endphp
+                    <form action="{{$action}}" method="POST" onSubmit="handleSubmit(event,this)">
                         @csrf
                         @if(!empty($user))
                         @method('PUT')
@@ -70,7 +73,7 @@
                                 </div>
                             </div>
                             <div class="card-footer" style="text-align: center">
-                                <a href="/user" type="button" class="btn btn-default">Cancel</a>
+                                <a href="{{ route('user.index') }}" type="button" class="btn btn-default">Cancel</a>
                                 <button type="submit" class="btn btn-info">Save</button>
                             </div>
                         </div>

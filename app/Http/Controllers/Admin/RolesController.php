@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use App\Models\Acl_Roles;
 use App\Models\Modules;
@@ -61,7 +62,6 @@ class RolesController extends MY_Controller
                     $role->id = $request['id'];
                 }
                 //create and update permission
-                // dd($request);
                 if (isset($request['module_id'])) {
                     $arrayDataAcl = [];
                     foreach ($request['module_id'] as $key => $val) {
@@ -87,7 +87,7 @@ class RolesController extends MY_Controller
                 $this->addToLog(request());
             });
         }
-        return $this->redirect($this->controller_name);
+        return redirect()->route('roles.index');
     }
     /**
      * Remove the specified resource from storage.
@@ -100,7 +100,7 @@ class RolesController extends MY_Controller
         //
         $this->deleteById($this->model, $id);
         $this->addToLog(request());
-        return redirect('/roles');
+        return redirect()->route('roles.index');
     }
     public function getList(Request $request)
     {

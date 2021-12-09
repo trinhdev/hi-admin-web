@@ -26,7 +26,7 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        <form action="/hidepayment/hide" method="POST" autocomplete="off" onsubmit="handleSubmit(event,this)">
+                        <form action="{{ route('hidepayment.hide')}}" method="POST" autocomplete="off" onsubmit="handleSubmit(event,this)">
                             @csrf
 
                             <div class="card card-info">

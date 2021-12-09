@@ -49,6 +49,7 @@ class MY_Controller extends Controller
      */
     protected $action_delete = 'delete';
 
+    protected $title = 'Title';
 
 
     /**
@@ -98,7 +99,7 @@ class MY_Controller extends Controller
         } else {
             $data = [];
         }
-        View::share(['groupModule' => $getModuleData->arrayGroupkey, 'aclCurrentModule' => $data]);
+        View::share(['groupModule' => $getModuleData->arrayGroupkey, 'aclCurrentModule' => $data,'title'=>$this->title]);
     }
     public function beforeExecuteRoute()
     {

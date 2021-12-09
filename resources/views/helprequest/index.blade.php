@@ -1,5 +1,7 @@
 @extends('layouts.default')
-
+@push('header')
+<link rel="stylesheet" href="{{asset('custom_css/close_request.css')}}">
+@endpush
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -13,7 +15,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">close helpe request</li>
+                            <li class="breadcrumb-item active">close help request</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -26,7 +28,8 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-12">
-                        <form action="/closehelprequest/getListReportByContract" method="POST" autocomplete="off">
+                        {{-- <form action=" {{ route('closehelprequest.getListReportByContract')}}" method="POST" autocomplete="off"> --}}
+                        <form>
                             @csrf
                             <div class="card card-info">
                                 <div class="card-header">
@@ -42,12 +45,21 @@
                                 </div>
                                 
                                 <div class="card-footer" style="text-align: center">
-                                    <button type="submit" class="btn btn-info">Get Contract Info</button>
+                                    <button type="button" class="btn btn-info" onclick="getListReport(this)">Get Contract Info</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
+            </div>
+            <div class="container">
+            <div class="col-md-12">
+                <div class="card2 card-white mb-5">
+                    <ul class="list-unstyled" id="showListReport">
+                        
+                    </ul>
+                </div>
+            </div>
             </div>
         </section>
         <!-- /.content -->

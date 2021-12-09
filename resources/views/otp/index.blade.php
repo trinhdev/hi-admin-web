@@ -26,7 +26,7 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        <form action="/manageotp/handle" method="POST" autocomplete="off">
+                        <form action="{{ route('manageotp.handle') }}" method="POST" autocomplete="off">
                             @csrf
 
                             <div class="card card-info">

@@ -67,16 +67,6 @@
                         </tbody>
 
                     </table>
-                    {{-- <div class="subpanel-pagination">
-                             <input type="hidden" id="Module_current_page" name="Module_current_page" value="1">
-                             <ul class="pagination pagination-sm">
-                                 <li class=" disabled"><a>«</a></li>
-                                 <li class="active">
-                                     <a>1</a>
-                                 </li>
-                                 <li class="disabled"><a>»</a></li>
-                             </ul>
-                         </div> --}}
                 </div>
             </div>
         </div>

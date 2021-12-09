@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Hi_FPT;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 
 use App\Http\Traits\DataTrait;
@@ -29,6 +29,7 @@ class HidepaymentController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = 'Hide Payment';
         $this->model = $this->getModel('Hidepayments');
     }
 
@@ -57,9 +58,12 @@ class HidepaymentController extends MY_Controller
             abort(419);
         }
 
+        $version_setting = Settings::where('name', 'hide_payment_version')->get();
+        $version = (!empty($version_setting[0]['value'])) ? json_decode($version_setting[0]['value'], true) : [];
         $validated = $request->validate([
-            'version' => 'required',
+            'version' => 'required|in:' . implode(',', $version),
         ]);
+
         $request->merge([
             'isUpStoreAndroid' => (!isset($request->isUpStoreAndroid)) ? "0" : "1",
             'isUpStoreIos' => (!isset($request->isUpStoreIos)) ? "0" : "1",
@@ -80,76 +84,9 @@ class HidepaymentController extends MY_Controller
         ]);
 
         $hidepayment = $this->createSingleRecord($this->model, $request->all());
-        $this->addToLog(request());
-        return redirect('/hidepayment')->with($result);
+        $this->addToLog($request);
+        return redirect()->route('hidepayment.index')->with($result);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function initDatatable(Request $request){
         if($request->ajax()){
             $data = $this->model::query();

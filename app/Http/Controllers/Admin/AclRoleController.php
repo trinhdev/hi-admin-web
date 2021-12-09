@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 
 class AclRoleController extends MY_Controller

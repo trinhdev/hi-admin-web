@@ -42,8 +42,6 @@ $(document).ready(function () {
     });
     $(document).on('pjax:popstate', function (event) {
         event.preventDefault();
-        // $.pjax.defaults.maxCacheLength = 0;
-        // location = event.currentTarget.URL;
         $.pjax.reload('#pjax');
     });
     // $(document).on('pjax:error', function (event, xhr, textStatus, errorThrown, options) {
@@ -218,7 +216,7 @@ function initUser() {
         "scrollX": true,
         retrieve: true,
         "ajax": {
-            url: "/user/initDatatable"
+            url: "user/initDatatable"
         },
         "columns": [{
                 data: "id",
@@ -256,6 +254,7 @@ function initUser() {
             "emptyTable": "No Record..."
         },
         "initComplete": function (setting, json) {
+            console.log(json);
             $('#userTable').show();
         },
         error: function (xhr, error, code) {

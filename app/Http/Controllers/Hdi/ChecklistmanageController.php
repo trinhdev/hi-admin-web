@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Hdi;
 
+use App\Http\Controllers\MY_Controller;
 use App\Services\ContractService;
 use App\Services\HelpRequestService;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ class ChecklistmanageController extends MY_Controller
     //
     public function __construct()
     {
+        $this->title = 'Check List';
         parent::__construct();
     }
     public function index()
@@ -53,7 +55,7 @@ class ChecklistmanageController extends MY_Controller
         }
         Redis::set($keyName, serialize($data));
         // continue
-        return redirect('/checklistmanage')->withSuccess(['success' => 'success']);
+        return redirect()->route('checklistmanage.index')->withSuccess(['success' => 'success']);
     }
 
     public function completeChecklist(Request $request)
@@ -65,10 +67,10 @@ class ChecklistmanageController extends MY_Controller
             $helpReqeustService = new HelpRequestService();
             $completeChecklist_reponse = $helpReqeustService->completeChecklist($request->checkListId);
             if ($completeChecklist_reponse->statusCode != 0) {
-                return redirect('/checklistmanage')->withErrors(['error' => $completeChecklist_reponse->message]);
+                return redirect()->route('checklistmanage.index')->withErrors(['error' => $completeChecklist_reponse->message]);
             }
-            $this->addToLog(request());
-            return redirect('/checklistmanage')->withSuccess(['success' => 'success']);
+            $this->addToLog($request);
+            return redirect()->route('checklistmanage.index')->withSuccess(['success' => 'success']);
         }
     }
     private function getListCheckList()

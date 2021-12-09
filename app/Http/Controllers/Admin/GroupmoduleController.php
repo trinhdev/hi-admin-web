@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Traits\DataTrait;
-use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use \stdClass;
 
@@ -17,6 +16,7 @@ class GroupmoduleController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = 'Group Module';
         $this->model = $this->getModel('Group_Module');
     }
     /**
@@ -55,7 +55,7 @@ class GroupmoduleController extends MY_Controller
         ]);
         $group_module = $this->createSingleRecord($this->model, $request->all());
         $this->addToLog(request());
-        return redirect('/groupmodule');
+        return redirect()->route('groupmodule.index');
     }
 
     /**
@@ -91,8 +91,8 @@ class GroupmoduleController extends MY_Controller
     public function update(Request $request, $id)
     {
         $group_module = $this->updateById($this->model, $id, $request->all());
-        $this->addToLog(request());
-        return redirect('/groupmodule');
+        $this->addToLog($request);
+        return redirect()->route('groupmodule.index');
     }
 
     /**
@@ -105,7 +105,7 @@ class GroupmoduleController extends MY_Controller
     {
         $this->deleteById($this->model, $id);
         $this->addToLog(request());
-        return redirect('/groupmodule');
+        return redirect()->route('groupmodule.index');
     }
 
     public function initDatatable(Request $request){
