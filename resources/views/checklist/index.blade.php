@@ -45,7 +45,7 @@
                             </div>
                             <!-- Card body -->
                             <div id="collapseUnfiled" class="collapse" role="tabpanel" data-parent="#accordionEx78">
-                                <form action="/checklistmanage/sendStaff" method="POST" onsubmit="handleSubmit(event,this)">
+                                <form action="{{ route('checklistmanage.sendStaff')}}" method="POST" onsubmit="handleSubmit(event,this)">
                                     @csrf
                                     <div class="card-body">
                                         <div class="input-group mb-3">
@@ -77,7 +77,7 @@
 
                             <!-- Card body -->
                             <div id="completeChecklist" class="collapse" role="tabpanel" data-parent="#accordionEx78">
-                                <form action="/checklistmanage/completeChecklist" method="POST" onsubmit="handleSubmit(event,this)">
+                                <form action="{{route('checklistmanage.completeChecklist')}}" method="POST" onsubmit="handleSubmit(event,this)">
                                     @csrf
                                     <div class="card-body">
                                         <div class="input-group mb-3">
@@ -106,7 +106,7 @@
                         <li class="list-group-item d-flex justify-content-around align-items-center">
                         <div class="badge badge-primary">No. {{$checklistLength--}}</div>
                             {{'ID: '. $checklist->ID.' - Hợp đồng: '.$checklist->HD}}
-                            <form  action="/checklistmanage/completeChecklist" method="POST" onsubmit="handleSubmit(event,this)">
+                            <form  action=" {{ route('checklistmanage.completeChecklist')}}" method="POST" onsubmit="handleSubmit(event,this)">
                             @csrf
                                 <input type="text" class="form-control" name="checkListId" hidden value="{{$checklist->ID}}">
                                 <button class="btn btn-sm btn-outline-success"><i class="fa fa-check" aria-hidden="true"></i></button>

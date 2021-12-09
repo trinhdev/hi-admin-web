@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Route;
 use \stdClass;
 
 use App\Models\Settings;
@@ -24,6 +22,7 @@ class SettingsController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = 'Settings';
         $this->model = $this->getModel('Settings');
     }
 
@@ -61,7 +60,7 @@ class SettingsController extends MY_Controller
         
         $setting = $this->createSingleRecord($this->model, $request->all());
         $this->addToLog(request());
-        return redirect('/settings');
+        return redirect()->route('settings.index');
     }
 
     /**
@@ -96,14 +95,15 @@ class SettingsController extends MY_Controller
      */
     public function update(Request $request, $id)
     {
+        $request = request();
         $validated = $request->validate([
             'name'  => 'required|max:255',
             'value' => 'required|json'
         ]);
 
         $setting = $this->updateById($this->model, $id, $request->all());
-        $this->addToLog(request());
-        return redirect('/settings');
+        $this->addToLog($request);
+        return redirect()->route('settings.index');
     }
 
     /**
@@ -116,7 +116,7 @@ class SettingsController extends MY_Controller
     {
         $this->deleteById($this->model, $id);
         $this->addToLog(request());
-        return redirect('/settings');
+        return redirect()->route('settings.index');
     }
 
     public function initDatatable(Request $request){

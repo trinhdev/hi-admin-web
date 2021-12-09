@@ -33,7 +33,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    {!! Form::open(array('url' => Config::get('app.backendUrl').'/'.$controller.'/save','method'=>'post' ,'id' => 'form-view','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
+                    {!! Form::open(array('url' => route('roles.save'),'method'=>'post' ,'id' => 'form-view','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
                     <input type="hidden" name="model_name" value="{{$model_name}}">
                     <input type="hidden" name="action_detail" value="{{$action_detail}}">
                     <input type="hidden" name="id" value="@if(!empty($data)){{$data->id}}@endif" />

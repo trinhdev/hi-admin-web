@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Hdi;
+
+use App\Http\Controllers\MY_Controller;
 use App\Services\ContractService;
 use App\Services\HelpRequestService;
+use GrahamCampbell\ResultType\Result;
 use Illuminate\Http\Request;;
 
 class ClosehelprequestController extends MY_Controller
@@ -10,6 +13,7 @@ class ClosehelprequestController extends MY_Controller
     //
     public function __construct()
     {
+        $this->title = 'Close Request';
         parent::__construct();
     }
     public function index()
@@ -22,21 +26,26 @@ class ClosehelprequestController extends MY_Controller
         $request->validate([
             'contractNo' =>'required'
         ]);
-        
+        $this->addToLog($request);
+        $result = [];
         $contractService = new ContractService();
         $helpReqeustService = new HelpRequestService();
         $contract_info_response = $contractService->getContractInfo($request); // call api get contract info
         if(empty($contract_info_response->data)){
-            return redirect()->back()->withErrors(['error'=>"Hợp đồng không tồn tại!"]);
+            $result['error'] = "Hợp đồng không tồn tại!";
+        }else{
+            $contract_info = $contract_info_response->data[0];
+            $list_report_response = $helpReqeustService->getListReportByContract($contract_info); // call api get list report by contract
+            if(empty($list_report_response->data)){
+                $result['error'] = "Không có yêu cầu hỗ trợ nào!";
+            }else{
+                // continue
+                $result['data'] = $list_report_response->data;
+                $result['contract'] = $request->contractNo;
+            }
         }
-        $contract_info = $contract_info_response->data[0];
-        $list_report_response = $helpReqeustService->getListReportByContract($contract_info); // call api get list report by contract
-        if(empty($list_report_response->data)){
-            return redirect()->back()->withErrors(['error'=>"Không có yêu cầu hỗ trợ nào!"]);
-        }
-        // continue
-        $this->addToLog(request());
-        return view('helprequest.list_request')->with(['listReport'=>$list_report_response->data]);
+        return $result;
+        // return view('helprequest.index')->with(['listReport'=>$list_report_response->data]);
     }
 
     public function closeRequest(Request $request)
@@ -49,7 +58,7 @@ class ClosehelprequestController extends MY_Controller
         ]);
         $helpReqeustService = new HelpRequestService();
         $reponse = $helpReqeustService->closeRequestByListReportId([$request->report_id]);
-        $this->addToLog(request());
+        $this->addToLog($request);
         return true;
     }
 }

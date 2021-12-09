@@ -24,7 +24,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid ">
-            <form action="logactivities/clearLog" method="POST" onsubmit="var formData = new FormData(this);if(formData.get('clear_log_option') == '')return false;">
+            <form action="{{route('logactivities.clearLog')}}" method="POST" onsubmit="var formData = new FormData(this);if(formData.get('clear_log_option') == '')return false;">
                 @csrf
                 <div class="row">
                     <div class="col-sm-6">

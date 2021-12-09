@@ -33,9 +33,11 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-12">
-                        <form id="setting-id" action="/settings{{(!$setting->id) ? '/store' : '/update'}}{{ (!$setting->id) ? '' : '/' . $setting->id }}" method="POST" novalidate="novalidate" autocomplete="off" onsubmit="handleSubmit(event,this)">
+                    @php
+                        $action = (isset($setting->id) && $setting->id) ? route('settings.update',$setting->id) : route('settings.store');
+                    @endphp
+                        <form id="setting-id" action="{{$action}}" method="POST" novalidate="novalidate" autocomplete="off" onsubmit="handleSubmit(event,this)">
                             @csrf
-            
                             @if (isset($setting->id) && $setting->id)
                                 @method('PUT')
                             @endif
@@ -64,7 +66,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer" style="text-align: center">
-                                    <a href="/settings" type="button" class="btn btn-default">Cancel</a>
+                                    <a href="{{ route('settings.index') }}" type="button" class="btn btn-default">Cancel</a>
                                     <button type="submit" class="btn btn-info">Save</button>
                                 </div>
                             </div>
