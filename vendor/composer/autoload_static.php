@@ -643,6 +643,7 @@ class ComposerStaticInit7842405ed90cebecb44980cef7dbe0a4
         'App\\Http\\Controllers\\Hdi\\ChecklistmanageController' => __DIR__ . '/../..' . '/app/Http/Controllers/Hdi/ChecklistmanageController.php',
         'App\\Http\\Controllers\\Hdi\\ClosehelprequestController' => __DIR__ . '/../..' . '/app/Http/Controllers/Hdi/ClosehelprequestController.php',
         'App\\Http\\Controllers\\Hi_FPT\\HidepaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/Hi_FPT/HidepaymentController.php',
+        'App\\Http\\Controllers\\Hi_FPT\\ManageotpController' => __DIR__ . '/../..' . '/app/Http/Controllers/Hi_FPT/ManageotpController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\MY_Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/MY_Controller.php',
         'App\\Http\\Controllers\\ProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProfileController.php',
