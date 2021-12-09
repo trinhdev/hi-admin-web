@@ -22,8 +22,7 @@ use PHPUnit\TextUI\XmlConfiguration\Group;
 
 Auth::routes();
 Route::group([
-    'middleware' => ['auth','can:role-permission'],
-    'namespace' =>'App\Http\Controllers'
+    'middleware' => ['auth','can:role-permission']
     ],
     function (){     
         Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -109,8 +108,8 @@ Route::group([
         });
         Route::namespace('Hi_FPT')->group(function () {
             Route::prefix('manageotp')->group(function () {
-                Route::get('/','ManageOtpController@index')->name('manageotp.index');
-                Route::post('/handle','ManageOtpController@handle')->name('manageotp.handle');
+                Route::get('/','ManageotpController@index')->name('manageotp.index');
+                Route::post('/handle','ManageotpController@handle')->name('manageotp.handle');
             });
             Route::prefix('hidepayment')->group(function () {
                 Route::get('/','HidepaymentController@index')->name('hidepayment.index');
