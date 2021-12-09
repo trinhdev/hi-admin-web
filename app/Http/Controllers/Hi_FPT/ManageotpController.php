@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\HdiCustomer;
 use Illuminate\Support\Facades\RateLimiter;
 
-class ManageOtpController extends MY_Controller
+class ManageotpController extends MY_Controller
 {
     /**
      * Display a listing of the resource.
