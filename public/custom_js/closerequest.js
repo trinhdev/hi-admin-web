@@ -24,7 +24,8 @@ function successCallGetListReport(reponse){
         var listColor = ['warning','info','primary','sucess'];
         var html = `<div> Contract : `+reponse.contract+`</div>`;
         for (const [key, report] of Object.entries(reponse.data) ){
-            html += `<li class="position-relative booking" id ="`+report.id+`">
+            console.log(report);
+            html += `<li class="position-relative booking" id ="`+report.reportId+`">
             <div class="media">
                 <div class="media-body">
                     <h5 class="mb-4">ID: `+report.reportId;
@@ -47,12 +48,12 @@ function successCallGetListReport(reponse){
                     </div>
                 </div>
             </div>`;
-            if(report.reportType === 'HT-KYTHUAT' && report.isShowBtnCancel == 1){
+            // if(report.reportType === 'HT-KYTHUAT' && report.isShowBtnCancel == 1){
             html+=`
             <div class="buttons-to-right">
                 <a onclick="dialogConfirmWithAjax(closeRequest,this)" type="button"class="btn-red mr-2"><i class="far fa-times-circle mr-2"></i>Close</a>
             </div>`;
-            }
+            // }
         html+=`</li>`;
         };
         showListReport.innerHTML = html;

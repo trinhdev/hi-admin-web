@@ -25,7 +25,12 @@ Route::group([
     'middleware' => ['auth','can:role-permission'],
     'namespace' =>'App\Http\Controllers'
     ],
-    function (){      
+    function (){     
+        Route::get('/', [HomeController::class, 'index'])->name('home');
+        Route::prefix('home')->group(function () {
+            Route::get('/', 'HomeController@index')->name('home');
+            Route::get('/getDataChart', 'HomeController@getDataChart')->name('home.getDataChart');
+        });
         Route::namespace('Admin')->group(function () {
             Route::prefix('settings')->group(function () {
                 Route::get('/','SettingsController@index')->name('settings.index');
@@ -118,6 +123,4 @@ Route::group([
             Route::post('/changePassword','ProfileController@changePassword')->name('profile.changePassword');
             Route::post('/updateprofile','ProfileController@updateprofile')->name('profile.updateprofile');
         });
-        Route::get('/', [HomeController::class, 'index'])->name('home');
-        Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
