@@ -18,6 +18,10 @@ class OtpController extends MY_Controller
     }
     public function login(Request $request){
 
+        $accessToken = $this->getAccessToken();
+        if($accessToken !== false){
+            return redirect()->route('smsworld.logs');
+        };
         if($request->isMethod('get')){
             return view('smsworld.index');
         }else{
