@@ -15,7 +15,7 @@ function drawChart() {
     });
 }
 
-function drawchart1(reponse) {
+function drawchart1(response) {
     var ticksStyle = {
         fontColor: '#495057',
         fontStyle: 'bold'
@@ -48,8 +48,8 @@ function drawchart1(reponse) {
         var d = new Date();
         d.setDate(d.getDate()-i);
         let date = formatDate(d);
-        if(reponse[date] != undefined){
-            let value = reponse[date];
+        if(response[date] != undefined){
+            let value = response[date];
             xeoto.data.push(value['XEOTO']);
             xemay.data.push(value['XEMAY']);
             total+=value['TOTAL'];

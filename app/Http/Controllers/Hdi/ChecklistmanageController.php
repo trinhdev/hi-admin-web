@@ -65,9 +65,9 @@ class ChecklistmanageController extends MY_Controller
                 'checkListId' => 'required'
             ]);
             $helpReqeustService = new HelpRequestService();
-            $completeChecklist_reponse = $helpReqeustService->completeChecklist($request->checkListId);
-            if ($completeChecklist_reponse->statusCode != 0) {
-                return redirect()->route('checklistmanage.index')->withErrors(['error' => $completeChecklist_reponse->message]);
+            $completeChecklist_response = $helpReqeustService->completeChecklist($request->checkListId);
+            if ($completeChecklist_response->statusCode != 0) {
+                return redirect()->route('checklistmanage.index')->withErrors(['error' => $completeChecklist_response->message]);
             }
             $this->addToLog($request);
             return redirect()->route('checklistmanage.index')->withSuccess(['success' => 'success']);

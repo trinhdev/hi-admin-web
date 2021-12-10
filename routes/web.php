@@ -122,4 +122,13 @@ Route::group([
             Route::post('/changePassword','ProfileController@changePassword')->name('profile.changePassword');
             Route::post('/updateprofile','ProfileController@updateprofile')->name('profile.updateprofile');
         });
+
+        Route::namespace('SmsWorld')->group(function () {
+            Route::prefix('smsworld')->group(function () {
+                Route::any('/','OtpController@login')->name('smsworld.login');
+                Route::get('/logout','OtpController@logout')->name('smsworld.logout');
+                Route::get('/logs','OtpController@logs')->name('smsworld.logs');
+                Route::post('/getlog','OtpController@getLog')->name('smsworld.getLog');
+            });
+        });
 });

@@ -16,15 +16,14 @@ function getListReport(_this){
     };
     callAPIHelper("/closehelprequest/getListReportByContract",param,'POST',successCallGetListReport);
 }
-function successCallGetListReport(reponse){
-    if(reponse.error != undefined){
+function successCallGetListReport(response){
+    if(response.error != undefined){
         showListReport.innerHTML = '';
-        showError(reponse.error);
+        showError(response.error);
     }else{
         var listColor = ['warning','info','primary','sucess'];
-        var html = `<div> Contract : `+reponse.contract+`</div>`;
-        for (const [key, report] of Object.entries(reponse.data) ){
-            console.log(report);
+        var html = `<div> Contract : `+response.contract+`</div>`;
+        for (const [key, report] of Object.entries(response.data) ){
             html += `<li class="position-relative booking" id ="`+report.reportId+`">
             <div class="media">
                 <div class="media-body">

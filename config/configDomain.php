@@ -63,8 +63,24 @@ $domainCustomerConfig = [
     ],
 ];
 
+$domainSmsWorld = [
+    'local'             => [
+        'URL'           => 'http://smsworld.fpt.vn/',
+        'PREFIX'       => 'api',
+    ],
+    'staging'           => [
+        'URL'           => 'http://smsworld.fpt.vn/',
+        'PREFIX'       => 'api',
+    ],
+    'production'        => [
+        'URL'           => 'http://smsworld.fpt.vn/',
+        'PREFIX'       => 'api',
+    ],
+];
+
 return [
     'DOMAIN_REPORT'         => $domainReportConfig,
     'DOMAIN_INSIDE'         => $domainInsideConfig,
     'DOMAIN_CUSTOMER'       => $domainCustomerConfig,
+    'DOMAIN_SMS_WORLD'      => $domainSmsWorld,
 ];
