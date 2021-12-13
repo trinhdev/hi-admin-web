@@ -22,10 +22,10 @@ function successCallGetListReport(response){
         showError(response.error);
     }else{
         var listColor = ['warning','info','primary','sucess'];
-        var html = `<div> Contract : `+response.contract+`</div>`;
+        var html = `<div class="card-header"> Contract : `+response.contract+`</div>`;
         for (const [key, report] of Object.entries(response.data) ){
             html += `<li class="position-relative booking" id ="`+report.reportId+`">
-            <div class="media">
+            <div class="card-body media">
                 <div class="media-body">
                     <h5 class="mb-4">ID: `+report.reportId;
                     for (const [key2, step] of Object.entries(report.stepStatus)) {
@@ -49,7 +49,7 @@ function successCallGetListReport(response){
             </div>`;
             // if(report.reportType === 'HT-KYTHUAT' && report.isShowBtnCancel == 1){
             html+=`
-            <div class="buttons-to-right">
+            <div class="card-footer text-center">
                 <a onclick="dialogConfirmWithAjax(closeRequest,this)" type="button"class="btn-red mr-2"><i class="far fa-times-circle mr-2"></i>Close</a>
             </div>`;
             // }
