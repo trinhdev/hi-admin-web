@@ -20,12 +20,14 @@ function getLogs(_this){
 function successCallGetListLog(response){
     if(response.error != undefined){
         showLogs.innerHTML = '';
+        showLogs.classList.remove('card');
         showError(response.error);
     }else{
-        var html = '';
+        showLogs.classList.add('card');
+        var html = '<ul class="list-unstyled">';
         response.forEach(log => {
             html+=`<li class="position-relative booking">
-            <div class="media">
+            <div class="card-body media">
                 <div class="media-body">
                     <h5 class="mb-4">STT: `+log.STT+`</h5>
                     <div class="mb-3">
@@ -41,8 +43,9 @@ function successCallGetListLog(response){
                         <span class="pr-2 mr-2">`+log.Message+`</span>
                     </div>
                 </div>
-            </div>`;
+            </div></li>`;
         });
+        html+='</ul>';
         showLogs.innerHTML = html;
     }
 }

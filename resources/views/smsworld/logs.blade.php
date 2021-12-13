@@ -65,10 +65,7 @@
         </div>
         <div class="container">
             <div class="col-md-12">
-                <div class="card2 card-white mb-5">
-                    <ul class="list-unstyled" id="showLogs">
-
-                    </ul>
+                <div class="card-white mb-5" id="showLogs">
                 </div>
             </div>
         </div>

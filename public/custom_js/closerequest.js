@@ -18,11 +18,14 @@ function getListReport(_this){
 }
 function successCallGetListReport(response){
     if(response.error != undefined){
+        showListReport.classList.remove('card');
         showListReport.innerHTML = '';
         showError(response.error);
     }else{
+        showListReport.classList.add('card');
         var listColor = ['warning','info','primary','sucess'];
-        var html = `<div class="card-header"> Contract : `+response.contract+`</div>`;
+        var html = `<div class="card-header"> Contract : `+response.contract+`</div>
+        <ul class="list-unstyled">`;
         for (const [key, report] of Object.entries(response.data) ){
             html += `<li class="position-relative booking" id ="`+report.reportId+`">
             <div class="card-body media">
@@ -53,7 +56,7 @@ function successCallGetListReport(response){
                 <a onclick="dialogConfirmWithAjax(closeRequest,this)" type="button"class="btn-red mr-2"><i class="far fa-times-circle mr-2"></i>Close</a>
             </div>`;
             // }
-        html+=`</li>`;
+        html+=`</li></ul>`;
         };
         showListReport.innerHTML = html;
     }
