@@ -39,7 +39,7 @@
         <li class="nav-item">
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
-                {{ __('Logout') }}
+                {{ __('Logout') }}&nbsp;&nbsp;<i class="fas fa-sign-out-alt"></i>
             </a>
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -101,7 +101,7 @@
                                             </div>
                                             <div class="about">
                                                 <h5>About</h5>
-                                                <p>I'm a goodboiz.</p>
+                                                <p>Something....</p>
                                             </div>
                                         </div>
                                     </div>
@@ -126,9 +126,9 @@
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group"> <label for="phone">Phone</label> <input type="text" class="form-control" id="phone" placeholder="Enter phone number"></div>
                                             </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            {{-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group"> <label for="website">Website URL</label> <input type="text" class="form-control" id="website" placeholder="Website url"></div>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="row gutters">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
