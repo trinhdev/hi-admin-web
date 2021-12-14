@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="row" style="margin-top: 20px">
-                    <div class="col-sm-12">
+                    <div class="card card-body col-sm-12">
                         <table id="hide-payment" class="display nowrap" style="width:100%">
                         </table>
                     </div>
