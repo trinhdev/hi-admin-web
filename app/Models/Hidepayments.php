@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
+use App\Admin\UserController;
+
 class Hidepayments extends MY_Model
 {
     use HasFactory;
@@ -17,4 +19,8 @@ class Hidepayments extends MY_Model
     protected $table = 'hidepayments';
     protected $primaryKey = 'id';
     protected $fillable = ['version','isUpStoreAndroid', 'isUpStoreIos', 'api_status', 'error_mesg', 'deleted_at', 'updated_by', 'created_by'];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }

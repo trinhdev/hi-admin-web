@@ -586,7 +586,8 @@ function initHidePaymentLogs() {
         "scrollX": true,
         "pageLength": 5,
         "lengthMenu": [ 5, 10, 25, 50, 75, 100 ],
-        "order": [[ 6, "desc" ]],
+        orderMulti: true,
+        "order": [[ 5, "desc" ]],
         retrieve: true,
         "ajax": {
             url: "/hidepayment/initDatatable"
@@ -606,7 +607,18 @@ function initHidePaymentLogs() {
                 name: "isUpStoreAndroid",
                 title: "Android",
                 render: function(data, type, row) {
-                    return (data == "0") ? "Show Payment" : "Hide Payment";
+                    var result = "";
+                    switch(data) {
+                        case "0":
+                            result = `<span class="badge bg-success">Show Payment</span>`;
+                            break;
+                        case "1":
+                            result = `<span class="badge bg-danger">Hide Payment</span>`;
+                            break;
+                        default:
+                            result = ""
+                    }
+                    return result;
                 },
             },
             {
@@ -614,18 +626,27 @@ function initHidePaymentLogs() {
                 name: "isUpStoreIos",
                 title: "IOS",
                 render: function(data, type, row) {
-                    return (data == "0") ? "Show Payment" : "Hide Payment";
+                    var result = "";
+                    switch(data) {
+                        case "0":
+                            result = `<span class="badge bg-success">Show Payment</span>`;
+                            break;
+                        case "1":
+                            result = `<span class="badge bg-danger">Hide Payment</span>`;
+                            break;
+                        default:
+                            result = ""
+                    }
+                    return result;
                 },
-            },
-            {
-                data: "api_status",
-                name: "api_status",
-                title: "API status"
             },
             {
                 data: "error_mesg",
                 name: "error_mesg",
-                title: "Error message"
+                title: "Error message",
+                render: function(data, type, row) {
+                    return (data == 'Thành công') ? `<span class="badge bg-success">${data}</span>` : `<span class="badge bg-danger">${data}</span>`;
+                }
             },
             {
                 data: "created_at",
@@ -633,9 +654,9 @@ function initHidePaymentLogs() {
                 title: "Created at"
             },
             {
-                data: "created_by",
-                name: "created_by",
-                title: "Created By"
+                data: "user.name",
+                name: "user.name",
+                title: "Created By",
             },
         ],
         "language": {
