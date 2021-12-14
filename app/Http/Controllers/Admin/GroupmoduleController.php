@@ -110,11 +110,17 @@ class GroupmoduleController extends MY_Controller
 
     public function initDatatable(Request $request){
         if($request->ajax()){
-            $data = $this->model::query();
+            $data = $this->model::query()->with('createdBy','updatedBy');
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
                 return view('layouts.button.action')->with(['row'=>$row,'module'=>'groupmodule']);
+            })
+            ->editColumn('created_by',function($row){
+                return !empty($row->createdBy) ? $row->createdBy->email : '';
+            })
+            ->editColumn('updated_by',function($row){
+                return !empty($row->updatedBy) ? $row->updatedBy->email : '';
             })
             ->rawColumns(['action'])
             ->make(true);

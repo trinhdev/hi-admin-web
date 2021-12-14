@@ -12,7 +12,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
                             <li class="breadcrumb-item active">Hide payment v1</li>
                         </ol>
                     </div><!-- /.col -->
@@ -36,7 +36,7 @@
                                 <div class="card-body">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="phone">Version</label>
+                                            <label for="version">Version</label>
                                             <select name="version" id="version" class="form-control selectpicker @error('version') is-invalid @enderror" data-live-search="true" data-size="10">
                                                 <option value="">Please choose version</option>
                                                 @foreach ($hidepayment->versions as $version)
@@ -47,24 +47,37 @@
                                                 <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <div class="form-check form-check-inline" style="width: 50%">
-                                            <input class="form-check-input" name="isUpStoreAndroid" type="checkbox" value="1" id="isUpStoreAndroid">
-                                            <label class="form-check-label" for="isUpStoreAndroid">
-                                                Is Hide Payment Up Store Android
-                                            </label>
+                                        <div class="form-group">
+                                            <label for="platform">Platform</label>
+                                            <div class="icheck-carrot">
+                                                <input type="radio" id="platform-android" name="platform" value="isUpStoreAndroid" checked />
+                                                <label for="platform-android">Android</label>
+                                            </div>
+                                            <div class="icheck-carrot">
+                                                <input type="radio" id="platform-ios" name="platform" value="isUpStoreIos" />
+                                                <label for="platform-ios">IOS</label>
+                                            </div>
+                                            @error('platform')
+                                                <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" name="isUpStoreIos" type="checkbox" value="1" id="isUpStoreIos">
-                                            <label class="form-check-label" for="isUpStoreIos">
-                                                Is Hide Payment Up Store Ios
-                                            </label>
+                                        <div class="form-group">
+                                            <label for="action">Action</label>
+                                            <select name="action" id="action" class="form-control selectpicker @error('action') is-invalid @enderror" data-live-search="true" data-size="10">
+                                                <option value="">Please choose action</option>
+                                                <option value="1">Hide</option>
+                                                <option value="0">Show</option>
+                                            </select>
+                                            @error('version')
+                                                <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
                                 
                                 @can('hide-payment')
                                     <div class="card-footer" style="text-align: center">
-                                        <button type="submit" class="btn btn-info">Hide payment</button>
+                                        <button type="submit" class="btn btn-info">Action</button>
                                     </div>
                                 @endcan
                             </div>
@@ -72,7 +85,7 @@
                     </div>
                 </div>
                 <div class="row" style="margin-top: 20px">
-                    <div class="col-sm-12">
+                    <div class="card card-body col-sm-12">
                         <table id="hide-payment" class="display nowrap" style="width:100%">
                         </table>
                     </div>

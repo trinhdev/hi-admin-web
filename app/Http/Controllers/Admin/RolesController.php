@@ -105,10 +105,13 @@ class RolesController extends MY_Controller
     public function getList(Request $request)
     {
         if ($request->ajax()) {
-            $data = $this->model::query();
-            $json =   DataTables::of($data)
+            $data = $this->model::query()->with('createdBy');
+            $json =  DataTables::of($data)
                 ->addColumn('action', function ($row) {
                     return view('layouts.button.action')->with(['row' => $row, 'module' => 'roles']);
+                })
+                ->editColumn('created_by',function($row){
+                    return !empty($row->createdBy) ? $row->createdBy->email : '';
                 })
                 ->make(true);
             return $json;

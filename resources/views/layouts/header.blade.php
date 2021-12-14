@@ -28,11 +28,21 @@
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/summernote/summernote-bs4.min.css">
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/bootstrap-select-1.13.14/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ asset('/custom_css/style.css')}}">
+    <style>
+    .content-wrapper{
+        background: url('{{config('platform_config.background.url')}}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: {{config('platform_config.background.color')}};
+    }
+    </style>
     <script type="text/javascript">
         var base_url = '{{url('/')}}';
     </script>

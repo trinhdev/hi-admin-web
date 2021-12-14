@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px">Modules Tables 1</h1>
+                        <h1 style="float: left; margin-right: 20px">List Module</h1>
                         @if(Auth::user()->role_id == config('constants.ADMIN') || $aclCurrentModule->create == 1)
                         <a href="/modules/create" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Add new module
@@ -17,8 +17,8 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Modules v1</li>
+                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                            <li class="breadcrumb-item active">Modules</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -29,18 +29,8 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <div class="col-sm-12">
+                <div class="card card-body col-sm-12">
                     <table id="modules" class="display nowrap" style="width:100%">
-                        {{-- <thead>
-                            <tr>
-                                <th>Module name</th>
-                                <th>Uri</th>
-                                <th>Created at</th>
-                                <th>Created by</th>
-                                <th>Updated at</th>
-                                <th>Updated by</th>
-                                <th></th>
-                            </tr> --}}
                         </thead>
                     </table>
                 </div>

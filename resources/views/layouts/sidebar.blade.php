@@ -1,9 +1,8 @@
    <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="/" class="brand-link">
-            <img src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/images/logo-hifpt1.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                 style="opacity: .8">
-            <span class="brand-text font-weight-light">Hi FPT</span>
+            <img src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/images/logo-hifpt1.png" alt="AdminLTE Logo" class="brand-image elevation-2">
+            <span class="brand-text">Hi FPT</span>
         </a>
 
         <!-- Sidebar -->

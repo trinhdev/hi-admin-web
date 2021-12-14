@@ -62,4 +62,10 @@ class Modules extends MY_Model
     public function parent(){
         return $this->hasOne(Group_Module::class,'id','group_module_id');
     }
+    public function createdBy(){
+        return $this->hasOne(User::class,'id','created_by');
+    }
+    public function updatedBy(){
+        return $this->hasOne(User::class,'id','updated_by');
+    }
 }
