@@ -16,17 +16,19 @@ function getListReport(_this){
     };
     callAPIHelper("/closehelprequest/getListReportByContract",param,'POST',successCallGetListReport);
 }
-function successCallGetListReport(reponse){
-    if(reponse.error != undefined){
+function successCallGetListReport(response){
+    if(response.error != undefined){
+        showListReport.classList.remove('card');
         showListReport.innerHTML = '';
-        showError(reponse.error);
+        showError(response.error);
     }else{
+        showListReport.classList.add('card');
         var listColor = ['warning','info','primary','sucess'];
-        var html = `<div> Contract : `+reponse.contract+`</div>`;
-        for (const [key, report] of Object.entries(reponse.data) ){
-            console.log(report);
+        var html = `<div class="card-header"> Contract : `+response.contract+`</div>
+        <ul class="list-unstyled">`;
+        for (const [key, report] of Object.entries(response.data) ){
             html += `<li class="position-relative booking" id ="`+report.reportId+`">
-            <div class="media">
+            <div class="card-body media">
                 <div class="media-body">
                     <h5 class="mb-4">ID: `+report.reportId;
                     for (const [key2, step] of Object.entries(report.stepStatus)) {
@@ -50,11 +52,11 @@ function successCallGetListReport(reponse){
             </div>`;
             // if(report.reportType === 'HT-KYTHUAT' && report.isShowBtnCancel == 1){
             html+=`
-            <div class="buttons-to-right">
+            <div class="card-footer text-center">
                 <a onclick="dialogConfirmWithAjax(closeRequest,this)" type="button"class="btn-red mr-2"><i class="far fa-times-circle mr-2"></i>Close</a>
             </div>`;
             // }
-        html+=`</li>`;
+        html+=`</li></ul>`;
         };
         showListReport.innerHTML = html;
     }

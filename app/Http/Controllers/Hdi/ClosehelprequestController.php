@@ -57,7 +57,7 @@ class ClosehelprequestController extends MY_Controller
             'report_id' =>'required'
         ]);
         $helpReqeustService = new HelpRequestService();
-        $reponse = $helpReqeustService->closeRequestByListReportId([$request->report_id]);
+        $response = $helpReqeustService->closeRequestByListReportId([$request->report_id]);
         $this->addToLog($request);
         return true;
     }

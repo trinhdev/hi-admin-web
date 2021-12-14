@@ -109,10 +109,15 @@ if (!function_exists('mb_ucwords')) {
 }
 
 if (!function_exists('sendRequest')) {
-    function sendRequest($url, $params, $token = null)
+    function sendRequest($url, $params, $token = null, $headerArray = array())
     {
         $headers[] = "Content-Type: application/json";
         $headers[] = (!empty($token)) ? "Authorization: " . $token : null;
+        if(!empty($headerArray)){
+            foreach($headerArray as $key => $val){
+                $headers[] = $key.": ". $val;
+            }
+        }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);

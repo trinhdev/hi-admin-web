@@ -1,48 +1,48 @@
-@extends('layouts.default')
+<style>
+*{
+    transition: all 0.6s;
+}
 
-@section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">404 Error Page</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Modules v1</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
+html {
+    height: 100%;
+}
 
-        <!-- Main content -->
-        <section class="content">
-            <div class="error-page">
-                <h2 class="headline text-danger">404</h2>
-                <div class="error-content">
-                    <h3>
-                        <i class="fas fa-exclamation-triangle text-danger"></i>
-                        Oops! Page not founded
-                    </h3>
-                    <p>
-                        We could not find the page you were looking for. You may return to dashboard or try another page.
+body{
+    font-family: 'Lato', sans-serif;
+    color: #888;
+    margin: 0;
+}
 
-                    </p>
+#main{
+    display: table;
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+}
+
+.fof{
+	  display: table-cell;
+	  vertical-align: middle;
+}
+
+.fof h1{
+	  font-size: 50px;
+	  display: inline-block;
+	  padding-right: 12px;
+	  animation: type .5s alternate infinite;
+}
+
+@keyframes type{
+	  from{box-shadow: inset -3px 0px 0px #888;}
+	  to{box-shadow: inset -3px 0px 0px transparent;}
+}
+</style>
+<div id="main">
+    	<div class="fof">
+        		<h1>Error 404</h1>
+                <div>
+                    {{-- <a href="{{route('home')}}" type="button" class="btn btn-success">Home</a> --}}
+                    <button onclick="location.href='{{route('home')}}'">Back Home</button>
                 </div>
-            </div>
-        </section>
-        <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-    <style>
-        select {
-            font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
-        }
-    </style>
-@endsection
+    	</div>
+</div>

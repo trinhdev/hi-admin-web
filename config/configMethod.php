@@ -8,7 +8,13 @@ $methodReportDomain = [
     'MY_UPDATE_EMPLOYEE' => 'my-update-employee',
     'MY_UPDATE_COMPLETE_CHECKLIST' => 'my-update-complete-checklist',
 ];
+
+$methodSmsWorld = [
+    'LOGIN' => 'login',
+    'CHECK_LOG' => 'checklog',
+];
 return [
     'DOMAIN_INSIDE' => $methodInsideDomain,
     'DOMAIN_REPORT' => $methodReportDomain,
+    'DOMAIN_SMS_WORLD' => $methodSmsWorld,
 ];

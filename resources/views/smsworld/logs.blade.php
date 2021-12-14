@@ -10,12 +10,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">CLOSE HELP REQUEST</h1>
+                    <h1 class="m-0">CHECK LOG</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">close help request</li>
+                        <li class="breadcrumb-item"><a href="{{route('smsworld.logout')}}">Logout SMS World</a></li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -33,19 +32,31 @@
                         @csrf
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">Get Contract Info</h3>
+                                <h3 class="card-title">INPUT</h3>
                             </div>
                             <div class="card-body">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="phone">Contract Number</label>
-                                        <input type="text" id="contractNo" name="contractNo" class="form-control" placeholder="Please input contract number">
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-2">
+                                                <label for="country_code">Country Code</label>
+                                                <input type="number" class="form-control" name="country_code" id="country_code" placeholder="Country Code" required>
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <label for="phone">Phone</label>
+                                                <input type="number" class="form-control" name="phone" placeholder="Phone Number" required>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="date">Month / Year</label>
+                                                <input type="month" class="form-control" name="date" placeholder="Date Check" required>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="card-footer" style="text-align: center">
-                                <button type="button" class="btn btn-info" onclick="getListReport(this)">Get Contract Info</button>
+                                <button type="button" class="btn btn-info" onclick="getLogs(this)">Get Logs</button>
                             </div>
                         </div>
                     </form>
@@ -53,7 +64,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="card-white mb-5" id="showListReport">
+            <div class="card-white mb-5" id="showLogs">
             </div>
         </div>
     </section>
