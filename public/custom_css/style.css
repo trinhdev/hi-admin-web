@@ -1,0 +1,16 @@
+.content-wrapper>.content {
+    padding: 1px 0.5rem;
+}
+[class*=sidebar-dark-] .sidebar a {
+    color: white;
+}
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link {
+    color: white;
+}
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:hover {
+    background-color: white;
+    color: black;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+}

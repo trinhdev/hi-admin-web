@@ -53,7 +53,7 @@ function successCallGetListReport(response){
             // if(report.reportType === 'HT-KYTHUAT' && report.isShowBtnCancel == 1){
             html+=`
             <div class="card-footer text-center">
-                <a onclick="dialogConfirmWithAjax(closeRequest,this)" type="button"class="btn-red mr-2"><i class="far fa-times-circle mr-2"></i>Close</a>
+                <a onclick="dialogConfirmWithAjax(closeRequest,this)" type="button"class="btn btn-danger mr-2"><i class="far fa-times-circle mr-2"></i>Close</a>
             </div>`;
             // }
         html+=`</li></ul>`;

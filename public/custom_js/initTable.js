@@ -261,11 +261,6 @@ function initUser() {
             $.pjax.reload('#pjax');
         },
         searchDelay: 500,
-        dom: 'Bfrtip',
-        buttons: [
-            'excelHtml5',
-            'csvHtml5',
-        ]
     });
 }
 
