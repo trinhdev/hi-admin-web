@@ -14,3 +14,7 @@
 .navbar-light .navbar-nav .nav-link {
     color: black;
 }
+
+.bootstrap-select .dropdown-toggle.bs-placeholder {
+    border: solid #CED4DA 1px;
+}

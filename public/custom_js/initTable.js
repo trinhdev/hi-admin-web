@@ -581,6 +581,7 @@ function initHidePaymentLogs() {
         "scrollX": true,
         "pageLength": 5,
         "lengthMenu": [ 5, 10, 25, 50, 75, 100 ],
+        orderMulti: true,
         "order": [[ 6, "desc" ]],
         retrieve: true,
         "ajax": {
@@ -597,40 +598,63 @@ function initHidePaymentLogs() {
                 title: "Version"
             },
             {
-                data: "isUpStoreAndroid",
+                data: 'isUpStoreAndroid',
                 name: "isUpStoreAndroid",
-                title: "Android",
+                title: "Platform",
                 render: function(data, type, row) {
-                    return (data == "0") ? "Show Payment" : "Hide Payment";
-                },
+                    var platform = '';
+                    if(row.isUpStoreAndroid) {
+                        platform += `<span class="badge badge-primary" style="margin-right: 5px">Android</span>`;
+                    }
+
+                    if(row.isUpStoreIos) {
+                        platform += `<span class="badge badge-secondary" style="margin-right: 5px">IOS</span>`;
+                    }
+                    return platform;
+                }
             },
             {
                 data: "isUpStoreIos",
                 name: "isUpStoreIos",
-                title: "IOS",
+                title: "Action",
                 render: function(data, type, row) {
-                    return (data == "0") ? "Show Payment" : "Hide Payment";
-                },
+                    var action = '';
+
+                    if(row.isUpStoreAndroid == '1') {
+                        action += `<span class="badge badge-danger" style="margin-right: 5px">Hide Android</span>`;
+                    }
+
+                    if(row.isUpStoreAndroid == '0') {
+                        action += `<span class="badge badge-success" style="margin-right: 5px">Show Android</span>`;
+                    }
+
+                    if(row.isUpStoreIos == '1') {
+                        action += `<span class="badge badge-danger" style="margin-right: 5px">Hide IOS</span>`;
+                    }
+
+                    if(row.isUpStoreIos == '0') {
+                        action += `<span class="badge badge-success" style="margin-right: 5px">Show IOS</span>`;
+                    }
+                    return action;
+                }
             },
             {
-                data: "api_status",
-                name: "api_status",
-                title: "API status"
+                data: "user.name",
+                name: "user.name",
+                title: "Created By",
             },
             {
                 data: "error_mesg",
                 name: "error_mesg",
-                title: "Error message"
+                title: "Status",
+                render: function(data, type, row) {
+                    return (data == 'Thành công') ? `<span class="badge bg-success">${data}</span>` : `<span class="badge bg-danger">${data}</span>`;
+                }
             },
             {
                 data: "created_at",
                 name: "created_at",
                 title: "Created at"
-            },
-            {
-                data: "created_by",
-                name: "created_by",
-                title: "Created By"
             },
         ],
         "language": {

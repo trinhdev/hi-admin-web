@@ -36,9 +36,10 @@ class HidepaymentController extends MY_Controller
     public function index()
     {
         $version = Settings::where('name', 'hide_payment_version')->get();
+        $device = Settings::where('name', 'hide_payment_device')->get();
         $hidepayment = new stdClass();
         $hidepayment->versions = (!empty($version[0]['value'])) ? json_decode($version[0]['value'], true) : [];
-
+        $hidepayment->device = (!empty($device[0]['value'])) ? json_decode($device[0]['value'], true) : [];
         return view('hidepayment.index')->with('hidepayment', $hidepayment);
     }
     
@@ -60,14 +61,16 @@ class HidepaymentController extends MY_Controller
 
         $version_setting = Settings::where('name', 'hide_payment_version')->get();
         $version = (!empty($version_setting[0]['value'])) ? json_decode($version_setting[0]['value'], true) : [];
+
         $validated = $request->validate([
-            'version' => 'required|in:' . implode(',', $version),
+            'version'   => 'required|in:' . implode(',', $version),
+            'action'    => 'required'
         ]);
 
-        $request->merge([
-            'isUpStoreAndroid' => (!isset($request->isUpStoreAndroid)) ? "0" : "1",
-            'isUpStoreIos' => (!isset($request->isUpStoreIos)) ? "0" : "1",
-        ]);
+        $action = [];
+        $action[$request->platform] = $request->action;
+
+        $request->merge($action);
         
         $data = ApiService::hidePayment($request->all());
 
@@ -89,7 +92,7 @@ class HidepaymentController extends MY_Controller
     }
     public function initDatatable(Request $request){
         if($request->ajax()){
-            $data = $this->model::query();
+            $data = $this->model::with('user')->select(['id', 'version', 'isUpStoreAndroid', 'isUpStoreIos', 'created_by', 'created_at', 'error_mesg']);
             return DataTables::of($data)
             ->addIndexColumn()
             ->make(true);
