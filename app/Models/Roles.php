@@ -15,11 +15,7 @@ class Roles extends MY_Model
     public function acls(){
         return $this->hasMany(Acl_Roles::class,'role_id','id');
     }
-
     public function createdBy(){
         return $this->hasOne(User::class,'id','created_by');
-    }
-    public function updatedBy(){
-        return $this->hasOne(User::class,'id','updated_by');
     }
 }

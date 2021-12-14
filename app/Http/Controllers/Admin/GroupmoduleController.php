@@ -110,7 +110,7 @@ class GroupmoduleController extends MY_Controller
 
     public function initDatatable(Request $request){
         if($request->ajax()){
-            $data = $this->model::query();
+            $data = $this->model::query()->with('createdBy','updatedBy');
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
