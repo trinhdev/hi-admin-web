@@ -110,6 +110,12 @@ class RolesController extends MY_Controller
                 ->addColumn('action', function ($row) {
                     return view('layouts.button.action')->with(['row' => $row, 'module' => 'roles']);
                 })
+                ->editColumn('created_by',function($row){
+                    return !empty($row->createdBy) ? $row->createdBy->email : '';
+                })
+                ->editColumn('updated_by',function($row){
+                    return !empty($row->updatedBy) ? $row->updatedBy->email : '';
+                })
                 ->make(true);
             return $json;
         }

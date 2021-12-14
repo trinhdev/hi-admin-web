@@ -134,7 +134,7 @@ class ModulesController extends MY_Controller
     
     public function initDatatable(Request $request){
         if($request->ajax()){
-            $data = $this->model::query()->with('parent');
+            $data = $this->model::query()->with('parent','createdBy','updatedBy');
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
@@ -142,6 +142,12 @@ class ModulesController extends MY_Controller
             })
             ->editColumn('group_module_id',function($row){
                 return !empty($row->group_module_id) ? $row->parent->group_module_name : '';
+            })
+            ->editColumn('created_by',function($row){
+                return !empty($row->createdBy) ? $row->createdBy->email : '';
+            })
+            ->editColumn('updated_by',function($row){
+                return !empty($row->updatedBy) ? $row->updatedBy->email : '';
             })
             ->rawColumns(['action'])
             ->make(true);

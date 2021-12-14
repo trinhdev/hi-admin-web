@@ -7,4 +7,8 @@
  */
 return [
     'current_theme' => 'themes',
+    'background' =>[
+        'url' => '/images/bg.png',
+        'color' =>'#64c51529'
+    ],
 ];
