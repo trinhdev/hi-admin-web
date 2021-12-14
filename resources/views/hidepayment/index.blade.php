@@ -49,15 +49,13 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="platform">Platform</label>
-                                            <div class="form-check">
-                                                <label class="form-check-label" for="isUpStoreAndroid">
-                                                    <input type="radio" class="form-check-input" id="platform" name="platform" value="isUpStoreAndroid" checked>Android
-                                                </label>
+                                            <div class="icheck-carrot">
+                                                <input type="radio" id="platform-android" name="platform" value="isUpStoreAndroid" checked />
+                                                <label for="platform-android">Android</label>
                                             </div>
-                                            <div class="form-check">
-                                                <label class="form-check-label" for="isUpStoreIos">
-                                                    <input type="radio" class="form-check-input" id="platform" name="platform" value="isUpStoreIos">IOS
-                                                </label>
+                                            <div class="icheck-carrot">
+                                                <input type="radio" id="platform-ios" name="platform" value="isUpStoreIos" />
+                                                <label for="platform-ios">IOS</label>
                                             </div>
                                             @error('platform')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
