@@ -27,7 +27,7 @@ class CheckUserInfoController extends MY_Controller
         $this->addToLog($request);
         $input = $this->validateInput($request->input);
         if ($this->checkInPutIsPhone($input)) {
-            $result = $this->checkUserInfoByPhone($request);
+            $result = $this->checkUserInfoByPhone($request->input);
         } else {
             $result = $this->checkUserInfoByContract($request->input);
         }
@@ -49,15 +49,21 @@ class CheckUserInfoController extends MY_Controller
         $contractService = new ContractService();
         $contract_info_response = $contractService->getContractInfo($contractNo); // call api get contract info
         if (empty($contract_info_response->data)) {
-            $result['error'] = "Hợp đồng không tồn tại!";
+            $result['error'] = "Thất Bại!!";
         } else {
             $result = $contract_info_response;
         }
         return $result;
     }
-    private function checkUserInfoByPhone(Request $request){
+    private function checkUserInfoByPhone($phoneNumber){
         $result = [];
-        $result['error'] = "chưa gán API";
+        $contractService = new ContractService();
+        $contract_info_response = $contractService->getListcontractByPhone($phoneNumber); // call api get contract info
+        if (empty($contract_info_response->data)) {
+            $result['error'] = "Thất Bại!!";
+        } else {
+            $result = $contract_info_response;
+        }
         return $result;
     }
 }

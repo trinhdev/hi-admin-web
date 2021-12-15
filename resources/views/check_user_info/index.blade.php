@@ -39,7 +39,7 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="input">Input</label>
-                                        <input type="text" id="input" name="input" class="form-control" placeholder="Please enter Contract or Phone Number">
+                                        <input type="text" id="input" name="input" class="form-control" placeholder="Please enter Contract Number or Phone Number">
                                     </div>
                                     {{-- <div class="form-group">
                                         <label >Type Input</label>

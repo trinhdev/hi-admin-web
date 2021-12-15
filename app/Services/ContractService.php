@@ -22,8 +22,14 @@ class ContractService
     }
 
     public function getContractInfo($contractNo){
-        $url = $this->baseUrl . $this->version .'/'. $this->listMethod['GET_CONTRACT_BY_NUMBER'];
+        $url = $this->baseUrl . $this->version .'/'. $this->listMethod['GET_CONTRACT_BY_CONTRACT_NO'];
         $response =  sendRequest($url, array('contractNo'=> $contractNo),$this->token);
+        return $response;
+    }
+
+    public function getListcontractByPhone($phoneNumber){
+        $url = $this->baseUrl . $this->version .'/'. $this->listMethod['GET_CONTRACT_BY_PHONE_NUMBER'];
+        $response =  sendRequest($url, array('contractPhone'=> $phoneNumber),$this->token);
         return $response;
     }
 }

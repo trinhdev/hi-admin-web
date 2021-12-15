@@ -1,6 +1,7 @@
 <?php
 $methodInsideDomain = [
-    'GET_CONTRACT_BY_NUMBER' => 'GetContractByContractNo',
+    'GET_CONTRACT_BY_CONTRACT_NO' => 'GetContractByContractNo',
+    'GET_CONTRACT_BY_PHONE_NUMBER' => 'GetListContractByPhoneNum',
 ];
 $methodReportDomain = [
     'GET_LIST_REPORT' => 'report-current-111',
