@@ -18,3 +18,25 @@
 .bootstrap-select .dropdown-toggle.bs-placeholder {
     border: solid #CED4DA 1px;
 }
+#showList .card-header .title {
+    font-size: 17px;
+    color: #000;
+}
+#showList .card-header .accicon {
+  float: right;
+  font-size: 20px;  
+  width: 1.2em;
+}
+#showList .card-header{
+  cursor: pointer;
+  border-bottom: none;
+}
+#showList .card{
+  border: 1px solid #ddd;
+}
+#showList .card-body{
+  border-top: 1px solid #ddd;
+}
+#showList .card-header:not(.collapsed) .rotate-icon {
+  transform: rotate(180deg);
+}
