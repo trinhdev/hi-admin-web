@@ -18,11 +18,11 @@ function getListReport(_this){
 }
 function successCallGetListReport(response){
     if(response.error != undefined){
-        showListReport.classList.remove('card');
-        showListReport.innerHTML = '';
+        showList.classList.remove('card');
+        showList.innerHTML = '';
         showError(response.error);
     }else{
-        showListReport.classList.add('card');
+        showList.classList.add('card');
         var listColor = ['warning','info','primary','sucess'];
         var html = `<div class="card-header"> Contract : `+response.contract+`</div>
         <ul class="list-unstyled">`;
@@ -58,7 +58,7 @@ function successCallGetListReport(response){
             // }
         html+=`</li></ul>`;
         };
-        showListReport.innerHTML = html;
+        showList.innerHTML = html;
     }
 }
 function successCloseRequest(response,li_tag) {

@@ -21,9 +21,9 @@ class ContractService
         $this->listMethod = config('configMethod.DOMAIN_INSIDE');
     }
 
-    public function getContractInfo(Request $request){
+    public function getContractInfo($contractNo){
         $url = $this->baseUrl . $this->version .'/'. $this->listMethod['GET_CONTRACT_BY_NUMBER'];
-        $response =  sendRequest($url, array('contractNo'=> $request->contractNo),$this->token);
+        $response =  sendRequest($url, array('contractNo'=> $contractNo),$this->token);
         return $response;
     }
 }

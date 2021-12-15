@@ -30,7 +30,7 @@ class ClosehelprequestController extends MY_Controller
         $result = [];
         $contractService = new ContractService();
         $helpReqeustService = new HelpRequestService();
-        $contract_info_response = $contractService->getContractInfo($request); // call api get contract info
+        $contract_info_response = $contractService->getContractInfo($request->contractNo); // call api get contract info
         if(empty($contract_info_response->data)){
             $result['error'] = "Hợp đồng không tồn tại!";
         }else{

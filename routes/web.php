@@ -105,6 +105,11 @@ Route::group([
                 Route::post('/closeRequest','ClosehelprequestController@closeRequest')->name('closehelprequest.closeRequest');
             });
 
+            Route::prefix('checkuserinfo')->group(function () {
+                Route::get('/','CheckUserInfoController@index')->name('checkuserinfo.index');
+                Route::post('/check','CheckUserInfoController@checkUserInfo')->name('checkuserinfo.checkUserInfo');
+            });
+
         });
         Route::namespace('Hi_FPT')->group(function () {
             Route::prefix('manageotp')->group(function () {
