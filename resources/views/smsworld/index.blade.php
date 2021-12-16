@@ -36,10 +36,10 @@
                                 <div class="card-body">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="username">Phone</label>
-                                            <input type="text" name="username" class="form-control @error('username') is-invalid @enderror" placeholder="Please input phone number" >
+                                            <label for="username">User Name</label>
+                                            <input type="text" name="username" class="form-control @error('username') is-invalid @enderror" placeholder="Please enter user name" >
                                             <label for="password">Password</label>
-                                            <input type="password" name="password"class="form-control @error('password') is-invalid @enderror" placeholder="Please input phone number" >
+                                            <input type="password" name="password"class="form-control @error('password') is-invalid @enderror" placeholder="Please enter password" >
                                         </div>
                                     </div>
                                 </div>
