@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <div class="card-footer" style="text-align: center">
-                                <a href="{{ route('user.index') }}" type="button" class="btn btn-default">Cancel</a>
+                                <a href="{{ route('bannermanage.index') }}" type="button" class="btn btn-default">Cancel</a>
                                 <button type="submit" class="btn btn-info">Save</button>
                             </div>
                         </div>

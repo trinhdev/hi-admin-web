@@ -743,7 +743,8 @@ function initBannerManage(show_from = null,show_to = null){
     });
 }
 function filterData(){
-    console.log(show_at.value);
+    $('#banner_manage').DataTable().destroy();
+    initBannerManage(show_from.value,show_to.value);
 }
 function badgeArrayView(arrayInput) {
     var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];
