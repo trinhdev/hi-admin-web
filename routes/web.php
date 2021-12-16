@@ -121,6 +121,16 @@ Route::group([
                 Route::post('/hide','HidepaymentController@hide')->name('hidepayment.hide');
                 Route::get('/initDatatable','HidepaymentController@initDatatable')->name('hidepayment.initDatatable');
             });
+
+            Route::prefix('bannermanage')->group(function () {
+                Route::get('/','BannerManageController@index')->name('bannermanage.index');
+                Route::get('/edit/{id}','BannerManageController@edit')->name('bannermanage.edit');
+                Route::get('/create','BannerManageController@create')->name('bannermanage.create');
+                Route::post('/store','BannerManageController@store')->name('bannermanage.store');
+                Route::put('/update/{id}','BannerManageController@update')->name('bannermanage.update');
+                // Route::delete('/destroy/{id}','UserController@destroy')->name('user.destroy');
+                Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
+            });
             
         });
         Route::prefix('profile')->group(function () {

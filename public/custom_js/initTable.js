@@ -33,6 +33,9 @@ $(document).ready(function () {
             case 'hidepayment':
                 initHidePaymentLogs();
                 break;
+            case 'bannermanage':
+                initBannerManage();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -254,7 +257,6 @@ function initUser() {
             "emptyTable": "No Record..."
         },
         "initComplete": function (setting, json) {
-            console.log(json);
             $('#userTable').show();
         },
         error: function (xhr, error, code) {
@@ -669,7 +671,80 @@ function initHidePaymentLogs() {
         searchDelay: 500
     });
 }
-
+function initBannerManage(show_from = null,show_to = null){
+    $('#banner_manage').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "select": true,
+        "dataSrc": "tableData",
+        "bDestroy": true,
+        responsive: true,
+        "scrollX": true,
+        retrieve: true,
+        "ajax": {
+            url: "bannermanage/initDatatable",
+            data:{
+                time_show_from:show_from,
+                time_show_to:show_to
+            }
+        },
+        "columns": [{
+                data: "id",
+                name: "id",
+                title: "Id"
+            },
+            {
+                data: "title",
+                name: "title",
+                title: "Title"
+            },
+            {
+                data: "posistion",
+                name: "position",
+                title: "Show at"
+            },
+            {
+                data: "path_1",
+                name: "path_1",
+                title: "File 1"
+            },
+            {
+                data: "path_2",
+                name: "path_2",
+                title: "File 2"
+            },
+            {
+                data: "created_by",
+                name: "created_by",
+                title: "Created By"
+            },
+            {
+                data: "updated_by",
+                name: "updated_by",
+                title: "Updated By"
+            },
+            {
+                data: "action",
+                name: "action",
+                title: "Action",
+                sortable: false
+            }
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#userTable').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500,
+    });
+}
+function filterData(){
+    console.log(show_at.value);
+}
 function badgeArrayView(arrayInput) {
     var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];
     var count_badge = 0;
