@@ -130,6 +130,7 @@ Route::group([
                 Route::put('/update/{id}','BannerManageController@update')->name('bannermanage.update');
                 // Route::delete('/destroy/{id}','UserController@destroy')->name('user.destroy');
                 Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
+                Route::post('/uploadImage','BannerManageController@uploadImage')->name('bannermanage.uploadImage');
             });
             
         });

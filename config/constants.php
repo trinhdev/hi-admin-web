@@ -5,6 +5,7 @@ $listRedisKey = [
     'LIST_CHECKLIST_ID' =>'list_check_list_id',
     'CHART_DOANH_THU_BAO_HIEM_HDI' => 'chart_doanh_thu_bao_hiem_hdi_key',
     'ACCESS_TOKEN_SMS_WORLD' =>'access_token_sms_world',
+    'DOAMIN_HI_FPT_STATIC' => 'https://hi-static.fpt.vn/',
 ];
 return [
     'ADMIN' => 1, // role_id of admin

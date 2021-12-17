@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Hi_FPT;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
+use App\Services\NewsEventService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -34,11 +35,27 @@ class BannerManageController extends MY_Controller
     }
 
     public function create(Request $request){
-        return view('banners.edit');
+        $newsEventService = new NewsEventService();
+        $listTargetRoute = $newsEventService->getListTargetRoute();
+        $listTargetRoute = ($listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
+
+        $listTypeBanner = $newsEventService->getListTypeBanner();
+        $listTypeBanner = ($listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
+        return view('banners.edit')->with(['list_target_route'=>$listTargetRoute, 'list_type_banner' => $listTypeBanner]);
     }
 
     public function store(Request $request){
 
+    }
+
+    public function uploadImage(Request $request){
+        $request->validate([
+            'imageFileName' => 'required',
+            'encodedImage' =>'required'
+        ]);
+        $newsEventService = new NewsEventService();
+        $uploadImage_response = $newsEventService->uploadImage($request->imageFileName,$request->encodedImage);
+        return $uploadImage_response;
     }
 
     public function initDatatable(Request $request){

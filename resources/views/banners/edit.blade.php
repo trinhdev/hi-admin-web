@@ -49,15 +49,22 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="show_at">Show At</label>
-                                        <select type="text" name="show_at" class="form-control">
+                                        <select type="text" name="show_at" class="form-control" onchange="onchangeTypeBanner(this)" hi>
+                                            @if(!empty($list_type_banner))
+                                            @foreach($list_type_banner as $type)
+                                                <option value='{{$type->id}}'>{{$type->name}}</option>
+                                            @endforeach
+                                            @endif
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="show_at">File</label>
-                                        <input type="file" name="path_1" class="form-control" />
+                                    <div class="form-group" id="path_1">
+                                        <label >File</label>
+                                        <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this,event)"/>
+                                        <img id="img_path_1" src="#" alt="your image" class="img-thumbnail" style="max-width: 175px;padding:10px" />
                                     </div>
-                                    <div class="form-group">
-                                        <input type="file" name="path_2" class="form-control" />
+                                    <div class="form-group" id="path_2" hidden>
+                                        <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this,event)"/>
+                                        <img id="img_path_2" src="#" alt="your image" class="img-thumbnail" style="max-width: 200px;padding:10px" />
                                     </div>
                                     <div class="form-inline">
                                         <label for="show_at">Show From: </label>
@@ -72,6 +79,11 @@
                                         </div>
                                         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#show_target_route">
                                             <select type="file" name="target_route" class="form-control">
+                                            @if(!empty($list_target_route))
+                                            @foreach($list_target_route as $target)
+                                                <option value='{{$target->id}}'>{{$target->name}}</option>
+                                            @endforeach
+                                            @endif
                                             </select>
                                         </div>
 
