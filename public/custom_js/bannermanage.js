@@ -5,10 +5,16 @@ function onchangeTypeBanner(_this){
         path_2.hidden = true;
     }
 }
-
+$(".img_viewable").click(function(){
+    $("#full-image").attr("src", $(this).attr("src"));
+    $('#img_view_modal').modal('show');
+});
 async function handleUploadImage(_this,event){
     event.preventDefault();
     img_tag_name = 'img_'+_this.name;
+    if(img_tag_name == 'img_path_2'){
+        path_2_required_alert.hidden = true;
+    }
     img_tag =  document.getElementById(img_tag_name);
     const [file] = _this.files;
     if (file) {
@@ -30,7 +36,6 @@ async function handleUploadImage(_this,event){
 }
 function successCallUploadImage(response,passingdata){
     if(response.statusCode == 0){
-        showSuccess(response.message);
         passingdata.img_tag.src = URL.createObjectURL(passingdata.file);
         passingdata.input_tag.text = response.uploadedImageFileName;
     }else{
@@ -48,3 +53,58 @@ const getBase64 = file => new Promise((resolve, reject) => {
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
 });
+
+function validateData(event,form){
+    event.preventDefault();
+    data_required = getDataRequired();
+    var passed = true;
+    formData = getDataInForm(form);
+    if(formData.show_at == 'promotion'){
+        if(formData.path_2 == undefined){
+            passed = false;
+            path_2_required_alert.hidden = false;
+        }else{
+            path_2_required_alert.hidden = true;
+        }
+    }
+    if(passed){
+        handleSubmit(event,form);
+    }
+}
+function checkEnableSave(form){
+    data_required = getDataRequired();
+    formData = getDataInForm(form);
+    let intersection = Object.keys(data_required).filter(x => !Object.keys(formData).includes(x));
+    if(intersection.length === 0){
+        $('form').find(':submit').prop('disabled', false);
+        return false;
+    }else{
+        $('form').find(':submit').prop('disabled', true);
+        return true;
+    }
+}
+function getDataInForm(form){
+    var formData = new FormData(form);
+    var data = {};
+    for (var pair of formData.entries()) {
+        if(pair[1] instanceof File){
+            if(pair[1].size > 0){
+                data[pair[0]] = pair[1];
+            }
+        }else{
+            if(pair[1].length > 0){
+                data[pair[0]] = pair[1];
+            }
+        }
+    }
+    return data;
+}
+function getDataRequired(){
+    var data = {
+        'title':true,
+        'show_from':true,
+        'show_to':true,
+        'show_at':true,
+    };
+    return data;
+}
