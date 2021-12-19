@@ -111,11 +111,11 @@
                                     </div>
                                     <div class="form-group" id="show_target_route">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" class="form-control" id="check" name="has_target_route" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" />
-                                            <label for="check">Has Target Route ? </label>
+                                            <input type="checkbox" class="form-control" id="has_target_route" name="has_target_route" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onchange="onchangeDirection()"/>
+                                            <label for="has_target_route">Has Target Route ? </label>
                                         </div>
                                         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#show_target_route">
-                                            <select type="file" name="target_route" class="form-control" id="target_route" onchange="onchangeDirection(this)">
+                                            <select type="file" name="target_route" class="form-control" id="target_route" onchange="onchangeDirection()">
                                                 @if(!empty($list_target_route))
                                                 @foreach($list_target_route as $target)
                                                 <option value='{{$target->id}}'>{{$target->name}}</option>

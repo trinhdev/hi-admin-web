@@ -6,9 +6,10 @@ function onchangeTypeBanner(_this) {
     }
 }
 
-function onchangeDirection(_this) {
-    if (check.value === 'on') {
-        if (_this.value === 'url_open_in_app' || _this.value === 'url_open_out_app') {
+function onchangeDirection() {
+    console.log($(has_target_route).is(':checked'));
+    if ($(has_target_route).is(':checked')) {
+        if (target_route.value === 'url_open_in_app' || target_route.value === 'url_open_out_app') {
             direction_url.hidden = false;
         } else {
             direction_url.hidden = true;
@@ -92,7 +93,6 @@ function validateData(event, form) {
 }
 
 function checkEnableSave(form) {
-    onchangeDirection(target_route);
     data_required = getDataRequired();
     formData = getDataInForm(form);
     let intersection = Object.keys(data_required).filter(x => !Object.keys(formData).includes(x));
