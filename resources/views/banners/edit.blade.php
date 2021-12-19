@@ -40,8 +40,12 @@
                             <div class="card-body">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="title">title(*)</label>
-                                        <input type="text" name="title" class="form-control" value="{{ !empty($banner)?$banner->name:''}}">
+                                        <label for="title">title VI(*)</label>
+                                        <input type="text" name="title_vi" class="form-control" value="{{ !empty($banner)?$banner->name:''}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="title">title EN(*)</label>
+                                        <input type="text" name="title_en" class="form-control" value="{{ !empty($banner)?$banner->name:''}}">
                                     </div>
                                     <div class="form-group">
                                         <label for="show_at">Show At(*)</label>
@@ -77,19 +81,41 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-inline">
-                                        <label for="show_at">Show From(*): </label>
-                                        <input type="date" name="show_from" value="{{ !empty($banner)?$banner->show_from:''}}" class="form-control" />
-                                        <label for="show_to"> Show To(*): </label>
-                                        <input type="date" name="show_to"  value="{{ !empty($banner)?$banner->show_to:''}}" class="form-control" />
+                                    <div class="form-group">
+                                        <label for="show_at">Object Type</label>
+                                        <select type="text" name="object_type" class="form-control">
+                                            <option value="topic">Nhóm được đăng ký sẵn</option>
+                                            <option value="location">Vùng miền</option>
+                                            <option value="contract_phone">Số điện thoại</option>
+                                            <option value="contract_no">Số hợp đồng</option>
+                                            <option value="hifpt_id">ID của user HiFPT</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="show_at">Object</label>
+                                        <select type="text" name="object" class="form-control">
+                                            <option value="all">Tất cả KH cài Hi FPT (bao gồm guest)</option>
+                                            <option value="all_hifpt">Tất cả KH có dùng dịch vụ (không bao gồm guest)</option>
+                                            <option value="guest">Tất cả KH không dùng dịch vụ (guest)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <label for="show_at">Show From(*): </label>
+                                            <input type="date" name="show_from" value="{{ !empty($banner)?$banner->show_from:''}}" class="form-control" />
+                                        </div>
+                                        <div class="col">
+                                            <label for="show_to"> Show To(*): </label>
+                                            <input type="date" name="show_to" value="{{ !empty($banner)?$banner->show_to:''}}" class="form-control" />   
+                                        </div>
                                     </div>
                                     <div class="form-group" id="show_target_route">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" id="check" name="has_target_route"data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" />
-                                            <label for="check">Has Target Route</label>
+                                            <input type="checkbox" class="form-control" id="check" name="has_target_route" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" />
+                                            <label for="check">Has Target Route ? </label>
                                         </div>
                                         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#show_target_route">
-                                            <select type="file" name="target_route" class="form-control">
+                                            <select type="file" name="target_route" class="form-control" id="target_route" onchange="onchangeDirection(this)">
                                                 @if(!empty($list_target_route))
                                                 @foreach($list_target_route as $target)
                                                 <option value='{{$target->id}}'>{{$target->name}}</option>
@@ -97,7 +123,10 @@
                                                 @endif
                                             </select>
                                         </div>
-
+                                    </div>
+                                    <div class="form-group" id="direction_url" hidden>
+                                        <label for="direction_url">Target URL</label>
+                                        <input type="text" name="direction_url" class="form-control" value="{{ !empty($banner)?$banner->direction_url:''}}">
                                     </div>
                                 </div>
                             </div>
