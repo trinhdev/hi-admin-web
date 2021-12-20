@@ -12,7 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('bannermanage.index')}}">Banner</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
+                        <li class="breadcrumb-item active">{{ (!empty($user)) ? 'edit' : 'create' }}</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -41,11 +41,11 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="title">title VI(*)</label>
-                                        <input type="text" name="title_vi" class="form-control" value="{{ !empty($banner)?$banner->name:''}}">
+                                        <input type="text" name="title_vi" class="form-control" value="{{ !empty($banner)?$banner->titleVi:''}}">
                                     </div>
                                     <div class="form-group">
                                         <label for="title">title EN(*)</label>
-                                        <input type="text" name="title_en" class="form-control" value="{{ !empty($banner)?$banner->name:''}}">
+                                        <input type="text" name="title_en" class="form-control" value="{{ !empty($banner)?$banner->titleEN:''}}">
                                     </div>
                                     <div class="form-group">
                                         <label for="show_at">Show At(*)</label>
@@ -102,19 +102,19 @@
                                     <div class="form-row">
                                         <div class="col">
                                             <label for="show_at">Show From(*): </label>
-                                            <input type="date" name="show_from" value="{{ !empty($banner)?$banner->show_from:''}}" class="form-control" />
+                                            <input type="datetime-local" name="show_from" value="{{ !empty($banner)?$banner->show_from:''}}" class="form-control" />
                                         </div>
                                         <div class="col">
                                             <label for="show_to"> Show To(*): </label>
-                                            <input type="date" name="show_to" value="{{ !empty($banner)?$banner->show_to:''}}" class="form-control" />   
+                                            <input type="datetime-local" name="show_to" value="{{ !empty($banner)?$banner->show_to:''}}" class="form-control" />   
                                         </div>
                                     </div>
                                     <div class="form-group" id="show_target_route">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" class="form-control" id="has_target_route" name="has_target_route" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onchange="onchangeDirection()"/>
-                                            <label for="has_target_route">Has Target Route ? </label>
+                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()"/>
+                                            <label for="has_target_route" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Has Target Route</label>
                                         </div>
-                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#show_target_route">
+                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#show_target_route"  style="transition: height 0.01s;">
                                             <select type="file" name="target_route" class="form-control" id="target_route" onchange="onchangeDirection()">
                                                 @if(!empty($list_target_route))
                                                 @foreach($list_target_route as $target)
@@ -127,6 +127,13 @@
                                     <div class="form-group" id="direction_url" hidden>
                                         <label for="direction_url">Target URL</label>
                                         <input type="text" name="direction_url" class="form-control" value="{{ !empty($banner)?$banner->direction_url:''}}">
+                                        <span class="warning-alert" id="direction_url_required_alert" hidden>This field is required!</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="icheck-carrot">
+                                            <input type="checkbox" id="isHighlight" name="isHighlight" />
+                                            <label for="isHighlight" >Highlight</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

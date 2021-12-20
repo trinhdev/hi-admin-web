@@ -31,21 +31,33 @@
         <div class="container-fluid">
             <div class="card card-body col-sm-12">
                 <div class="container">
-                    <div class="card-body row col-sm-9">
-                        <div class="col md-3 form-inline" >
-                            <label for="show_at">Show At: </label>
-                            <select class="form-control" name="position" id="show_at" placeholder="Show at" onchange="filterData()">
-                                <option>1</option>
-                                <option>hahahahahah</option>
-                            </select>
+                    <div class="card-body row form-inline">
+                        <div class="col-md-4">
+                            <div class="input-group mb-4">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Show At:</div>
+                                </div>
+                                <select class="form-control" name="position" id="show_at" placeholder="Show at" onchange="filterData()">
+                                    <option>1</option>
+                                    <option>hahahahahah</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col md-3 form-inline">
-                            <label for="show_from">Show From: </label>
-                            <input type="date" name="show_from"class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                        <div class="col-md-4">
+                            <div class="input-group mb-4">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Show From:</div>
+                                </div>
+                                <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                            </div>
                         </div>
-                        <div class="col md-3 form-inline">
-                            <label for="show_to">Show To: </label>
-                            <input type="date" name="show_to"class="form-control" id="show_to" placeholder="Date To" onchange="filterData()"/>
+                        <div class="col-md-4">
+                            <div class="input-group mb-4">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Show To:</div>
+                                </div>
+                                <input type="datetime-local" name="show_to" class="form-control" id="show_to" placeholder="Date To" onchange="filterData()" />
+                            </div>
                         </div>
                     </div>
                 </div>

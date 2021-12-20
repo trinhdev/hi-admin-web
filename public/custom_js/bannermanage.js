@@ -7,14 +7,13 @@ function onchangeTypeBanner(_this) {
 }
 
 function onchangeDirection() {
-    console.log($(has_target_route).is(':checked'));
     if ($(has_target_route).is(':checked')) {
         if (target_route.value === 'url_open_in_app' || target_route.value === 'url_open_out_app') {
             direction_url.hidden = false;
         } else {
             direction_url.hidden = true;
         }
-    }else{
+    } else {
         direction_url.hidden = true;
     }
 }
@@ -30,6 +29,9 @@ async function handleUploadImage(_this, event) {
         path_2_required_alert.hidden = true;
     }
     img_tag = document.getElementById(img_tag_name);
+    if (_this.value == '') {
+        resetData(_this, img_tag);
+    }
     const [file] = _this.files;
     if (file) {
         if (file.size > 2050000) { // handle file
@@ -79,12 +81,23 @@ function validateData(event, form) {
     data_required = getDataRequired();
     var passed = true;
     formData = getDataInForm(form);
+    if (!$(has_target_route).is(':checked')) {
+        delete data.target_route;
+    }
     if (formData.show_at == 'promotion') {
         if (formData.path_2 == undefined) {
             passed = false;
             path_2_required_alert.hidden = false;
         } else {
             path_2_required_alert.hidden = true;
+        }
+    }
+    if (formData.target_route === 'url_open_in_app' || formData.target_route === 'url_open_out_app') {
+        if (formData.direction_url == undefined) {
+            passed = false;
+            direction_url_required_alert.hidden = false;
+        } else {
+            direction_url_required_alert.hidden = true;
         }
     }
     if (passed) {
@@ -105,23 +118,6 @@ function checkEnableSave(form) {
     }
 }
 
-function getDataInForm(form) {
-    var formData = new FormData(form);
-    var data = {};
-    for (var pair of formData.entries()) {
-        if (pair[1] instanceof File) {
-            if (pair[1].size > 0) {
-                data[pair[0]] = pair[1];
-            }
-        } else {
-            if (pair[1].length > 0) {
-                data[pair[0]] = pair[1];
-            }
-        }
-    }
-    return data;
-}
-
 function getDataRequired() {
     var data = {
         'title_vi': true,
@@ -129,6 +125,7 @@ function getDataRequired() {
         'show_from': true,
         'show_to': true,
         'show_at': true,
+        'path_1': true,
     };
     return data;
 }
