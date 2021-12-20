@@ -61,11 +61,13 @@
                                         <label>File (*)</label>
                                         <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this,event)" />
                                         <img id="img_path_1" src="#" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
+                                        <input name="img_path_1_name" id="img_path_1_name" value=""hidden/>
                                     </div>
                                     <div class="form-group" id="path_2" hidden>
                                         <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this,event)" />
                                         <img id="img_path_2" src="#" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
                                         <span class="warning-alert" id="path_2_required_alert" hidden>This field is required!</span>
+                                         <input name="img_path_2_name" id="img_path_2_name" value="" hidden/>
                                     </div>
                                     <div class="modal fade" id="img_view_modal" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog modal-xl">
@@ -106,33 +108,35 @@
                                         </div>
                                         <div class="col">
                                             <label for="show_to"> Show To(*): </label>
-                                            <input type="datetime-local" name="show_to" value="{{ !empty($banner)?$banner->show_to:''}}" class="form-control" />   
+                                            <input type="datetime-local" name="show_to" value="{{ !empty($banner)?$banner->show_to:''}}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="form-group" id="show_target_route">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()"/>
+                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()" />
                                             <label for="has_target_route" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Has Target Route</label>
                                         </div>
-                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#show_target_route"  style="transition: height 0.01s;">
-                                            <select type="file" name="target_route" class="form-control" id="target_route" onchange="onchangeDirection()">
-                                                @if(!empty($list_target_route))
-                                                @foreach($list_target_route as $target)
-                                                <option value='{{$target->id}}'>{{$target->name}}</option>
-                                                @endforeach
-                                                @endif
-                                            </select>
+                                        <div class="" id="box_target">
+                                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#show_target_route" style="transition: height 0.01s;">
+                                                <select type="file" name="target_route" class="form-control" id="target_route" onchange="onchangeDirection()">
+                                                    @if(!empty($list_target_route))
+                                                    @foreach($list_target_route as $target)
+                                                    <option value='{{$target->id}}'>{{$target->name}}</option>
+                                                    @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            <div class="form-group" id="direction_url" hidden>
+                                                <label for="direction_url">Target URL</label>
+                                                <input type="text" name="direction_url" class="form-control" value="{{ !empty($banner)?$banner->direction_url:''}}">
+                                                <span class="warning-alert" id="direction_url_required_alert" hidden>This field is required!</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group" id="direction_url" hidden>
-                                        <label for="direction_url">Target URL</label>
-                                        <input type="text" name="direction_url" class="form-control" value="{{ !empty($banner)?$banner->direction_url:''}}">
-                                        <span class="warning-alert" id="direction_url_required_alert" hidden>This field is required!</span>
                                     </div>
                                     <div class="form-group">
                                         <div class="icheck-carrot">
                                             <input type="checkbox" id="isHighlight" name="isHighlight" />
-                                            <label for="isHighlight" >Highlight</label>
+                                            <label for="isHighlight">Highlight</label>
                                         </div>
                                     </div>
                                 </div>

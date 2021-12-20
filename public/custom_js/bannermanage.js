@@ -9,11 +9,15 @@ function onchangeTypeBanner(_this) {
 function onchangeDirection() {
     if ($(has_target_route).is(':checked')) {
         if (target_route.value === 'url_open_in_app' || target_route.value === 'url_open_out_app') {
+            box_target.classList.add('border');
+            box_target.classList.add('box-target');
             direction_url.hidden = false;
         } else {
             direction_url.hidden = true;
         }
     } else {
+        box_target.classList.remove('box-target');
+        box_target.classList.remove('border');
         direction_url.hidden = true;
     }
 }
@@ -58,9 +62,10 @@ async function handleUploadImage(_this, event) {
 function successCallUploadImage(response, passingdata) {
     if (response.statusCode == 0) {
         passingdata.img_tag.src = URL.createObjectURL(passingdata.file);
-        passingdata.input_tag.text = response.uploadedImageFileName;
+       document.getElementById(passingdata.img_tag.id+'_name').value = response.data.uploadedImageFileName
     } else {
         resetData(passingdata.input_tag, passingdata.img_tag);
+        document.getElementById(passingdata.img_tag.id+'_name').value = "";
         showError(response.message);
     }
 }
