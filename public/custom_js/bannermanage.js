@@ -134,3 +134,15 @@ function getDataRequired() {
     };
     return data;
 }
+function callApiGetListBanner(show_from = null,show_to = null,bannerType = null){
+    uploadParam = {
+        public_date_from : show_from,
+        public_date_to : show_to,
+        bannerType : bannerType
+    };
+    callAPIHelper("/bannermanage/initDatatable", uploadParam, 'GET', initBannerManage);
+}
+function filterData(){
+    $('#banner_manage').DataTable().destroy();
+    callApiGetListBanner(show_from.value, show_to.value, show_at.value);
+}

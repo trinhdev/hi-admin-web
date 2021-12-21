@@ -45,4 +45,20 @@ class NewsEventService
         $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey]);
         return $response;
     }
+
+    public function getListbanner($param = null){
+        $url = $this->baseUrl . $this->listMethod['GET_LIST_BANNER'];
+        $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey],'GET');
+        return $response;
+    }
+
+    public function getDetailBanner($bannerId,$bannerType){
+        $url = $this->baseUrl . $this->listMethod['GET_DETAIL_BANNER'];
+        $param = [
+            'bannerId' => $bannerId,
+            'bannerType'  => $bannerType
+        ];
+        $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey],'GET');
+        return $response;
+    }
 }

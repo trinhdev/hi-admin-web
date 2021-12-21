@@ -34,7 +34,7 @@ $(document).ready(function () {
                 initHidePaymentLogs();
                 break;
             case 'bannermanage':
-                initBannerManage();
+                callApiGetListBanner();
                 break;
             case '':
             case 'home':
@@ -671,80 +671,97 @@ function initHidePaymentLogs() {
         searchDelay: 500
     });
 }
-function initBannerManage(show_from = null,show_to = null){
+function initBannerManage(response){
+    var dataTable = [];
+    response.data.forEach(element => {
+        let subData = {
+            bannerId : '',
+            bannerType : '',
+            public_date_start : '',
+            public_date_end : '',
+            title_vi : '',
+            title_en : '',
+            direction_id : '',
+            direction_url : '',
+            image : '',
+            thump_image : '',
+            ordering : '',
+            view_count : 0,
+            date_created : '',
+            created_by : ''
+        };
+        if(element.banner_id != undefined){
+            subData.bannerId = element.banner_id;
+            subData.title_vi = element.banner_title != undefined ? element.banner_title : '',
+            subData.bannerType = element.banner_type != undefined ? element.banner_type : '';
+            subData.image = element.image_url != undefined ? element.image_url : '';
+            subData.ordering = element.ordering != undefined ? element.ordering : '';
+            subData.view_count = element.view_count != undefined ? element.view_count : '0';
+            subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
+        }else{
+            subData.bannerId = element.event_id;
+            subData.title_vi = element.banner_title != undefined ? element.banner_title : '',
+            subData.bannerType = element.banner_type != undefined ? element.banner_type : '';
+            subData.image = element.image_url != undefined ? element.image_url : '';
+            subData.ordering = element.ordering != undefined ? element.ordering : '';
+            subData.view_count = element.view_count != undefined ? element.view_count : '0';
+            subData.direction_url = element.event_url != undefined ? element.event_url : '';
+
+            subData.created_by = element.created_by != undefined ? element.created_by : '';
+            subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '',
+            subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : ''
+        }
+        dataTable.push(subData);
+    });
     $('#banner_manage').DataTable({
+        data:dataTable,
         "processing": true,
-        "serverSide": true,
         "select": true,
         "dataSrc": "tableData",
-        "bDestroy": true,
         responsive: true,
+        "bDestroy": true,
         "scrollX": true,
         retrieve: true,
-        "ajax": {
-            url: "bannermanage/initDatatable",
-            data:{
-                time_show_from:show_from,
-                time_show_to:show_to
-            }
-        },
-        "columns": [{
-                data: "id",
-                name: "id",
-                title: "Id"
+        "columns": [
+            {
+                data :'bannerId',
+                title: "Banner Id"
             },
             {
-                data: "title",
-                name: "title",
+                data :'title_vi',
                 title: "Title"
             },
             {
-                data: "posistion",
-                name: "position",
-                title: "Show at"
+                data :'image',
+                title: "Image",
+                "render": function(data, type, row) {
+                    return '<img src="'+data+'"  style="width:200px" />';
+                }
             },
             {
-                data: "path_1",
-                name: "path_1",
-                title: "File 1"
+                data :'direction_url',
+                title: "Direction URL",
+                "render": function(data, type, row) {
+                    return '<a href="'+data+'">'+data+'</a>';
+                }
             },
             {
-                data: "path_2",
-                name: "path_2",
-                title: "File 2"
+                data:'public_date_start',
+                title: 'Public Date Start'
             },
             {
-                data: "created_by",
-                name: "created_by",
-                title: "Created By"
+                data:'public_date_end',
+                title: 'Public Date End'
             },
             {
-                data: "updated_by",
-                name: "updated_by",
-                title: "Updated By"
-            },
-            {
-                data: "action",
-                name: "action",
-                title: "Action",
-                sortable: false
+                data: 'created_by',
+                title: 'Created By'
             }
         ],
         "language": {
             "emptyTable": "No Record..."
-        },
-        "initComplete": function (setting, json) {
-            $('#userTable').show();
-        },
-        error: function (xhr, error, code) {
-            $.pjax.reload('#pjax');
-        },
-        searchDelay: 500,
+        }
     });
-}
-function filterData(){
-    $('#banner_manage').DataTable().destroy();
-    initBannerManage(show_from.value,show_to.value);
 }
 function badgeArrayView(arrayInput) {
     var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];

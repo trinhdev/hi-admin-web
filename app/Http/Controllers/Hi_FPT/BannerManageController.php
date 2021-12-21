@@ -20,7 +20,10 @@ class BannerManageController extends MY_Controller
         $this->model = $this->getModel('Banner');
     }
     public function index(){
-        return view('banners.index');
+        $newsEventService = new NewsEventService();
+        $listTypeBanner = $newsEventService->getListTypeBanner();
+        $listTypeBanner = ($listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
+        return view('banners.index')->with(['list_type_banner' => $listTypeBanner]);
     }
 
     public function edit(Request $request){
@@ -59,17 +62,14 @@ class BannerManageController extends MY_Controller
     }
 
     public function initDatatable(Request $request){
-        if ($request->ajax()) {
+            $newsEventService = new NewsEventService();
             
-            $data = $this->model::query();
-
-            $json = DataTables::of($data)
-                ->addColumn('action', function ($row) {
-                    return view('layouts.button.action')->with(['row' => $row, 'module' => 'bannermanage']);
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-            return $json;
-        }
+            $param = [
+                'bannerType' => empty($request->bannerType) ? null : $request->bannerType,
+                'publicDateStart' => empty($request->public_date_from) ? null : $request->public_date_from,
+                'publicDateEnd' => empty($request->public_date_to) ? null : $request->public_date_to
+            ];
+            $responseCallAPIGetListBanner = $newsEventService->getListbanner($param);
+            return $responseCallAPIGetListBanner;
     }
 }

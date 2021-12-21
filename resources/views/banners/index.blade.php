@@ -38,8 +38,12 @@
                                     <div class="input-group-text">Show At:</div>
                                 </div>
                                 <select class="form-control" name="position" id="show_at" placeholder="Show at" onchange="filterData()">
-                                    <option>1</option>
-                                    <option>hahahahahah</option>
+                                    <option value=''>All</option>
+                                    @if(!empty($list_type_banner))
+                                    @foreach($list_type_banner as $type)
+                                         <option value="{{$type->id}}">{{$type->name}}</option>
+                                    @endforeach
+                                    @endif
                                 </select>
                             </div>
                         </div>
