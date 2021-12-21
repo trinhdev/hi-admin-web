@@ -143,6 +143,7 @@ function callApiGetListBanner(show_from = null,show_to = null,bannerType = null)
     callAPIHelper("/bannermanage/initDatatable", uploadParam, 'GET', initBannerManage);
 }
 function filterData(){
-    $('#banner_manage').DataTable().destroy();
+    // $('#banner_manage').DataTable().destroy();
+    $('#banner_manage').DataTable().clear();
     callApiGetListBanner(show_from.value, show_to.value, show_at.value);
 }

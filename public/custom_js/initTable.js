@@ -721,11 +721,11 @@ function initBannerManage(response){
         responsive: true,
         "bDestroy": true,
         "scrollX": true,
-        retrieve: true,
         "columns": [
             {
                 data :'bannerId',
-                title: "Banner Id"
+                title: "Banner Id",
+                className: "text-center"
             },
             {
                 data :'title_vi',
@@ -735,14 +735,14 @@ function initBannerManage(response){
                 data :'image',
                 title: "Image",
                 "render": function(data, type, row) {
-                    return '<img src="'+data+'"  style="width:200px" />';
+                    return '<img src="'+data+'"  style="width:200px"  title="'+data+'"/>';
                 }
             },
             {
                 data :'direction_url',
                 title: "Direction URL",
                 "render": function(data, type, row) {
-                    return '<a href="'+data+'">'+data+'</a>';
+                    return `<a href="`+data+`" target="_blank">`+data+`</a>`;
                 }
             },
             {
