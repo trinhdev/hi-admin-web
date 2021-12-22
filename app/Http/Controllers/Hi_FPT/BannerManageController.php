@@ -32,7 +32,6 @@ class BannerManageController extends MY_Controller
 
     public function update(Request $request, $id)
     {
-        $this->updateById($this->model,$id,$request->all());
         $this->addToLog($request);
         return redirect()->route('bannermanage.index')->withSuccess('Success!');
     }
@@ -61,6 +60,17 @@ class BannerManageController extends MY_Controller
         return $uploadImage_response;
     }
 
+    public function getDetailBanner(Request $request){
+        $request->validate([
+            'bannerType' => 'required',
+            'bannerId'  => 'required'
+        ]);
+
+        $newsEventService = new NewsEventService();
+        $uploadImage_response = $newsEventService->getDetailBanner($request->bannerId,$request->bannerType);
+        return $uploadImage_response;
+
+    }
     public function initDatatable(Request $request){
             $newsEventService = new NewsEventService();
             
@@ -69,7 +79,15 @@ class BannerManageController extends MY_Controller
                 'publicDateStart' => empty($request->public_date_from) ? null : $request->public_date_from,
                 'publicDateEnd' => empty($request->public_date_to) ? null : $request->public_date_to
             ];
+
             $responseCallAPIGetListBanner = $newsEventService->getListbanner($param);
+            if(empty($responseCallAPIGetListBanner)){
+                $responseCallAPIGetListBanner = (object)[];
+            };
+            if($this->user->role_id == ADMIN){
+                $responseCallAPIGetListBanner->isAdmin = true;
+            }
+            $responseCallAPIGetListBanner->aclCurrentModule  = $this->aclCurrentModule;
             return $responseCallAPIGetListBanner;
     }
 }

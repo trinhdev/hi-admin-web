@@ -16,6 +16,7 @@ class MY_Controller extends Controller
     protected $module_name;
     protected $model;
     protected $redis;
+    protected $aclCurrentModule;
     /**
      * model of module
      * @var $model_name
@@ -99,6 +100,7 @@ class MY_Controller extends Controller
         } else {
             $data = [];
         }
+        $this->aclCurrentModule = $data;
         View::share(['groupModule' => $getModuleData->arrayGroupkey, 'aclCurrentModule' => $data,'title'=>$this->title]);
     }
     public function beforeExecuteRoute()

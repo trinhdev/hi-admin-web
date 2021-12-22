@@ -672,7 +672,9 @@ function initHidePaymentLogs() {
     });
 }
 function initBannerManage(response){
+    console.log(response);
     var dataTable = [];
+    var flagAcl = false;
     response.data.forEach(element => {
         let subData = {
             bannerId : '',
@@ -693,16 +695,16 @@ function initBannerManage(response){
         if(element.banner_id != undefined){
             subData.bannerId = element.banner_id;
             subData.title_vi = element.banner_title != undefined ? element.banner_title : '',
-            subData.bannerType = element.banner_type != undefined ? element.banner_type : '';
+            subData.bannerType = element.custom_data != undefined ? element.custom_data : '';
             subData.image = element.image_url != undefined ? element.image_url : '';
             subData.ordering = element.ordering != undefined ? element.ordering : '';
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
         }else{
             subData.bannerId = element.event_id;
-            subData.title_vi = element.banner_title != undefined ? element.banner_title : '',
-            subData.bannerType = element.banner_type != undefined ? element.banner_type : '';
-            subData.image = element.image_url != undefined ? element.image_url : '';
+            subData.title_vi = element.title_vi != undefined ? element.title_vi : '',
+            subData.bannerType = element.event_type != undefined ? element.event_type : '';
+            subData.image = element.image != undefined ? element.image : '';
             subData.ordering = element.ordering != undefined ? element.ordering : '';
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.event_url != undefined ? element.event_url : '';
@@ -713,51 +715,75 @@ function initBannerManage(response){
         }
         dataTable.push(subData);
     });
+    var columnData =  [
+        {
+            data :'bannerId',
+            title: "Banner Id",
+            className: "text-center",
+            "name": "version"
+        },
+        {
+            data :'title_vi',
+            title: "Title"
+        },
+        {
+            data :'image',
+            title: "Image",
+            "render": function(data, type, row) {
+                return `<img src="`+data+`"  style="width:200px"  title="`+data+`" onclick ="window.open('`+data+`').focus()"/>`;
+            }
+        },
+        {
+            data :'direction_url',
+            title: "Direction URL",
+            "render": function(data, type, row) {
+                return `<a href="`+data+`" target="_blank">`+data+`</a>`;
+            }
+        },
+        {
+            data:'bannerType',
+            title: 'Banner Type'
+        },
+        {
+            data:'public_date_start',
+            title: 'Public Date Start'
+        },
+        {
+            data:'public_date_end',
+            title: 'Public Date End'
+        },
+        {
+            data: 'created_by',
+            title: 'Created By'
+        }
+    ]; 
+    if(response.isAdmin === true){
+        flagAcl = true;
+    }else{
+        var aclCurrentModule = response.aclCurrentModule;
+        if(aclCurrentModule.edit == 1){
+            flagAcl = true;
+        }
+    }
+    if(flagAcl){
+        columnData.push(
+            {
+                title: 'Action',
+                render: function(data, type, row){
+                    return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
+                },
+                className: 'text-center'
+            }
+        );
+    };
     $('#banner_manage').DataTable({
         data:dataTable,
         "processing": true,
         "select": true,
-        "dataSrc": "tableData",
         responsive: true,
         "bDestroy": true,
         "scrollX": true,
-        "columns": [
-            {
-                data :'bannerId',
-                title: "Banner Id",
-                className: "text-center"
-            },
-            {
-                data :'title_vi',
-                title: "Title"
-            },
-            {
-                data :'image',
-                title: "Image",
-                "render": function(data, type, row) {
-                    return '<img src="'+data+'"  style="width:200px"  title="'+data+'"/>';
-                }
-            },
-            {
-                data :'direction_url',
-                title: "Direction URL",
-                "render": function(data, type, row) {
-                    return `<a href="`+data+`" target="_blank">`+data+`</a>`;
-                }
-            },
-            {
-                data:'public_date_start',
-                title: 'Public Date Start'
-            },
-            {
-                data:'public_date_end',
-                title: 'Public Date End'
-            },
-            {
-                data: 'created_by',
-                title: 'Created By'
-            }
-        ],
+        "columns": columnData,
         "language": {
             "emptyTable": "No Record..."
         }

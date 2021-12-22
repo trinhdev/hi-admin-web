@@ -147,3 +147,12 @@ function filterData(){
     $('#banner_manage').DataTable().clear();
     callApiGetListBanner(show_from.value, show_to.value, show_at.value);
 }
+function getDetailBanner(_this){
+    let row = _this.closest('tr');
+    console.log(row);
+    getParam = {
+        bannerId : show_from,
+        bannerType : show_to
+    };
+    // callAPIHelper("/bannermanage/getDetailBanner", uploadParam, 'GET', initBannerManage);
+}
