@@ -687,7 +687,7 @@ function initBannerManage(response){
             direction_url : '',
             image : '',
             thumb_image : '',
-            ordering : '',
+            ordering : '-1',
             view_count : 0,
             date_created : '',
             created_by : ''
@@ -697,7 +697,7 @@ function initBannerManage(response){
             subData.title_vi = element.banner_title != undefined ? element.banner_title : '';
             subData.bannerType = element.custom_data != undefined ? element.custom_data : '';
             subData.image = element.image_url != undefined ? element.image_url : '';
-            subData.ordering = element.ordering != undefined ? element.ordering : '';
+            subData.ordering = element.ordering != undefined ? element.ordering : '-1';
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
         }else{
@@ -705,7 +705,7 @@ function initBannerManage(response){
             subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
             subData.bannerType = element.event_type != undefined ? element.event_type : '';
             subData.image = element.image != undefined ? element.image : '';
-            subData.ordering = element.ordering != undefined ? element.ordering : '';
+            subData.ordering = element.ordering != undefined ? element.ordering : '-1';
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.event_url != undefined ? element.event_url : '';
 
@@ -715,6 +715,7 @@ function initBannerManage(response){
         }
         dataTable.push(subData);
     });
+    // console.log(dataTable);
     var columnData =  [
         {
             data :"bannerId",
@@ -753,6 +754,14 @@ function initBannerManage(response){
         {
             data:'public_date_end',
             title: 'Public Date End'
+        },
+        {
+            data:'ordering',
+            title: 'Ordering'
+        },
+        {
+            data:'view_count',
+            title: 'View Count'
         },
         {
             data: 'created_by',

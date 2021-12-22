@@ -53,8 +53,10 @@ class BannerManageController extends MY_Controller
             "ordering" => null,
             "view_count" => 0,
             "date_created" => null,
-            "created_by" => null
+            "created_by" => null,
+            "is_highlight" => false
         ];
+        // dd($dataResponse);
         if(isset($dataResponse->banner_id)){
             $bannerObj->bannerId = $dataResponse->banner_id;
             $bannerObj->title_vi = $dataResponse->banner_title;
@@ -62,7 +64,9 @@ class BannerManageController extends MY_Controller
             $bannerObj->image = $dataResponse->image_url;
             $bannerObj->ordering = $dataResponse->ordering;
             $bannerObj->view_count = $dataResponse->view_count;
+            $bannerObj->direction_id = $dataResponse->target;
             $bannerObj->direction_url = $dataResponse->direction_url;
+            
         }else{
             $bannerObj->bannerId = $dataResponse->event_id;
             $bannerObj->title_vi = $dataResponse->title_vi;
@@ -70,12 +74,14 @@ class BannerManageController extends MY_Controller
             $bannerObj->image = !empty($dataResponse->image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->image : null;
             $bannerObj->ordering = $dataResponse->ordering;
             $bannerObj->view_count = $dataResponse->view_count;
+            $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
             $bannerObj->direction_url = $dataResponse->event_url;
 
             $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->thumb_image : null;
             $bannerObj->created_by = $dataResponse->created_by;
             $bannerObj->public_date_start = $dataResponse->public_date_start;
             $bannerObj->public_date_end = $dataResponse->public_date_end;
+            $bannerObj->is_highlight = (boolean) $bannerObj->is_highlight;
         }
         return view('banners.edit')->with(['list_target_route'=>$listTargetRoute, 'list_type_banner' => $listTypeBanner, 'banner'=>$bannerObj]);
     }
