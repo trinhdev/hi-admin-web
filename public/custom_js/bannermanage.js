@@ -72,7 +72,7 @@ function successCallUploadImage(response, passingdata) {
 
 function resetData(input_tag, img_tag) {
     input_tag.value = null;
-    img_tag.src = "";
+    img_tag.src = "/images/image_holder.png";
 }
 const getBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -89,7 +89,7 @@ function validateData(event, form) {
     if (!$(has_target_route).is(':checked')) {
         delete data.target_route;
     }
-    if (formData.show_at == 'promotion') {
+    if (formData.bannerType == 'promotion') {
         if (formData.path_2 == undefined) {
             passed = false;
             path_2_required_alert.hidden = false;
@@ -129,8 +129,10 @@ function getDataRequired() {
         'title_en': true,
         'show_from': true,
         'show_to': true,
-        'show_at': true,
+        'bannerType': true,
         'path_1': true,
+        'object':true,
+        'object_type':true
     };
     return data;
 }
@@ -149,10 +151,10 @@ function filterData(){
 }
 function getDetailBanner(_this){
     let row = _this.closest('tr');
-    console.log(row);
+    let infoRow = row.querySelector('.infoRow');
     getParam = {
-        bannerId : show_from,
-        bannerType : show_to
+        bannerId : infoRow.innerHTML,
+        bannerType : infoRow.getAttribute('data-type')
     };
-    // callAPIHelper("/bannermanage/getDetailBanner", uploadParam, 'GET', initBannerManage);
+    window.location.href= `/bannermanage/edit/`+infoRow.innerHTML+`/`+infoRow.getAttribute('data-type');
 }

@@ -26,7 +26,7 @@
             <div class="row justify-content-md-center">
                 <div class="col-sm-6">
                     @php
-                    $action = (empty($banner)) ? route('bannermanage.store') : route('bannermanage.update',$banner->id);
+                    $action = (empty($banner)) ? route('bannermanage.store') : route('bannermanage.update',$banner->bannerId);
                     @endphp
                     <form action="{{$action}}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)">
                         @csrf
@@ -40,16 +40,16 @@
                             <div class="card-body">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="title">title VI(*)</label>
-                                        <input type="text" name="title_vi" class="form-control" value="{{ !empty($banner)?$banner->titleVi:''}}">
+                                        <label for="title" class="required_red_dot">Title VI</label>
+                                        <input type="text" name="title_vi" class="form-control" value="{{ !empty($banner)?$banner->title_vi : ''}} ">
                                     </div>
                                     <div class="form-group">
-                                        <label for="title">title EN(*)</label>
-                                        <input type="text" name="title_en" class="form-control" value="{{ !empty($banner)?$banner->titleEN:''}}">
+                                        <label for="title" class="required_red_dot">Title EN</label>
+                                        <input type="text" name="title_en" class="form-control" value="{{ !empty($banner)?$banner->title_en : ''}} ">
                                     </div>
                                     <div class="form-group">
-                                        <label for="show_at">Show At(*)</label>
-                                        <select type="text" name="show_at" class="form-control" onchange="onchangeTypeBanner(this)" hi>
+                                        <label for="bannerType" class="required_red_dot">Show At</label>
+                                        <select type="text" name="bannerType" class="form-control" onchange="onchangeTypeBanner(this)" hi>
                                             @if(!empty($list_type_banner))
                                             @foreach($list_type_banner as $type)
                                             <option value='{{$type->id}}'>{{$type->name}}</option>
@@ -58,14 +58,14 @@
                                         </select>
                                     </div>
                                     <div class="form-group" id="path_1">
-                                        <label>File (*)</label>
+                                        <label class="required_red_dot">File</label>
                                         <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this,event)" />
-                                        <img id="img_path_1" src="#" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
+                                        <img id="img_path_1" src="{{ (!empty($banner)) ? $banner->image :asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
                                         <input name="img_path_1_name" id="img_path_1_name" value=""hidden/>
                                     </div>
                                     <div class="form-group" id="path_2" hidden>
                                         <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this,event)" />
-                                        <img id="img_path_2" src="#" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
+                                        <img id="img_path_2" src="{{asset('/images/image_holder.png')}}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
                                         <span class="warning-alert" id="path_2_required_alert" hidden>This field is required!</span>
                                          <input name="img_path_2_name" id="img_path_2_name" value="" hidden/>
                                     </div>
@@ -84,7 +84,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="show_at">Object Type</label>
+                                        <label for="object_type" class="required_red_dot">Object Type</label>
                                         <select type="text" name="object_type" class="form-control">
                                             <option value="topic">Nhóm được đăng ký sẵn</option>
                                             <option value="location">Vùng miền</option>
@@ -94,7 +94,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="show_at">Object</label>
+                                        <label for="object" class="required_red_dot">Object</label>
                                         <select type="text" name="object" class="form-control">
                                             <option value="all">Tất cả KH cài Hi FPT (bao gồm guest)</option>
                                             <option value="all_hifpt">Tất cả KH có dùng dịch vụ (không bao gồm guest)</option>
@@ -103,12 +103,12 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="col">
-                                            <label for="show_at">Show From(*): </label>
-                                            <input type="datetime-local" name="show_from" value="{{ !empty($banner)?$banner->show_from:''}}" class="form-control" />
+                                            <label for="show_from" class="required_red_dot">Show From </label>
+                                            <input type="datetime-local" name="show_from" value="{{ !empty($banner)?$banner->public_date_start:''}}" class="form-control" />
                                         </div>
                                         <div class="col">
-                                            <label for="show_to"> Show To(*): </label>
-                                            <input type="datetime-local" name="show_to" value="{{ !empty($banner)?$banner->show_to:''}}" class="form-control" />
+                                            <label for="show_to" class="required_red_dot"> Show To </label>
+                                            <input type="datetime-local" name="show_to" value="{{ !empty($banner)?$banner->public_date_end:''}}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="form-group" id="show_target_route">

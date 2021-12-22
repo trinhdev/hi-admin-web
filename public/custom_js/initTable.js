@@ -686,7 +686,7 @@ function initBannerManage(response){
             direction_id : '',
             direction_url : '',
             image : '',
-            thump_image : '',
+            thumb_image : '',
             ordering : '',
             view_count : 0,
             date_created : '',
@@ -694,7 +694,7 @@ function initBannerManage(response){
         };
         if(element.banner_id != undefined){
             subData.bannerId = element.banner_id;
-            subData.title_vi = element.banner_title != undefined ? element.banner_title : '',
+            subData.title_vi = element.banner_title != undefined ? element.banner_title : '';
             subData.bannerType = element.custom_data != undefined ? element.custom_data : '';
             subData.image = element.image_url != undefined ? element.image_url : '';
             subData.ordering = element.ordering != undefined ? element.ordering : '';
@@ -702,7 +702,7 @@ function initBannerManage(response){
             subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
         }else{
             subData.bannerId = element.event_id;
-            subData.title_vi = element.title_vi != undefined ? element.title_vi : '',
+            subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
             subData.bannerType = element.event_type != undefined ? element.event_type : '';
             subData.image = element.image != undefined ? element.image : '';
             subData.ordering = element.ordering != undefined ? element.ordering : '';
@@ -710,17 +710,19 @@ function initBannerManage(response){
             subData.direction_url = element.event_url != undefined ? element.event_url : '';
 
             subData.created_by = element.created_by != undefined ? element.created_by : '';
-            subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '',
+            subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '';
             subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : ''
         }
         dataTable.push(subData);
     });
     var columnData =  [
         {
-            data :'bannerId',
+            data :"bannerId",
             title: "Banner Id",
             className: "text-center",
-            "name": "version"
+            "render": function(data, type, row) {
+                return `<span class ="infoRow" data-type="`+row.bannerType+`">`+data+`</span>`;
+            }
         },
         {
             data :'title_vi',
