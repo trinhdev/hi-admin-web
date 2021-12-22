@@ -19,7 +19,7 @@ class Modules extends MY_Model
     public function getModulesGroupByParent($role_id)
     {
         $result = new stdClass();
-        if($role_id != config('constants.ADMIN')){
+        if($role_id != ADMIN){
             $listModule = DB::table('modules')
             ->join('acl_roles','acl_roles.module_id','modules.id')
             ->where('acl_roles.view',1)

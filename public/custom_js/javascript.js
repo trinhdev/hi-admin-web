@@ -98,3 +98,19 @@ function showError(error = null) {
         html: (error == null) ? 'Error!' : error
     });
 }
+function getDataInForm(form) {
+    var formData = new FormData(form);
+    var data = {};
+    for (var pair of formData.entries()) {
+        if (pair[1] instanceof File) {
+            if (pair[1].size > 0) {
+                data[pair[0]] = pair[1];
+            }
+        } else {
+            if (pair[1].length > 0) {
+                data[pair[0]] = pair[1];
+            }
+        }
+    }
+    return data;
+}

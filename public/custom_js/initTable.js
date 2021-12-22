@@ -33,6 +33,9 @@ $(document).ready(function () {
             case 'hidepayment':
                 initHidePaymentLogs();
                 break;
+            case 'bannermanage':
+                callApiGetListBanner();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -254,7 +257,6 @@ function initUser() {
             "emptyTable": "No Record..."
         },
         "initComplete": function (setting, json) {
-            console.log(json);
             $('#userTable').show();
         },
         error: function (xhr, error, code) {
@@ -669,7 +671,124 @@ function initHidePaymentLogs() {
         searchDelay: 500
     });
 }
+function initBannerManage(response){
+    console.log(response);
+    var dataTable = [];
+    var flagAcl = false;
+    response.data.forEach(element => {
+        let subData = {
+            bannerId : '',
+            bannerType : '',
+            public_date_start : '',
+            public_date_end : '',
+            title_vi : '',
+            title_en : '',
+            direction_id : '',
+            direction_url : '',
+            image : '',
+            thump_image : '',
+            ordering : '',
+            view_count : 0,
+            date_created : '',
+            created_by : ''
+        };
+        if(element.banner_id != undefined){
+            subData.bannerId = element.banner_id;
+            subData.title_vi = element.banner_title != undefined ? element.banner_title : '',
+            subData.bannerType = element.custom_data != undefined ? element.custom_data : '';
+            subData.image = element.image_url != undefined ? element.image_url : '';
+            subData.ordering = element.ordering != undefined ? element.ordering : '';
+            subData.view_count = element.view_count != undefined ? element.view_count : '0';
+            subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
+        }else{
+            subData.bannerId = element.event_id;
+            subData.title_vi = element.title_vi != undefined ? element.title_vi : '',
+            subData.bannerType = element.event_type != undefined ? element.event_type : '';
+            subData.image = element.image != undefined ? element.image : '';
+            subData.ordering = element.ordering != undefined ? element.ordering : '';
+            subData.view_count = element.view_count != undefined ? element.view_count : '0';
+            subData.direction_url = element.event_url != undefined ? element.event_url : '';
 
+            subData.created_by = element.created_by != undefined ? element.created_by : '';
+            subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '',
+            subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : ''
+        }
+        dataTable.push(subData);
+    });
+    var columnData =  [
+        {
+            data :'bannerId',
+            title: "Banner Id",
+            className: "text-center",
+            "name": "version"
+        },
+        {
+            data :'title_vi',
+            title: "Title"
+        },
+        {
+            data :'image',
+            title: "Image",
+            "render": function(data, type, row) {
+                return `<img src="`+data+`"  style="width:200px"  title="`+data+`" onclick ="window.open('`+data+`').focus()"/>`;
+            }
+        },
+        {
+            data :'direction_url',
+            title: "Direction URL",
+            "render": function(data, type, row) {
+                return `<a href="`+data+`" target="_blank">`+data+`</a>`;
+            }
+        },
+        {
+            data:'bannerType',
+            title: 'Banner Type'
+        },
+        {
+            data:'public_date_start',
+            title: 'Public Date Start'
+        },
+        {
+            data:'public_date_end',
+            title: 'Public Date End'
+        },
+        {
+            data: 'created_by',
+            title: 'Created By'
+        }
+    ]; 
+    if(response.isAdmin === true){
+        flagAcl = true;
+    }else{
+        var aclCurrentModule = response.aclCurrentModule;
+        if(aclCurrentModule.edit == 1){
+            flagAcl = true;
+        }
+    }
+    if(flagAcl){
+        columnData.push(
+            {
+                title: 'Action',
+                render: function(data, type, row){
+                    return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
+                },
+                className: 'text-center'
+            }
+        );
+    };
+    $('#banner_manage').DataTable({
+        data:dataTable,
+        "processing": true,
+        "select": true,
+        responsive: true,
+        "bDestroy": true,
+        "scrollX": true,
+        "columns": columnData,
+        "language": {
+            "emptyTable": "No Record..."
+        }
+    });
+}
 function badgeArrayView(arrayInput) {
     var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];
     var count_badge = 0;

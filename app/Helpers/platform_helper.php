@@ -109,7 +109,7 @@ if (!function_exists('mb_ucwords')) {
 }
 
 if (!function_exists('sendRequest')) {
-    function sendRequest($url, $params, $token = null, $headerArray = array())
+    function sendRequest($url, $params, $token = null, $headerArray = array(),$method = null)
     {
         $headers[] = "Content-Type: application/json";
         $headers[] = (!empty($token)) ? "Authorization: " . $token : null;
@@ -118,6 +118,7 @@ if (!function_exists('sendRequest')) {
                 $headers[] = $key.": ". $val;
             }
         }
+        // my_debug($headers);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -134,6 +135,9 @@ if (!function_exists('sendRequest')) {
         // }
 
         $time = microtime(true);
+        if(!empty($method)){
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        }
         $output = curl_exec($ch);
         $timeRun = microtime(true) - $time;
         // if (curl_errno($ch)) {

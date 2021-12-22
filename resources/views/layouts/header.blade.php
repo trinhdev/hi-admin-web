@@ -41,6 +41,7 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-color: {{config('platform_config.background.color')}};
+
     }
     </style>
     <script type="text/javascript">

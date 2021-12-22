@@ -86,7 +86,7 @@ function drawchart1(response) {
                         display: true,
                         lineWidth: '4px',
                         color: 'rgba(0, 0, 0, .2)',
-                        zeroLineColor: 'transparent'
+                        zeroLineColor: 'black'
                     },
                     ticks: $.extend({
                         beginAtZero: true,
@@ -96,7 +96,8 @@ function drawchart1(response) {
                 xAxes: [{
                     display: true,
                     gridLines: {
-                        display: false
+                        display: true,
+                        zeroLineColor: 'black'
                     },
                     ticks: $.extend({
                         autoSkip:false

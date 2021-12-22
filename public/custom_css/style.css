@@ -40,3 +40,16 @@
 #showList .card-header:not(.collapsed) .rotate-icon {
   transform: rotate(180deg);
 }
+.icheck-carrot>input:first-child:not(:checked):not(:disabled):hover+input[type=hidden]+label::before, .icheck-carrot>input:first-child:not(:checked):not(:disabled):hover+label::before {
+  border-color: #007bff;
+}
+.icheck-carrot>input:first-child:checked+input[type=hidden]+label::before, .icheck-carrot>input:first-child:checked+label::before {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+.warning-alert{
+  color: red;
+}
+.box-target{
+  padding:10px;
+}
