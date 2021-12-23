@@ -7,7 +7,6 @@ function onchangeTypeBanner(_this) {
 }
 
 function onchangeDirection() {
-    console.log($(has_target_route).is(':checked'));
     if ($(has_target_route).is(':checked')) {
         box_target.hidden = false;
         // if (target_route.value === 'url_open_in_app' || target_route.value === 'url_open_out_app') {
@@ -62,7 +61,7 @@ async function handleUploadImage(_this, event) {
 }
 
 function successCallUploadImage(response, passingdata) {
-    if (response.statusCode == 0) {
+    if (response.statusCode == 0 && response.data != null) {
         passingdata.img_tag.src = URL.createObjectURL(passingdata.file);
        document.getElementById(passingdata.img_tag.id+'_name').value = response.data.uploadedImageFileName
     } else {
