@@ -7,18 +7,20 @@ function onchangeTypeBanner(_this) {
 }
 
 function onchangeDirection() {
+    console.log($(has_target_route).is(':checked'));
     if ($(has_target_route).is(':checked')) {
-        if (target_route.value === 'url_open_in_app' || target_route.value === 'url_open_out_app') {
-            box_target.classList.add('border');
-            box_target.classList.add('box-target');
-            direction_url.hidden = false;
-        } else {
-            direction_url.hidden = true;
-        }
+        box_target.hidden = false;
+        // if (target_route.value === 'url_open_in_app' || target_route.value === 'url_open_out_app') {
+        //     box_target.classList.add('border');
+        //     box_target.classList.add('box-target');
+           
+        // } else {
+        //     box_target.hidden = true;
+        // }
     } else {
-        box_target.classList.remove('box-target');
-        box_target.classList.remove('border');
-        direction_url.hidden = true;
+        // box_target.classList.remove('box-target');
+        // box_target.classList.remove('border');
+        box_target.hidden = true;
     }
 }
 

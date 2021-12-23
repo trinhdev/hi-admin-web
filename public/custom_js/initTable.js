@@ -761,7 +761,10 @@ function initBannerManage(response){
         },
         {
             data:'view_count',
-            title: 'View Count'
+            title: 'View Count',
+            "render": function(data, type, row) {
+                return `<input type="number" value="`+data+`"/>`;
+            }
         },
         {
             data: 'created_by',
@@ -781,6 +784,7 @@ function initBannerManage(response){
             {
                 title: 'Action',
                 render: function(data, type, row){
+                    if(row.bannerType === 'event_normal')return "";
                     return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
                 },
                 className: 'text-center'
