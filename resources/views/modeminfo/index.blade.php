@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0" style="font-weight: bold">{{ (!empty($data['ModemInfo']['ModelModem'])) ? $data['ModemInfo']['ModelModem'] : 'N/A' }}</h1><span class="badge bg-primary" style="padding: 0.4em 0.4em">{{ (!empty($data['ModemInfo']['IpAdress'])) ? $data['ModemInfo']['IpAdress'] : '' }}</span>
+                        <h1 class="m-0" style="font-weight: bold">{{ (!empty($data['ModemInfo']['ModelModem'])) ? $data['ModemInfo']['ModelModem'] : 'N/A' }}</h1><span class="badge bg-primary" style="padding: 0.4em 0.4em; font-size: 13px">{{ (!empty($data['ModemInfo']['IpAdress'])) ? $data['ModemInfo']['IpAdress'] : '' }}</span>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -45,7 +45,7 @@
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">Upload</span>
-                                <span class="info-box-number">{{ (!empty($data['ModemInfo']['upload'])) ? $data['ModemInfo']['upload'] : '' }}</span>
+                                <span class="info-box-number" style="font-size: 20px">{{ (!empty($data['ModemInfo']['upload'])) ? $data['ModemInfo']['upload'] : '' }}</span>
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">Download</span>
-                                <span class="info-box-number">{{ (!empty($data['ModemInfo']['download'])) ? $data['ModemInfo']['download'] : '' }}</span>
+                                <span class="info-box-number" style="font-size: 20px">{{ (!empty($data['ModemInfo']['download'])) ? $data['ModemInfo']['download'] : '' }}</span>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">Online</span>
-                                <span class="info-box-number">{{ (!empty($data['ModemInfo']['DayOnline'])) ? $data['ModemInfo']['DayOnline'] : '' }}</span>
+                                <span class="info-box-number" style="font-size: 20px">{{ (!empty($data['ModemInfo']['DayOnline'])) ? $data['ModemInfo']['DayOnline'] : '' }}</span>
                             </div>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">Lưu lượng</span>
-                                <span class="info-box-number">{{ (!empty($data['ModemInfo']['currentMonthTraffic'])) ? $data['ModemInfo']['currentMonthTraffic'] : '' }}</span>
+                                <span class="info-box-number" style="font-size: 20px">{{ (!empty($data['ModemInfo']['currentMonthTraffic'])) ? $data['ModemInfo']['currentMonthTraffic'] : '' }}</span>
                             </div>
                         </div>
                     </div>
@@ -109,11 +109,11 @@
                                                         </div>
                                                         <div class="card-body row">
                                                             <div class="col-sm-5">Thiết bị</div>
-                                                            <div class="col-sm-7"><span class="badge bg-secondary">{{ $wifi['Type'] }}</span></div>
+                                                            <div class="col-sm-7"><span class="badge bg-secondary modem-info">{{ $wifi['Type'] }}</span></div>
                                                             <div class="col-sm-5">Mac</div>
-                                                            <div class="col-sm-7"><span class="badge bg-success">{{ $wifi['MacAddress'] }}</span></div>
+                                                            <div class="col-sm-7"><span class="badge bg-success modem-info">{{ $wifi['MacAddress'] }}</span></div>
                                                             <div class="col-sm-5">IP Address</div>
-                                                            <div class="col-sm-7"><span class="badge bg-danger">{{ $wifi['IpAdress'] }}</span></div>
+                                                            <div class="col-sm-7"><span class="badge bg-danger modem-info">{{ $wifi['IpAdress'] }}</span></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -149,11 +149,11 @@
                                                 </div>
                                                 <div class="card-body row">
                                                     <div class="col-sm-5">Thiết bị</div>
-                                                    <div class="col-sm-7"><span class="badge bg-secondary">{{ $lan['Type'] }}</span></div>
+                                                    <div class="col-sm-7"><span class="badge bg-secondary modem-info">{{ $lan['Type'] }}</span></div>
                                                     <div class="col-sm-5">Mac</div>
-                                                    <div class="col-sm-7"><span class="badge bg-success">{{ $lan['MacAddress'] }}</span></div>
+                                                    <div class="col-sm-7"><span class="badge bg-success modem-info">{{ $lan['MacAddress'] }}</span></div>
                                                     <div class="col-sm-5">IP Address</div>
-                                                    <div class="col-sm-7"><span class="badge bg-danger">{{ $lan['IpAdress'] }}</span></div>
+                                                    <div class="col-sm-7"><span class="badge bg-danger modem-info">{{ $lan['IpAdress'] }}</span></div>
                                                     {{-- <div class="col-sm-5">Lưu lượng sử dụng</div>
                                                     <div class="col-sm-7"><span class="badge bg-warning text-dark">0.0251GB</span></div> --}}
                                                 </div>
@@ -173,6 +173,12 @@
     <style>
         select {
             font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
+        }
+
+        .modem-info {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
     </style>
 @endsection
