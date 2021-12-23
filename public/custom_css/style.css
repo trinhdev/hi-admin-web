@@ -53,3 +53,7 @@
 .box-target{
   padding:10px;
 }
+.required_red_dot::after{
+    content:" (*)";
+    color: red;
+}

@@ -686,41 +686,44 @@ function initBannerManage(response){
             direction_id : '',
             direction_url : '',
             image : '',
-            thump_image : '',
-            ordering : '',
+            thumb_image : '',
+            ordering : '-1',
             view_count : 0,
             date_created : '',
             created_by : ''
         };
         if(element.banner_id != undefined){
             subData.bannerId = element.banner_id;
-            subData.title_vi = element.banner_title != undefined ? element.banner_title : '',
+            subData.title_vi = element.banner_title != undefined ? element.banner_title : '';
             subData.bannerType = element.custom_data != undefined ? element.custom_data : '';
             subData.image = element.image_url != undefined ? element.image_url : '';
-            subData.ordering = element.ordering != undefined ? element.ordering : '';
+            subData.ordering = element.ordering != undefined ? element.ordering : '-1';
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
         }else{
             subData.bannerId = element.event_id;
-            subData.title_vi = element.title_vi != undefined ? element.title_vi : '',
+            subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
             subData.bannerType = element.event_type != undefined ? element.event_type : '';
             subData.image = element.image != undefined ? element.image : '';
-            subData.ordering = element.ordering != undefined ? element.ordering : '';
+            subData.ordering = element.ordering != undefined ? element.ordering : '-1';
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.event_url != undefined ? element.event_url : '';
 
             subData.created_by = element.created_by != undefined ? element.created_by : '';
-            subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '',
+            subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '';
             subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : ''
         }
         dataTable.push(subData);
     });
+    // console.log(dataTable);
     var columnData =  [
         {
-            data :'bannerId',
+            data :"bannerId",
             title: "Banner Id",
             className: "text-center",
-            "name": "version"
+            "render": function(data, type, row) {
+                return `<span class ="infoRow" data-type="`+row.bannerType+`">`+data+`</span>`;
+            }
         },
         {
             data :'title_vi',
@@ -753,6 +756,17 @@ function initBannerManage(response){
             title: 'Public Date End'
         },
         {
+            data:'ordering',
+            title: 'Ordering'
+        },
+        {
+            data:'view_count',
+            title: 'View Count',
+            "render": function(data, type, row) {
+                return `<input type="number" value="`+data+`"/>`;
+            }
+        },
+        {
             data: 'created_by',
             title: 'Created By'
         }
@@ -770,6 +784,7 @@ function initBannerManage(response){
             {
                 title: 'Action',
                 render: function(data, type, row){
+                    if(row.bannerType === 'event_normal')return "";
                     return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
                 },
                 className: 'text-center'
