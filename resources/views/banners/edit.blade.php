@@ -122,7 +122,7 @@
                                             {{-- {{ (!empty($banner) && $banner->direction_id) ? --}}
                                             <label for="has_target_route" >Has Target Route</label>
                                         </div>
-                                        <div class="{{ (!empty($banner) && ($banner->direction_id || !empty($banner->direction_url) ) !== null) ? "border box-target" : ''}}" id="box_target">
+                                        <div class="{{ (!empty($banner) && ($banner->direction_id || !empty($banner->direction_url) ) !== null) ? "border box-target" : ''}}" {{ (empty($banner)) ? "hidden" : ''}} id="box_target">
 
                                             <div id="collapseOne" tyle="transition: height 0.01s;">
                                                 {{-- <label for="target_route">Target Id</label> --}}

@@ -672,7 +672,6 @@ function initHidePaymentLogs() {
     });
 }
 function initBannerManage(response){
-    console.log(response);
     var dataTable = [];
     var flagAcl = false;
     response.data.forEach(element => {

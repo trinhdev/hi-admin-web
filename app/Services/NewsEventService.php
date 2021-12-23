@@ -61,4 +61,19 @@ class NewsEventService
         $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey],'GET');
         return $response;
     }
+
+    public function updateOrderBannder($bannerId, $bannerType, $ordering){
+        $url = $this->baseUrl . $this->listMethod['UPDATE_ORDERING'];
+        
+        $updateParam = [
+            'bannerType'    => $bannerType,
+            'orderings'     => [
+                'bannerId'  => $bannerId,
+                'ordering'  => $ordering
+            ]
+        ];
+
+        $response =  sendRequest($url, $updateParam, $this->token, $header = ['clientKey' => $this->clientKey],'GET');
+        return $response;
+    }
 }

@@ -145,4 +145,18 @@ class BannerManageController extends MY_Controller
             $responseCallAPIGetListBanner->aclCurrentModule  = $this->aclCurrentModule;
             return $responseCallAPIGetListBanner;
     }
+    public function updateOrder(Request $request){
+        if(!$request->ajax()){
+            return false;
+        }
+        $request->validate([
+            'ordering' => 'required',
+            'bannerType'    => 'required',
+            'bannerId'  => 'required'
+        ]);
+
+        $newsEventService = new NewsEventService();
+        $updateOrder_response = $newsEventService->updateOrderBannder($request->bannerId, $request->bannerType, $request->ordering);
+        return $updateOrder_response;
+    }
 }
