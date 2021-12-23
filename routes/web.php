@@ -121,6 +121,11 @@ Route::group([
                 Route::post('/hide','HidepaymentController@hide')->name('hidepayment.hide');
                 Route::get('/initDatatable','HidepaymentController@initDatatable')->name('hidepayment.initDatatable');
             });
+            Route::prefix('modeminfo')->group(function () {
+                Route::get('/','ModeminfoController@index')->name('modeminfo.index');
+                Route::post('/searchByContractNoOrId','ModeminfoController@searchByContractNoOrId')->name('modeminfo.searchByContractNoOrId');
+                Route::get('/initDatatable','ModeminfoController@initDatatable')->name('modeminfo.initDatatable');
+            });
 
             Route::prefix('bannermanage')->group(function () {
                 Route::get('/','BannerManageController@index')->name('bannermanage.index');
