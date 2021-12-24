@@ -54,8 +54,9 @@ class BannerManageController extends MY_Controller
             "ordering" => null,
             "view_count" => 0,
             "date_created" => null,
+            "date_created"    =>null,
             "created_by" => null,
-            "is_highlight" => false
+            "is_highlight" => false,
         ];
         // dd($dataResponse);
         if(isset($dataResponse->banner_id)){
@@ -67,6 +68,7 @@ class BannerManageController extends MY_Controller
             $bannerObj->view_count = $dataResponse->view_count;
             $bannerObj->direction_id = $dataResponse->action_type;
             $bannerObj->direction_url = $dataResponse->direction_url;
+            $bannerObj->date_created = $dataResponse->date_created;
             
         }else{
             $bannerObj->bannerId = $dataResponse->event_id;
@@ -77,6 +79,7 @@ class BannerManageController extends MY_Controller
             $bannerObj->view_count = $dataResponse->view_count;
             $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
             $bannerObj->direction_url = $dataResponse->event_url;
+            $bannerObj->date_created = $dataResponse->date_created;
 
             $bannerObj->title_en = $dataResponse->title_en;
             $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->thumb_image : null;
@@ -106,14 +109,42 @@ class BannerManageController extends MY_Controller
     }
 
     public function store(Request $request){
-        $request->validate([
+        $rules = [
             'bannerType' =>'required',
-            'path_1'    =>'required',
             'title_vi'  =>'required',
             'title_en'  =>'required',
+            'path_1'    =>'required',
+            'img_path_1_name' =>'required',
             'object'    =>'required',
             'object_type'=>'required',
-        ]);
+            'show_from' =>'required|date_format:Y-m-d H:i:s',
+            'show_to'   =>'required|date_format:Y-m-d H:i:s',
+            'direction_url' => 'required_if:directionId,url_open_in_app,url_open_out_app',
+            'img_path_2_name'   => 'required_if:bannerType,promotion',
+        ];
+        $request->validate($rules);
+
+        $newsEventService = new NewsEventService();
+        $createParams = [
+            'bannerType'        => $request->bannerType,
+            'titleVi'           =>$request->title_vi,
+            'titleEn'           => $request->title_en,
+            'publicDateStart'   =>$request->show_from,
+            'publicDateEnd'     => $request->show_to,
+            'object'            => $request->object,
+            'objectType'        => $request->objectType,
+            'imageFileName'     => $request->img_path_1_name,
+        ];
+        if(!empty($request->has_route_target)){
+            if(!empty($request->direction_id) && ($request->direction_id == 'url_open_out_app'  || $request->direction_id == 'url_open_in_app') ){
+                $createParams['directionUrl'] = $request->direction_url;
+            };
+        };
+        if(!empty($request->bannerType) && $request->bannerType =='promotion'){
+           $createParams['thumbImageFileName'] = $request->img_path_2_name;
+        };
+        $create_banner_response = $newsEventService->addNewBanner($createParams);
+        dd($create_banner_response);
     }
 
     public function uploadImage(Request $request){

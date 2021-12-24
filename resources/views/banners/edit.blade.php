@@ -46,11 +46,11 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="title" class="required_red_dot">Title VI</label>
-                                        <input type="text" name="title_vi" class="form-control" value="{{ !empty($banner)?$banner->title_vi : ''}} ">
+                                        <input type="text" name="title_vi" class="form-control" value="{{ !empty($banner)?$banner->title_vi : ''}}">
                                     </div>
                                     <div class="form-group">
                                         <label for="title" class="required_red_dot">Title EN</label>
-                                        <input type="text" name="title_en" class="form-control" value="{{ !empty($banner)?$banner->title_en : ''}} ">
+                                        <input type="text" name="title_en" class="form-control" value="{{ !empty($banner)?$banner->title_en : ''}}">
                                     </div>
                                     <div class="form-group">
                                         <label for="bannerType" class="required_red_dot">Show At</label>
@@ -66,7 +66,7 @@
                                         <label class="required_red_dot">File</label>
                                         <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this,event)" />
                                         <img id="img_path_1" src="{{ (!empty($banner)) ? $banner->image :asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
-                                        <input name="img_path_1_name" id="img_path_1_name" value=""hidden/>
+                                        <input name="img_path_1_name" id="img_path_1_name" value="" hidden/>
                                     </div>
                                     <div class="form-group" id="path_2" {{ ($isBannerPromotion) ? '':'hidden' }}>
                                         <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this,event)" />
@@ -126,8 +126,8 @@
 
                                             <div id="collapseOne" tyle="transition: height 0.01s;">
                                                 {{-- <label for="target_route">Target Id</label> --}}
-                                                <select type="file" name="target_route" class="form-control" id="target_route">
-                                                    <option selected>None</option>
+                                                <select type="file" name="direction_id" class="form-control" id="target_route">
+                                                    <option selected value>None</option>
                                                     @if(!empty($list_target_route))
                                                     @foreach($list_target_route as $target)
                                                     <option value='{{$target->id}}' {{ ( !empty($banner) && $banner->direction_id === $target->key ) ? 'selected' : ''}}>{{$target->name}}</option>

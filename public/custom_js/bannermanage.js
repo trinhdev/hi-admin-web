@@ -9,16 +9,11 @@ function onchangeTypeBanner(_this) {
 function onchangeDirection() {
     if ($(has_target_route).is(':checked')) {
         box_target.hidden = false;
-        // if (target_route.value === 'url_open_in_app' || target_route.value === 'url_open_out_app') {
-        //     box_target.classList.add('border');
-        //     box_target.classList.add('box-target');
-           
-        // } else {
-        //     box_target.hidden = true;
-        // }
+        box_target.classList.add('border');
+        box_target.classList.add('box-target');
     } else {
-        // box_target.classList.remove('box-target');
-        // box_target.classList.remove('border');
+        box_target.classList.remove('box-target');
+        box_target.classList.remove('border');
         box_target.hidden = true;
     }
 }
@@ -64,7 +59,7 @@ function successCallUploadImage(response, passingdata) {
     console.log(response);
     if (response.statusCode == 0 && response.data != null) {
         passingdata.img_tag.src = URL.createObjectURL(passingdata.file);
-       document.getElementById(passingdata.img_tag.id+'_name').value = response.data.uploadedImageFileName
+        document.getElementById(passingdata.img_tag.id+'_name').value = response.data.uploadedImageFileName;
     } else {
         resetData(passingdata.input_tag, passingdata.img_tag);
         document.getElementById(passingdata.img_tag.id+'_name').value = "";
@@ -85,43 +80,29 @@ const getBase64 = file => new Promise((resolve, reject) => {
 
 function validateData(event, form) {
     event.preventDefault();
-    data_required = getDataRequired();
+
     var passed = true;
+    
     formData = getDataInForm(form);
     if (!$(has_target_route).is(':checked')) {
-        delete data.target_route;
+        delete formData.direction_id;
     }
-    if (formData.bannerType == 'promotion') {
-        if (formData.path_2 == undefined) {
-            passed = false;
-            path_2_required_alert.hidden = false;
-        } else {
-            path_2_required_alert.hidden = true;
-        }
-    }
-    if (formData.target_route === 'url_open_in_app' || formData.target_route === 'url_open_out_app') {
-        if (formData.direction_url == undefined) {
-            passed = false;
-            direction_url_required_alert.hidden = false;
-        } else {
-            direction_url_required_alert.hidden = true;
-        }
-    }
-    if (passed) {
+    var passed = checkSubmit(formData);
+    if (passed.status) {
+        formData.show_from = formData.show_from.replace('T',' ');
+        formData.show_to = formData.show_to.replace('T',' ');
         handleSubmit(event, form);
+    }else{
+        showError('Missing Field !!')
     }
 }
 
 function checkEnableSave(form) {
-    data_required = getDataRequired();
     formData = getDataInForm(form);
-    let intersection = Object.keys(data_required).filter(x => !Object.keys(formData).includes(x));
-    if (intersection.length === 0) {
+    if ( checkSubmit(formData).status){
         $('form').find(':submit').prop('disabled', false);
-        return false;
-    } else {
+    }else{
         $('form').find(':submit').prop('disabled', true);
-        return true;
     }
 }
 
@@ -133,10 +114,35 @@ function getDataRequired() {
         'show_to': true,
         'bannerType': true,
         'path_1': true,
+        'img_path_1_name' : true,
         'object':true,
         'object_type':true
     };
     return data;
+}
+function checkSubmit(formData){
+    var data_required = getDataRequired();
+    if($(has_target_route).is(':checked')){
+        data_required.direction_id  = true;
+        if(formData.direction_id === 'url_open_in_app' || formData.direction_id === 'url_open_out_app'){
+            data_required.direction_url = true;
+        }
+    }
+
+    if(formData.bannerType == 'promotion'){
+        data_required.path_2 = true;
+        data_required.img_path_2_name = true;
+    }
+    let intersection = Object.keys(data_required).filter(x => !Object.keys(formData).includes(x));
+    var result = {};
+    if(intersection.length === 0){
+        result.status = true;
+        result.data = null;
+    }else{
+        result.status = false;
+        result.data = intersection;
+    }
+    return result;
 }
 function callApiGetListBanner(show_from = null,show_to = null,bannerType = null){
     uploadParam = {

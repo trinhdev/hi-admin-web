@@ -73,7 +73,13 @@ class NewsEventService
             ]
         ];
 
-        $response =  sendRequest($url, $updateParam, $this->token, $header = ['clientKey' => $this->clientKey],'GET');
+        $response =  sendRequest($url, $updateParam, $this->token, $header = ['clientKey' => $this->clientKey]);
+        return $response;
+    }
+
+    public function addNewBanner($params){
+        $url = $this->baseUrl . $this->listMethod['CREATE_BANNER'];
+        $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
         return $response;
     }
 }
