@@ -117,13 +117,19 @@ class BannerManageController extends MY_Controller
             'img_path_1_name' =>'required',
             'object'    =>'required',
             'object_type'=>'required',
-            'show_from' =>'required|date_format:Y-m-d H:i:s',
-            'show_to'   =>'required|date_format:Y-m-d H:i:s',
+            'show_from' =>'required|date_format:Y-m-d\TH:i',
+            'show_to'   =>'required|date_format:Y-m-d\TH:i',
             'direction_url' => 'required_if:directionId,url_open_in_app,url_open_out_app',
             'img_path_2_name'   => 'required_if:bannerType,promotion',
         ];
+        
+        $show_from =  Carbon::parse($request->show_from)->format('Y-m-d H:i:s');
         $request->validate($rules);
 
+        $request->merge([
+            'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s'),
+            'show_to'   => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
+        ]);
         $newsEventService = new NewsEventService();
         $createParams = [
             'bannerType'        => $request->bannerType,
@@ -131,8 +137,8 @@ class BannerManageController extends MY_Controller
             'titleEn'           => $request->title_en,
             'publicDateStart'   =>$request->show_from,
             'publicDateEnd'     => $request->show_to,
-            'object'            => $request->object,
-            'objectType'        => $request->objectType,
+            'objects'            => $request->object,
+            'objectType'        => $request->object_type,
             'imageFileName'     => $request->img_path_1_name,
         ];
         if(!empty($request->has_route_target)){
