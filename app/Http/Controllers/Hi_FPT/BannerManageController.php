@@ -50,7 +50,6 @@ class BannerManageController extends MY_Controller
             "direction_url" => null,
             "image" => null,
             "thumb_image" => null,
-            "ordering" => null,
             "view_count" => 0,
             "date_created" => null,
             "date_created"    =>null,
@@ -63,7 +62,6 @@ class BannerManageController extends MY_Controller
             $bannerObj->title_vi = $dataResponse->banner_title;
             $bannerObj->bannerType = $dataResponse->custom_data;
             $bannerObj->image = $dataResponse->image_url;
-            $bannerObj->ordering = $dataResponse->ordering;
             $bannerObj->view_count = $dataResponse->view_count;
             $bannerObj->direction_id = $dataResponse->action_type;
             $bannerObj->direction_url = $dataResponse->direction_url;
@@ -74,7 +72,6 @@ class BannerManageController extends MY_Controller
             $bannerObj->title_vi = $dataResponse->title_vi;
             $bannerObj->bannerType = ($dataResponse->event_type == "highlight" ) ? 'bannerHome' : $dataResponse->event_type;
             $bannerObj->image = !empty($dataResponse->image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->image : null;
-            $bannerObj->ordering = $dataResponse->ordering;
             $bannerObj->view_count = $dataResponse->view_count;
             // $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
             $bannerObj->direction_id = $dataResponse->target;
@@ -254,7 +251,6 @@ class BannerManageController extends MY_Controller
             'bannerType'    => 'required',
             'bannerId'  => 'required'
         ]);
-
         $newsEventService = new NewsEventService();
         $updateOrder_response = $newsEventService->updateOrderBannder($request->bannerId, $request->bannerType, $request->ordering);
         return $updateOrder_response;
