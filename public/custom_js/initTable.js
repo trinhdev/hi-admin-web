@@ -706,7 +706,7 @@ function initBannerManage(response){
             subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
             subData.bannerType = element.event_type != undefined ? element.event_type : '';
             subData.image = element.image != undefined ? element.image : '';
-            subData.ordering = element.ordering != undefined ? element.ordering : '-1';
+            subData.ordering = element.ordering != undefined ? element.ordering_on_home : '-1';
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.event_url != undefined ? element.event_url : '';
             subData.date_created = element.date_created;
@@ -736,7 +736,8 @@ function initBannerManage(response){
             title: "Image",
             "render": function(data, type, row) {
                 return `<img src="`+data+`"  style="width:200px"  onclick ="window.open('`+data+`').focus()"/>`;
-            }
+            },
+            "ordering": false
         },
         {
             data :'direction_url',
@@ -761,8 +762,9 @@ function initBannerManage(response){
             data:'ordering',
             title: 'Ordering',
             "render": function(data, type, row) {
-                return `<input type="number" value="`+data+`"/>`;
-            }
+                return `<input type="number" onchange="updateOrdering(this)" value="`+data+`"/>`;
+            },
+            "ordering": false
         },
         {
             data:'view_count',

@@ -66,13 +66,14 @@ class NewsEventService
         $url = $this->baseUrl . $this->listMethod['UPDATE_ORDERING'];
         
         $updateParam = [
-            'bannerType'    => $bannerType,
+            'bannerType'    => ($bannerType == 'highlight') ? 'bannerHome' : $bannerType,
             'orderings'     => [
-                'bannerId'  => $bannerId,
-                'ordering'  => $ordering
+                [
+                    'bannerId'  => $bannerId,
+                    'ordering'  => $ordering
+                ]
             ]
         ];
-
         $response =  sendRequest($url, $updateParam, $this->token, $header = ['clientKey' => $this->clientKey]);
         return $response;
     }

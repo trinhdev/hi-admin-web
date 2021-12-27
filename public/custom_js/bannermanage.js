@@ -1,3 +1,4 @@
+"use strict";
 function onchangeTypeBanner(_this) {
     if (_this.value == 'promotion') {
         path_2.hidden = false;
@@ -24,11 +25,11 @@ $(".img_viewable").click(function () {
 });
 async function handleUploadImage(_this, event) {
     event.preventDefault();
-    img_tag_name = 'img_' + _this.name;
+    var img_tag_name = 'img_' + _this.name;
     if (img_tag_name == 'img_path_2') {
         path_2_required_alert.hidden = true;
     }
-    img_tag = document.getElementById(img_tag_name);
+    var img_tag = document.getElementById(img_tag_name);
     if (_this.value == '') {
         resetData(_this, img_tag);
     }
@@ -39,10 +40,10 @@ async function handleUploadImage(_this, event) {
             showError("File is too big! Allowed memory size of 2MB");
             return false;
         };
-        base64_img = await getBase64(file);
-        base64_img = base64_img.replace(/^data:image\/[a-z]+;base64,/, "");
+        var base64_img = await getBase64(file);
+        var base64_img = base64_img.replace(/^data:image\/[a-z]+;base64,/, "");
 
-        uploadParam = {
+        var uploadParam = {
             'imageFileName': file.name,
             'encodedImage': base64_img,
             _token: $('meta[name="csrf-token"]').attr('content')
@@ -84,7 +85,7 @@ function validateData(event, form) {
 
     var passed = true;
 
-    formData = getDataInForm(form);
+    var formData = getDataInForm(form);
     if (!$(has_target_route).is(':checked')) {
         delete formData.direction_id;
     }
@@ -152,10 +153,11 @@ function checkSubmit(formData) {
 }
 
 function callApiGetListBanner(show_from = null, show_to = null, bannerType = null) {
-    uploadParam = {
+    var uploadParam = {
         public_date_from: show_from,
         public_date_to: show_to,
-        bannerType: bannerType
+        bannerType: bannerType,
+        _token: $('meta[name="csrf-token"]').attr('content')
     };
     callAPIHelper("/bannermanage/initDatatable", uploadParam, 'GET', initBannerManage);
 }
@@ -169,15 +171,11 @@ function filterData() {
 function getDetailBanner(_this) {
     let row = _this.closest('tr');
     let infoRow = row.querySelector('.infoRow');
-    getParam = {
-        bannerId: infoRow.innerHTML,
-        bannerType: infoRow.getAttribute('data-type')
-    };
     window.location.href = `/bannermanage/edit/` + infoRow.innerHTML + `/` + infoRow.getAttribute('data-type');
 }
 
 function changeFormatDateTimeLocal(dateInput) {
-    date = new Date(dateInput);
+    var date = new Date(dateInput);
     var str = "";
     if (date != null && date != undefined && date != "Invalid Date") {
         var day = date.getDate();
@@ -195,4 +193,22 @@ function changeFormatDateTimeLocal(dateInput) {
         date.getMinutes().toString().padStart(2, '0')}:${
             date.getSeconds().toString().padStart(2, '0')}`;
     return str;
+}
+
+function updateOrdering(_thisInputTag){
+    let row = _thisInputTag.closest('tr');
+    let infoRow = row.querySelector('.infoRow');
+    let updateParams = {
+        bannerId: infoRow.innerHTML,
+        bannerType: infoRow.getAttribute('data-type'),
+        ordering:_thisInputTag.value,
+        _token: $('meta[name="csrf-token"]').attr('content')
+    };
+    callAPIHelper("/bannermanage/updateordering", updateParams, 'POST', callApiUpdateOderSuccess);
+}
+
+function callApiUpdateOderSuccess(response){
+    if(response.statusCode != 0){
+        showError(response.message);
+    }
 }

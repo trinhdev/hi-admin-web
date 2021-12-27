@@ -135,6 +135,7 @@ Route::group([
                 Route::put('/update/{id}/{type}','BannerManageController@update')->name('bannermanage.update');
                 Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
                 Route::post('/uploadImage','BannerManageController@uploadImage')->name('bannermanage.uploadImage');
+                Route::post('/updateordering','BannerManageController@updateOrder')->name('bannermanage.updateOrder');
             });
             
         });
