@@ -132,7 +132,7 @@ Route::group([
                 Route::get('/edit/{id}/{type}','BannerManageController@edit')->name('bannermanage.edit');
                 Route::get('/create','BannerManageController@create')->name('bannermanage.create');
                 Route::post('/store','BannerManageController@store')->name('bannermanage.store');
-                Route::put('/update/{id}','BannerManageController@update')->name('bannermanage.update');
+                Route::put('/update/{id}/{type}','BannerManageController@update')->name('bannermanage.update');
                 Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
                 Route::post('/uploadImage','BannerManageController@uploadImage')->name('bannermanage.uploadImage');
             });

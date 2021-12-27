@@ -672,7 +672,6 @@ function initHidePaymentLogs() {
     });
 }
 function initBannerManage(response){
-    console.log(response);
     var dataTable = [];
     var flagAcl = false;
     response.data.forEach(element => {
@@ -690,6 +689,7 @@ function initBannerManage(response){
             ordering : '-1',
             view_count : 0,
             date_created : '',
+            date_created : '',
             created_by : ''
         };
         if(element.banner_id != undefined){
@@ -700,6 +700,7 @@ function initBannerManage(response){
             subData.ordering = element.ordering != undefined ? element.ordering : '-1';
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
+            subData.date_created = element.date_created;
         }else{
             subData.bannerId = element.event_id;
             subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
@@ -708,10 +709,11 @@ function initBannerManage(response){
             subData.ordering = element.ordering != undefined ? element.ordering : '-1';
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.event_url != undefined ? element.event_url : '';
+            subData.date_created = element.date_created;
 
             subData.created_by = element.created_by != undefined ? element.created_by : '';
             subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '';
-            subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : ''
+            subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : '';
         }
         dataTable.push(subData);
     });
@@ -733,7 +735,7 @@ function initBannerManage(response){
             data :'image',
             title: "Image",
             "render": function(data, type, row) {
-                return `<img src="`+data+`"  style="width:200px"  title="`+data+`" onclick ="window.open('`+data+`').focus()"/>`;
+                return `<img src="`+data+`"  style="width:200px"  onclick ="window.open('`+data+`').focus()"/>`;
             }
         },
         {
@@ -757,14 +759,19 @@ function initBannerManage(response){
         },
         {
             data:'ordering',
-            title: 'Ordering'
+            title: 'Ordering',
+            "render": function(data, type, row) {
+                return `<input type="number" value="`+data+`"/>`;
+            }
         },
         {
             data:'view_count',
             title: 'View Count',
-            "render": function(data, type, row) {
-                return `<input type="number" value="`+data+`"/>`;
-            }
+            className: 'text-center'
+        },
+        {
+            data: 'date_created',
+            title: 'Created at'
         },
         {
             data: 'created_by',
@@ -801,7 +808,8 @@ function initBannerManage(response){
         "columns": columnData,
         "language": {
             "emptyTable": "No Record..."
-        }
+        },
+        "order": [[ 9, "desc" ]]
     });
 }
 function badgeArrayView(arrayInput) {
