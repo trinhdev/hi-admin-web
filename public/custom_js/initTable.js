@@ -735,7 +735,7 @@ function initBannerManage(response){
             data :'image',
             title: "Image",
             "render": function(data, type, row) {
-                return `<img src="`+data+`"  style="width:200px"  title="`+data+`" onclick ="window.open('`+data+`').focus()"/>`;
+                return `<img src="`+data+`"  style="width:200px"  onclick ="window.open('`+data+`').focus()"/>`;
             }
         },
         {

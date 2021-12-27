@@ -26,7 +26,7 @@
             <div class="row justify-content-md-center">
                 <div class="col-sm-6">
                     @php
-                    $action = (empty($banner)) ? route('bannermanage.store') : route('bannermanage.update',$banner->bannerId);
+                    $action = (empty($banner)) ? route('bannermanage.store') : route('bannermanage.update', [$banner->bannerId, $banner->bannerType]);
                     $isBannerHome = false;
                     $isBannerPromotion = false;
                     if(!empty($banner) && $banner->bannerType == 'promotion'){
@@ -118,11 +118,11 @@
                                     </div>
                                     <div class="form-group" id="show_target_route">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()" {{ (!empty($banner) && ($banner->direction_id || !empty($banner->direction_url)) !== null) ? 'checked="true"' : ''}}/>
+                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()" {{ (!empty($banner) && (!empty($banner->direction_id) || !empty($banner->direction_url)) ) ? 'checked="true"' : ''}}/>
                                             {{-- {{ (!empty($banner) && $banner->direction_id) ? --}}
                                             <label for="has_target_route" >Has Target Route</label>
                                         </div>
-                                        <div class="{{ (!empty($banner) && ($banner->direction_id || !empty($banner->direction_url) ) !== null) ? "border box-target" : ''}}" {{ (empty($banner)) ? "hidden" : ''}} id="box_target">
+                                        <div class="{{ (!empty($banner) && (!empty($banner->direction_id) || !empty($banner->direction_url) ) ) ? "border box-target" : ''}}" {{ (!empty($banner) && (!empty($banner->direction_id) || !empty($banner->direction_url))) ? '' : 'hidden'}} id="box_target">
 
                                             <div id="collapseOne" tyle="transition: height 0.01s;">
                                                 {{-- <label for="target_route">Target Id</label> --}}
@@ -130,7 +130,7 @@
                                                     <option selected value>None</option>
                                                     @if(!empty($list_target_route))
                                                     @foreach($list_target_route as $target)
-                                                    <option value='{{$target->id}}' {{ ( !empty($banner) && $banner->direction_id === $target->key ) ? 'selected' : ''}}>{{$target->name}}</option>
+                                                    <option value='{{$target->id}}' {{ ( !empty($banner) && ($banner->direction_id === $target->key) ) ? 'selected' : $banner->direction_id}}>{{$target->name}}</option>
                                                     @endforeach
                                                     @endif
                                                 </select>

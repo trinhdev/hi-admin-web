@@ -82,4 +82,9 @@ class NewsEventService
         $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
         return $response;
     }
+    public function updateBanner($params){
+        $url = $this->baseUrl . $this->listMethod['UPDATE_BANNER'];
+        $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
+        return $response;
+    }
 }

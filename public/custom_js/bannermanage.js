@@ -90,11 +90,6 @@ function validateData(event, form) {
     }
     var passed = checkSubmit(formData);
     if (passed.status) {
-        // var show_from = changeFormatDateTimeLocal(formData.show_from);
-        // var show_to = changeFormatDateTimeLocal(formData.show_to);
-        // $(form).find('input[name="show_from"]').val(show_from);
-        // $(form).find('input[name="show_to"]').val(show_to);
-        // console.log(getDataInForm(form));
         handleSubmit(event, form);
     } else {
         showError('Missing Field !!')
@@ -125,6 +120,14 @@ function getDataRequired() {
     return data;
 }
 function checkSubmit(formData) {
+    const pathArray = window.location.pathname.split("/");
+    let action = pathArray[2]; // action ['create','edit']
+    if(action === 'edit'){
+        return {
+            status:true,
+            data:null
+        };
+    }
     var data_required = getDataRequired();
     if ($(has_target_route).is(':checked')) {
         data_required.direction_id = true;
