@@ -146,9 +146,11 @@ Route::group([
 
         Route::namespace('SmsWorld')->group(function () {
             Route::prefix('smsworld')->group(function () {
-                Route::any('/','OtpController@login')->name('smsworld.login');
-                Route::get('/logout','OtpController@logout')->name('smsworld.logout');
-                Route::get('/logs','OtpController@logs')->name('smsworld.logs');
+                // Route::any('/','OtpController@login')->name('smsworld.login');
+                // Route::get('/logout','OtpController@logout')->name('smsworld.logout');
+                // Route::get('/logs','OtpController@logs')->name('smsworld.logs');
+                // Route::post('/getlog','OtpController@getLog')->name('smsworld.getLog');
+                Route::any('/','OtpController@logs')->name('smsworld.logs');
                 Route::post('/getlog','OtpController@getLog')->name('smsworld.getLog');
             });
         });
