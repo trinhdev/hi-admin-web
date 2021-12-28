@@ -43,7 +43,7 @@
                             @endif
                             <div class="card card-info">
                                 <div class="card-header">
-                                    <h3 class="card-title">Setting Info</h3>
+                                    <h3 class="card-title uppercase">Setting Info</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="card-body">

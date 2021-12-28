@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px">Settings Table</h1>
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">Settings Table</h1>
                         @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
                         <a href="/settings/create" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Add new setting
