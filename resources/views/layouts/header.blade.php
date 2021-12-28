@@ -37,11 +37,12 @@
     <link rel="stylesheet" href="{{ asset('/custom_css/style.css')}}">
     <style>
     .content-wrapper{
-        background: url('{{config('platform_config.background.url')}}');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-color: {{config('platform_config.background.color')}};
-
+        background-image: url('{{config('platform_config.background.url')}}');
+         background-repeat: {{ config('platform_config.background.repeat') }};
+        background-repeat: {{ config('platform_config.background.repeat') }};
+        background-size: {{ config('platform_config.background.size') }};
+        background-position: {{config('platform_config.background.position')}}; 
+        background-color: {{ config('platform_config.background.color') }};
     }
     </style>
     <script type="text/javascript">
