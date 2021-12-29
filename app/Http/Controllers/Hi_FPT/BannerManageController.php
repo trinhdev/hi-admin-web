@@ -138,6 +138,8 @@ class BannerManageController extends MY_Controller
         };
         if(!empty($request->isHighlight)){
             $updateParams['isHighlight'] = true;
+        }else{
+            $updateParams['isHighlight'] = false;
         };
         
         $update_banner_response = $newsEventService->updateBanner($updateParams);
