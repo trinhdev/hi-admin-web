@@ -6,6 +6,7 @@
 }
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link {
     color: white;
+    padding-left: 40px;
 }
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:hover {
     background-color: white;
