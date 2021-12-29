@@ -57,8 +57,8 @@ class OtpController extends MY_Controller
         ]);
 
         $result = [];
-        $userName = 'hifpt@hr.fpt.vn';
-        $passWord = '!@#hiFPT123';
+        $userName = 'hifpt';
+        $passWord = 'a1a3ccf8678d7524129470a0ec47eb5a';
         $smsWorldService = new SmsWorldService;
         $response_Login = $smsWorldService->login($userName,$passWord);
         if(empty($response_Login->Detail)){

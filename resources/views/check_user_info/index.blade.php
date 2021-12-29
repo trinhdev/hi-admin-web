@@ -41,6 +41,9 @@
                                         <label for="input">Input</label>
                                         <input type="text" id="input" name="input" class="form-control" placeholder="Please enter Contract Number or Phone Number">
                                     </div>
+                                    <div class="form-group" hidden>
+                                        <input type="text" placeholder="hiddeninput">
+                                    </div>
                                     {{-- <div class="form-group">
                                         <label >Type Input</label>
                                         <div class="icheck-carrot">

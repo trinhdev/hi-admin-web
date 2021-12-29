@@ -41,6 +41,9 @@
                                         <label for="phone">Contract Number</label>
                                         <input type="text" id="contractNo" name="contractNo" class="form-control" placeholder="Please input contract number">
                                     </div>
+                                    <div class="form-group" hidden>
+                                        <input type="text" placeholder="hiddeninput">
+                                    </div>
                                 </div>
                             </div>
 

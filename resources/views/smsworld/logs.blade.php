@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="card-white mb-5" id="showLogs">
+            <div class="mb-5" id="showLogs">
             </div>
         </div>
     </section>

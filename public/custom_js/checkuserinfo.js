@@ -13,23 +13,6 @@ function successCallCheckUserInfo(response){
         showError(response.error);
     }else{
         var html ='';
-        console.log(response);
-        //SGH918117
-        /*
-        <div id="accordion">
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Collapsible Group Item #1
-                    </button>
-                </h5>
-                </div>
-
-                
-            </div>
-        </div>
-        */
         response.data.forEach(element => {
             html += `<div class="card">
                         <div class="card-header" id="heading`+element.Id+`" data-toggle="collapse" data-target="#collapse`+element.Id+`" aria-expanded="true" aria-controls="collapse`+element.Id+`">
