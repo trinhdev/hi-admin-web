@@ -736,7 +736,7 @@ function initBannerManage(response){
             data :'image',
             title: "Image",
             "render": function(data, type, row) {
-                return `<img src="`+data+`"  style="width:200px"  onclick ="window.open('`+data+`').focus()"/>`;
+                return `<img src="`+data+`"  style="width:150px" onerror="this.onerror=null;this.src='/images/img_404.svg';"  onclick ="window.open('`+data+`').focus()"/>`;
             },
             "sortable": false
         },
