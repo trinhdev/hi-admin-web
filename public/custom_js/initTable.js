@@ -785,7 +785,7 @@ function initBannerManage(response){
         flagAcl = true;
     }else{
         var aclCurrentModule = response.aclCurrentModule;
-        if(aclCurrentModule.edit == 1){
+        if(aclCurrentModule.update == 1){
             flagAcl = true;
         }
     }
@@ -796,6 +796,18 @@ function initBannerManage(response){
                 render: function(data, type, row){
                     if(row.bannerType === 'event_normal')return "";
                     return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
+                },
+                className: 'text-center',
+                "sortable": false
+            }
+        );
+    }else{
+        columnData.push(
+            {
+                title: 'Action',
+                render: function(data, type, row){
+                    if(row.bannerType === 'event_normal')return "";
+                    return `<div></div>`;
                 },
                 className: 'text-center',
                 "sortable": false
