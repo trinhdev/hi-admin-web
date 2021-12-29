@@ -725,7 +725,8 @@ function initBannerManage(response){
             className: "text-center",
             "render": function(data, type, row) {
                 return `<span class ="infoRow" data-type="`+row.bannerType+`">`+data+`</span>`;
-            }
+            },
+            width:'10px'
         },
         {
             data :'title_vi',
@@ -737,7 +738,7 @@ function initBannerManage(response){
             "render": function(data, type, row) {
                 return `<img src="`+data+`"  style="width:200px"  onclick ="window.open('`+data+`').focus()"/>`;
             },
-            "ordering": false
+            "sortable": false
         },
         {
             data :'direction_url',
@@ -764,7 +765,7 @@ function initBannerManage(response){
             "render": function(data, type, row) {
                 return `<input type="number" onchange="updateOrdering(this)" value="`+data+`"/>`;
             },
-            "ordering": false
+            "sortable": false
         },
         {
             data:'view_count',
@@ -796,11 +797,14 @@ function initBannerManage(response){
                     if(row.bannerType === 'event_normal')return "";
                     return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
                 },
-                className: 'text-center'
+                className: 'text-center',
+                "sortable": false
             }
         );
     };
     $('#banner_manage').DataTable({
+        // "bAutoWidth": false,
+        // "autoWidth":false,
         data:dataTable,
         "processing": true,
         "select": true,
@@ -811,7 +815,21 @@ function initBannerManage(response){
         "language": {
             "emptyTable": "No Record..."
         },
-        "order": [[ 9, "desc" ]]
+        "order": [[ 9, "desc" ]],
+        columnDefs: [
+            { width: '5%', targets: 0 }, // 1 bannerId
+            { width: '10%', targets: 1 }, // 2 Title
+            { width: '15%', targets: 2 }, // 3 Image
+            { width: '1%', targets: 3 }, // 4 direction URL
+            { width: '10%', targets: 4 }, // 5 Banner Type,
+            { width: '10%', targets: 5 }, // 6 public date start
+            { width: '10%', targets: 6 }, // 7 public date end
+            { width: '5%', targets: 7 }, // 8 ordering
+            { width: '5%', targets: 8 }, // 9 view count
+            { width: '5%', targets: 9 }, // 10 create at
+            { width: '10%', targets: 10 }, // 11 create by
+            { width: '5%', targets: 11 }, // 12 action
+         ]
     });
 }
 function badgeArrayView(arrayInput) {

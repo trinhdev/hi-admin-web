@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <table id="banner_manage" class="display nowrap" style="width:100%">
+                <table id="banner_manage" class="display" style="width:100%; word-wrap:no-wrap;">
                 </table>
             </div>
         </div>
