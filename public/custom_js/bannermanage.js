@@ -212,3 +212,11 @@ function callApiUpdateOderSuccess(response){
         showError(response.message);
     }
 }
+function changePublicDateTime(dateTimeInput){
+    var form = $(dateTimeInput).closest('form');
+    var show_from = $(form).find('input[name="show_from"]');
+    var show_to = $(form).find('input[name="show_to"]');
+
+    show_from.attr("max",show_to.val());
+    show_to.attr("min",show_from.val());
+}

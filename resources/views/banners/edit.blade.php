@@ -109,11 +109,11 @@
                                     <div class="form-row">
                                         <div class="col">
                                             <label for="show_from" class="required_red_dot">Show From </label>
-                                            <input type="datetime-local" name="show_from" value="{{ !empty($banner)?$banner->public_date_start:''}}" class="form-control" />
+                                            <input type="datetime-local" name="show_from" max="{{ (!empty($banner) && !empty($banner->public_date_end))?$banner->public_date_end:''}}" value="{{ !empty($banner)?$banner->public_date_start:''}}" class="form-control" onchange="changePublicDateTime(this)"/>
                                         </div>
                                         <div class="col">
                                             <label for="show_to" class="required_red_dot"> Show To </label>
-                                            <input type="datetime-local" name="show_to" value="{{ !empty($banner)?$banner->public_date_end:''}}" class="form-control" />
+                                            <input type="datetime-local" name="show_to" min ="{{ (!empty($banner) && !empty($banner->public_date_start))?$banner->public_date_start:''}}" value="{{ !empty($banner)?$banner->public_date_end:''}}" class="form-control" onchange="changePublicDateTime(this)"/>
                                         </div>
                                     </div>
                                     <div class="form-group" id="show_target_route">

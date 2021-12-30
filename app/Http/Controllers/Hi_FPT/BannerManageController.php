@@ -93,13 +93,13 @@ class BannerManageController extends MY_Controller
     {
         $rules = [
             'bannerType' =>'required',
-            'title_vi'  =>'required',
-            'title_en'  =>'required',
+            // 'title_vi'  =>'required',
+            // 'title_en'  =>'required',
             // 'img_path_1_name' =>'required',
             'object'    =>'required',
             'object_type'=>'required',
-            'show_from' =>'required|date_format:Y-m-d\TH:i',
-            'show_to'   =>'required|date_format:Y-m-d\TH:i',
+            'show_from' =>'date_format:Y-m-d\TH:i|nullable',
+            'show_to'   =>'date_format:Y-m-d\TH:i|nullable',
             'direction_url' => 'required_if:directionId,url_open_in_app,url_open_out_app',
             // 'img_path_2_name'   => 'required_if:bannerType,promotion',
         ];
@@ -115,13 +115,21 @@ class BannerManageController extends MY_Controller
         $updateParams = [
             'bannerId'          => $id,
             'bannerType'        => $request->bannerType,
-            'titleVi'           =>$request->title_vi,
-            'titleEn'           => $request->title_en,
-            'publicDateStart'   =>$request->show_from,
-            'publicDateEnd'     => $request->show_to,
             'objects'            => $request->object,
             'objectType'        => $request->object_type,
         ];
+        if(!empty($request->title_vi)){
+            $updateParams['titleVi'] = $request->title_vi;
+        };
+        if(!empty($request->show_from)){
+            $updateParams['publicDateStart'] = $request->show_from;
+        };
+        if(!empty($request->show_to)){
+            $updateParams['publicDateEnd'] = $request->show_to;
+        }
+        if(!empty($request->title_en)){
+            $updateParams['titleEn'] = $request->title_en;
+        }
         if(!empty($request->img_path_1_name)){
             $updateParams['imageFileName'] = $request->img_path_1_name;
         };
