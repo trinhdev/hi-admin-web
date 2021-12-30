@@ -780,7 +780,7 @@ function initBannerManage(response){
             data: 'created_by',
             title: 'Created By'
         }
-    ]; 
+    ];
     if(response.isAdmin === true){
         flagAcl = true;
     }else{
@@ -794,7 +794,12 @@ function initBannerManage(response){
             {
                 title: 'Action',
                 render: function(data, type, row){
-                    if(row.bannerType === 'event_normal')return "";
+                    var bannerType = row.bannerType;
+                    if(bannerType == 'highlight'){
+                        bannerType = 'bannerHome';
+                    };
+                    var exists = 0 != $('#show_at option[value='+bannerType+']').length;
+                    if(exists === false)return "";
                     return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
                 },
                 className: 'text-center',
