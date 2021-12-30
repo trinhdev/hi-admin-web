@@ -54,13 +54,16 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="bannerType" class="required_red_dot">Show At</label>
-                                        <select type="text" name="bannerType" class="form-control" onchange="onchangeTypeBanner(this)" >
+                                        <select type="text" name="{{ !empty($banner) ? '' : 'bannerType'}}" class="form-control" onchange="onchangeTypeBanner(this)" {{ !empty($banner) ? 'disabled' : ''}}>
                                             @if(!empty($list_type_banner))
                                             @foreach($list_type_banner as $type)
                                             <option value='{{$type->id}}' {{ ( !empty($banner) && $banner->bannerType == $type->id) ? 'selected' : ''}}>{{$type->name}}</option>
                                             @endforeach
                                             @endif
                                         </select>
+                                        @if(!empty($banner))
+                                        <input name="bannerType" value ="{{ !empty($banner) ? $banner->bannerType : ''}}"hidden/>
+                                        @endif
                                     </div>
                                     <div class="form-group" id="path_1">
                                         <label class="required_red_dot">File</label>
