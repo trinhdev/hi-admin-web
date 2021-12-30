@@ -40,7 +40,7 @@ class LogactivitiesController extends MY_Controller
                     return !empty($row->user) ? $row->user->email : '';
                 })
                 ->addColumn('user_role', function ($row) {
-                    return !empty($row->user) ? $row->user->role->role_name : '';
+                    return (!empty($row->user) && !empty($row->user->role)) ? $row->user->role->role_name : '';
                 })
                 ->rawColumns(['method', 'url', 'ip', 'user_name', 'user_role'])
                 ->make(true);
