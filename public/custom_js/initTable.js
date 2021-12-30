@@ -843,7 +843,7 @@ function initBannerManage(response){
             { width: '10%', targets: 6 }, // 7 public date end
             { width: '5%', targets: 7 }, // 8 ordering
             { width: '5%', targets: 8 }, // 9 view count
-            { width: '5%', targets: 9 }, // 10 create at
+            { width: '10%', targets: 9 }, // 10 create at
             { width: '10%', targets: 10 }, // 11 create by
             { width: '5%', targets: 11 }, // 12 action
          ]
