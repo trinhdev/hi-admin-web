@@ -69,7 +69,9 @@ class MY_Controller extends Controller
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
-            $this->getListModule();
+            if(!empty($this->user->role)){
+                $this->getListModule();
+            }
             $this->getSetting();
             return $next($request);
         });

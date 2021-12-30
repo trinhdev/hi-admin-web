@@ -28,6 +28,9 @@ class RolePermissionPolicy
         if($user_role == ADMIN || in_array($moduleUri,$this->listControllerDontNeedPolicy)){
             return true;
         }
+        if(empty($user_role)){
+            return false;
+        }
         if(!empty($moduleUri) && !in_array($moduleUri,$this->listControllerDontNeedPolicy) && $user_role != ADMIN){
             $listModuleByUser =(new Modules())->getModulesGroupByParent(Auth::user()->role_id)->listModule;
             if(empty($listModuleByUser)){
