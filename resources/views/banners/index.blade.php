@@ -41,7 +41,7 @@
                                     <option value=''>All</option>
                                     @if(!empty($list_type_banner))
                                     @foreach($list_type_banner as $type)
-                                         <option value="{{$type->id}}">{{$type->name}}</option>
+                                         <option value="{{$type->id}}">&#8920; {{ $type->id}} &#x22D9;: {{$type->name}}</option>
                                     @endforeach
                                     @endif
                                 </select>
