@@ -13,7 +13,7 @@ function successCallCheckUserInfo(response){
         showError(response.error);
     }else{
         var html ='';
-        var arrRemove = ['']
+        var arrRemove = ['Id','Contract','FullName','Address','Location','Birthday','Phone','Email']
         response.data.forEach(element => {
             html += `<div class="card">
                         <div class="card-header collapsed" id="heading`+element.Id+`" data-toggle="collapse" data-target="#collapse`+element.Id+`" aria-expanded="true" aria-controls="collapse`+element.Id+`">
@@ -22,9 +22,12 @@ function successCallCheckUserInfo(response){
                         </div>
                          <div id="collapse`+element.Id+`" class="collapse" aria-labelledby="heading`+element.Contract+`" data-parent="#showList">
                             <div class="card-body"> `;
-            for (const [key, value] of Object.entries(element)) {
-                html+=`<div><b><i>`+ key+`:</b></i>     ` +value+`</div>`;
-            }
+            // for (const [key, value] of Object.entries(element)) {
+            //     html+=`<div><b><i>`+ key+`:</b></i>     ` +value+`</div>`;
+            // }
+            arrRemove.forEach(key => {
+                html+=`<div><b><i>`+key+`:</b></i>     ` +element[key]+`</div>`;
+            });
             html+=`</div></div></div>`;
         });
        showList.innerHTML = html;
