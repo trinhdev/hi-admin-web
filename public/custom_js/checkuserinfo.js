@@ -4,7 +4,8 @@ function checkUserInfo(_this){
         _token:$('meta[name="csrf-token"]').attr('content'),
         input:$(form).find('input[name="input"]').val(),
     };
-    callAPIHelper("/checkuserinfo/check",param,'POST',successCallCheckUserInfo);
+    window.location.href="/checkuserinfo?info=check";
+    // callAPIHelper("/checkuserinfo/check",param,'GET',successCallCheckUserInfo);
 }
 function successCallCheckUserInfo(response){
     if(response.error != undefined){

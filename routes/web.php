@@ -106,8 +106,8 @@ Route::group([
             });
 
             Route::prefix('checkuserinfo')->group(function () {
-                Route::get('/','CheckUserInfoController@index')->name('checkuserinfo.index');
-                Route::post('/check','CheckUserInfoController@checkUserInfo')->name('checkuserinfo.checkUserInfo');
+                Route::get('/{info?}','CheckUserInfoController@index')->name('checkuserinfo.index');
+                // Route::get('','CheckUserInfoController@checkUserInfo')->name('checkuserinfo.checkUserInfo');
             });
 
         });

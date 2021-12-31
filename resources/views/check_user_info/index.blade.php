@@ -27,10 +27,8 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-md-center">
-                <div class="col-sm-12">
-                    {{-- <form action=" {{ route('closehelprequest.getListReportByContract')}}" method="POST" autocomplete="off"> --}}
-                    <form>
-                        @csrf
+                <div class="col-sm-6">
+                    <form action=" {{ route('checkuserinfo.index')}}" method="GET" autocomplete="off">
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">Check User Information</h3>
@@ -41,25 +39,11 @@
                                         <label for="input">Input</label>
                                         <input type="text" id="input" name="input" class="form-control" placeholder="Please enter Contract Number or Phone Number">
                                     </div>
-                                    <div class="form-group" hidden>
-                                        <input type="text" placeholder="hiddeninput">
-                                    </div>
-                                    {{-- <div class="form-group">
-                                        <label >Type Input</label>
-                                        <div class="icheck-carrot">
-                                                <input type="radio" id="type_phone" name="platform" value="phone" />
-                                                <label for="type_phone">Phone</label>
-                                        </div>
-                                        <div class="icheck-carrot">
-                                                <input type="radio" id="type_contract" name="platform" value="contract" />
-                                                <label for="type_contract">Contract</label>
-                                        </div>
-                                    </div> --}}
                                 </div>
                             </div>
 
                             <div class="card-footer" style="text-align: center">
-                                <button type="button" class="btn btn-info" onclick="checkUserInfo(this)">Check User Info</button>
+                                <button type="submit" class="btn btn-info">Check User Info</button>
                             </div>
                         </div>
                     </form>
@@ -68,6 +52,7 @@
         </div>
         <div class="col-md-12">
             <div class="mb-5" id="showList">
+            
             </div>
         </div>
     </section>
@@ -80,4 +65,8 @@
     }
 
 </style>
+<script>
+var a = '{{$data}}';
+console.log(a);
+</script>
 @endsection
