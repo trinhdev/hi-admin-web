@@ -18,21 +18,18 @@ class CheckUserInfoController extends MY_Controller
 
     public function index(Request $request){
 
-        if(!empty($request->input)){
-            $resultData = $this->checkUserInfo($request);
-            if(isset($resultData->error)){
-                return redirect()->route('checkuserinfo.index')->withErrors($resultData->error);
-            }
-            return view('check_user_info.index')->with(['data'=>$resultData->data]);
-        }else{
+        if(empty($request->input)){
             return view('check_user_info.index');
+        };
+
+        $resultData = $this->checkUserInfo($request);
+        if(isset($resultData->error)){
+            return redirect()->route('checkuserinfo.index')->withErrors($resultData->error);
         }
+        return view('check_user_info.index')->with(['data'=>$resultData->data]);
     }
     public function checkUserInfo(Request $request)
     {
-        $request->validate([
-            'input' => 'required',
-        ]);
         $this->addToLog($request);
         $input = $this->validateInput($request->input);
         if ($this->checkInPutIsPhone($input)) {

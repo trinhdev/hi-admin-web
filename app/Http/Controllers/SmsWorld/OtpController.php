@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\SmsWorld;
 
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Services\SmsWorldService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Validator;
 
 class OtpController extends MY_Controller
 {
@@ -16,45 +16,26 @@ class OtpController extends MY_Controller
         parent::__construct();
         $this->title = 'Sms World';
     }
-    // public function login(Request $request){
+    public function logs(Request $request){
+        $rules  = [
+            'country_code' =>'required',
+            'phone' => 'required',
+            'date' => 'required'
+        ];
+        $params = $request->all();
+        $validator = Validator::make($params, $rules);
+        if ($validator->fails()) {
+            return view('smsworld.logs');
+        };
 
-    //     $accessToken = $this->getAccessToken();
-    //     if($accessToken !== false){
-    //         return redirect()->route('smsworld.logs');
-    //     };
-    //     if($request->isMethod('get')){
-    //         return view('smsworld.index');
-    //     }else{
-    //         $request->validate([
-    //             'username' =>'required',
-    //             'password' =>'required'
-    //         ]);
-    //         $smsWorldService = new SmsWorldService;
-    //         $response = $smsWorldService->login($request->username,$request->password);
-    //         if(empty($response->Detail)){
-    //             return redirect()->route('smsworld.login')->withErrors(['errors'=>'Login Failed!']);
-    //         }
-    //         $this->setAccessToken($response->Detail->AccessToken);
-    //         return redirect()->back();
-    //     }
-    // }
-    // public function logout(){
-    //     $keyName = config('constants.REDIS_KEY.ACCESS_TOKEN_SMS_WORLD');
-    //     Redis::del($keyName);
-    //     return redirect()->route('smsworld.login');
-    // }
-    public function logs(){
-        return view('smsworld.logs');
+        $this->addToLog($request);
+        $resultData = $this->getLog($params);
+        if(isset($resultData->error)){
+            return redirect()->route('smsworld.logs')->withErrors($resultData->error);
+        }
+        return view('smsworld.logs')->with(['data'=>$resultData]);
     }
-
-    public function getLog(Request $request){
-
-
-        $request->validate([
-            'PhoneNumber' =>'required',
-            'Month' => 'required',
-            'Year' => 'required'
-        ]);
+    public function getLog($params){
 
         $result = [];
         $userName = 'hifpt';
@@ -69,7 +50,11 @@ class OtpController extends MY_Controller
                 $result['error'] = 'Authorization has been denied for this request.';
             }else{
                 $smsWorldService = new SmsWorldService;
-                $response = $smsWorldService->getlogs($request->PhoneNumber,$request->Month,$request->Year,$accessToken);
+                $params['PhoneNumber'] = $params['country_code'].$params['phone'];
+                $timestamp = strtotime($params['date']);
+                $params['Month'] = date('m',$timestamp);
+                $params['Year']  = date('Y',$timestamp);
+                $response = $smsWorldService->getlogs($params['PhoneNumber'], $params['Month'], $params['Year'], $accessToken);
                 if(empty($response->Detail)){
                     $result['error'] = $response->Message;
                 }else{
