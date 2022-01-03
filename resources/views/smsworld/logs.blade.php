@@ -64,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="card-primary col-md-12">
             <div class="mb-5" id="showLogs">
             </div>
         </div>

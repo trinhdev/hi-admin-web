@@ -1,11 +1,3 @@
-function checkUserInfo(_this){
-    let form = $(_this).closest('form');
-    param = {
-        _token:$('meta[name="csrf-token"]').attr('content'),
-        input:$(form).find('input[name="input"]').val(),
-    };
-    callAPIHelper("/checkuserinfo/check",param,'POST',successCallCheckUserInfo);
-}
 function successCallCheckUserInfo(response){
     if(response.error != undefined){
         showList.classList.remove('card');
@@ -32,4 +24,13 @@ function successCallCheckUserInfo(response){
         });
        showList.innerHTML = html;
     }
+}
+function viewUserInfo(jsonData){
+    var modalBody = $(showUserInfo_Modal).find('#showUserInfo_Modal_body');
+    var html = '';
+    for (const [key, value] of Object.entries(jsonData)) {
+            html+=`<div><b><i>`+ key+`:</b></i>     ` +value+`</div>`;
+    }
+    $(modalBody).html(html)
+    $('#showUserInfo_Modal').modal('toggle');
 }

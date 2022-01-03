@@ -59,7 +59,7 @@ function drawchart1(response) {
         }
         dates.push(date);
     }
-    total_oto_xemay.innerHTML = total;
+    document.getElementById('total_oto_xemay').innerHTML = total;
     // eslint-disable-next-line no-unused-vars
     var revenueChart = new Chart($revenueChart, {
         data: {

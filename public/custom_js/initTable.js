@@ -36,6 +36,9 @@ $(document).ready(function () {
             case 'bannermanage':
                 callApiGetListBanner();
                 break;
+            case 'checkuserinfo':
+                initCheckUserInfo();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -849,6 +852,49 @@ function initBannerManage(response){
          ]
     });
 }
+function initCheckUserInfo(){
+    console.log(data);
+    var columnData = [
+        {
+            data:'Id',
+            title:'ID'
+        },
+        {
+            data:'FullName',
+            title:'Full Name'
+        },
+        {
+            data:'Contract',
+            title:'Contract'
+        },
+        {
+            data:'Phone',
+            title:'Phone'
+        },
+        {
+            title:'Action',
+            data:'Id',
+            render: function(data, type, row){
+                var tmp = JSON.stringify(row);
+                return `<div><button class="btn btn-sm fas fa-eye btn-icon bg-olive" onclick='viewUserInfo(`+tmp+`)'></button?</div>`;
+            },
+            className: 'text-center',
+            "sortable": false
+        }
+    ];
+    $('#checkuserinfo_table').DataTable({
+       data:data,
+       "processing": true,
+       "select": true,
+       responsive: true,
+       "bDestroy": true,
+       "scrollX": true,
+       "columns": columnData,
+       "language": {
+           "emptyTable": "No Record..."
+       },
+   });
+};
 function badgeArrayView(arrayInput) {
     var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];
     var count_badge = 0;

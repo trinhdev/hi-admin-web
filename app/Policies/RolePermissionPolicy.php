@@ -15,7 +15,7 @@ class RolePermissionPolicy
      *
      * @return void
      */
-    private $listControllerDontNeedPolicy =[null,'home','profile']; // danh sách uri-controller không cần check acl
+    private $listControllerDontNeedPolicy =[null, 'home', 'profile']; // danh sách uri-controller không cần check acl
     public function __construct()
     {
         //
