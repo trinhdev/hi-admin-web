@@ -37,7 +37,7 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="input">Input</label>
-                                        <input type="text" id="input" name="input" class="form-control" placeholder="Please enter Contract Number or Phone Number">
+                                        <input type="text" id="input" name="input" class="form-control" value="{{ request()->input('input', old('input')) }}" placeholder="Please enter Contract Number or Phone Number">
                                     </div>
                                 </div>
                             </div>
@@ -56,11 +56,11 @@
             </div>
         </div> --}}
          <div class="row" style="margin-top: 20px">
-                    <div class="card card-body col-sm-12">
-                        <table id="checkuserinfo_table" class="display nowrap" style="width:100%">
-                        </table>
-                    </div>
-                </div>
+            <div class="card card-body col-sm-12">
+                <table id="checkuserinfo_table" class="display nowrap" style="width:100%">
+                </table>
+            </div>
+        </div>
     </section>
     <!-- /.content -->
 </div>

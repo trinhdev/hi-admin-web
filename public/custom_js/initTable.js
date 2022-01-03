@@ -39,6 +39,9 @@ $(document).ready(function () {
             case 'checkuserinfo':
                 initCheckUserInfo();
                 break;
+            case 'smsworld':
+                initSmsWorld();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -853,7 +856,6 @@ function initBannerManage(response){
     });
 }
 function initCheckUserInfo(){
-    console.log(data);
     var columnData = [
         {
             data:'Id',
@@ -883,6 +885,44 @@ function initCheckUserInfo(){
         }
     ];
     $('#checkuserinfo_table').DataTable({
+       data:data,
+       "processing": true,
+       "select": true,
+       responsive: true,
+       "bDestroy": true,
+       "scrollX": true,
+       "columns": columnData,
+       "language": {
+           "emptyTable": "No Record..."
+       },
+   });
+};
+
+function initSmsWorld(){
+    console.log(data);
+    var columnData = [
+        {
+            data:'STT',
+            title:'STT'
+        },
+        {
+            data:'Date',
+            title:'Date'
+        },
+        {
+            data:'Source',
+            title:'Source'
+        },
+        {
+            data:'Message',
+            title:'Message'
+        },
+        {
+            data:'PhoneNumber',
+            title: 'Phone Number'
+        }
+    ];
+    $('#smsworld_table').DataTable({
        data:data,
        "processing": true,
        "select": true,
