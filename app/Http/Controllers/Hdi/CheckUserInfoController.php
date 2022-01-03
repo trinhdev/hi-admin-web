@@ -23,7 +23,7 @@ class CheckUserInfoController extends MY_Controller
             if(isset($resultData->error)){
                 return redirect()->route('checkuserinfo.index')->withErrors($resultData->error);
             }
-            return view('check_user_info.index')->with(['data'=>htmlentities(stripslashes(utf8_encode((array)$resultData)), ENT_QUOTES)]);
+            return view('check_user_info.index')->with(['data'=>$resultData->data]);
         }else{
             return view('check_user_info.index');
         }

@@ -50,15 +50,36 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
+        {{-- <div class="col-md-12">
             <div class="mb-5" id="showList">
             
             </div>
-        </div>
+        </div> --}}
+         <div class="row" style="margin-top: 20px">
+                    <div class="card card-body col-sm-12">
+                        <table id="checkuserinfo_table" class="display nowrap" style="width:100%">
+                        </table>
+                    </div>
+                </div>
     </section>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+{{-- modal --}}
+<div id="showUserInfo_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span></button>
+            </div>
+            <div class="modal-body" id="showUserInfo_Modal_body">
+            </div>
+        </div>
+    </div>
+</div>
 <style>
     select {
         font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
@@ -66,7 +87,7 @@
 
 </style>
 <script>
-var a = '{{$data}}';
-console.log(a);
+
+    var data = <?php echo !empty($data) ? json_encode($data) : 'null'; ?>;
 </script>
 @endsection
