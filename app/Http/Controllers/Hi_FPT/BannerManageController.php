@@ -225,11 +225,17 @@ class BannerManageController extends MY_Controller
 
     public function uploadImage(Request $request){
         $request->validate([
-            'imageFileName' => 'required',
-            'encodedImage' =>'required'
+            // 'imageFileName' => 'required',
+            // 'encodedImage' =>'required'
+            'file'  =>'required'
         ]);
+        $file = $request->file('file');
+        $param = [
+            'imageFileName'=>  $file->getClientOriginalName(),
+            'encodedImage' =>   base64_encode(file_get_contents($file))
+        ];
         $newsEventService = new NewsEventService();
-        $uploadImage_response = $newsEventService->uploadImage($request->imageFileName,$request->encodedImage);
+        $uploadImage_response = $newsEventService->uploadImage($param['imageFileName'], $param['encodedImage']);
         return $uploadImage_response;
     }
 

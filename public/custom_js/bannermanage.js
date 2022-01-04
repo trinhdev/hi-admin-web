@@ -40,19 +40,26 @@ async function handleUploadImage(_this, event) {
             showError("File is too big! Allowed memory size of 2MB");
             return false;
         };
-        var base64_img = await getBase64(file);
-        var base64_img = base64_img.replace(/^data:image\/[a-z]+;base64,/, "");
+        // var base64_img = await getBase64(file);
+        // var base64_img = base64_img.replace(/^data:image\/[a-z]+;base64,/, "");
 
         var uploadParam = {
-            'imageFileName': file.name,
-            'encodedImage': base64_img,
+            // 'imageFileName': file.name,
+            // 'encodedImage': base64_img,
+            file:file,
             _token: $('meta[name="csrf-token"]').attr('content')
         };
-        callAPIHelper("/bannermanage/uploadImage", uploadParam, 'POST', successCallUploadImage, {
+        console.log(uploadParam);
+        uploadFile(file, successCallUploadImage, {
             'img_tag': img_tag,
             'input_tag': _this,
             'file': file
         });
+        // callAPIHelper("/bannermanage/uploadImage", uploadParam, 'POST', successCallUploadImage, {
+        //     'img_tag': img_tag,
+        //     'input_tag': _this,
+        //     'file': file
+        // });
     }
 }
 

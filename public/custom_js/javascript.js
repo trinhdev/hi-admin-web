@@ -42,7 +42,7 @@ function handleSubmit(e, form) {
             form.submit();
             let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
             $('form').find(':button').prop('disabled', true);
-            $( "#spinner" ).addClass( "show" );
+            $("#spinner").addClass("show");
         }
     });
 }
@@ -65,15 +65,45 @@ function dialogConfirmWithAjax(sureCallbackFunction, data) {
     });
 }
 
-function callAPIHelper(url, param, method, callback,passingData = null) {
+function callAPIHelper(url, param, method, callback, passingData = null, isfile = false) {
     $.ajax({
         url: url,
         type: method,
         data: param,
+        processData: false, // tell jQuery not to process the data
         success: function (data) {
-            callback(data,passingData);
+            callback(data, passingData);
         },
         error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+        }
+    });
+}
+
+function uploadFile(file, callBack, passingData) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var formData = new FormData();
+    formData.append("file", file,file.name);
+    $.ajax({
+        type: 'POST',
+        url: '/bannermanage/uploadImage',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: (data) => {
+            callBack(data,passingData);
+        },
+        error: function (data) {
             var errorString = '';
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
@@ -99,6 +129,7 @@ function showError(error = null) {
         html: (error == null) ? 'Error!' : error
     });
 }
+
 function getDataInForm(form) {
     var formData = new FormData(form);
     var data = {};
