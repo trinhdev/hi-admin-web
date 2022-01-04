@@ -899,7 +899,6 @@ function initCheckUserInfo(){
 };
 
 function initSmsWorld(){
-    console.log(data);
     var columnData = [
         {
             data:'STT',
