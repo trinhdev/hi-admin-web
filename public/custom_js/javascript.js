@@ -78,7 +78,6 @@ function callAPIHelper(url, param, method, callback, passingData = null, isfile 
         url: url,
         type: method,
         data: param,
-        processData: false, // tell jQuery not to process the data
         success: function (data) {
             callback(data, passingData);
         },
