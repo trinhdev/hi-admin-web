@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-12">
-                    <form action=" {{ route('smsworld.logs')}}" method="GET" autocomplete="off">
+                    <form action=" {{ route('smsworld.logs')}}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">INPUT</h3>

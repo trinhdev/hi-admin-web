@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-6">
-                    <form action=" {{ route('checkuserinfo.index')}}" method="GET" autocomplete="off">
+                    <form action=" {{ route('checkuserinfo.index')}}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">Check User Information</h3>

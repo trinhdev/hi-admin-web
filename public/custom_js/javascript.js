@@ -25,25 +25,32 @@ function reloadPjax() {
 
 }
 
-function handleSubmit(e, form) {
+function handleSubmit(e, form, withPopup = true) {
     e.preventDefault();
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "Please Confirm This Action",
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonColor: '#d33',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, Confirmed!',
-        reverseButtons: true
+    if(withPopup){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Please Confirm This Action",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, Confirmed!',
+            reverseButtons: true
+    
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+                let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+                $('form').find(':button').prop('disabled', true);
+            }
+        });
+    }else{
+        form.submit();
+        let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+        $('form').find(':button').prop('disabled', true);
+    }
 
-    }).then((result) => {
-        if (result.isConfirmed) {
-            form.submit();
-            let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
-            $('form').find(':button').prop('disabled', true);
-        }
-    });
 }
 
 function dialogConfirmWithAjax(sureCallbackFunction, data) {
