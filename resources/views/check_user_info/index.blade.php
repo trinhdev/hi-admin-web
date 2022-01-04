@@ -27,10 +27,8 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-md-center">
-                <div class="col-sm-12">
-                    {{-- <form action=" {{ route('closehelprequest.getListReportByContract')}}" method="POST" autocomplete="off"> --}}
-                    <form>
-                        @csrf
+                <div class="col-sm-6">
+                    <form action=" {{ route('checkuserinfo.index')}}" method="GET" autocomplete="off">
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">Check User Information</h3>
@@ -39,45 +37,57 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="input">Input</label>
-                                        <input type="text" id="input" name="input" class="form-control" placeholder="Please enter Contract Number or Phone Number">
+                                        <input type="text" id="input" name="input" class="form-control" value="{{ request()->input('input', old('input')) }}" placeholder="Please enter Contract Number or Phone Number">
                                     </div>
-                                    <div class="form-group" hidden>
-                                        <input type="text" placeholder="hiddeninput">
-                                    </div>
-                                    {{-- <div class="form-group">
-                                        <label >Type Input</label>
-                                        <div class="icheck-carrot">
-                                                <input type="radio" id="type_phone" name="platform" value="phone" />
-                                                <label for="type_phone">Phone</label>
-                                        </div>
-                                        <div class="icheck-carrot">
-                                                <input type="radio" id="type_contract" name="platform" value="contract" />
-                                                <label for="type_contract">Contract</label>
-                                        </div>
-                                    </div> --}}
                                 </div>
                             </div>
 
                             <div class="card-footer" style="text-align: center">
-                                <button type="button" class="btn btn-info" onclick="checkUserInfo(this)">Check User Info</button>
+                                <button type="submit" class="btn btn-info">Check User Info</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
+        {{-- <div class="col-md-12">
             <div class="mb-5" id="showList">
+            
+            </div>
+        </div> --}}
+         <div class="row" style="margin-top: 20px">
+            <div class="card card-body col-sm-12">
+                <table id="checkuserinfo_table" class="display nowrap" style="width:100%">
+                </table>
             </div>
         </div>
     </section>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+{{-- modal --}}
+<div id="showUserInfo_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span></button>
+            </div>
+            <div class="modal-body" id="showUserInfo_Modal_body">
+            </div>
+        </div>
+    </div>
+</div>
 <style>
     select {
         font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
     }
 
 </style>
+<script>
+
+    var data = <?php echo !empty($data) ? json_encode($data) : 'null'; ?>;
+</script>
 @endsection

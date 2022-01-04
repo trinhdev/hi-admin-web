@@ -16,14 +16,20 @@ class CheckUserInfoController extends MY_Controller
         parent::__construct();
     }
 
-    public function index(){
-        return view('check_user_info.index');
+    public function index(Request $request){
+
+        if(empty($request->input)){
+            return view('check_user_info.index');
+        };
+
+        $resultData = $this->checkUserInfo($request);
+        if(isset($resultData->error)){
+            return redirect()->route('checkuserinfo.index')->withErrors($resultData->error);
+        }
+        return view('check_user_info.index')->with(['data'=>$resultData->data]);
     }
     public function checkUserInfo(Request $request)
     {
-        $request->validate([
-            'input' => 'required',
-        ]);
         $this->addToLog($request);
         $input = $this->validateInput($request->input);
         if ($this->checkInPutIsPhone($input)) {
@@ -45,22 +51,22 @@ class CheckUserInfoController extends MY_Controller
     }
     private function checkUserInfoByContract($contractNo)
     {
-        $result = [];
+        $result = (object)[];
         $contractService = new ContractService();
         $contract_info_response = $contractService->getContractInfo($contractNo); // call api get contract info
         if (empty($contract_info_response->data)) {
-            $result['error'] = "Thất Bại!!";
+            $result->error = "Thất Bại!!";
         } else {
             $result = $contract_info_response;
         }
         return $result;
     }
     private function checkUserInfoByPhone($phoneNumber){
-        $result = [];
+        $result = (object)[];
         $contractService = new ContractService();
         $contract_info_response = $contractService->getListcontractByPhone($phoneNumber); // call api get contract info
         if (empty($contract_info_response->data)) {
-            $result['error'] = "Thất Bại!!";
+            $result->error = "Thất Bại!!";
         } else {
             $result = $contract_info_response;
         }
