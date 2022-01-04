@@ -65,7 +65,6 @@ class MY_Controller extends Controller
     protected $action_name;
     public function __construct()
     {
-        dd(phpinfo());
         $this->beforeExecuteRoute();
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
