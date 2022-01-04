@@ -234,6 +234,7 @@ class BannerManageController extends MY_Controller
             'imageFileName'=>  $file->getClientOriginalName(),
             'encodedImage' =>   base64_encode(file_get_contents($file))
         ];
+        dd($file);
         $newsEventService = new NewsEventService();
         $uploadImage_response = $newsEventService->uploadImage($param['imageFileName'], $param['encodedImage']);
         return $uploadImage_response;

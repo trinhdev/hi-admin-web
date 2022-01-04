@@ -103,9 +103,9 @@ function uploadFile(file, callBack, passingData) {
         success: (data) => {
             callBack(data,passingData);
         },
-        error: function (data) {
+        error: function (xhr) {
             var errorString = '';
-            $.each(data.responseJSON.errors, function (key, value) {
+            $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
             });
