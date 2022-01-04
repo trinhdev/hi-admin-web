@@ -6,7 +6,13 @@
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-
+        {{-- snining --}}
+        <div id="spinner">
+            <div class="loader">
+                <img style="width: 100px" src="/images/Ellipsis-1.3s-200px.svg" alt="loading">
+            </div>
+        </div>
+        {{-- snining --}}
         <!-- Preloader -->
         {{--<div class="preloader flex-column justify-content-center align-items-center">--}}
         {{--<img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">--}}
