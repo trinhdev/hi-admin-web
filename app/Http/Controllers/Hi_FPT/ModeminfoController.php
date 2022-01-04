@@ -26,7 +26,7 @@ class ModeminfoController extends MY_Controller {
     public function getContractIdByContractNo($contractNo) {
         $contractInfo = json_decode(json_encode(ModemService::getContractByContractNo($contractNo)), true);
         $contractId = 0;
-        if(isset($contractInfo['code']) && $contractInfo['code'] == 0) {
+        if(isset($contractInfo['code']) && $contractInfo['code'] == 0 && !empty($contractInfo['data'][0]['Id'])) {
             $contractId = intval($contractInfo['data'][0]['Id']);
         }
         return $contractId;

@@ -123,7 +123,7 @@ Route::group([
             });
             Route::prefix('modeminfo')->group(function () {
                 Route::get('/','ModeminfoController@index')->name('modeminfo.index');
-                Route::post('/searchByContractNoOrId','ModeminfoController@searchByContractNoOrId')->name('modeminfo.searchByContractNoOrId');
+                Route::get('/searchByContractNoOrId','ModeminfoController@searchByContractNoOrId')->name('modeminfo.searchByContractNoOrId');
                 Route::get('/initDatatable','ModeminfoController@initDatatable')->name('modeminfo.initDatatable');
             });
 

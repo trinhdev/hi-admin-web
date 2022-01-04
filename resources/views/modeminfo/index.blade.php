@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0" style="font-weight: bold">{{ (!empty($data['ModemInfo']['ModelModem'])) ? $data['ModemInfo']['ModelModem'] : 'N/A' }}</h1><span class="badge bg-primary" style="padding: 0.4em 0.4em; font-size: 13px">{{ (!empty($data['ModemInfo']['IpAdress'])) ? $data['ModemInfo']['IpAdress'] : '' }}</span>
+                        <h1 class="m-0" style="font-weight: bold">{{ (!empty($data['ModemInfo']['ModelModem'])) ? $data['ModemInfo']['ModelModem'] : 'Không tìm thấy thông tin modem' }}</h1><span class="badge bg-primary" style="padding: 0.4em 0.4em; font-size: 13px">{{ (!empty($data['ModemInfo']['IpAdress'])) ? $data['ModemInfo']['IpAdress'] : '' }}</span>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -26,8 +26,8 @@
             <div class="container-fluid">
                 <div class="row" style="margin-bottom: 30px">
                     <div class="col-md-12">
-                        <form action="{{ route('modeminfo.searchByContractNoOrId') }}" onsubmit="handleSubmit(event,this)" onKeyPress="return checkSubmit(event)" method="POST">
-                            @csrf
+                        <form action="{{ route('modeminfo.searchByContractNoOrId') }}" onsubmit="handleSubmit(event,this)" onKeyPress="return checkSubmit(event)" method="GET">
+                            {{-- @csrf --}}
                             <div class="input-group">
                                 <input type="search" class="form-control" placeholder="Xin nhập số hợp đồng cần tra cứu tại đây" name="modemNo" id="modemNo">
                                 <div class="input-group-append">
