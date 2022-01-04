@@ -105,7 +105,7 @@ function uploadFile(file, callBack, passingData) {
         },
         error: function (data) {
             var errorString = '';
-            $.each(xhr.responseJSON.errors, function (key, value) {
+            $.each(data.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
             });
