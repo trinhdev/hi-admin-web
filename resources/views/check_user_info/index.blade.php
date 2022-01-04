@@ -87,7 +87,6 @@
 
 </style>
 <script>
-
-    var data = <?php echo !empty($data) ? json_encode($data) : 'null'; ?>;
+    var data = {!! !empty($data) ? json_encode($data) : 'null'; !!};
 </script>
 @endsection
