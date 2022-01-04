@@ -24,7 +24,8 @@ class CheckUserInfoController extends MY_Controller
 
         $resultData = $this->checkUserInfo($request);
         if(isset($resultData->error)){
-            return redirect()->route('checkuserinfo.index')->withErrors($resultData->error);
+            // return redirect()->route('checkuserinfo.index')->withErrors($resultData->error);
+            return view('check_user_info.index');
         }
         return view('check_user_info.index')->with(['data'=>$resultData->data]);
     }
