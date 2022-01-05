@@ -681,8 +681,10 @@ function initBannerManage(response){
     var dataTable = [];
     var flagAcl = false;
     var toDay = new Date();
+    var stt = 1;
     response.data.forEach(element => {
         let subData = {
+            stt : stt++,
             bannerId : '',
             bannerType : '',
             public_date_start : '',
@@ -731,6 +733,11 @@ function initBannerManage(response){
     // console.log(dataTable);
     var columnData =  [
         {
+            data:'stt',
+            title:'No.',
+            className:'text-center'
+        },
+        {
             data :"bannerId",
             title: "Banner Id",
             className: "text-center",
@@ -771,10 +778,15 @@ function initBannerManage(response){
             title: 'Public Date End'
         },
         {
+            data:'is_banner_expired',
+            title: 'Is Banner Expired'
+        },
+        {
             data:'ordering',
             title: 'Ordering',
             "render": function(data, type, row) {
-                return `<input type="number" onchange="updateOrdering(this)" value="`+data+`"/>`;
+                let disable = row.is_banner_expired ? 'disabled' : '';
+                return `<input type="number" onchange="updateOrdering(this)" value="`+data+`" `+ disable +`/>`;
             },
             "sortable": false
         },
@@ -847,7 +859,7 @@ function initBannerManage(response){
         "order": [[ 9, "desc" ]],
         columnDefs: [
             { width: '5%', targets: 0 }, // 1 bannerId
-            { width: '10%', targets: 1 }, // 2 Title
+            { width: '15%', targets: 1 }, // 2 Title
             { width: '15%', targets: 2 }, // 3 Image
             { width: '1%', targets: 3 }, // 4 direction URL
             { width: '10%', targets: 4 }, // 5 Banner Type,
@@ -861,7 +873,7 @@ function initBannerManage(response){
         ],
         "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
             if(data.is_banner_expired){
-                $('td', row).css('background-color', 'rgb(255 108 94)');
+                $('td', row).css('background-color', 'rgb(255 108 94 / 51%)');
             }
         }
     });
