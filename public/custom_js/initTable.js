@@ -783,7 +783,12 @@ function initBannerManage(response){
         },
         {
             data:'is_banner_expired',
-            title: 'Is Banner Expired',
+            title: 'Status',
+            render: function(data, type, row){
+                let is_show = (data) ? 'Hide' : 'Show';
+                let badge = (data) ? 'badge badge-danger' : 'badge badge-success';
+                return `<h4 class="`+badge+`">`+is_show+`</h4>`;
+            },
             className: 'text-center'
         },
         {
@@ -878,11 +883,11 @@ function initBannerManage(response){
             { width: '10%', targets: 12 }, // 11 create by
             { width: '3%', targets: 13 }, // 12 action
         ],
-        "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
-            if(data.is_banner_expired){
-                $('td', row).css('background-color', 'rgb(255 108 94 / 51%)');
-            }
-        }
+        // "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
+        //     if(data.is_banner_expired){
+        //         $('td', row).css('background-color', 'rgb(255 108 94 / 51%)');
+        //     }
+        // }
     });
 }
 function initCheckUserInfo(){
