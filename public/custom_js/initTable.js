@@ -861,21 +861,22 @@ function initBannerManage(response){
         "language": {
             "emptyTable": "No Record..."
         },
-        "order": [[ 9, "desc" ]],
+        "order": [[ 11, "desc" ]],
         columnDefs: [
-            { width: '5%', targets: 0 }, // 1 bannerId
-            { width: '15%', targets: 1 }, // 2 Title
-            { width: '15%', targets: 2 }, // 3 Image
-            { width: '1%', targets: 3 }, // 4 direction URL
-            { width: '10%', targets: 4 }, // 5 Banner Type,
-            { width: '10%', targets: 5 }, // 6 public date start
-            { width: '10%', targets: 6 }, // 7 public date end
-            { width: '5%', targets: 7 },
-            { width: '5%', targets: 8 }, // 8 ordering
-            { width: '5%', targets: 9 }, // 9 view count
-            { width: '10%', targets: 10 }, // 10 create at
-            { width: '10%', targets: 11 }, // 11 create by
-            { width: '5%', targets: 12 }, // 12 action
+            { width: '3%', targets: 0 }, //stt
+            { width: '3%', targets: 1 }, // 1 bannerId
+            { width: '15%', targets: 2 }, // 2 Title
+            { width: '15%', targets: 3 }, // 3 Image
+            { width: '10%', targets: 4 }, // 4 direction URL
+            { width: '5%', targets: 5 }, // 5 Banner Type,
+            { width: '10%', targets: 6 }, // 6 public date start
+            { width: '10%', targets: 7 }, // 7 public date end
+            { width: '3%', targets: 8 }, // is expired
+            { width: '3%', targets: 9 }, // 8 ordering
+            { width: '3%', targets: 10 }, // 9 view count
+            { width: '10%', targets: 11 }, // 10 create at
+            { width: '10%', targets: 12 }, // 11 create by
+            { width: '3%', targets: 13 }, // 12 action
         ],
         "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
             if(data.is_banner_expired){
