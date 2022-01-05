@@ -680,6 +680,7 @@ function initHidePaymentLogs() {
 function initBannerManage(response){
     var dataTable = [];
     var flagAcl = false;
+    var toDay = new Date();
     response.data.forEach(element => {
         let subData = {
             bannerId : '',
@@ -696,7 +697,8 @@ function initBannerManage(response){
             view_count : 0,
             date_created : '',
             date_created : '',
-            created_by : ''
+            created_by : '',
+            is_banner_expired : false
         };
         if(element.banner_id != undefined){
             subData.bannerId = element.banner_id;
@@ -707,7 +709,9 @@ function initBannerManage(response){
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
             subData.date_created = element.date_created;
+            subData.is_banner_expired = element.is_selected ? false : true;
         }else{
+            let public_date_end = new Date(element.public_date_end);
             subData.bannerId = element.event_id;
             subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
             subData.bannerType = element.event_type != undefined ? element.event_type : '';
@@ -716,6 +720,7 @@ function initBannerManage(response){
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.event_url != undefined ? element.event_url : '';
             subData.date_created = element.date_created;
+            subData.is_banner_expired = (public_date_end < toDay) ? true : false;
 
             subData.created_by = element.created_by != undefined ? element.created_by : '';
             subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '';
@@ -787,6 +792,7 @@ function initBannerManage(response){
             title: 'Created By'
         }
     ];
+
     if(response.isAdmin === true){
         flagAcl = true;
     }else{
@@ -852,7 +858,12 @@ function initBannerManage(response){
             { width: '10%', targets: 9 }, // 10 create at
             { width: '10%', targets: 10 }, // 11 create by
             { width: '5%', targets: 11 }, // 12 action
-         ]
+        ],
+        "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
+            if(data.is_banner_expired){
+                $('td', row).css('background-color', 'rgb(255 108 94)');
+            }
+        }
     });
 }
 function initCheckUserInfo(){
