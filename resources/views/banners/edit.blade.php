@@ -133,7 +133,7 @@
                                                     <option selected value>None</option>
                                                     @if(!empty($list_target_route))
                                                     @foreach($list_target_route as $target)
-                                                    <option value='{{$target->id}}' {{ ( !empty($banner) && ($banner->direction_id === $target->key) ) ? 'selected' : ''}}>{{$target->name}}</option>
+                                                    <option value='{{$target->id}}' {{ ( $banner->direction_id == $target->id ) ? 'selected' : ''}}>{{$target->name}}</option>
                                                     @endforeach
                                                     @endif
                                                 </select>

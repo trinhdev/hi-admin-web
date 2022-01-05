@@ -63,7 +63,7 @@ class BannerManageController extends MY_Controller
             $bannerObj->bannerType = $dataResponse->custom_data;
             $bannerObj->image = $dataResponse->image_url;
             $bannerObj->view_count = $dataResponse->view_count;
-            $bannerObj->direction_id = $dataResponse->action_type;
+            $bannerObj->direction_id = $dataResponse->direction_id;
             $bannerObj->direction_url = $dataResponse->direction_url;
             $bannerObj->date_created = $dataResponse->date_created;
             
@@ -74,7 +74,7 @@ class BannerManageController extends MY_Controller
             $bannerObj->image = !empty($dataResponse->image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->image : null;
             $bannerObj->view_count = $dataResponse->view_count;
             // $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
-            $bannerObj->direction_id = $dataResponse->target;
+            $bannerObj->direction_id = $dataResponse->direction_id;
             $bannerObj->direction_url = $dataResponse->event_url;
             $bannerObj->date_created = $dataResponse->date_created;
 
@@ -85,7 +85,6 @@ class BannerManageController extends MY_Controller
             $bannerObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
             $bannerObj->is_highlight = (boolean) $dataResponse->is_highlight;
         }
-        // dd($bannerObj);
         return view('banners.edit')->with(['list_target_route'=>$listTargetRoute, 'list_type_banner' => $listTypeBanner, 'banner'=>$bannerObj]);
     }
 
