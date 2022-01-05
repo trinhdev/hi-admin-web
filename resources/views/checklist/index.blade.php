@@ -26,21 +26,18 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <!--Accordion wrapper-->
                     <div class="accordion md-accordion accordion-blocks" id="accordionEx78" role="tablist" aria-multiselectable="true">
 
                         <!-- Accordion card -->
-                        <div class="card card-info">
+                        <div class="card card-info" id="sendStaff">
 
                             <!-- Card header -->
                             <div class="card-header" role="tab">
                                 <!-- Heading -->
-                                <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapseUnfiled" aria-expanded="true" aria-controls="collapseUnfiled">
-                                    <h5 class="mt-1 mb-0">
-                                        <span>Send Staff</span>
-                                        <i class="fas fa-angle-down rotate-icon"></i>
-                                    </h5>
+                                <a data-toggle="collapse" data-parent="#accordionEx78" href="#collapseUnfiled" aria-expanded="true" aria-controls="collapseUnfiled" class="btn btn-header-link collapsed">
+                                    Send Staff
                                 </a>
                             </div>
                             <!-- Card body -->
@@ -61,18 +58,14 @@
                         <!-- Accordion card -->
 
                         <!-- Accordion card -->
-                        <div class="card card-info">
+                        <div class="card card-info" id="completeCheckList">
 
                             <!-- Card header -->
                             <div class="card-header" role="tab">
                                 <!-- Heading -->
-                                <a data-toggle="collapse" data-parent="#accordionEx78" href="#completeChecklist" aria-expanded="true" aria-controls="collapseUnfiled">
-                                    <h5 class="mt-1 mb-0">
-                                        <span>Complete</span>
-                                        <i class="fas fa-angle-down rotate-icon"></i>
-                                    </h5>
+                                <a data-toggle="collapse" data-parent="#accordionEx78" href="#completeChecklist" aria-expanded="true" aria-controls="collapseUnfiled" class="btn btn-header-link collapsed">
+                                   Complete
                                 </a>
-
                             </div>
 
                             <!-- Card body -->
@@ -95,26 +88,10 @@
                     <!--/.Accordion wrapper-->
                 </div>
             </div>
-            <h4 class="text-muted text-center">List Id</h4>
-            <div class="row justify-content-center">
-                <div class="col-md-10">
-                    <ul class="list-group">
-                    @php
-                        $checklistLength = count($list_checklist_id);
-                    @endphp
-                        @foreach(array_reverse($list_checklist_id) as $key=>$checklist)
-                        <li class="list-group-item d-flex justify-content-around align-items-center">
-                        <div class="badge badge-primary">No. {{$checklistLength--}}</div>
-                            {{'ID: '. $checklist->ID.' - Hợp đồng: '.$checklist->HD}}
-                            <form  action=" {{ route('checklistmanage.completeChecklist')}}" method="POST" onsubmit="handleSubmit(event,this)">
-                            @csrf
-                                <input type="text" class="form-control" name="checkListId" hidden value="{{$checklist->ID}}">
-                                <button class="btn btn-sm btn-outline-success"><i class="fa fa-check" aria-hidden="true"></i></button>
-                            </form>
-                        </li>
-                        @endforeach
-
-                    </ul>
+            <div class="row" style="margin-top: 20px">
+                <div class="card card-body col-sm-12">
+                    <table id="checklistManage_table" class="display nowrap" style="width:100%">
+                    </table>
                 </div>
             </div>
         </div>
@@ -126,8 +103,12 @@
     select {
         font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
     }
-
 </style>
+<script>
+    var listCheckList = {!! !empty($list_checklist_id) ? json_encode($list_checklist_id) : 'null'; !!};
+    var route_checklistmanage = '{{ route('checklistmanage.completeChecklist')}}';
+    var crsf = '{{ csrf_token()}}';
+</script>
 @else
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->

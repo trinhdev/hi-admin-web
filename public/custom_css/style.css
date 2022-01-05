@@ -42,14 +42,46 @@
   transform: rotate(180deg);
 }
 /**/
-#showLogs .card-header:not(.collapsed) .rotate-icon {
-  transform: rotate(180deg);
+/* #sendStaff .card-header:not(.collapsed) {
+  background: red;
 }
-#showLogs .card-header .accicon {
+#sendStaff .card-header .accicon {
   float: right;
   font-size: 20px;  
   width: 1.2em;
+} */
+#sendStaff .card-header .btn-header-link {
+  display: block;
+  text-align: left;
 }
+
+#sendStaff .card-header .btn-header-link:after {
+  content: "\f107";
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  float: right;
+}
+
+#sendStaff .card-header .btn-header-link.collapsed:after {
+  content: "\f106";
+}
+
+#completeCheckList .card-header .btn-header-link {
+  display: block;
+  text-align: left;
+}
+
+#completeCheckList .card-header .btn-header-link:after {
+  content: "\f107";
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  float: right;
+}
+
+#completeCheckList .card-header .btn-header-link.collapsed:after {
+  content: "\f106";
+}
+
 /**/
 .icheck-carrot>input:first-child:not(:checked):not(:disabled):hover+input[type=hidden]+label::before, .icheck-carrot>input:first-child:not(:checked):not(:disabled):hover+label::before {
   border-color: #007bff;

@@ -27,7 +27,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-md-center">
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <form action=" {{ route('smsworld.logs')}}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
                         <div class="card card-info">
                             <div class="card-header">
@@ -37,11 +37,7 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="form-row">
-                                            <div class="form-group col-sm-2">
-                                                <label for="country_code">Country Code</label>
-                                                <input type="number" class="form-control" name="country_code" id="country_code" placeholder="Country Code" value="{{ request()->input('country_code', old('country_code')) }}" required>
-                                            </div>
-                                            <div class="form-group col-sm-4">
+                                            <div class="form-group col-sm-6">
                                                 <label for="phone">Phone</label>
                                                 <input type="number" class="form-control" name="phone" placeholder="Phone Number " value="{{ request()->input('phone', old('phone')) }}" required>
                                             </div>

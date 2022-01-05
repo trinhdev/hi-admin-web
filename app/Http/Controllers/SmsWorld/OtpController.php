@@ -18,7 +18,6 @@ class OtpController extends MY_Controller
     }
     public function logs(Request $request){
         $rules  = [
-            'country_code' =>'required',
             'phone' => 'required',
             'date' => 'required'
         ];
@@ -35,8 +34,13 @@ class OtpController extends MY_Controller
         }
         return view('smsworld.logs')->with(['data'=>$resultData]);
     }
+    private function convertPhone($phone){
+        if($phone[0] === '0'){
+            $phone = preg_replace('/' . '0' . '/', '84', $phone, 1);
+        }
+        return $phone;
+    }
     public function getLog($params){
-
         $result = [];
         $userName = 'hifpt';
         $passWord = 'a1a3ccf8678d7524129470a0ec47eb5a';
@@ -50,7 +54,7 @@ class OtpController extends MY_Controller
                 $result['error'] = 'Authorization has been denied for this request.';
             }else{
                 $smsWorldService = new SmsWorldService;
-                $params['PhoneNumber'] = $params['country_code'].$params['phone'];
+                $params['PhoneNumber'] = $this->convertPhone($params['phone']);
                 $timestamp = strtotime($params['date']);
                 $params['Month'] = date('m',$timestamp);
                 $params['Year']  = date('Y',$timestamp);

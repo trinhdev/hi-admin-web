@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     initSelect();
     settings_on_search();
@@ -41,6 +42,9 @@ $(document).ready(function () {
                 break;
             case 'smsworld':
                 initSmsWorld();
+                break;
+            case 'checklistmanage':
+                initCheckListManage();
                 break;
             case '':
             case 'home':
@@ -779,7 +783,8 @@ function initBannerManage(response){
         },
         {
             data:'is_banner_expired',
-            title: 'Is Banner Expired'
+            title: 'Is Banner Expired',
+            className: 'text-center'
         },
         {
             data:'ordering',
@@ -865,11 +870,12 @@ function initBannerManage(response){
             { width: '10%', targets: 4 }, // 5 Banner Type,
             { width: '10%', targets: 5 }, // 6 public date start
             { width: '10%', targets: 6 }, // 7 public date end
-            { width: '5%', targets: 7 }, // 8 ordering
-            { width: '5%', targets: 8 }, // 9 view count
-            { width: '10%', targets: 9 }, // 10 create at
-            { width: '10%', targets: 10 }, // 11 create by
-            { width: '5%', targets: 11 }, // 12 action
+            { width: '5%', targets: 7 },
+            { width: '5%', targets: 8 }, // 8 ordering
+            { width: '5%', targets: 9 }, // 9 view count
+            { width: '10%', targets: 10 }, // 10 create at
+            { width: '10%', targets: 11 }, // 11 create by
+            { width: '5%', targets: 12 }, // 12 action
         ],
         "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
             if(data.is_banner_expired){
@@ -925,7 +931,7 @@ function initSmsWorld(){
     var columnData = [
         {
             data:'STT',
-            title:'STT'
+            title:'No.'
         },
         {
             data:'Date',
@@ -957,6 +963,51 @@ function initSmsWorld(){
        },
    });
 };
+
+function initCheckListManage(){
+    console.log(listCheckList);
+    var columnData = [
+        {
+            title:'No.',
+            render: function(data,type, row ,meta){
+                return meta.row + 1;
+            },
+            className: 'text-center'
+        },
+        {
+            data:'ID',
+            title:'ID'
+        },
+        {
+            data:'HD',
+            title:'Contract'
+        },
+        {
+            data:'action',
+            title:'Action',
+            render:function(data, type, row){
+                var html = `<form  action=`+route_checklistmanage+` method="POST" onsubmit="handleSubmit(event,this)">
+                    <input type="hidden" name="_token" value=`+crsf+` />
+                    <input type="text" class="form-control" name="checkListId" hidden value="`+row.ID+`">
+                    <button class="btn btn-sm btn-outline-success"><i class="fa fa-check" aria-hidden="true"></i></button>
+                </form>`;
+                return html;
+            }
+        }
+    ]
+    $('#checklistManage_table').dataTable({
+        data:listCheckList,
+       "processing": true,
+       "select": true,
+       responsive: true,
+       "bDestroy": true,
+       "scrollX": true,
+       "columns": columnData,
+       "language": {
+           "emptyTable": "No Record..."
+       },
+    });
+}
 function badgeArrayView(arrayInput) {
     var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];
     var count_badge = 0;
