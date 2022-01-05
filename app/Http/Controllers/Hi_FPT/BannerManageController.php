@@ -215,6 +215,7 @@ class BannerManageController extends MY_Controller
             $createParams['isHighlight'] = true;
         };
 
+        // dd($createParams);
         $create_banner_response = $newsEventService->addNewBanner($createParams);
         if(!empty($create_banner_response->data)){
             return redirect()->route('bannermanage.index')->withSuccess('Success!');
