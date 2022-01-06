@@ -95,7 +95,14 @@ function initModule() {
         "ajax": {
             url: "/modules/initDatatable"
         },
-        "columns": [{
+        "columns": [
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
                 data: 'id',
                 name: "id",
                 title: "Id"
@@ -172,7 +179,14 @@ function initGroupModule() {
         "ajax": {
             url: "/groupmodule/initDatatable"
         },
-        "columns": [{
+        "columns": [
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
                 data: 'id',
                 name: "id",
                 title: "Id"
@@ -234,7 +248,14 @@ function initUser() {
         "ajax": {
             url: "user/initDatatable"
         },
-        "columns": [{
+        "columns": [
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
                 data: "id",
                 name: "id",
                 title: "Id"
@@ -295,7 +316,14 @@ function initGroup() {
             url: base_url + '/groups/getList',
         },
         searchDelay: 500,
-        columns: [{
+        columns: [
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
                 data: 'id'
             },
             {
@@ -333,7 +361,14 @@ function initRoles() {
             url: base_url + '/roles/getList',
         },
         searchDelay: 500,
-        columns: [{
+        columns: [
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
                 data: 'id'
             },
             {
@@ -371,7 +406,14 @@ function initLogActivities() {
             url: base_url + '/logactivities/initDatatable',
         },
         searchDelay: 500,
-        columns: [{
+        columns: [
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
                 data: 'id',
             },
             {
@@ -441,7 +483,14 @@ function initManageOtp() {
         "ajax": {
             url: "/modules/initDatatable"
         },
-        "columns": [{
+        "columns": [
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
                 data: 'otp',
                 name: "otp",
                 title: "OTP"
@@ -518,7 +567,14 @@ function initSettings() {
         "columnDefs": [
             { "width": 20, "targets": 2 },
         ],
-        "columns": [{
+        "columns": [
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
                 data: 'id',
                 name: "id",
                 title: "Id"
@@ -532,7 +588,7 @@ function initSettings() {
                 data: "value",
                 name: "value",
                 title: "Value",
-                render: function(data, type, row) {
+                render: function (data, type, row) {
                     const htmlEntities = {
                         "&": "&amp;",
                         "<": "&lt;",
@@ -595,14 +651,21 @@ function initHidePaymentLogs() {
         "bDestroy": true,
         "scrollX": true,
         "pageLength": 5,
-        "lengthMenu": [ 5, 10, 25, 50, 75, 100 ],
+        "lengthMenu": [5, 10, 25, 50, 75, 100],
         orderMulti: true,
-        "order": [[ 6, "desc" ]],
+        "order": [[6, "desc"]],
         retrieve: true,
         "ajax": {
             url: "/hidepayment/initDatatable"
         },
-        "columns": [{
+        "columns": [
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
                 data: 'id',
                 name: "id",
                 title: "Id"
@@ -616,13 +679,13 @@ function initHidePaymentLogs() {
                 data: 'isUpStoreAndroid',
                 name: "isUpStoreAndroid",
                 title: "Platform",
-                render: function(data, type, row) {
+                render: function (data, type, row) {
                     var platform = '';
-                    if(row.isUpStoreAndroid) {
+                    if (row.isUpStoreAndroid) {
                         platform += `<span class="badge badge-primary" style="margin-right: 5px">Android</span>`;
                     }
 
-                    if(row.isUpStoreIos) {
+                    if (row.isUpStoreIos) {
                         platform += `<span class="badge badge-secondary" style="margin-right: 5px">IOS</span>`;
                     }
                     return platform;
@@ -632,22 +695,22 @@ function initHidePaymentLogs() {
                 data: "isUpStoreIos",
                 name: "isUpStoreIos",
                 title: "Action",
-                render: function(data, type, row) {
+                render: function (data, type, row) {
                     var action = '';
 
-                    if(row.isUpStoreAndroid == '1') {
+                    if (row.isUpStoreAndroid == '1') {
                         action += `<span class="badge badge-danger" style="margin-right: 5px">Hide Android</span>`;
                     }
 
-                    if(row.isUpStoreAndroid == '0') {
+                    if (row.isUpStoreAndroid == '0') {
                         action += `<span class="badge badge-success" style="margin-right: 5px">Show Android</span>`;
                     }
 
-                    if(row.isUpStoreIos == '1') {
+                    if (row.isUpStoreIos == '1') {
                         action += `<span class="badge badge-danger" style="margin-right: 5px">Hide IOS</span>`;
                     }
 
-                    if(row.isUpStoreIos == '0') {
+                    if (row.isUpStoreIos == '0') {
                         action += `<span class="badge badge-success" style="margin-right: 5px">Show IOS</span>`;
                     }
                     return action;
@@ -662,7 +725,7 @@ function initHidePaymentLogs() {
                 data: "error_mesg",
                 name: "error_mesg",
                 title: "Status",
-                render: function(data, type, row) {
+                render: function (data, type, row) {
                     return (data == 'Thành công') ? `<span class="badge bg-success">${data}</span>` : `<span class="badge bg-danger">${data}</span>`;
                 }
             },
@@ -684,7 +747,7 @@ function initHidePaymentLogs() {
         searchDelay: 500
     });
 }
-function initBannerManage(response){
+function initBannerManage(response) {
     console.log(response);
     var dataTable = [];
     var flagAcl = false;
@@ -692,25 +755,25 @@ function initBannerManage(response){
     var stt = 1;
     response.data.forEach(element => {
         let subData = {
-            bannerId : '',
-            bannerType : '',
-            public_date_start : '',
-            public_date_end : '',
-            title_vi : '',
-            title_en : '',
-            direction_id : '',
-            direction_url : '',
-            image : '',
-            thumb_image : '',
-            ordering : '-1',
-            view_count : 0,
-            date_created : '',
-            date_created : '',
-            created_by : '',
-            modified_by : '',
-            is_banner_expired : false
+            bannerId: '',
+            bannerType: '',
+            public_date_start: '',
+            public_date_end: '',
+            title_vi: '',
+            title_en: '',
+            direction_id: '',
+            direction_url: '',
+            image: '',
+            thumb_image: '',
+            ordering: '-1',
+            view_count: 0,
+            date_created: '',
+            date_created: '',
+            created_by: '',
+            modified_by: '',
+            is_banner_expired: false
         };
-        if(element.banner_id != undefined){
+        if (element.banner_id != undefined) {
             subData.bannerId = element.banner_id;
             subData.title_vi = element.banner_title != undefined ? element.banner_title : '';
             subData.bannerType = element.custom_data != undefined ? element.custom_data : '';
@@ -720,7 +783,7 @@ function initBannerManage(response){
             subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
             subData.date_created = element.date_created;
             subData.is_banner_expired = element.is_selected ? false : true;
-        }else{
+        } else {
             let public_date_end = new Date(element.public_date_end);
             subData.bannerId = element.event_id;
             subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
@@ -739,24 +802,24 @@ function initBannerManage(response){
         }
         dataTable.push(subData);
     });
-    var columnData =  [
+    var columnData = [
         {
-            title:'STT',
-            className:'text-center',
-            render: function(data,type, row ,meta){
-                return `<span class ="infoRow" data-type="`+row.bannerType+`" data-id = "`+row.bannerId+`">`+ parseInt(meta.row + 1)+`</span>`;
+            title: 'STT',
+            className: 'text-center',
+            render: function (data, type, row, meta) {
+                return `<span class ="infoRow" data-type="` + row.bannerType + `" data-id = "` + row.bannerId + `">` + parseInt(meta.row + 1) + `</span>`;
             },
             className: 'text-center'
         },
         {
-            data :'title_vi',
+            data: 'title_vi',
             title: "Tiêu Đề"
         },
         {
-            data :'image',
+            data: 'image',
             title: "Ảnh Banner",
-            "render": function(data, type, row) {
-                return `<img src="`+data+`"  style="width:150px" onerror="this.onerror=null;this.src='/images/img_404.svg';"  onclick ="window.open('`+data+`').focus()"/>`;
+            "render": function (data, type, row) {
+                return `<img src="` + data + `"  style="width:150px" onerror="this.onerror=null;this.src='/images/img_404.svg';"  onclick ="window.open('` + data + `').focus()"/>`;
             },
             "sortable": false,
             className: 'text-center'
@@ -769,40 +832,40 @@ function initBannerManage(response){
         //     }
         // },
         {
-            data:'bannerType',
+            data: 'bannerType',
             title: 'Loại Banner',
-            className:'text-center'
+            className: 'text-center'
         },
         {
-            data:'public_date_start',
+            data: 'public_date_start',
             title: 'Ngày Hiển Thị'
         },
         {
-            data:'public_date_end',
+            data: 'public_date_end',
             title: 'Ngày kết thúc'
         },
         {
-            data:'is_banner_expired',
+            data: 'is_banner_expired',
             title: 'Trạng Thái',
-            render: function(data, type, row){
+            render: function (data, type, row) {
                 let is_show = (data) ? 'Hide' : 'Show';
                 let badge = (data) ? 'badge badge-danger' : 'badge badge-success';
-                return `<h4 class="`+badge+`">`+is_show+`</h4>`;
+                return `<h4 class="` + badge + `">` + is_show + `</h4>`;
             },
             className: 'text-center'
         },
         {
-            data:'ordering',
+            data: 'ordering',
             title: 'Độ ưu tiên',
-            "render": function(data, type, row) {
+            "render": function (data, type, row) {
                 let disable = row.is_banner_expired ? 'disabled' : '';
-                return `<input type="number" onchange="updateOrdering(this)" style="width:80%" value="`+data+`" `+ disable +`/>`;
+                return `<input type="number" onchange="updateOrdering(this)" style="width:80%" value="` + data + `" ` + disable + `/>`;
             },
             "sortable": false,
-            className:'text-center'
+            className: 'text-center'
         },
         {
-            data:'view_count',
+            data: 'view_count',
             title: 'Số lượt view',
             className: 'text-center'
         },
@@ -816,41 +879,41 @@ function initBannerManage(response){
         },
         {
             data: 'modified_by',
-            title : 'Người cập nhật'
+            title: 'Người cập nhật'
         }
     ];
 
-    if(response.isAdmin === true){
+    if (response.isAdmin === true) {
         flagAcl = true;
-    }else{
+    } else {
         var aclCurrentModule = response.aclCurrentModule;
-        if(aclCurrentModule.update == 1){
+        if (aclCurrentModule.update == 1) {
             flagAcl = true;
         }
     }
-    if(flagAcl){
+    if (flagAcl) {
         columnData.push(
             {
                 title: 'Action',
-                render: function(data, type, row){
+                render: function (data, type, row) {
                     var bannerType = row.bannerType;
-                    if(bannerType == 'highlight'){
+                    if (bannerType == 'highlight') {
                         bannerType = 'bannerHome';
                     };
-                    var exists = 0 != $('#show_at option[value='+bannerType+']').length;
-                    if(exists === false)return "";
+                    var exists = 0 != $('#show_at option[value=' + bannerType + ']').length;
+                    if (exists === false) return "";
                     return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
                 },
                 className: 'text-center',
                 "sortable": false
             }
         );
-    }else{
+    } else {
         columnData.push(
             {
                 title: 'Action',
-                render: function(data, type, row){
-                    if(row.bannerType === 'event_normal')return "";
+                render: function (data, type, row) {
+                    if (row.bannerType === 'event_normal') return "";
                     return `<div></div>`;
                 },
                 className: 'text-center',
@@ -861,7 +924,7 @@ function initBannerManage(response){
     $('#banner_manage').DataTable({
         // "bAutoWidth": false,
         // "autoWidth":false,
-        data:dataTable,
+        data: dataTable,
         "processing": true,
         "select": true,
         responsive: true,
@@ -871,7 +934,7 @@ function initBannerManage(response){
         "language": {
             "emptyTable": "No Record..."
         },
-        "order": [[ 9, "desc" ]],
+        "order": [[9, "desc"]],
         columnDefs: [
             { width: '5%', targets: 0 }, //stt
             // { width: '10%', targets: 1 }, // 1 bannerId
@@ -894,111 +957,123 @@ function initBannerManage(response){
         // }
     });
 }
-function initCheckUserInfo(){
+function initCheckUserInfo() {
     var columnData = [
         {
-            data:'Id',
-            title:'ID'
+            title: 'No.',
+            render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+            },
         },
         {
-            data:'FullName',
-            title:'Full Name'
+            data: 'Id',
+            title: 'ID'
         },
         {
-            data:'Contract',
-            title:'Contract'
+            data: 'FullName',
+            title: 'Full Name'
         },
         {
-            data:'Phone',
-            title:'Phone'
+            data: 'Contract',
+            title: 'Contract'
         },
         {
-            title:'Action',
-            data:'Id',
-            render: function(data, type, row){
+            data: 'Phone',
+            title: 'Phone'
+        },
+        {
+            title: 'Action',
+            data: 'Id',
+            render: function (data, type, row) {
                 var tmp = JSON.stringify(row);
-                return `<div><button class="btn btn-sm fas fa-eye btn-icon bg-olive" onclick='viewUserInfo(`+tmp+`)'></button?</div>`;
+                return `<div><button class="btn btn-sm fas fa-eye btn-icon bg-olive" onclick='viewUserInfo(` + tmp + `)'></button?</div>`;
             },
             className: 'text-center',
             "sortable": false
         }
     ];
     $('#checkuserinfo_table').DataTable({
-       data:data,
-       "processing": true,
-       "select": true,
-       responsive: true,
-       "bDestroy": true,
-       "scrollX": true,
-       "columns": columnData,
-       "language": {
-           "emptyTable": "No Record..."
-       },
-   });
+        data: data,
+        "processing": true,
+        "select": true,
+        responsive: true,
+        "bDestroy": true,
+        "scrollX": true,
+        "columns": columnData,
+        "language": {
+            "emptyTable": "No Record..."
+        },
+    });
 };
 
-function initSmsWorld(){
+function initSmsWorld() {
     var columnData = [
         {
-            data:'STT',
-            title:'No.'
+            data: 'STT',
+            title: 'No.'
         },
         {
-            data:'Date',
-            title:'Date'
+            data: 'Date',
+            title: 'Date'
         },
         {
-            data:'Source',
-            title:'Source'
+            data: 'Source',
+            title: 'Source'
         },
         {
-            data:'Message',
-            title:'Message'
+            data: 'Message',
+            title: 'Message'
         },
         {
-            data:'PhoneNumber',
+            data: 'PhoneNumber',
             title: 'Phone Number'
         }
     ];
     $('#smsworld_table').DataTable({
-       data:data,
-       "processing": true,
-       "select": true,
-       responsive: true,
-       "bDestroy": true,
-       "scrollX": true,
-       "columns": columnData,
-       "language": {
-           "emptyTable": "No Record..."
-       },
-   });
+        data: data,
+        "processing": true,
+        "select": true,
+        responsive: true,
+        "bDestroy": true,
+        "scrollX": true,
+        "columns": columnData,
+        "language": {
+            "emptyTable": "No Record..."
+        },
+    });
 };
 
-function initCheckListManage(){
+function initCheckListManage() {
     console.log(listCheckList);
     var columnData = [
+        // {
+        //     title:'No.',
+        //     render: function(data,type, row ,meta){
+        //         return meta.row + 1;
+        //     },
+        //     className: 'text-center'
+        // },
         {
-            title:'No.',
-            render: function(data,type, row ,meta){
-                return meta.row + 1;
+            title: 'No.',
+            render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
             },
-            className: 'text-center'
         },
         {
-            data:'ID',
-            title:'ID'
+            data: 'ID',
+            title: 'ID'
         },
         {
-            data:'HD',
-            title:'Contract'
+            data: 'HD',
+            title: 'Contract'
         },
         {
-            data:'action',
-            title:'Action',
-            render:function(data, type, row){
-                var html = `<form  action=`+route_checklistmanage+` method="POST" onsubmit="handleSubmit(event,this)">
-                    <input type="hidden" name="_token" value=`+crsf+` />
-                    <input type="text" class="form-control" name="checkListId" hidden value="`+row.ID+`">
+            data: 'action',
+            title: 'Action',
+            render: function (data, type, row) {
+                var html = `<form  action=` + route_checklistmanage + ` method="POST" onsubmit="handleSubmit(event,this)">
+                    <input type="hidden" name="_token" value=`+ crsf + ` />
+                    <input type="text" class="form-control" name="checkListId" hidden value="`+ row.ID + `">
                     <button class="btn btn-sm btn-outline-success"><i class="fa fa-check" aria-hidden="true"></i></button>
                 </form>`;
                 return html;
@@ -1006,16 +1081,16 @@ function initCheckListManage(){
         }
     ]
     $('#checklistManage_table').dataTable({
-        data:listCheckList,
-       "processing": true,
-       "select": true,
-       responsive: true,
-       "bDestroy": true,
-       "scrollX": true,
-       "columns": columnData,
-       "language": {
-           "emptyTable": "No Record..."
-       },
+        data: listCheckList,
+        "processing": true,
+        "select": true,
+        responsive: true,
+        "bDestroy": true,
+        "scrollX": true,
+        "columns": columnData,
+        "language": {
+            "emptyTable": "No Record..."
+        },
     });
 }
 
@@ -1031,7 +1106,7 @@ function initIconmanagement() {
         "scrollX": true,
         "scrollCollapse": true,
         "pageLength": 5,
-        "lengthMenu": [ 5, 10, 25, 50, 75, 100 ],
+        "lengthMenu": [5, 10, 25, 50, 75, 100],
         "orderMulti": true,
         "retrieve": true,
         "serverSide": true,
@@ -1045,12 +1120,12 @@ function initIconmanagement() {
                 name: "no",
                 title: "STT",
                 className: 'text-center',
-            }, 
+            },
             {
                 data: 'icon_url',
                 name: "icon_url",
                 title: "Hình ảnh",
-                render: function(data, type, row) {
+                render: function (data, type, row) {
                     return `<img src="${data}" style="width:40px">`;
                 },
                 className: 'text-center',
@@ -1071,9 +1146,9 @@ function initIconmanagement() {
                 data: "status",
                 name: "status",
                 title: "Trạng thái",
-                render: function(data, type, row) {
+                render: function (data, type, row) {
                     var html = '';
-                    if(!row['status']) {
+                    if (!row['status']) {
                         html = `<div class="df-switch">
                                     <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off" disabled>
                                         <div class="inner-handle"></div>
@@ -1094,12 +1169,12 @@ function initIconmanagement() {
                 className: 'text-center',
             },
             {
-                title:'Action',
-                data:'Id',
-                render: function(data, type, row){
+                title: 'Action',
+                data: 'Id',
+                render: function (data, type, row) {
                     var tmp = JSON.stringify(row);
                     return `<div>
-                                <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onclick='viewUserInfo(`+tmp+`)' data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                                <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onclick='viewUserInfo(`+ tmp + `)' data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                                 <a style="float: left; margin-right: 5px" href="#" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
                                 <button style="float: left; type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
                             </div>`;
@@ -1125,7 +1200,7 @@ function badgeArrayView(arrayInput) {
     var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];
     var count_badge = 0;
     var template = ``;
-    $.map( arrayInput, function( n, i ) {
+    $.map(arrayInput, function (n, i) {
         if (count_badge == badge.length) {
             count_badge = 0;
         }
@@ -1136,7 +1211,7 @@ function badgeArrayView(arrayInput) {
 }
 
 function settings_on_search() {
-    $('form .bs-searchbox input').keyup(function(e) {
+    $('form .bs-searchbox input').keyup(function (e) {
         if (e.which == 13) {
             var search = $(".bs-searchbox input").val();
             $("#value").append($('<option>', {
