@@ -35,7 +35,7 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Please input phone number" value="{{ (!empty(Session::get('phone'))) ? Session::get('phone') : '' }}" >
+                                            <input type="text" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Please input phone number" value="{{ request()->input('input', old('input')) }}" >
                                             @error('phone')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
