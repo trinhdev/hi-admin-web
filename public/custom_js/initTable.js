@@ -303,7 +303,7 @@ function initUser() {
 function initGroup() {
     $('#groupTable').DataTable({
         "order": [
-            [0, "desc"]
+            [1, "desc"]
         ],
         responsive: true,
         searchDelay: 500,
@@ -348,7 +348,7 @@ function initGroup() {
 function initRoles() {
     $('#rolesTable').DataTable({
         "order": [
-            [0, "desc"]
+            [1, "desc"]
         ],
         responsive: true,
         searchDelay: 500,
@@ -393,7 +393,7 @@ function initRoles() {
 function initLogActivities() {
     $('#logTable').DataTable({
         "order": [
-            [0, "desc"]
+            [1, "desc"]
         ],
         responsive: true,
         searchDelay: 500,
@@ -653,7 +653,7 @@ function initHidePaymentLogs() {
         "pageLength": 5,
         "lengthMenu": [5, 10, 25, 50, 75, 100],
         orderMulti: true,
-        "order": [[6, "desc"]],
+        "order": [[7, "desc"]],
         retrieve: true,
         "ajax": {
             url: "/hidepayment/initDatatable"
