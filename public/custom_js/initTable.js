@@ -95,64 +95,57 @@ function initModule() {
         "ajax": {
             url: "/modules/initDatatable"
         },
-        "columns": [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
-            {
-                data: 'id',
-                name: "id",
-                title: "Id"
-            },
-            {
-                data: 'module_name',
-                name: "module_name",
-                title: "Module Name"
-            },
-            {
-                data: "uri",
-                name: "uri",
-                title: "Uri"
-            },
-            {
-                data: "group_module_id",
-                name: "group_module_id",
-                title: "Group Module"
-            },
-            {
-                data: "status",
-                name: "status",
-                title: "Status"
-            },
-            {
-                data: "created_at",
-                name: "created_at",
-                title: "Created at"
-            },
-            {
-                data: "created_by",
-                name: "created_by",
-                title: "Created By"
-            },
-            {
-                data: "updated_at",
-                name: "updated_at",
-                title: "Updated at"
-            },
-            {
-                data: "updated_by",
-                name: "updated_by",
-                title: "Updated By"
-            },
-            {
-                data: "action",
-                name: "action",
-                title: "Action",
-                sortable: false
-            }
+        "columns": [{
+            data: 'id',
+            name: "id",
+            title: "Id"
+        },
+        {
+            data: 'module_name',
+            name: "module_name",
+            title: "Module Name"
+        },
+        {
+            data: "uri",
+            name: "uri",
+            title: "Uri"
+        },
+        {
+            data: "group_module_id",
+            name: "group_module_id",
+            title: "Group Module"
+        },
+        {
+            data: "status",
+            name: "status",
+            title: "Status"
+        },
+        {
+            data: "created_at",
+            name: "created_at",
+            title: "Created at"
+        },
+        {
+            data: "created_by",
+            name: "created_by",
+            title: "Created By"
+        },
+        {
+            data: "updated_at",
+            name: "updated_at",
+            title: "Updated at"
+        },
+        {
+            data: "updated_by",
+            name: "updated_by",
+            title: "Updated By"
+        },
+        {
+            data: "action",
+            name: "action",
+            title: "Action",
+            sortable: false
+        }
         ],
         "language": {
             "emptyTable": "No Record..."
@@ -179,48 +172,41 @@ function initGroupModule() {
         "ajax": {
             url: "/groupmodule/initDatatable"
         },
-        "columns": [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
-            {
-                data: 'id',
-                name: "id",
-                title: "Id"
-            },
-            {
-                data: 'group_module_name',
-                name: "group_module_name",
-                title: "Group Module Name"
-            },
-            {
-                data: "created_at",
-                name: "created_at",
-                title: "Created at"
-            },
-            {
-                data: "created_by",
-                name: "created_by",
-                title: "Created by"
-            },
-            {
-                data: "updated_at",
-                name: "updated_at",
-                title: "Updated at"
-            },
-            {
-                data: "updated_by",
-                name: "updated_by",
-                title: "Updated by"
-            },
-            {
-                data: "action",
-                name: "action",
-                title: "Action"
-            }
+        "columns": [{
+            data: 'id',
+            name: "id",
+            title: "Id"
+        },
+        {
+            data: 'group_module_name',
+            name: "group_module_name",
+            title: "Group Module Name"
+        },
+        {
+            data: "created_at",
+            name: "created_at",
+            title: "Created at"
+        },
+        {
+            data: "created_by",
+            name: "created_by",
+            title: "Created by"
+        },
+        {
+            data: "updated_at",
+            name: "updated_at",
+            title: "Updated at"
+        },
+        {
+            data: "updated_by",
+            name: "updated_by",
+            title: "Updated by"
+        },
+        {
+            data: "action",
+            name: "action",
+            title: "Action"
+        }
         ],
         "language": {
             "emptyTable": "No Record..."
@@ -248,44 +234,37 @@ function initUser() {
         "ajax": {
             url: "user/initDatatable"
         },
-        "columns": [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
-            {
-                data: "id",
-                name: "id",
-                title: "Id"
-            },
-            {
-                data: "name",
-                name: "name",
-                title: "Name"
-            },
-            {
-                data: "email",
-                name: "email",
-                title: "Email"
-            },
-            {
-                data: "role_id",
-                name: "role_id",
-                title: "Role"
-            },
-            {
-                data: "created_at",
-                name: "created_at",
-                title: "Created at"
-            },
-            {
-                data: "action",
-                name: "action",
-                title: "Action",
-                sortable: false
-            }
+        "columns": [{
+            data: "id",
+            name: "id",
+            title: "Id"
+        },
+        {
+            data: "name",
+            name: "name",
+            title: "Name"
+        },
+        {
+            data: "email",
+            name: "email",
+            title: "Email"
+        },
+        {
+            data: "role_id",
+            name: "role_id",
+            title: "Role"
+        },
+        {
+            data: "created_at",
+            name: "created_at",
+            title: "Created at"
+        },
+        {
+            data: "action",
+            name: "action",
+            title: "Action",
+            sortable: false
+        }
         ],
         "language": {
             "emptyTable": "No Record..."
@@ -316,28 +295,21 @@ function initGroup() {
             url: base_url + '/groups/getList',
         },
         searchDelay: 500,
-        columns: [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
-            {
-                data: 'id'
-            },
-            {
-                data: 'group_name'
-            },
-            {
-                data: 'created_by'
-            },
-            {
-                data: "action",
-                name: "action",
-                title: "Action",
-                sortable: false
-            }
+        columns: [{
+            data: 'id'
+        },
+        {
+            data: 'group_name'
+        },
+        {
+            data: 'created_by'
+        },
+        {
+            data: "action",
+            name: "action",
+            title: "Action",
+            sortable: false
+        }
         ],
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
@@ -361,28 +333,21 @@ function initRoles() {
             url: base_url + '/roles/getList',
         },
         searchDelay: 500,
-        columns: [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
-            {
-                data: 'id'
-            },
-            {
-                data: 'role_name'
-            },
-            {
-                data: 'created_by'
-            },
-            {
-                data: "action",
-                name: "action",
-                title: "Action",
-                sortable: false
-            }
+        columns: [{
+            data: 'id'
+        },
+        {
+            data: 'role_name'
+        },
+        {
+            data: 'created_by'
+        },
+        {
+            data: "action",
+            name: "action",
+            title: "Action",
+            sortable: false
+        }
         ],
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
@@ -406,64 +371,57 @@ function initLogActivities() {
             url: base_url + '/logactivities/initDatatable',
         },
         searchDelay: 500,
-        columns: [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
-            {
-                data: 'id',
-            },
-            {
-                data: 'user_id',
-                className: "text-center"
-            },
-            {
-                data: 'email',
-                className: "text-center"
-            },
-            {
-                data: 'user_role',
-                className: "text-center"
-            },
-            {
-                data: 'method',
-                className: "text-center"
-            },
-            {
-                data: 'url'
-            },
-            {
-                data: 'created_at',
-                class: 'font-weight-bold'
-            },
-            {
-                data: 'param',
-                render: function (data, type, full) {
-                    var showChar = 200;
-                    var ellipsestext = "...";
-                    var moretext = "Show More";
-                    var lesstext = "Show Less";
-                    var contentt = JSON.stringify(data);
-                    var content = contentt.replace(/["]+/g, '').substring(0, contentt.length - 1);
-                    if (content.length > showChar) {
-                        var c = content.substr(0, showChar);
-                        var h = content.substr(showChar, content.length - showChar);
-                        var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink" style="cursor: pointer;">' + moretext + '</a></span>'; //here call the read() function
-                        return html.toString();
-                    }
-                    return data;
+        columns: [{
+            data: 'id',
+        },
+        {
+            data: 'user_id',
+            className: "text-center"
+        },
+        {
+            data: 'email',
+            className: "text-center"
+        },
+        {
+            data: 'user_role',
+            className: "text-center"
+        },
+        {
+            data: 'method',
+            className: "text-center"
+        },
+        {
+            data: 'url'
+        },
+        {
+            data: 'created_at',
+            class: 'font-weight-bold'
+        },
+        {
+            data: 'param',
+            render: function (data, type, full) {
+                var showChar = 200;
+                var ellipsestext = "...";
+                var moretext = "Show More";
+                var lesstext = "Show Less";
+                var contentt = JSON.stringify(data);
+                var content = contentt.replace(/["]+/g, '').substring(0, contentt.length - 1);
+                if (content.length > showChar) {
+                    var c = content.substr(0, showChar);
+                    var h = content.substr(showChar, content.length - showChar);
+                    var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink" style="cursor: pointer;">' + moretext + '</a></span>'; //here call the read() function
+                    return html.toString();
                 }
-            },
-            {
-                data: 'ip',
-                className: "text-center",
-            },
-            {
-                data: 'agent'
+                return data;
             }
+        },
+        {
+            data: 'ip',
+            className: "text-center",
+        },
+        {
+            data: 'agent'
+        }
         ],
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
@@ -483,59 +441,52 @@ function initManageOtp() {
         "ajax": {
             url: "/modules/initDatatable"
         },
-        "columns": [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
-            {
-                data: 'otp',
-                name: "otp",
-                title: "OTP"
-            },
-            {
-                data: 'otp_time',
-                name: "otp_time",
-                title: "Time OTP"
-            },
-            {
-                data: "phone",
-                name: "phone",
-                title: "Phone number"
-            },
-            {
-                data: "status",
-                name: "status",
-                title: "Status"
-            },
-            {
-                data: "created_at",
-                name: "created_at",
-                title: "Created at"
-            },
-            {
-                data: "created_by",
-                name: "created_by",
-                title: "Created By"
-            },
-            {
-                data: "updated_at",
-                name: "updated_at",
-                title: "Updated at"
-            },
-            {
-                data: "updated_by",
-                name: "updated_by",
-                title: "Updated By"
-            },
-            {
-                data: "action",
-                name: "action",
-                title: "Action",
-                sortable: false
-            }
+        "columns": [{
+            data: 'otp',
+            name: "otp",
+            title: "OTP"
+        },
+        {
+            data: 'otp_time',
+            name: "otp_time",
+            title: "Time OTP"
+        },
+        {
+            data: "phone",
+            name: "phone",
+            title: "Phone number"
+        },
+        {
+            data: "status",
+            name: "status",
+            title: "Status"
+        },
+        {
+            data: "created_at",
+            name: "created_at",
+            title: "Created at"
+        },
+        {
+            data: "created_by",
+            name: "created_by",
+            title: "Created By"
+        },
+        {
+            data: "updated_at",
+            name: "updated_at",
+            title: "Updated at"
+        },
+        {
+            data: "updated_by",
+            name: "updated_by",
+            title: "Updated By"
+        },
+        {
+            data: "action",
+            name: "action",
+            title: "Action",
+            sortable: false
+        }
         ],
         "language": {
             "emptyTable": "No Record..."
@@ -567,67 +518,60 @@ function initSettings() {
         "columnDefs": [
             { "width": 20, "targets": 2 },
         ],
-        "columns": [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
+        "columns": [{
+            data: 'id',
+            name: "id",
+            title: "Id"
+        },
+        {
+            data: 'name',
+            name: "name",
+            title: "Unique name"
+        },
+        {
+            data: "value",
+            name: "value",
+            title: "Value",
+            render: function (data, type, row) {
+                const htmlEntities = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&apos;"
+                };
+                var value = JSON.parse(String(data).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"'));
+                var template = badgeArrayView(value);
+                return template;
             },
-            {
-                data: 'id',
-                name: "id",
-                title: "Id"
-            },
-            {
-                data: 'name',
-                name: "name",
-                title: "Unique name"
-            },
-            {
-                data: "value",
-                name: "value",
-                title: "Value",
-                render: function (data, type, row) {
-                    const htmlEntities = {
-                        "&": "&amp;",
-                        "<": "&lt;",
-                        ">": "&gt;",
-                        '"': "&quot;",
-                        "'": "&apos;"
-                    };
-                    var value = JSON.parse(String(data).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"'));
-                    var template = badgeArrayView(value);
-                    return template;
-                },
-                width: 20
-            },
-            {
-                data: "created_at",
-                name: "created_at",
-                title: "Created at"
-            },
-            {
-                data: "created_by",
-                name: "created_by",
-                title: "Created By"
-            },
-            {
-                data: "updated_at",
-                name: "updated_at",
-                title: "Updated at"
-            },
-            {
-                data: "updated_by",
-                name: "updated_by",
-                title: "Updated By"
-            },
-            {
-                data: "action",
-                name: "action",
-                title: "Action",
-                sortable: false
-            }
+            width: 20
+        },
+        {
+            data: "created_at",
+            name: "created_at",
+            title: "Created at"
+        },
+        {
+            data: "created_by",
+            name: "created_by",
+            title: "Created By"
+        },
+        {
+            data: "updated_at",
+            name: "updated_at",
+            title: "Updated at"
+        },
+        {
+            data: "updated_by",
+            name: "updated_by",
+            title: "Updated By"
+        },
+        {
+            data: "action",
+            name: "action",
+            title: "Action",
+            sortable: false
+        }
         ],
         "language": {
             "emptyTable": "No Record..."
@@ -658,82 +602,75 @@ function initHidePaymentLogs() {
         "ajax": {
             url: "/hidepayment/initDatatable"
         },
-        "columns": [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
-            {
-                data: 'id',
-                name: "id",
-                title: "Id"
-            },
-            {
-                data: 'version',
-                name: "version",
-                title: "Version"
-            },
-            {
-                data: 'isUpStoreAndroid',
-                name: "isUpStoreAndroid",
-                title: "Platform",
-                render: function (data, type, row) {
-                    var platform = '';
-                    if (row.isUpStoreAndroid) {
-                        platform += `<span class="badge badge-primary" style="margin-right: 5px">Android</span>`;
-                    }
-
-                    if (row.isUpStoreIos) {
-                        platform += `<span class="badge badge-secondary" style="margin-right: 5px">IOS</span>`;
-                    }
-                    return platform;
+        "columns": [{
+            data: 'id',
+            name: "id",
+            title: "Id"
+        },
+        {
+            data: 'version',
+            name: "version",
+            title: "Version"
+        },
+        {
+            data: 'isUpStoreAndroid',
+            name: "isUpStoreAndroid",
+            title: "Platform",
+            render: function (data, type, row) {
+                var platform = '';
+                if (row.isUpStoreAndroid) {
+                    platform += `<span class="badge badge-primary" style="margin-right: 5px">Android</span>`;
                 }
-            },
-            {
-                data: "isUpStoreIos",
-                name: "isUpStoreIos",
-                title: "Action",
-                render: function (data, type, row) {
-                    var action = '';
 
-                    if (row.isUpStoreAndroid == '1') {
-                        action += `<span class="badge badge-danger" style="margin-right: 5px">Hide Android</span>`;
-                    }
-
-                    if (row.isUpStoreAndroid == '0') {
-                        action += `<span class="badge badge-success" style="margin-right: 5px">Show Android</span>`;
-                    }
-
-                    if (row.isUpStoreIos == '1') {
-                        action += `<span class="badge badge-danger" style="margin-right: 5px">Hide IOS</span>`;
-                    }
-
-                    if (row.isUpStoreIos == '0') {
-                        action += `<span class="badge badge-success" style="margin-right: 5px">Show IOS</span>`;
-                    }
-                    return action;
+                if (row.isUpStoreIos) {
+                    platform += `<span class="badge badge-secondary" style="margin-right: 5px">IOS</span>`;
                 }
-            },
-            {
-                data: "user.name",
-                name: "user.name",
-                title: "Created By",
-            },
-            {
-                data: "error_mesg",
-                name: "error_mesg",
-                title: "Status",
-                render: function (data, type, row) {
-                    return (data == 'Thành công') ? `<span class="badge bg-success">${data}</span>` : `<span class="badge bg-danger">${data}</span>`;
+                return platform;
+            }
+        },
+        {
+            data: "isUpStoreIos",
+            name: "isUpStoreIos",
+            title: "Action",
+            render: function (data, type, row) {
+                var action = '';
+
+                if (row.isUpStoreAndroid == '1') {
+                    action += `<span class="badge badge-danger" style="margin-right: 5px">Hide Android</span>`;
                 }
-            },
-            {
-                data: "created_at",
-                name: "created_at",
-                title: "Created at"
-            },
+
+                if (row.isUpStoreAndroid == '0') {
+                    action += `<span class="badge badge-success" style="margin-right: 5px">Show Android</span>`;
+                }
+
+                if (row.isUpStoreIos == '1') {
+                    action += `<span class="badge badge-danger" style="margin-right: 5px">Hide IOS</span>`;
+                }
+
+                if (row.isUpStoreIos == '0') {
+                    action += `<span class="badge badge-success" style="margin-right: 5px">Show IOS</span>`;
+                }
+                return action;
+            }
+        },
+        {
+            data: "user.name",
+            name: "user.name",
+            title: "Created By",
+        },
+        {
+            data: "error_mesg",
+            name: "error_mesg",
+            title: "Status",
+            render: function (data, type, row) {
+                return (data == 'Thành công') ? `<span class="badge bg-success">${data}</span>` : `<span class="badge bg-danger">${data}</span>`;
+            }
+        },
+        {
+            data: "created_at",
+            name: "created_at",
+            title: "Created at"
+        },
         ],
         "language": {
             "emptyTable": "No Record..."
@@ -960,12 +897,6 @@ function initBannerManage(response) {
 function initCheckUserInfo() {
     var columnData = [
         {
-            title: 'No.',
-            render: function (data, type, row, meta) {
-                return meta.row + meta.settings._iDisplayStart + 1;
-            },
-        },
-        {
             data: 'Id',
             title: 'ID'
         },
@@ -1046,18 +977,12 @@ function initSmsWorld() {
 function initCheckListManage() {
     console.log(listCheckList);
     var columnData = [
-        // {
-        //     title:'No.',
-        //     render: function(data,type, row ,meta){
-        //         return meta.row + 1;
-        //     },
-        //     className: 'text-center'
-        // },
         {
             title: 'No.',
             render: function (data, type, row, meta) {
-                return meta.row + meta.settings._iDisplayStart + 1;
+                return meta.row + 1;
             },
+            className: 'text-center'
         },
         {
             data: 'ID',
