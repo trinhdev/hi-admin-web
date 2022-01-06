@@ -26,7 +26,7 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        <form action="{{ route('manageotp.handle') }}" method="GET" autocomplete="off">
+                        <form action="{{ route('manageotp.handle') }}" method="GET">
                             <div class="card card-info">
                                 <div class="card-header">
                                     <h3 class="card-title uppercase">Get OTP by phone</h3>
