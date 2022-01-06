@@ -110,7 +110,7 @@ $domainModemInfo = [
         'SUB_DOMAIN'    => ['provider', 'admin-tool'],
     ],
     'production'        => [
-        'URL'           => 'http://hi-modem.fpt.vn',
+        'URL'           => 'http://hi-modem.fpt.vn/',
         'CLIENT_KEY'    => 'hifpt_modem',
         'SECRET_KEY'    => 'xxxxxxhifpt2018',
         'SUB_DOMAIN'    => ['provider', 'admin-tool'],
