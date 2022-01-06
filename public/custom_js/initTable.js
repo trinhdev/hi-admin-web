@@ -688,7 +688,6 @@ function initBannerManage(response){
     var stt = 1;
     response.data.forEach(element => {
         let subData = {
-            stt : stt++,
             bannerId : '',
             bannerType : '',
             public_date_start : '',
@@ -734,21 +733,14 @@ function initBannerManage(response){
         }
         dataTable.push(subData);
     });
-    // console.log(dataTable);
     var columnData =  [
         {
-            data:'stt',
             title:'No.',
-            className:'text-center'
-        },
-        {
-            data :"bannerId",
-            title: "Banner Id",
-            className: "text-center",
-            "render": function(data, type, row) {
-                return `<span class ="infoRow" data-type="`+row.bannerType+`">`+data+`</span>`;
+            className:'text-center',
+            render: function(data,type, row ,meta){
+                return `<span class ="infoRow" data-type="`+row.bannerType+`" data-id = "`+row.bannerId+`">`+meta.row + 1;+`</span>`;
             },
-            width:'10px'
+            className: 'text-center'
         },
         {
             data :'title_vi',
@@ -771,7 +763,8 @@ function initBannerManage(response){
         },
         {
             data:'bannerType',
-            title: 'Banner Type'
+            title: 'Banner Type',
+            className:'text-center'
         },
         {
             data:'public_date_start',
@@ -796,9 +789,10 @@ function initBannerManage(response){
             title: 'Ordering',
             "render": function(data, type, row) {
                 let disable = row.is_banner_expired ? 'disabled' : '';
-                return `<input type="number" onchange="updateOrdering(this)" value="`+data+`" `+ disable +`/>`;
+                return `<input type="number" onchange="updateOrdering(this)" style="width:80%" value="`+data+`" `+ disable +`/>`;
             },
-            "sortable": false
+            "sortable": false,
+            className:'text-center'
         },
         {
             data:'view_count',
@@ -866,22 +860,21 @@ function initBannerManage(response){
         "language": {
             "emptyTable": "No Record..."
         },
-        "order": [[ 11, "desc" ]],
+        "order": [[ 10, "desc" ]],
         columnDefs: [
-            { width: '3%', targets: 0 }, //stt
-            { width: '3%', targets: 1 }, // 1 bannerId
-            { width: '15%', targets: 2 }, // 2 Title
-            { width: '15%', targets: 3 }, // 3 Image
-            { width: '10%', targets: 4 }, // 4 direction URL
-            { width: '5%', targets: 5 }, // 5 Banner Type,
-            { width: '10%', targets: 6 }, // 6 public date start
-            { width: '10%', targets: 7 }, // 7 public date end
-            { width: '3%', targets: 8 }, // is expired
-            { width: '3%', targets: 9 }, // 8 ordering
-            { width: '3%', targets: 10 }, // 9 view count
-            { width: '10%', targets: 11 }, // 10 create at
-            { width: '10%', targets: 12 }, // 11 create by
-            { width: '3%', targets: 13 }, // 12 action
+            { width: '5%', targets: 0 }, //stt
+            // { width: '10%', targets: 1 }, // 1 bannerId
+            { width: '10%', targets: 1 }, // 2 Title
+            { width: '15%', targets: 2 }, // 3 Image
+            { width: '10%', targets: 3 }, // 4 direction URL
+            { width: '1%', targets: 4 }, // 5 Banner Type,
+            { width: '15%', targets: 5 }, // 6 public date start
+            { width: '15%', targets: 6 }, // 7 public date end
+            { width: '3%', targets: 7 }, // is expired
+            { width: '5%', targets: 8 }, // 8 ordering
+            { width: '3%', targets: 9 }, // 9 view count
+            { width: '10%', targets: 10 }, // 10 create at
+            { width: '10%', targets: 11 }, // 11 create by
         ],
         // "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
         //     if(data.is_banner_expired){

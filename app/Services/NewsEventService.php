@@ -48,7 +48,9 @@ class NewsEventService
 
     public function getListbanner($param = null){
         $url = $this->baseUrl . $this->listMethod['GET_LIST_BANNER'];
+        // my_debug($param,false);
         $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey],'GET');
+        // my_debug($response);
         return $response;
     }
 

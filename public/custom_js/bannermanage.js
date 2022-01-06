@@ -178,7 +178,7 @@ function filterData() {
 function getDetailBanner(_this) {
     let row = _this.closest('tr');
     let infoRow = row.querySelector('.infoRow');
-    window.location.href = `/bannermanage/edit/` + infoRow.innerHTML + `/` + infoRow.getAttribute('data-type');
+    window.location.href = `/bannermanage/edit/` + infoRow.getAttribute('data-id') + `/` + infoRow.getAttribute('data-type');
 }
 
 function changeFormatDateTimeLocal(dateInput) {
@@ -217,6 +217,8 @@ function updateOrdering(_thisInputTag){
 function callApiUpdateOderSuccess(response){
     if(response.statusCode != 0){
         showError(response.message);
+    }else{
+        showSuccess('Updated!');
     }
 }
 function changePublicDateTime(dateTimeInput){

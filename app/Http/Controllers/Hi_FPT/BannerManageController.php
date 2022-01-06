@@ -23,19 +23,19 @@ class BannerManageController extends MY_Controller
     public function index(){
         $newsEventService = new NewsEventService();
         $listTypeBanner = $newsEventService->getListTypeBanner();
-        $listTypeBanner = ($listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
+        $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
         return view('banners.index')->with(['list_type_banner' => $listTypeBanner]);
     }
     public function edit(Request $request, $bannerId, $bannerType){
         $newsEventService = new NewsEventService();
         $listTargetRoute = $newsEventService->getListTargetRoute();
-        $listTargetRoute = ($listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
+        $listTargetRoute = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
 
         $listTypeBanner = $newsEventService->getListTypeBanner();
-        $listTypeBanner = ($listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
+        $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
 
         $getDetailBanner_response = $newsEventService->getDetailBanner($bannerId,$bannerType);
-        if($getDetailBanner_response->statusCode != 0){
+        if(!isset($getDetailBanner_response->statusCode) || $getDetailBanner_response->statusCode != 0){
             return redirect()->route('bannermanage.index')->withErrors($getDetailBanner_response->message);
         }
         $dataResponse = $getDetailBanner_response->data;
@@ -242,13 +242,14 @@ class BannerManageController extends MY_Controller
     public function initDatatable(Request $request){
             $newsEventService = new NewsEventService();
             
+            // $toDay = Carbon::parse( date('Y-m-d h:i:s'))->format('Y-m-d\TH:i');
             $param = [
                 'bannerType' => empty($request->bannerType) ? null : $request->bannerType,
-                'publicDateStart' => empty($request->public_date_from) ? null : $request->public_date_from,
-                'publicDateEnd' => empty($request->public_date_to) ? null : $request->public_date_to
+                'publicDateStart' => empty($request->public_date_from) ? null : Carbon::parse($request->public_date_from)->format('Y-m-d H:i:s'),
+                'publicDateEnd' => empty($request->public_date_to) ? null : Carbon::parse($request->public_date_to)->format('Y-m-d H:i:s')
             ];
-
             $responseCallAPIGetListBanner = $newsEventService->getListbanner($param);
+            // dd($responseCallAPIGetListBanner);
             if(empty($responseCallAPIGetListBanner)){
                 $responseCallAPIGetListBanner = (object)[];
             };
