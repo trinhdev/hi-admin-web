@@ -741,7 +741,7 @@ function initBannerManage(response){
             title:'No.',
             className:'text-center',
             render: function(data,type, row ,meta){
-                return `<span class ="infoRow" data-type="`+row.bannerType+`" data-id = "`+row.bannerId+`">`+meta.row + 1;+`</span>`;
+                return `<span class ="infoRow" data-type="`+row.bannerType+`" data-id = "`+row.bannerId+`">`+ parseInt(meta.row + 1)+`</span>`;
             },
             className: 'text-center'
         },
@@ -755,15 +755,16 @@ function initBannerManage(response){
             "render": function(data, type, row) {
                 return `<img src="`+data+`"  style="width:150px" onerror="this.onerror=null;this.src='/images/img_404.svg';"  onclick ="window.open('`+data+`').focus()"/>`;
             },
-            "sortable": false
+            "sortable": false,
+            className: 'text-center'
         },
-        {
-            data :'direction_url',
-            title: "Direction URL",
-            "render": function(data, type, row) {
-                return `<a href="`+data+`" target="_blank">`+data+`</a>`;
-            }
-        },
+        // {
+        //     data :'direction_url',
+        //     title: "Direction URL",
+        //     "render": function(data, type, row) {
+        //         return `<a href="`+data+`" target="_blank">`+data+`</a>`;
+        //     }
+        // },
         {
             data:'bannerType',
             title: 'Banner Type',
@@ -863,21 +864,21 @@ function initBannerManage(response){
         "language": {
             "emptyTable": "No Record..."
         },
-        "order": [[ 10, "desc" ]],
+        "order": [[ 9, "desc" ]],
         columnDefs: [
             { width: '5%', targets: 0 }, //stt
             // { width: '10%', targets: 1 }, // 1 bannerId
             { width: '10%', targets: 1 }, // 2 Title
             { width: '15%', targets: 2 }, // 3 Image
-            { width: '10%', targets: 3 }, // 4 direction URL
-            { width: '1%', targets: 4 }, // 5 Banner Type,
-            { width: '15%', targets: 5 }, // 6 public date start
-            { width: '15%', targets: 6 }, // 7 public date end
-            { width: '3%', targets: 7 }, // is expired
-            { width: '5%', targets: 8 }, // 8 ordering
-            { width: '3%', targets: 9 }, // 9 view count
-            { width: '10%', targets: 10 }, // 10 create at
-            { width: '10%', targets: 11 }, // 11 create by
+            // { width: '10%', targets: 3 }, // 4 direction URL
+            { width: '1%', targets: 3 }, // 5 Banner Type,
+            { width: '10%', targets: 4 }, // 6 public date start
+            { width: '10%', targets: 5 }, // 7 public date end
+            { width: '3%', targets: 6 }, // is expired
+            { width: '5%', targets: 7 }, // 8 ordering
+            { width: '3%', targets: 8 }, // 9 view count
+            { width: '10%', targets: 9 }, // 10 create at
+            { width: '10%', targets: 10 }, // 11 create by
         ],
         // "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
         //     if(data.is_banner_expired){
