@@ -63,6 +63,7 @@ class ManageotpController extends MY_Controller
                 break;
         }
         $this->addToLog($request);
+        $result['phone'] = $request["phone"];
         return redirect()->route('manageotp.index')->with($result);
     }
 }

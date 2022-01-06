@@ -26,9 +26,7 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        <form action="{{ route('manageotp.handle') }}" method="POST" autocomplete="off">
-                            @csrf
-
+                        <form action="{{ route('manageotp.handle') }}" method="GET" autocomplete="off">
                             <div class="card card-info">
                                 <div class="card-header">
                                     <h3 class="card-title uppercase">Get OTP by phone</h3>
@@ -37,7 +35,7 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Please input phone number" >
+                                            <input type="text" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Please input phone number" value="{{ (!empty(Session::get('phone'))) ? Session::get('phone') : '' }}" >
                                             @error('phone')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
