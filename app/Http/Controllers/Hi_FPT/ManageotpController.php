@@ -64,7 +64,7 @@ class ManageotpController extends MY_Controller
         }
         $this->addToLog($request);
         $result['phone'] = $request["phone"];
-        return view('manageotp.index')->with($result);
+        return view('otp.index')->with($result);
         // return redirect()->route('manageotp.index')->with($result);
     }
 }
