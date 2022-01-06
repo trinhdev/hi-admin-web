@@ -303,7 +303,7 @@ function initUser() {
 function initGroup() {
     $('#groupTable').DataTable({
         "order": [
-            [1, "desc"]
+            [0, "desc"]
         ],
         responsive: true,
         searchDelay: 500,
@@ -317,12 +317,12 @@ function initGroup() {
         },
         searchDelay: 500,
         columns: [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
+            // {
+            //     title: 'No.',
+            //     render: function (data, type, row, meta) {
+            //         return meta.row + meta.settings._iDisplayStart + 1;
+            //     },
+            // },
             {
                 data: 'id'
             },
@@ -348,7 +348,7 @@ function initGroup() {
 function initRoles() {
     $('#rolesTable').DataTable({
         "order": [
-            [1, "desc"]
+            [0, "desc"]
         ],
         responsive: true,
         searchDelay: 500,
@@ -362,12 +362,12 @@ function initRoles() {
         },
         searchDelay: 500,
         columns: [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
+            // {
+            //     title: 'No.',
+            //     render: function (data, type, row, meta) {
+            //         return meta.row + meta.settings._iDisplayStart + 1;
+            //     },
+            // },
             {
                 data: 'id'
             },
@@ -393,7 +393,7 @@ function initRoles() {
 function initLogActivities() {
     $('#logTable').DataTable({
         "order": [
-            [1, "desc"]
+            [0, "desc"]
         ],
         responsive: true,
         searchDelay: 500,
@@ -407,12 +407,12 @@ function initLogActivities() {
         },
         searchDelay: 500,
         columns: [
-            {
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-            },
+            // {
+            //     title: 'No.',
+            //     render: function (data, type, row, meta) {
+            //         return meta.row + meta.settings._iDisplayStart + 1;
+            //     },
+            // },
             {
                 data: 'id',
             },
