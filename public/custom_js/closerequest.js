@@ -18,11 +18,12 @@ function getListReport(_this){
 }
 function successCallGetListReport(response){
     if(response.error != undefined){
-        showListReport.classList.remove('card');
-        showListReport.innerHTML = '';
+        showList.classList.remove('card');
+        showList.innerHTML = '';
         showError(response.error);
     }else{
-        showListReport.classList.add('card');
+        console.log(response);
+        showList.classList.add('card');
         var listColor = ['warning','info','primary','sucess'];
         var html = `<div class="card-header"> Contract : `+response.contract+`</div>
         <ul class="list-unstyled">`;
@@ -35,6 +36,10 @@ function successCallGetListReport(response){
                         html += `<span class="badge badge-`+listColor[key2]+` ml-3">`+step.name+`</span>`
                     };
                     html+= `</h5>
+                    <div class="mb-3">
+                        <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Report Time:</span>
+                        <span class="bg-light">`+report.stepStatus[0].time+`</span>
+                    </div>
                     <div class="mb-3">
                         <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Report Type:</span>
                         <span class="bg-light-green">`+report.reportType+` -`+report.reportName+`</span>
@@ -58,7 +63,7 @@ function successCallGetListReport(response){
             // }
         html+=`</li></ul>`;
         };
-        showListReport.innerHTML = html;
+        showList.innerHTML = html;
     }
 }
 function successCloseRequest(response,li_tag) {

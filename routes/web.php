@@ -105,6 +105,11 @@ Route::group([
                 Route::post('/closeRequest','ClosehelprequestController@closeRequest')->name('closehelprequest.closeRequest');
             });
 
+            Route::prefix('checkuserinfo')->group(function () {
+                Route::get('/{info?}','CheckUserInfoController@index')->name('checkuserinfo.index');
+                // Route::get('','CheckUserInfoController@checkUserInfo')->name('checkuserinfo.checkUserInfo');
+            });
+
         });
         Route::namespace('Hi_FPT')->group(function () {
             Route::prefix('manageotp')->group(function () {
@@ -116,6 +121,22 @@ Route::group([
                 Route::post('/hide','HidepaymentController@hide')->name('hidepayment.hide');
                 Route::get('/initDatatable','HidepaymentController@initDatatable')->name('hidepayment.initDatatable');
             });
+            Route::prefix('modeminfo')->group(function () {
+                Route::get('/','ModeminfoController@index')->name('modeminfo.index');
+                Route::get('/searchByContractNoOrId','ModeminfoController@searchByContractNoOrId')->name('modeminfo.searchByContractNoOrId');
+                Route::get('/initDatatable','ModeminfoController@initDatatable')->name('modeminfo.initDatatable');
+            });
+
+            Route::prefix('bannermanage')->group(function () {
+                Route::get('/','BannerManageController@index')->name('bannermanage.index');
+                Route::get('/edit/{id}/{type}','BannerManageController@edit')->name('bannermanage.edit');
+                Route::get('/create','BannerManageController@create')->name('bannermanage.create');
+                Route::post('/store','BannerManageController@store')->name('bannermanage.store');
+                Route::put('/update/{id}/{type}','BannerManageController@update')->name('bannermanage.update');
+                Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
+                Route::post('/uploadImage','BannerManageController@uploadImage')->name('bannermanage.uploadImage');
+                Route::post('/updateordering','BannerManageController@updateOrder')->name('bannermanage.updateOrder');
+            });
             
         });
         Route::prefix('profile')->group(function () {
@@ -125,10 +146,7 @@ Route::group([
 
         Route::namespace('SmsWorld')->group(function () {
             Route::prefix('smsworld')->group(function () {
-                Route::any('/','OtpController@login')->name('smsworld.login');
-                Route::get('/logout','OtpController@logout')->name('smsworld.logout');
-                Route::get('/logs','OtpController@logs')->name('smsworld.logs');
-                Route::post('/getlog','OtpController@getLog')->name('smsworld.getLog');
+                Route::any('/{phonecode?}/{phone?}/{date?}','OtpController@logs')->name('smsworld.logs');
             });
         });
 });

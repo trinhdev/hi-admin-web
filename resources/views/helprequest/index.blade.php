@@ -33,13 +33,16 @@
                         @csrf
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">Get Contract Info</h3>
+                                <h3 class="card-title uppercase">Get Contract Info</h3>
                             </div>
                             <div class="card-body">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="phone">Contract Number</label>
                                         <input type="text" id="contractNo" name="contractNo" class="form-control" placeholder="Please input contract number">
+                                    </div>
+                                    <div class="form-group" hidden>
+                                        <input type="text" placeholder="hiddeninput">
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +56,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="card-white mb-5" id="showListReport">
+            <div class="card-white mb-5" id="showList">
             </div>
         </div>
     </section>

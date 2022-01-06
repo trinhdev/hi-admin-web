@@ -29,7 +29,7 @@
             <div class="col-sm-12">
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">Infomation {{$controller}}</h3>
+                        <h3 class="card-title uppercase">Infomation {{$controller}}</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->

@@ -78,9 +78,87 @@ $domainSmsWorld = [
     ],
 ];
 
+$domainNewsEventConfig = [
+    'local'             => [
+        'URL'           => 'hievent.local/',
+        'CLIENT_KEY'    => '9895ee2f7616a73ab8be47e5df5a8924',
+        'SECRET_KEY'    => 'e063d2833da02c8dac4cac106b825535',
+    ],
+    'staging'           => [
+        'URL'           => 'hi-news-event-stag.fpt.vn/',
+        'CLIENT_KEY'    => '9895ee2f7616a73ab8be47e5df5a8924',
+        'SECRET_KEY'    => 'e063d2833da02c8dac4cac106b825535',
+    ],
+    'production'        => [
+        'URL'           => 'hi-news-event.fpt.vn/',
+        'CLIENT_KEY'    => '9895ee2f7616a73ab8be47e5df5a8924',
+        'SECRET_KEY'    => 'e063d2833da02c8dac4cac106b825535',
+    ],
+];
+
+$domainModemInfo = [
+    'local'             => [
+        'URL'           => 'http://hi-modem-stag.fpt.vn/',
+        'CLIENT_KEY'    => 'hifpt_modem',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018',
+        'SUB_DOMAIN'    => ['provider', 'admin-tool'],
+    ],
+    'staging'           => [
+        'URL'           => 'http://hi-modem-stag.fpt.vn/',
+        'CLIENT_KEY'    => 'hifpt_modem',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018',
+        'SUB_DOMAIN'    => ['provider', 'admin-tool'],
+    ],
+    'production'        => [
+        'URL'           => 'http://hi-modem.fpt.vn',
+        'CLIENT_KEY'    => 'hifpt_modem',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018',
+        'SUB_DOMAIN'    => ['provider', 'admin-tool'],
+    ],
+];
+
+$domainModemAccessPoint = [
+    'local'             => [
+        'URL'           => 'http://staging-hi-api.fpt.vn/',
+        'SUB_DOMAIN'    => ['v68'],
+    ],
+    'staging'           => [
+        'URL'           => 'http://staging-hi-api.fpt.vn/',
+        'SUB_DOMAIN'    => ['v68'],
+    ],
+    'production'        => [
+        'URL'           => 'http://hi-api.fpt.vn/',
+        'SUB_DOMAIN'    => ['v68'],
+    ],
+];
+
+$domainModemContractInfo = [
+    'local'             => [
+        'URL'           => 'http://hi-inside.fpt.vn/',
+        'SUB_DOMAIN'    => ['v1'],
+        'CLIENT_KEY'    => 'hifpt_inside',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+    ],
+    'staging'           => [
+        'URL'           => 'http://hi-inside.fpt.vn/',
+        'SUB_DOMAIN'    => ['v1'],
+        'CLIENT_KEY'    => 'hifpt_inside',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+    ],
+    'production'        => [
+        'URL'           => 'http://hi-inside.fpt.vn/',
+        'SUB_DOMAIN'    => ['v1'],
+        'CLIENT_KEY'    => 'hifpt_inside',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+    ],
+];
 return [
     'DOMAIN_REPORT'         => $domainReportConfig,
     'DOMAIN_INSIDE'         => $domainInsideConfig,
     'DOMAIN_CUSTOMER'       => $domainCustomerConfig,
     'DOMAIN_SMS_WORLD'      => $domainSmsWorld,
+    'DOMAIN_NEWS_EVENT'     => $domainNewsEventConfig,
+    'DOMAIN_MODEM_INFO'             => $domainModemInfo,
+    'DOMAIN_MODEM_ACCESS_POINT'     => $domainModemAccessPoint,
+    'DOMAIN_MODEM_CONTRACT_INFO'    => $domainModemContractInfo,
 ];

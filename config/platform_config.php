@@ -8,7 +8,10 @@
 return [
     'current_theme' => 'themes',
     'background' =>[
-        'url' => '/images/bg.png',
-        'color' =>'#64c51529'
+        'url' => '/images/tet.png',
+        'color' =>'#dc354529',
+        'position'  => 'bottom',
+        'repeat'    => 'repeat-x',
+        'size'      => 'inhernit'
     ],
 ];

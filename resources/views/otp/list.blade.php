@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px">OTP Tables</h1>
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">OTP Tables</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">

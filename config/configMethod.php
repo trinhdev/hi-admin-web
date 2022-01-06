@@ -1,6 +1,7 @@
 <?php
 $methodInsideDomain = [
-    'GET_CONTRACT_BY_NUMBER' => 'GetContractByContractNo',
+    'GET_CONTRACT_BY_CONTRACT_NO' => 'GetContractByContractNo',
+    'GET_CONTRACT_BY_PHONE_NUMBER' => 'GetListContractByPhoneNum',
 ];
 $methodReportDomain = [
     'GET_LIST_REPORT' => 'report-current-111',
@@ -13,8 +14,24 @@ $methodSmsWorld = [
     'LOGIN' => 'login',
     'CHECK_LOG' => 'checklog',
 ];
+$methodNewsEventDomain = [
+    'GET_LIST_TARGET_ROUTE' => 'provider/tool/get-list-direction',
+    'UPLOAD_IMAGE' => 'provider/tool/upload-image',
+    'GET_LIST_TYPE_BANNER' => 'provider/tool/banner/get-list-type',
+    'CREATE_BANNER'=> 'provider/tool/banner/create',
+    'UPDATE_BANNER' => 'provider/tool/banner/update',
+    'UPDATE_ORDERING'   => 'provider/tool/banner/update-orderings',
+
+    // pop up
+    'CREATE_TEMPLATE_POPUP' => 'provider/tool/popup/create-template',
+    'UPDATE_TEMPLATE_POPUP' => 'provider/tool/popup/update-template',
+    'PUSH_POPUP'            => 'provider/tool/popup/push-popup',
+    'GET_LIST_BANNER'       => 'provider/tool/banner/get-list-banner',
+    'GET_DETAIL_BANNER'     => 'provider/tool/banner/get-detail-banner',
+];
 return [
     'DOMAIN_INSIDE' => $methodInsideDomain,
     'DOMAIN_REPORT' => $methodReportDomain,
     'DOMAIN_SMS_WORLD' => $methodSmsWorld,
+    'DOMAIN_NEWS_EVENT' =>  $methodNewsEventDomain,
 ];

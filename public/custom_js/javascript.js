@@ -25,25 +25,34 @@ function reloadPjax() {
 
 }
 
-function handleSubmit(e, form) {
+function handleSubmit(e, form, withPopup = false) {
     e.preventDefault();
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "Please Confirm This Action",
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonColor: '#d33',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, Confirmed!',
-        reverseButtons: true
+    if(withPopup){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Please Confirm This Action",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, Confirmed!',
+            reverseButtons: true
+    
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+                let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+                $('form').find(':button').prop('disabled', true);
+                $("#spinner").addClass("show");
+            }
+        });
+    }else{
+        form.submit();
+        let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+        $('form').find(':button').prop('disabled', true);
+        $("#spinner").addClass("show");
+    }
 
-    }).then((result) => {
-        if (result.isConfirmed) {
-            form.submit();
-            let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
-            $('form').find(':button').prop('disabled', true);
-        }
-    });
 }
 
 function dialogConfirmWithAjax(sureCallbackFunction, data) {
@@ -64,13 +73,42 @@ function dialogConfirmWithAjax(sureCallbackFunction, data) {
     });
 }
 
-function callAPIHelper(url, param, method, callback,passingData = null) {
+function callAPIHelper(url, param, method, callback, passingData = null, isfile = false) {
     $.ajax({
         url: url,
         type: method,
         data: param,
         success: function (data) {
-            callback(data,passingData);
+            callback(data, passingData);
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+        }
+    });
+}
+
+function uploadFile(file, callBack, passingData) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var formData = new FormData();
+    formData.append("file", file,file.name);
+    $.ajax({
+        type: 'POST',
+        url: '/bannermanage/uploadImage',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: (data) => {
+            callBack(data,passingData);
         },
         error: function (xhr) {
             var errorString = '';
@@ -97,4 +135,21 @@ function showError(error = null) {
         title: 'Oops...',
         html: (error == null) ? 'Error!' : error
     });
+}
+
+function getDataInForm(form) {
+    var formData = new FormData(form);
+    var data = {};
+    for (var pair of formData.entries()) {
+        if (pair[1] instanceof File) {
+            if (pair[1].size > 0) {
+                data[pair[0]] = pair[1];
+            }
+        } else {
+            if (pair[1].length > 0) {
+                data[pair[0]] = pair[1];
+            }
+        }
+    }
+    return data;
 }

@@ -30,7 +30,7 @@ class ChecklistmanageController extends MY_Controller
         $this->addToLog(request());
         $contractService = new ContractService();
         $helpReqeustService = new HelpRequestService();
-        $contract_info_response = $contractService->getContractInfo($request); // call api get contract info
+        $contract_info_response = $contractService->getContractInfo($request->contractNo); // call api get contract info
         if (empty($contract_info_response->data)) {
             return redirect()->back()->withErrors(['error' => "Hợp đồng không tồn tại!"]);
         }

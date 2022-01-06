@@ -115,7 +115,7 @@
                                                 <h6 class="mb-2 text-primary">Personal Details</h6>
                                             </div>
                                             <div class="ol-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="form-group"> <label for="name">Role: </label><b>&nbsp;{{Auth::user()->role->role_name}}</b></div>
+                                                <div class="form-group"> <label for="name">Role: </label><b>&nbsp;{{ !empty(Auth::user()->role) ? Auth::user()->role->role_name: ''}}</b></div>
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                                 <div class="form-group"> <label for="name">Full Name</label> <input type="text" class="form-control" id="name" name="name" value="{{Auth::user()->name}}"></div>

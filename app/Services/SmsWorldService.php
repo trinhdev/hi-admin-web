@@ -22,7 +22,7 @@ class SmsWorldService
             'UserName' => $username,
             'Password' => $password
         ];
-        return sendRequest($url,$param);
+        return sendRequest($url,$param,null,$headerArray = ['Abp.TenantId' => '1']);
     }
     public function getlogs($phone,$month,$year,$accessToken){
         $url = $this->baseUrl . $this->prefix . '/' . $this->listMethod['CHECK_LOG'];

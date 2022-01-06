@@ -41,6 +41,8 @@
 <script src="{{ asset('/custom_js/closerequest.js')}}"></script>
 <script src="{{ asset('/custom_js/updateprofile.js')}}"></script>
 <script src="{{ asset('/custom_js/smsworld.js')}}"></script>
+<script src="{{ asset('/custom_js/checkuserinfo.js')}}"></script>
+<script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 <script>
 @if($errors->any())
     showError('{{$errors->first()}}');
