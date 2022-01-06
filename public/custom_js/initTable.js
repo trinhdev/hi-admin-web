@@ -46,6 +46,9 @@ $(document).ready(function () {
             case 'checklistmanage':
                 initCheckListManage();
                 break;
+            case 'iconmanagement':
+                initIconmanagement();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -1007,6 +1010,109 @@ function initCheckListManage(){
        },
     });
 }
+
+function initIconmanagement() {
+    // $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+    //     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    // } );
+
+    $('#icon-management').DataTable({
+        "processing": true,
+        "select": true,
+        "bDestroy": true,
+        "scrollX": true,
+        "scrollCollapse": true,
+        "pageLength": 5,
+        "lengthMenu": [ 5, 10, 25, 50, 75, 100 ],
+        "orderMulti": true,
+        "retrieve": true,
+        "serverSide": true,
+        "ajax": {
+            url: "/iconmanagement/initDatatable"
+        },
+        "data": [],
+        "columns": [
+            {
+                data: "no",
+                name: "no",
+                title: "STT",
+                className: 'text-center',
+            }, 
+            {
+                data: 'icon_url',
+                name: "icon_url",
+                title: "Hình ảnh",
+                render: function(data, type, row) {
+                    return `<img src="${data}" style="width:40px">`;
+                },
+                className: 'text-center',
+            },
+            {
+                data: 'productNameVi',
+                name: "productNameVi",
+                title: "Tên sản phẩm - VN",
+                className: 'text-center',
+            },
+            {
+                data: 'productNameEn',
+                name: "productNameEn",
+                title: "Tên sản phẩm - EN",
+                className: 'text-center',
+            },
+            {
+                data: "status",
+                name: "status",
+                title: "Trạng thái",
+                render: function(data, type, row) {
+                    var html = '';
+                    if(!row['status']) {
+                        html = `<div class="df-switch">
+                                    <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off" disabled>
+                                        <div class="inner-handle"></div>
+                                        <div class="handle"></div>
+                                    </button>
+                                </div>`;
+                    }
+                    else {
+                        html = `<div class="df-switch">
+                                    <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
+                                        <div class="inner-handle"></div>
+                                        <div class="handle"></div>
+                                    </button>
+                                </div>`;
+                    }
+                    return html;
+                },
+                className: 'text-center',
+            },
+            {
+                title:'Action',
+                data:'Id',
+                render: function(data, type, row){
+                    var tmp = JSON.stringify(row);
+                    return `<div>
+                                <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onclick='viewUserInfo(`+tmp+`)' data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                                <a style="float: left; margin-right: 5px" href="#" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
+                                <button style="float: left; type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
+                            </div>`;
+                },
+                className: 'text-center',
+                "sortable": false
+            }
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#icon-management-home').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500
+    });
+}
+
 function badgeArrayView(arrayInput) {
     var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];
     var count_badge = 0;
