@@ -56,7 +56,6 @@ class BannerManageController extends MY_Controller
             "created_by" => null,
             "is_highlight" => false,
         ];
-        // dd($dataResponse);
         if(isset($dataResponse->banner_id)){
             $bannerObj->bannerId = $dataResponse->banner_id;
             $bannerObj->title_vi = $dataResponse->banner_title;
@@ -148,8 +147,9 @@ class BannerManageController extends MY_Controller
         }else{
             $updateParams['isHighlight'] = false;
         };
-        
+        // my_debug($updateParams, false);
         $update_banner_response = $newsEventService->updateBanner($updateParams);
+        // dd($update_banner_response);
         if(isset($update_banner_response->statusCode) && $update_banner_response->statusCode == 0){
             return redirect()->route('bannermanage.index')->withSuccess('Success!');
         }
@@ -215,7 +215,6 @@ class BannerManageController extends MY_Controller
             $createParams['isHighlight'] = true;
         };
 
-        // dd($createParams);
         $create_banner_response = $newsEventService->addNewBanner($createParams);
         if(!empty($create_banner_response->data)){
             return redirect()->route('bannermanage.index')->withSuccess('Success!');
@@ -249,7 +248,6 @@ class BannerManageController extends MY_Controller
                 'publicDateEnd' => empty($request->public_date_to) ? null : Carbon::parse($request->public_date_to)->format('Y-m-d H:i:s')
             ];
             $responseCallAPIGetListBanner = $newsEventService->getListbanner($param);
-            // dd($responseCallAPIGetListBanner);
             if(empty($responseCallAPIGetListBanner)){
                 $responseCallAPIGetListBanner = (object)[];
             };

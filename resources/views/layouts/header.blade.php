@@ -35,7 +35,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('/custom_css/style.css')}}">
-    <style>
+    {{-- <style>
     .content-wrapper{
         background-image: url('{{config('platform_config.background.url')}}');
          background-repeat: {{ config('platform_config.background.repeat') }};
@@ -44,7 +44,7 @@
         background-position: {{config('platform_config.background.position')}}; 
         background-color: {{ config('platform_config.background.color') }};
     }
-    </style>
+    </style> --}}
     <script type="text/javascript">
         var base_url = '{{url('/')}}';
     </script>

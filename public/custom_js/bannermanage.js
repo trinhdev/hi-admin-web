@@ -166,6 +166,7 @@ function callApiGetListBanner(show_from = null, show_to = null, bannerType = nul
         bannerType: bannerType,
         _token: $('meta[name="csrf-token"]').attr('content')
     };
+
     callAPIHelper("/bannermanage/initDatatable", uploadParam, 'GET', initBannerManage);
 }
 

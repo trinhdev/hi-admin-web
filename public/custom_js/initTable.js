@@ -685,6 +685,7 @@ function initHidePaymentLogs() {
     });
 }
 function initBannerManage(response){
+    console.log(response);
     var dataTable = [];
     var flagAcl = false;
     var toDay = new Date();
@@ -826,6 +827,7 @@ function initBannerManage(response){
             {
                 title: 'Action',
                 render: function(data, type, row){
+                    console.log(row.bannerType);
                     var bannerType = row.bannerType;
                     if(bannerType == 'highlight'){
                         bannerType = 'bannerHome';
