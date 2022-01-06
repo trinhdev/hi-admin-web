@@ -17,7 +17,7 @@ class ModemService {
         $subDomain          = (!empty($api_info_config['SUB_DOMAIN'])) ? implode('/', $api_info_config['SUB_DOMAIN']) . '/' : ''; 
         $url                = $url = $baseUrl . $subDomain . 'GetContractByContractNo';
         $token              = $api_info_config['CLIENT_KEY'] . '::' . md5($api_info_config['CLIENT_KEY'] . '::' . $api_info_config['SECRET_KEY'] . date('Y-d-m'));
-        $response           = $this->my_sendRequest($url, ['contractNo' => $contractNo], $token);
+        $response           = self::my_sendRequest($url, ['contractNo' => $contractNo], $token);
         return $response;
     }
 
@@ -27,11 +27,11 @@ class ModemService {
         $subDomain          = (!empty($api_info_config['SUB_DOMAIN'])) ? implode('/', $api_info_config['SUB_DOMAIN']) . '/' : '';
         $url                = $url = $baseUrl . $subDomain . 'modem-info';
         $token              = md5($api_info_config['CLIENT_KEY'] . '::' . $api_info_config['SECRET_KEY'] . date('Y-d-m'));
-        $response           = $this->my_sendRequest($url, array('accessToken' => $token, 'contractId'=> $contractId));
+        $response           = self::my_sendRequest($url, array('accessToken' => $token, 'contractId'=> $contractId));
         return $response;
     }
 
-    function my_sendRequest($url, $params, $token = null, $headerArray = array(),$method = null)
+    public function my_sendRequest($url, $params, $token = null, $headerArray = array(),$method = null)
     {
         $headers[] = "Content-Type: application/json";
         $headers[] = (!empty($token)) ? "Authorization: " . $token : null;
@@ -63,11 +63,19 @@ class ModemService {
         $output = curl_exec($ch);
         $timeRun = microtime(true) - $time;
         if (curl_errno($ch)) {
-            dd(curl_error($ch));
-            // my_debug($url.'</br>'.curl_error($ch));
+            // dd(curl_error($ch));
+            self::my_debug_private($url.'</br>'.curl_error($ch));
         }
         curl_close($ch);
         // my_debug($output.'</br>'.$url);
         return json_decode($output);
+    }
+
+    public function my_debug_private($var, $is_die = true)
+    {
+        echo '<pre>' . print_r($var, true) . '</pre>';
+        if ($is_die) {
+            die();
+        }
     }
 }
