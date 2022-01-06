@@ -8,17 +8,17 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 style="float: left; margin-right: 20px" class="uppercase">Banner Manage</h1>
+                    <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Banner</h1>
                     @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
                     <a href="{{ route('bannermanage.create') }}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus"></i> Add new Banner
+                        <i class="fas fa-plus"></i> Thêm Mới
                     </a>
                     @endif
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Banner Manage</li>
+                        <li class="breadcrumb-item active">Quản lý Banner</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -35,10 +35,10 @@
                         <div class="col-md-4">
                             <div class="input-group mb-4">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">Show At:</div>
+                                    <div class="input-group-text">Vị Trí Hiển Thị: </div>
                                 </div>
                                 <select class="form-control" name="position" id="show_at" placeholder="Show at" onchange="filterData()">
-                                    <option value=''>All</option>
+                                    <option value=''>Tất Cả</option>
                                     @if(!empty($list_type_banner))
                                     @foreach($list_type_banner as $type)
                                          <option value="{{$type->id}}">&#8920; {{ $type->id}} &#x22D9;: {{$type->name}}</option>
@@ -50,7 +50,7 @@
                         <div class="col-md-4">
                             <div class="input-group mb-4">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">Show From:</div>
+                                    <div class="input-group-text">Từ: </div>
                                 </div>
                                 <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
                             </div>
@@ -58,7 +58,7 @@
                         <div class="col-md-4">
                             <div class="input-group mb-4">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">Show To:</div>
+                                    <div class="input-group-text">Đến: </div>
                                 </div>
                                 <input type="datetime-local" name="show_to" class="form-control" id="show_to" placeholder="Date To" onchange="filterData()" />
                             </div>

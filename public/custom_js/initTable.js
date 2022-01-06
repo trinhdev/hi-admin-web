@@ -707,6 +707,7 @@ function initBannerManage(response){
             date_created : '',
             date_created : '',
             created_by : '',
+            modified_by : '',
             is_banner_expired : false
         };
         if(element.banner_id != undefined){
@@ -734,12 +735,13 @@ function initBannerManage(response){
             subData.created_by = element.created_by != undefined ? element.created_by : '';
             subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '';
             subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : '';
+            subData.modified_by = element.modified_by != undefined ? element.modified_by : '';
         }
         dataTable.push(subData);
     });
     var columnData =  [
         {
-            title:'No.',
+            title:'STT',
             className:'text-center',
             render: function(data,type, row ,meta){
                 return `<span class ="infoRow" data-type="`+row.bannerType+`" data-id = "`+row.bannerId+`">`+ parseInt(meta.row + 1)+`</span>`;
@@ -748,11 +750,11 @@ function initBannerManage(response){
         },
         {
             data :'title_vi',
-            title: "Title"
+            title: "Tiêu Đề"
         },
         {
             data :'image',
-            title: "Image",
+            title: "Ảnh Banner",
             "render": function(data, type, row) {
                 return `<img src="`+data+`"  style="width:150px" onerror="this.onerror=null;this.src='/images/img_404.svg';"  onclick ="window.open('`+data+`').focus()"/>`;
             },
@@ -768,20 +770,20 @@ function initBannerManage(response){
         // },
         {
             data:'bannerType',
-            title: 'Banner Type',
+            title: 'Loại Banner',
             className:'text-center'
         },
         {
             data:'public_date_start',
-            title: 'Public Date Start'
+            title: 'Ngày Hiển Thị'
         },
         {
             data:'public_date_end',
-            title: 'Public Date End'
+            title: 'Ngày kết thúc'
         },
         {
             data:'is_banner_expired',
-            title: 'Status',
+            title: 'Trạng Thái',
             render: function(data, type, row){
                 let is_show = (data) ? 'Hide' : 'Show';
                 let badge = (data) ? 'badge badge-danger' : 'badge badge-success';
@@ -791,7 +793,7 @@ function initBannerManage(response){
         },
         {
             data:'ordering',
-            title: 'Ordering',
+            title: 'Độ ưu tiên',
             "render": function(data, type, row) {
                 let disable = row.is_banner_expired ? 'disabled' : '';
                 return `<input type="number" onchange="updateOrdering(this)" style="width:80%" value="`+data+`" `+ disable +`/>`;
@@ -801,16 +803,20 @@ function initBannerManage(response){
         },
         {
             data:'view_count',
-            title: 'View Count',
+            title: 'Số lượt view',
             className: 'text-center'
         },
         {
             data: 'date_created',
-            title: 'Created at'
+            title: 'Ngày tạo'
         },
         {
             data: 'created_by',
-            title: 'Created By'
+            title: 'Người Tạo'
+        },
+        {
+            data: 'modified_by',
+            title : 'Người cập nhật'
         }
     ];
 
