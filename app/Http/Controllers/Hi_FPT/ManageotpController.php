@@ -21,50 +21,7 @@ class ManageotpController extends MY_Controller
     }
     public function index()
     {
-        if(empty($request->input)){
-            return view('otp.index');
-        }
-        
-        $executed = RateLimiter::attempt(
-            'request-otp-with-phone' . $request['phone'],
-            $perMinute = 2,
-            function() {
-                
-            }
-        );
-        if (! $executed) {
-            abort(419);
-        }
-
-        $validated = $request->validate([
-            'phone' => 'required|digits_between:10,11',
-        ]);
-
-        switch($request->action) {
-            case 'get_otp':
-                $hiCustomer = new HdiCustomer();
-                $data = $hiCustomer->postOTPByPhone('/help-tool/otp-by-phone', ["phone" => $request["phone"]]);
-                if(!empty($data['status'])) {
-                    $result = ['success' => 'success', 'html' => $data['data']['otp']];
-                }
-                else {
-                    $result = ['error' => 'error', 'html' => $data['message']];
-                }
-                break;
-            case 'reset_otp':
-                $hiCustomer = new HdiCustomer();
-                $data = $hiCustomer->postResetOTPByPhone('/help-tool/reset-otp', ["phone" => $request["phone"]]);
-                if(!empty($data['status'])) {
-                    $result = ['success' => 'success', 'html' => $data['message']];
-                }
-                else {
-                    $result = ['error' => 'error', 'html' => $data['message']];
-                }
-                break;
-        }
-        $this->addToLog($request);
-        $result['phone'] = $request["phone"];
-        return redirect()->route('manageotp.index')->with($result);
+        return view('otp.index');
     }
 
     public function handle(Request $request) {
@@ -106,8 +63,6 @@ class ManageotpController extends MY_Controller
                 break;
         }
         $this->addToLog($request);
-        $result['phone'] = $request["phone"];
-        return view('otp.index')->with($result);
-        // return redirect()->route('manageotp.index')->with($result);
+        return redirect()->route('manageotp.index')->with($result);
     }
 }
