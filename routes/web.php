@@ -114,7 +114,7 @@ Route::group([
         Route::namespace('Hi_FPT')->group(function () {
             Route::prefix('manageotp')->group(function () {
                 Route::get('/','ManageotpController@index')->name('manageotp.index');
-                Route::get('/handle','ManageotpController@handle')->name('manageotp.handle');
+                Route::get('/{handle?}','ManageotpController@handle')->name('manageotp.handle');
             });
             Route::prefix('hidepayment')->group(function () {
                 Route::get('/','HidepaymentController@index')->name('hidepayment.index');
