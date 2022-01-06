@@ -833,7 +833,6 @@ function initBannerManage(response){
             {
                 title: 'Action',
                 render: function(data, type, row){
-                    console.log(row.bannerType);
                     var bannerType = row.bannerType;
                     if(bannerType == 'highlight'){
                         bannerType = 'bannerHome';

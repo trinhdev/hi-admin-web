@@ -49,7 +49,6 @@ async function handleUploadImage(_this, event) {
             file:file,
             _token: $('meta[name="csrf-token"]').attr('content')
         };
-        console.log(uploadParam);
         uploadFile(file, successCallUploadImage, {
             'img_tag': img_tag,
             'input_tag': _this,

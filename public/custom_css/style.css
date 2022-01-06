@@ -130,3 +130,6 @@
   visibility: visible;
   opacity: 1;
 }
+.btn-light{
+  border-color: #2e2a2a73;
+}
