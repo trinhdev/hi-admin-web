@@ -32,9 +32,10 @@ class ManageotpController extends MY_Controller
                 
             }
         );
-        // if (! $executed) {
-        //     abort(419);
-        // }
+        
+        if (! $executed) {
+            abort(419);
+        }
 
         $validated = $request->validate([
             'phone' => 'required|digits_between:10,11',
