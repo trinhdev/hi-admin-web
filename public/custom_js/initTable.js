@@ -869,7 +869,7 @@ function initBannerManage(response) {
         },
         {
             data: 'view_count',
-            title: 'Số lượt view',
+            title: 'Số lượt click',
             className: 'text-center'
         },
         {
@@ -949,7 +949,7 @@ function initBannerManage(response) {
             { width: '10%', targets: 5 }, // 7 public date end
             { width: '3%', targets: 6 }, // is expired
             { width: '7%', targets: 7 }, // 8 ordering
-            { width: '3%', targets: 8 }, // 9 view count
+            { width: '5%', targets: 8 }, // 9 view count
             { width: '10%', targets: 9 }, // 10 create at
             { width: '10%', targets: 10 }, // 11 create by
         ],
