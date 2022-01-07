@@ -63,7 +63,6 @@ async function handleUploadImage(_this, event) {
 }
 
 function successCallUploadImage(response, passingdata) {
-    console.log(response);
     if (response.statusCode == 0 && response.data != null) {
         passingdata.img_tag.src = URL.createObjectURL(passingdata.file);
         document.getElementById(passingdata.img_tag.id + '_name').value = response.data.uploadedImageFileName;

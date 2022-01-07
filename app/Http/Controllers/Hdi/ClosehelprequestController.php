@@ -16,16 +16,24 @@ class ClosehelprequestController extends MY_Controller
         $this->title = 'Close Request';
         parent::__construct();
     }
-    public function index()
+    public function index(Request $request)
     {
-        return view('helprequest.index');
+        if(!isset($request->contractNo)){
+            return view('helprequest.index');
+        };
+        $resultData = $this->getListReportByContract($request);
+        if(isset($resultData['error'])){
+            return view('helprequest.index');
+        };
+        $data = [
+            'result' => $resultData['data'],
+            'contract' => $resultData['contract']
+        ];
+        return view('helprequest.index')->with(['data'=>$data]);
     }
 
     public function getListReportByContract(Request $request)
     {
-        $request->validate([
-            'contractNo' =>'required'
-        ]);
         $this->addToLog($request);
         $result = [];
         $contractService = new ContractService();
@@ -39,13 +47,11 @@ class ClosehelprequestController extends MY_Controller
             if(empty($list_report_response->data)){
                 $result['error'] = "Không có yêu cầu hỗ trợ nào!";
             }else{
-                // continue
                 $result['data'] = $list_report_response->data;
                 $result['contract'] = $request->contractNo;
             }
         }
         return $result;
-        // return view('helprequest.index')->with(['listReport'=>$list_report_response->data]);
     }
 
     public function closeRequest(Request $request)

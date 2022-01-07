@@ -49,6 +49,9 @@ $(document).ready(function () {
             case 'iconmanagement':
                 initIconmanagement();
                 break;
+            case 'closehelprequest':
+                initCloseHelpReqest();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -751,7 +754,6 @@ function initHidePaymentLogs() {
     });
 }
 function initBannerManage(response) {
-    console.log(response);
     var dataTable = [];
     var flagAcl = false;
     var toDay = new Date();
@@ -1047,7 +1049,6 @@ function initSmsWorld() {
 };
 
 function initCheckListManage() {
-    console.log(listCheckList);
     var columnData = [
         // {
         //     title:'No.',
@@ -1197,6 +1198,49 @@ function initIconmanagement() {
         },
         searchDelay: 500
     });
+}
+
+function initCloseHelpReqest(){
+    console.log(dataCloseHelpRequest);
+    var columnData = [
+        {
+            title: 'No.',
+            render: function (data, type, row, meta) {
+                return meta.row + 1;
+            },
+        },
+        {
+            data: 'reportId',
+            title: 'Report Id'
+        },
+        {
+            title: 'Report Time',
+            render : function(data,type,row,meta){
+                return row.stepStatus[0].time;
+            }
+        },
+        {
+            data:'reportName',
+            title:'Report Name'
+        },
+        {
+            data:'note',
+            title:'Note'
+        }
+    ]
+    $('#closeHelpRequest_table').dataTable({
+        data: dataCloseHelpRequest.result,
+        "processing": true,
+        "select": true,
+        responsive: true,
+        "bDestroy": true,
+        "scrollX": true,
+        "columns": columnData,
+        "language": {
+            "emptyTable": "No Record..."
+        },
+    });
+
 }
 
 function badgeArrayView(arrayInput) {
