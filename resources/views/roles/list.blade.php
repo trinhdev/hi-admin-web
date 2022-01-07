@@ -32,6 +32,7 @@
                     <table id="rolesTable" class="display nowrap" style="width:100%">
                         <thead>
                         <tr>
+                            <th>No.</th>
                             <th>ID</th>
                             <th>Roles name</th>
                             <th>Created by</th>
