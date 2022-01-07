@@ -851,7 +851,7 @@ function initBannerManage(response) {
             data: 'is_banner_expired',
             title: 'Trạng Thái',
             render: function (data, type, row) {
-                let is_show = (data) ? 'Hide' : 'Show';
+                let is_show = (data) ? 'Ẩn' : 'Hiện';
                 let badge = (data) ? 'badge badge-danger' : 'badge badge-success';
                 return `<h4 class="` + badge + `">` + is_show + `</h4>`;
             },
@@ -897,7 +897,7 @@ function initBannerManage(response) {
     if (flagAcl) {
         columnData.push(
             {
-                title: 'Action',
+                title: 'Hành Động',
                 render: function (data, type, row) {
                     var bannerType = row.bannerType;
                     if (bannerType == 'highlight') {
@@ -914,7 +914,7 @@ function initBannerManage(response) {
     } else {
         columnData.push(
             {
-                title: 'Action',
+                title: 'Hành Động',
                 render: function (data, type, row) {
                     if (row.bannerType === 'event_normal') return "";
                     return `<div></div>`;
@@ -948,11 +948,24 @@ function initBannerManage(response) {
             { width: '10%', targets: 4 }, // 6 public date start
             { width: '10%', targets: 5 }, // 7 public date end
             { width: '3%', targets: 6 }, // is expired
-            { width: '5%', targets: 7 }, // 8 ordering
+            { width: '7%', targets: 7 }, // 8 ordering
             { width: '3%', targets: 8 }, // 9 view count
             { width: '10%', targets: 9 }, // 10 create at
             { width: '10%', targets: 10 }, // 11 create by
         ],
+        language: {
+            "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
+            "zeroRecords": "Không có dữ liệu",
+            "info": "Trang thứ _PAGE_ của _PAGES_",
+            "infoEmpty": "Không có dữ liệu",
+            "paginate": {
+                "first":      "Đầu",
+                "last":       "Cuối",
+                "next":       "Sau",
+                "previous":   "Trước"
+            },
+            "search":         "Tìm kiếm:",
+        }
         // "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
         //     if(data.is_banner_expired){
         //         $('td', row).css('background-color', 'rgb(255 108 94 / 51%)');

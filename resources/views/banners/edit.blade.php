@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">{{ (!empty($user)) ? 'EDIT' : 'ADD NEW' }} BANNER</h1>
+                    <h1 class="m-0">{{ (!empty($user)) ? 'CHỈNH SỬA' : 'TẠO MỚI' }} BANNER</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('bannermanage.index')}}">Banner</a></li>
-                        <li class="breadcrumb-item active">{{ (!empty($user)) ? 'edit' : 'create' }}</li>
+                        <li class="breadcrumb-item active">{{ (!empty($user)) ? 'chỉnh sửa' : 'Tạo mới' }}</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -74,7 +74,7 @@
                                     <div class="form-group" id="path_2" {{ ($isBannerPromotion) ? '':'hidden' }}>
                                         <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this,event)" />
                                         <img id="img_path_2" src="{{ ($isBannerPromotion) ? $banner->thumb_image :asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
-                                        <span class="warning-alert" id="path_2_required_alert" hidden>This field is required!</span>
+                                        <span class="warning-alert" id="path_2_required_alert" hidden>Dữ liệu này bắt buộc!</span>
                                          <input name="img_path_2_name" id="img_path_2_name" value="" hidden/>
                                     </div>
                                     <div class="modal fade" id="img_view_modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -141,7 +141,7 @@
                                             <div class="form-group" id="direction_url" >
                                                 <label for="direction_url">URL</label>
                                                 <input type="text" name="direction_url" class="form-control" value="{{ !empty($banner)? $banner->direction_url:''}}">
-                                                <span class="warning-alert" id="direction_url_required_alert" hidden>This field is required!</span>
+                                                <span class="warning-alert" id="direction_url_required_alert" hidden>Dữ liệu này bắt buộc!</span>
                                             </div>
                                         </div>
                                     </div>
@@ -154,8 +154,8 @@
                                 </div>
                             </div>
                             <div class="card-footer" style="text-align: center">
-                                <a href="{{ route('bannermanage.index') }}" type="button" class="btn btn-default">Cancel</a>
-                                <button type="submit" class="btn btn-info" disabled>Save</button>
+                                <a href="{{ route('bannermanage.index') }}" type="button" class="btn btn-default">Thoát</a>
+                                <button type="submit" class="btn btn-info" disabled>Lưu</button>
                             </div>
                         </div>
                     </form>
