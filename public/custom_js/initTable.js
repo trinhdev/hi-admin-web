@@ -303,7 +303,7 @@ function initUser() {
 function initGroup() {
     $('#groupTable').DataTable({
         "order": [
-            [0, "desc"]
+            [1, "desc"]
         ],
         responsive: true,
         searchDelay: 500,
@@ -317,12 +317,12 @@ function initGroup() {
         },
         searchDelay: 500,
         columns: [
-            // {
-            //     title: 'No.',
-            //     render: function (data, type, row, meta) {
-            //         return meta.row + meta.settings._iDisplayStart + 1;
-            //     },
-            // },
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
             {
                 data: 'id'
             },
@@ -348,34 +348,33 @@ function initGroup() {
 function initRoles() {
     $('#rolesTable').DataTable({
         "order": [
-            [0, "desc"]
+            [1, "desc"]
         ],
         responsive: true,
-        searchDelay: 500,
         processing: true,
         "bDestroy": true,
+        "dataSrc": "tableData",
         serverSide: true,
         "scrollX": true,
         retrieve: true,
         ajax: {
             url: base_url + '/roles/getList',
         },
-        searchDelay: 500,
         columns: [
-            // {
-            //     title: 'No.',
-            //     render: function (data, type, row, meta) {
-            //         return meta.row + meta.settings._iDisplayStart + 1;
-            //     },
-            // },
             {
-                data: 'id'
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
             },
             {
-                data: 'role_name'
+                data: 'id',
             },
             {
-                data: 'created_by'
+                data: 'role_name',
+            },
+            {
+                data: 'created_by',
             },
             {
                 data: "action",
@@ -384,9 +383,13 @@ function initRoles() {
                 sortable: false
             }
         ],
+        "initComplete": function (setting, json) {
+            $('#rolesTable').show();
+        },
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
         },
+        searchDelay: 500,
     });
 }
 
@@ -407,12 +410,12 @@ function initLogActivities() {
         },
         searchDelay: 500,
         columns: [
-            // {
-            //     title: 'No.',
-            //     render: function (data, type, row, meta) {
-            //         return meta.row + meta.settings._iDisplayStart + 1;
-            //     },
-            // },
+            {
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
             {
                 data: 'id',
             },

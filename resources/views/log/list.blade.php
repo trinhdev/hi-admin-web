@@ -52,6 +52,7 @@
                 <table id="logTable" class="display" style="width:100%;word-wrap:no-wrap;">
                     <thead>
                         <tr>
+                            <th>No.</th>
                             <th>ID</th>
                             <th>User Id</th>
                             <th>User Name</th>
