@@ -180,7 +180,6 @@ function getDetailBanner(_this) {
     let infoRow = row.querySelector('.infoRow');
     window.location.href = `/bannermanage/edit/` + infoRow.getAttribute('data-id') + `/` + infoRow.getAttribute('data-type');
 }
-
 function changeFormatDateTimeLocal(dateInput) {
     var date = new Date(dateInput);
     var str = "";
@@ -228,4 +227,18 @@ function changePublicDateTime(dateTimeInput){
 
     show_from.attr("max",show_to.val());
     show_to.attr("min",show_from.val());
+}
+
+function viewBanner(_this){
+    let row = _this.closest('tr');
+    let infoRow = row.querySelector('.infoRow');
+
+    callAPIHelper("/bannermanage/view/" + infoRow.getAttribute('data-id') + `/` + infoRow.getAttribute('data-type'),null,'GET',successGetViewBanner);
+}
+
+function successGetViewBanner(response){
+    console.log(response);
+    if(response.error != undefined){
+        showError(response.error)
+    };
 }

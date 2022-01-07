@@ -26,6 +26,75 @@ class BannerManageController extends MY_Controller
         $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
         return view('banners.index')->with(['list_type_banner' => $listTypeBanner]);
     }
+    public function view(Request $request, $bannerId, $bannerType){
+        $newsEventService = new NewsEventService();
+        $result = [];
+        $listTargetRoute = $newsEventService->getListTargetRoute();
+        $listTargetRoute = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
+
+        $listTypeBanner = $newsEventService->getListTypeBanner();
+        $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
+
+        $getDetailBanner_response = $newsEventService->getDetailBanner($bannerId,$bannerType);
+        if(!isset($getDetailBanner_response->statusCode) || $getDetailBanner_response->statusCode != 0){
+            $result['error'] = $getDetailBanner_response->message;
+            return $result;
+            // return redirect()->route('bannermanage.index')->withErrors($getDetailBanner_response->message);
+        }
+        $dataResponse = $getDetailBanner_response->data;
+        $bannerObj = (object)[
+            "bannerId" =>null,
+            "bannerType" => null,
+            "public_date_start" => null,
+            "public_date_end" => null,
+            "title_vi" => null,
+            "title_en" => null,
+            "direction_id" => null,
+            "direction_url" => null,
+            "image" => null,
+            "thumb_image" => null,
+            "view_count" => 0,
+            "date_created" => null,
+            "date_created"    =>null,
+            "created_by" => null,
+            "is_highlight" => false,
+        ];
+        if(isset($dataResponse->banner_id)){
+            $bannerObj->bannerId = $dataResponse->banner_id;
+            $bannerObj->title_vi = $dataResponse->banner_title;
+            $bannerObj->bannerType = $dataResponse->custom_data;
+            $bannerObj->image = $dataResponse->image_url;
+            $bannerObj->view_count = $dataResponse->view_count;
+            $bannerObj->direction_id = $dataResponse->direction_id;
+            $bannerObj->direction_url = $dataResponse->direction_url;
+            $bannerObj->date_created = $dataResponse->date_created;
+            
+        }else{
+            $bannerObj->bannerId = $dataResponse->event_id;
+            $bannerObj->title_vi = $dataResponse->title_vi;
+            $bannerObj->bannerType = ($dataResponse->event_type == "highlight" ) ? 'bannerHome' : $dataResponse->event_type;
+            $bannerObj->image = !empty($dataResponse->image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->image : null;
+            $bannerObj->view_count = $dataResponse->view_count;
+            // $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
+            $bannerObj->direction_id = $dataResponse->direction_id;
+            $bannerObj->direction_url = $dataResponse->event_url;
+            $bannerObj->date_created = $dataResponse->date_created;
+
+            $bannerObj->title_en = $dataResponse->title_en;
+            $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->thumb_image : null;
+            $bannerObj->created_by = $dataResponse->created_by;
+            $bannerObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
+            $bannerObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
+            $bannerObj->is_highlight = (boolean) $dataResponse->is_highlight;
+        }
+        $result = [
+            'list_target_route'=>$listTargetRoute,
+            'list_type_banner' => $listTypeBanner,
+            'banner'=>$bannerObj
+        ];
+        return $result;
+    }
+
     public function edit(Request $request, $bannerId, $bannerType){
         $newsEventService = new NewsEventService();
         $listTargetRoute = $newsEventService->getListTargetRoute();
@@ -240,7 +309,6 @@ class BannerManageController extends MY_Controller
 
     public function initDatatable(Request $request){
             $newsEventService = new NewsEventService();
-            
             // $toDay = Carbon::parse( date('Y-m-d h:i:s'))->format('Y-m-d\TH:i');
             $param = [
                 'bannerType' => empty($request->bannerType) ? null : $request->bannerType,

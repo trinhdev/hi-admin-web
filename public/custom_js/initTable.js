@@ -753,6 +753,8 @@ function initHidePaymentLogs() {
 function initBannerManage(response) {
     console.log(response);
     var dataTable = [];
+    var activeBanner = [];
+    var unactiveBanner = [];
     var flagAcl = false;
     var toDay = new Date();
     var stt = 1;
@@ -791,7 +793,11 @@ function initBannerManage(response) {
             subData.bannerId = element.event_id;
             subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
             subData.bannerType = element.event_type != undefined ? element.event_type : '';
-            subData.image = element.image != undefined ? element.image : '';
+            if(subData.bannerType === 'promotion'){
+                subData.image = element.thumb_image != undefined ? (URL_STATIC+'/upload/images/event/'+element.thumb_image) : element.image;
+            }else{
+                subData.image = element.image != undefined ? element.image : '';
+            }
             subData.ordering = element.ordering != undefined ? element.ordering_on_home : '-1';
             subData.view_count = element.view_count != undefined ? element.view_count : '0';
             subData.direction_url = element.event_url != undefined ? element.event_url : '';
@@ -803,8 +809,20 @@ function initBannerManage(response) {
             subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : '';
             subData.modified_by = element.modified_by != undefined ? element.modified_by : '';
         }
-        dataTable.push(subData);
+        
+        (subData.is_banner_expired) ? unactiveBanner.push(subData) : activeBanner.push(subData);
+        // dataTable.push(subData);
     });
+    activeBanner = activeBanner.sort(function(first, seccond){
+        return new Date(seccond.date_created) - new Date(first.date_created);
+    });
+    unactiveBanner.sort(function(first, seccond){
+        return new Date(first.date_created) - new Date(seccond.date_created);
+    });
+    dataTable = activeBanner.concat(unactiveBanner);
+    console.log(activeBanner);
+    // dataTable.push(activeBanner);
+    // dataTable.push(unactiveBanner);
     var columnData = [
         {
             title: 'STT',
@@ -851,7 +869,7 @@ function initBannerManage(response) {
             data: 'is_banner_expired',
             title: 'Trạng Thái',
             render: function (data, type, row) {
-                let is_show = (data) ? 'Ẩn' : 'Hiện';
+                let is_show = (data) ? 'Hết hạn' : 'Còn hạn';
                 let badge = (data) ? 'badge badge-danger' : 'badge badge-success';
                 return `<h4 class="` + badge + `">` + is_show + `</h4>`;
             },
@@ -905,9 +923,12 @@ function initBannerManage(response) {
                     };
                     var exists = 0 != $('#show_at option[value=' + bannerType + ']').length;
                     if (exists === false) return "";
-                    return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
+                //     return `
+                //     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
+                //    <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
+                //     `;
+                return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
                 },
-                className: 'text-center',
                 "sortable": false
             }
         );
@@ -937,7 +958,7 @@ function initBannerManage(response) {
         "language": {
             "emptyTable": "No Record..."
         },
-        "order": [[9, "desc"]],
+        // "order": [[9, "desc"]],
         columnDefs: [
             { width: '5%', targets: 0 }, //stt
             // { width: '10%', targets: 1 }, // 1 bannerId
@@ -951,12 +972,12 @@ function initBannerManage(response) {
             { width: '7%', targets: 7 }, // 8 ordering
             { width: '5%', targets: 8 }, // 9 view count
             { width: '10%', targets: 9 }, // 10 create at
-            { width: '10%', targets: 10 }, // 11 create by
+            { width: '7%', targets: 10 }, // 11 create by
         ],
         language: {
             "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
             "zeroRecords": "Không có dữ liệu",
-            "info": "Trang thứ _PAGE_ của _PAGES_",
+            "info": "Trang _PAGE_ / _PAGES_ của _TOTAL_ dữ liệu",
             "infoEmpty": "Không có dữ liệu",
             "paginate": {
                 "first":      "Đầu",
