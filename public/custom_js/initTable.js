@@ -817,12 +817,9 @@ function initBannerManage(response) {
         return new Date(seccond.date_created) - new Date(first.date_created);
     });
     unactiveBanner.sort(function(first, seccond){
-        return new Date(first.date_created) - new Date(seccond.date_created);
+        return new Date(seccond.date_created) - new Date(first.date_created);
     });
     dataTable = activeBanner.concat(unactiveBanner);
-    console.log(activeBanner);
-    // dataTable.push(activeBanner);
-    // dataTable.push(unactiveBanner);
     var columnData = [
         {
             title: 'STT',
@@ -923,11 +920,11 @@ function initBannerManage(response) {
                     };
                     var exists = 0 != $('#show_at option[value=' + bannerType + ']').length;
                     if (exists === false) return "";
-                //     return `
-                //     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
-                //    <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
-                //     `;
-                return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
+                    return `
+                    <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
+                   <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
+                    `;
+                // return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
                 },
                 "sortable": false
             }
@@ -965,7 +962,7 @@ function initBannerManage(response) {
             { width: '10%', targets: 1 }, // 2 Title
             { width: '15%', targets: 2 }, // 3 Image
             // { width: '10%', targets: 3 }, // 4 direction URL
-            { width: '1%', targets: 3 }, // 5 Banner Type,
+            { width: '5%', targets: 3 }, // 5 Banner Type,
             { width: '10%', targets: 4 }, // 6 public date start
             { width: '10%', targets: 5 }, // 7 public date end
             { width: '3%', targets: 6 }, // is expired
@@ -973,6 +970,8 @@ function initBannerManage(response) {
             { width: '5%', targets: 8 }, // 9 view count
             { width: '10%', targets: 9 }, // 10 create at
             { width: '7%', targets: 10 }, // 11 create by
+            { width: '7%', targets: 11 }, // 11 create by
+            { width: '10%', targets: 12 }, // 12 Action
         ],
         language: {
             "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",

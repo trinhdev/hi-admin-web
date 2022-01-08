@@ -74,8 +74,9 @@
                                     <div class="form-group" id="path_2" {{ ($isBannerPromotion) ? '':'hidden' }}>
                                         <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this,event)" />
                                         <img id="img_path_2" src="{{ ($isBannerPromotion) ? $banner->thumb_image :asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
+                                        <span><i>&nbsp; &nbsp;&nbsp;(* đây là ảnh hiển thị ở Home)</i></span>
                                         <span class="warning-alert" id="path_2_required_alert" hidden>Dữ liệu này bắt buộc!</span>
-                                         <input name="img_path_2_name" id="img_path_2_name" value="" hidden/>
+                                        <input name="img_path_2_name" id="img_path_2_name" value="" hidden/>
                                     </div>
                                     <div class="modal fade" id="img_view_modal" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog modal-xl">

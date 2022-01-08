@@ -237,8 +237,16 @@ function viewBanner(_this){
 }
 
 function successGetViewBanner(response){
-    console.log(response);
     if(response.error != undefined){
         showError(response.error)
-    };
+    }else{
+        console.log(response);
+        var modalBody = $(showDetailBanner_Modal).find('#showDetailBanner_Modal_body');
+        var html = '';
+        // for (const [key, value] of Object.entries(jsonData)) {
+        //         html+=`<div><b><i>`+ key+`:</b></i>     ` +value+`</div>`;
+        // }
+        // $(modalBody).html(html)
+        $('#showDetailBanner_Modal').modal('toggle');
+    }
 }
