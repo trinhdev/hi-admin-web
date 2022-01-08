@@ -10,22 +10,22 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="title">Tiêu đề tiếng Việt</label>
-                                <input type="text" name="title_vi" class="form-control" disabled value="Yêu cầu phục vụ">
+                                <input type="text" name="title_vi" class="form-control" id="BannerDetail_titleVi" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="title">Tiêu đề tiếng Anh</label>
-                                <input type="text" name="title_en" class="form-control" value="Yêu cầu phục vụ" disabled>
+                                <input type="text" name="title_en" class="form-control" id="BannerDetail_titleEn" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="bannerType">Vị trí hiển thị</label>
-                                <input  type="text" name="title_en" class="form-control" value="Tất cả KH cài Hi FPT (bao gồm guest)" disabled/>
+                                <input  type="text" name="bannerType" class="form-control" id="BannerDetail_bannerType" disabled/>
                             </div>
                             <div class="form-group" id="path_1">
-                                <label>Ảnh</label>
-                                <img id="img_path_1" src="https://hi-static.fpt.vn/upload/images/event/uat.jpg" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px">
+                                <div><label>Ảnh</label></div>
+                                <img  src="http://hiadmin.local/images/image_holder.png" alt="your image" id ="BannerDetail_image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px">
                             </div>
-                            <div class="form-group" id="path_2" hidden="">
-                                <img id="img_path_2" src="http://hiadmin.local/images/image_holder.png" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px">
+                            <div class="form-group" id="path_2" hidden>
+                                <img src="http://hiadmin.local/images/image_holder.png" alt="your image" id ="BannerDetail_thump_image"  class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px">
                                 <span><i>&nbsp; &nbsp;&nbsp;(* đây là ảnh hiển thị ở Home)</i></span>
                             </div>
                             <div class="form-group">
@@ -39,11 +39,11 @@
                             <div class="form-row">
                                 <div class="col">
                                     <label for="show_from">Ngày hiển thị </label>
-                                    <input type="datetime-local" name="show_from"value="2021-10-29T00:00" class="form-control" disabled>
+                                    <input type="datetime-local" name="show_from" id="BannerDetail_public_date_start"  class="form-control" disabled>
                                 </div>
                                 <div class="col">
                                     <label for="show_to"> Ngày kết thúc </label>
-                                    <input type="datetime-local" name="show_to" value="2022-10-31T23:59" class="form-control" disabled>
+                                    <input type="datetime-local" name="show_to" id="BannerDetail_public_date_end" class="form-control" disabled>
                                 </div>
                             </div>
                             <div class="form-group" id="show_target_route">

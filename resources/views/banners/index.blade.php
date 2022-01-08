@@ -84,8 +84,6 @@
             <div class="modal-body" id="showDetailBanner_Modal_body">
                 @include('banners.detail')
             </div>
-            <div class="modal-footer" id="showDetailBanner_Modal_body_footer">
-            </div>
         </div>
     </div>
 </div>
