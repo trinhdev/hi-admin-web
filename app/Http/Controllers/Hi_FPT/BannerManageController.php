@@ -124,6 +124,7 @@ class BannerManageController extends MY_Controller
             "date_created"    =>null,
             "created_by" => null,
             "is_highlight" => false,
+            "cms_note" => null
         ];
         if(isset($dataResponse->banner_id)){
             $bannerObj->bannerId = $dataResponse->banner_id;
@@ -134,7 +135,7 @@ class BannerManageController extends MY_Controller
             $bannerObj->direction_id = $dataResponse->direction_id;
             $bannerObj->direction_url = $dataResponse->direction_url;
             $bannerObj->date_created = $dataResponse->date_created;
-            
+            $bannerObj->cms_note = $dataResponse->cms_note;
         }else{
             $bannerObj->bannerId = $dataResponse->event_id;
             $bannerObj->title_vi = $dataResponse->title_vi;
@@ -145,6 +146,7 @@ class BannerManageController extends MY_Controller
             $bannerObj->direction_id = $dataResponse->direction_id;
             $bannerObj->direction_url = $dataResponse->event_url;
             $bannerObj->date_created = $dataResponse->date_created;
+            $bannerObj->cms_note = $dataResponse->cms_note;
 
             $bannerObj->title_en = $dataResponse->title_en;
             $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->thumb_image : null;
@@ -170,7 +172,6 @@ class BannerManageController extends MY_Controller
             'direction_url' => 'required_if:directionId,url_open_in_app,url_open_out_app',
             // 'img_path_2_name'   => 'required_if:bannerType,promotion',
         ];
-        
         $request->validate($rules);
 
         $request->merge([
@@ -216,6 +217,15 @@ class BannerManageController extends MY_Controller
         }else{
             $updateParams['isHighlight'] = false;
         };
+        if(!empty($cms_note)){
+            $cms_note = json_decode($cms_note);
+            $cms_note->updated_by = $this->user->id;
+        }else{
+            $cms_note = (object)[];
+            $cms_note->created_by = null;
+            $cms_note->updated_by = $this->user->id;
+        }
+        $updateParams['cms_note'] = json_encode($cms_note);
         // my_debug($updateParams, false);
         $update_banner_response = $newsEventService->updateBanner($updateParams);
         // dd($update_banner_response);
@@ -284,6 +294,8 @@ class BannerManageController extends MY_Controller
             $createParams['isHighlight'] = true;
         };
 
+        $createParams['cms_note'] = $this->user->id;
+        
         $create_banner_response = $newsEventService->addNewBanner($createParams);
         if(!empty($create_banner_response->data)){
             return redirect()->route('bannermanage.index')->withSuccess('Success!');

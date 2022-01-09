@@ -80,7 +80,7 @@ $domainSmsWorld = [
 
 $domainNewsEventConfig = [
     'local'             => [
-        'URL'           => 'hi-news-event-stag.fpt.vn/',
+        'URL'           => 'hievent.local/',
         'CLIENT_KEY'    => '9895ee2f7616a73ab8be47e5df5a8924',
         'SECRET_KEY'    => 'e063d2833da02c8dac4cac106b825535',
     ],
