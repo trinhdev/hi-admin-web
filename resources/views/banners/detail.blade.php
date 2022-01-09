@@ -55,11 +55,11 @@
                                 <div class="border box-target" id="box_target" hidden>
                                     <label for="target_route">Điều hướng đến</label>
                                     <div id="collapseOne" tyle="transition: height 0.01s;">
-                                        <input type="text" name="title_en" class="form-control" value="Tất cả KH cài Hi FPT (bao gồm guest)" disabled/>
+                                        <input type="text" name="title_en" class="form-control" value="" id="BannerDetail_directionId" disabled/>
                                     </div>
                                     <div class="form-group" id="direction_url">
                                         <label for="direction_url">URL</label>
-                                        <input type="text" name="title_en" class="form-control" value="Tất cả KH cài Hi FPT (bao gồm guest)" disabled/>
+                                        <input type="text" name="title_en" class="form-control" value="" id="BannerDetail_directionURL" disabled/>
                                     </div>
                                 </div>
                             </div>
