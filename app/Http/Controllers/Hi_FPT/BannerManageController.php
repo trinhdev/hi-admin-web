@@ -208,7 +208,11 @@ class BannerManageController extends MY_Controller
             if(!empty($request->direction_url)){
                 $updateParams['directionUrl'] = $request->direction_url;
             };
-        }
+        }else{
+            $updateParams['directionId'] = NULL;
+            $updateParams['directionUrl'] = NULL;
+        };
+
         if(!empty($request->bannerType) && $request->bannerType =='promotion' && !empty($request->img_path_2_name) ){
            $updateParams['thumbImageFileName'] = $request->img_path_2_name;
         };
