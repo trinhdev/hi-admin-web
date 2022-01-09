@@ -825,7 +825,7 @@ function initBannerManage(response) {
             title: 'Độ ưu tiên',
             "render": function (data, type, row) {
                 let disable = row.is_banner_expired ? 'disabled' : '';
-                return `<input type="number" onchange="updateOrdering(this)" style="width:80%" value="` + data + `" ` + disable + `/>`;
+                return `<input type="number" onchange="updateOrdering(this)" style="width:50px" value="` + data + `" ` + disable + `/>`;
             },
             "sortable": false,
             className: 'text-center'
@@ -914,7 +914,7 @@ function initBannerManage(response) {
             { width: '10%', targets: 4 }, // 6 public date start
             { width: '10%', targets: 5 }, // 7 public date end
             { width: '3%', targets: 6 }, // is expired
-            { width: '7%', targets: 7 }, // 8 ordering
+            { width: '5%', targets: 7 }, // 8 ordering
             { width: '5%', targets: 8 }, // 9 view count
             { width: '10%', targets: 9 }, // 10 create at
             { width: '7%', targets: 10 }, // 11 create by

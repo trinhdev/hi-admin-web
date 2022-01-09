@@ -254,18 +254,42 @@ function successGetViewBanner(response){
         if(banner.bannerType == 'promotion'){
             path_2.hidden = false;
             BannerDetail_thump_image.src = banner.thumb_image != undefined ? banner.thumb_image : '';
+        }else{
+            path_2.hidden = true;
         }
 
         BannerDetail_public_date_start.value = banner.public_date_start != undefined ? banner.public_date_start : '';
         BannerDetail_public_date_end.value = banner.public_date_end != undefined ? banner.public_date_end : '';
 
         //target route
-        has_target_route.checked = false;
+        if(banner.direction_id != undefined || banner.direction_url != undefined){
+            has_target_route.checked = true;
+            box_target.hidden = false;
+        }else{
+            box_target.hidden = true;
+            has_target_route.checked = false;
+        }
+
+        if(banner.is_highlight == 1){
+            isHighlight.checked = true;
+        }else{
+            isHighlight.checked = false;
+        }
+
+        BannerDetail_link_to_edit.setAttribute('data-type', banner.bannerType);
+        BannerDetail_link_to_edit.setAttribute('data-id', banner.bannerId);
         //end
         $('#showDetailBanner_Modal').modal('toggle');
     }
 }
+function editBanner(button){
+    var bannerType = button.getAttribute('data-type');
+    var bannerId = button.getAttribute('data-id');
 
+    bannerType = (bannerType == 'bannerHome') ? 'highlight' : bannerType;
+    var editBannerLink =  base_url+`/bannermanage/edit/` + bannerId + `/` + bannerType;
+    window.location.href = editBannerLink;
+}
 function convertDetailBanner(element){
     var toDay = new Date();
     let subData = {

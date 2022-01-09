@@ -48,11 +48,11 @@
                             </div>
                             <div class="form-group" id="show_target_route">
                                 <div class="icheck-carrot">
-                                    <input type="checkbox" id="has_target_route" name="has_target_route" checked disabled>
+                                    <input type="checkbox" id="has_target_route" name="has_target_route" disabled>
 
                                     <label for="has_target_route">Điều hướng</label>
                                 </div>
-                                <div class="border box-target" id="box_target">
+                                <div class="border box-target" id="box_target" hidden>
                                     <label for="target_route">Điều hướng đến</label>
                                     <div id="collapseOne" tyle="transition: height 0.01s;">
                                         <input type="text" name="title_en" class="form-control" value="Tất cả KH cài Hi FPT (bao gồm guest)" disabled/>
@@ -65,7 +65,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="icheck-carrot">
-                                    <input type="checkbox" id="isHighlight" name="isHighlight" checked disabled>
+                                    <input type="checkbox" id="isHighlight" name="isHighlight" disabled>
                                     <label for="isHighlight">Hiện ở Home</label>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                     </div>
                     <div class="card-footer" style="text-align: center">
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">Đóng</button>
-                        <a href="http://hiadmin.local/bannermanage" data-dismiss="modal" aria-label="Close" type="button" class="btn btn-info">Chỉnh sửa</a>
+                        <a href="" type="button" class="btn btn-info modal-close" onclick="editBanner(this)" data-type="" data-id ="" id="BannerDetail_link_to_edit">Chỉnh sửa</a>
                     </div>
                 </div>
             </form>
