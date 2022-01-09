@@ -237,8 +237,110 @@ function viewBanner(_this){
 }
 
 function successGetViewBanner(response){
-    console.log(response);
     if(response.error != undefined){
         showError(response.error)
+    }else{
+        console.log(response);
+        var banner = response.banner;
+        var listTargetRoute = response.list_target_route;
+        var listTypeBanner = response.list_type_banner;
+
+        BannerDetail_titleVi.value  = banner.title_vi != undefined ? banner.title_vi : '';
+        BannerDetail_titleEn.value = banner.title_en != undefined ? banner.title_en : '';
+        var map_bannerType = findElementInArrayObjectByKeyValue(listTypeBanner, 'id', banner.bannerType);
+        BannerDetail_bannerType.value = map_bannerType != undefined ? map_bannerType.name : banner.bannerType;
+
+        BannerDetail_image.src = banner.image != undefined ? banner.image : '';
+        if(banner.bannerType == 'promotion'){
+            path_2.hidden = false;
+            BannerDetail_thump_image.src = banner.thumb_image != undefined ? banner.thumb_image : '';
+        }else{
+            path_2.hidden = true;
+        }
+
+        BannerDetail_public_date_start.value = banner.public_date_start != undefined ? banner.public_date_start : '';
+        BannerDetail_public_date_end.value = banner.public_date_end != undefined ? banner.public_date_end : '';
+
+        //target route
+        if(banner.direction_id != undefined || banner.direction_url != undefined){
+            has_target_route.checked = true;
+            box_target.hidden = false;
+        }else{
+            box_target.hidden = true;
+            has_target_route.checked = false;
+        }
+
+        if(banner.is_highlight == 1){
+            isHighlight.checked = true;
+        }else{
+            isHighlight.checked = false;
+        }
+
+        BannerDetail_link_to_edit.setAttribute('data-type', banner.bannerType);
+        BannerDetail_link_to_edit.setAttribute('data-id', banner.bannerId);
+        //end
+        $('#showDetailBanner_Modal').modal('toggle');
+    }
+}
+function editBanner(button){
+    var bannerType = button.getAttribute('data-type');
+    var bannerId = button.getAttribute('data-id');
+
+    bannerType = (bannerType == 'bannerHome') ? 'highlight' : bannerType;
+    var editBannerLink =  base_url+`/bannermanage/edit/` + bannerId + `/` + bannerType;
+    window.location.href = editBannerLink;
+}
+function convertDetailBanner(element){
+    var toDay = new Date();
+    let subData = {
+        bannerId: '',
+        bannerType: '',
+        public_date_start: '',
+        public_date_end: '',
+        title_vi: '',
+        title_en: '',
+        direction_id: '',
+        direction_url: '',
+        image: '',
+        thumb_image: '',
+        ordering: '-1',
+        view_count: 0,
+        date_created: '',
+        date_created: '',
+        created_by: '',
+        modified_by: '',
+        is_banner_expired: false
     };
+    if (element.banner_id != undefined) {
+        subData.bannerId = element.banner_id;
+        subData.title_vi = element.banner_title != undefined ? element.banner_title : '';
+        subData.bannerType = element.custom_data != undefined ? element.custom_data : '';
+        subData.image = element.image_url != undefined ? element.image_url : '';
+        subData.ordering = element.ordering != undefined ? element.ordering : '-1';
+        subData.view_count = element.view_count != undefined ? element.view_count : '0';
+        subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
+        subData.date_created = element.date_created;
+        subData.is_banner_expired = element.is_selected ? false : true;
+    } else {
+        let public_date_end = new Date(element.public_date_end);
+        subData.bannerId = element.event_id;
+        subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
+        subData.bannerType = element.event_type != undefined ? element.event_type : '';
+        if(subData.bannerType === 'promotion'){
+            subData.image = element.thumb_image != undefined ? (URL_STATIC+'/upload/images/event/'+element.thumb_image) : element.image;
+        }else{
+            subData.image = element.image != undefined ? element.image : '';
+        }
+        subData.ordering = element.ordering != undefined ? element.ordering_on_home : '-1';
+        subData.view_count = element.view_count != undefined ? element.view_count : '0';
+        subData.direction_url = element.event_url != undefined ? element.event_url : '';
+        subData.date_created = element.date_created;
+        subData.is_banner_expired = (public_date_end < toDay) ? true : false;
+
+        subData.created_by = element.created_by != undefined ? element.created_by : '';
+        subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '';
+        subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : '';
+        subData.modified_by = element.modified_by != undefined ? element.modified_by : '';
+    }
+    return subData;
 }

@@ -153,3 +153,7 @@ function getDataInForm(form) {
     }
     return data;
 }
+
+function findElementInArrayObjectByKeyValue(array ,key, value){
+    return array.find(object => object[key] == value);
+}
