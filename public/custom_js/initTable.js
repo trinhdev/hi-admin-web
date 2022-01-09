@@ -755,58 +755,21 @@ function initHidePaymentLogs() {
 }
 function initBannerManage(response) {
     var dataTable = [];
+    var activeBanner = [];
+    var unactiveBanner = [];
     var flagAcl = false;
-    var toDay = new Date();
     var stt = 1;
     response.data.forEach(element => {
-        let subData = {
-            bannerId: '',
-            bannerType: '',
-            public_date_start: '',
-            public_date_end: '',
-            title_vi: '',
-            title_en: '',
-            direction_id: '',
-            direction_url: '',
-            image: '',
-            thumb_image: '',
-            ordering: '-1',
-            view_count: 0,
-            date_created: '',
-            date_created: '',
-            created_by: '',
-            modified_by: '',
-            is_banner_expired: false
-        };
-        if (element.banner_id != undefined) {
-            subData.bannerId = element.banner_id;
-            subData.title_vi = element.banner_title != undefined ? element.banner_title : '';
-            subData.bannerType = element.custom_data != undefined ? element.custom_data : '';
-            subData.image = element.image_url != undefined ? element.image_url : '';
-            subData.ordering = element.ordering != undefined ? element.ordering : '-1';
-            subData.view_count = element.view_count != undefined ? element.view_count : '0';
-            subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
-            subData.date_created = element.date_created;
-            subData.is_banner_expired = element.is_selected ? false : true;
-        } else {
-            let public_date_end = new Date(element.public_date_end);
-            subData.bannerId = element.event_id;
-            subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
-            subData.bannerType = element.event_type != undefined ? element.event_type : '';
-            subData.image = element.image != undefined ? element.image : '';
-            subData.ordering = element.ordering != undefined ? element.ordering_on_home : '-1';
-            subData.view_count = element.view_count != undefined ? element.view_count : '0';
-            subData.direction_url = element.event_url != undefined ? element.event_url : '';
-            subData.date_created = element.date_created;
-            subData.is_banner_expired = (public_date_end < toDay) ? true : false;
-
-            subData.created_by = element.created_by != undefined ? element.created_by : '';
-            subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '';
-            subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : '';
-            subData.modified_by = element.modified_by != undefined ? element.modified_by : '';
-        }
-        dataTable.push(subData);
+        let subData = convertDetailBanner(element);
+        (subData.is_banner_expired) ? unactiveBanner.push(subData) : activeBanner.push(subData);
     });
+    activeBanner = activeBanner.sort(function(first, seccond){
+        return new Date(seccond.date_created) - new Date(first.date_created);
+    });
+    unactiveBanner.sort(function(first, seccond){
+        return new Date(seccond.date_created) - new Date(first.date_created);
+    });
+    dataTable = activeBanner.concat(unactiveBanner);
     var columnData = [
         {
             title: 'STT',
@@ -853,7 +816,7 @@ function initBannerManage(response) {
             data: 'is_banner_expired',
             title: 'Trạng Thái',
             render: function (data, type, row) {
-                let is_show = (data) ? 'Hide' : 'Show';
+                let is_show = (data) ? 'Hết hạn' : 'Còn hạn';
                 let badge = (data) ? 'badge badge-danger' : 'badge badge-success';
                 return `<h4 class="` + badge + `">` + is_show + `</h4>`;
             },
@@ -864,14 +827,14 @@ function initBannerManage(response) {
             title: 'Độ ưu tiên',
             "render": function (data, type, row) {
                 let disable = row.is_banner_expired ? 'disabled' : '';
-                return `<input type="number" onchange="updateOrdering(this)" style="width:80%" value="` + data + `" ` + disable + `/>`;
+                return `<input type="number" onchange="updateOrdering(this)" style="width:50px" value="` + data + `" ` + disable + `/>`;
             },
             "sortable": false,
             className: 'text-center'
         },
         {
             data: 'view_count',
-            title: 'Số lượt view',
+            title: 'Số lượt click',
             className: 'text-center'
         },
         {
@@ -899,7 +862,7 @@ function initBannerManage(response) {
     if (flagAcl) {
         columnData.push(
             {
-                title: 'Action',
+                title: 'Hành Động',
                 render: function (data, type, row) {
                     var bannerType = row.bannerType;
                     if (bannerType == 'highlight') {
@@ -907,16 +870,19 @@ function initBannerManage(response) {
                     };
                     var exists = 0 != $('#show_at option[value=' + bannerType + ']').length;
                     if (exists === false) return "";
-                    return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
+                    return `
+                    <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
+                   <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
+                    `;
+                // return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
                 },
-                className: 'text-center',
                 "sortable": false
             }
         );
     } else {
         columnData.push(
             {
-                title: 'Action',
+                title: 'Hành Động',
                 render: function (data, type, row) {
                     if (row.bannerType === 'event_normal') return "";
                     return `<div></div>`;
@@ -939,22 +905,37 @@ function initBannerManage(response) {
         "language": {
             "emptyTable": "No Record..."
         },
-        "order": [[9, "desc"]],
+        // "order": [[9, "desc"]],
         columnDefs: [
             { width: '5%', targets: 0 }, //stt
             // { width: '10%', targets: 1 }, // 1 bannerId
             { width: '10%', targets: 1 }, // 2 Title
             { width: '15%', targets: 2 }, // 3 Image
             // { width: '10%', targets: 3 }, // 4 direction URL
-            { width: '1%', targets: 3 }, // 5 Banner Type,
+            { width: '5%', targets: 3 }, // 5 Banner Type,
             { width: '10%', targets: 4 }, // 6 public date start
             { width: '10%', targets: 5 }, // 7 public date end
             { width: '3%', targets: 6 }, // is expired
             { width: '5%', targets: 7 }, // 8 ordering
-            { width: '3%', targets: 8 }, // 9 view count
+            { width: '5%', targets: 8 }, // 9 view count
             { width: '10%', targets: 9 }, // 10 create at
-            { width: '10%', targets: 10 }, // 11 create by
+            { width: '7%', targets: 10 }, // 11 create by
+            { width: '7%', targets: 11 }, // 11 create by
+            { width: '10%', targets: 12 }, // 12 Action
         ],
+        language: {
+            "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
+            "zeroRecords": "Không có dữ liệu",
+            "info": "Trang _PAGE_ / _PAGES_ của _TOTAL_ dữ liệu",
+            "infoEmpty": "Không có dữ liệu",
+            "paginate": {
+                "first":      "Đầu",
+                "last":       "Cuối",
+                "next":       "Sau",
+                "previous":   "Trước"
+            },
+            "search":         "Tìm kiếm:",
+        }
         // "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
         //     if(data.is_banner_expired){
         //         $('td', row).css('background-color', 'rgb(255 108 94 / 51%)');

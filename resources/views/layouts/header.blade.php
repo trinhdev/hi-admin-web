@@ -47,4 +47,5 @@
     </style> --}}
     <script type="text/javascript">
         var base_url = '{{url('/')}}';
+        const URL_STATIC = "{{env('URL_STATIC')}}";
     </script>

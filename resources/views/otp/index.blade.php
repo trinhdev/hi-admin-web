@@ -26,9 +26,7 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-6">
-                        <form action="{{ route('manageotp.handle') }}" method="GET" autocomplete="off">
-                            @csrf
-
+                        <form action="{{ route('manageotp.handle') }}" method="GET" autocomplete="off" onSubmit="handleSubmit(event,this)">
                             <div class="card card-info">
                                 <div class="card-header">
                                     <h3 class="card-title uppercase">Get OTP by phone</h3>
@@ -37,7 +35,8 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Please input phone number" >
+                                            <input type="text" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Please input phone number" value="{{ $phone }}" >
+                                            <input type="hidden" id="action" name="action" value="{{ $action }}">
                                             @error('phone')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror
@@ -46,9 +45,8 @@
                                 </div>
                                 
                                 <div class="card-footer" style="text-align: center">
-                                    <button name="action" value="get_otp" type="submit" class="btn btn-info">Get OTP</button>
-                                    <button name="action" value="reset_otp" type="submit" class="btn btn-primary">Reset OTP</button>
-                                    <!-- <a href="/manageotp/reset_otp_view" type="button" class="btn btn-default">Reset OTP</a> -->
+                                    <button value="get_otp" type="submit" onclick="setAction('get_otp')" class="btn btn-info">Get OTP</button>
+                                    <button value="reset_otp" type="submit" onclick="setAction('reset_otp')" class="btn btn-primary">Reset OTP</button>
                                 </div>
                             </div>
                         </form>

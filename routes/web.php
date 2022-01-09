@@ -114,7 +114,7 @@ Route::group([
         Route::namespace('Hi_FPT')->group(function () {
             Route::prefix('manageotp')->group(function () {
                 Route::get('/','ManageotpController@index')->name('manageotp.index');
-                Route::get('/handle','ManageotpController@handle')->name('manageotp.handle');
+                Route::get('/handle/{phone?}/{action?}','ManageotpController@handle')->name('manageotp.handle');
             });
             Route::prefix('hidepayment')->group(function () {
                 Route::get('/','HidepaymentController@index')->name('hidepayment.index');
@@ -136,6 +136,7 @@ Route::group([
                 Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
                 Route::post('/uploadImage','BannerManageController@uploadImage')->name('bannermanage.uploadImage');
                 Route::post('/updateordering','BannerManageController@updateOrder')->name('bannermanage.updateOrder');
+                Route::get('/view/{id}/{type}','BannerManageController@view')->name('bannermanage.view');
             });
             
         });
