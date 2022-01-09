@@ -152,6 +152,10 @@
                                             <label for="isHighlight">Hiện ở Home</label>
                                         </div>
                                     </div>
+                                    @if(!empty($banner))
+                                        <input name="cms_note" value="{{$banner->cms_note}}" hidden/>
+                                    @endif
+                                    
                                 </div>
                             </div>
                             <div class="card-footer" style="text-align: center">
