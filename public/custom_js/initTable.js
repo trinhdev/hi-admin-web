@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     initSelect();
     settings_on_search();
@@ -49,6 +48,9 @@ $(document).ready(function () {
             case 'iconmanagement':
                 initIconmanagement();
                 break;
+            case 'closehelprequest':
+                initCloseHelpReqest();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -95,8 +97,7 @@ function initModule() {
         "ajax": {
             url: "/modules/initDatatable"
         },
-        "columns": [
-            {
+        "columns": [{
                 title: 'No.',
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -179,8 +180,7 @@ function initGroupModule() {
         "ajax": {
             url: "/groupmodule/initDatatable"
         },
-        "columns": [
-            {
+        "columns": [{
                 title: 'No.',
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -248,8 +248,7 @@ function initUser() {
         "ajax": {
             url: "user/initDatatable"
         },
-        "columns": [
-            {
+        "columns": [{
                 title: 'No.',
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -316,8 +315,7 @@ function initGroup() {
             url: base_url + '/groups/getList',
         },
         searchDelay: 500,
-        columns: [
-            {
+        columns: [{
                 title: 'No.',
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -360,8 +358,7 @@ function initRoles() {
         ajax: {
             url: base_url + '/roles/getList',
         },
-        columns: [
-            {
+        columns: [{
                 title: 'No.',
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -409,8 +406,7 @@ function initLogActivities() {
             url: base_url + '/logactivities/initDatatable',
         },
         searchDelay: 500,
-        columns: [
-            {
+        columns: [{
                 title: 'No.',
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -486,8 +482,7 @@ function initManageOtp() {
         "ajax": {
             url: "/modules/initDatatable"
         },
-        "columns": [
-            {
+        "columns": [{
                 title: 'No.',
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -567,11 +562,11 @@ function initSettings() {
         "ajax": {
             url: "/settings/initDatatable"
         },
-        "columnDefs": [
-            { "width": 20, "targets": 2 },
-        ],
-        "columns": [
-            {
+        "columnDefs": [{
+            "width": 20,
+            "targets": 2
+        }, ],
+        "columns": [{
                 title: 'No.',
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -656,13 +651,14 @@ function initHidePaymentLogs() {
         "pageLength": 5,
         "lengthMenu": [5, 10, 25, 50, 75, 100],
         orderMulti: true,
-        "order": [[7, "desc"]],
+        "order": [
+            [7, "desc"]
+        ],
         retrieve: true,
         "ajax": {
             url: "/hidepayment/initDatatable"
         },
-        "columns": [
-            {
+        "columns": [{
                 title: 'No.',
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
@@ -750,8 +746,8 @@ function initHidePaymentLogs() {
         searchDelay: 500
     });
 }
+
 function initBannerManage(response) {
-    console.log(response);
     var dataTable = [];
     var activeBanner = [];
     var unactiveBanner = [];
@@ -759,17 +755,16 @@ function initBannerManage(response) {
     var stt = 1;
     response.data.forEach(element => {
         let subData = convertDetailBanner(element);
-        (subData.is_banner_expired) ? unactiveBanner.push(subData) : activeBanner.push(subData);
+        (subData.is_banner_expired) ? unactiveBanner.push(subData): activeBanner.push(subData);
     });
-    activeBanner = activeBanner.sort(function(first, seccond){
+    activeBanner = activeBanner.sort(function (first, seccond) {
         return new Date(seccond.date_created) - new Date(first.date_created);
     });
-    unactiveBanner.sort(function(first, seccond){
+    unactiveBanner.sort(function (first, seccond) {
         return new Date(seccond.date_created) - new Date(first.date_created);
     });
     dataTable = activeBanner.concat(unactiveBanner);
-    var columnData = [
-        {
+    var columnData = [{
             title: 'STT',
             className: 'text-center',
             render: function (data, type, row, meta) {
@@ -858,37 +853,33 @@ function initBannerManage(response) {
         }
     }
     if (flagAcl) {
-        columnData.push(
-            {
-                title: 'Hành Động',
-                render: function (data, type, row) {
-                    var bannerType = row.bannerType;
-                    if (bannerType == 'highlight') {
-                        bannerType = 'bannerHome';
-                    };
-                    var exists = 0 != $('#show_at option[value=' + bannerType + ']').length;
-                    if (exists === false) return "";
-                    return `
+        columnData.push({
+            title: 'Hành Động',
+            render: function (data, type, row) {
+                var bannerType = row.bannerType;
+                if (bannerType == 'highlight') {
+                    bannerType = 'bannerHome';
+                };
+                var exists = 0 != $('#show_at option[value=' + bannerType + ']').length;
+                if (exists === false) return "";
+                return `
                     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
                    <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
                     `;
                 // return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
-                },
-                "sortable": false
-            }
-        );
+            },
+            "sortable": false
+        });
     } else {
-        columnData.push(
-            {
-                title: 'Hành Động',
-                render: function (data, type, row) {
-                    if (row.bannerType === 'event_normal') return "";
-                    return `<div></div>`;
-                },
-                className: 'text-center',
-                "sortable": false
-            }
-        );
+        columnData.push({
+            title: 'Hành Động',
+            render: function (data, type, row) {
+                if (row.bannerType === 'event_normal') return "";
+                return `<div></div>`;
+            },
+            className: 'text-center',
+            "sortable": false
+        });
     };
     $('#banner_manage').DataTable({
         // "bAutoWidth": false,
@@ -904,22 +895,60 @@ function initBannerManage(response) {
             "emptyTable": "No Record..."
         },
         // "order": [[9, "desc"]],
-        columnDefs: [
-            { width: '5%', targets: 0 }, //stt
+        columnDefs: [{
+                width: '5%',
+                targets: 0
+            }, //stt
             // { width: '10%', targets: 1 }, // 1 bannerId
-            { width: '10%', targets: 1 }, // 2 Title
-            { width: '15%', targets: 2 }, // 3 Image
+            {
+                width: '10%',
+                targets: 1
+            }, // 2 Title
+            {
+                width: '15%',
+                targets: 2
+            }, // 3 Image
             // { width: '10%', targets: 3 }, // 4 direction URL
-            { width: '5%', targets: 3 }, // 5 Banner Type,
-            { width: '10%', targets: 4 }, // 6 public date start
-            { width: '10%', targets: 5 }, // 7 public date end
-            { width: '3%', targets: 6 }, // is expired
-            { width: '5%', targets: 7 }, // 8 ordering
-            { width: '5%', targets: 8 }, // 9 view count
-            { width: '10%', targets: 9 }, // 10 create at
-            { width: '7%', targets: 10 }, // 11 create by
-            { width: '7%', targets: 11 }, // 11 create by
-            { width: '10%', targets: 12 }, // 12 Action
+            {
+                width: '5%',
+                targets: 3
+            }, // 5 Banner Type,
+            {
+                width: '10%',
+                targets: 4
+            }, // 6 public date start
+            {
+                width: '10%',
+                targets: 5
+            }, // 7 public date end
+            {
+                width: '3%',
+                targets: 6
+            }, // is expired
+            {
+                width: '5%',
+                targets: 7
+            }, // 8 ordering
+            {
+                width: '5%',
+                targets: 8
+            }, // 9 view count
+            {
+                width: '10%',
+                targets: 9
+            }, // 10 create at
+            {
+                width: '7%',
+                targets: 10
+            }, // 11 create by
+            {
+                width: '7%',
+                targets: 11
+            }, // 11 create by
+            {
+                width: '10%',
+                targets: 12
+            }, // 12 Action
         ],
         language: {
             "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
@@ -927,12 +956,12 @@ function initBannerManage(response) {
             "info": "Trang _PAGE_ / _PAGES_ của _TOTAL_ dữ liệu",
             "infoEmpty": "Không có dữ liệu",
             "paginate": {
-                "first":      "Đầu",
-                "last":       "Cuối",
-                "next":       "Sau",
-                "previous":   "Trước"
+                "first": "Đầu",
+                "last": "Cuối",
+                "next": "Sau",
+                "previous": "Trước"
             },
-            "search":         "Tìm kiếm:",
+            "search": "Tìm kiếm:",
         }
         // "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
         //     if(data.is_banner_expired){
@@ -941,9 +970,9 @@ function initBannerManage(response) {
         // }
     });
 }
+
 function initCheckUserInfo() {
-    var columnData = [
-        {
+    var columnData = [{
             title: 'No.',
             render: function (data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1;
@@ -991,8 +1020,7 @@ function initCheckUserInfo() {
 };
 
 function initSmsWorld() {
-    var columnData = [
-        {
+    var columnData = [{
             data: 'STT',
             title: 'No.'
         },
@@ -1028,7 +1056,6 @@ function initSmsWorld() {
 };
 
 function initCheckListManage() {
-    console.log(listCheckList);
     var columnData = [
         // {
         //     title:'No.',
@@ -1056,8 +1083,8 @@ function initCheckListManage() {
             title: 'Action',
             render: function (data, type, row) {
                 var html = `<form  action=` + route_checklistmanage + ` method="POST" onsubmit="handleSubmit(event,this)">
-                    <input type="hidden" name="_token" value=`+ crsf + ` />
-                    <input type="text" class="form-control" name="checkListId" hidden value="`+ row.ID + `">
+                    <input type="hidden" name="_token" value=` + crsf + ` />
+                    <input type="text" class="form-control" name="checkListId" hidden value="` + row.ID + `">
                     <button class="btn btn-sm btn-outline-success"><i class="fa fa-check" aria-hidden="true"></i></button>
                 </form>`;
                 return html;
@@ -1098,8 +1125,7 @@ function initIconmanagement() {
             url: "/iconmanagement/initDatatable"
         },
         "data": [],
-        "columns": [
-            {
+        "columns": [{
                 data: "no",
                 name: "no",
                 title: "STT",
@@ -1139,8 +1165,7 @@ function initIconmanagement() {
                                         <div class="handle"></div>
                                     </button>
                                 </div>`;
-                    }
-                    else {
+                    } else {
                         html = `<div class="df-switch">
                                     <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
                                         <div class="inner-handle"></div>
@@ -1158,7 +1183,7 @@ function initIconmanagement() {
                 render: function (data, type, row) {
                     var tmp = JSON.stringify(row);
                     return `<div>
-                                <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onclick='viewUserInfo(`+ tmp + `)' data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                                <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onclick='viewUserInfo(` + tmp + `)' data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                                 <a style="float: left; margin-right: 5px" href="#" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
                                 <button style="float: left; type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
                             </div>`;
@@ -1178,6 +1203,69 @@ function initIconmanagement() {
         },
         searchDelay: 500
     });
+}
+
+function initCloseHelpReqest() {
+    var tableData = [];
+    if(dataCloseHelpRequest != undefined && dataCloseHelpRequest != null){
+        tableData = dataCloseHelpRequest.result;
+    };
+    var columnData = [{
+            title: 'No.',
+            render: function (data, type, row, meta) {
+                return meta.row + 1;
+            },
+        },
+        {
+            data: 'reportId',
+            title: 'Report Id'
+        },
+        {
+            title: 'Report Time',
+            render: function (data, type, row, meta) {
+                return row.stepStatus[0].time;
+            }
+        },
+        {
+            data: 'reportName',
+            title: 'Report Name'
+        },
+        {
+            title :'Status',
+            render: function (data, type, row, meta) {
+                var listColor = ['warning','info','primary','success','danger','default'];
+                var html ='';
+                for (const [key, step] of Object.entries(row.stepStatus)) {
+                    html += `<h5 class="badge badge-`+listColor[key]+` ml-3">`+step.name+`</h5>`
+                };
+                return html;
+            },
+            className:'text-center'
+        },
+        {
+            data: 'note',
+            title: 'Note'
+        },
+        {
+            title: 'Action',
+            render: function (data, type, row, meta) {
+                return ` <a onclick="dialogConfirmWithAjax(closeRequest,this)" data-id="`+row.reportId+`" type="button"class="btn btn-danger">Close</a>`;
+            }
+        }
+    ]
+    $('#closeHelpRequest_table').dataTable({
+        data: tableData,
+        "processing": true,
+        "select": true,
+        responsive: true,
+        "bDestroy": true,
+        "scrollX": true,
+        "columns": columnData,
+        "language": {
+            "emptyTable": "No Record..."
+        },
+    });
+
 }
 
 function badgeArrayView(arrayInput) {

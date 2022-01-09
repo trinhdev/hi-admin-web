@@ -27,10 +27,10 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-md-center">
-                <div class="col-sm-12">
-                    {{-- <form action=" {{ route('closehelprequest.getListReportByContract')}}" method="POST" autocomplete="off"> --}}
-                    <form>
-                        @csrf
+                <div class="col-sm-6">
+                    <form action=" {{ route('closehelprequest.index')}}" method="GET" autocomplete="off">
+                    {{-- <form> --}}
+                        {{-- @csrf --}}
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title uppercase">Get Contract Info</h3>
@@ -39,26 +39,30 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="phone">Contract Number</label>
-                                        <input type="text" id="contractNo" name="contractNo" class="form-control" placeholder="Please input contract number">
-                                    </div>
-                                    <div class="form-group" hidden>
-                                        <input type="text" placeholder="hiddeninput">
+                                        <input type="text" id="contractNo" name="contractNo" value="{{ request()->input('contractNo', old('contractNo')) }}" class="form-control" placeholder="Please input contract number">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="card-footer" style="text-align: center">
-                                <button type="button" class="btn btn-info" onclick="getListReport(this)">Get Contract Info</button>
+                                <button type="submit" class="btn btn-info">Get Contract Info</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
+        {{-- <div class="col-md-12">
             <div class="card-white mb-5" id="showList">
             </div>
+        </div> --}}
+        <div class="row" style="margin-top: 20px">
+            <div class="card card-body col-sm-12">
+                <table id="closeHelpRequest_table" class="display nowrap" style="width:100%">
+                </table>
+            </div>
         </div>
+
     </section>
     <!-- /.content -->
 </div>
@@ -67,6 +71,8 @@
     select {
         font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
     }
-
 </style>
+<script>
+    var dataCloseHelpRequest = {!! !empty($data) ? json_encode($data) : 'null'; !!};
+</script>
 @endsection
