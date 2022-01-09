@@ -248,6 +248,8 @@ function successGetViewBanner(response){
         BannerDetail_titleVi.value  = banner.title_vi != undefined ? banner.title_vi : '';
         BannerDetail_titleEn.value = banner.title_en != undefined ? banner.title_en : '';
         var map_bannerType = findElementInArrayObjectByKeyValue(listTypeBanner, 'id', banner.bannerType);
+        var map_directionId = findElementInArrayObjectByKeyValue(listTargetRoute, 'id', banner.direction_id);
+
         BannerDetail_bannerType.value = map_bannerType != undefined ? map_bannerType.name : banner.bannerType;
 
         BannerDetail_image.src = banner.image != undefined ? banner.image : '';
@@ -265,6 +267,8 @@ function successGetViewBanner(response){
         if(banner.direction_id != undefined || banner.direction_url != undefined){
             has_target_route.checked = true;
             box_target.hidden = false;
+            BannerDetail_directionId.value = (map_directionId != undefined) ?  map_directionId.name : '';
+            BannerDetail_directionURL.value = (banner.direction_url != undefined) ? banner.direction_url : '';
         }else{
             box_target.hidden = true;
             has_target_route.checked = false;
