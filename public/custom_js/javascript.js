@@ -25,7 +25,7 @@ function reloadPjax() {
 
 }
 
-function handleSubmit(e, form, withPopup = false) {
+function handleSubmit(e, form, withPopup = true) {
     e.preventDefault();
     if(withPopup){
         Swal.fire({
