@@ -1,20 +1,12 @@
 function closeRequest(_this) {
-    let li_tag = $(_this).closest("li");
-    let _report_id = $(li_tag).attr('id')
     let _token = $('meta[name="csrf-token"]').attr('content');
+    let _report_id = _this.getAttribute('data-id');
+    let trTag = $(_this).parents('tr');
     param = {
         _token: $('meta[name="csrf-token"]').attr('content'),
         report_id: _report_id
     };
-    callAPIHelper("/closehelprequest/closeRequest", param, 'POST', successCloseRequest,li_tag);
-}
-function getListReport(_this){
-    let form = $(_this).closest('form');
-    param = {
-        _token:$('meta[name="csrf-token"]').attr('content'),
-        contractNo:$(form).find('input[name="contractNo"]').val()
-    };
-    callAPIHelper("/closehelprequest/getListReportByContract",param,'POST',successCallGetListReport);
+    callAPIHelper("/closehelprequest/closeRequest", param, 'POST', successCloseRequest,trTag);
 }
 function successCallGetListReport(response){
     if(response.error != undefined){
@@ -66,9 +58,13 @@ function successCallGetListReport(response){
         showList.innerHTML = html;
     }
 }
-function successCloseRequest(response,li_tag) {
+function successCloseRequest(response,trTag) {
     if (response == true) {
-        $(li_tag).remove();
+        // $(li_tag).remove();
+        var table = $('#closeHelpRequest_table').DataTable();
+        table.row(trTag)
+        .remove()
+        .draw();
         swal.fire({
             icon: 'success',
             title: 'Success!',
