@@ -22,10 +22,10 @@
                             </div>
                             <div class="form-group" id="path_1">
                                 <div><label>Ảnh</label></div>
-                                <img  src="http://hiadmin.local/images/image_holder.png" alt="your image" id ="BannerDetail_image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px">
+                                <img  src="{{ asset('/images/image_holder.png')}}" alt="your image" id ="BannerDetail_image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px">
                             </div>
                             <div class="form-group" id="path_2" hidden>
-                                <img src="http://hiadmin.local/images/image_holder.png" alt="your image" id ="BannerDetail_thump_image"  class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px">
+                                <img src="{{ asset('/images/image_holder.png')}}" alt="your image" id ="BannerDetail_thump_image"  class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px">
                                 <span><i>&nbsp; &nbsp;&nbsp;(* đây là ảnh hiển thị ở Home)</i></span>
                             </div>
                             <div class="form-group">
