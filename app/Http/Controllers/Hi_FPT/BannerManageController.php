@@ -206,10 +206,14 @@ class BannerManageController extends MY_Controller
         if(!empty($request->has_target_route)){
             if(!empty($request->direction_id)){
                 $updateParams['directionId'] = $request->direction_id;
-            };
+            }else{
+                $updateParams['directionId'] = NULL;
+            }
             if(!empty($request->direction_url)){
                 $updateParams['directionUrl'] = $request->direction_url;
-            };
+            }else{
+                $updateParams['directionUrl'] = NULL;
+            }
         }else{
             $updateParams['directionId'] = NULL;
             $updateParams['directionUrl'] = NULL;
