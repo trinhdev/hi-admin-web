@@ -223,8 +223,8 @@ class BannerManageController extends MY_Controller
         }else{
             $updateParams['isHighlight'] = false;
         };
-        if(!empty($cms_note)){
-            $cms_note = json_decode($cms_note);
+        if(!empty($request->cms_note)){
+            $cms_note = json_decode($request->cms_note);
             $cms_note->modified_by = $this->user->email;
         }else{
             $cms_note = (object)[];
