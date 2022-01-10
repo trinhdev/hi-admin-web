@@ -157,3 +157,7 @@ function getDataInForm(form) {
 function findElementInArrayObjectByKeyValue(array ,key, value){
     return array.find(object => object[key] == value);
 }
+
+function isEmpty(str) {
+    return (!str || str.length === 0 );
+}

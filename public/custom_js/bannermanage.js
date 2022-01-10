@@ -345,5 +345,15 @@ function convertDetailBanner(element){
         subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : '';
         subData.modified_by = element.modified_by != undefined ? element.modified_by : '';
     }
+
+    if(element.cms_note != undefined && !isEmpty(element.cms_note)){
+        var JSONcms_note = JSON.parse(element.cms_note);
+        subData.created_by = (JSONcms_note.created_by != undefined ) ? JSONcms_note.created_by : '';
+        subData.modified_by =  (JSONcms_note.modified_by != undefined ) ? JSONcms_note.modified_by : '';
+    }else{
+        // console.log(element.cms_note);
+        subData.created_by = '';
+        subData.modified_by = '';
+    }
     return subData;
 }

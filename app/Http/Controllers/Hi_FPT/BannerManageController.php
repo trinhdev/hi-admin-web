@@ -193,7 +193,7 @@ class BannerManageController extends MY_Controller
         };
         if(!empty($request->show_to)){
             $request->merge([
-                'show_to' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s')
+                'show_to' => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
             ]);
             $updateParams['publicDateEnd'] = $request->show_to;
         }
@@ -225,11 +225,11 @@ class BannerManageController extends MY_Controller
         };
         if(!empty($cms_note)){
             $cms_note = json_decode($cms_note);
-            $cms_note->updated_by = $this->user->id;
+            $cms_note->modified_by = $this->user->email;
         }else{
             $cms_note = (object)[];
             $cms_note->created_by = null;
-            $cms_note->updated_by = $this->user->id;
+            $cms_note->modified_by = $this->user->email;
         }
         $updateParams['cms_note'] = json_encode($cms_note);
         // my_debug($updateParams, false);
@@ -300,7 +300,10 @@ class BannerManageController extends MY_Controller
             $createParams['isHighlight'] = true;
         };
 
-        $createParams['cms_note'] = $this->user->id;
+        $createParams['cms_note'] = json_encode([
+            'created_by' => $this->user->email,
+            'modified_by' => null
+        ]);
         
         $create_banner_response = $newsEventService->addNewBanner($createParams);
         if(!empty($create_banner_response->data)){
