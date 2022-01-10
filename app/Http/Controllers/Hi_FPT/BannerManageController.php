@@ -174,10 +174,6 @@ class BannerManageController extends MY_Controller
         ];
         $request->validate($rules);
 
-        $request->merge([
-            'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s'),
-            'show_to'   => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
-        ]);
         $this->addToLog($request);
         $newsEventService = new NewsEventService();
         $updateParams = [
@@ -190,9 +186,15 @@ class BannerManageController extends MY_Controller
             $updateParams['titleVi'] = $request->title_vi;
         };
         if(!empty($request->show_from)){
+            $request->merge([
+                'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s')
+            ]);
             $updateParams['publicDateStart'] = $request->show_from;
         };
         if(!empty($request->show_to)){
+            $request->merge([
+                'show_to' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s')
+            ]);
             $updateParams['publicDateEnd'] = $request->show_to;
         }
         if(!empty($request->title_en)){
