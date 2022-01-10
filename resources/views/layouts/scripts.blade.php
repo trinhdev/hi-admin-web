@@ -32,6 +32,11 @@
 <script src="{{asset('custom_js/jquery.pjax.js')}}"></script>
 <!-- DataTables -->
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables/jquery.dataTables.js"></script>
+
+<!-- jquery-tmpl -->
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/jquery-tmpl/jquery-tmpl.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+
 <script src="{{ asset('js/dataTablebutton.min.js') }}"></script>
 <script src="{{ asset('js/buttonHtml5.js') }}"></script>
 <script src="{{ asset('js/jszip.min.js') }}"></script>
@@ -44,6 +49,7 @@
 <script src="{{ asset('/custom_js/checkuserinfo.js')}}"></script>
 <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 <script src="{{ asset('/custom_js/otp.js')}}"></script>
+<script src="{{ asset('/custom_js/iconmanagement.js')}}"></script>
 <script>
 @if($errors->any())
     showError('{{$errors->first()}}');
