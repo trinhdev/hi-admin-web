@@ -138,6 +138,14 @@ Route::group([
                 Route::post('/updateordering','BannerManageController@updateOrder')->name('bannermanage.updateOrder');
                 Route::get('/view/{id}/{type}','BannerManageController@view')->name('bannermanage.view');
             });
+
+            Route::prefix('iconmanagement')->group(function () {
+                Route::get('/','IconmanagementController@index')->name('iconmanagement.index');
+                Route::get('/edit/{id?}','IconmanagementController@edit')->name('iconmanagement.edit');
+                Route::post('/upload/{id?}','IconmanagementController@upload')->name('iconmanagement.upload');
+                // Route::get('/searchByContractNoOrId','IconmanagementController@searchByContractNoOrId')->name('iconmanagement.searchByContractNoOrId');
+                Route::get('/initDatatable','IconmanagementController@initDatatable')->name('iconmanagement.initDatatable');
+            });
             
         });
         Route::prefix('profile')->group(function () {

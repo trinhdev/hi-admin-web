@@ -1184,7 +1184,7 @@ function initIconmanagement() {
                     var tmp = JSON.stringify(row);
                     return `<div>
                                 <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onclick='viewUserInfo(` + tmp + `)' data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
-                                <a style="float: left; margin-right: 5px" href="#" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
+                                <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${id}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
                                 <button style="float: left; type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
                             </div>`;
                 },
@@ -1202,6 +1202,24 @@ function initIconmanagement() {
             $.pjax.reload('#pjax');
         },
         searchDelay: 500
+    });
+
+    $('input:radio[name="status"]').change(() => {
+        if($('#status-clock').is(':checked')) {
+            $('#status-clock-date-time').show();
+        }
+        else {
+            $('#status-clock-date-time').hide();
+        } 
+    });
+    
+    $('input:checkbox[name="is_new_show"]').change(() => {
+        if($('#is-new-show').is(':checked')) {
+            $('#is-new-icon-show-date-time').show();
+        }
+        else {
+            $('#is-new-icon-show-date-time').hide();
+        } 
     });
 }
 
