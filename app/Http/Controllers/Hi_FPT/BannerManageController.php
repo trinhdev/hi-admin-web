@@ -229,16 +229,17 @@ class BannerManageController extends MY_Controller
         };
         if(!empty($request->cms_note)){
             $cms_note = json_decode($request->cms_note);
-            $cms_note->modified_by = $this->user->email;
+            $user_email = $this->user->email;
+            $cms_note->modified_by = substr($user_email, 0, strpos($user_email, '@'));
         }else{
             $cms_note = (object)[];
             $cms_note->created_by = null;
-            $cms_note->modified_by = $this->user->email;
+            $user_email = $this->user->email;
+            $cms_note->modified_by = substr($user_email, 0, strpos($user_email, '@'));
         }
         $updateParams['cms_note'] = json_encode($cms_note);
-        // my_debug($updateParams, false);
+        // my_debug(json$updateParams, false);
         $update_banner_response = $newsEventService->updateBanner($updateParams);
-        // dd($update_banner_response);
         if(isset($update_banner_response->statusCode) && $update_banner_response->statusCode == 0){
             return redirect()->route('bannermanage.index')->withSuccess('Success!');
         }
@@ -303,9 +304,9 @@ class BannerManageController extends MY_Controller
         if(!empty($request->isHighlight)){
             $createParams['isHighlight'] = true;
         };
-
+        $user_email = $this->user->email;
         $createParams['cms_note'] = json_encode([
-            'created_by' => $this->user->email,
+            'created_by' => substr($user_email, 0, strpos($user_email, '@')),
             'modified_by' => null
         ]);
         
