@@ -293,10 +293,14 @@ class BannerManageController extends MY_Controller
         if(!empty($request->has_target_route)){
             if(!empty($request->direction_id)){
                 $createParams['directionId'] = $request->direction_id;
-            };
+            }else{
+                $createParams['directionId'] = NULL;
+            }
             if(!empty($request->direction_url)){
                 $createParams['directionUrl'] = $request->direction_url;
-            };
+            }else{
+                $createParams['directionUrl'] = NULL;
+            }
         }
         if(!empty($request->bannerType) && $request->bannerType =='promotion'){
            $createParams['thumbImageFileName'] = $request->img_path_2_name;
@@ -309,7 +313,6 @@ class BannerManageController extends MY_Controller
             'created_by' => substr($user_email, 0, strpos($user_email, '@')),
             'modified_by' => null
         ]);
-        
         $create_banner_response = $newsEventService->addNewBanner($createParams);
         if(!empty($create_banner_response->data)){
             return redirect()->route('bannermanage.index')->withSuccess('Success!');
