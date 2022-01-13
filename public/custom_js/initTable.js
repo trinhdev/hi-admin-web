@@ -420,12 +420,13 @@ function initLogActivities() {
                 className: "text-center"
             },
             {
-                data: 'email',
+                data: 'user.email',
                 className: "text-center"
             },
             {
-                data: 'user_role',
-                className: "text-center"
+                data: 'user.role.role_name',
+                className: "text-center",
+                searchable:false
             },
             {
                 data: 'method',
