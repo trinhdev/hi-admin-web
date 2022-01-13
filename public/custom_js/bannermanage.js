@@ -263,7 +263,7 @@ function successGetViewBanner(response){
         BannerDetail_public_date_end.value = banner.public_date_end != undefined ? banner.public_date_end : '';
 
         //target route
-        if(banner.direction_id != undefined || banner.direction_url != undefined){
+        if(banner.direction_id || banner.direction_url ){
             has_target_route.checked = true;
             box_target.hidden = false;
             BannerDetail_directionId.value = (map_directionId != undefined) ?  map_directionId.name : '';
