@@ -36,13 +36,13 @@ class LogactivitiesController extends MY_Controller
                 ->editColumn('ip', function ($row) {
                     return '<span class="text-danger font-weight-bolder">' . $row->ip . '</span>';
                 })
-                ->addColumn('email', function ($row) {
-                    return !empty($row->user) ? $row->user->email : '';
-                })
-                ->addColumn('user_role', function ($row) {
-                    return (!empty($row->user) && !empty($row->user->role)) ? $row->user->role->role_name : '';
-                })
-                ->rawColumns(['method', 'url', 'ip', 'user_name', 'user_role'])
+                // ->addColumn('email', function ($row) {
+                //     return !empty($row->user) ? $row->user->email : '';
+                // })
+                // ->addColumn('user_role', function ($row) {
+                //     return (!empty($row->user) && !empty($row->user->role)) ? $row->user->role->role_name : '';
+                // })
+                ->rawColumns(['method', 'url', 'ip'])
                 ->make(true);
             return $json;
         }

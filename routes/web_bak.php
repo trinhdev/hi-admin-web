@@ -126,7 +126,6 @@ Route::group([
                 Route::get('/searchByContractNoOrId','ModeminfoController@searchByContractNoOrId')->name('modeminfo.searchByContractNoOrId');
                 Route::get('/initDatatable','ModeminfoController@initDatatable')->name('modeminfo.initDatatable');
             });
-
             Route::prefix('bannermanage')->group(function () {
                 Route::get('/','BannerManageController@index')->name('bannermanage.index');
                 Route::get('/edit/{id}/{type}','BannerManageController@edit')->name('bannermanage.edit');
@@ -136,19 +135,14 @@ Route::group([
                 Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
                 Route::post('/uploadImage','BannerManageController@uploadImage')->name('bannermanage.uploadImage');
                 Route::post('/updateordering','BannerManageController@updateOrder')->name('bannermanage.updateOrder');
-                Route::get('/view/{id}/{type}','BannerManageController@view')->name('bannermanage.view');
             });
-
             Route::prefix('iconmanagement')->group(function () {
                 Route::get('/','IconmanagementController@index')->name('iconmanagement.index');
                 Route::get('/edit/{id?}','IconmanagementController@edit')->name('iconmanagement.edit');
-                Route::get('/save/{id?}','IconmanagementController@edit')->name('iconmanagement.edit');
-                Route::get('/detail/{id?}','IconmanagementController@edit')->name('iconmanagement.edit');
-                Route::post('/upload','IconmanagementController@upload')->name('iconmanagement.upload');
+                Route::post('/upload/{id?}','IconmanagementController@upload')->name('iconmanagement.upload');
                 // Route::get('/searchByContractNoOrId','IconmanagementController@searchByContractNoOrId')->name('iconmanagement.searchByContractNoOrId');
                 Route::get('/initDatatable','IconmanagementController@initDatatable')->name('iconmanagement.initDatatable');
             });
-            
         });
         Route::prefix('profile')->group(function () {
             Route::post('/changePassword','ProfileController@changePassword')->name('profile.changePassword');
