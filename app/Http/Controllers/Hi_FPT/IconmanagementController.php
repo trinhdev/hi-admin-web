@@ -41,12 +41,24 @@ class IconmanagementController extends MY_Controller
         if(!empty($id)) {
             $data['id'] = $id;
             $data['data'] = [
-                'id'            => 1,
-                'icon_url'      => '/images/camera_icon.jpg',
-                'productNameVi' => 'FPT Camera',
-                'productNameEn' => 'FPT Camera',
-                'status'        => 1,
-                
+                'id'                    => 1,
+                'productNameVi'         => 'FPT Camera',
+                'productNameEn'         => 'FPT Camera',
+                'icon_url'              => '/images/camera_icon.jpg',
+                'dataActionStaging'     => '',
+                'dataActionProduction'  => '',
+                'data'                  => '',
+                'actionType'            => 'go_to_screen',
+                'content'               => '',
+                'isNew'                 => '1',
+                'newBeginDay'           => '2022-01-01 00:00:00',
+                'newEndDay'             => '2031-12-31 00:00:00',
+                'isDisplay'             => 1,
+                'displayBeginDay'       => '2022-01-01 00:00:00',
+                'displayEndDay'         => '2031-12-31 00:00:00',
+                'decriptionVi'          => '',
+                'decriptionEn'          => '',
+                'keywords'              => ''
             ];
         }
         
@@ -88,19 +100,62 @@ class IconmanagementController extends MY_Controller
         if($request->ajax()){
             // $data = $this->model::with('user')->select(['id', 'icon_url', 'name', 'position', 'status', 'category', 'updated_by', 'created_by']);
             $data = [[
-                'id'            => 1,
-                'icon_url'      => '/images/camera_icon.jpg',
-                'productNameVi' => 'FPT Camera',
-                'productNameEn' => 'FPT Camera',
-                'status'        => 1,
-                'description'   => 'TEST'
+                'id'                    => 1,
+                'productNameVi'         => 'FPT Camera',
+                'productNameEn'         => 'FPT Camera',
+                'icon_url'              => '/images/camera_icon.jpg',
+                'dataActionStaging'     => '',
+                'dataActionProduction'  => '',
+                'data'                  => '',
+                'actionType'            => 'go_to_screen',
+                'content'               => '',
+                'isNew'                 => '1',
+                'newBeginDay'           => '2022-01-01 00:00:00',
+                'newEndDay'             => '2031-12-31 00:00:00',
+                'isDisplay'             => 1,
+                'displayBeginDay'       => '2022-01-01 00:00:00',
+                'displayEndDay'         => '2031-12-31 00:00:00',
+                'decriptionVi'          => '',
+                'decriptionEn'          => '',
+                'keywords'              => ''
             ], [
-                'id'            => 2,
-                'icon_url'      => '/images/hdi_ins.png',
-                'productNameVi' => 'Bảo hiểm Ô tô - Xe máy',
-                'productNameEn' => 'HD Insurance',
-                'status'        => 0,
-                'description'   => 'TEST'
+                'id'                    => 2,
+                'productNameVi'         => 'Bảo hiểm Ô tô - Xe máy',
+                'productNameEn'         => 'HD Insurance',
+                'icon_url'              => '/images/hdi_ins.png',
+                'dataActionStaging'     => '',
+                'dataActionProduction'  => '',
+                'data'                  => '',
+                'actionType'            => 'go_to_screen',
+                'content'               => '',
+                'isNew'                 => '1',
+                'newBeginDay'           => '2022-01-01 00:00:00',
+                'newEndDay'             => '2031-12-31 00:00:00',
+                'isDisplay'             => 0,
+                'displayBeginDay'       => '2022-01-01 00:00:00',
+                'displayEndDay'         => '2031-12-31 00:00:00',
+                'decriptionVi'          => '',
+                'decriptionEn'          => '',
+                'keywords'              => ''
+            ], [
+                'id'                    => 3,
+                'productNameVi'         => 'Nhà thuốc Long Châu',
+                'productNameEn'         => 'Long Chau Drugstore',
+                'icon_url'              => '/images/lc-logo.png',
+                'dataActionStaging'     => '',
+                'dataActionProduction'  => '',
+                'data'                  => '',
+                'actionType'            => 'go_to_screen',
+                'content'               => '',
+                'isNew'                 => '1',
+                'newBeginDay'           => '2022-01-01 00:00:00',
+                'newEndDay'             => '2031-12-31 00:00:00',
+                'isDisplay'             => 2,
+                'displayBeginDay'       => '2022-01-30 00:00:00',
+                'displayEndDay'         => '2031-12-31 00:00:00',
+                'decriptionVi'          => '',
+                'decriptionEn'          => '',
+                'keywords'              => ''
             ]];
             return DataTables::of($data)
             ->addIndexColumn()

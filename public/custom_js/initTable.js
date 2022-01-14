@@ -51,6 +51,9 @@ $(document).ready(function () {
             case 'closehelprequest':
                 initCloseHelpReqest();
                 break;
+            case 'iconcategory':
+                initIconcategory();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -1153,25 +1156,34 @@ function initIconmanagement() {
                 className: 'text-center',
             },
             {
-                data: "status",
-                name: "status",
+                data: "isDisplay",
+                name: "isDisplay",
                 title: "Trạng thái",
                 render: function (data, type, row) {
                     var html = '';
-                    if (!row['status']) {
-                        html = `<div class="df-switch">
-                                    <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off" disabled>
-                                        <div class="inner-handle"></div>
-                                        <div class="handle"></div>
-                                    </button>
-                                </div>`;
-                    } else {
-                        html = `<div class="df-switch">
+                    if('isDisplay' in row) {
+                        switch(row['isDisplay']) {
+                            case 0:
+                                html = `<div class="df-switch">
                                     <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
                                         <div class="inner-handle"></div>
                                         <div class="handle"></div>
                                     </button>
                                 </div>`;
+                                break;
+                            case 1:
+                                html = `<div class="df-switch">
+                                    <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off" disabled>
+                                        <div class="inner-handle"></div>
+                                        <div class="handle"></div>
+                                    </button>
+                                </div>`;
+                                break;
+                            case 2:
+                                html = (row['displayBeginDay']) ? `Hẹn ngày bật <span class="badge badge-warning">${row['displayBeginDay']}</span>` : '';
+                                break;
+                            default:
+                        }
                     }
                     return html;
                 },
@@ -1220,6 +1232,63 @@ function initIconmanagement() {
             $('#is-new-icon-show-date-time').hide();
         } 
     });
+
+    let items = document.querySelectorAll('.carousel .carousel-item');
+    items.forEach((el) => {
+        const minPerSlide = 4;
+        let next = el.nextElementSibling;
+        for (var i=1; i<minPerSlide; i++) {
+            if (!next) {
+                // wrap carousel by using first child
+                next = items[0];
+            }
+            let cloneChild = next.cloneNode(true);
+            el.appendChild(cloneChild.children[0])
+            next = next.nextElementSibling
+        }
+    });
+
+    // Dragula CSS Release 3.2.0 from: https://github.com/bevacqua/dragula
+    dragula([document.getElementById('all-product'), document.getElementById('selected-product')])
+    .on('drag', function(el) {
+        console.log('init-table');
+        el.className.replace('ex-moved', '');
+    }).on('drop', function(el) {
+        el.className += 'ex-moved';
+    }).on('over', function(el, container) {
+        container.className += 'ex-over';
+    }).on('out', function(el, container) {
+        container.className.replace('ex-over', '');
+    });
+
+    /* Vanilla JS to add a new card */
+    function addCard() {
+    /* Get card text from input */
+    var inputCard = document.getElementById("cardText").value;
+    /* Add card to the 'To Do' column */
+    document.getElementById("cards").innerHTML += "<li class='card'><p>" + inputCard + "</p></li>";
+    /* Clear card text from input after adding card */
+    document.getElementById("cardText").value = "";
+    }
+
+    /* Vanilla JS to delete all cards */
+    function deleteAllCards() {
+    /* Clear cards from 'cards' and 'order' column */
+    document.getElementById("cards").innerHTML = "";
+    document.getElementById("order").innerHTML = "";
+    }
+
+    /* Vanilla JS to delete all cards in cards column */
+    function deleteCardsCards() {
+    /* Clear cards from 'cards' column */
+    document.getElementById("cards").innerHTML = "";
+    }
+
+    /* Vanilla JS to delete all cards in order column*/
+    function deleteOrderCards() {
+    /* Clear cards from 'order' column */
+    document.getElementById("order").innerHTML = "";
+    }
 }
 
 function initCloseHelpReqest() {
@@ -1283,6 +1352,138 @@ function initCloseHelpReqest() {
         },
     });
 
+}
+
+function initIconcategory() {
+    // $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+    //     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    // } );
+
+    $('#icon-category').DataTable({
+        "processing": true,
+        "select": true,
+        "bDestroy": true,
+        "scrollX": true,
+        "scrollCollapse": true,
+        "pageLength": 5,
+        "lengthMenu": [5, 10, 25, 50, 75, 100],
+        "orderMulti": true,
+        "retrieve": true,
+        "serverSide": true,
+        "ajax": {
+            url: "/iconcategory/initDatatable"
+        },
+        "data": [],
+        "columns": [{
+                data: "id",
+                name: "id",
+                title: "STT",
+                className: 'text-center',
+            },
+            {
+                data: 'categoryNameVi',
+                name: "categoryNameVi",
+                title: "Tên danh mục - VN",
+                className: 'text-center',
+            },
+            {
+                data: 'categoryNameEn',
+                name: "categoryNameEn",
+                title: "Tên danh mục - EN",
+                className: 'text-center',
+            },
+            {
+                data: 'icon_count',
+                name: 'icon_count',
+                title: 'Số lượng',
+                className: 'text-center',
+            },
+            {
+                data: "status",
+                name: "status",
+                title: "Trạng thái",
+                render: function (data, type, row) {
+                    var html = '';
+                    if (!row['status']) {
+                        html = `<div class="df-switch">
+                                    <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off" disabled>
+                                        <div class="inner-handle"></div>
+                                        <div class="handle"></div>
+                                    </button>
+                                </div>`;
+                    } else {
+                        html = `<div class="df-switch">
+                                    <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
+                                        <div class="inner-handle"></div>
+                                        <div class="handle"></div>
+                                    </button>
+                                </div>`;
+                    }
+                    return html;
+                },
+                className: 'text-center',
+            },
+            {
+                title: 'Action',
+                data: 'id',
+                render: function (data, type, row) {
+                    return `<button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${JSON.stringify(row).split('"').join("&quot;")})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                            <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
+                            <button style="float: left; type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProduct('${row.productNameVi}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>`;
+                },
+                "sortable": false,
+                className: 'text-center',
+            }
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#icon-management-home').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500
+    });
+
+    $('input:radio[name="status"]').change(() => {
+        if($('#status-clock').is(':checked')) {
+            $('#status-clock-date-time').show();
+        }
+        else {
+            $('#status-clock-date-time').hide();
+        } 
+    });
+    
+    $('input:checkbox[name="is_new_show"]').change(() => {
+        if($('#is-new-show').is(':checked')) {
+            $('#is-new-icon-show-date-time').show();
+        }
+        else {
+            $('#is-new-icon-show-date-time').hide();
+        } 
+    });
+
+    $("#carousel").carousel();
+
+    $('.carousel-showmanymoveone .item').each(function(){
+        var itemToClone = $(this);
+    
+        for (var i=1;i<6;i++) {
+          itemToClone = itemToClone.next();
+    
+          // wrap around if at end of item collection
+          if (!itemToClone.length) {
+            itemToClone = $(this).siblings(':first');
+          }
+    
+          // grab item, clone, add marker class, add to collection
+          itemToClone.children(':first-child').clone()
+            .addClass("cloneditem-"+(i))
+            .appendTo($(this));
+        }
+    });      
 }
 
 function badgeArrayView(arrayInput) {

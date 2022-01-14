@@ -148,6 +148,18 @@ Route::group([
                 // Route::get('/searchByContractNoOrId','IconmanagementController@searchByContractNoOrId')->name('iconmanagement.searchByContractNoOrId');
                 Route::get('/initDatatable','IconmanagementController@initDatatable')->name('iconmanagement.initDatatable');
             });
+
+            Route::prefix('iconcategory')->group(function () {
+                Route::get('/','IconcategoryController@index')->name('iconcategory.index');
+                Route::get('/edit/{id?}','IconcategoryController@edit')->name('iconcategory.edit');
+                Route::get('/save/{id?}','IconcategoryController@edit')->name('iconcategory.edit');
+                Route::get('/detail/{id?}','IconcategoryController@edit')->name('iconcategory.edit');
+                Route::post('/upload','IconcategoryController@upload')->name('iconcategory.upload');
+                // Route::get('/searchByContractNoOrId','IconmanagementController@searchByContractNoOrId')->name('iconmanagement.searchByContractNoOrId');
+                Route::get('/initDatatable','IconcategoryController@initDatatable')->name('iconcategory.initDatatable');
+                Route::get('/testdragdrop','IconcategoryController@test_drag_drop')->name('iconcategory.testdragdrop');
+                Route::get('/testcarousel','IconcategoryController@test_carousel')->name('iconcategory.testcarousel');
+            });
             
         });
         Route::prefix('profile')->group(function () {

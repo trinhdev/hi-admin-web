@@ -37,6 +37,10 @@
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/jquery-tmpl/jquery-tmpl.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/dragula-master/dist/dragula.min.js"></script>
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/lightslider-master/dist/js/lightslider.min.js"></script>
+
+
 <script src="{{ asset('js/dataTablebutton.min.js') }}"></script>
 <script src="{{ asset('js/buttonHtml5.js') }}"></script>
 <script src="{{ asset('js/jszip.min.js') }}"></script>
@@ -50,6 +54,9 @@
 <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 <script src="{{ asset('/custom_js/otp.js')}}"></script>
 <script src="{{ asset('/custom_js/iconmanagement.js')}}"></script>
+<script src="{{ asset('/custom_js/icon_category.js')}}"></script>
+<script src="{{ asset('/custom_js/test_drag_drop.js')}}"></script>
+<script src="{{ asset('/custom_js/test_carousel.js')}}"></script>
 <script>
 @if($errors->any())
     showError('{{$errors->first()}}');
