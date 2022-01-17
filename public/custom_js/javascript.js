@@ -13,7 +13,7 @@ $(document).ready(function () {
         $(this).parents('.nav-treeview').prevAll('.nav-link').addClass('active');
 
     });
-    reloadPjax();
+    // reloadPjax();
 });
 
 function reloadPjax() {
