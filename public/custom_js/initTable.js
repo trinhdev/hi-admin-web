@@ -1,7 +1,7 @@
 $(document).ready(function () {
     initSelect();
     settings_on_search();
-    $(document).on('pjax:end', function () {
+    // $(document).on('ready', function () {
         initSelect();
         const pathArray = window.location.pathname.split("/");
         let segment = pathArray[1]; //first uri param
@@ -54,10 +54,10 @@ $(document).ready(function () {
             case '':
             case 'home':
                 drawChart();
-                break
+                break;
         }
 
-    });
+    // });
     $(document).on('pjax:popstate', function (event) {
         event.preventDefault();
         $.pjax.reload('#pjax');
