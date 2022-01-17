@@ -1129,9 +1129,15 @@ function initIconmanagement() {
         },
         "data": [],
         "columns": [{
-                data: "id",
-                name: "id",
                 title: "STT",
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
+                data: "productId",
+                name: "productId",
+                title: "Product ID",
                 className: 'text-center',
             },
             {
@@ -1191,7 +1197,7 @@ function initIconmanagement() {
             },
             {
                 title: 'Action',
-                data: 'id',
+                data: 'productId',
                 render: function (data, type, row) {
                     return `<div>
                                 <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${JSON.stringify(row).split('"').join("&quot;")})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
@@ -1215,7 +1221,115 @@ function initIconmanagement() {
         searchDelay: 500
     });
 
-    $('input:radio[name="status"]').change(() => {
+    var show_from = $('#show_from').val() != "" ? new Date($('#show_from').val()) : false;
+    var show_to = $('#show_to').val() != "" ? new Date($('#show_to').val()) : false;
+
+    $('#show_from').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        },
+        minDate: new Date(),
+        maxDate: show_to
+    });
+
+    $('#show_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        },
+        useCurrent: false,
+        minDate: show_from
+    });
+
+    var new_from = $('#new_from').val() != "" ? new Date($('#new_from').val()) : false;
+    var new_to = $('#new_to').val() != "" ? new Date($('#new_to').val()) : false;
+
+    $('#new_from').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        },
+        minDate: new Date(),
+        maxDate: new_to
+    });
+
+    $('#new_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        },
+        useCurrent: false,
+        minDate: new_from
+    });
+
+    $("#show_from").on("dp.change", function (e) {
+        $('#show_to').data("DateTimePicker").minDate(e.date);
+    });      
+    
+    $("#show_to").on("dp.change", function (e) {
+        $('#show_from').data("DateTimePicker").maxDate(e.date);
+    });
+
+    $("#new_from").on("dp.change", function (e) {
+        $('#new_to').data("DateTimePicker").minDate(e.date);
+    });      
+    
+    $("#new_to").on("dp.change", function (e) {
+        $('#new_from').data("DateTimePicker").maxDate(e.date);
+    });
+
+    if($('#status-clock').is(':checked')) {
+        $('#status-clock-date-time').show();
+    }
+    else {
+        $('#status-clock-date-time').hide();
+    }
+
+    if($('#is-new-show').is(':checked')) {
+        $('#is-new-icon-show-date-time').show();
+    }
+    else {
+        $('#is-new-icon-show-date-time').hide();
+    }
+
+    $('input:radio[name="isDisplay"]').change(() => {
         if($('#status-clock').is(':checked')) {
             $('#status-clock-date-time').show();
         }
@@ -1224,7 +1338,7 @@ function initIconmanagement() {
         } 
     });
     
-    $('input:checkbox[name="is_new_show"]').change(() => {
+    $('input:checkbox[name="isNew"]').change(() => {
         if($('#is-new-show').is(':checked')) {
             $('#is-new-icon-show-date-time').show();
         }

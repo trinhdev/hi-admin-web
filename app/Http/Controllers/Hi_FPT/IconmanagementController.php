@@ -39,40 +39,45 @@ class IconmanagementController extends MY_Controller
         ];
         $id = request()->segment(3);
         if(!empty($id)) {
-            $data['id'] = $id;
-            $data['data'] = [
-                'id'                    => 1,
-                'productNameVi'         => 'FPT Camera',
-                'productNameEn'         => 'FPT Camera',
-                'icon_url'              => '/images/camera_icon.jpg',
-                'dataActionStaging'     => '',
-                'dataActionProduction'  => '',
-                'data'                  => '',
-                'actionType'            => 'go_to_screen',
-                'content'               => '',
-                'isNew'                 => '1',
-                'newBeginDay'           => '2022-01-01 00:00:00',
-                'newEndDay'             => '2031-12-31 00:00:00',
-                'isDisplay'             => 1,
-                'displayBeginDay'       => '2022-01-01 00:00:00',
-                'displayEndDay'         => '2031-12-31 00:00:00',
-                'decriptionVi'          => '',
-                'decriptionEn'          => '',
-                'keywords'              => ''
-            ];
+            $api_info = [
+                "statusCode"                    => 0,
+                "message"                       => "Thành công",
+                "data"                          => [
+                    "productId"                 => 9,
+                    "productNameVi"             => "F-Safe",
+                    "productNameEn"             => "F-Safe",
+                    "iconUrl"                   => "https://hi-static.fpt.vn/sys/hifpt/icons/hi-customer/6_2/FSafe.png",
+                    "dataActionStaging"         => "https://staging-hi.fpt.vn/shopping/fpt/fsafe/grid",
+                    "dataActionProduction"      => "https://fpt.vn/fsafe/",
+                    "actionType"                => "open_url_in_app_with_access_token",
+                    "data"                      => null,
+                    "content"                   => "",
+                    "isNew"                     => "2",
+                    "newBeginDay"               => "2021-11-28 00:00:00",
+                    "newEndDay"                 => "2021-11-28 00:00:00",
+                    "isDisplay"                 => "2",
+                    "displayBeginDay"           => "2021-11-28 00:00:00",
+                    "displayEndDay"             => "2021-11-28 00:00:00",
+                    "decriptionVi"              => null,
+                    "decriptionEn"              => null,
+                    "keywords"                  => "fsafe, f safe"
+                ]
+            ];            
+
+            // $data['productId'] = (!empty);
+            $data['data'] = (!empty($api_info['data'])) ? $api_info['data'] : [];
         }
         
         $loai_dieu_huong = Settings::where('name', 'icon_loai_dieu_huong')->get();
         $data['loai_dieu_huong'] = (!empty($loai_dieu_huong[0]['value'])) ? json_decode($loai_dieu_huong[0]['value'], true) : [];
-        // dd($data);
         return view('icon_management.edit')->with($data);
     }
 
     public function save(Request $request) {
-        $id = request()->segment(3);
-        if(!empty($id)) {
+        // $id = request()->segment(3);
+        // if(!empty($id)) {
 
-        }
+        // }
         dd($request);
     }
 
@@ -100,7 +105,7 @@ class IconmanagementController extends MY_Controller
         if($request->ajax()){
             // $data = $this->model::with('user')->select(['id', 'icon_url', 'name', 'position', 'status', 'category', 'updated_by', 'created_by']);
             $data = [[
-                'id'                    => 1,
+                'productId'             => 1,
                 'productNameVi'         => 'FPT Camera',
                 'productNameEn'         => 'FPT Camera',
                 'icon_url'              => '/images/camera_icon.jpg',
@@ -119,7 +124,7 @@ class IconmanagementController extends MY_Controller
                 'decriptionEn'          => '',
                 'keywords'              => ''
             ], [
-                'id'                    => 2,
+                'productId'             => 2,
                 'productNameVi'         => 'Bảo hiểm Ô tô - Xe máy',
                 'productNameEn'         => 'HD Insurance',
                 'icon_url'              => '/images/hdi_ins.png',
@@ -138,7 +143,7 @@ class IconmanagementController extends MY_Controller
                 'decriptionEn'          => '',
                 'keywords'              => ''
             ], [
-                'id'                    => 3,
+                'productId'             => 3,
                 'productNameVi'         => 'Nhà thuốc Long Châu',
                 'productNameEn'         => 'Long Chau Drugstore',
                 'icon_url'              => '/images/lc-logo.png',

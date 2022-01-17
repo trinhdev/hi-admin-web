@@ -1,6 +1,124 @@
 "use strict";
 
-$('input:radio[name="status"]').change(() => {
+$( document ).ready(function() {
+    if($('#status-clock').is(':checked')) {
+        $('#status-clock-date-time').show();
+    }
+    else {
+        $('#status-clock-date-time').hide();
+    }
+
+    if($('#is-new-show').is(':checked')) {
+        $('#is-new-icon-show-date-time').show();
+    }
+    else {
+        $('#is-new-icon-show-date-time').hide();
+    }
+
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1)
+
+    var show_from = $('#show_from').val() != "" ? new Date($('#show_from').val()) : false;
+    var show_to = $('#show_to').val() != "" ? new Date($('#show_to').val()) : false;
+
+    var show_from_picker = $('#show_from').datetimepicker({
+        // date: moment(),
+        format: "YYYY-MM-DD HH:mm",
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        },
+        minDate: new Date(),
+        maxDate: show_to,
+        // useCurrent: true,
+    }).data('DateTimePicker').date(moment('2021-11-28 00:00:00'));
+
+    var show_to_picker = $('#show_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        },
+        useCurrent: false,
+        minDate: show_from
+    }).data('DateTimePicker').date(tomorrow);
+
+    var new_from = $('#new_from').val() != "" ? new Date($('#new_from').val()) : false;
+    var new_to = $('#new_to').val() != "" ? new Date($('#new_to').val()) : false;
+
+    $('#new_from').datetimepicker({
+        format: "YYYY-MM-DD HH:mm:SS",
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        },
+        minDate: new Date(),
+        maxDate: new_to,
+        defaultDate: new Date()
+    });
+
+    $('#new_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm:SS",
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        },
+        useCurrent: false,
+        minDate: new_from,
+        // date: new_to
+    });
+});
+
+$("#show_from").on("dp.change", function (e) {
+    show_to_picker.minDate(e.date);
+});      
+
+$("#show_to").on("dp.change", function (e) {
+    show_from_picker.maxDate(e.date);
+});
+
+$("#new_from").on("dp.change", function (e) {
+    $('#new_to').data("DateTimePicker").minDate(e.date);
+});      
+
+$("#new_to").on("dp.change", function (e) {
+    $('#new_from').data("DateTimePicker").maxDate(e.date);
+});
+
+$('input:radio[name="isDisplay"]').change(() => {
     if($('#status-clock').is(':checked')) {
         $('#status-clock-date-time').show();
     }
@@ -9,7 +127,7 @@ $('input:radio[name="status"]').change(() => {
     } 
 });
 
-$('input:checkbox[name="is_new_show"]').change(() => {
+$('input:checkbox[name="isNew"]').change(() => {
     if($('#is-new-show').is(':checked')) {
         $('#is-new-icon-show-date-time').show();
     }

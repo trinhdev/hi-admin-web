@@ -39,6 +39,7 @@
 
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/dragula-master/dist/dragula.min.js"></script>
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/lightslider-master/dist/js/lightslider.min.js"></script>
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
 
 <script src="{{ asset('js/dataTablebutton.min.js') }}"></script>

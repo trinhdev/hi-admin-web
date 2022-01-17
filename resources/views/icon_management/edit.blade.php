@@ -24,10 +24,11 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-9">
-                    {!! Form::open(array('url' => route('roles.save'),'method'=>'post' ,'id' => 'form-view','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
+                    {!! Form::open(array('url' => route('iconmanagement.save'),'method'=>'post' ,'productId' => 'form-view','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
+                    @csrf
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title uppercase">{{ (!empty($id)) ? 'Cập nhật' : 'Thêm' }} Sản Phẩm</h3>
+                            <h3 class="card-title uppercase">{{ (!empty($data['productId'])) ? 'Cập nhật' : 'Thêm' }} Sản Phẩm</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -39,7 +40,7 @@
                                         <img id="img_icon" src="{{ (!empty($data['icon_url']) ? $data['icon_url'] : '/images/image_logo.png') }}" alt="" width="200" class="mb-4">
                                         <!-- Upload image input-->
                                         <div class="input-group mb-3 px-2 py-2 rounded-pill bg-gray shadow-sm">
-                                            <input id="upload" name="icon_img" type="file" onchange="readURL(this);" class="form-control border-0">
+                                            <input id="upload" name="iconUrl" type="file" onchange="readURL(this);" class="form-control border-0">
                                             <label id="upload-label" for="upload" style="color: white; font-weight: bold">Upload image</label>
                                             <div class="input-group-append">
                                                 <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
@@ -81,13 +82,13 @@
                                 <div class="row">
                                     <div class="col-sm-2 offset-sm-1">
                                         <div class="icheck-sunflower">
-                                            <input type="radio" id="status-show" name="status" value="hide" checked />
+                                            <input type="radio" id="status-show" name="isDisplay" value="0" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '0') ? 'checked' : '' }} />
                                             <label for="status-show">Bật</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="icheck-sunflower">
-                                            <input type="radio" id="status-hide" name="status" value="show" />
+                                            <input type="radio" id="status-hide" name="isDisplay" value="1" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '1') ? 'checked' : '' }} />
                                             <label for="status-hide">Tắt</label>
                                         </div>
                                     </div>
@@ -96,7 +97,7 @@
                                     <div class="col-sm-11 offset-sm-1">
                                         <div class="form-group">
                                             <div class="icheck-sunflower">
-                                                <input type="radio" id="status-clock" name="status" value="clock" />
+                                                <input type="radio" id="status-clock" name="isDisplay" value="2" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '2') ? 'checked' : '' }} />
                                                 <label for="status-clock">Hẹn giờ bật hiển thị</label>
                                             </div>
                                         </div>
@@ -108,7 +109,7 @@
                                             <div class="form-group row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày bắt đầu</label>
                                                 <div class="col-sm-7">
-                                                    <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                    <input type="text" name="displayBeginDay" class="form-control" id="show_from" placeholder="yyyy-mm-dd hh:mm" value="{{ @$data['displayBeginDay'] }}" />
                                                 </div>
                                             </div>
                                         </div>
@@ -116,9 +117,9 @@
                                     <div class="row">
                                         <div class="col-sm-7 offset-sm-1">
                                             <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày bắt đầu</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày kết thúc</label>
                                                 <div class="col-sm-7">
-                                                    <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                    <input type="text" name="displayEndDay" class="form-control" id="show_to" placeholder="yyyy-mm-dd hh:mm" />
                                                 </div>
                                             </div>
                                         </div>
@@ -127,8 +128,8 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-form-label col-sm-2">Hiển thị icon "Mới"</label>
-                                <div class="icheck-primary">
-                                    <input type="checkbox" id="is-new-show" name="is_new_show" />
+                                <div class="icheck-primary" style="width: auto">
+                                    <input type="checkbox" id="is-new-show" name="isNew" />
                                     <label for="is-new-show"></label>
                                 </div>
                             </div>
@@ -138,7 +139,7 @@
                                         <div class="form-group row">
                                             <label for="inputEmail3" class="col-sm-5">Ngày bắt đầu</label>
                                             <div class="col-sm-7">
-                                                <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                <input type="text" name="newBeginDay" class="form-control" id="new_from" placeholder="yyyy-mm-dd hh:mm" />
                                             </div>
                                         </div>
                                     </div>
@@ -146,9 +147,9 @@
                                 <div class="row">
                                     <div class="col-sm-7 offset-sm-1">
                                         <div class="form-group row">
-                                            <label for="inputEmail3" class="col-sm-5">Ngày bắt đầu</label>
+                                            <label for="inputEmail3" class="col-sm-5">Ngày kết thúc</label>
                                             <div class="col-sm-7">
-                                                <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                <input type="text" name="newEndDay" class="form-control" id="new_to" placeholder="yyyy-mm-dd hh:mm" />
                                             </div>
                                         </div>
                                     </div>
@@ -158,10 +159,10 @@
                                 <div class="col-sm-8">
                                     <div class="form-group row">
                                         <label class="col-sm-6" style="padding-right: 0" for="action">Loại điều hướng</label>
-                                        <select name="action" id="action" class="selectpicker col-sm-6" data-live-search="true" data-size="10">
+                                        <select name="actionType" id="action" class="selectpicker col-sm-6" data-live-search="true" data-size="10">
                                             <option value="">Please choose action</option>
                                             @foreach ($loai_dieu_huong as $item)
-                                            <option value="{{ $item['key'] }}">{{ $item['value'] }}</option>
+                                            <option value="{{ $item['key'] }}" {{ (!empty($data['actionType']) && $data['actionType'] == $item['key']) ? 'selected' : '' }}>{{ $item['value'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -172,7 +173,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-5 col-form-label">Link production</label>
                                         <div class="col-sm-7">
-                                            <input type="textbox" name="show_from" class="form-control" />
+                                            <input type="textbox" name="dataActionProduction" class="form-control" value="{{ @$data['dataActionProduction'] }}" />
                                         </div>
                                     </div>
                                 </div>
@@ -182,7 +183,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-5 col-form-label">Link staging</label>
                                         <div class="col-sm-7">
-                                            <input type="textbox" name="show_from" class="form-control" />
+                                            <input type="textbox" name="dataActionStaging" class="form-control" value="{{ @$data['dataActionStaging'] }}" />
                                         </div>
                                     </div>
                                 </div>
@@ -192,8 +193,8 @@
                         <div class="card-footer">
                             <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
                             <a href="/{{$controller}}" class="btn btn-default float-right" style="margin-left: 5px">Đóng</a>
-                            @if (!empty($id))
-                            <button type="button" onClick="deleteProduct('{{ $data['productNameVi'] }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            @if (!empty($data['productId']))
+                            <button type="button" onClick="deleteProduct('{{ @$data['productNameVi'] }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                             @endif
                         </div>
                         <!-- /.card-footer -->
