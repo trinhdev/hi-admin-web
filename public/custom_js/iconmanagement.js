@@ -40,7 +40,7 @@ $( document ).ready(function() {
         minDate: new Date(),
         maxDate: show_to,
         // useCurrent: true,
-    }).data('DateTimePicker').date(moment('2021-11-28 00:00:00'));
+    }).data('DateTimePicker').date(today);
 
     var show_to_picker = $('#show_to').datetimepicker({
         format: "YYYY-MM-DD HH:mm",
@@ -102,13 +102,13 @@ $( document ).ready(function() {
     });
 });
 
-$("#show_from").on("dp.change", function (e) {
-    show_to_picker.minDate(e.date);
-});      
+// $("#show_from").on("dp.change", function (e) {
+//     show_to_picker.minDate(e.date);
+// });      
 
-$("#show_to").on("dp.change", function (e) {
-    show_from_picker.maxDate(e.date);
-});
+// $("#show_to").on("dp.change", function (e) {
+//     show_from_picker.maxDate(e.date);
+// });
 
 $("#new_from").on("dp.change", function (e) {
     $('#new_to').data("DateTimePicker").minDate(e.date);
