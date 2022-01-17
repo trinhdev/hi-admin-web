@@ -2,7 +2,7 @@ $(document).ready(function () {
     // $('#sidebar').sortable({
     //     axis: "y",
     // });
-    $(document).pjax('a', '#pjax');
+    // $(document).pjax('a', '#pjax');
     $('aside li.nav-item a').on('click', function (e) {
         if ($(this).attr('href') != '#') {
             $('aside').find(".menu-open > .nav-treeview").not($(this).parents('.menu-open > .nav-treeview')).slideUp()
