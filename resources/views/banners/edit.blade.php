@@ -33,7 +33,7 @@
                         $isBannerPromotion = true;
                     }
                     @endphp
-                    <form action="{{$action}}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)">
+                    <form action="{{$action}}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)" onkeydown="checkEnableSave(this)">
                         @csrf
                         @if(!empty($banner))
                         @method('PUT')
