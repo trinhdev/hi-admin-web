@@ -25,7 +25,7 @@ function reloadPjax() {
 
 }
 
-function handleSubmit(e, form, withPopup = false) {
+function handleSubmit(e, form, withPopup = true) {
     e.preventDefault();
     if(withPopup){
         Swal.fire({
@@ -152,4 +152,12 @@ function getDataInForm(form) {
         }
     }
     return data;
+}
+
+function findElementInArrayObjectByKeyValue(array ,key, value){
+    return array.find(object => object[key] == value);
+}
+
+function isEmpty(str) {
+    return (!str || str.length === 0 );
 }

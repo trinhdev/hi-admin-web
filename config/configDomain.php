@@ -80,7 +80,7 @@ $domainSmsWorld = [
 
 $domainNewsEventConfig = [
     'local'             => [
-        'URL'           => 'hievent.local/',
+        'URL'           => 'hi-news-event-stag.fpt.vn/',
         'CLIENT_KEY'    => '9895ee2f7616a73ab8be47e5df5a8924',
         'SECRET_KEY'    => 'e063d2833da02c8dac4cac106b825535',
     ],
@@ -110,7 +110,7 @@ $domainModemInfo = [
         'SUB_DOMAIN'    => ['provider', 'admin-tool'],
     ],
     'production'        => [
-        'URL'           => 'http://hi-modem.fpt.vn',
+        'URL'           => 'http://hi-modem.fpt.vn/',
         'CLIENT_KEY'    => 'hifpt_modem',
         'SECRET_KEY'    => 'xxxxxxhifpt2018',
         'SUB_DOMAIN'    => ['provider', 'admin-tool'],
