@@ -24,7 +24,7 @@ class PopupManageController extends MY_Controller
         $newsEventService = new NewsEventService();
         $listTypeBanner = $newsEventService->getListTypeBanner();
         $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
-        return view('banners.index')->with(['list_type_banner' => $listTypeBanner]);
+        return view('popup.index')->with(['list_type_banner' => $listTypeBanner]);
     }
     public function edit(Request $request, $bannerId, $bannerType){
         $newsEventService = new NewsEventService();
@@ -158,29 +158,36 @@ class PopupManageController extends MY_Controller
     }
 
     public function create(Request $request){
-        $newsEventService = new NewsEventService();
-        $listTargetRoute = $newsEventService->getListTargetRoute();
-        $listTargetRoute = ($listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
+        // $newsEventService = new NewsEventService();
+        // $listTargetRoute = $newsEventService->getListTargetRoute();
+        // $listTargetRoute = ($listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
 
-        $listTypeBanner = $newsEventService->getListTypeBanner();
-        $listTypeBanner = ($listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
-        return view('banners.edit')->with(['list_target_route'=>$listTargetRoute, 'list_type_banner' => $listTypeBanner]);
+        // $listTypeBanner = $newsEventService->getListTypeBanner();
+        // $listTypeBanner = ($listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
+        return view('popup.edit'); //->with(['list_target_route'=>$listTargetRoute, 'list_type_banner' => $listTypeBanner]);
     }
 
-    public function store(Request $request){
-        $rules = [
-            'bannerType' =>'required',
-            'title_vi'  =>'required',
-            'title_en'  =>'required',
-            'path_1'    =>'required',
-            'img_path_1_name' =>'required',
-            'object'    =>'required',
-            'object_type'=>'required',
-            'show_from' =>'required|date_format:Y-m-d\TH:i',
-            'show_to'   =>'required|date_format:Y-m-d\TH:i',
-            'direction_url' => 'required_if:directionId,url_open_in_app,url_open_out_app',
-            'img_path_2_name'   => 'required_if:bannerType,promotion',
+    public function store(Request $request){ 
+        $ruleButtonImage = [
+            'path_button'           =>  'required',
+            'img_path_button_name'  =>  'required',
         ];
+        
+        $rules = [
+            'templateType'          =>  'required',
+            'title_vi'              =>  'required',
+            'title_en'              =>  'required',
+            'path_1'                =>  'required',
+            'img_path_1_name'       =>  'required',
+            // 'show_from'             =>  'required|date_format:Y-m-d\TH:i',
+            // 'show_to'               =>  'required|date_format:Y-m-d\TH:i',
+            // 'direction_url'         =>  'required_if:directionId,url_open_in_app,url_open_out_app',
+            // 'img_path_2_name'       =>  'required_if:bannerType,promotion',
+        ];
+
+        if($request->templateType == "popup_custom_image_transparent"){
+           $rule = array_merge($ruleButtonImage, $rules);
+        }
         
         $request->validate($rules);
 
@@ -192,11 +199,11 @@ class PopupManageController extends MY_Controller
         $newsEventService = new NewsEventService();
         $createParams = [
             'bannerType'        => $request->bannerType,
-            'titleVi'           =>$request->title_vi,
+            'titleVi'           => $request->title_vi,
             'titleEn'           => $request->title_en,
-            'publicDateStart'   =>$request->show_from,
+            'publicDateStart'   => $request->show_from,
             'publicDateEnd'     => $request->show_to,
-            'objects'            => $request->object,
+            'objects'           => $request->object,
             'objectType'        => $request->object_type,
             'imageFileName'     => $request->img_path_1_name,
         ];
