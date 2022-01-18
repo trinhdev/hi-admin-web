@@ -148,6 +148,17 @@ Route::group([
                 // Route::get('/searchByContractNoOrId','IconmanagementController@searchByContractNoOrId')->name('iconmanagement.searchByContractNoOrId');
                 Route::get('/initDatatable','IconmanagementController@initDatatable')->name('iconmanagement.initDatatable');
             });
+
+            Route::prefix('popupmanage')->group(function () {
+                Route::get('/','PopupManageController@index')->name('popupmanage.index');
+                Route::get('/edit/{id}/{type}','PopupManageController@edit')->name('popupmanage.edit');
+                Route::get('/create','PopupManageController@create')->name('popupmanage.create');
+                Route::post('/store','PopupManageController@store')->name('popupmanage.store');
+                Route::put('/update/{id}/{type}','PopupManageController@update')->name('popupmanage.update');
+                Route::get('/initDatatable','PopupManageController@initDatatable')->name('popupmanage.initDatatable');
+                Route::post('/uploadImage','PopupManageController@uploadImage')->name('popupmanage.uploadImage');
+                Route::post('/updateordering','PopupManageController@updateOrder')->name('popupmanage.updateOrder');
+            });
             
         });
         Route::prefix('profile')->group(function () {
