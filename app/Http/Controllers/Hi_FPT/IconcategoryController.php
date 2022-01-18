@@ -100,26 +100,29 @@ class IconcategoryController extends MY_Controller
         if($request->ajax()){
             // $data = $this->model::with('user')->select(['id', 'icon_url', 'name', 'position', 'status', 'category', 'updated_by', 'created_by']);
             $data = [[
-                'id'                => 1,
-                'categoryNameVi'    => 'Viễn thông',
-                'categoryNameEn'    => 'Telecom',
-                'icon_count'        => 4,
-                'status'            => 1,
-                'description'       => 'TEST'
+                'productTitleId'        => 1,
+                'productTitleNameVi'    => 'Viễn thông',
+                'productTitleNameEn'    => 'Telecom',
+                'arrayId'               => '5,17,8,34,9,10,11,39',
+                'dateModified'          => '2021-10-21 08:34:39',
+                'isDeleted'             => 0,
+                'pheduyet'              => 'Chờ kiểm tra'
             ], [
-                'id'                => 2,
-                'categoryNameVi'    => 'Giải trí',
-                'categoryNameEn'    => 'Entertainment',
-                'icon_count'        => 4,
-                'status'            => 0,
-                'description'       => 'TEST'
+                'productTitleId'        => 2,
+                'productTitleNameVi'    => 'Smart Home',
+                'productTitleNameEn'    => 'Smart Home',
+                'arrayId'               => '7,19',
+                'dateModified'          => '2021-10-11 18:27:36',
+                'isDeleted'             => 0,
+                'pheduyet'              => 'Kiểm tra thất bại'
             ], [
-                'id'                => 3,
-                'categoryNameVi'    => 'Dịch vụ IT',
-                'categoryNameEn'    => 'IT service',
-                'icon_count'        => 10,
-                'status'            => 1,
-                'description'       => 'TEST'
+                'productTitleId'        => 3,
+                'productTitleNameVi'    => 'Dịch vụ IT',
+                'productTitleNameEn'    => 'IT service',
+                'arrayId'               => '5,17,8,34,9,10,11,39,7,19,30',
+                'dateModified'          => '2021-10-21 08:34:39',
+                'isDeleted'             => 0,
+                'pheduyet'              => 'Đã phê duyệt'
             ]];
             return DataTables::of($data)
             ->addIndexColumn()

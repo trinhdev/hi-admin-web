@@ -152,6 +152,28 @@ $domainModemContractInfo = [
         'SECRET_KEY'    => 'xxxxxxhifpt2018'
     ],
 ];
+
+$domainIconManagement = [
+    'local'             => [
+        'URL'           => 'http://hi-customer-stag.fpt.vn/',
+        'SUB_DOMAIN'    => ['hi-customer-local', 'tool'],
+        'CLIENT_KEY'    => 'hifpt_customer_local',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+    ],
+    'staging'           => [
+        'URL'           => 'http://hi-customer-stag.fpt.vn/',
+        'SUB_DOMAIN'    => ['hi-customer-local', 'tool'],
+        'CLIENT_KEY'    => 'hifpt_customer_local',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+    ],
+    'production'        => [
+        'URL'           => 'http://hi-customer-stag.fpt.vn/',
+        'SUB_DOMAIN'    => ['hi-customer-local', 'tool'],
+        'CLIENT_KEY'    => 'hifpt_customer_local',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+    ],
+];
+
 return [
     'DOMAIN_REPORT'         => $domainReportConfig,
     'DOMAIN_INSIDE'         => $domainInsideConfig,
@@ -161,4 +183,5 @@ return [
     'DOMAIN_MODEM_INFO'             => $domainModemInfo,
     'DOMAIN_MODEM_ACCESS_POINT'     => $domainModemAccessPoint,
     'DOMAIN_MODEM_CONTRACT_INFO'    => $domainModemContractInfo,
+    'DOMAIN_ICON_MANAGEMENT'        => $domainIconManagement
 ];

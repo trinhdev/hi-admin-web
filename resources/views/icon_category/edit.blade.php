@@ -131,10 +131,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <ul style="list-style: none; display: contents;" id="selected-product">
-                                                <li class="col-sm-1" style="text-align: center">
-                                                    <img src="/images/wifi-router.png" alt="" class="img-thumbnail">
-                                                    <h5><span class="badge badge-dark">HDI</span></h5>
-                                                </li>
+                                                
                                             </ul>
                                         </div>
                                     </div>
@@ -322,5 +319,28 @@
     #selected-product li {
         display: inline-grid
     }
+
+    .close-thik {
+        color: #777;
+        font: 14px/100% arial, sans-serif;
+        position: absolute;
+        right: 3px;
+        text-decoration: none;
+        text-shadow: 0 1px 0 #fff;
+        top: -6px;
+    }
+
+    .close-thik:after {
+        content: '✖'; /* UTF-8 symbol */
+    }
 </style>
+
+<script id="product-list-template" type="text/x-jquery-tmpl">
+    <li class="col-sm-1" style="text-align: center">
+        <a href="#" class="close-thik" onClick="deleteProduct('${productNameVi}')"></a>
+        <img src="${iconUrl}" alt="${productNameVi}" class="img-thumbnail">
+        <h5><span class="badge badge-primary">${productNameVi}</span></h5>
+        <h6><span class="badge badge-warning">${no}</span></h6>
+    </li>
+</script>
 @endsection
