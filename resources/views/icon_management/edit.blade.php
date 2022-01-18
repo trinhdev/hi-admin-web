@@ -109,7 +109,7 @@
                                             <div class="form-group row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày bắt đầu</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" name="displayBeginDay" class="form-control" id="show_from" placeholder="yyyy-mm-dd hh:mm" value="{{ @$data['displayBeginDay'] }}" />
+                                                    <input type="text" name="displayBeginDay" class="form-control" id="show_from" placeholder="yyyy-mm-dd hh:mm" value="{{ @$data['displayBeginDay'] }}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -119,7 +119,7 @@
                                             <div class="form-group row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày kết thúc</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" name="displayEndDay" class="form-control" id="show_to" placeholder="yyyy-mm-dd hh:mm" />
+                                                    <input type="text" name="displayEndDay" class="form-control" id="show_to" placeholder="yyyy-mm-dd hh:mm" value="{{ @$data['displayEndDay'] }}" />
                                                 </div>
                                             </div>
                                         </div>
@@ -129,7 +129,7 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-sm-2">Hiển thị icon "Mới"</label>
                                 <div class="icheck-primary" style="width: auto">
-                                    <input type="checkbox" id="is-new-show" name="isNew" />
+                                    <input type="checkbox" id="is-new-show" name="isNew" {{ (isset($data['isNew'])) && ($data['isNew'] == "1" || $data['isNew'] == "2") ? "checked" : "" }} />
                                     <label for="is-new-show"></label>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                                         <div class="form-group row">
                                             <label for="inputEmail3" class="col-sm-5">Ngày bắt đầu</label>
                                             <div class="col-sm-7">
-                                                <input type="text" name="newBeginDay" class="form-control" id="new_from" placeholder="yyyy-mm-dd hh:mm" />
+                                                <input type="text" name="newBeginDay" class="form-control" id="new_from" placeholder="yyyy-mm-dd hh:mm" value="{{ @$data['newBeginDay'] }}" />
                                             </div>
                                         </div>
                                     </div>
@@ -149,7 +149,7 @@
                                         <div class="form-group row">
                                             <label for="inputEmail3" class="col-sm-5">Ngày kết thúc</label>
                                             <div class="col-sm-7">
-                                                <input type="text" name="newEndDay" class="form-control" id="new_to" placeholder="yyyy-mm-dd hh:mm" />
+                                                <input type="text" name="newEndDay" class="form-control" id="new_to" placeholder="yyyy-mm-dd hh:mm" value="{{ @$data['newEndDay'] }}" />
                                             </div>
                                         </div>
                                     </div>

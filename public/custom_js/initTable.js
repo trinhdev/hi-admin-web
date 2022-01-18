@@ -1221,11 +1221,9 @@ function initIconmanagement() {
         searchDelay: 500
     });
 
-    var show_from = $('#show_from').val() != "" ? new Date($('#show_from').val()) : false;
-    var show_to = $('#show_to').val() != "" ? new Date($('#show_to').val()) : false;
-
     $('#show_from').datetimepicker({
         format: "YYYY-MM-DD HH:mm",
+        useCurrent: false,
         sideBySide: true,
         icons: {
             time: 'fas fa-clock',
@@ -1237,13 +1235,12 @@ function initIconmanagement() {
             today: 'fas fa-calendar-day',
             clear: 'fas fa-trash',
             close: 'fas fa-window-close'
-        },
-        minDate: new Date(),
-        maxDate: show_to
+        }
     });
 
     $('#show_to').datetimepicker({
         format: "YYYY-MM-DD HH:mm",
+        useCurrent: false,
         sideBySide: true,
         icons: {
             time: 'fas fa-clock',
@@ -1255,16 +1252,12 @@ function initIconmanagement() {
             today: 'fas fa-calendar-day',
             clear: 'fas fa-trash',
             close: 'fas fa-window-close'
-        },
-        useCurrent: false,
-        minDate: show_from
+        }
     });
 
-    var new_from = $('#new_from').val() != "" ? new Date($('#new_from').val()) : false;
-    var new_to = $('#new_to').val() != "" ? new Date($('#new_to').val()) : false;
-
     $('#new_from').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
+        format: "YYYY-MM-DD HH:mm:SS",
+        useCurrent: false,
         sideBySide: true,
         icons: {
             time: 'fas fa-clock',
@@ -1276,13 +1269,12 @@ function initIconmanagement() {
             today: 'fas fa-calendar-day',
             clear: 'fas fa-trash',
             close: 'fas fa-window-close'
-        },
-        minDate: new Date(),
-        maxDate: new_to
+        }
     });
 
     $('#new_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
+        format: "YYYY-MM-DD HH:mm:SS",
+        useCurrent: false,
         sideBySide: true,
         icons: {
             time: 'fas fa-clock',
@@ -1294,25 +1286,31 @@ function initIconmanagement() {
             today: 'fas fa-calendar-day',
             clear: 'fas fa-trash',
             close: 'fas fa-window-close'
-        },
-        useCurrent: false,
-        minDate: new_from
+        }
     });
 
     $("#show_from").on("dp.change", function (e) {
-        $('#show_to').data("DateTimePicker").minDate(e.date);
+        if($('#show_to').data("DateTimePicker") != undefined) {
+            $('#show_to').data("DateTimePicker").minDate(e.date);
+        }
     });      
     
     $("#show_to").on("dp.change", function (e) {
-        $('#show_from').data("DateTimePicker").maxDate(e.date);
+        if($('#show_from').data("DateTimePicker") != undefined) {
+            $('#show_from').data("DateTimePicker").maxDate(e.date);
+        }
     });
-
+    
     $("#new_from").on("dp.change", function (e) {
-        $('#new_to').data("DateTimePicker").minDate(e.date);
+        if($('#new_to').data("DateTimePicker") != undefined) {
+            $('#new_to').data("DateTimePicker").minDate(e.date);
+        }
     });      
     
     $("#new_to").on("dp.change", function (e) {
-        $('#new_from').data("DateTimePicker").maxDate(e.date);
+        if($('#new_from').data("DateTimePicker") != undefined) {
+            $('#new_from').data("DateTimePicker").maxDate(e.date);
+        }
     });
 
     if($('#status-clock').is(':checked')) {

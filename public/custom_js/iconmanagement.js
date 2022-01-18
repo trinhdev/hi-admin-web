@@ -9,62 +9,50 @@ $( document ).ready(function() {
     }
 
     if($('#is-new-show').is(':checked')) {
+        console.log('test');
         $('#is-new-icon-show-date-time').show();
     }
     else {
         $('#is-new-icon-show-date-time').hide();
     }
 
-    const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1)
-
-    var show_from = $('#show_from').val() != "" ? new Date($('#show_from').val()) : false;
-    var show_to = $('#show_to').val() != "" ? new Date($('#show_to').val()) : false;
-
-    var show_from_picker = $('#show_from').datetimepicker({
-        // date: moment(),
+    $('#show_from').datetimepicker({
         format: "YYYY-MM-DD HH:mm",
-        sideBySide: true,
-        icons: {
-            time: 'fas fa-clock',
-            date: 'fas fa-calendar',
-            up: 'fas fa-arrow-up',
-            down: 'fas fa-arrow-down',
-            previous: 'fas fa-arrow-left',
-            next: 'fas fa-arrow-right',
-            today: 'fas fa-calendar-day',
-            clear: 'fas fa-trash',
-            close: 'fas fa-window-close'
-        },
-        minDate: new Date(),
-        maxDate: show_to,
-        // useCurrent: true,
-    }).data('DateTimePicker').date(today);
-
-    var show_to_picker = $('#show_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
-        sideBySide: true,
-        icons: {
-            time: 'fas fa-clock',
-            date: 'fas fa-calendar',
-            up: 'fas fa-arrow-up',
-            down: 'fas fa-arrow-down',
-            previous: 'fas fa-arrow-left',
-            next: 'fas fa-arrow-right',
-            today: 'fas fa-calendar-day',
-            clear: 'fas fa-trash',
-            close: 'fas fa-window-close'
-        },
         useCurrent: false,
-        minDate: show_from
-    }).data('DateTimePicker').date(tomorrow);
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
 
-    var new_from = $('#new_from').val() != "" ? new Date($('#new_from').val()) : false;
-    var new_to = $('#new_to').val() != "" ? new Date($('#new_to').val()) : false;
+    $('#show_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
 
     $('#new_from').datetimepicker({
         format: "YYYY-MM-DD HH:mm:SS",
+        useCurrent: false,
         sideBySide: true,
         icons: {
             time: 'fas fa-clock',
@@ -76,14 +64,12 @@ $( document ).ready(function() {
             today: 'fas fa-calendar-day',
             clear: 'fas fa-trash',
             close: 'fas fa-window-close'
-        },
-        minDate: new Date(),
-        maxDate: new_to,
-        defaultDate: new Date()
+        }
     });
 
     $('#new_to').datetimepicker({
         format: "YYYY-MM-DD HH:mm:SS",
+        useCurrent: false,
         sideBySide: true,
         icons: {
             time: 'fas fa-clock',
@@ -95,27 +81,32 @@ $( document ).ready(function() {
             today: 'fas fa-calendar-day',
             clear: 'fas fa-trash',
             close: 'fas fa-window-close'
-        },
-        useCurrent: false,
-        minDate: new_from,
-        // date: new_to
+        }
     });
 });
 
-// $("#show_from").on("dp.change", function (e) {
-//     show_to_picker.minDate(e.date);
-// });      
+$("#show_from").on("dp.change", function (e) {
+    if($('#show_to').data("DateTimePicker") != undefined) {
+        $('#show_to').data("DateTimePicker").minDate(e.date);
+    }
+});      
 
-// $("#show_to").on("dp.change", function (e) {
-//     show_from_picker.maxDate(e.date);
-// });
+$("#show_to").on("dp.change", function (e) {
+    if($('#show_from').data("DateTimePicker") != undefined) {
+        $('#show_from').data("DateTimePicker").maxDate(e.date);
+    }
+});
 
 $("#new_from").on("dp.change", function (e) {
-    $('#new_to').data("DateTimePicker").minDate(e.date);
+    if($('#new_to').data("DateTimePicker") != undefined) {
+        $('#new_to').data("DateTimePicker").minDate(e.date);
+    }
 });      
 
 $("#new_to").on("dp.change", function (e) {
-    $('#new_from').data("DateTimePicker").maxDate(e.date);
+    if($('#new_from').data("DateTimePicker") != undefined) {
+        $('#new_from').data("DateTimePicker").maxDate(e.date);
+    }
 });
 
 $('input:radio[name="isDisplay"]').change(() => {

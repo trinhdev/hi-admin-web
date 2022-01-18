@@ -54,10 +54,10 @@ class IconmanagementController extends MY_Controller
                     "content"                   => "",
                     "isNew"                     => "2",
                     "newBeginDay"               => "2021-11-28 00:00:00",
-                    "newEndDay"                 => "2021-11-28 00:00:00",
+                    "newEndDay"                 => "2021-11-30 00:00:00",
                     "isDisplay"                 => "2",
                     "displayBeginDay"           => "2021-11-28 00:00:00",
-                    "displayEndDay"             => "2021-11-28 00:00:00",
+                    "displayEndDay"             => "2021-11-30 00:00:00",
                     "decriptionVi"              => null,
                     "decriptionEn"              => null,
                     "keywords"                  => "fsafe, f safe"
