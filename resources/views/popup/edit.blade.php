@@ -33,8 +33,8 @@
                                 $isPopupPromotion = true;
                             }
                         @endphp
-                        <form action="{{ $action }}" method="POST" onSubmit="validateData(event,this)"
-                            onchange="checkEnableSave(this)">
+                        <form action="{{ $action }}" method="POST" onSubmit="validateDataPopup(event,this)"
+                            onchange="checkEnableSavePopup(this)">
                             @csrf
                             @if (!empty($popup))
                                 @method('PUT')
@@ -67,8 +67,7 @@
                                         </div> --}}
                                         <div class="form-group">
                                             <label for="templateType" class="required_red_dot">Loại Popup</label>
-                                            <select type="text" name="templateType" class="form-control"
-                                                onchange="templateTypeChanged(this)">
+                                            <select type="text" name="templateType" class="form-control">
                                                 <option value="popup_custom_image_transparent" selected>Loại popup mặc định
                                                     khuyến nghị dùng</option>
                                                 <option value="popup_full_screen">Popup full màn hình, có nút "Xem chi tiết"
@@ -82,7 +81,7 @@
                                         <div class="form-group" id="path_1">
                                             <label class="required_red_dot">Ảnh</label>
                                             <input type="file" accept="image/*" name="path_1" class="form-control"
-                                                onchange="handleUploadImage(this,event)" />
+                                                onchange="handleUploadImagePopup(this,event)" />
                                             <img id="img_path_1"
                                                 src="{{ !empty($popup) ? $popup->image : asset('/images/image_holder.png') }}"
                                                 alt="your image" class="img-thumbnail img_viewable"
@@ -90,8 +89,8 @@
                                             <input name="img_path_1_name" id="img_path_1_name" value="" hidden />
                                         </div>
                                         <div class="form-group" id="path_2" {{ $isPopupPromotion ? '' : 'hidden' }}>
-                                            <input type="file" accept="image/*" name="path_2" class="form-control"
-                                                onchange="handleUploadImage(this,event)" />
+                                            <input type="file" accept="image/*" name="path_2" class="form-control" 
+                                                onchange="handleUploadImagePopup(this,event)"/>
                                             <img id="img_path_2"
                                                 src="{{ $isPopupPromotion ? $popup->thumb_image : asset('/images/image_holder.png') }}"
                                                 alt="your image" class="img-thumbnail img_viewable"
@@ -118,8 +117,8 @@
                                         </div>
                                         <div class="form-group" id="path_button">
                                             <label class="">Nút điều hướng</label>
-                                            <input type="file" accept="image/*" name="path_button" class="form-control"
-                                                onchange="handleUploadImage(this,event)" />
+                                            <input type="file" accept="image/*" name="path_button" class="form-control" 
+                                                onchange="handleUploadImagePopup(this,event)"/>
                                             <img id="img_path_button"
                                                 src="{{ !empty($popup) ? $popup->image : asset('/images/image_holder.png') }}"
                                                 alt="your image" class="img-thumbnail img_viewable"
@@ -128,7 +127,7 @@
                                         </div>
                                         <div class="form-group" id="path_button2" {{ $isPopupPromotion ? '' : 'hidden' }}>
                                             <input type="file" accept="image/*" name="path_2" class="form-control"
-                                                onchange="handleUploadImage(this,event)" />
+                                                onchange="handleUploadImagePopup(this,event)" /> 
                                             <img id="img_path_button_2"
                                                 src="{{ $isPopupPromotion ? $popup->thumb_image : asset('/images/image_holder.png') }}"
                                                 alt="your image" class="img-thumbnail img_viewable"
@@ -191,13 +190,23 @@
                                                     class="form-control" onchange="changePublicDateTime(this)" />
                                             </div>
                                         </div>
-                                        
+                                        <div class="form-group">
+                                            <label for="directionUrl" class="required_red_dot">Điều hướng</label>
+                                            <select type="text" name="directionUrl" class="form-control"
+                                                {{-- onchange="templateTypeChanged(this)" --}}>
+                                                <option value="Foxpay" selected>Foxpay</option>
+                                                <option value="tp_bank">TP bank
+                                                </option>
+                                                <option value="momo">Momo</option>
+                                                <option value="shopee">Shopee</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-footer" style="text-align: center">
                                     <a href="{{ route('popupmanage.index') }}" type="button"
-                                        class="btn btn-default">Cancel</a>
-                                    <button type="submit" class="btn btn-info" disabled>Save</button>
+                                        class="btn btn-default">hủy</a>
+                                    <button type="submit" class="btn btn-info" disabled>Lưu</button>
                                 </div>
                             </div>
                         </form>
