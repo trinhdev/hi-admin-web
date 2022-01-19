@@ -5,9 +5,6 @@ function validateDataPopup(event, form) {
     var passed = true;
 
     var formData = getDataInForm(form);
-    if (!$(has_target_route).is(':checked')) {
-        delete formData.direction_id;
-    }
     var passed = checkSubmitPopup(formData);
     if (passed.status) {
         handleSubmit(event, form);

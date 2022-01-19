@@ -183,6 +183,16 @@ class PopupManageController extends MY_Controller
             // 'show_to'               =>  'required|date_format:Y-m-d\TH:i',
             // 'direction_url'         =>  'required_if:directionId,url_open_in_app,url_open_out_app',
             // 'img_path_2_name'       =>  'required_if:bannerType,promotion',
+            
+            // "titleVi"
+            // "titleEn"
+            // "descriptionVi"
+            // "descriptionEn"
+            // "image"
+            // "templateType"
+            // "buttonImage"
+            // "directionId"
+            // "directionUrl"
         ];
         if($request->templateType == "popup_custom_image_transparent"){
            $rules = array_merge($ruleButtonImage, $rules);
@@ -195,7 +205,7 @@ class PopupManageController extends MY_Controller
             'show_to'   => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
         ]);
 
-        return $request;
+        return $request;    
         $this->addToLog($request);
         $newsEventService = new NewsEventService();
         $createParams = [
