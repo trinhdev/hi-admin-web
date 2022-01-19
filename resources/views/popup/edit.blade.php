@@ -125,8 +125,8 @@
                                                 style="max-width: 150px;padding:10px;margin-top:10px" />
                                             <input name="img_path_button_name" id="img_path_button_name" value="" hidden />
                                         </div>
-                                        <div class="form-group" id="path_button2" {{ $isPopupPromotion ? '' : 'hidden' }}>
-                                            <input type="file" accept="image/*" name="path_2" class="form-control"
+                                        <div class="form-group" id="path_button_2" {{ $isPopupPromotion ? '' : 'hidden' }}>
+                                            <input type="file" accept="image/*" name="path_button_2" class="form-control"
                                                 onchange="handleUploadImagePopup(this,event)" /> 
                                             <img id="img_path_button_2"
                                                 src="{{ $isPopupPromotion ? $popup->thumb_image : asset('/images/image_holder.png') }}"
