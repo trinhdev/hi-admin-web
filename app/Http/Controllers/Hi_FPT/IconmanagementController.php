@@ -102,9 +102,10 @@ class IconmanagementController extends MY_Controller
     }
 
     public function initDatatable(Request $request){
-        if($request->ajax()){
+        if($request->ajax()) {
+            $iconManagement = new IconManagementService();
             // $data = $this->model::with('user')->select(['id', 'icon_url', 'name', 'position', 'status', 'category', 'updated_by', 'created_by']);
-            $response = json_decode(json_encode(IconManagementService::getAllProduct()), true);
+            $response = json_decode(json_encode($iconManagement->getAllProduct()), true);
             $data = [];
             if(!empty($response['data'])) {
                 $data = $response['data'];

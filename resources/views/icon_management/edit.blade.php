@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-9">
-                    {!! Form::open(array('url' => route('iconmanagement.save'),'method'=>'post' ,'productId' => 'form-view','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
+                    {!! Form::open(array('url' => route('iconmanagement.save'),'method'=>'post' ,'id' => 'form-view','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
                     @csrf
                     <div class="card card-info">
                         <div class="card-header">

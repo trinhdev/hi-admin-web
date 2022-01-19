@@ -12,15 +12,19 @@ use Yajra\DataTables\DataTables;
 
 use App\Models\Settings;
 
+use App\Services\IconManagementService;
+
 class IconcategoryController extends MY_Controller
 {
     use DataTrait;
     protected $module_name = 'Icon_Category';
     protected $model_name = "Icon_Category";
+    protected $iconManagement = null;
     public function __construct()
     {
         parent::__construct();
         $this->title = 'Icon Category';
+        $this->iconManagement = new IconManagementService();
         // $this->model = $this->getModel('Icon_Management');
     }
 
@@ -40,26 +44,23 @@ class IconcategoryController extends MY_Controller
         $id = request()->segment(3);
         if(!empty($id)) {
             $data['id'] = $id;
-            $data['data'] = [
-                'id'                    => 1,
-                'productNameVi'         => 'FPT Camera',
-                'productNameEn'         => 'FPT Camera',
-                'icon_url'              => '/images/camera_icon.jpg',
-                'dataActionStaging'     => '',
-                'dataActionProduction'  => '',
-                'data'                  => '',
-                'actionType'            => 'go_to_screen',
-                'content'               => '',
-                'isNew'                 => '1',
-                'newBeginDay'           => '2022-01-01 00:00:00',
-                'newEndDay'             => '2031-12-31 00:00:00',
-                'isDisplay'             => 1,
-                'displayBeginDay'       => '2022-01-01 00:00:00',
-                'displayEndDay'         => '2031-12-31 00:00:00',
-                'decriptionVi'          => '',
-                'decriptionEn'          => '',
-                'keywords'              => ''
-            ];
+
+            $response = json_decode(json_encode($this->iconManagement->getProductTitleById($id)), true);
+            if(!empty($response['data'])) {
+                $response['data']['productListId'] = (isset($response['data']['arrayId']) && is_string($response['data']['arrayId'])) ? explode(',', $response['data']['arrayId']) : [];
+                $productList = json_decode(json_encode($this->iconManagement->getAllProduct()), true);
+                $response['data']['productList'] = (!empty($productList['data'])) ? $productList['data'] : [];
+                $response['data']['productListInTitle'] = [];
+                foreach($response['data']['productListId'] as $productId) {
+                    foreach($response['data']['productList'] as $product) {
+                        if(intval($productId) == $product['productId']) {
+                            array_push($response['data']['productListInTitle'], $product);
+                        }
+                    }
+                }
+                
+                $data['data'] = $response['data'];
+            }
         }
         
         $loai_dieu_huong = Settings::where('name', 'icon_loai_dieu_huong')->get();
@@ -98,32 +99,11 @@ class IconcategoryController extends MY_Controller
 
     public function initDatatable(Request $request){
         if($request->ajax()){
-            // $data = $this->model::with('user')->select(['id', 'icon_url', 'name', 'position', 'status', 'category', 'updated_by', 'created_by']);
-            $data = [[
-                'productTitleId'        => 1,
-                'productTitleNameVi'    => 'Viễn thông',
-                'productTitleNameEn'    => 'Telecom',
-                'arrayId'               => '5,17,8,34,9,10,11,39',
-                'dateModified'          => '2021-10-21 08:34:39',
-                'isDeleted'             => 0,
-                'pheduyet'              => 'Chờ kiểm tra'
-            ], [
-                'productTitleId'        => 2,
-                'productTitleNameVi'    => 'Smart Home',
-                'productTitleNameEn'    => 'Smart Home',
-                'arrayId'               => '7,19',
-                'dateModified'          => '2021-10-11 18:27:36',
-                'isDeleted'             => 0,
-                'pheduyet'              => 'Kiểm tra thất bại'
-            ], [
-                'productTitleId'        => 3,
-                'productTitleNameVi'    => 'Dịch vụ IT',
-                'productTitleNameEn'    => 'IT service',
-                'arrayId'               => '5,17,8,34,9,10,11,39,7,19,30',
-                'dateModified'          => '2021-10-21 08:34:39',
-                'isDeleted'             => 0,
-                'pheduyet'              => 'Đã phê duyệt'
-            ]];
+            $response = json_decode(json_encode($this->iconManagement->getAllProductTitle()), true);
+            $data = [];
+            if(!empty($response['data'])) {
+                $data = $response['data'];
+            }
             return DataTables::of($data)
             ->addIndexColumn()
             ->make(true);

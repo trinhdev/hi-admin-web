@@ -1,5 +1,114 @@
 "use strict";
 
+$( document ).ready(function() {
+    if($('#status-clock').is(':checked')) {
+        $('#status-clock-date-time').show();
+    }
+    else {
+        $('#status-clock-date-time').hide();
+    }
+
+    if($('#is-new-show').is(':checked')) {
+        console.log('test');
+        $('#is-new-icon-show-date-time').show();
+    }
+    else {
+        $('#is-new-icon-show-date-time').hide();
+    }
+
+    $('#show_from').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    $('#show_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    $('#new_from').datetimepicker({
+        format: "YYYY-MM-DD HH:mm:SS",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    $('#new_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm:SS",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+});
+
+$("#show_from").on("dp.change", function (e) {
+    if($('#show_to').data("DateTimePicker") != undefined) {
+        $('#show_to').data("DateTimePicker").minDate(e.date);
+    }
+});      
+
+$("#show_to").on("dp.change", function (e) {
+    if($('#show_from').data("DateTimePicker") != undefined) {
+        $('#show_from').data("DateTimePicker").maxDate(e.date);
+    }
+});
+
+$("#new_from").on("dp.change", function (e) {
+    if($('#new_to').data("DateTimePicker") != undefined) {
+        $('#new_to').data("DateTimePicker").minDate(e.date);
+    }
+});      
+
+$("#new_to").on("dp.change", function (e) {
+    if($('#new_from').data("DateTimePicker") != undefined) {
+        $('#new_from').data("DateTimePicker").maxDate(e.date);
+    }
+});
+
 $('input:radio[name="status"]').change(() => {
     if($('#status-clock').is(':checked')) {
         $('#status-clock-date-time').show();
@@ -17,6 +126,10 @@ $('input:checkbox[name="is_new_show"]').change(() => {
         $('#is-new-icon-show-date-time').hide();
     } 
 });
+
+// $("#product-modal-body").html('');
+// $('#exampleModalCenter').modal();
+// $("#product-detail-template").tmpl(data).appendTo("#product-modal-body");
 
 function readURL(value) {
     // console.log(value.val());
@@ -84,36 +197,58 @@ function openDetail(detailData) {
     
 }
 
-// carousel
-// let items = document.querySelectorAll('.carousel .carousel-item');
-// items.forEach((el) => {
-//     const minPerSlide = 6;
-//     let next = el.nextElementSibling;
-//     for (var i=1; i<minPerSlide; i++) {
-//         if (!next) {
-//             // wrap carousel by using first child
-//             next = items[0];
-//         }
-//         let cloneChild = next.cloneNode(true);
-//         el.appendChild(cloneChild.children[0])
-//         next = next.nextElementSibling
-//     }
-// });
-
 // lightSlider
 $(document).ready(function() {
     $('#all-product').lightSlider({
-        item: 4,
-        loop: false,
+        item: 5,
+        loop: true,
         slideMove: 1,
         easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
         speed: 600,
         slideMargin: 15,
         enableDrag: false,
-        enableTouch: false
+        enableTouch: false,
+        pager: false
     });  
 });
 
 // Dragula CSS Release 3.2.0 from: https://github.com/bevacqua/dragula
-dragula([document.getElementById('all-product'), document.getElementById('selected-product')])
+dragula([document.getElementById('all-product'), document.getElementById('selected-product')], {
+    direction: 'horizontal',
+    copy: function (el, source) {
+        return source === document.getElementById('all-product')
+    },
+    accepts: function (el, target) {
+        return target !== document.getElementById('all-product')
+    }
+}).on('drop', (el, target, source, sibling) => {
+    $(el).removeClass("lslide");
+    $(el).removeClass("active");
+    $(el).removeClass("gu-transit");
+    $(el).addClass("col-sm-2");
+
+    $(el).css('margin-right', 0);
+
+    var spanElement = $(el).find("span:first");
+    $(spanElement).removeClass("badge-light");
+    $(spanElement).addClass("badge-dark");
+
+    if($(el).find('span.position').length < 1) {
+        $(el).append(`<h6><span class="badge badge-warning position">${$(el).index() + 1}</span></h6>`);
+    }
+
+    $(target).find("li").each((key, value) => {
+        $(value).find("span.position").text($(value).index() + 1);
+    });
+});
+
+function removeFromSelectedProduct(el) {
+    var parent_ul = $($("#" + el).parent());
+    $("#" + el).remove();
+    console.log($($("#" + el).parent()).find("li"));
+    parent_ul.find("li").each((key, value) => {
+        $(value).find("span.position").text($(value).index() + 1);
+    });
+    
+}
 

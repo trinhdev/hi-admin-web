@@ -3,38 +3,38 @@
 namespace App\Services;
 
 class IconManagementService {
+    private $subDomain;
     private $token;
     private $baseUrl;
-    private $sub_domain;
+    public function __construct()
+    {
+        $api_config         = config('configDomain.DOMAIN_ICON_MANAGEMENT.' . env('APP_ENV'));
+        $this->baseUrl      = $api_config['URL'];
+        $this->subDomain    = (!empty($api_config['SUB_DOMAIN'])) ? implode('/', $api_config['SUB_DOMAIN']) . '/' : '';
+        $this->token        = md5($api_config['CLIENT_KEY'] . '::' . $api_config['SECRET_KEY'] . date('Y-d-m'));
+    }
 
-    public static function getAllProduct() {
-        $api_info_config    = config('configDomain.DOMAIN_ICON_MANAGEMENT.' . env('APP_ENV'));
-        $baseUrl            = $api_info_config['URL'];
-        $subDomain          = (!empty($api_info_config['SUB_DOMAIN'])) ? implode('/', $api_info_config['SUB_DOMAIN']) . '/' : ''; 
-        $url                = $url = $baseUrl . $subDomain . 'products/get-all';
-        $token              = md5($api_info_config['CLIENT_KEY'] . '::' . $api_info_config['SECRET_KEY'] . date('Y-d-m'));
-        // dd($url);
-        $response           = sendRequest($url, [], $token);
+    public function getAllProduct(){
+        $url                = $this->baseUrl . $this->subDomain . 'products/get-all';
+        $response           = sendRequest($url, [], $this->token);
         return $response;
     }
 
-    public function getContractByContractNo($contractNo) {
-        $api_info_config    = config('configDomain.DOMAIN_MODEM_CONTRACT_INFO.' . env('APP_ENV'));
-        $baseUrl            = $api_info_config['URL'];
-        $subDomain          = (!empty($api_info_config['SUB_DOMAIN'])) ? implode('/', $api_info_config['SUB_DOMAIN']) . '/' : ''; 
-        $url                = $url = $baseUrl . $subDomain . 'GetContractByContractNo';
-        $token              = $api_info_config['CLIENT_KEY'] . '::' . md5($api_info_config['CLIENT_KEY'] . '::' . $api_info_config['SECRET_KEY'] . date('Y-d-m'));
-        $response           = sendRequest($url, ['contractNo' => $contractNo], $token);
+    public function getProductById($id) {
+        $url                = $this->baseUrl . $this->subDomain . 'products/get-by-id';
+        $response           = sendRequest($url, ['productId' => $id], $this->token);
         return $response;
     }
 
-    public function getModemInfo($contractId) {
-        $api_info_config    = config('configDomain.DOMAIN_MODEM_INFO.' . env('APP_ENV'));
-        $baseUrl            = $api_info_config['URL'];
-        $subDomain          = (!empty($api_info_config['SUB_DOMAIN'])) ? implode('/', $api_info_config['SUB_DOMAIN']) . '/' : '';
-        $url                = $url = $baseUrl . $subDomain . 'modem-info';
-        $token              = md5($api_info_config['CLIENT_KEY'] . '::' . $api_info_config['SECRET_KEY'] . date('Y-d-m'));
-        $response           = sendRequest($url, array('accessToken' => $token, 'contractId'=> $contractId));
+    public function getAllProductTitle(){
+        $url                = $this->baseUrl . $this->subDomain . 'product-titles/get-all';
+        $response           = sendRequest($url, [], $this->token);
+        return $response;
+    }
+
+    public function getProductTitleById($id) {
+        $url                = $this->baseUrl . $this->subDomain . 'product-titles/get-by-id';
+        $response           = sendRequest($url, ['productTitleId' => $id], $this->token);
         return $response;
     }
 }

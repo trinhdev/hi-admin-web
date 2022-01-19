@@ -27,7 +27,7 @@
                     {!! Form::open(array('url' => route('roles.save'),'method'=>'post' ,'id' => 'form-view','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title uppercase">{{ (!empty($id)) ? 'Cập nhật' : 'Thêm' }} Danh Mục</h3>
+                            <h3 class="card-title uppercase">{{ (!empty($data['productTitleId'])) ? 'Cập nhật' : 'Thêm' }} Danh Mục</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -58,8 +58,8 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Tên danh mục</label>
                                         <div class="col-sm-9">
-                                            <input type="name" style="margin-bottom: 15px" class="form-control" id="vi-name" placeholder="Tên tiếng Việt" name="group_name" value="">
-                                            <input type="name" class="form-control" id="en-name" placeholder="Tên tiếng Anh" name="group_name" value="">
+                                            <input type="name" style="margin-bottom: 15px" class="form-control" id="vi-name" placeholder="Tên tiếng Việt" name="productTitleNameVi" value="{{ @$data['productTitleNameVi'] }}">
+                                            <input type="name" class="form-control" id="en-name" placeholder="Tên tiếng Anh" name="productTitleNameEn" value="{{ @$data['productTitleNameEn'] }}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -102,7 +102,7 @@
                                             <div class="form-group row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày bắt đầu</label>
                                                 <div class="col-sm-7">
-                                                    <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                    <input type="text" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
                                                 </div>
                                             </div>
                                         </div>
@@ -112,7 +112,7 @@
                                             <div class="form-group row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày bắt đầu</label>
                                                 <div class="col-sm-7">
-                                                    <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                    <input type="text" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
                                                 </div>
                                             </div>
                                         </div>
@@ -124,14 +124,21 @@
                                 <div class="row">
                                     <div class="direct-chat-msg">
                                         <img class="direct-chat-img" src="/images/information.png" alt="">
-                                        <div class="direct-chat-text">Kéo thả sản phẩm từ bên dưới danh sách <b><i>"Tất cả sản phẩm"</i></b> vào ô thứ tự để sắp xếp vị trí tương ứng</div>
+                                        <div style="background-color: #6C757D; color: #ffffff" class="direct-chat-text">Kéo thả sản phẩm từ bên dưới danh sách <b><i>"Tất cả sản phẩm"</i></b> vào ô thứ tự để sắp xếp vị trí tương ứng</div>
                                     </div>
                                 </div>
                                 <div class="card card-info">
                                     <div class="card-body">
                                         <div class="row">
                                             <ul style="list-style: none; display: contents;" id="selected-product">
-                                                
+                                                @foreach ($data['productListInTitle'] as $key => $value)
+                                                    <li class="col-sm-2" style="text-align: center" id="{{ @$value['productId'] }}-selected-product">
+                                                        <button type="button" class="close-thik" onClick="removeFromSelectedProduct('{{ @$value['productId'] }}-selected-product')"></button>
+                                                        <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}" class="img-thumbnail">
+                                                        <h6><span class="badge badge-dark">{{ $value['productNameVi'] }}</span></h6>
+                                                        <h6><span class="badge badge-warning position">{{ $key + 1 }}</span></h6>
+                                                    </li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                     </div>
@@ -140,42 +147,17 @@
                             <div class="form-group">
                                 <label for="">Tất cả sản phẩm</label>
                                 <div class="card card-info">
-                                    <div class="card-body">
+                                    <div class="card-body" style="background-color: #6C757D">
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <ul id="all-product" style="list-style: none;">
-                                                    <li>
-                                                        <div class="card" style="background-color: #F5F7FA">
-                                                            <div class="card-content">
-                                                              <div class="card-body">
-                                                                <div class="media d-flex">
-                                                                    <div class="align-self-center">
-                                                                        <img src="/images/image_logo.png" alt="" width="80px">
-                                                                    </div>
-                                                                    <div class="media-body text-right">
-                                                                        <h4 style="font-weight: bold; color: #228E3B">Lịch phát sóng</h4>
-                                                                    </div>
-                                                                </div>
-                                                              </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="card" style="background-color: #F5F7FA">
-                                                            <div class="card-content">
-                                                              <div class="card-body">
-                                                                <div class="media d-flex">
-                                                                    <div class="align-self-center">
-                                                                        <img src="/images/image_logo.png" alt="" width="80px">
-                                                                    </div>
-                                                                    <div class="media-body text-right">
-                                                                        <h4 style="font-weight: bold; color: #228E3B">Lịch phát sóng</h4>
-                                                                    </div>
-                                                                </div>
-                                                              </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
+                                                    @foreach ($data['productList'] as $key => $value)
+                                                        <li style="text-align: center">
+                                                            <button class="close-thik" onClick="deleteProduct('{{ $value['productNameVi'] }}')"></button>
+                                                            <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}" class="img-thumbnail">
+                                                            <h6><span class="badge badge-light">{{ $value['productNameVi'] }}</span></h6>
+                                                        </li>
+                                                    @endforeach
                                                 </ul>
                                             </div>
                                         </div>
@@ -188,7 +170,7 @@
                             <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
                             <a href="/{{$controller}}" class="btn btn-default float-right" style="margin-left: 5px">Đóng</a>
                             @if (!empty($id))
-                            <button type="button" onClick="deleteProduct('{{ $data['productNameVi'] }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            <button type="button" onClick="deleteProduct('{{ $data['productTitleNameVi'] }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                             @endif
                         </div>
                         <!-- /.card-footer -->
@@ -317,30 +299,37 @@
     } */
 
     #selected-product li {
-        display: inline-grid
+        margin-bottom: 20px
+    }
+
+    #selected-product li img {
+        width: 40%;
+        margin-bottom: 10px
+    }
+
+    #all-product li img {
+        width: 30%;
+        margin-bottom: 10px
+    }
+
+    .direct-chat-text::after, .direct-chat-text::before {
+        border-right-color: #6C757D
     }
 
     .close-thik {
-        color: #777;
+        color: #ffffff;
         font: 14px/100% arial, sans-serif;
         position: absolute;
-        right: 3px;
+        right: 55px;
         text-decoration: none;
         text-shadow: 0 1px 0 #fff;
         top: -6px;
+        background-color: #6C757D;
+        border-radius: 50%
     }
 
     .close-thik:after {
         content: '✖'; /* UTF-8 symbol */
     }
 </style>
-
-<script id="product-list-template" type="text/x-jquery-tmpl">
-    <li class="col-sm-1" style="text-align: center">
-        <a href="#" class="close-thik" onClick="deleteProduct('${productNameVi}')"></a>
-        <img src="${iconUrl}" alt="${productNameVi}" class="img-thumbnail">
-        <h5><span class="badge badge-primary">${productNameVi}</span></h5>
-        <h6><span class="badge badge-warning">${no}</span></h6>
-    </li>
-</script>
 @endsection

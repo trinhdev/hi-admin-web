@@ -185,7 +185,6 @@ function deleteProduct(prod_name) {
 }
 
 function openDetail(detailData) {
-    console.log(detailData);
     var data = [detailData];
     $("#product-modal-body").html('');
     $('#exampleModalCenter').modal();
