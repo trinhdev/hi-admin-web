@@ -205,7 +205,8 @@ class PopupManageController extends MY_Controller
             'show_to'   => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
         ]);
 
-        return $request;    
+        return $request;
+        // khúc dưới này chưa xử lý    
         $this->addToLog($request);
         $newsEventService = new NewsEventService();
         $createParams = [
