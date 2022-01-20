@@ -103,3 +103,30 @@ function successCallUploadImagePopup(response, passingdata) {
         showError(response.message);
     }
 }
+
+$('.select2').select2();
+$('#reservationtime').daterangepicker({
+    timePicker: true,
+    timePickerIncrement: 30,
+    locale: {
+        format: 'DD/MM/YYYY hh:mm A'
+    }
+})
+$('#listTypePopup').on("change", function () {
+    let type_popup = $('#listTypePopup').val();
+    if (type_popup == 'popup_image_transparent' || type_popup == 'popup_image_full_screen') {
+        $('#dieuhuong').hide();
+        $('#path_2').hide();
+    } else {
+        $('#dieuhuong').show();
+        $('#path_2').show();
+    }
+})
+$('#directionId').on("change", function () {
+    let type_direction = $('#directionId').val();
+    if (type_direction == 'url_open_out_app' || type_direction == 'url_open_in_app') {
+        $('#form_directionUrl').show();
+    } else {
+        $('#form_directionUrl').hide();
+    }
+})
