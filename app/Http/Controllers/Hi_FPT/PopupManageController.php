@@ -280,15 +280,15 @@ class PopupManageController extends MY_Controller
             'publicDateStart' => empty($request->public_date_from) ? null : Carbon::parse($request->public_date_from)->format('Y-m-d H:i:s'),
             'publicDateEnd' => empty($request->public_date_to) ? null : Carbon::parse($request->public_date_to)->format('Y-m-d H:i:s')
         ];
-        $responseCallAPIGetListBanner = $newsEventService->getListTemplatePopup($param);
-        if (empty($responseCallAPIGetListBanner)) {
-            $responseCallAPIGetListBanner = (object)[];
+        $responseCallAPIGetListPopup = $newsEventService->getListTemplatePopup($param);
+        if (empty($responseCallAPIGetListPopup)) {
+            $responseCallAPIGetListPopup = (object)[];
         };
         if ($this->user->role_id == ADMIN) {
-            $responseCallAPIGetListBanner->isAdmin = true;
+            $responseCallAPIGetListPopup->isAdmin = true;
         }
-        $responseCallAPIGetListBanner->aclCurrentModule = $this->aclCurrentModule;
-        return $responseCallAPIGetListBanner;
+        $responseCallAPIGetListPopup->aclCurrentModule = $this->aclCurrentModule;
+        return $responseCallAPIGetListPopup;
     }
 
     public function updateOrder(Request $request)
