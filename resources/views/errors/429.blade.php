@@ -24,14 +24,14 @@
         <!-- Main content -->
         <section class="content">
             <div class="error-page">
-                <h2 class="headline text-danger">419</h2>
+                <h2 class="headline text-danger">429</h2>
                 <div class="error-content">
                     <h3>
                         <i class="fas fa-exclamation-triangle text-danger"></i>
-                        Oops! Error token miss match!
+                        Oops! Too many request.
                     </h3>
                     <p>
-                        Error token miss match.
+                        You just send too many request in 1 minute. Please wait for few minutes and retry again or try another page.
                     </p>
                 </div>
             </div>
