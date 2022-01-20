@@ -26,6 +26,7 @@ function reloadPjax() {
 }
 
 function handleSubmit(e, form, withPopup = true) {
+    console.log("#3333");
     e.preventDefault();
     if(withPopup){
         Swal.fire({
@@ -40,6 +41,7 @@ function handleSubmit(e, form, withPopup = true) {
     
         }).then((result) => {
             if (result.isConfirmed) {
+                console.log("ssss");
                 form.submit();
                 let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
                 $('form').find(':button').prop('disabled', true);
@@ -103,6 +105,35 @@ function uploadFile(file, callBack, passingData) {
     $.ajax({
         type: 'POST',
         url: '/bannermanage/uploadImage',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: (data) => {
+            callBack(data,passingData);
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+        }
+    });
+}
+//
+function uploadFileExternal(file, callBack, passingData) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var formData = new FormData();
+    formData.append("file", file,file.name);
+    $.ajax({
+        type: 'POST',
+        url: '/file/uploadImageExternal',
         data: formData,
         cache: false,
         contentType: false,

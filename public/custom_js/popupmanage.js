@@ -5,36 +5,24 @@ function validateDataPopup(event, form) {
     var passed = true;
 
     var formData = getDataInForm(form);
-    var passed = checkSubmitPopup(formData);
-    if (passed.status) {
-        handleSubmit(event, form);
-    } else {
-        showError('Missing Field !!')
-    }
+    // var passed = checkSubmitPopup(formData);
+    // if (passed.status) {
+    //     handleSubmit(event, form);
+    // } else {
+    //     showError('Missing Field !!')
+    // }
+    handleSubmit(event, form);
 }
 
 function checkEnableSavePopup(form) {
     var formData = getDataInForm(form);
-    if (checkSubmitPopup(formData).status) {
-        $('form').find(':submit').prop('disabled', false);
-    } else {
-        $('form').find(':submit').prop('disabled', true);
-    }
+    // if (checkSubmitPopup(formData).status) {
+    //     $('form').find(':submit').prop('disabled', false);
+    // } else {
+    //     $('form').find(':submit').prop('disabled', true);
+    // }
 }
 
-function getDataRequiredPopup() {
-    var data = {
-        'title_vi': true,
-        'title_en': true,
-        'templateType': true,
-        'path_1': true,
-        'img_path_1_name': true,
-        'show_to': true,
-        'show_from': true,
-        'directionUrl': true
-    };
-    return data;
-}
 function checkSubmitPopup(formData) {
     const pathArray = window.location.pathname.split("/");
     let action = pathArray[2]; // action ['create','edit']
@@ -44,11 +32,22 @@ function checkSubmitPopup(formData) {
             data: null
         };
     }
-    var data_required = getDataRequiredPopup();
-    // if (formData.templateType == 'popup_custom_image_transparent') {
-    //     data_required.path_2 = true;
-    //     data_required.img_path_2_name = true;
-    // }
+    var data_required = {
+        'titleVi': true,
+        'titleEn': true,
+        'templateType': true,
+        // 'path_1': true,
+        'img_path_1_name': true,
+    };
+
+    if (formData.templateType != 'popup_image_transparent' && formData.templateType != 'popup_image_full_screen' ) {
+        // data_required.path_2 = true;
+        data_required.img_path_2_name = true;
+        data_required.directionId = true;
+        if (formData.directionId == 'url_open_out_app' || formData.directionId == 'url_open_in_app') {
+            data_required.directionUrl = true;
+        }
+    }
     let intersection = Object.keys(data_required).filter(x => !Object.keys(formData).includes(x));
     var result = {};
     if (intersection.length === 0) {
@@ -79,12 +78,16 @@ async function handleUploadImagePopup(_this, event) {
             showError("File is too big! Allowed memory size of 2MB");
             return false;
         };
+        // var base64_img = await getBase64(file);
+        // var base64_img = base64_img.replace(/^data:image\/[a-z]+;base64,/, "");
 
         var uploadParam = {
+            // 'imageFileName': file.name,
+            // 'encodedImage': base64_img,
             file:file,
             _token: $('meta[name="csrf-token"]').attr('content')
         };
-        uploadFile(file, successCallUploadImagePopup, {
+        uploadFileExternal(file, successCallUploadImagePopup, {
             'img_tag': img_tag,
             'input_tag': _this,
             'file': file
@@ -105,7 +108,7 @@ function successCallUploadImagePopup(response, passingdata) {
 }
 
 $('.select2').select2();
-$('#reservationtime').daterangepicker({
+$('#timeline').daterangepicker({
     timePicker: true,
     timePickerIncrement: 30,
     locale: {

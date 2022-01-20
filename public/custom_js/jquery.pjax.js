@@ -111,6 +111,7 @@ function handleClick(event, container, options) {
 //
 // Returns nothing.
 function handleSubmit(event, container, options) {
+  console.log(")0");
   options = optionsFor(container, options)
 
   var form = event.currentTarget

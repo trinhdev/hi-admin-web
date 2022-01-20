@@ -26,9 +26,14 @@ Route::group([
     ],
     function (){     
         Route::get('/', [HomeController::class, 'index'])->name('home');
+        Route::any('/uploadImage', 'FileController@uploadImage')->name('uploadImage');
         Route::prefix('home')->group(function () {
             Route::get('/', 'HomeController@index')->name('home');
             Route::get('/getDataChart', 'HomeController@getDataChart')->name('home.getDataChart');
+        });
+        Route::prefix('file')->group(function () {
+            Route::any('/uploadImageExternal', 'FileController@uploadImageExternal')->name('uploadImageExternalB');
+
         });
         Route::namespace('Admin')->group(function () {
             Route::prefix('settings')->group(function () {
@@ -134,7 +139,6 @@ Route::group([
                 Route::post('/store','BannerManageController@store')->name('bannermanage.store');
                 Route::put('/update/{id}/{type}','BannerManageController@update')->name('bannermanage.update');
                 Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
-                Route::post('/uploadImage','BannerManageController@uploadImage')->name('bannermanage.uploadImage');
                 Route::post('/updateordering','BannerManageController@updateOrder')->name('bannermanage.updateOrder');
                 Route::get('/view/{id}/{type}','BannerManageController@view')->name('bannermanage.view');
             });
@@ -156,7 +160,6 @@ Route::group([
                 Route::post('/store','PopupManageController@store')->name('popupmanage.store');
                 Route::put('/update/{id}/{type}','PopupManageController@update')->name('popupmanage.update');
                 Route::get('/initDatatable','PopupManageController@initDatatable')->name('popupmanage.initDatatable');
-                Route::post('/uploadImage','PopupManageController@uploadImage')->name('popupmanage.uploadImage');
                 Route::post('/updateordering','PopupManageController@updateOrder')->name('popupmanage.updateOrder');
             });
             

@@ -49,7 +49,7 @@ async function handleUploadImage(_this, event) {
             file:file,
             _token: $('meta[name="csrf-token"]').attr('content')
         };
-        uploadFile(file, successCallUploadImage, {
+        uploadFileExternal(file, successCallUploadImage, {
             'img_tag': img_tag,
             'input_tag': _this,
             'file': file
@@ -308,7 +308,6 @@ function convertDetailBanner(element){
         thumb_image: '',
         ordering: '-1',
         view_count: 0,
-        date_created: '',
         date_created: '',
         created_by: '',
         modified_by: '',

@@ -19,7 +19,6 @@ class PopupManageController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Popup Manage';
-        $this->model = $this->getModel('Banner');
     }
 
     public function index()
@@ -180,6 +179,7 @@ class PopupManageController extends MY_Controller
 
     public function store(Request $request)
     {
+        die("222");
         $ruleButtonImage = [
             'path_button' => 'required',
             'img_path_button_name' => 'required',
