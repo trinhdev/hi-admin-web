@@ -22,10 +22,10 @@ class PopupManageController extends MY_Controller
         $this->model = $this->getModel('Banner');
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $newsEventService = new NewsEventService();
-        $listTemplatePopup = $newsEventService->getListTemplatePopup($request);
+        $listTemplatePopup = $newsEventService->getListTemplatePopup();
         $listTemplatePopup->type = config('platform_config.type_popup_service');
         $listTemplatePopup = (isset($listTemplatePopup->statusCode) && $listTemplatePopup->statusCode == 0) ? $listTemplatePopup : [];
         return view('popup.index')->with(['list_template_popup' => $listTemplatePopup]);
