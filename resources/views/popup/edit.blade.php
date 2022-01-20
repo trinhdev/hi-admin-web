@@ -129,6 +129,6 @@
     <!-- /.content-wrapper -->
 
 @endsection
-@push('scripts')
-    <script src="{{ asset('/custom_js/popupmanage.js')}}"></script>
-@endpush
+{{--@section('scripts')--}}
+{{--    <script src="{{ asset('/custom_js/popupmanage.js')}}"></script>--}}
+{{--@endsection--}}

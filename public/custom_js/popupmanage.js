@@ -114,6 +114,7 @@ $('#reservationtime').daterangepicker({
 })
 $('#listTypePopup').on("change", function () {
     let type_popup = $('#listTypePopup').val();
+    console.log(type_popup);
     if (type_popup == 'popup_image_transparent' || type_popup == 'popup_image_full_screen') {
         $('#dieuhuong').hide();
         $('#path_2').hide();
