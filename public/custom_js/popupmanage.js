@@ -131,3 +131,20 @@ $('#directionId').on("change", function () {
         $('#form_directionUrl').hide();
     }
 })
+
+function filterData() {
+    // $('#banner_manage').DataTable().destroy();
+    $('#popup_manage').DataTable().clear();
+    callApiGetListPopup(show_from.value, show_to.value, show_at.value);
+}
+
+function callApiGetListPopup(show_from = null, show_to = null, popupType = null) {
+    var uploadParam = {
+        public_date_from: show_from,
+        public_date_to: show_to,
+        popupType: popupType,
+        _token: $('meta[name="csrf-token"]').attr('content')
+    };
+
+    callAPIHelper("/popupmanage/initDatatable", uploadParam, 'GET', initPopupManage);
+}

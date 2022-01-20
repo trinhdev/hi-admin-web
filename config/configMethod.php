@@ -28,6 +28,8 @@ $methodNewsEventDomain = [
     'PUSH_POPUP'            => 'provider/tool/popup/push-popup',
     'GET_LIST_BANNER'       => 'provider/tool/banner/get-list-banner',
     'GET_DETAIL_BANNER'     => 'provider/tool/banner/get-detail-banner',
+    'GET_LIST_POPUP'        => 'provider/tool/popup/list-template',
+    'GET_DETAIL_POPUP'      => 'provider/tool/popup/detail-template',
 ];
 return [
     'DOMAIN_INSIDE' => $methodInsideDomain,

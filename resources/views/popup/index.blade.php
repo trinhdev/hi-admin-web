@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Banner</h1>
+                    <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Popup</h1>
                     @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
                     <a href="{{ route('popupmanage.create') }}" class="btn btn-primary btn-sm">
                         <i class="fas fa-plus"></i> Thêm Mới
@@ -18,7 +18,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Quản lý Banner</li>
+                        <li class="breadcrumb-item active">Quản lý Popup</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -39,10 +39,10 @@
                                 </div>
                                 <select class="form-control" name="position" id="show_at" placeholder="Show at" onchange="filterData()">
                                     <option value=''>Tất Cả</option>
-                                    @if(!empty($list_type_banner))
-                                    @foreach($list_type_banner as $type)
-                                         <option value="{{$type->id}}">&#8920; {{ $type->id}} &#x22D9;: {{$type->name}}</option>
-                                    @endforeach
+                                    @if(!empty($list_template_popup))
+                                    @foreach($list_template_popup->type as $key => $value)
+                                            <option value="{{$key}}">{{$value}}</option>
+                                        @endforeach
                                     @endif
                                 </select>
                             </div>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <table id="banner_manage" class="display" style="width:100%; word-wrap:no-wrap;">
+                <table id="popup_manage" class="display" style="width:100%; word-wrap:no-wrap;">
                 </table>
             </div>
         </div>

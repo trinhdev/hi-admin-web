@@ -22,12 +22,13 @@ class PopupManageController extends MY_Controller
         $this->model = $this->getModel('Banner');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $newsEventService = new NewsEventService();
-        $listTypeBanner = $newsEventService->getListTypeBanner();
-        $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
-        return view('popup.index')->with(['list_type_banner' => $listTypeBanner]);
+        $listTemplatePopup = $newsEventService->getListTemplatePopup($request);
+        $listTemplatePopup->type = config('platform_config.type_popup_service');
+        $listTemplatePopup = (isset($listTemplatePopup->statusCode) && $listTemplatePopup->statusCode == 0) ? $listTemplatePopup : [];
+        return view('popup.index')->with(['list_template_popup' => $listTemplatePopup]);
     }
 
     public function edit(Request $request, $bannerId, $bannerType)
@@ -275,11 +276,11 @@ class PopupManageController extends MY_Controller
 
         // $toDay = Carbon::parse( date('Y-m-d h:i:s'))->format('Y-m-d\TH:i');
         $param = [
-            'bannerType' => empty($request->bannerType) ? null : $request->bannerType,
+            'popupType' => empty($request->popupType) ? null : $request->popupType,
             'publicDateStart' => empty($request->public_date_from) ? null : Carbon::parse($request->public_date_from)->format('Y-m-d H:i:s'),
             'publicDateEnd' => empty($request->public_date_to) ? null : Carbon::parse($request->public_date_to)->format('Y-m-d H:i:s')
         ];
-        $responseCallAPIGetListBanner = $newsEventService->getListbanner($param);
+        $responseCallAPIGetListBanner = $newsEventService->getListTemplatePopup($param);
         if (empty($responseCallAPIGetListBanner)) {
             $responseCallAPIGetListBanner = (object)[];
         };

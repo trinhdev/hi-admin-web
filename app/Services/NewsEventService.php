@@ -90,4 +90,11 @@ class NewsEventService
         $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
         return $response;
     }
+
+    public function getListTemplatePopup($param = null)
+    {
+        $url = $this->baseUrl . $this->listMethod['GET_LIST_POPUP'];
+        $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey], 'POST');
+        return $response;
+    }
 }
