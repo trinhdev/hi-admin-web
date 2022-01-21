@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('content')
-    <!-- Modal -->
+    <!-- Modal view detail -->
     <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -26,6 +26,53 @@
         </div>
     </div>
     <!-- Modal -->
+
+    {{-- Modal filter --}}
+    <div class="modal fade" id="filter-status" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Lọc</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12"><b>Trạng thái</b></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Tất cả</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="status-all" />
+                            <label class="float-right" for="status-all"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Trạng thái hiện</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="status-show" />
+                            <label class="float-right" for="status-show"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Trạng thái ẩn</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="status-hide" />
+                            <label class="float-right" for="status-hide"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12"><b>Trạng thái</b></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -57,7 +104,7 @@
             <div class="container-fluid">
                 <div class="row" style="margin-top: 20px">
                     <div class="card card-body col-sm-12">
-                        <div class="container">
+                        {{-- <div class="container">
                             <form action="{{ route('iconmanagement.index') }}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
                                 <div class="card-body row form-inline">
                                     <div class="col-sm-6">
@@ -65,7 +112,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Tên sản phẩm</div>
                                             </div>
-                                            <input type="name" class="form-control" id="vi-name" placeholder="Nhập tên sản phẩm" name="group_name" value="@if(!empty($data)){{$data->group_name}}@endif">
+                                            <input type="name" class="form-control" id="product-name-filter" placeholder="Nhập tên sản phẩm" name="group_name" value="@if(!empty($data)){{$data->group_name}}@endif">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -73,7 +120,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Trạng thái sản phẩm</div>
                                             </div>
-                                            <select name="action" id="status-filter" class="selectpicker form-control">
+                                            <select id="status-filter" class="selectpicker form-control">
                                                 <option value="">Vui lòng chọn trạng thái</option>
                                                 <option value="1">Hiện</option>
                                                 <option value="0">Ẩn</option>
@@ -82,7 +129,7 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> --}}
                         <table id="icon-management" class="display nowrap" style="width: 100%">
                         </table>                                          
                     </div>
@@ -217,13 +264,29 @@
             width: 25%;
             font-weight: bold
         }
+
+        #icon-management_filter {
+            float: left;
+        }
+
+        .dt-buttons {
+            float: right;
+        }
+
+        #filter-status .col-form-label {
+            font-weight: unset!important;
+        }
+
+        #filter-status .form-group {
+            margin-bottom: 0
+        }
     </style>
 
     <script id="product-detail-template" type="text/x-jquery-tmpl">
         <table class="product-detail">
             <tr>
                 <td style="text-align: center; width: 100%; padding-bottom: 30px" colspan="2">
-                    <img class="img-thumbnail" src="${icon_url}" style="width: 150px" />
+                    <img class="img-thumbnail" src="${iconUrl}" style="width: 150px" lat="${productNameVi}" />
                 </td>
             </tr>
             <tr>
@@ -232,7 +295,7 @@
             </tr>
             <tr>
                 <td class="title" style="width: 25%;">Mô tả</td>
-                <td>${description}</td>
+                <td>${decriptionVi}</td>
             </tr>
             <tr>
                 <td class="title" style="padding-bottom: 30px">Thông tin bổ sung</td>
@@ -241,28 +304,28 @@
 
             <tr>
                 <td class="title">Trạng thái hiển thị</td>
-                <td>${status}</td>
+                <td>${(isDisplay && isDisplay == '1' ? "Hiện" : "Ẩn")}</td>
             </tr>
             <tr>
                 <td class="title">Ngày bắt đầu</td>
-                <td>31/12/2021</td>
+                <td>${displayBeginDay}</td>
             </tr>
             <tr>
                 <td class="title" style="padding-bottom: 30px">Ngày kết thúc</td>
-                <td style="padding-bottom: 30px">15/01/2022</td>
+                <td style="padding-bottom: 30px">${displayEndDay}</td>
             </tr>
             
             <tr>
                 <td class="title">Hiển thị icon mới</td>
-                <td>Bật</td>
+                <td>${isNew && isNew == '1' ? "Bật" : "Tắt"}</td>
             </tr>
             <tr>
                 <td class="title">Ngày bắt đầu</td>
-                <td>31/12/2021</td>
+                <td>${newBeginDay}</td>
             </tr>
             <tr>
                 <td class="title" style="padding-bottom: 30px">Ngày kết thúc</td>
-                <td style="padding-bottom: 30px">15/01/2022</td>
+                <td style="padding-bottom: 30px">${newEndDay}</td>
             </tr>
             
             <tr>
@@ -271,11 +334,11 @@
             </tr>
             <tr>
                 <td class="title">Link Production</td>
-                <td>https://google.com.vn</td>
+                <td>${dataActionProduction}</td>
             </tr>
             <tr>
                 <td class="title">Link Staging</td>
-                <td>https://google.com.vn</td>
+                <td>${dataActionStaging}</td>
             </tr>
             <tr>
                 <td></td>

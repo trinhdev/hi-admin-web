@@ -37,7 +37,7 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group" style="text-align: center">
-                                        <img id="img_icon" src="{{ (!empty($data['icon_url']) ? $data['icon_url'] : '/images/image_logo.png') }}" alt="" width="200" class="mb-4">
+                                        <img id="img_icon" src="{{ (!empty($data['iconUrl']) ? $data['iconUrl'] : '/images/image_logo.png') }}" alt="" width="200" class="mb-4">
                                         <!-- Upload image input-->
                                         <div class="input-group mb-3 px-2 py-2 rounded-pill bg-gray shadow-sm">
                                             <input id="upload" name="iconUrl" type="file" onchange="readURL(this);" class="form-control border-0">
@@ -82,13 +82,13 @@
                                 <div class="row">
                                     <div class="col-sm-2 offset-sm-1">
                                         <div class="icheck-sunflower">
-                                            <input type="radio" id="status-show" name="isDisplay" value="0" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '0') ? 'checked' : '' }} />
+                                            <input type="radio" id="status-show" name="isDisplay" value="1" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '1') ? 'checked' : '' }} />
                                             <label for="status-show">Bật</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="icheck-sunflower">
-                                            <input type="radio" id="status-hide" name="isDisplay" value="1" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '1') ? 'checked' : '' }} />
+                                            <input type="radio" id="status-hide" name="isDisplay" value="0" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '0') ? 'checked' : '' }} />
                                             <label for="status-hide">Tắt</label>
                                         </div>
                                     </div>

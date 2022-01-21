@@ -83,6 +83,19 @@ $( document ).ready(function() {
             close: 'fas fa-window-close'
         }
     });
+
+    // lightSlider
+    $('#all-product').lightSlider({
+        item: 5,
+        loop: true,
+        slideMove: 1,
+        easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
+        speed: 600,
+        slideMargin: 15,
+        enableDrag: false,
+        enableTouch: false,
+        pager: false
+    });  
 });
 
 $("#show_from").on("dp.change", function (e) {
@@ -127,12 +140,7 @@ $('input:checkbox[name="is_new_show"]').change(() => {
     } 
 });
 
-// $("#product-modal-body").html('');
-// $('#exampleModalCenter').modal();
-// $("#product-detail-template").tmpl(data).appendTo("#product-modal-body");
-
 function readURL(value) {
-    // console.log(value.val());
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -143,7 +151,6 @@ function readURL(value) {
     formData.append("file", files, files.name);
     $.ajax({
         type: 'POST',
-        // datatype: 'JSON',
         url: '/iconmanagement/upload',
         data: formData,
         cache: false,
@@ -151,7 +158,6 @@ function readURL(value) {
         processData: false,
         success: (data) => {
             console.log(data);
-            // callBack(data,passingData);
             if(data.url) {
                 $("#img_icon").attr('src', '/images/upload/' + data.url);
             }
@@ -167,7 +173,7 @@ function readURL(value) {
     });
 }
 
-function deleteProduct(prod_name) {
+function deleteProductTitle(prod_name) {
     Swal.fire({
         title: 'Xóa sản phẩm',
         text: `Bạn có chắc muốn xóa sản phẩm ${prod_name}?`,
@@ -197,31 +203,29 @@ function openDetail(detailData) {
     
 }
 
-// lightSlider
-$(document).ready(function() {
-    $('#all-product').lightSlider({
-        item: 5,
-        loop: true,
-        slideMove: 1,
-        easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
-        speed: 600,
-        slideMargin: 15,
-        enableDrag: false,
-        enableTouch: false,
-        pager: false
-    });  
-});
-
 // Dragula CSS Release 3.2.0 from: https://github.com/bevacqua/dragula
 dragula([document.getElementById('all-product'), document.getElementById('selected-product')], {
     direction: 'horizontal',
+    revertOnSpill: true,
     copy: function (el, source) {
         return source === document.getElementById('all-product')
     },
-    accepts: function (el, target) {
+    accepts: function (el, target, source, sibling) {
+        var li_all = $(el).attr('id');
+        if($('#' + li_all + '-selected-product').length != 0) {
+            swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                html: `Sản phẩm này đã tồn tại trong danh mục`
+            });
+            return false;
+        }
+
         return target !== document.getElementById('all-product')
     }
 }).on('drop', (el, target, source, sibling) => {
+    var li_all = $(el).attr('id');
+    $(el).attr('id', li_all + '-selected-product');
     $(el).removeClass("lslide");
     $(el).removeClass("active");
     $(el).removeClass("gu-transit");

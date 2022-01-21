@@ -1113,7 +1113,7 @@ function initIconmanagement() {
     //     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
     // } );
 
-    $('#icon-management').DataTable({
+    var icon_management_table = $('#icon-management').DataTable({
         "processing": true,
         "select": true,
         "bDestroy": true,
@@ -1128,6 +1128,13 @@ function initIconmanagement() {
             url: "/iconmanagement/initDatatable"
         },
         "data": [],
+        dom: 'Bfrtip',
+        "columnDefs": [
+            { 
+                "searchable": false, 
+                "targets": [0, 1, 4, 5, 6]
+            },
+        ],
         "columns": [{
             title: "STT",
             render: function (data, type, row, meta) {
@@ -1139,7 +1146,6 @@ function initIconmanagement() {
             name: "iconUrl",
             title: "Hình ảnh",
             render: function (data, type, row) {
-                console.log(data);
                 return `<img class="img-thumbnail" src="${data}" style="width: 80px">`;
             },
             className: 'text-center',
@@ -1164,15 +1170,7 @@ function initIconmanagement() {
                 var html = '';
                 if ('isDisplay' in row) {
                     switch (row['isDisplay']) {
-                        case 0:
-                            html = `<div class="df-switch">
-                                    <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
-                                        <div class="inner-handle"></div>
-                                        <div class="handle"></div>
-                                    </button>
-                                </div>`;
-                            break;
-                        case 1:
+                        case "0":
                             html = `<div class="df-switch">
                                     <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off" disabled>
                                         <div class="inner-handle"></div>
@@ -1180,7 +1178,15 @@ function initIconmanagement() {
                                     </button>
                                 </div>`;
                             break;
-                        case 2:
+                        case "1":
+                            html = `<div class="df-switch">
+                                    <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
+                                        <div class="inner-handle"></div>
+                                        <div class="handle"></div>
+                                    </button>
+                                </div>`;
+                            break;
+                        case "2":
                             html = (row['displayBeginDay']) ? `Hẹn ngày bật <span class="badge badge-warning">${row['displayBeginDay']}</span>` : '';
                             break;
                         default:
@@ -1191,14 +1197,39 @@ function initIconmanagement() {
             className: 'text-center',
         },
         {
+            data: 'pheduyet',
+            name: 'pheduyet',
+            title: 'Phê duyệt',
+            className: 'text-center',
+            render: function (data, type, row) {
+                var badge = ``;
+                switch (data) {
+                    case 'Chờ kiểm tra':
+                        badge = 'badge-warning';
+                        break;
+                    case 'Kiểm tra thất bại':
+                        badge = 'badge-danger';
+                        break;
+                    default:
+                        badge = 'badge-success';
+                }
+                var html = ``;
+                if(data) {
+                    html = `<span class="badge ${badge}">${data}</span>`;
+                }
+                return html;
+            }
+        },
+        {
             title: 'Action',
             data: 'productId',
             render: function (data, type, row) {
+                var productName = row.productNameVi.replace(/(\r\n|\n|\r)/gm, " ");
                 return `<div>
-                                <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${JSON.stringify(row).split('"').join("&quot;")})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
-                                <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                                <button style="float: left; type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProduct('${row.productNameVi}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
-                            </div>`;
+                            <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${JSON.stringify(row).split('"').join("&quot;")})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                            <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
+                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProduct('${productName}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
+                        </div>`;
             },
             className: 'text-center',
             "sortable": false
@@ -1213,7 +1244,24 @@ function initIconmanagement() {
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
         },
-        searchDelay: 500
+        // searchDelay: 500,
+        "searchCols": [
+            null,
+            null, 
+            {"regex": true},
+            {"regex": true},
+            null,
+            null,
+            null
+        ],
+        buttons: [
+            {
+                text: '<i class="fas fa-filter"></i> Lọc',
+                action: function ( e, dt, node, config ) {
+                    $('#filter-status').modal();
+                }
+            }
+        ]
     });
 
     $('#show_from').datetimepicker({
@@ -1340,62 +1388,21 @@ function initIconmanagement() {
         }
     });
 
-    let items = document.querySelectorAll('.carousel .carousel-item');
-    items.forEach((el) => {
-        const minPerSlide = 4;
-        let next = el.nextElementSibling;
-        for (var i = 1; i < minPerSlide; i++) {
-            if (!next) {
-                // wrap carousel by using first child
-                next = items[0];
-            }
-            let cloneChild = next.cloneNode(true);
-            el.appendChild(cloneChild.children[0])
-            next = next.nextElementSibling
-        }
-    });
+//     $('#status-filter').on('change', function(e){
+//         var status = $(this).val();
+//         // $('#status-filter').val(status)
+//         console.log(status)
+//         //dataTable.column(6).search('\\s' + status + '\\s', true, false, true).draw();
+//         icon_management_table.column(4).search(status).draw();
+//     });
 
-    // Dragula CSS Release 3.2.0 from: https://github.com/bevacqua/dragula
-    dragula([document.getElementById('all-product'), document.getElementById('selected-product')])
-        .on('drag', function (el) {
-            console.log('init-table');
-            el.className.replace('ex-moved', '');
-        }).on('drop', function (el) {
-            el.className += 'ex-moved';
-        }).on('over', function (el, container) {
-            container.className += 'ex-over';
-        }).on('out', function (el, container) {
-            container.className.replace('ex-over', '');
-        });
-
-    /* Vanilla JS to add a new card */
-    function addCard() {
-        /* Get card text from input */
-        var inputCard = document.getElementById("cardText").value;
-        /* Add card to the 'To Do' column */
-        document.getElementById("cards").innerHTML += "<li class='card'><p>" + inputCard + "</p></li>";
-        /* Clear card text from input after adding card */
-        document.getElementById("cardText").value = "";
-    }
-
-    /* Vanilla JS to delete all cards */
-    function deleteAllCards() {
-        /* Clear cards from 'cards' and 'order' column */
-        document.getElementById("cards").innerHTML = "";
-        document.getElementById("order").innerHTML = "";
-    }
-
-    /* Vanilla JS to delete all cards in cards column */
-    function deleteCardsCards() {
-        /* Clear cards from 'cards' column */
-        document.getElementById("cards").innerHTML = "";
-    }
-
-    /* Vanilla JS to delete all cards in order column*/
-    function deleteOrderCards() {
-        /* Clear cards from 'order' column */
-        document.getElementById("order").innerHTML = "";
-    }
+//     $('#product-name-filter').on('keydown', function() {
+//         var name = $(this).val();
+//         // $('#status-filter').val(status)
+//         console.log(name)
+//         //dataTable.column(6).search('\\s' + status + '\\s', true, false, true).draw();
+//         icon_management_table.columns([2, 3]).search("^" + name, true, true, true).draw();
+//    });
 }
 
 function initCloseHelpReqest() {
@@ -1587,42 +1594,183 @@ function initIconcategory() {
         searchDelay: 500
     });
 
+    if($('#status-clock').is(':checked')) {
+        $('#status-clock-date-time').show();
+    }
+    else {
+        $('#status-clock-date-time').hide();
+    }
+
+    if($('#is-new-show').is(':checked')) {
+        $('#is-new-icon-show-date-time').show();
+    }
+    else {
+        $('#is-new-icon-show-date-time').hide();
+    }
+
+    $('#show_from').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    $('#show_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    $('#new_from').datetimepicker({
+        format: "YYYY-MM-DD HH:mm:SS",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    $('#new_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm:SS",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    // lightSlider
+    $('#all-product').lightSlider({
+        item: 5,
+        loop: true,
+        slideMove: 1,
+        easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
+        speed: 600,
+        slideMargin: 15,
+        enableDrag: false,
+        enableTouch: false,
+        pager: false
+    });  
+
+    $("#show_from").on("dp.change", function (e) {
+        if($('#show_to').data("DateTimePicker") != undefined) {
+            $('#show_to').data("DateTimePicker").minDate(e.date);
+        }
+    });      
+    
+    $("#show_to").on("dp.change", function (e) {
+        if($('#show_from').data("DateTimePicker") != undefined) {
+            $('#show_from').data("DateTimePicker").maxDate(e.date);
+        }
+    });
+    
+    $("#new_from").on("dp.change", function (e) {
+        if($('#new_to').data("DateTimePicker") != undefined) {
+            $('#new_to').data("DateTimePicker").minDate(e.date);
+        }
+    });      
+    
+    $("#new_to").on("dp.change", function (e) {
+        if($('#new_from').data("DateTimePicker") != undefined) {
+            $('#new_from').data("DateTimePicker").maxDate(e.date);
+        }
+    });
+    
     $('input:radio[name="status"]').change(() => {
-        if ($('#status-clock').is(':checked')) {
+        if($('#status-clock').is(':checked')) {
             $('#status-clock-date-time').show();
         }
         else {
             $('#status-clock-date-time').hide();
-        }
+        } 
     });
-
+    
     $('input:checkbox[name="is_new_show"]').change(() => {
-        if ($('#is-new-show').is(':checked')) {
+        if($('#is-new-show').is(':checked')) {
             $('#is-new-icon-show-date-time').show();
         }
         else {
             $('#is-new-icon-show-date-time').hide();
-        }
+        } 
     });
 
-    $("#carousel").carousel();
-
-    $('.carousel-showmanymoveone .item').each(function () {
-        var itemToClone = $(this);
-
-        for (var i = 1; i < 6; i++) {
-            itemToClone = itemToClone.next();
-
-            // wrap around if at end of item collection
-            if (!itemToClone.length) {
-                itemToClone = $(this).siblings(':first');
+    dragula([document.getElementById('all-product'), document.getElementById('selected-product')], {
+        direction: 'horizontal',
+        revertOnSpill: true,
+        copy: function (el, source) {
+            return source === document.getElementById('all-product')
+        },
+        accepts: function (el, target, source, sibling) {
+            var li_all = $(el).attr('id');
+            if($('#' + li_all + '-selected-product').length != 0) {
+                swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: `Sản phẩm này đã tồn tại trong danh mục`
+                });
+                return false;
             }
-
-            // grab item, clone, add marker class, add to collection
-            itemToClone.children(':first-child').clone()
-                .addClass("cloneditem-" + (i))
-                .appendTo($(this));
+    
+            return target !== document.getElementById('all-product')
         }
+    }).on('drop', (el, target, source, sibling) => {
+        var li_all = $(el).attr('id');
+        $(el).attr('id', li_all + '-selected-product');
+        $(el).removeClass("lslide");
+        $(el).removeClass("active");
+        $(el).removeClass("gu-transit");
+        $(el).addClass("col-sm-2");
+    
+        $(el).css('margin-right', 0);
+    
+        var spanElement = $(el).find("span:first");
+        $(spanElement).removeClass("badge-light");
+        $(spanElement).addClass("badge-dark");
+    
+        if($(el).find('span.position').length < 1) {
+            $(el).append(`<h6><span class="badge badge-warning position">${$(el).index() + 1}</span></h6>`);
+        }
+    
+        $(target).find("li").each((key, value) => {
+            $(value).find("span.position").text($(value).index() + 1);
+        });
     });
 }
 

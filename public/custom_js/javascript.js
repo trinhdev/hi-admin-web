@@ -2,6 +2,25 @@ $(document).ready(function () {
     // $('#sidebar').sortable({
     //     axis: "y",
     // });
+    if (window.history && window.history.pushState) {
+
+        // window.history.pushState('forward', null, './#forward');
+        if($('#spinner').length) {
+            console.log('ready');
+            $('#spinner').removeClass('show');
+            $('#spinner').addClass('hide');
+        }
+        // $(window).on('popstate', function() {
+        //     if($('#spinner').length) {
+        //         console.log('ready');
+        //         $('#spinner').removeClass('show');
+        //         $('#spinner').addClass('hide');
+        //     }
+        // });
+    
+    }
+
+
     $(document).pjax('a', '#pjax');
     $('aside li.nav-item a').on('click', function (e) {
         if ($(this).attr('href') != '#') {
@@ -43,14 +62,19 @@ function handleSubmit(e, form, withPopup = true) {
                 form.submit();
                 let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
                 $('form').find(':button').prop('disabled', true);
-                $("#spinner").addClass("show");
+                $("#spinner").toggle("show");
             }
         });
     }else{
         form.submit();
         let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
         $('form').find(':button').prop('disabled', true);
-        $("#spinner").addClass("show");
+        $("#spinner").toggle("show");
+    }
+
+    if (e.result == true) {
+        // $("#spinner").addClass("hide");
+        console.log('end submit');
     }
 
 }

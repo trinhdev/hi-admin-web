@@ -129,18 +129,16 @@
                                 </div>
                                 <div class="card card-info">
                                     <div class="card-body">
-                                        <div class="row">
-                                            <ul style="list-style: none; display: contents;" id="selected-product">
-                                                @foreach ($data['productListInTitle'] as $key => $value)
-                                                    <li class="col-sm-2" style="text-align: center" id="{{ @$value['productId'] }}-selected-product">
-                                                        <button type="button" class="close-thik" onClick="removeFromSelectedProduct('{{ @$value['productId'] }}-selected-product')"></button>
-                                                        <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}" class="img-thumbnail">
-                                                        <h6><span class="badge badge-dark">{{ $value['productNameVi'] }}</span></h6>
-                                                        <h6><span class="badge badge-warning position">{{ $key + 1 }}</span></h6>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
+                                        <ul class="row" style="list-style: none; min-height: 100px" id="selected-product">
+                                            @foreach ($data['productListInTitle'] as $key => $value)
+                                                <li class="col-sm-2" style="text-align: center" id="{{ @$value['productId'] }}-selected-product">
+                                                    <button type="button" class="close-thik" onClick="removeFromSelectedProduct('{{ @$value['productId'] }}-selected-product')"><i class="fas fa-times-circle"></i></button>
+                                                    <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}" class="img-thumbnail">
+                                                    <h6><span class="badge badge-dark">{{ $value['productNameVi'] }}</span></h6>
+                                                    <h6><span class="badge badge-warning position">{{ $key + 1 }}</span></h6>
+                                                </li>
+                                            @endforeach
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -150,10 +148,10 @@
                                     <div class="card-body" style="background-color: #6C757D">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <ul id="all-product" style="list-style: none;">
+                                                <ul id="all-product" style="list-style: none">
                                                     @foreach ($data['productList'] as $key => $value)
-                                                        <li style="text-align: center">
-                                                            <button class="close-thik" onClick="deleteProduct('{{ $value['productNameVi'] }}')"></button>
+                                                        <li style="text-align: center" id="{{ @$value['productId'] }}">
+                                                            <button type="button" class="close-thik" onClick="removeFromSelectedProduct('{{ @$value['productId'] }}-selected-product')"><i class="fas fa-times-circle"></i></button>
                                                             <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}" class="img-thumbnail">
                                                             <h6><span class="badge badge-light">{{ $value['productNameVi'] }}</span></h6>
                                                         </li>
@@ -317,19 +315,11 @@
     }
 
     .close-thik {
-        color: #ffffff;
-        font: 14px/100% arial, sans-serif;
         position: absolute;
         right: 55px;
-        text-decoration: none;
-        text-shadow: 0 1px 0 #fff;
         top: -6px;
-        background-color: #6C757D;
-        border-radius: 50%
-    }
-
-    .close-thik:after {
-        content: '✖'; /* UTF-8 symbol */
+        background-color: transparent;
+        border: none
     }
 </style>
 @endsection

@@ -9,7 +9,6 @@ $( document ).ready(function() {
     }
 
     if($('#is-new-show').is(':checked')) {
-        console.log('test');
         $('#is-new-icon-show-date-time').show();
     }
     else {
@@ -128,7 +127,6 @@ $('input:checkbox[name="isNew"]').change(() => {
 });
 
 function readURL(value) {
-    // console.log(value.val());
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -146,7 +144,6 @@ function readURL(value) {
         contentType: false,
         processData: false,
         success: (data) => {
-            console.log(data);
             // callBack(data,passingData);
             if(data.url) {
                 $("#img_icon").attr('src', '/images/upload/' + data.url);
@@ -166,7 +163,7 @@ function readURL(value) {
 function deleteProduct(prod_name) {
     Swal.fire({
         title: 'Xóa sản phẩm',
-        text: `Bạn có chắc muốn xóa sản phẩm ${prod_name}?`,
+        html: `Bạn có chắc muốn xóa sản phẩm <span class="badge bg-warning text-dark">${prod_name}</span>?`,
         icon: 'warning',
         showCancelButton: true,
         cancelButtonColor: '#d33',

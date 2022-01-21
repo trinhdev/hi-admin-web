@@ -32,6 +32,10 @@
 <script src="{{asset('custom_js/jquery.pjax.js')}}"></script>
 <!-- DataTables -->
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables/jquery.dataTables.js"></script>
+{{-- <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-searchpanes/js/dataTables.searchPanes.min.js"></script>
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-searchpanes/js/searchPanes.bootstrap4.min.js"></script> --}}
+{{-- <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script> --}}
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-select/js/dataTables.select.min.js"></script>
 
 <!-- jquery-tmpl -->
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/jquery-tmpl/jquery-tmpl.min.js"></script>

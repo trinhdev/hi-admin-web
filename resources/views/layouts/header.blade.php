@@ -32,9 +32,11 @@
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/simple-line-icons/style.min.css">
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/lightslider-master/dist/css/lightslider.min.css">
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/bootstrap-datetimepicker/css/tempus-dominus.min.css">
+    <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-searchpanes/css/searchPanes.bootstrap4.min.css">
     {{-- <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/app-assets/css/colors.min.css"> --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css">
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.bootstrap4.min.css"/> --}}
     
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 

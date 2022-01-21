@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\Http\Controllers\MY_Controller;
+use App\Models\Settings;
 use Illuminate\Http\Request;
 
 use App\Http\Traits\DataTrait;
@@ -17,10 +18,12 @@ class IconmanagementController extends MY_Controller
     use DataTrait;
     protected $module_name = 'Icon management';
     protected $model_name = "Icon_Management";
+    protected $iconManagement = null;
     public function __construct()
     {
         parent::__construct();
         $this->title = 'Icon Management';
+        $this->iconManagement = new IconManagementService();
         // $this->model = $this->getModel('Icon_Management');
     }
 
@@ -28,6 +31,8 @@ class IconmanagementController extends MY_Controller
     {
         //get view list
         $data = $this->list1();
+        $icon_approve = Settings::where('name', 'icon_approve')->get();
+        $data['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
         return view('icon_management.list')->with($data);
     }
 
@@ -39,30 +44,7 @@ class IconmanagementController extends MY_Controller
         ];
         $id = request()->segment(3);
         if(!empty($id)) {
-            $api_info = [
-                "statusCode"                    => 0,
-                "message"                       => "Thành công",
-                "data"                          => [
-                    "productId"                 => 9,
-                    "productNameVi"             => "F-Safe",
-                    "productNameEn"             => "F-Safe",
-                    "iconUrl"                   => "https://hi-static.fpt.vn/sys/hifpt/icons/hi-customer/6_2/FSafe.png",
-                    "dataActionStaging"         => "https://staging-hi.fpt.vn/shopping/fpt/fsafe/grid",
-                    "dataActionProduction"      => "https://fpt.vn/fsafe/",
-                    "actionType"                => "open_url_in_app_with_access_token",
-                    "data"                      => null,
-                    "content"                   => "",
-                    "isNew"                     => "2",
-                    "newBeginDay"               => "2021-11-28 00:00:00",
-                    "newEndDay"                 => "2021-11-30 00:00:00",
-                    "isDisplay"                 => "2",
-                    "displayBeginDay"           => "2021-11-28 00:00:00",
-                    "displayEndDay"             => "2021-11-30 00:00:00",
-                    "decriptionVi"              => null,
-                    "decriptionEn"              => null,
-                    "keywords"                  => "fsafe, f safe"
-                ]
-            ];            
+            $api_info = json_decode(json_encode($this->iconManagement->getProductById($id)), true);;            
 
             // $data['productId'] = (!empty);
             $data['data'] = (!empty($api_info['data'])) ? $api_info['data'] : [];
@@ -103,9 +85,7 @@ class IconmanagementController extends MY_Controller
 
     public function initDatatable(Request $request){
         if($request->ajax()) {
-            $iconManagement = new IconManagementService();
-            // $data = $this->model::with('user')->select(['id', 'icon_url', 'name', 'position', 'status', 'category', 'updated_by', 'created_by']);
-            $response = json_decode(json_encode($iconManagement->getAllProduct()), true);
+            $response = json_decode(json_encode($this->iconManagement->getAllProduct()), true);
             $data = [];
             if(!empty($response['data'])) {
                 $data = $response['data'];
