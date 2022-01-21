@@ -43,18 +43,23 @@ function handleSubmit(e, form, withPopup = true) {
                 form.submit();
                 let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
                 $('form').find(':button').prop('disabled', true);
-                $("#spinner").addClass("show");
+                showLoading();
             }
         });
     }else{
         form.submit();
         let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
         $('form').find(':button').prop('disabled', true);
-        $("#spinner").addClass("show");
+        showLoading();
     }
 
 }
-
+function showLoading(){
+    $("#spinner").addClass("show");
+    setTimeout(function() {
+        $("#spinner").removeClass("show");
+      },4000);
+}
 function dialogConfirmWithAjax(sureCallbackFunction, data) {
     Swal.fire({
         title: 'Are you sure?',
