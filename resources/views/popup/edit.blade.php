@@ -41,6 +41,7 @@
                 <!-- /.card-header -->
                     <form action="{{$action}}" method="POST"
                           onchange="checkEnableSavePopup(this)">
+                        @csrf
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">

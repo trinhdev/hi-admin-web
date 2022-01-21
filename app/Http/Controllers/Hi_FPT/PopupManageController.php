@@ -33,7 +33,6 @@ class PopupManageController extends MY_Controller
     public function edit(Request $request, $bannerId, $bannerType)
     {
         $newsEventService = new NewsEventService();
-        my_debug($newsEventService);
         $listTargetRoute = $newsEventService->getListTargetRoute();
         $listTargetRoute = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
 
@@ -179,7 +178,6 @@ class PopupManageController extends MY_Controller
 
     public function store(Request $request)
     {
-        die("222");
         $ruleButtonImage = [
             'path_button' => 'required',
             'img_path_button_name' => 'required',
