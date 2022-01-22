@@ -26,7 +26,6 @@ function reloadPjax() {
 }
 
 function handleSubmit(e, form, withPopup = true) {
-    console.log("#3333");
     e.preventDefault();
     if(withPopup){
         Swal.fire({
@@ -41,7 +40,6 @@ function handleSubmit(e, form, withPopup = true) {
     
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log("ssss");
                 form.submit();
                 let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
                 $('form').find(':button').prop('disabled', true);

@@ -90,7 +90,14 @@ class NewsEventService
         $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
         return $response;
     }
+    public function addNewPopup($params) {
+        $url = $this->baseUrl . $this->listMethod['CREATE_TEMPLATE_POPUP'];
+        $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
+        return $response;
+    }
+    public function pushTemplate($params) {
 
+    }
     public function getListTemplatePopup($param = null)
     {
         $url = $this->baseUrl . $this->listMethod['GET_LIST_POPUP'];

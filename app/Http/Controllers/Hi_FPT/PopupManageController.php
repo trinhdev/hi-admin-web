@@ -178,73 +178,56 @@ class PopupManageController extends MY_Controller
 
     public function store(Request $request)
     {
+        $timeline = $request->all()['timeline'];
+        $timeline_array = explode("-", $timeline);
+        $dateStart = $timeline_array[0];
+        $dateEnd = $timeline_array[1];
         $ruleButtonImage = [
-            'path_button' => 'required',
-            'img_path_button_name' => 'required',
+            'directionId' => 'required',
+            'img_path_2_name' => 'required',
         ];
-        my_debug($request->all());
         $rules = [
             'templateType' => 'required',
-            'title_vi' => 'required',
-            'title_en' => 'required',
+            'titleVi' => 'required',
+            'titleEn' => 'required',
             'path_1' => 'required',
             'img_path_1_name' => 'required',
-            // 'show_from'             =>  'required|date_format:Y-m-d\TH:i',
-            // 'show_to'               =>  'required|date_format:Y-m-d\TH:i',
-            // 'direction_url'         =>  'required_if:directionId,url_open_in_app,url_open_out_app',
-            // 'img_path_2_name'       =>  'required_if:bannerType,promotion',
-
-            // "titleVi"
-            // "titleEn"
-            // "descriptionVi"
-            // "descriptionEn"
-            // "image"
-            // "templateType"
-            // "buttonImage"
-            // "directionId"
-            // "directionUrl"
+            'timeline' => 'required',
         ];
-        if ($request->templateType == "popup_custom_image_transparent") {
+        if ($request->templateType == "popup_custom_image_transparent" || $request->templateType == "popup_full_screen") {
             $rules = array_merge($ruleButtonImage, $rules);
         }
-
-        $request->validate($rules);
-
-        $request->merge([
-            'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s'),
-            'show_to' => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
-        ]);
-
-        return $request;
-        // khúc dưới này chưa xử lý    
+        if  ($request->directionId == "url_open_out_app" || $request->directionId == "url_open_in_app"){
+            $rules['directionUrl'] = 'required';
+        }
+//        $request->merge([
+//            'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s'),
+//            'show_to' => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
+//        ]);
         $this->addToLog($request);
         $newsEventService = new NewsEventService();
         $createParams = [
-            'bannerType' => $request->bannerType,
-            'titleVi' => $request->title_vi,
-            'titleEn' => $request->title_en,
-            'publicDateStart' => $request->show_from,
-            'publicDateEnd' => $request->show_to,
-            'objects' => $request->object,
-            'objectType' => $request->object_type,
-            'imageFileName' => $request->img_path_1_name,
+            'templateType' => $request->templateType,
+            'titleVi' => $request->titleVi,
+            'titleEn' => $request->titleEn,
+//            'publicDateStart' => $request->show_from,
+//            'publicDateEnd' => $request->show_to,
+            'image' => $request->img_path_1_name,
+            'directionId' => $request->directionId,
         ];
-        if (!empty($request->has_target_route)) {
-            if (!empty($request->direction_id)) {
-                $createParams['directionId'] = $request->direction_id;
-            };
-            if (!empty($request->direction_url)) {
-                $createParams['directionUrl'] = $request->direction_url;
-            };
-        }
-        if (!empty($request->bannerType) && $request->bannerType == 'promotion') {
-            $createParams['thumbImageFileName'] = $request->img_path_2_name;
-        };
-        if (!empty($request->isHighlight)) {
-            $createParams['isHighlight'] = true;
-        };
-
-        $create_banner_response = $newsEventService->addNewBanner($createParams);
+//        if (!empty($request->has_target_route)) {
+//            if (!empty($request->direction_id)) {
+//                $createParams['directionId'] = $request->direction_id;
+//            };
+//            if (!empty($request->direction_url)) {
+//                $createParams['directionUrl'] = $request->direction_url;
+//            };
+//        }
+//        if (!empty($request->bannerType) && $request->bannerType == 'promotion') {
+//            $createParams['thumbImageFileName'] = $request->img_path_2_name;
+//        };
+        $create_banner_response = $newsEventService->addNewPopup($createParams);
+        my_debug($create_banner_response);
         if (!empty($create_banner_response->data)) {
             return redirect()->route('bannermanage.index')->withSuccess('Success!');
         }

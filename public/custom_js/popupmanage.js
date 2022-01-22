@@ -5,22 +5,22 @@ function validateDataPopup(event, form) {
     var passed = true;
 
     var formData = getDataInForm(form);
-    // var passed = checkSubmitPopup(formData);
-    // if (passed.status) {
-    //     handleSubmit(event, form);
-    // } else {
-    //     showError('Missing Field !!')
-    // }
+    var passed = checkSubmitPopup(formData);
+    if (passed.status) {
+        handleSubmit(event, form);
+    } else {
+        showError('Missing Field !!')
+    }
     handleSubmit(event, form);
 }
 
 function checkEnableSavePopup(form) {
     var formData = getDataInForm(form);
-    // if (checkSubmitPopup(formData).status) {
-    //     $('form').find(':submit').prop('disabled', false);
-    // } else {
-    //     $('form').find(':submit').prop('disabled', true);
-    // }
+    if (checkSubmitPopup(formData).status) {
+        $('form').find(':submit').prop('disabled', false);
+    } else {
+        $('form').find(':submit').prop('disabled', true);
+    }
 }
 
 function checkSubmitPopup(formData) {
@@ -109,12 +109,23 @@ function successCallUploadImagePopup(response, passingdata) {
 
 $('.select2').select2();
 $('#timeline').daterangepicker({
+    autoApply: true,
+    autoUpdateInput: true,
     timePicker: true,
-    timePickerIncrement: 30,
+    timePicker24Hour: true,
+    timePickerSeconds: true,
+    timePickerIncrement: 1,
     locale: {
-        format: 'DD/MM/YYYY hh:mm A'
+        format: 'YYYY:MM:DD HH:mm:ss'
     }
 })
+$('input[name="timeline"]').on('apply.daterangepicker', function(ev, picker) {
+    $(this).val(picker.startDate.format('YYYY:MM:DD HH:mm:ss') + '-' + picker.endDate.format('YYYY:MM:DD HH:mm:ss'));
+});
+
+$('input[name="timeline"]').on('cancel.daterangepicker', function(ev, picker) {
+    $(this).val('');
+});
 $('#listTypePopup').on("change", function () {
     let type_popup = $('#listTypePopup').val();
     console.log(type_popup);

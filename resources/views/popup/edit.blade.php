@@ -40,7 +40,7 @@
                 @endphp
                 <!-- /.card-header -->
                     <form action="{{$action}}" method="POST"
-                          onchange="checkEnableSavePopup(this)">
+                          onchange="checkEnableSavePopup(this)" onSubmit="validateDataPopup(event,this)">
                         @csrf
                         <div class="card-body">
                             <div class="row">
@@ -125,7 +125,7 @@
                         <div class="card-footer">
                             <a href="{{ route('popupmanage.index') }}" type="button"
                                class="btn btn-default">Hủy</a>
-                            <button type="submit" class="btn btn-info" id="submit_data" >Lưu</button>
+                            <button type="submit" class="btn btn-info" id="submit_data" disabled >Lưu</button>
                         </div>
                     </form>
                 </div>
