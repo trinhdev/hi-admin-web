@@ -79,6 +79,7 @@ class HdiCustomer
             my_debug($url.'</br>'.curl_error($ch));
         }
         curl_close($ch);
+        my_debug($output.'</br>'.$url);
         return $output;
     }
 }
