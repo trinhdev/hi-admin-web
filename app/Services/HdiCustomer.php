@@ -72,6 +72,10 @@ class HdiCustomer
         //     curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
         // }
 
+        if (curl_errno($ch)) {
+            my_debug($url.'</br>'.curl_error($ch));
+        }
+
         $time = microtime(true);
         $output = curl_exec($ch);
         $timeRun = microtime(true) - $time;
