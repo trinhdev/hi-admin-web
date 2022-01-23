@@ -54,7 +54,7 @@ $(document).ready(function () {
             case '':
             case 'home':
                 drawChart();
-                break
+                break;
         }
 
     });
