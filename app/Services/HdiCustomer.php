@@ -34,6 +34,7 @@ class HdiCustomer
             $data['status']     = false;
             $data['message']    = (!empty($result['message'])) ? $result['message'] : "Không tìm thấy OTP";
         }
+        dd($data);
         return $data;
     }
 
