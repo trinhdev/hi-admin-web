@@ -80,7 +80,7 @@ class ManageotpController extends MY_Controller
         $result['phone'] = $request['phone'];
         $result['action'] = $request['action'];
         $this->addToLog($request);
-        // my_debug(json_encode($result));
+        my_debug(json_encode($result));
         // return redirect()->route('manageotp.index')->with($result);
         return view('otp.index')->with($result);
     }
