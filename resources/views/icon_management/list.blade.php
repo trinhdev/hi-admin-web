@@ -44,31 +44,47 @@
                     <div class="form-group row">
                         <label class="col-form-label col-sm-6">Tất cả</label>
                         <div class="col-sm-6 icheck-primary" style="width: auto">
-                            <input type="checkbox" id="status-all" />
+                            <input type="checkbox" id="status-all" value="all" />
                             <label class="float-right" for="status-all"></label>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-sm-6">Trạng thái hiện</label>
                         <div class="col-sm-6 icheck-primary" style="width: auto">
-                            <input type="checkbox" id="status-show" />
+                            <input type="checkbox" id="status-show" name="status" value="1" />
                             <label class="float-right" for="status-show"></label>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-sm-6">Trạng thái ẩn</label>
                         <div class="col-sm-6 icheck-primary" style="width: auto">
-                            <input type="checkbox" id="status-hide" />
+                            <input type="checkbox" id="status-hide" name="status" value="0" />
                             <label class="float-right" for="status-hide"></label>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12"><b>Trạng thái</b></div>
+                        <div class="col-sm-12"><b>Phê duyệt</b></div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Tất cả</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="pheduyet-all" value="all" />
+                            <label class="float-right" for="pheduyet-all"></label>
+                        </div>
+                    </div>
+                    @foreach($icon_approve as $approve)
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">{{ $approve['value'] }}</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="pheduyet-{{ strtolower(str_replace(' ', '', convert_vi_to_en($approve['value']))) }}" name="pheduyet" value="{{ $approve['value'] }}" />
+                            <label class="float-right" for="pheduyet-{{ strtolower(str_replace(' ', '', convert_vi_to_en($approve['value']))) }}"></label>
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" onClick="filterStatusPheDuyet()">Lọc</button>
                 </div>
             </div>
         </div>

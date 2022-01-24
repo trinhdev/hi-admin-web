@@ -1130,9 +1130,9 @@ function initIconmanagement() {
         "data": [],
         dom: 'Bfrtip',
         "columnDefs": [
-            { 
-                "searchable": false, 
-                "targets": [0, 1, 4, 5, 6]
+            {
+                "searchable": false,
+                "targets": [0, 1, 6]
             },
         ],
         "columns": [{
@@ -1214,7 +1214,7 @@ function initIconmanagement() {
                         badge = 'badge-success';
                 }
                 var html = ``;
-                if(data) {
+                if (data) {
                     html = `<span class="badge ${badge}">${data}</span>`;
                 }
                 return html;
@@ -1247,20 +1247,44 @@ function initIconmanagement() {
         // searchDelay: 500,
         "searchCols": [
             null,
-            null, 
-            {"regex": true},
-            {"regex": true},
+            null,
+            { "regex": true },
+            { "regex": true },
             null,
             null,
             null
         ],
         buttons: [
             {
+                text: 'Tất cả',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('', true, false).draw();
+                }
+            },
+            {
+                text: 'Chờ kiểm tra',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('Chờ kiểm tra', true, false).draw();
+                }
+            },
+            {
+                text: 'Đã phê duyệt',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('Đã phê duyệt', true, false).draw();
+                }
+            },
+            {
+                text: 'Phê duyệt thất bại',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('Phê duyệt thất bại', true, false).draw();
+                }
+            },
+            {
                 text: '<i class="fas fa-filter"></i> Lọc',
-                action: function ( e, dt, node, config ) {
+                action: function (e, dt, node, config) {
                     $('#filter-status').modal();
                 }
-            }
+            },
         ]
     });
 
@@ -1388,21 +1412,39 @@ function initIconmanagement() {
         }
     });
 
-//     $('#status-filter').on('change', function(e){
-//         var status = $(this).val();
-//         // $('#status-filter').val(status)
-//         console.log(status)
-//         //dataTable.column(6).search('\\s' + status + '\\s', true, false, true).draw();
-//         icon_management_table.column(4).search(status).draw();
-//     });
+    $("#status-all").change(function () {
+        if (this.checked) {
+            $("input[name='status']").prop('checked', true);
+        }
+        else {
+            $("input[name='status']").prop('checked', false);
+        }
+    });
 
-//     $('#product-name-filter').on('keydown', function() {
-//         var name = $(this).val();
-//         // $('#status-filter').val(status)
-//         console.log(name)
-//         //dataTable.column(6).search('\\s' + status + '\\s', true, false, true).draw();
-//         icon_management_table.columns([2, 3]).search("^" + name, true, true, true).draw();
-//    });
+    $("#pheduyet-all").change(function () {
+        if (this.checked) {
+            $("input[name='pheduyet']").prop('checked', true);
+        }
+        else {
+            $("input[name='pheduyet']").prop('checked', false);
+        }
+    });
+
+    //     $('#status-filter').on('change', function(e){
+    //         var status = $(this).val();
+    //         // $('#status-filter').val(status)
+    //         console.log(status)
+    //         //dataTable.column(6).search('\\s' + status + '\\s', true, false, true).draw();
+    //         icon_management_table.column(4).search(status).draw();
+    //     });
+
+    //     $('#product-name-filter').on('keydown', function() {
+    //         var name = $(this).val();
+    //         // $('#status-filter').val(status)
+    //         console.log(name)
+    //         //dataTable.column(6).search('\\s' + status + '\\s', true, false, true).draw();
+    //         icon_management_table.columns([2, 3]).search("^" + name, true, true, true).draw();
+    //    });
 }
 
 function initCloseHelpReqest() {
@@ -1484,6 +1526,13 @@ function initIconcategory() {
         "orderMulti": true,
         "retrieve": true,
         "serverSide": true,
+        dom: 'Bfrtip',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "targets": [0, 3, 6]
+            },
+        ],
         "ajax": {
             url: "/iconcategory/initDatatable"
         },
@@ -1564,7 +1613,7 @@ function initIconcategory() {
                         badge = 'badge-success';
                 }
                 var html = ``;
-                if(data) {
+                if (data) {
                     html = `<span class="badge ${badge}">${data}</span>`;
                 }
                 return html;
@@ -1582,6 +1631,15 @@ function initIconcategory() {
             className: 'text-center',
         }
         ],
+        "searchCols": [
+            null,
+            { "regex": true },
+            { "regex": true },
+            null,
+            null,
+            null,
+            null
+        ],
         "language": {
             "emptyTable": "No Record..."
         },
@@ -1591,17 +1649,49 @@ function initIconcategory() {
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
         },
-        searchDelay: 500
+        // searchDelay: 500
+        buttons: [
+            {
+                text: 'Tất cả',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('', true, false).draw();
+                }
+            },
+            {
+                text: 'Chờ kiểm tra',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('Chờ kiểm tra', true, false).draw();
+                }
+            },
+            {
+                text: 'Đã phê duyệt',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('Đã phê duyệt', true, false).draw();
+                }
+            },
+            {
+                text: 'Phê duyệt thất bại',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('Phê duyệt thất bại', true, false).draw();
+                }
+            },
+            {
+                text: '<i class="fas fa-filter"></i> Lọc',
+                action: function (e, dt, node, config) {
+                    $('#filter-status').modal();
+                }
+            },
+        ]
     });
 
-    if($('#status-clock').is(':checked')) {
+    if ($('#status-clock').is(':checked')) {
         $('#status-clock-date-time').show();
     }
     else {
         $('#status-clock-date-time').hide();
     }
 
-    if($('#is-new-show').is(':checked')) {
+    if ($('#is-new-show').is(':checked')) {
         $('#is-new-icon-show-date-time').show();
     }
     else {
@@ -1687,48 +1777,48 @@ function initIconcategory() {
         enableDrag: false,
         enableTouch: false,
         pager: false
-    });  
+    });
 
     $("#show_from").on("dp.change", function (e) {
-        if($('#show_to').data("DateTimePicker") != undefined) {
+        if ($('#show_to').data("DateTimePicker") != undefined) {
             $('#show_to').data("DateTimePicker").minDate(e.date);
         }
-    });      
-    
+    });
+
     $("#show_to").on("dp.change", function (e) {
-        if($('#show_from').data("DateTimePicker") != undefined) {
+        if ($('#show_from').data("DateTimePicker") != undefined) {
             $('#show_from').data("DateTimePicker").maxDate(e.date);
         }
     });
-    
+
     $("#new_from").on("dp.change", function (e) {
-        if($('#new_to').data("DateTimePicker") != undefined) {
+        if ($('#new_to').data("DateTimePicker") != undefined) {
             $('#new_to').data("DateTimePicker").minDate(e.date);
         }
-    });      
-    
+    });
+
     $("#new_to").on("dp.change", function (e) {
-        if($('#new_from').data("DateTimePicker") != undefined) {
+        if ($('#new_from').data("DateTimePicker") != undefined) {
             $('#new_from').data("DateTimePicker").maxDate(e.date);
         }
     });
-    
+
     $('input:radio[name="status"]').change(() => {
-        if($('#status-clock').is(':checked')) {
+        if ($('#status-clock').is(':checked')) {
             $('#status-clock-date-time').show();
         }
         else {
             $('#status-clock-date-time').hide();
-        } 
+        }
     });
-    
+
     $('input:checkbox[name="is_new_show"]').change(() => {
-        if($('#is-new-show').is(':checked')) {
+        if ($('#is-new-show').is(':checked')) {
             $('#is-new-icon-show-date-time').show();
         }
         else {
             $('#is-new-icon-show-date-time').hide();
-        } 
+        }
     });
 
     dragula([document.getElementById('all-product'), document.getElementById('selected-product')], {
@@ -1739,7 +1829,7 @@ function initIconcategory() {
         },
         accepts: function (el, target, source, sibling) {
             var li_all = $(el).attr('id');
-            if($('#' + li_all + '-selected-product').length != 0) {
+            if ($('#' + li_all + '-selected-product').length != 0) {
                 swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -1747,7 +1837,7 @@ function initIconcategory() {
                 });
                 return false;
             }
-    
+
             return target !== document.getElementById('all-product')
         }
     }).on('drop', (el, target, source, sibling) => {
@@ -1757,17 +1847,17 @@ function initIconcategory() {
         $(el).removeClass("active");
         $(el).removeClass("gu-transit");
         $(el).addClass("col-sm-2");
-    
+
         $(el).css('margin-right', 0);
-    
+
         var spanElement = $(el).find("span:first");
         $(spanElement).removeClass("badge-light");
         $(spanElement).addClass("badge-dark");
-    
-        if($(el).find('span.position').length < 1) {
+
+        if ($(el).find('span.position').length < 1) {
             $(el).append(`<h6><span class="badge badge-warning position">${$(el).index() + 1}</span></h6>`);
         }
-    
+
         $(target).find("li").each((key, value) => {
             $(value).find("span.position").text($(value).index() + 1);
         });

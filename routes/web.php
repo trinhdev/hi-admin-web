@@ -152,7 +152,7 @@ Route::group([
             Route::prefix('iconcategory')->group(function () {
                 Route::get('/','IconcategoryController@index')->name('iconcategory.index');
                 Route::get('/edit/{id?}','IconcategoryController@edit')->name('iconcategory.edit');
-                Route::get('/save/{id?}','IconcategoryController@edit')->name('iconcategory.edit');
+                Route::get('/save','IconcategoryController@save')->name('iconcategory.save');
                 Route::get('/detail/{id?}','IconcategoryController@edit')->name('iconcategory.edit');
                 Route::post('/upload','IconcategoryController@upload')->name('iconcategory.upload');
                 // Route::get('/searchByContractNoOrId','IconmanagementController@searchByContractNoOrId')->name('iconmanagement.searchByContractNoOrId');

@@ -49,7 +49,14 @@ class IconmanagementController extends MY_Controller
             // $data['productId'] = (!empty);
             $data['data'] = (!empty($api_info['data'])) ? $api_info['data'] : [];
         }
-        
+
+        if(!empty($data['data']['productNameVi'])) {
+            $data['data']['productNameVi'] = preg_replace('/\r|\n/', ' ', @$data['data']['productNameVi']);
+        }
+
+        if(!empty($data['data']['productNameEn'])) {
+            $data['data']['productNameEn'] = preg_replace('/\r|\n/', ' ', @$data['data']['productNameEn']);
+        }
         $loai_dieu_huong = Settings::where('name', 'icon_loai_dieu_huong')->get();
         $data['loai_dieu_huong'] = (!empty($loai_dieu_huong[0]['value'])) ? json_decode($loai_dieu_huong[0]['value'], true) : [];
         return view('icon_management.edit')->with($data);
@@ -60,7 +67,15 @@ class IconmanagementController extends MY_Controller
         // if(!empty($id)) {
 
         // }
-        dd($request);
+        // dd($request);
+        $result = $this->list1();
+        $icon_approve = Settings::where('name', 'icon_approve')->get();
+        $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
+        // $result = ['success' => 'success', 'html' => 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.'];
+        // array_merge($result, ['success' => 'success', 'html' => 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.']);
+        $request->session()->flash('success', 'success');
+        $request->session()->flash('html', 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.');
+        return redirect()->route('iconmanagement.index')->with($result);
     }
 
     public function detail() {

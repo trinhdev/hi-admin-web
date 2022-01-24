@@ -27,6 +27,69 @@
     </div>
     <!-- Modal -->
 
+    {{-- Modal filter --}}
+    <div class="modal fade" id="filter-status" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Lọc</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12"><b>Trạng thái</b></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Tất cả</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="status-all" value="all" />
+                            <label class="float-right" for="status-all"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Trạng thái hiện</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="status-show" name="status" value="1" />
+                            <label class="float-right" for="status-show"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Trạng thái ẩn</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="status-hide" name="status" value="0" />
+                            <label class="float-right" for="status-hide"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12"><b>Phê duyệt</b></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Tất cả</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="pheduyet-all" value="all" />
+                            <label class="float-right" for="pheduyet-all"></label>
+                        </div>
+                    </div>
+                    @foreach($icon_approve as $approve)
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">{{ $approve['value'] }}</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="pheduyet-{{ strtolower(str_replace(' ', '', convert_vi_to_en($approve['value']))) }}" name="pheduyet" value="{{ $approve['value'] }}" />
+                            <label class="float-right" for="pheduyet-{{ strtolower(str_replace(' ', '', convert_vi_to_en($approve['value']))) }}"></label>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onClick="filterStatusPheDuyet()">Lọc</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -34,7 +97,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản lý sản phẩm</h1>
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản lý danh mục sản phẩm</h1>
                         @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
                         <a href="{{$controller}}/{{$action_edit}}" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Thêm mới danh mục
@@ -57,32 +120,6 @@
             <div class="container-fluid">
                 <div class="row" style="margin-top: 20px">
                     <div class="card card-body col-sm-12">
-                        <div class="container">
-                            <form action="{{ route('iconcategory.index') }}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
-                                <div class="card-body row form-inline">
-                                    <div class="col-sm-6">
-                                        <div class="input-group mb-4">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Tên danh mục</div>
-                                            </div>
-                                            <input type="name" class="form-control" id="vi-name" placeholder="Nhập tên sản phẩm" name="group_name" value="@if(!empty($data)){{$data->group_name}}@endif">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="input-group mb-4">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Trạng thái danh mục</div>
-                                            </div>
-                                            <select name="action" id="status-filter" class="selectpicker form-control">
-                                                <option value="">Vui lòng chọn trạng thái</option>
-                                                <option value="1">Hiện</option>
-                                                <option value="0">Ẩn</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                         <table id="icon-category" class="display nowrap" style="width: 100%">
                         </table>                                          
                     </div>
@@ -216,6 +253,22 @@
         .product-detail .title {
             width: 25%;
             font-weight: bold
+        }
+
+        #icon-category_filter {
+            float: left;
+        }
+
+        .dt-buttons {
+            float: right;
+        }
+
+        #filter-status .col-form-label {
+            font-weight: unset!important;
+        }
+
+        #filter-status .form-group {
+            margin-bottom: 0
         }
     </style>
 

@@ -32,6 +32,8 @@ class IconcategoryController extends MY_Controller
     {
         //get view list
         $data = $this->list1();
+        $icon_approve = Settings::where('name', 'icon_approve')->get();
+        $data['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
         return view('icon_category.list')->with($data);
     }
 
