@@ -24,7 +24,9 @@ class NewsEventService
     public function getListTargetRoute()
     {
         $url = $this->baseUrl . $this->listMethod['GET_LIST_TARGET_ROUTE'];
+        print_r($url);
         $response =  sendRequest($url, null, $this->token, $header = ['clientKey' => $this->clientKey], 'GET');
+        my_debug($response);
         return $response;
     }
 

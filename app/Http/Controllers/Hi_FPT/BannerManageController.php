@@ -250,7 +250,6 @@ class BannerManageController extends MY_Controller
     public function create(Request $request){
         $newsEventService = new NewsEventService();
         $listTargetRoute = $newsEventService->getListTargetRoute();
-        dd($listTargetRoute);
         $listTargetRoute = ($listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
 
         $listTypeBanner = $newsEventService->getListTypeBanner();
