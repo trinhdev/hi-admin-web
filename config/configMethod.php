@@ -21,6 +21,7 @@ $methodNewsEventDomain = [
     'CREATE_BANNER'=> 'provider/tool/banner/create',
     'UPDATE_BANNER' => 'provider/tool/banner/update',
     'UPDATE_ORDERING'   => 'provider/tool/banner/update-orderings',
+    'GET_LIST_BANNER'       => 'provider/tool/banner/get-list-banner',
 
     // pop up
     'CREATE_TEMPLATE_POPUP' => 'provider/tool/popup/create-template',
