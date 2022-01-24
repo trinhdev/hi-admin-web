@@ -34,7 +34,6 @@ class HdiCustomer
             $data['status']     = false;
             $data['message']    = (!empty($result['message'])) ? $result['message'] : "Không tìm thấy OTP";
         }
-        dd($data);
         return $data;
     }
 
@@ -75,6 +74,7 @@ class HdiCustomer
 
         $time = microtime(true);
         $output = curl_exec($ch);
+        dd($output);
         $timeRun = microtime(true) - $time;
         // if (curl_errno($ch)) {
             // my_debug($url.'</br>'.curl_error($ch));
