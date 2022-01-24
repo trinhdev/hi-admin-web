@@ -36,6 +36,9 @@ $(document).ready(function () {
             case 'bannermanage':
                 callApiGetListBanner();
                 break;
+            case 'popupmanage':
+                callApiGetListPopup();
+                break;
             case 'checkuserinfo':
                 initCheckUserInfo();
                 break;
@@ -900,6 +903,230 @@ function initBannerManage(response) {
                 width: '5%',
                 targets: 0
             }, //stt
+            // { width: '10%', targets: 1 }, // 1 bannerId
+            {
+                width: '10%',
+                targets: 1
+            }, // 2 Title
+            {
+                width: '15%',
+                targets: 2
+            }, // 3 Image
+            // { width: '10%', targets: 3 }, // 4 direction URL
+            {
+                width: '5%',
+                targets: 3
+            }, // 5 Banner Type,
+            {
+                width: '10%',
+                targets: 4
+            }, // 6 public date start
+            {
+                width: '10%',
+                targets: 5
+            }, // 7 public date end
+            {
+                width: '3%',
+                targets: 6
+            }, // is expired
+            {
+                width: '5%',
+                targets: 7
+            }, // 8 ordering
+            {
+                width: '5%',
+                targets: 8
+            }, // 9 view count
+            {
+                width: '10%',
+                targets: 9
+            }, // 10 create at
+            {
+                width: '7%',
+                targets: 10
+            }, // 11 create by
+            {
+                width: '7%',
+                targets: 11
+            }, // 11 create by
+            {
+                width: '10%',
+                targets: 12
+            }, // 12 Action
+        ],
+        language: {
+            "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
+            "zeroRecords": "Không có dữ liệu",
+            "info": "Trang _PAGE_ / _PAGES_ của _TOTAL_ dữ liệu",
+            "infoEmpty": "Không có dữ liệu",
+            "paginate": {
+                "first": "Đầu",
+                "last": "Cuối",
+                "next": "Sau",
+                "previous": "Trước"
+            },
+            "search": "Tìm kiếm:",
+        }
+        // "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
+        //     if(data.is_banner_expired){
+        //         $('td', row).css('background-color', 'rgb(255 108 94 / 51%)');
+        //     }
+        // }
+    });
+}
+function initPopupManage(response) {
+    console.log(response);
+    var dataTable = [];
+    var activePopup = [];
+    var unactivePopup = [];
+    var flagAcl = false;
+    var stt = 1;
+    response.data.forEach(element => {
+        let subData = convertDetailBanner(element);
+        (subData.is_banner_expired) ? unactivePopup.push(subData): activePopup.push(subData);
+    });
+    activePopup = activePopup.sort(function (first, seccond) {
+        return new Date(seccond.date_created) - new Date(first.date_created);
+    });
+    unactivePopup.sort(function (first, seccond) {
+        return new Date(seccond.date_created) - new Date(first.date_created);
+    });
+    dataTable = activePopup.concat(unactivePopup);
+    var columnData = [{
+        title: 'STT',
+        className: 'text-center',
+        render: function (data, type, row, meta) {
+            return `<span class ="infoRow" data-type="` + row.bannerType + `" data-id = "` + row.bannerId + `">` + parseInt(meta.row + 1) + `</span>`;
+        },
+        className: 'text-center'
+    },
+        {
+            data: 'title_vi',
+            title: "Tiêu Đề"
+        },
+        {
+            data: 'image',
+            title: "Ảnh Banner",
+            "render": function (data, type, row) {
+                return `<img src="` + data + `"  style="width:150px" onerror="this.onerror=null;this.src='/images/img_404.svg';"  onclick ="window.open('` + data + `').focus()"/>`;
+            },
+            "sortable": false,
+            className: 'text-center'
+        },
+        // {
+        //     data :'direction_url',
+        //     title: "Direction URL",
+        //     "render": function(data, type, row) {
+        //         return `<a href="`+data+`" target="_blank">`+data+`</a>`;
+        //     }
+        // },
+        {
+            data: 'bannerType',
+            title: 'Loại Banner',
+            className: 'text-center'
+        },
+        {
+            data: 'public_date_start',
+            title: 'Ngày Hiển Thị'
+        },
+        {
+            data: 'public_date_end',
+            title: 'Ngày kết thúc'
+        },
+        {
+            data: 'is_banner_expired',
+            title: 'Trạng Thái',
+            render: function (data, type, row) {
+                let is_show = (data) ? 'Hết hạn' : 'Còn hạn';
+                let badge = (data) ? 'badge badge-danger' : 'badge badge-success';
+                return `<h4 class="` + badge + `">` + is_show + `</h4>`;
+            },
+            className: 'text-center'
+        },
+        {
+            data: 'ordering',
+            title: 'Độ ưu tiên',
+            "render": function (data, type, row) {
+                let disable = row.is_banner_expired ? 'disabled' : '';
+                return `<input type="number" onchange="updateOrdering(this)" style="width:50px" value="` + data + `" ` + disable + `/>`;
+            },
+            "sortable": false,
+            className: 'text-center'
+        },
+        {
+            data: 'view_count',
+            title: 'Số lượt click',
+            className: 'text-center'
+        },
+        {
+            data: 'date_created',
+            title: 'Ngày tạo'
+        },
+        {
+            data: 'created_by',
+            title: 'Người Tạo'
+        },
+        {
+            data: 'modified_by',
+            title: 'Người cập nhật'
+        }
+    ];
+
+    if (response.isAdmin === true) {
+        flagAcl = true;
+    } else {
+        var aclCurrentModule = response.aclCurrentModule;
+        if (aclCurrentModule.update == 1) {
+            flagAcl = true;
+        }
+    }
+    if (flagAcl) {
+        columnData.push({
+            title: 'Hành Động',
+            render: function (data, type, row) {
+                var bannerType = row.bannerType;
+                if (bannerType == 'highlight') {
+                    bannerType = 'bannerHome';
+                };
+                var exists = 0 != $('#show_at option[value=' + bannerType + ']').length;
+                if (exists === false) return "";
+                return `
+                    <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
+                   <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
+                    `;
+                // return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
+            },
+            "sortable": false
+        });
+    } else {
+        columnData.push({
+            title: 'Hành Động',
+            render: function (data, type, row) {
+                if (row.bannerType === 'event_normal') return "";
+                return `<div></div>`;
+            },
+            className: 'text-center',
+            "sortable": false
+        });
+    };
+    $('#popup_manage').DataTable({
+        // "bAutoWidth": false,
+        // "autoWidth":false,
+        data: dataTable,
+        "processing": true,
+        "select": true,
+        responsive: true,
+        "bDestroy": true,
+        "scrollX": true,
+        "columns": columnData,
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        // "order": [[9, "desc"]],
+        columnDefs: [{
+            width: '5%',
+            targets: 0
+        }, //stt
             // { width: '10%', targets: 1 }, // 1 bannerId
             {
                 width: '10%',

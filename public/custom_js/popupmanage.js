@@ -38,6 +38,8 @@ function checkSubmitPopup(formData) {
         'templateType': true,
         // 'path_1': true,
         'img_path_1_name': true,
+        'object': true,
+        'objecttype': true
     };
 
     if (formData.templateType != 'popup_image_transparent' && formData.templateType != 'popup_image_full_screen' ) {
@@ -135,6 +137,14 @@ $('#listTypePopup').on("change", function () {
     } else {
         $('#dieuhuong').show();
         $('#path_2').show();
+    }
+})
+$('#repeatTime').on("change", function () {
+    let repeatTime = $('#repeatTime').val();
+    if (repeatTime == 'other') {
+        $('#other_min').show();
+    } else {
+        $('#other_min').hide();
     }
 })
 $('#directionId').on("change", function () {

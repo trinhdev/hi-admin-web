@@ -171,8 +171,10 @@ class PopupManageController extends MY_Controller
             $data['listTargetRoute'] = ($listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
         } else
             $data['listTargetRoute'] = [];
-//        my_debug($data);
         $data['listTypePopup'] = config('platform_config.type_popup_service');
+        $data['object_type'] = config('platform_config.object_type');
+        $data['object'] = config('platform_config.object');
+        $data['repeatTime'] = config('platform_config.repeatTime');
         return view('popup.edit')->with($data);
     }
 
@@ -193,9 +195,15 @@ class PopupManageController extends MY_Controller
             'path_1' => 'required',
             'img_path_1_name' => 'required',
             'timeline' => 'required',
+            'objecttype' => 'required',
+            'object' => 'required'
         ];
+//      banner có button
         if ($request->templateType == "popup_custom_image_transparent" || $request->templateType == "popup_full_screen") {
             $rules = array_merge($ruleButtonImage, $rules);
+            $directionUrl = $request->directionUrl;
+        } else {
+            $directionUrl = '';
         }
         if  ($request->directionId == "url_open_out_app" || $request->directionId == "url_open_in_app"){
             $rules['directionUrl'] = 'required';
@@ -213,25 +221,24 @@ class PopupManageController extends MY_Controller
 //            'publicDateStart' => $request->show_from,
 //            'publicDateEnd' => $request->show_to,
             'image' => $request->img_path_1_name,
-            'directionId' => $request->directionId,
+            'directionId' => !empty($request->directionId) ? $request->directionId : '',
+            'buttonImage' => !empty($request->img_path_2_name) ? $request->img_path_2_name : '',
+            'directionUrl' => $directionUrl,
         ];
-//        if (!empty($request->has_target_route)) {
-//            if (!empty($request->direction_id)) {
-//                $createParams['directionId'] = $request->direction_id;
-//            };
-//            if (!empty($request->direction_url)) {
-//                $createParams['directionUrl'] = $request->direction_url;
-//            };
-//        }
-//        if (!empty($request->bannerType) && $request->bannerType == 'promotion') {
-//            $createParams['thumbImageFileName'] = $request->img_path_2_name;
-//        };
         $create_banner_response = $newsEventService->addNewPopup($createParams);
-        my_debug($create_banner_response);
         if (!empty($create_banner_response->data)) {
-            return redirect()->route('bannermanage.index')->withSuccess('Success!');
+            $pushParams = [
+                'popupTemplateId' => $create_banner_response->data->templatePersonalId,
+                'repeatTime' => ($request->repeatTime != 'other') ? $request->repeatTime : $request->other_min,
+                'dateStart' => $dateStart,
+                'dateEnd' => $dateEnd,
+                'objectType' => $request->objecttype,
+                'objects' => $request->object,
+            ];
+//            $create_banner_response = $newsEventService->pushTemplate($pushParams);
+            return redirect()->route('popupmanage.index')->withSuccess('Success!');
         }
-        return redirect()->route('bannermanage.index')->withErrors(isset($create_banner_response->description) ? $create_banner_response->description : $create_banner_response->message);
+        return redirect()->route('popupmanage.index')->withErrors(isset($create_banner_response->description) ? $create_banner_response->description : $create_banner_response->message);
     }
 
     public function uploadImage(Request $request)

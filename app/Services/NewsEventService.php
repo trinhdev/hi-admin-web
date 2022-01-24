@@ -96,7 +96,9 @@ class NewsEventService
         return $response;
     }
     public function pushTemplate($params) {
-
+        $url = $this->baseUrl . $this->listMethod['PUSH_POPUP'];
+        $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
+        return $response;
     }
     public function getListTemplatePopup($param = null)
     {

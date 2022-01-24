@@ -37,7 +37,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Vị Trí Hiển Thị: </div>
                                 </div>
-                                <select class="form-control" name="position" id="show_at" placeholder="Show at" onchange="filterData()">
+                                <select class="form-control" name="popupType" id="show_at" placeholder="Show at" onchange="filterData()">
                                     <option value=''>Tất Cả</option>
                                     @if(!empty($list_template_popup))
                                     @foreach($list_template_popup->type as $key => $value)

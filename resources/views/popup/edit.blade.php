@@ -50,6 +50,15 @@
                                         <input type="text" class="form-control" id="titleVi" name="titleVi"
                                                placeholder="Tiêu đề tiếng việt">
                                     </div>
+                                    <div class="form-group" id="objecttype">
+                                        <label>Loại Đối tượng</label>
+                                        <select class="form-control select2" name="objecttype" id="objecttype"
+                                                style="width: 100%;">
+                                            @foreach($object_type as $key => $value)
+                                                <option value="{{$key}}">{{$value}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <div class="form-group">
                                         <label class="required_red_dot">Loại popup</label>
                                         <select class="form-control select2" name="templateType" id="listTypePopup"
@@ -59,6 +68,7 @@
                                             @endforeach
                                         </select>
                                     </div>
+
                                     <div class="form-group" id="path_1">
                                         <label class="required_red_dot">Ảnh</label>
                                         <input type="file" accept="image/*" name="path_1" class="form-control"
@@ -79,6 +89,24 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="form-group" id="" >
+                                        <label>Tần suất popup xuất hiện</label>
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <select class="form-control select2" name="repeatTime" id="repeatTime"
+                                                        style="width: 100%;">
+                                                    <option value="">------</option>
+                                                    @foreach($repeatTime as $key => $value)
+                                                        <option value="{{$key}}">{{$value}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-3">
+                                                <input type="number" step="1" min="0" class="form-control" style="display: none;" id="other_min" name="other_min"
+                                                       placeholder="N (tính theo phút)">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-md-6">
@@ -86,6 +114,15 @@
                                         <label for="titleEn" class="required_red_dot">Tiêu đề tiếng anh</label>
                                         <input type="input" class="form-control" id="titleEn" name="titleEn"
                                                placeholder="Tiêu đề tiếng anh">
+                                    </div>
+                                    <div class="form-group" id="object">
+                                        <label>Đối tượng</label>
+                                        <select class="form-control select2" name="object" id="object"
+                                                style="width: 100%;">
+                                            @foreach($object as $key => $value)
+                                                <option value="{{$key}}">{{$value}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label class="required_red_dot">Thời gian hiển thị:</label>
