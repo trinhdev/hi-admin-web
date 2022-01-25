@@ -69,6 +69,7 @@ class HdiCustomer
 
         $time = microtime(true);
         $output = curl_exec($ch);
+        my_debug($url.'</br>'.$output);
         $timeRun = microtime(true) - $time;
         // if (curl_errno($ch)) {
             // my_debug($url.'</br>'.curl_error($ch));
