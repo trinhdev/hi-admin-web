@@ -54,6 +54,9 @@ $(document).ready(function () {
             case 'iconcategory':
                 initIconcategory();
                 break;
+            case 'iconconfig':
+                initIconconfig();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -1515,7 +1518,7 @@ function initIconcategory() {
     //     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
     // } );
 
-    $('#icon-category').DataTable({
+    var icon_category = $('#icon-category').DataTable({
         "processing": true,
         "select": true,
         "bDestroy": true,
@@ -1623,9 +1626,9 @@ function initIconcategory() {
             title: 'Action',
             data: 'productTitleId',
             render: function (data, type, row) {
-                return `<button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${JSON.stringify(row).split('"').join("&quot;")})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                return `<button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${data})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                             <a style="float: left; margin-right: 5px" href="/iconcategory/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button style="float: left; type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProduct('${row.productTitleNameVi}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>`;
+                            <button style="float: left; type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProductTitle('${row.productTitleNameVi}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>`;
             },
             "sortable": false,
             className: 'text-center',
@@ -1654,25 +1657,25 @@ function initIconcategory() {
             {
                 text: 'Tất cả',
                 action: function (e, dt, node, config) {
-                    icon_management_table.column(5).search('', true, false).draw();
+                    icon_category.column(5).search('', true, false).draw();
                 }
             },
             {
                 text: 'Chờ kiểm tra',
                 action: function (e, dt, node, config) {
-                    icon_management_table.column(5).search('Chờ kiểm tra', true, false).draw();
+                    icon_category.column(5).search('Chờ kiểm tra', true, false).draw();
                 }
             },
             {
                 text: 'Đã phê duyệt',
                 action: function (e, dt, node, config) {
-                    icon_management_table.column(5).search('Đã phê duyệt', true, false).draw();
+                    icon_category.column(5).search('Đã phê duyệt', true, false).draw();
                 }
             },
             {
                 text: 'Phê duyệt thất bại',
                 action: function (e, dt, node, config) {
-                    icon_management_table.column(5).search('Phê duyệt thất bại', true, false).draw();
+                    icon_category.column(5).search('Phê duyệt thất bại', true, false).draw();
                 }
             },
             {
@@ -1862,6 +1865,363 @@ function initIconcategory() {
             $(value).find("span.position").text($(value).index() + 1);
         });
     });
+
+    $("#status-all").change(function () {
+        if (this.checked) {
+            $("input[name='status']").prop('checked', true);
+        }
+        else {
+            $("input[name='status']").prop('checked', false);
+        }
+    });
+
+    $("#pheduyet-all").change(function () {
+        if (this.checked) {
+            $("input[name='pheduyet']").prop('checked', true);
+        }
+        else {
+            $("input[name='pheduyet']").prop('checked', false);
+        }
+    });
+}
+
+function initIconconfig() {
+    // $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+    //     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    // } );
+
+    var icon_management_table = $('#icon-config').DataTable({
+        "processing": true,
+        "select": true,
+        "bDestroy": true,
+        "scrollX": true,
+        "scrollCollapse": true,
+        "pageLength": 5,
+        "lengthMenu": [5, 10, 25, 50, 75, 100],
+        "orderMulti": true,
+        "retrieve": true,
+        "serverSide": true,
+        "ajax": {
+            url: "/iconmanagement/initDatatable"
+        },
+        "data": [],
+        dom: 'Bfrtip',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "targets": [0, 1, 6]
+            },
+        ],
+        "columns": [{
+            title: "STT",
+            render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+            },
+        },
+        {
+            data: 'iconUrl',
+            name: "iconUrl",
+            title: "Hình ảnh",
+            render: function (data, type, row) {
+                return `<img class="img-thumbnail" src="${data}" style="width: 80px">`;
+            },
+            className: 'text-center',
+        },
+        {
+            data: 'productNameVi',
+            name: "productNameVi",
+            title: "Tên sản phẩm - VN",
+            className: 'text-center',
+        },
+        {
+            data: 'productNameEn',
+            name: "productNameEn",
+            title: "Tên sản phẩm - EN",
+            className: 'text-center',
+        },
+        {
+            data: "isDisplay",
+            name: "isDisplay",
+            title: "Trạng thái",
+            render: function (data, type, row) {
+                var html = '';
+                if ('isDisplay' in row) {
+                    switch (row['isDisplay']) {
+                        case "0":
+                            html = `<div class="df-switch">
+                                    <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off" disabled>
+                                        <div class="inner-handle"></div>
+                                        <div class="handle"></div>
+                                    </button>
+                                </div>`;
+                            break;
+                        case "1":
+                            html = `<div class="df-switch">
+                                    <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
+                                        <div class="inner-handle"></div>
+                                        <div class="handle"></div>
+                                    </button>
+                                </div>`;
+                            break;
+                        case "2":
+                            html = (row['displayBeginDay']) ? `Hẹn ngày bật <span class="badge badge-warning">${row['displayBeginDay']}</span>` : '';
+                            break;
+                        default:
+                    }
+                }
+                return html;
+            },
+            className: 'text-center',
+        },
+        {
+            data: 'pheduyet',
+            name: 'pheduyet',
+            title: 'Phê duyệt',
+            className: 'text-center',
+            render: function (data, type, row) {
+                var badge = ``;
+                switch (data) {
+                    case 'Chờ kiểm tra':
+                        badge = 'badge-warning';
+                        break;
+                    case 'Kiểm tra thất bại':
+                        badge = 'badge-danger';
+                        break;
+                    default:
+                        badge = 'badge-success';
+                }
+                var html = ``;
+                if (data) {
+                    html = `<span class="badge ${badge}">${data}</span>`;
+                }
+                return html;
+            }
+        },
+        {
+            title: 'Action',
+            data: 'productId',
+            render: function (data, type, row) {
+                var productName = row.productNameVi.replace(/(\r\n|\n|\r)/gm, " ");
+                return `<div>
+                            <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${JSON.stringify(row).split('"').join("&quot;")})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                            <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
+                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProduct('${productName}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
+                        </div>`;
+            },
+            className: 'text-center',
+            "sortable": false
+        }
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#icon-management-home').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        // searchDelay: 500,
+        "searchCols": [
+            null,
+            null,
+            { "regex": true },
+            { "regex": true },
+            null,
+            null,
+            null
+        ],
+        buttons: [
+            {
+                text: 'Tất cả',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('', true, false).draw();
+                }
+            },
+            {
+                text: 'Chờ kiểm tra',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('Chờ kiểm tra', true, false).draw();
+                }
+            },
+            {
+                text: 'Đã phê duyệt',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('Đã phê duyệt', true, false).draw();
+                }
+            },
+            {
+                text: 'Phê duyệt thất bại',
+                action: function (e, dt, node, config) {
+                    icon_management_table.column(5).search('Phê duyệt thất bại', true, false).draw();
+                }
+            },
+            {
+                text: '<i class="fas fa-filter"></i> Lọc',
+                action: function (e, dt, node, config) {
+                    $('#filter-status').modal();
+                }
+            },
+        ]
+    });
+
+    $('#show_from').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    $('#show_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    $('#new_from').datetimepicker({
+        format: "YYYY-MM-DD HH:mm:SS",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    $('#new_to').datetimepicker({
+        format: "YYYY-MM-DD HH:mm:SS",
+        useCurrent: false,
+        sideBySide: true,
+        icons: {
+            time: 'fas fa-clock',
+            date: 'fas fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-arrow-left',
+            next: 'fas fa-arrow-right',
+            today: 'fas fa-calendar-day',
+            clear: 'fas fa-trash',
+            close: 'fas fa-window-close'
+        }
+    });
+
+    $("#show_from").on("dp.change", function (e) {
+        if ($('#show_to').data("DateTimePicker") != undefined) {
+            $('#show_to').data("DateTimePicker").minDate(e.date);
+        }
+    });
+
+    $("#show_to").on("dp.change", function (e) {
+        if ($('#show_from').data("DateTimePicker") != undefined) {
+            $('#show_from').data("DateTimePicker").maxDate(e.date);
+        }
+    });
+
+    $("#new_from").on("dp.change", function (e) {
+        if ($('#new_to').data("DateTimePicker") != undefined) {
+            $('#new_to').data("DateTimePicker").minDate(e.date);
+        }
+    });
+
+    $("#new_to").on("dp.change", function (e) {
+        if ($('#new_from').data("DateTimePicker") != undefined) {
+            $('#new_from').data("DateTimePicker").maxDate(e.date);
+        }
+    });
+
+    if ($('#status-clock').is(':checked')) {
+        $('#status-clock-date-time').show();
+    }
+    else {
+        $('#status-clock-date-time').hide();
+    }
+
+    if ($('#is-new-show').is(':checked')) {
+        $('#is-new-icon-show-date-time').show();
+    }
+    else {
+        $('#is-new-icon-show-date-time').hide();
+    }
+
+    $('input:radio[name="isDisplay"]').change(() => {
+        if ($('#status-clock').is(':checked')) {
+            $('#status-clock-date-time').show();
+        }
+        else {
+            $('#status-clock-date-time').hide();
+        }
+    });
+
+    $('input:checkbox[name="isNew"]').change(() => {
+        if ($('#is-new-show').is(':checked')) {
+            $('#is-new-icon-show-date-time').show();
+        }
+        else {
+            $('#is-new-icon-show-date-time').hide();
+        }
+    });
+
+    $("#status-all").change(function () {
+        if (this.checked) {
+            $("input[name='status']").prop('checked', true);
+        }
+        else {
+            $("input[name='status']").prop('checked', false);
+        }
+    });
+
+    $("#pheduyet-all").change(function () {
+        if (this.checked) {
+            $("input[name='pheduyet']").prop('checked', true);
+        }
+        else {
+            $("input[name='pheduyet']").prop('checked', false);
+        }
+    });
+
+    //     $('#status-filter').on('change', function(e){
+    //         var status = $(this).val();
+    //         // $('#status-filter').val(status)
+    //         console.log(status)
+    //         //dataTable.column(6).search('\\s' + status + '\\s', true, false, true).draw();
+    //         icon_management_table.column(4).search(status).draw();
+    //     });
+
+    //     $('#product-name-filter').on('keydown', function() {
+    //         var name = $(this).val();
+    //         // $('#status-filter').val(status)
+    //         console.log(name)
+    //         //dataTable.column(6).search('\\s' + status + '\\s', true, false, true).draw();
+    //         icon_management_table.columns([2, 3]).search("^" + name, true, true, true).draw();
+    //    });
 }
 
 function badgeArrayView(arrayInput) {

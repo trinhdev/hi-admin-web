@@ -24,11 +24,11 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-9">
-                    {!! Form::open(array('url' => route('iconcategory.save'),'method'=>'post' ,'id' => 'form-view','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
+                    {!! Form::open(array('url' => route('iconmanagement.save'),'method'=>'post' ,'id' => 'form-view','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
                     @csrf
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title uppercase">{{ (!empty($data['productTitleId'])) ? 'Cập nhật' : 'Thêm' }} Danh Mục</h3>
+                            <h3 class="card-title uppercase">{{ (!empty($data['productId'])) ? 'Cập nhật' : 'Thêm' }} Sản Phẩm</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -37,10 +37,10 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group" style="text-align: center">
-                                        <img id="img_icon" src="{{ (!empty($data['iconUrl'])) ? $data['iconUrl'] : '/images/image_logo.png' }}" alt="" width="150" class="mb-4">
+                                        <img id="img_icon" src="{{ (!empty($data['iconUrl']) ? $data['iconUrl'] : '/images/image_logo.png') }}" alt="" width="200" class="mb-4">
                                         <!-- Upload image input-->
                                         <div class="input-group mb-3 px-2 py-2 rounded-pill bg-gray shadow-sm">
-                                            <input id="upload" name="icon_img" type="file" onchange="readURL(this);" class="form-control border-0">
+                                            <input id="upload" name="iconUrl" type="file" onchange="readURL(this);" class="form-control border-0">
                                             <label id="upload-label" for="upload" style="color: white; font-weight: bold">Upload image</label>
                                             <div class="input-group-append">
                                                 <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
@@ -57,14 +57,20 @@
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Tên danh mục</label>
+                                        <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Tên sản phẩm</label>
                                         <div class="col-sm-9">
-                                            <input type="name" style="margin-bottom: 15px" class="form-control" id="vi-name" placeholder="Tên tiếng Việt" name="productTitleNameVi" value="{{ @$data['productTitleNameVi'] }}">
-                                            <input type="name" class="form-control" id="en-name" placeholder="Tên tiếng Anh" name="productTitleNameEn" value="{{ @$data['productTitleNameEn'] }}">
+                                            <input type="name" style="margin-bottom: 15px" class="form-control" id="vi-name" placeholder="Tên tiếng Việt" name="group_name" value="{{ @$data['productNameVi'] }}">
+                                            <input type="name" class="form-control" id="en-name" placeholder="Tên tiếng Anh" name="group_name" value="{{ @$data['productNameEn'] }}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Mô tả danh mục</label>
+                                        <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Mô tả sản phẩm</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" rows="4" id="comment">{{ @$data['decriptionVi'] }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Định danh sản phẩm</label>
                                         <div class="col-sm-9">
                                             <textarea class="form-control" rows="4" id="comment"></textarea>
                                         </div>
@@ -76,13 +82,13 @@
                                 <div class="row">
                                     <div class="col-sm-2 offset-sm-1">
                                         <div class="icheck-sunflower">
-                                            <input type="radio" id="status-show" name="status" value="hide" checked />
+                                            <input type="radio" id="status-show" name="isDisplay" value="1" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '1') ? 'checked' : '' }} />
                                             <label for="status-show">Bật</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="icheck-sunflower">
-                                            <input type="radio" id="status-hide" name="status" value="show" />
+                                            <input type="radio" id="status-hide" name="isDisplay" value="0" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '0') ? 'checked' : '' }} />
                                             <label for="status-hide">Tắt</label>
                                         </div>
                                     </div>
@@ -91,7 +97,7 @@
                                     <div class="col-sm-11 offset-sm-1">
                                         <div class="form-group">
                                             <div class="icheck-sunflower">
-                                                <input type="radio" id="status-clock" name="status" value="clock" />
+                                                <input type="radio" id="status-clock" name="isDisplay" value="2" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '2') ? 'checked' : '' }} />
                                                 <label for="status-clock">Hẹn giờ bật hiển thị</label>
                                             </div>
                                         </div>
@@ -103,7 +109,7 @@
                                             <div class="form-group row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày bắt đầu</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                    <input type="text" name="displayBeginDay" class="form-control" id="show_from" placeholder="yyyy-mm-dd hh:mm" value="{{ @$data['displayBeginDay'] }}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -111,54 +117,73 @@
                                     <div class="row">
                                         <div class="col-sm-7 offset-sm-1">
                                             <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày bắt đầu</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày kết thúc</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                    <input type="text" name="displayEndDay" class="form-control" id="show_to" placeholder="yyyy-mm-dd hh:mm" value="{{ @$data['displayEndDay'] }}" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label>Danh sách sản phẩm</label>
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-2">Hiển thị icon "Mới"</label>
+                                <div class="icheck-primary" style="width: auto">
+                                    <input type="checkbox" id="is-new-show" name="isNew" {{ (isset($data['isNew'])) && ($data['isNew'] == "1" || $data['isNew'] == "2") ? "checked" : "" }} />
+                                    <label for="is-new-show"></label>
+                                </div>
+                            </div>
+                            <div id="is-new-icon-show-date-time" style="display: none">
                                 <div class="row">
-                                    <div class="direct-chat-msg">
-                                        <img class="direct-chat-img" src="/images/information.png" alt="">
-                                        <div style="background-color: #6C757D; color: #ffffff" class="direct-chat-text">Kéo thả sản phẩm từ bên dưới danh sách <b><i>"Tất cả sản phẩm"</i></b> vào ô thứ tự để sắp xếp vị trí tương ứng</div>
+                                    <div class="col-sm-7 offset-sm-1">
+                                        <div class="form-group row">
+                                            <label for="inputEmail3" class="col-sm-5">Ngày bắt đầu</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" name="newBeginDay" class="form-control" id="new_from" placeholder="yyyy-mm-dd hh:mm" value="{{ @$data['newBeginDay'] }}" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="card card-info">
-                                    <div class="card-body">
-                                        <ul class="row" style="list-style: none; min-height: 100px" id="selected-product">
-                                            @foreach ($data['productListInTitle'] as $key => $value)
-                                                <li class="col-sm-2" style="text-align: center" id="{{ @$value['productId'] }}-selected-product">
-                                                    <button type="button" class="close-thik" onClick="removeFromSelectedProduct('{{ @$value['productId'] }}-selected-product')"><i class="fas fa-times-circle"></i></button>
-                                                    <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}" class="img-thumbnail">
-                                                    <h6><span class="badge badge-dark">{{ $value['productNameVi'] }}</span></h6>
-                                                    <h6><span class="badge badge-warning position">{{ $key + 1 }}</span></h6>
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                                <div class="row">
+                                    <div class="col-sm-7 offset-sm-1">
+                                        <div class="form-group row">
+                                            <label for="inputEmail3" class="col-sm-5">Ngày kết thúc</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" name="newEndDay" class="form-control" id="new_to" placeholder="yyyy-mm-dd hh:mm" value="{{ @$data['newEndDay'] }}" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="">Tất cả sản phẩm</label>
-                                <div class="card card-info">
-                                    <div class="card-body" style="background-color: #6C757D">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <ul id="all-product" style="list-style: none">
-                                                    @foreach ($data['productList'] as $key => $value)
-                                                        <li style="text-align: center" id="{{ @$value['productId'] }}">
-                                                            <button type="button" class="close-thik" onClick="removeFromSelectedProduct('{{ @$value['productId'] }}-selected-product')"><i class="fas fa-times-circle"></i></button>
-                                                            <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}" class="img-thumbnail">
-                                                            <h6><span class="badge badge-light">{{ $value['productNameVi'] }}</span></h6>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="form-group row">
+                                        <label class="col-sm-6" style="padding-right: 0" for="action">Loại điều hướng</label>
+                                        <select name="actionType" id="action" class="selectpicker col-sm-6" data-live-search="true" data-size="10">
+                                            <option value="">Please choose action</option>
+                                            @foreach ($loai_dieu_huong as $item)
+                                            <option value="{{ $item['key'] }}" {{ (!empty($data['actionType']) && $data['actionType'] == $item['key']) ? 'selected' : '' }}>{{ $item['value'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7 offset-sm-1">
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Link production</label>
+                                        <div class="col-sm-7">
+                                            <input type="textbox" name="dataActionProduction" class="form-control" value="{{ @$data['dataActionProduction'] }}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7 offset-sm-1">
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Link staging</label>
+                                        <div class="col-sm-7">
+                                            <input type="textbox" name="dataActionStaging" class="form-control" value="{{ @$data['dataActionStaging'] }}" />
                                         </div>
                                     </div>
                                 </div>
@@ -167,9 +192,9 @@
                         <!-- /.card-body -->
                         <div class="card-footer">
                             <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
-                            <button type="button" onClick="cancelForm('{{ route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
-                            @if (!empty($id))
-                            <button type="button" onClick="deleteProductTitle('{{ $data['productTitleNameVi'] }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            <button type="button" onClick="cancelForm('{{ route('iconmanagement.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
+                            @if (isset($data['productId']))
+                            <button type="button" onClick="deleteProduct('{{ @$data['productNameVi'] }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                             @endif
                         </div>
                         <!-- /.card-footer -->
@@ -234,93 +259,12 @@
         padding-left: 0!important
     }
 
-    .delete-button {
-        line-height: 28px;
-        width: 30px;
-        font-size: 16pt;
-        font-family: ;
-        margin-top: 1px;
-        margin-right: 2px;
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        border-radius: 50%;
-        font-weight: bold;
-        border: none;
-        background-color: #2a2d30;
-        color: #fff;
-    }
-
-    /* 
-        Carousel
+    /*
+    *
+    * ==========================================
+    * FOR DEMO PURPOSES
+    * ==========================================
+    *
     */
-    @media (max-width: 767px) {
-        .carousel-inner .carousel-item > div {
-            display: none;
-        }
-        .carousel-inner .carousel-item > div:first-child {
-            display: block;
-        }
-    }
-    
-    .carousel-inner .carousel-item.active,
-    .carousel-inner .carousel-item-next,
-    .carousel-inner .carousel-item-prev {
-        display: flex;
-    }
-    
-    /* medium and up screens */
-    @media (min-width: 768px) {
-    
-        .carousel-inner .carousel-item-end.active,
-        .carousel-inner .carousel-item-next {
-            transform: translateX(25%);
-        }
-        
-        .carousel-inner .carousel-item-start.active,
-        .carousel-inner .carousel-item-prev {
-            transform: translateX(-25%);
-        }
-    }
-    
-    .carousel-inner .carousel-item-end,
-    .carousel-inner .carousel-item-start {
-        transform: translateX(0);
-    }
-
-    /* dragula */
-    .gu-unselectable {
-        list-style: none;
-    }
-    
-    /* #selected-product {
-        display: table-row;
-    } */
-
-    #selected-product li {
-        margin-bottom: 20px
-    }
-
-    #selected-product li img {
-        width: 40%;
-        margin-bottom: 10px
-    }
-
-    #all-product li img {
-        width: 30%;
-        margin-bottom: 10px
-    }
-
-    .direct-chat-text::after, .direct-chat-text::before {
-        border-right-color: #6C757D
-    }
-
-    .close-thik {
-        position: absolute;
-        right: 55px;
-        top: -6px;
-        background-color: transparent;
-        border: none
-    }
 </style>
 @endsection

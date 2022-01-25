@@ -197,10 +197,6 @@ function cancelForm(url) {
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = url;
-            // form.submit();
-            // let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
-            // $('form').find(':button').prop('disabled', true);
-            // $("#spinner").addClass("show");
         }
     });
 }
