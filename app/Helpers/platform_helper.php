@@ -147,9 +147,9 @@ if (!function_exists('sendRequest')) {
         curl_close($ch);
         print_r("không co lỗi, đây là output");
         print_r("url : ". $url);
-        print_r("header :");print_r($headers);
-        print_r("params : ");print_r($params);
-        print_r("response: ");print_r($output);
+        print_r("header :");my_debug($headers);
+        print_r("params : ");my_debug($params);
+        print_r("response: ");my_debug($output);
         die;
         // my_debug($output.'</br>'.$url);
         return json_decode($output);
