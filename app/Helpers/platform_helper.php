@@ -140,9 +140,10 @@ if (!function_exists('sendRequest')) {
         }
         $output = curl_exec($ch);
         $timeRun = microtime(true) - $time;
-        // if (curl_errno($ch)) {
-        //     my_debug($url.'</br>'.curl_error($ch));
-        // }
+        if (curl_errno($ch)) {
+            // dd("lỗi .".curl_error($ch));
+            // my_debug($url.'</br>'.curl_error($ch));
+        }
         curl_close($ch);
         // my_debug($output.'</br>'.$url);
         return json_decode($output);
