@@ -47,11 +47,10 @@ class ManageotpController extends MY_Controller
             case 'get_otp':
                 $hiCustomer = new HdiCustomer();
                 $data = $hiCustomer->postOTPByPhone('/help-tool/otp-by-phone', ["phone" => $request["phone"]]);
-                
-                if(!empty($data['status'])) {
+                if(!empty($data['data']['otp'])) {
                     $result = ['success' => 'success', 'html' => $data['data']['otp']];
                     $request->session()->flash('success', 'success');
-                    $request->session()->flash('html', $data['message']);
+                    $request->session()->flash('html', $data['data']['otp']);
                 }
                 else {
                     $result = ['error' => 'error', 'html' => $data['message']];
