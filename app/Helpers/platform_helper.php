@@ -150,6 +150,7 @@ if (!function_exists('sendRequest')) {
         print_r("header :");print_r($headers);
         print_r("params : ");print_r($params);
         print_r("response: ");print_r($output);
+        
         die;
         // my_debug($output.'</br>'.$url);
         return json_decode($output);
