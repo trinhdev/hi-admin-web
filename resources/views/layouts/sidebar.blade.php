@@ -43,7 +43,7 @@
                                         $tmpUrl = $module->uri == "" ? "/" : $module->uri;
                                     @endphp
                                     <li class="nav-item">
-                                        <a href="/{{ $module->uri }}" class="nav-link {{ request()->is($tmpUrl) ? 'active' : '' }}">
+                                        <a href="/{{ $module->uri }}" class="nav-link {{ (request()->is($tmpUrl) || request()->is($tmpUrl.'/*') ) ? 'active' : '' }}">
                                         <i class="nav-icon {{ $module->icon}}"></i>
                                         <p>{{ $module->module_name}}</p>
                                         </a>
@@ -56,8 +56,7 @@
                                 @php
                                     $tmpUrl = $group->uri == "" ? "/" : $group->uri;
                                 @endphp
-                                <input data="{{ $tmpUrl }}" hidden>
-                                <a href="/{{ $group->uri }}" data="test  {{$group->uri}} . {{ request()->is($tmpUrl)}} "class="nav-link {{ request()->is($tmpUrl) ? 'active' : '' }}">
+                                <a href="/{{ $group->uri }}" class="nav-link {{ (request()->is($tmpUrl) || request()->is($tmpUrl.'/*') ) ? 'active' : '' }}">
                                 <i class="nav-icon {{ $group->icon}}"></i>
                                 <p>{{ $group->module_name}}</p>
                                 </a>
