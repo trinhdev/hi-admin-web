@@ -181,7 +181,7 @@ class PopupManageController extends MY_Controller
     public function store(Request $request)
     {
         $timeline = $request->all()['timeline'];
-        $timeline_array = explode("-", $timeline);
+        $timeline_array = explode(" - ", $timeline);
         $dateStart = $timeline_array[0];
         $dateEnd = $timeline_array[1];
         $ruleButtonImage = [
@@ -203,7 +203,7 @@ class PopupManageController extends MY_Controller
             $rules = array_merge($ruleButtonImage, $rules);
             $directionUrl = $request->directionUrl;
         } else {
-            $directionUrl = '';
+            $directionUrl = "";
         }
         if  ($request->directionId == "url_open_out_app" || $request->directionId == "url_open_in_app"){
             $rules['directionUrl'] = 'required';
@@ -221,10 +221,13 @@ class PopupManageController extends MY_Controller
 //            'publicDateStart' => $request->show_from,
 //            'publicDateEnd' => $request->show_to,
             'image' => $request->img_path_1_name,
-            'directionId' => !empty($request->directionId) ? $request->directionId : '',
-            'buttonImage' => !empty($request->img_path_2_name) ? $request->img_path_2_name : '',
-            'directionUrl' => $directionUrl,
+            'directionId' => !empty($request->directionId) ? $request->directionId : "",
+            'buttonImage' => !empty($request->img_path_2_name) ? $request->img_path_2_name : "",
         ];
+
+        if ($request->directionId == 'url_open_out_app' || $request->directionId == 'url_open_in_app') {
+            $createParams['directionUrl'] = $directionUrl;
+        }
         $create_banner_response = $newsEventService->addNewPopup($createParams);
         if (!empty($create_banner_response->data)) {
             $pushParams = [
@@ -235,7 +238,8 @@ class PopupManageController extends MY_Controller
                 'objectType' => $request->objecttype,
                 'objects' => $request->object,
             ];
-//            $create_banner_response = $newsEventService->pushTemplate($pushParams);
+            $push_response = $newsEventService->pushTemplate($pushParams);
+            my_debug($push_response);
             return redirect()->route('popupmanage.index')->withSuccess('Success!');
         }
         return redirect()->route('popupmanage.index')->withErrors(isset($create_banner_response->description) ? $create_banner_response->description : $create_banner_response->message);
