@@ -167,9 +167,9 @@
                         <!-- /.card-body -->
                         <div class="card-footer">
                             <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
-                            <button type="button" onClick="cancelForm('{{ route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
+                            <button type="button" onClick="cancelButton('{{ route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
-                            <button type="button" onClick="deleteProductTitle('{{ $data['productTitleNameVi'] }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            <button type="button" onClick="deleteButton({{ $data['productTitleId'] }}, '{{ $data['productTitleNameVi'] }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                             @endif
                         </div>
                         <!-- /.card-footer -->

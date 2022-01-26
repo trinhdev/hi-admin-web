@@ -58,6 +58,7 @@
 <script src="{{ asset('/custom_js/checkuserinfo.js')}}"></script>
 <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 <script src="{{ asset('/custom_js/otp.js')}}"></script>
+<script src="{{ asset('/custom_js/javascript.icon.js')}}"></script>
 <script src="{{ asset('/custom_js/iconmanagement.js')}}"></script>
 <script src="{{ asset('/custom_js/icon_category.js')}}"></script>
 <script src="{{ asset('/custom_js/test_drag_drop.js')}}"></script>

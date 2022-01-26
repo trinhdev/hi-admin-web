@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Modal -->
-    <div class="modal fade bd-example-modal-lg" id="product-title-modal" tabindex="-1" role="dialog" aria-labelledby="product-title-modal" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="iconModal" tabindex="-1" role="dialog" aria-labelledby="iconModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,7 +12,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" id="product-title-modal-body"></div>
+                <div class="row" id="icon-modal-body"></div>
                 {{-- <div class="row">
                     <div class="col-sm-12" style="text-align: center">
                         <img alt="icon_img">
@@ -84,7 +84,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onClick="filterStatusPheDuyet()">Lọc</button>
+                    <button type="button" class="btn btn-primary" onClick="filterStatusPheDuyet('#icon-category')">Lọc</button>
                 </div>
             </div>
         </div>

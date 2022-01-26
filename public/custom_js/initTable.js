@@ -1229,9 +1229,9 @@ function initIconmanagement() {
             render: function (data, type, row) {
                 var productName = row.productNameVi.replace(/(\r\n|\n|\r)/gm, " ");
                 return `<div>
-                            <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${JSON.stringify(row).split('"').join("&quot;")})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconmanagement/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                             <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProduct('${productName}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
+                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteButton(${data}, '${productName}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
                         </div>`;
             },
             className: 'text-center',
@@ -1432,22 +1432,6 @@ function initIconmanagement() {
             $("input[name='pheduyet']").prop('checked', false);
         }
     });
-
-    //     $('#status-filter').on('change', function(e){
-    //         var status = $(this).val();
-    //         // $('#status-filter').val(status)
-    //         console.log(status)
-    //         //dataTable.column(6).search('\\s' + status + '\\s', true, false, true).draw();
-    //         icon_management_table.column(4).search(status).draw();
-    //     });
-
-    //     $('#product-name-filter').on('keydown', function() {
-    //         var name = $(this).val();
-    //         // $('#status-filter').val(status)
-    //         console.log(name)
-    //         //dataTable.column(6).search('\\s' + status + '\\s', true, false, true).draw();
-    //         icon_management_table.columns([2, 3]).search("^" + name, true, true, true).draw();
-    //    });
 }
 
 function initCloseHelpReqest() {
@@ -1626,9 +1610,9 @@ function initIconcategory() {
             title: 'Action',
             data: 'productTitleId',
             render: function (data, type, row) {
-                return `<button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${data})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                return `<button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconcategory/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                             <a style="float: left; margin-right: 5px" href="/iconcategory/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button style="float: left; type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProductTitle('${row.productTitleNameVi}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>`;
+                            <button style="float: left; type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteButton(${data}, '${row.productTitleNameVi}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>`;
             },
             "sortable": false,
             className: 'text-center',

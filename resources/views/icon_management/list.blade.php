@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Modal view detail -->
-    <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="iconModal" tabindex="-1" role="dialog" aria-labelledby="iconModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,12 +12,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" id="product-modal-body"></div>
-                {{-- <div class="row">
-                    <div class="col-sm-12" style="text-align: center">
-                        <img alt="icon_img">
-                    </div>
-                </div> --}}
+                <div class="row" id="icon-modal-body"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -84,7 +79,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onClick="filterStatusPheDuyet()">Lọc</button>
+                    <button type="button" class="btn btn-primary" onClick="filterStatusPheDuyet('#icon-management')">Lọc</button>
                 </div>
             </div>
         </div>
@@ -120,32 +115,6 @@
             <div class="container-fluid">
                 <div class="row" style="margin-top: 20px">
                     <div class="card card-body col-sm-12">
-                        {{-- <div class="container">
-                            <form action="{{ route('iconmanagement.index') }}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
-                                <div class="card-body row form-inline">
-                                    <div class="col-sm-6">
-                                        <div class="input-group mb-4">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Tên sản phẩm</div>
-                                            </div>
-                                            <input type="name" class="form-control" id="product-name-filter" placeholder="Nhập tên sản phẩm" name="group_name" value="@if(!empty($data)){{$data->group_name}}@endif">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="input-group mb-4">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Trạng thái sản phẩm</div>
-                                            </div>
-                                            <select id="status-filter" class="selectpicker form-control">
-                                                <option value="">Vui lòng chọn trạng thái</option>
-                                                <option value="1">Hiện</option>
-                                                <option value="0">Ẩn</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div> --}}
                         <table id="icon-management" class="display nowrap" style="width: 100%">
                         </table>                                          
                     </div>
@@ -297,69 +266,4 @@
             margin-bottom: 0
         }
     </style>
-
-    <script id="product-detail-template" type="text/x-jquery-tmpl">
-        <table class="product-detail">
-            <tr>
-                <td style="text-align: center; width: 100%; padding-bottom: 30px" colspan="2">
-                    <img class="img-thumbnail" src="${iconUrl}" style="width: 150px" lat="${productNameVi}" />
-                </td>
-            </tr>
-            <tr>
-                <td class="title">Tên</td>
-                <td>${productNameVi}</td>
-            </tr>
-            <tr>
-                <td class="title" style="width: 25%;">Mô tả</td>
-                <td>${decriptionVi}</td>
-            </tr>
-            <tr>
-                <td class="title" style="padding-bottom: 30px">Thông tin bổ sung</td>
-                <td style="padding-bottom: 30px"></td>
-            </tr>
-
-            <tr>
-                <td class="title">Trạng thái hiển thị</td>
-                <td>${(isDisplay && isDisplay == '1' ? "Hiện" : "Ẩn")}</td>
-            </tr>
-            <tr>
-                <td class="title">Ngày bắt đầu</td>
-                <td>${displayBeginDay}</td>
-            </tr>
-            <tr>
-                <td class="title" style="padding-bottom: 30px">Ngày kết thúc</td>
-                <td style="padding-bottom: 30px">${displayEndDay}</td>
-            </tr>
-            
-            <tr>
-                <td class="title">Hiển thị icon mới</td>
-                <td>${isNew && isNew == '1' ? "Bật" : "Tắt"}</td>
-            </tr>
-            <tr>
-                <td class="title">Ngày bắt đầu</td>
-                <td>${newBeginDay}</td>
-            </tr>
-            <tr>
-                <td class="title" style="padding-bottom: 30px">Ngày kết thúc</td>
-                <td style="padding-bottom: 30px">${newEndDay}</td>
-            </tr>
-            
-            <tr>
-                <td class="title">Loại điều hướng</td>
-                <td>Mở webkit kèm access token</td>
-            </tr>
-            <tr>
-                <td class="title">Link Production</td>
-                <td>${dataActionProduction}</td>
-            </tr>
-            <tr>
-                <td class="title">Link Staging</td>
-                <td>${dataActionStaging}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
-    </script>
 @endsection

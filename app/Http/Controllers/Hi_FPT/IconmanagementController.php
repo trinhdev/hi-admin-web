@@ -78,9 +78,15 @@ class IconmanagementController extends MY_Controller
         return redirect()->route('iconmanagement.index')->with($result);
     }
 
-    public function detail() {
-        $id = request()->segment(3);
-
+    public function detail($productId) {
+        $data['productId'] = $productId;
+        $data['data'] = [];
+        $response = json_decode(json_encode($this->iconManagement->getProductById($productId)), true);
+        if(!empty($response['data'])) {
+            $data['data'] = $response['data'];
+        }
+        $detail_prod_title = view('icon_management.detail')->with($data);
+        return $detail_prod_title->render();
     }
 
     public function upload(Request $request) {
