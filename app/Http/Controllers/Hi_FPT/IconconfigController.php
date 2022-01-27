@@ -100,7 +100,7 @@ class IconconfigController extends MY_Controller
 
     public function initDatatable(Request $request){
         if($request->ajax()) {
-            $response = json_decode(json_encode($this->iconconfig->getAllProduct()), true);
+            $response = json_decode(json_encode($this->iconconfig->getAllProductConfig()), true);
             $data = [];
             if(!empty($response['data'])) {
                 $data = $response['data'];

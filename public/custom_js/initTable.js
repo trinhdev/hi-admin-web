@@ -1886,7 +1886,7 @@ function initIconconfig() {
         "retrieve": true,
         "serverSide": true,
         "ajax": {
-            url: "/iconmanagement/initDatatable"
+            url: "/iconconfig/initDatatable"
         },
         "data": [],
         dom: 'Bfrtip',
@@ -1903,24 +1903,24 @@ function initIconconfig() {
             },
         },
         {
-            data: 'iconUrl',
-            name: "iconUrl",
-            title: "Hình ảnh",
-            render: function (data, type, row) {
-                return `<img class="img-thumbnail" src="${data}" style="width: 80px">`;
+            data: 'name',
+            name: "name",
+            title: "Tên vị trí",
+            className: 'text-center',
+        },
+        {
+            data: 'iconsPerRow',
+            name: "iconsPerRow",
+            title: "Số lượng",
+            render: function(data, type, row, meta) {
+                return row['iconsPerRow'] * row['rowOnPage'];
             },
             className: 'text-center',
         },
         {
-            data: 'productNameVi',
-            name: "productNameVi",
-            title: "Tên sản phẩm - VN",
-            className: 'text-center',
-        },
-        {
-            data: 'productNameEn',
-            name: "productNameEn",
-            title: "Tên sản phẩm - EN",
+            data: 'rowOnPage',
+            name: "rowOnPage",
+            title: "Số dòng",
             className: 'text-center',
         },
         {
@@ -1985,11 +1985,11 @@ function initIconconfig() {
             title: 'Action',
             data: 'productId',
             render: function (data, type, row) {
-                var productName = row.productNameVi.replace(/(\r\n|\n|\r)/gm, " ");
+                var name = row.name.replace(/(\r\n|\n|\r)/gm, " ");
                 return `<div>
                             <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${JSON.stringify(row).split('"').join("&quot;")})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                             <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProduct('${productName}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
+                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProduct('${name}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
                         </div>`;
             },
             className: 'text-center',

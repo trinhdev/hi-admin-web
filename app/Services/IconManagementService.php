@@ -37,4 +37,16 @@ class IconManagementService {
         $response           = sendRequest($url, ['productTitleId' => $id], $this->token);
         return $response;
     }
+
+    public function getAllProductConfig() {
+        $url                = $this->baseUrl . $this->subDomain . 'product-configs/get-all';
+        $response           = sendRequest($url, [], $this->token);
+        return $response;
+    }
+
+    public function getProductConfigById($id) {
+        $url                = $this->baseUrl . $this->subDomain . 'product-configs/get-by-id';
+        $response           = sendRequest($url, ['productTitleId' => $id], $this->token);
+        return $response;
+    }
 }
