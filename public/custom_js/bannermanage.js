@@ -204,7 +204,7 @@ function updateOrdering(_thisInputTag){
     let row = _thisInputTag.closest('tr');
     let infoRow = row.querySelector('.infoRow');
     let updateParams = {
-        bannerId: infoRow.innerHTML,
+        bannerId: infoRow.getAttribute('data-id'),
         bannerType: infoRow.getAttribute('data-type'),
         ordering:_thisInputTag.value,
         _token: $('meta[name="csrf-token"]').attr('content')
@@ -213,6 +213,7 @@ function updateOrdering(_thisInputTag){
 }
 
 function callApiUpdateOderSuccess(response){
+    console.log(response);
     if(response.statusCode != 0){
         showError(response.message);
     }else{
