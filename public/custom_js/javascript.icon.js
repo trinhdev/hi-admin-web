@@ -76,14 +76,15 @@ function cancelButton(url) {
 function openDetail(url) {
     $.ajax({
         url: url,
-        success: function(result) {
-            if(result) {
+        success: function (result) {
+            if (result) {
+                console.log(result);
                 $("#icon-modal-body").html('');
                 $("#icon-modal-body").html(result);
                 $('#iconModal').modal();
             }
         },
-        error: function(jqXHR, testStatus, error) {
+        error: function (jqXHR, testStatus, error) {
             console.log(error);
         },
     })

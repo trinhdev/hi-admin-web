@@ -1874,7 +1874,7 @@ function initIconconfig() {
     //     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
     // } );
 
-    var icon_management_table = $('#icon-config').DataTable({
+    var icon_config_table = $('#icon-config').DataTable({
         "processing": true,
         "select": true,
         "bDestroy": true,
@@ -1893,7 +1893,7 @@ function initIconconfig() {
         "columnDefs": [
             {
                 "searchable": false,
-                "targets": [0, 1, 6]
+                "targets": [0, 2, 3, 6]
             },
         ],
         "columns": [{
@@ -1912,8 +1912,8 @@ function initIconconfig() {
             data: 'iconsPerRow',
             name: "iconsPerRow",
             title: "Số lượng",
-            render: function(data, type, row, meta) {
-                return row['iconsPerRow'] * row['rowOnPage'];
+            render: function (data, type, row, meta) {
+                return row['arrayId'].split(',').length;
             },
             className: 'text-center',
         },
@@ -1983,11 +1983,11 @@ function initIconconfig() {
         },
         {
             title: 'Action',
-            data: 'productId',
+            data: 'productConfigId',
             render: function (data, type, row) {
                 var name = row.name.replace(/(\r\n|\n|\r)/gm, " ");
                 return `<div>
-                            <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail(${JSON.stringify(row).split('"').join("&quot;")})" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                            <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconconfig/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                             <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
                             <button style="float: left;" type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" onClick="deleteProduct('${name}')" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
                         </div>`;
@@ -2008,9 +2008,9 @@ function initIconconfig() {
         // searchDelay: 500,
         "searchCols": [
             null,
+            { "regex": true },
             null,
-            { "regex": true },
-            { "regex": true },
+            null,
             null,
             null,
             null
@@ -2019,25 +2019,25 @@ function initIconconfig() {
             {
                 text: 'Tất cả',
                 action: function (e, dt, node, config) {
-                    icon_management_table.column(5).search('', true, false).draw();
+                    icon_config_table.column(5).search('', true, false).draw();
                 }
             },
             {
                 text: 'Chờ kiểm tra',
                 action: function (e, dt, node, config) {
-                    icon_management_table.column(5).search('Chờ kiểm tra', true, false).draw();
+                    icon_config_table.column(5).search('Chờ kiểm tra', true, false).draw();
                 }
             },
             {
                 text: 'Đã phê duyệt',
                 action: function (e, dt, node, config) {
-                    icon_management_table.column(5).search('Đã phê duyệt', true, false).draw();
+                    icon_config_table.column(5).search('Đã phê duyệt', true, false).draw();
                 }
             },
             {
                 text: 'Phê duyệt thất bại',
                 action: function (e, dt, node, config) {
-                    icon_management_table.column(5).search('Phê duyệt thất bại', true, false).draw();
+                    icon_config_table.column(5).search('Phê duyệt thất bại', true, false).draw();
                 }
             },
             {

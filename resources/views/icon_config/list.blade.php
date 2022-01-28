@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Modal view detail -->
-    <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="iconModal" tabindex="-1" role="dialog" aria-labelledby="iconModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,12 +12,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" id="product-modal-body"></div>
-                {{-- <div class="row">
-                    <div class="col-sm-12" style="text-align: center">
-                        <img alt="icon_img">
-                    </div>
-                </div> --}}
+                <div class="row" id="modal-body">
+                    <div class="row" id="icon-modal-body"></div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -84,7 +81,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onClick="filterStatusPheDuyet()">Lọc</button>
+                    <button type="button" class="btn btn-primary" onClick="filterStatusPheDuyet('#icon-config')">Lọc</button>
                 </div>
             </div>
         </div>

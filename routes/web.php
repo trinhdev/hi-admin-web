@@ -163,7 +163,7 @@ Route::group([
                 Route::get('/','IconconfigController@index')->name('iconconfig.index');
                 Route::get('/edit/{id?}','IconconfigController@edit')->name('iconconfig.edit');
                 Route::get('/save','IconconfigController@save')->name('iconconfig.save');
-                Route::get('/detail/{id?}','IconconfigController@edit')->name('iconconfig.edit');
+                Route::get('/detail/{id?}','IconconfigController@detail')->name('iconconfig.edit');
                 Route::post('/upload','IconconfigController@upload')->name('iconconfig.upload');
                 // Route::get('/searchByContractNoOrId','IconconfigController@searchByContractNoOrId')->name('iconconfig.searchByContractNoOrId');
                 Route::get('/initDatatable','IconconfigController@initDatatable')->name('iconconfig.initDatatable');

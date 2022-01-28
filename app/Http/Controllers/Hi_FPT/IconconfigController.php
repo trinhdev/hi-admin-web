@@ -78,9 +78,28 @@ class IconconfigController extends MY_Controller
         return redirect()->route('iconconfig.index')->with($result);
     }
 
-    public function detail() {
-        $id = request()->segment(3);
-
+    public function detail($productConfigId) {
+        $data['productConfigId'] = $productConfigId;
+        $data['data'] = [];
+        $response = json_decode(json_encode($this->iconconfig->getProductConfigById($productConfigId)), true);
+        
+        if(!empty($response['data'])) {
+            $response['data']['productListId'] = (isset($response['data']['arrayId']) && is_string($response['data']['arrayId'])) ? explode(',', $response['data']['arrayId']) : [];
+            $productList = json_decode(json_encode($this->iconconfig->getAllProduct()), true);
+            $response['data']['productList'] = (!empty($productList['data'])) ? $productList['data'] : [];
+            $response['data']['productListInTitle'] = [];
+            foreach($response['data']['productListId'] as $productId) {
+                foreach($response['data']['productList'] as $product) {
+                    if(intval($productId) == $product['productId']) {
+                        array_push($response['data']['productListInTitle'], $product);
+                    }
+                }
+            }
+            
+            $data['data'] = $response['data'];
+        }
+        $detail_prod_config_title = view('icon_config.detail')->with($data);
+        return $detail_prod_config_title->render();
     }
 
     public function upload(Request $request) {
