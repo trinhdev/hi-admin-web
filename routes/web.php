@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\HomeController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\UserController;
 use PHPUnit\TextUI\XmlConfiguration\Group;
+use App\Http\Controllers\Hi_FPT\FtelPhoneController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,26 @@ Route::group([
                 Route::post('/clearLog','LogactivitiesController@clearLog')->name('logactivities.clearLog');
                 Route::delete('/destroy/{id}','LogactivitiesController@destroy')->name('logactivities.destroy');
                 Route::get('/initDatatable','LogactivitiesController@initDatatable')->name('logactivities.initDatatable');
+            });
+            Route::prefix('ftel-phone')->group(function () {
+                Route::get('/', [FtelPhoneController::class, 'index']);
+                Route::get('/create', [FtelPhoneController::class, 'create'])->name('ftel_phone.create');
+                Route::post('/store', [FtelPhoneController::class, 'store'])->name('ftel_phone.store');
+                Route::get('/destroy/{id}', [FtelPhoneController::class, 'destroy'])->name('ftel_phone.destroy');
+                Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');
+
+                Route::post('/phone-info', [FtelPhoneController::class, 'PhoneInfo'])->name('ftel_phone.phoneInfo');
+                Route::get('/seed', [FtelPhoneController::class, function(){
+                    $faker = Faker::create();
+                    $gender = $faker->randomElement(["03", "07", "08", "09", "05"]);
+                    $result = '';
+                    foreach (range(1,1001) as $index) {     
+                        $test = $gender.$faker->numberBetween(10000000,99999999);
+                        $result = $result.','.$test;
+                    }
+                    print_r($result);
+                }]);
+                            
             });
 
         });

@@ -51,6 +51,9 @@ $(document).ready(function () {
             case 'closehelprequest':
                 initCloseHelpReqest();
                 break;
+            case 'ftel-phone':
+                initFtelPhone();
+                break;
             case '':
             case 'home':
                 drawChart();
@@ -1285,7 +1288,82 @@ function initCloseHelpReqest() {
     });
 
 }
-
+function initFtelPhone() {
+    $('#phoneTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "select": true,
+        "dataSrc": "tableData",
+        "bDestroy": true,
+        "scrollX": true,
+        retrieve: true,
+        "ajax": {
+            url: "/ftel-phone/initDatatable"
+        },
+        "columns": [
+            {
+                data: 'id',
+                name: "id",
+                title: "Id"
+            },
+            {
+                data: 'number_phone',
+                name: "number_phone",
+                title: "Phone"
+            },
+            {
+                data: 'code',
+                name: "code",
+                title: "Mã số nhân viên"
+            },
+            {
+                data: 'emailAddress',
+                name: "emailAddress",
+                title: "Email"
+            },
+            {
+                data: 'fullName',
+                name: "fullName",
+                title: "Tên đầy đủ"
+            },
+            {
+                data: 'organizationNamePath',
+                name: "organizationNamePath",
+                title: "organizationNamePath"
+            },
+            {
+                data: 'organizationCodePath',
+                name: "organizationCodePath",
+                title: "organizationCodePath"
+            },
+            {
+                data: 'response',
+                name: "response",
+                title: "Response"
+            },
+            {
+                data: 'created_by',
+                name: "created_by",
+                title: "Người tạo"
+            },
+            {
+                data: 'created_at',
+                name: "created_at",
+                title: "Ngày tạo"
+            }
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#phoneTable').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500
+    });
+}
 function badgeArrayView(arrayInput) {
     var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];
     var count_badge = 0;
