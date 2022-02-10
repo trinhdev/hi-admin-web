@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use Carbon\Carbon;
-use App\Models\FtelPhone;
-use App\Services\HrService;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\FtelPhoneRequest;
-use Illuminate\Support\Facades\Validator;
+use App\Services\HrService;
+use App\Models\FtelPhone;
+use App\Exports\Export;
+use Excel;
 
 class FtelPhoneController extends MY_Controller
 {
@@ -45,7 +46,8 @@ class FtelPhoneController extends MY_Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * Số không tồn tại trong db -> chạy qua HR lấy info save ( nếu không có info thì lưu sdt, nếu thông tin đã có trong db thì update lại sdt mới )
+     * Số tồn tại trong db -> update lại nếu time > 1 tuần còn không bỏ qua
      * @return \Illuminate\Http\Response
      */
     public function store(FtelPhoneRequest $request)
@@ -53,24 +55,38 @@ class FtelPhoneController extends MY_Controller
         $arrPhone = explode(',',$request->number_phone);
         $hrService = new HrService();
         $token = $hrService->loginHr()->authorization;
+        $dataExport = [];
         foreach($arrPhone as $arPhone)
         {
             $phone = trim($arPhone);
-            $issetPhone = $this->model->where('number_phone',$phone)->first();
-            if(!empty($issetPhone) && now()->subWeeks() >= $issetPhone->updated_at) {
+            $findPhone = $this->model->where('number_phone',$phone)->first();
+            if(isset($findPhone) && now()->subWeeks() >= $findPhone->updated_at) {
                 $getInfo = $hrService->getInfoEmployee($phone,$token);
-                $issetPhone->update([
-                    'number_phone'=> $phone,
-                    'code' => $getInfo->code,
-                    'emailAddress' => $getInfo->emailAddress,
-                    'fullName'=> $getInfo->fullName,
-                    'response' => json_encode($getInfo),
-                    'organizationNamePath' => $getInfo->organizationNamePath, 
-                    'organizationCodePath' => $getInfo->organizationCodePath
-                ]);
-            } else {
+                if(isset($getInfo)) {
+                    $obj = [
+                        'number_phone'=> $phone,
+                        'code' => $getInfo->code,
+                        'emailAddress' => $getInfo->emailAddress,
+                        'fullName'=> $getInfo->fullName,
+                        'response' => json_encode($getInfo),
+                        'organizationNamePath' => $getInfo->organizationNamePath, 
+                        'organizationCodePath' => $getInfo->organizationCodePath
+                    ];
+                    $findPhone->update($obj);
+                    array_push($dataExport, $obj);
+                } else {
+                    $findPhone->update([
+                        'updated_at' => now()
+                    ]);
+                }
+            } elseif(empty($findPhone)) {
                 $getInfo = $hrService->getInfoEmployee($phone,$token);
-                if(!empty($getInfo)) {
+                if(empty($getInfo)) {
+                    $this->model->create([
+                        'number_phone'=> $phone,
+                        'created_by' => $this->user->id
+                    ]);
+                } else {                                  
                     $obj = [
                         'number_phone'=> $phone,
                         'code' => $getInfo->code,
@@ -81,22 +97,20 @@ class FtelPhoneController extends MY_Controller
                         'organizationCodePath' => $getInfo->organizationCodePath
                     ];
                     $code = $this->model->where('code',$getInfo->code)->first();
-                    if(!empty($code)) {
-                            $code->update($obj);
-                    }
-                    elseif(empty($issetPhone)) {
-                        $obj['created_by'] = $user->id;
+                    if(isset($code)) {
+                        $code->update($obj);
+                        array_push($dataExport, $obj);
+                    } else {
+                        $obj['created_by'] = $this->user->id;
                         $this->model->create($obj);
+                        array_push($dataExport, $obj);
                     }               
-                } else {                
-                    $this->model->create([
-                        'number_phone'=> $phone,
-                        'created_by' => Auth::user()->id
-                    ]);
                 }
-            }    
+            }
+            
         }
-        return redirect()->back()->withSuccess('All success!');
+        Excel::download(new Export($dataExport), 'phone-list.xlsx');
+        return redirect()->back()->withSuccess('Success');
     }
 
     /**
