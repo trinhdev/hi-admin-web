@@ -8,6 +8,10 @@
         $list_uri = json_decode($uri_config->value);
     }
 @endphp
+
+@if(Session::has('download.in.the.next.request'))
+         <meta http-equiv="refresh" content="5;url={{ Session::get('export') }}">
+@endif
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -59,7 +63,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer" style="text-align: center">
-                                    <a href="/ftel_phone" type="button" class="btn btn-default">Cancel</a>
+                                    <a href="/ftel-phone" type="button" class="btn btn-default">Cancel</a>
                                     <button id="check" type="submit" class="btn btn-info">Check</button>
                                 </div>
                             </div>
@@ -76,5 +80,12 @@
             font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
         }
     </style>
-
+    <script>
+        reload = document.getElementById("reload");
+        url = location.hostname;
+        alert(url);
+        if(reload) {
+            location.href = 'http://'.url.'/ftel-phone/store';
+        }
+    </script>
 @endsection

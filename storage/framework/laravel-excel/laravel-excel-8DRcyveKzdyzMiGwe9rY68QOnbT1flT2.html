@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        
+        Phone
+    </title>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="http://test.test/themes/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="http://test.test/themes/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="http://test.test/themes/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="http://test.test/themes/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="http://test.test/themes/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="http://test.test/themes/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="http://test.test/themes/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="http://test.test/themes/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="http://test.test/themes/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="http://test.test/themes/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="http://test.test/themes/plugins/bootstrap-select-1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="csrf-token" content="xxZloQ6XVIiNMzVkFVajTzsMoLotRmhMhu5aZIas">
+    <link rel="stylesheet" href="http://test.test/custom_css/style.css">
+    
+    <script type="text/javascript">
+        var base_url = 'http://test.test';
+        const URL_STATIC = "https://hi-static.fpt.vn";
+    </script>    </head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        
+        <div id="spinner">
+            <div class="loader">
+                <img style="width: 100px" src="/images/Ellipsis-1.3s-200px.svg" alt="loading">
+            </div>
+        </div>
+        
+        <!-- Preloader -->
+        
+        
+        
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+    </ul>
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+        <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                <img src="http://test.test/themes/dist/img/avatar5.png" class="user-image" alt="User Image">
+                <span class="hidden-xs"> Admin</span>
+            </a>
+            <ul class="dropdown-menu" style="transform: translate(-25%, 0px);">
+                <!-- User image -->
+                <li class="user-header">
+                    <img src="http://test.test/themes/dist/img/avatar5.png" class="img-circle" alt="User Image">
+                    <p>
+                         Admin
+                    </p>
+                </li>
+                <!-- Menu Body -->
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                    <div class="pull-left">
+                        <a href="#" class="btn btn-default btn-flat" data-toggle="modal" data-target="#profileModal"><i class="fas fa-user"></i>&nbsp;Profile</a>
+                        <a class="btn btn-default btn-flat" href="#" data-toggle="modal" data-target="#changePasswordModal"><i class="fas fa-key"></i>&nbsp;Change Password</a>
+                    </div>
+                </li>
+            </ul>
+
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                <i class="fas fa-expand-arrows-alt"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="dropdown-item" href="http://test.test/logout" onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                Logout&nbsp;&nbsp;<i class="fas fa-sign-out-alt"></i>
+            </a>
+
+            <form id="logout-form" action="http://test.test/logout" method="POST" class="d-none">
+                <input type="hidden" name="_token" value="xxZloQ6XVIiNMzVkFVajTzsMoLotRmhMhu5aZIas">            </form>
+        </li>
+    </ul>
+</nav>
+<div id="changePasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span></button>
+            </div>
+            <form action="/profile/changePassword" method="POST" onsubmit="handleSubmit(event,this)">
+                <input type="hidden" name="_token" value="xxZloQ6XVIiNMzVkFVajTzsMoLotRmhMhu5aZIas">                <div class="modal-body">
+                    <div class="form-group">
+                        <input placeholder="Current Password" type="password" name="current_password" class="form-control" data-toggle="password" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="New Password" type="password" name="password" class="form-control" data-toggle="password" />
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Confirm New Password" type="password" name="password_confirmation" class="form-control" data-toggle="password" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="dialogConfirmWithAjax(changePassWord, this)">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="profileModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span></button>
+            </div>
+            <div class="modal-body">
+                <form action="/profile/updateprofile" method="POST" onsubmit="handleSubmit(event,this)">
+                    <input type="hidden" name="_token" value="xxZloQ6XVIiNMzVkFVajTzsMoLotRmhMhu5aZIas">                    <div class="container">
+                        <div class="row gutters">
+                            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="account-settings">
+                                            <div class="user-profile">
+                                                <div class="user-avatar"> <img src="http://test.test/themes/dist/img/avatar5.png" alt="Maxwell Admin"></div>
+                                                <h5 class="user-name"> Admin</h5>
+                                                <h6 class="user-email">admin@gmail.com</h6>
+                                            </div>
+                                            <div class="about">
+                                                <h5>About</h5>
+                                                <p>Something....</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="row gutters">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <h6 class="mb-2 text-primary">Personal Details</h6>
+                                            </div>
+                                            <div class="ol-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="form-group"> <label for="name">Role: </label><b>&nbsp;Admin</b></div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group"> <label for="name">Full Name</label> <input type="text" class="form-control" id="name" name="name" value=" Admin"></div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group"> <label for="eMail">Email</label> <input class="form-control" value="admin@gmail.com" disabled></div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group"> <label for="phone">Phone</label> <input type="text" class="form-control" id="phone" placeholder="Enter phone number"></div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row gutters">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="text-right">
+                                                    <button data-dismiss="modal" aria-label="Close" class="btn btn-secondary">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+    .account-settings .user-profile {
+        margin: 0 0 1rem 0;
+        padding-bottom: 1rem;
+        text-align: center;
+    }
+
+    .account-settings .user-profile .user-avatar {
+        margin: 0 0 1rem 0;
+    }
+
+    .account-settings .user-profile .user-avatar img {
+        width: 90px;
+        height: 90px;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+    }
+
+    .account-settings .user-profile h5.user-name {
+        margin: 0 0 0.5rem 0;
+    }
+
+    .account-settings .user-profile h6.user-email {
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: #9fa8b9;
+    }
+
+    .account-settings .about {
+        margin: 2rem 0 0 0;
+        text-align: center;
+    }
+
+    .account-settings .about h5 {
+        margin: 0 0 15px 0;
+        color: #007ae1;
+    }
+
+    .account-settings .about p {
+        font-size: 0.825rem;
+    }
+
+    .form-control {
+        border: 1px solid #cfd1d8;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        font-size: .825rem;
+        background: #ffffff;
+        color: #2e323c;
+    }
+
+    .card {
+        background: #ffffff;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        border: 0;
+        margin-bottom: 1rem;
+    }
+
+</style>
+        <!-- /.navbar -->
+        <!-- Sidebar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="/" class="brand-link">
+            <img src="http://test.test/themes/images/logo-hifpt1.png" alt="AdminLTE Logo" class="brand-image elevation-2">
+            <span class="brand-text">Hi FPT</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            
+
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false" id="sidebar">
+                                                                                            <li class="nav-item">
+                                                                <a href="/" class="nav-link ">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p>Home</p>
+                                </a>
+                            </li>
+                                                                                                                           <li class="nav-item menu  ">
+                                <a href="#" class="nav-link ">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        ADMIN
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none">
+                                                                                                        <li class="nav-item">
+                                        <a href="/roles" class="nav-link ">
+                                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                                        <p>Role</p>
+                                        </a>
+                                    </li>
+                                                                                                        <li class="nav-item">
+                                        <a href="/modules" class="nav-link ">
+                                        <i class="nav-icon fas fa-bars"></i>
+                                        <p>Module</p>
+                                        </a>
+                                    </li>
+                                                                                                        <li class="nav-item">
+                                        <a href="/groups" class="nav-link ">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>Groups</p>
+                                        </a>
+                                    </li>
+                                                                                                        <li class="nav-item">
+                                        <a href="/groupmodule" class="nav-link ">
+                                        <i class="nav-icon fa fa-cogs"></i>
+                                        <p>Group Module</p>
+                                        </a>
+                                    </li>
+                                                                                                        <li class="nav-item">
+                                        <a href="/logactivities" class="nav-link ">
+                                        <i class="nav-icon fa fa-cogs"></i>
+                                        <p>Log</p>
+                                        </a>
+                                    </li>
+                                                                </ul>
+                            </li>
+                                                                                                                           <li class="nav-item menu  ">
+                                <a href="#" class="nav-link ">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        REPORT
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none">
+                                                                                                        <li class="nav-item">
+                                        <a href="/user" class="nav-link ">
+                                        <i class="nav-icon fas fa-user"></i>
+                                        <p>User</p>
+                                        </a>
+                                    </li>
+                                                                </ul>
+                            </li>
+                                                                                </ul>
+            </nav>
+            
+            <!-- /.sidebar-menu -->
+        </div>
+    </aside>        <!-- /.sidebar -->
+
+                <div id="pjax">
+                <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">List phone</h1>
+                                                <a href="http://test.test/ftel-phone/create" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> Export
+                        </a>
+                                            </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="http://test.test/home">Home</a></li>
+                            <li class="breadcrumb-item active">Phone</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-body col-sm-12">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                                            <tr>
+                            <td>0354370175</td>
+                            <td></td>
+                        </tr>
+                                        </tbody>
+                </table>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+        </div>
+                <footer class="main-footer">
+    <strong>Copyright &copy; 2022 <a href="http://test.test">Hi FPT </a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+        <b>Version</b>
+    </div>
+</footer>        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+    <script src="http://test.test/themes/plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="http://test.test/themes/plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+
+</script>
+<!-- Bootstrap 4 -->
+<script src="http://test.test/themes/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="http://test.test/themes/plugins/chart.js/Chart.min.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="http://test.test/themes/plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="http://test.test/themes/plugins/moment/moment.min.js"></script>
+<script src="http://test.test/themes/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="http://test.test/themes/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="http://test.test/themes/plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="http://test.test/themes/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="http://test.test/themes/dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="http://test.test/themes/dist/js/demo.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="http://test.test/themes/dist/js/pages/dashboard3.js"></script>
+<script src="http://test.test/themes/plugins/select2/js/select2.full.min.js"></script>
+<script src="http://test.test/themes/plugins/bootstrap-select-1.13.14/dist/js/bootstrap-select.js"></script>
+<script src="http://test.test/custom_js/jquery.pjax.js"></script>
+<!-- DataTables -->
+<script src="http://test.test/themes/plugins/datatables/jquery.dataTables.js"></script>
+
+<!-- jquery-tmpl -->
+<script src="http://test.test/themes/plugins/jquery-tmpl/jquery-tmpl.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+
+<script src="http://test.test/js/dataTablebutton.min.js"></script>
+<script src="http://test.test/js/buttonHtml5.js"></script>
+<script src="http://test.test/js/jszip.min.js"></script>
+<script src="http://test.test/custom_js/javascript.js"></script>
+<script src="http://test.test/custom_js/initTable.js"></script>
+<script src="http://test.test/custom_js/rolemanage.js"></script>
+<script src="http://test.test/custom_js/closerequest.js"></script>
+<script src="http://test.test/custom_js/updateprofile.js"></script>
+<script src="http://test.test/custom_js/smsworld.js"></script>
+<script src="http://test.test/custom_js/checkuserinfo.js"></script>
+<script src="http://test.test/custom_js/bannermanage.js"></script>
+<script src="http://test.test/custom_js/otp.js"></script>
+<script src="http://test.test/custom_js/iconmanagement.js"></script>
+<script>
+
+
+
+
+</script>
+        <!-- jQuery -->
+</body>
+
+</html>

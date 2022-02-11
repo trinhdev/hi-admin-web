@@ -1,18 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\Hi_FPT;
-
+use Excel;
 use Carbon\Carbon;
+use App\Exports\Export;
+use App\Models\FtelPhone;
+use App\Services\HrService;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\FtelPhoneRequest;
-use App\Services\HrService;
-use App\Models\FtelPhone;
-use App\Exports\Export;
-use Excel;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class FtelPhoneController extends MY_Controller
 {
@@ -56,11 +56,37 @@ class FtelPhoneController extends MY_Controller
         $hrService = new HrService();
         $token = $hrService->loginHr()->authorization;
         $dataExport = [];
+        $id = 1;
         foreach($arrPhone as $arPhone)
         {
             $phone = trim($arPhone);
             $findPhone = $this->model->where('number_phone',$phone)->first();
             if(isset($findPhone) && now()->subWeeks() >= $findPhone->updated_at) {
+                $getInfo = $hrService->getInfoEmployee($phone,$token);
+                if(isset($getInfo)) {
+                    $findPhone->update([
+                        'number_phone' => $phone,
+                        'code' => $getInfo->code,
+                        'emailAddress' => $getInfo->emailAddress,
+                        'fullName' => $getInfo->fullName,
+                        'response' => json_encode($getInfo),
+                        'organizationNamePath' => $getInfo->organizationNamePath, 
+                        'organizationCodePath' => $getInfo->organizationCodePath
+                    ]);
+                    array_push($dataExport, [
+                        'id' => $id++,
+                        'number_phone'=> $phone,
+                        'code' => $getInfo->code,
+                        'emailAddress' => $getInfo->emailAddress,
+                        'fullName'=> $getInfo->fullName,
+                        'organizationCodePath' => $getInfo->organizationCodePath, 
+                    ]);
+                } else {
+                    $findPhone->update([
+                        'updated_at' => now()
+                    ]);
+                }
+            } elseif(isset($findPhone)) {
                 $getInfo = $hrService->getInfoEmployee($phone,$token);
                 if(isset($getInfo)) {
                     $obj = [
@@ -73,7 +99,14 @@ class FtelPhoneController extends MY_Controller
                         'organizationCodePath' => $getInfo->organizationCodePath
                     ];
                     $findPhone->update($obj);
-                    array_push($dataExport, $obj);
+                    array_push($dataExport, [
+                        'id' => $id++,
+                        'number_phone'=> $phone,
+                        'code' => $getInfo->code,
+                        'emailAddress' => $getInfo->emailAddress,
+                        'fullName'=> $getInfo->fullName,
+                        'organizationCodePath' => $getInfo->organizationCodePath, 
+                    ]);
                 } else {
                     $findPhone->update([
                         'updated_at' => now()
@@ -103,14 +136,21 @@ class FtelPhoneController extends MY_Controller
                     } else {
                         $obj['created_by'] = $this->user->id;
                         $this->model->create($obj);
-                        array_push($dataExport, $obj);
+                        array_push($dataExport, [
+                            'id' => $id++,
+                            'number_phone'=> $phone,
+                            'code' => $getInfo->code,
+                            'emailAddress' => $getInfo->emailAddress,
+                            'fullName'=> $getInfo->fullName,
+                            'organizationCodePath' => $getInfo->organizationCodePath, 
+                        ]);
                     }               
                 }
             }
             
         }
-        Excel::download(new Export($dataExport), 'phone-list.xlsx');
-        return redirect()->back()->withSuccess('Success');
+        return $this->export($dataExport);
+        //return redirect()->back()->withSuccess('Success');
     }
 
     /**
@@ -119,9 +159,13 @@ class FtelPhoneController extends MY_Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function export($dataExport)
     {
-        //
+        return Excel::download(new Export($dataExport), 'FtelPhone_'.now().'.xlsx');
+    }
+    public function show()
+    {
+        
     }
 
     /**

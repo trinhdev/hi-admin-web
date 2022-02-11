@@ -1,0 +1,57 @@
+@extends('layouts.default')
+
+@section('content')
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">List phone</h1>
+                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
+                        <a href="{{ route('ftel_phone.create') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> Export
+                        </a>
+                        @endif
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                            <li class="breadcrumb-item active">Phone</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-body col-sm-12">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- @foreach($data as $key => $d)
+                        <tr>
+                            <td>{{ $d['number_phone'] }}</td>
+                            <td></td>
+                        </tr>
+                    @endforeach -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+@endsection
