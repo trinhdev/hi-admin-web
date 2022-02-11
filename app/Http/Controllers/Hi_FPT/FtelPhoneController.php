@@ -8,6 +8,7 @@ use App\Models\FtelPhone;
 use App\Services\HrService;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
+use App\Imports\FtelPhoneImport;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MY_Controller;
@@ -163,9 +164,13 @@ class FtelPhoneController extends MY_Controller
     {
         return Excel::download(new Export($dataExport), 'FtelPhone_'.now().'.xlsx');
     }
-    public function show()
+
+    public function import(Request $request) 
     {
-        
+        $path1 = $request->file('exel')->store('temp'); 
+        $path=storage_path('app').'/'.$path1;  
+        Excel::import(new FtelPhoneImport, $path);
+        return redirect()->back()->withSuccess('Success');
     }
 
     /**

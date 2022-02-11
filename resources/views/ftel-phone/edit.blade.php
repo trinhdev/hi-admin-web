@@ -41,7 +41,7 @@
                             @csrf
                             <div class="card card-info">
                                 <div class="card-header">
-                                    <h3 class="card-title uppercase">Phone Info</h3>
+                                    <h3 class="card-title uppercase">Phone Info </h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="card-body">
@@ -65,6 +65,38 @@
                                 <div class="card-footer" style="text-align: center">
                                     <a href="/ftel-phone" type="button" class="btn btn-default">Cancel</a>
                                     <button id="check" type="submit" class="btn btn-info">Check</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form action="{{ route('ftel_phone.import') }}" method="POST" novalidate="novalidate" autocomplete="off" onSubmit="handleSubmit(event,this)" enctype="multipart/form-data">
+                            @csrf
+                            <div class="card card-info">
+                                <div class="card-header">
+                                    <h3 class="card-title uppercase">Phone Import Exel</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="module_name">Phone</label>
+                                            <input type="file" id="number_phone" name="exel" class="form-control @error('exel') is-invalid @enderror" placeholder="Có thể thêm nhiều số điện thoại cách nhau bằng dấu phẩy ','" >
+                                            @error('exel')
+                                                <span class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                            <br>
+                                            <nav aria-label="breadcrumb">
+                                            <ol class="breadcrumb">
+                                                <ul>                                                  
+                                                    <b>Note</b>: Lưu list file số điện thoại theo 1 cột duy nhất
+                                                </ul>
+                                            </ol>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer" style="text-align: center">
+                                    <a href="/ftel-phone" type="button" class="btn btn-default">Cancel</a>
+                                    <button id="check" type="submit" class="btn btn-info">Import</button>
                                 </div>
                             </div>
                         </form>
