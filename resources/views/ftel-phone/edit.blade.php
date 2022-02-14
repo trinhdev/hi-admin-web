@@ -69,7 +69,7 @@
                             </div>
                         </form>
 
-                        <form action="{{ route('ftel_phone.import') }}" method="POST" novalidate="novalidate" autocomplete="off" onSubmit="handleSubmit(event,this)" enctype="multipart/form-data">
+                        <!-- <form action="{{ route('ftel_phone.import') }}" method="POST" novalidate="novalidate" autocomplete="off" onSubmit="handleSubmit(event,this)" enctype="multipart/form-data">
                             @csrf
                             <div class="card card-info">
                                 <div class="card-header">
@@ -99,7 +99,7 @@
                                     <button id="check" type="submit" class="btn btn-info">Import</button>
                                 </div>
                             </div>
-                        </form>
+                        </form> -->
                     </div>
                 </div>
             </div>

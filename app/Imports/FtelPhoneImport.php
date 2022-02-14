@@ -2,8 +2,10 @@
 
 namespace App\Imports;
 
+use App\Exports\Export;
 use App\Models\FtelPhone;
 use App\Services\HrService;
+use Excel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -21,8 +23,10 @@ class FtelPhoneImport implements ToModel, WithBatchInserts, WithValidation, Skip
         $hrService = new HrService();
         $token = $hrService->loginHr()->authorization;
         $findPhone = FtelPhone::where('number_phone',$row[0])->first();
+        $dataExport = [];
+        $id = 1;
         if(isset($findPhone) && now()->subWeeks() >= $findPhone->updated_at) {
-            $getInfo = $hrService->getInfoEmployee($phone,$token);
+            $getInfo = $hrService->getInfoEmployee($row[0],$token);
             if(isset($getInfo)) {
                 $findPhone->update([
                     'number_phone' => $row[0],
@@ -32,6 +36,14 @@ class FtelPhoneImport implements ToModel, WithBatchInserts, WithValidation, Skip
                     'response' => json_encode($getInfo),
                     'organizationNamePath' => $getInfo->organizationNamePath, 
                     'organizationCodePath' => $getInfo->organizationCodePath
+                ]);
+                array_push($dataExport, [
+                    'id' => $id++,
+                    'number_phone'=> $row[0],
+                    'code' => $getInfo->code,
+                    'emailAddress' => $getInfo->emailAddress,
+                    'fullName'=> $getInfo->fullName,
+                    'organizationCodePath' => $getInfo->organizationCodePath, 
                 ]);
             } else {
                 $findPhone->update([
@@ -51,7 +63,14 @@ class FtelPhoneImport implements ToModel, WithBatchInserts, WithValidation, Skip
                     'organizationCodePath' => $getInfo->organizationCodePath
                 ];
                 $findPhone->update($obj);
-
+                array_push($dataExport, [
+                    'id' => $id++,
+                    'number_phone'=> $row[0],
+                    'code' => $getInfo->code,
+                    'emailAddress' => $getInfo->emailAddress,
+                    'fullName'=> $getInfo->fullName,
+                    'organizationCodePath' => $getInfo->organizationCodePath, 
+                ]);
             } else {
                 $findPhone->update([
                     'updated_at' => now()
@@ -80,12 +99,18 @@ class FtelPhoneImport implements ToModel, WithBatchInserts, WithValidation, Skip
                 } else {
                     $obj['created_by'] = Auth::id();
                     FtelPhone::create($obj);
+                    array_push($dataExport, [
+                        'id' => $id++,
+                        'number_phone'=> $row[0],
+                        'code' => $getInfo->code,
+                        'emailAddress' => $getInfo->emailAddress,
+                        'fullName'=> $getInfo->fullName,
+                        'organizationCodePath' => $getInfo->organizationCodePath, 
+                    ]);
                 }               
             }
-            }
-        // return new FtelPhone([
-        //     'number_phone'  => $row[0],
-        // ]);
+        }
+        //return $dataExport;
     }
 
     public function batchSize(): int

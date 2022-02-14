@@ -1297,14 +1297,6 @@ function initFtelPhone() {
         "bDestroy": true,
         "scrollX": true,
         retrieve: true,
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ],
-        lengthMenu: [
-            [ 10, 25, 50, -1 ],
-            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
-            ],
         "ajax": {
             url: "/ftel-phone/initDatatable"
         },

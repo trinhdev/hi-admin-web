@@ -1,3 +1,6 @@
+@php
+    $data = session()->get( 'data' );
+@endphp
 @extends('layouts.default')
 
 @section('content')
@@ -8,11 +11,15 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">List phone</h1>
                         @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                        <a href="{{ route('ftel_phone.create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Export
-                        </a>
+                        <form action="{{ route('ftel_phone.export') }}" type="POST" novalidate="novalidate" autocomplete="off">
+                            @csrf
+                            @method('POST')
+                            <input type="hidden" name="data" value="{{ json_encode($data,TRUE)}}" />
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                        </form>
                         @endif
                     </div><!-- /.col -->
                     <div class="col-sm-6">
@@ -25,7 +32,6 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -33,20 +39,27 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
+                        <th>ID</th>
+                        <th>Phone</th>
+                        <th>Mã số nhân viên</th>
+                        <th>Email</th>
+                        <th>Tên đầy đủ</th>
+                        <th>Đơn vị</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <!-- @foreach($data as $key => $d)
-                        <tr>
-                            <td>{{ $d['number_phone'] }}</td>
-                            <td></td>
-                        </tr>
-                    @endforeach -->
+                    @if($data)
+                    @foreach($data as $data)
+                    <tr>
+                        <td>{{ $data['id'] }}</td>
+                        <td>{{ $data['number_phone'] }}</td>
+                        <td>{{ $data['code'] }}</td>
+                        <td>{{ $data['emailAddress'] }}</td>
+                        <td>{{ $data['fullName'] }}</td>    
+                        <td>{{ $data['organizationCodePath'] }}</td>                        
+                    </tr>
+                    @endforeach
+                    @endif
                     </tbody>
                 </table>
             </div>

@@ -80,7 +80,7 @@ class FtelPhoneController extends MY_Controller
                         'code' => $getInfo->code,
                         'emailAddress' => $getInfo->emailAddress,
                         'fullName'=> $getInfo->fullName,
-                        'organizationCodePath' => $getInfo->organizationCodePath, 
+                        'organizationCodePath' => substr( $getInfo->organizationCodePath, 13, 6 ), 
                     ]);
                 } else {
                     $findPhone->update([
@@ -106,7 +106,7 @@ class FtelPhoneController extends MY_Controller
                         'code' => $getInfo->code,
                         'emailAddress' => $getInfo->emailAddress,
                         'fullName'=> $getInfo->fullName,
-                        'organizationCodePath' => $getInfo->organizationCodePath, 
+                        'organizationCodePath' => substr( $getInfo->organizationCodePath, 13, 6 ),
                     ]);
                 } else {
                     $findPhone->update([
@@ -133,7 +133,14 @@ class FtelPhoneController extends MY_Controller
                     $code = $this->model->where('code',$getInfo->code)->first();
                     if(isset($code)) {
                         $code->update($obj);
-                        array_push($dataExport, $obj);
+                        array_push($dataExport, [
+                            'id' => $id++,
+                            'number_phone'=> $phone,
+                            'code' => $getInfo->code,
+                            'emailAddress' => $getInfo->emailAddress,
+                            'fullName'=> $getInfo->fullName,
+                            'organizationCodePath' => substr( $getInfo->organizationCodePath, 13, 6 ), 
+                        ]);
                     } else {
                         $obj['created_by'] = $this->user->id;
                         $this->model->create($obj);
@@ -143,15 +150,13 @@ class FtelPhoneController extends MY_Controller
                             'code' => $getInfo->code,
                             'emailAddress' => $getInfo->emailAddress,
                             'fullName'=> $getInfo->fullName,
-                            'organizationCodePath' => $getInfo->organizationCodePath, 
+                            'organizationCodePath' => substr( $getInfo->organizationCodePath, 13, 6 ), 
                         ]);
                     }               
                 }
             }
-            
         }
-        return $this->export($dataExport);
-        //return redirect()->back()->withSuccess('Success');
+        return redirect()->route('ftel_phone.viewExport')->with( ['data' => $dataExport] );
     }
 
     /**
@@ -160,17 +165,23 @@ class FtelPhoneController extends MY_Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function export($dataExport)
+
+    public function viewExport()
     {
-        return Excel::download(new Export($dataExport), 'FtelPhone_'.now().'.xlsx');
+        return view('ftel-phone.export');
+    }
+
+    public function export(Request $request)
+    {
+        $data = json_decode($request->data, TRUE);
+        return Excel::download(new Export($data), 'FtelPhone_'.now().'.xlsx');
     }
 
     public function import(Request $request) 
     {
         $path1 = $request->file('exel')->store('temp'); 
-        $path=storage_path('app').'/'.$path1;  
-        Excel::import(new FtelPhoneImport, $path);
-        return redirect()->back()->withSuccess('Success');
+        $path=storage_path('app').'/'.$path1;
+        return redirect()->route('ftel_phone.viewExport')->with( ['data' => $dataExport] );
     }
 
     /**
