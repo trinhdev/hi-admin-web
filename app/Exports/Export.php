@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -20,7 +21,6 @@ class Export implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'ID',
             'Phone',
             'Mã só nhân viên',
             'Email',

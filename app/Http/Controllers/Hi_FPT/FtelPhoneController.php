@@ -51,111 +51,76 @@ class FtelPhoneController extends MY_Controller
      * Số tồn tại trong db -> update lại nếu time > 1 tuần còn không bỏ qua
      * @return \Illuminate\Http\Response
      */
+    public function pushExport($getInfo, $phone, $dataExport, $id)
+    {
+        array_push($dataExport, [
+            'number_phone'=> $phone,
+            'code' => $getInfo->code,
+            'emailAddress' => $getInfo->emailAddress,
+            'fullName'=> $getInfo->fullName,
+            'organizationCodePath' => substr( $getInfo->organizationCodePath, 13, 6 ), 
+        ]);
+        $dataExport = array_unique($dataExport, SORT_REGULAR);
+        return $dataExport;
+    }
+    public function dataDB($getInfo, $phone)
+    {
+        $data = [
+            'number_phone' => $phone,
+            'code' => $getInfo->code,
+            'emailAddress' => $getInfo->emailAddress,
+            'fullName' => $getInfo->fullName,
+            'response' => json_encode($getInfo),
+            'organizationNamePath' => $getInfo->organizationNamePath, 
+            'organizationCodePath' => $getInfo->organizationCodePath,
+            'created_by' => $this->user->id
+        ];
+        return $data;
+    }
     public function store(FtelPhoneRequest $request)
     {
         $arrPhone = explode(',',$request->number_phone);
         $hrService = new HrService();
         $token = $hrService->loginHr()->authorization;
-        $dataExport = [];
-        $id = 1;
+        $dataExport = array(); $id = 0;
         foreach($arrPhone as $arPhone)
         {
+            $id++;
             $phone = trim($arPhone);
             $findPhone = $this->model->where('number_phone',$phone)->first();
             if(isset($findPhone) && now()->subWeeks() >= $findPhone->updated_at) {
                 $getInfo = $hrService->getInfoEmployee($phone,$token);
                 if(isset($getInfo)) {
-                    $findPhone->update([
-                        'number_phone' => $phone,
-                        'code' => $getInfo->code,
-                        'emailAddress' => $getInfo->emailAddress,
-                        'fullName' => $getInfo->fullName,
-                        'response' => json_encode($getInfo),
-                        'organizationNamePath' => $getInfo->organizationNamePath, 
-                        'organizationCodePath' => $getInfo->organizationCodePath
-                    ]);
-                    array_push($dataExport, [
-                        'id' => $id++,
-                        'number_phone'=> $phone,
-                        'code' => $getInfo->code,
-                        'emailAddress' => $getInfo->emailAddress,
-                        'fullName'=> $getInfo->fullName,
-                        'organizationCodePath' => substr( $getInfo->organizationCodePath, 13, 6 ), 
-                    ]);
+                    $findPhone->update($this->dataDB($getInfo, $phone));
+                    $dataExport = $this->pushExport($getInfo, $phone, $dataExport);
                 } else {
-                    $findPhone->update([
-                        'updated_at' => now()
-                    ]);
+                    $findPhone->update([ 'updated_at' => now() ]);
                 }
             } elseif(isset($findPhone)) {
                 $getInfo = $hrService->getInfoEmployee($phone,$token);
                 if(isset($getInfo)) {
-                    $obj = [
-                        'number_phone'=> $phone,
-                        'code' => $getInfo->code,
-                        'emailAddress' => $getInfo->emailAddress,
-                        'fullName'=> $getInfo->fullName,
-                        'response' => json_encode($getInfo),
-                        'organizationNamePath' => $getInfo->organizationNamePath, 
-                        'organizationCodePath' => $getInfo->organizationCodePath
-                    ];
-                    $findPhone->update($obj);
-                    array_push($dataExport, [
-                        'id' => $id++,
-                        'number_phone'=> $phone,
-                        'code' => $getInfo->code,
-                        'emailAddress' => $getInfo->emailAddress,
-                        'fullName'=> $getInfo->fullName,
-                        'organizationCodePath' => substr( $getInfo->organizationCodePath, 13, 6 ),
-                    ]);
+                    $findPhone->update($this->dataDB($getInfo, $phone));
+                    $dataExport = $this->pushExport($getInfo, $phone, $dataExport, $id);
                 } else {
-                    $findPhone->update([
-                        'updated_at' => now()
-                    ]);
+                    $findPhone->update([ 'updated_at' => now() ]);
                 }
             } elseif(empty($findPhone)) {
                 $getInfo = $hrService->getInfoEmployee($phone,$token);
                 if(empty($getInfo)) {
-                    $this->model->create([
-                        'number_phone'=> $phone,
-                        'created_by' => $this->user->id
-                    ]);
+                    $this->model->create([ 'number_phone'=> $phone, 'created_by' => $this->user->id ]);
                 } else {                                  
-                    $obj = [
-                        'number_phone'=> $phone,
-                        'code' => $getInfo->code,
-                        'emailAddress' => $getInfo->emailAddress,
-                        'fullName'=> $getInfo->fullName,
-                        'response' => json_encode($getInfo),
-                        'organizationNamePath' => $getInfo->organizationNamePath, 
-                        'organizationCodePath' => $getInfo->organizationCodePath
-                    ];
                     $code = $this->model->where('code',$getInfo->code)->first();
                     if(isset($code)) {
-                        $code->update($obj);
-                        array_push($dataExport, [
-                            'id' => $id++,
-                            'number_phone'=> $phone,
-                            'code' => $getInfo->code,
-                            'emailAddress' => $getInfo->emailAddress,
-                            'fullName'=> $getInfo->fullName,
-                            'organizationCodePath' => substr( $getInfo->organizationCodePath, 13, 6 ), 
-                        ]);
+                        $code->update($this->dataDB($getInfo, $phone));
+                        $dataExport = $this->pushExport($getInfo, $phone, $dataExport, $id);
                     } else {
-                        $obj['created_by'] = $this->user->id;
-                        $this->model->create($obj);
-                        array_push($dataExport, [
-                            'id' => $id++,
-                            'number_phone'=> $phone,
-                            'code' => $getInfo->code,
-                            'emailAddress' => $getInfo->emailAddress,
-                            'fullName'=> $getInfo->fullName,
-                            'organizationCodePath' => substr( $getInfo->organizationCodePath, 13, 6 ), 
-                        ]);
+                        $this->model->create($this->dataDB($getInfo, $phone));
+                        $dataExport = $this->pushExport($getInfo, $phone, $dataExport, $id);
                     }               
                 }
             }
         }
+        
         return redirect()->route('ftel_phone.viewExport')->with( ['data' => $dataExport] );
     }
 
@@ -173,7 +138,7 @@ class FtelPhoneController extends MY_Controller
 
     public function export(Request $request)
     {
-        $data = json_decode($request->data, TRUE);
+        $data = json_decode($request->data, TRUE);       
         return Excel::download(new Export($data), 'FtelPhone_'.now().'.xlsx');
     }
 

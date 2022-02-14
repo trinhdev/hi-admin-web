@@ -1,5 +1,6 @@
 @php
     $data = session()->get( 'data' );
+    $id = 1;
 @endphp
 @extends('layouts.default')
 
@@ -11,7 +12,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
+                        @if($data!=null && Auth::user()->role_id == ADMIN)
                         <form action="{{ route('ftel_phone.export') }}" type="POST" novalidate="novalidate" autocomplete="off">
                             @csrf
                             @method('POST')
@@ -37,6 +38,7 @@
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
                 <table>
+                    @if($data)
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -48,10 +50,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @if($data)
+                    
                     @foreach($data as $data)
                     <tr>
-                        <td>{{ $data['id'] }}</td>
+                        <td>{{ $id++ }}</td>
                         <td>{{ $data['number_phone'] }}</td>
                         <td>{{ $data['code'] }}</td>
                         <td>{{ $data['emailAddress'] }}</td>
@@ -59,6 +61,8 @@
                         <td>{{ $data['organizationCodePath'] }}</td>                        
                     </tr>
                     @endforeach
+                    @else
+                    <h3 class="text-center"><i>Không có dữ liệu</i></h3>
                     @endif
                     </tbody>
                 </table>
