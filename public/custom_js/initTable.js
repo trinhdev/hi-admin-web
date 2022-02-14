@@ -975,14 +975,13 @@ function initBannerManage(response) {
     });
 }
 function initPopupManage(response) {
-    console.log(response);
     var dataTable = [];
     var activePopup = [];
     var unactivePopup = [];
     var flagAcl = false;
     var stt = 1;
     response.data.forEach(element => {
-        let subData = convertDetailBanner(element);
+        let subData = convertDetailPopup(element);
         (subData.is_banner_expired) ? unactivePopup.push(subData): activePopup.push(subData);
     });
     activePopup = activePopup.sort(function (first, seccond) {
@@ -992,6 +991,7 @@ function initPopupManage(response) {
         return new Date(seccond.date_created) - new Date(first.date_created);
     });
     dataTable = activePopup.concat(unactivePopup);
+    console.log(dataTable);
     var columnData = [{
         title: 'STT',
         className: 'text-center',
@@ -1021,7 +1021,7 @@ function initPopupManage(response) {
         //     }
         // },
         {
-            data: 'bannerType',
+            data: 'templateType',
             title: 'Loại Banner',
             className: 'text-center'
         },

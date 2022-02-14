@@ -180,10 +180,10 @@ class PopupManageController extends MY_Controller
 
     public function store(Request $request)
     {
-        $timeline = $request->all()['timeline'];
-        $timeline_array = explode(" - ", $timeline);
-        $dateStart = $timeline_array[0];
-        $dateEnd = $timeline_array[1];
+//        $timeline = $request->all()['timeline'];
+//        $timeline_array = explode(" - ", $timeline);
+//        $dateStart = $timeline_array[0];
+//        $dateEnd = $timeline_array[1];
         $ruleButtonImage = [
             'directionId' => 'required',
             'img_path_2_name' => 'required',
@@ -229,19 +229,19 @@ class PopupManageController extends MY_Controller
             $createParams['directionUrl'] = $directionUrl;
         }
         $create_banner_response = $newsEventService->addNewPopup($createParams);
-        if (!empty($create_banner_response->data)) {
-            $pushParams = [
-                'popupTemplateId' => $create_banner_response->data->templatePersonalId,
-                'repeatTime' => ($request->repeatTime != 'other') ? $request->repeatTime : $request->other_min,
-                'dateStart' => $dateStart,
-                'dateEnd' => $dateEnd,
-                'objectType' => $request->objecttype,
-                'objects' => $request->object,
-            ];
-            $push_response = $newsEventService->pushTemplate($pushParams);
-            my_debug($push_response);
-            return redirect()->route('popupmanage.index')->withSuccess('Success!');
-        }
+//        if (!empty($create_banner_response->data)) {
+//            $pushParams = [
+//                'popupTemplateId' => $create_banner_response->data->templatePersonalId,
+//                'repeatTime' => ($request->repeatTime != 'other') ? $request->repeatTime : $request->other_min,
+////                'dateStart' => $dateStart,
+////                'dateEnd' => $dateEnd,
+//                'objectType' => $request->objecttype,
+//                'objects' => $request->object,
+//            ];
+//            $push_response = $newsEventService->pushTemplate($pushParams);
+//            my_debug($push_response);
+//            return redirect()->route('popupmanage.index')->withSuccess('Success!');
+//        }
         return redirect()->route('popupmanage.index')->withErrors(isset($create_banner_response->description) ? $create_banner_response->description : $create_banner_response->message);
     }
 
