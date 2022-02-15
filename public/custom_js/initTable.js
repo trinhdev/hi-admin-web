@@ -5,7 +5,9 @@ $(document).ready(function () {
         initSelect();
         const pathArray = window.location.pathname.split("/");
         let segment = pathArray[1]; //first uri param
+        let segment2 = pathArray[2];
         switch (segment) {
+
             case 'user':
                 initUser();
                 break;
@@ -54,11 +56,11 @@ $(document).ready(function () {
             case 'ftel-phone':
                 initFtelPhone();
                 break;
-            case '':
             case 'home':
                 drawChart();
                 break;
         }
+        
 
     });
     $(document).on('pjax:popstate', function (event) {
@@ -1364,6 +1366,7 @@ function initFtelPhone() {
         searchDelay: 500
     });
 }
+
 function badgeArrayView(arrayInput) {
     var badge = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark', 'bg-light text-dark', 'bg-dark'];
     var count_badge = 0;

@@ -36,10 +36,4 @@ class Export implements FromCollection, WithHeadings
     {
         return collect($this->data);
     }
-    // public function view(): View
-    // {
-    //     return view('ftel-phone.export', [
-    //         'data' => $this->data
-    //     ]);
-    // }
 }

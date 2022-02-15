@@ -11,8 +11,10 @@ use App\Http\Traits\DataTrait;
 use App\Imports\FtelPhoneImport;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\FtelPhoneRequest;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class FtelPhoneController extends MY_Controller
@@ -24,21 +26,12 @@ class FtelPhoneController extends MY_Controller
         $this->title = 'Phone';
         $this->model = $this->getModel('FtelPhone');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return view('ftel-phone.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('ftel-phone.edit');
@@ -120,67 +113,24 @@ class FtelPhoneController extends MY_Controller
                 }
             }
         }
-        
-        return redirect()->route('ftel_phone.viewExport')->with( ['data' => $dataExport] );
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
-    public function viewExport()
-    {
-        return view('ftel-phone.export');
+        return redirect()->route('ftel_phone.create')->with( ['data' => $dataExport])->withSuccess('success');
+        //return view('ftel-phone.edit')->with( ['data' => $dataExport] )->withSuccess('success', 'Success');
     }
 
     public function export(Request $request)
     {
-        $data = json_decode($request->data, TRUE);       
+        $data = json_decode($request->data, TRUE);
+        $request->session()->flash('success', 'Task was successful!');
         return Excel::download(new Export($data), 'FtelPhone_'.now().'.xlsx');
     }
 
     public function import(Request $request) 
     {
-        $path1 = $request->file('exel')->store('temp'); 
+        $import = new FtelPhoneImport;
+        $path1 = $request->file('excel')->store('temp'); 
         $path=storage_path('app').'/'.$path1;
-        return redirect()->route('ftel_phone.viewExport')->with( ['data' => $dataExport] );
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $dataExcel = Excel::import($import, $path);
+        return redirect()->route('ftel_phone.create');
     }
 
     public function initDatatable(Request $request){

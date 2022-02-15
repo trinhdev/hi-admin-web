@@ -8,109 +8,19 @@ use App\Services\HrService;
 use Excel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
-class FtelPhoneImport implements ToModel, WithBatchInserts, WithValidation, SkipsEmptyRows
+class FtelPhoneImport implements ToCollection, WithBatchInserts, WithValidation, SkipsEmptyRows
 {
     use Importable; 
 
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
-        $hrService = new HrService();
-        $token = $hrService->loginHr()->authorization;
-        $findPhone = FtelPhone::where('number_phone',$row[0])->first();
-        $dataExport = [];
-        $id = 1;
-        if(isset($findPhone) && now()->subWeeks() >= $findPhone->updated_at) {
-            $getInfo = $hrService->getInfoEmployee($row[0],$token);
-            if(isset($getInfo)) {
-                $findPhone->update([
-                    'number_phone' => $row[0],
-                    'code' => $getInfo->code,
-                    'emailAddress' => $getInfo->emailAddress,
-                    'fullName' => $getInfo->fullName,
-                    'response' => json_encode($getInfo),
-                    'organizationNamePath' => $getInfo->organizationNamePath, 
-                    'organizationCodePath' => $getInfo->organizationCodePath
-                ]);
-                array_push($dataExport, [
-                    'id' => $id++,
-                    'number_phone'=> $row[0],
-                    'code' => $getInfo->code,
-                    'emailAddress' => $getInfo->emailAddress,
-                    'fullName'=> $getInfo->fullName,
-                    'organizationCodePath' => $getInfo->organizationCodePath, 
-                ]);
-            } else {
-                $findPhone->update([
-                    'updated_at' => now()
-                ]);
-            }
-        } elseif(isset($findPhone)) {
-            $getInfo = $hrService->getInfoEmployee($row[0],$token);
-            if(isset($getInfo)) {
-                $obj = [
-                    'number_phone'=> $row[0],
-                    'code' => $getInfo->code,
-                    'emailAddress' => $getInfo->emailAddress,
-                    'fullName'=> $getInfo->fullName,
-                    'response' => json_encode($getInfo),
-                    'organizationNamePath' => $getInfo->organizationNamePath, 
-                    'organizationCodePath' => $getInfo->organizationCodePath
-                ];
-                $findPhone->update($obj);
-                array_push($dataExport, [
-                    'id' => $id++,
-                    'number_phone'=> $row[0],
-                    'code' => $getInfo->code,
-                    'emailAddress' => $getInfo->emailAddress,
-                    'fullName'=> $getInfo->fullName,
-                    'organizationCodePath' => $getInfo->organizationCodePath, 
-                ]);
-            } else {
-                $findPhone->update([
-                    'updated_at' => now()
-                ]);
-            }
-        } elseif(empty($findPhone)) {
-            $getInfo = $hrService->getInfoEmployee($row[0],$token);
-            if(empty($getInfo)) {
-                FtelPhone::create([
-                    'number_phone'=> $row[0],
-                    'created_by' => Auth::id(),
-                ]);
-            } else {                                  
-                $obj = [
-                    'number_phone'=> $row[0],
-                    'code' => $getInfo->code,
-                    'emailAddress' => $getInfo->emailAddress,
-                    'fullName'=> $getInfo->fullName,
-                    'response' => json_encode($getInfo),
-                    'organizationNamePath' => $getInfo->organizationNamePath, 
-                    'organizationCodePath' => $getInfo->organizationCodePath
-                ];
-                $code = FtelPhone::where('code',$getInfo->code)->first();
-                if(isset($code)) {
-                    $code->update($obj);
-                } else {
-                    $obj['created_by'] = Auth::id();
-                    FtelPhone::create($obj);
-                    array_push($dataExport, [
-                        'id' => $id++,
-                        'number_phone'=> $row[0],
-                        'code' => $getInfo->code,
-                        'emailAddress' => $getInfo->emailAddress,
-                        'fullName'=> $getInfo->fullName,
-                        'organizationCodePath' => $getInfo->organizationCodePath, 
-                    ]);
-                }               
-            }
-        }
-        //return $dataExport;
+        return redirect()->route('ftel_phone.create')->with(['dataExcel' => $rows->toArray()]);
     }
 
     public function batchSize(): int
@@ -134,5 +44,107 @@ class FtelPhoneImport implements ToModel, WithBatchInserts, WithValidation, Skip
             ]
         ];
     }
+
+    public function validationMessages()
+    {
+        return [
+            '0' => trans('user.first_name_is_required'),
+        ];
+    }
+
+    // public function model(array $row)
+    // {
+    //     $hrService = new HrService();
+    //     $token = $hrService->loginHr()->authorization;
+    //     $findPhone = FtelPhone::where('number_phone',$row[0])->first();
+    //     $dataExport = [];
+    //     $id = 1;
+    //     if(isset($findPhone) && now()->subWeeks() >= $findPhone->updated_at) {
+    //         $getInfo = $hrService->getInfoEmployee($row[0],$token);
+    //         if(isset($getInfo)) {
+    //             $findPhone->update([
+    //                 'number_phone' => $row[0],
+    //                 'code' => $getInfo->code,
+    //                 'emailAddress' => $getInfo->emailAddress,
+    //                 'fullName' => $getInfo->fullName,
+    //                 'response' => json_encode($getInfo),
+    //                 'organizationNamePath' => $getInfo->organizationNamePath, 
+    //                 'organizationCodePath' => $getInfo->organizationCodePath
+    //             ]);
+    //             array_push($dataExport, [
+    //                 'id' => $id++,
+    //                 'number_phone'=> $row[0],
+    //                 'code' => $getInfo->code,
+    //                 'emailAddress' => $getInfo->emailAddress,
+    //                 'fullName'=> $getInfo->fullName,
+    //                 'organizationCodePath' => $getInfo->organizationCodePath, 
+    //             ]);
+    //         } else {
+    //             $findPhone->update([
+    //                 'updated_at' => now()
+    //             ]);
+    //         }
+    //     } elseif(isset($findPhone)) {
+    //         $getInfo = $hrService->getInfoEmployee($row[0],$token);
+    //         if(isset($getInfo)) {
+    //             $obj = [
+    //                 'number_phone'=> $row[0],
+    //                 'code' => $getInfo->code,
+    //                 'emailAddress' => $getInfo->emailAddress,
+    //                 'fullName'=> $getInfo->fullName,
+    //                 'response' => json_encode($getInfo),
+    //                 'organizationNamePath' => $getInfo->organizationNamePath, 
+    //                 'organizationCodePath' => $getInfo->organizationCodePath
+    //             ];
+    //             $findPhone->update($obj);
+    //             array_push($dataExport, [
+    //                 'id' => $id++,
+    //                 'number_phone'=> $row[0],
+    //                 'code' => $getInfo->code,
+    //                 'emailAddress' => $getInfo->emailAddress,
+    //                 'fullName'=> $getInfo->fullName,
+    //                 'organizationCodePath' => $getInfo->organizationCodePath, 
+    //             ]);
+    //         } else {
+    //             $findPhone->update([
+    //                 'updated_at' => now()
+    //             ]);
+    //         }
+    //     } elseif(empty($findPhone)) {
+    //         $getInfo = $hrService->getInfoEmployee($row[0],$token);
+    //         if(empty($getInfo)) {
+    //             FtelPhone::create([
+    //                 'number_phone'=> $row[0],
+    //                 'created_by' => Auth::id(),
+    //             ]);
+    //         } else {                                  
+    //             $obj = [
+    //                 'number_phone'=> $row[0],
+    //                 'code' => $getInfo->code,
+    //                 'emailAddress' => $getInfo->emailAddress,
+    //                 'fullName'=> $getInfo->fullName,
+    //                 'response' => json_encode($getInfo),
+    //                 'organizationNamePath' => $getInfo->organizationNamePath, 
+    //                 'organizationCodePath' => $getInfo->organizationCodePath
+    //             ];
+    //             $code = FtelPhone::where('code',$getInfo->code)->first();
+    //             if(isset($code)) {
+    //                 $code->update($obj);
+    //             } else {
+    //                 $obj['created_by'] = Auth::id();
+    //                 FtelPhone::create($obj);
+    //                 array_push($dataExport, [
+    //                     'id' => $id++,
+    //                     'number_phone'=> $row[0],
+    //                     'code' => $getInfo->code,
+    //                     'emailAddress' => $getInfo->emailAddress,
+    //                     'fullName'=> $getInfo->fullName,
+    //                     'organizationCodePath' => $getInfo->organizationCodePath, 
+    //                 ]);
+    //             }               
+    //         }
+    //     }
+    //     //return $row;
+    // }
 
 }

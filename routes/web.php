@@ -102,8 +102,7 @@ Route::group([
                 Route::get('/exportPhone', [FtelPhoneController::class, 'export'])->name('ftel_phone.export');
                 Route::get('/destroy/{id}', [FtelPhoneController::class, 'destroy'])->name('ftel_phone.destroy');
                 Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');
-
-                Route::post('/phone-info', [FtelPhoneController::class, 'PhoneInfo'])->name('ftel_phone.phoneInfo');
+                Route::get('/initExportDatatable', [FtelPhoneController::class, 'initExportDatatable'])->name('ftel_phone.initExportDatatable');
                 Route::get('/seed', [FtelPhoneController::class, function(){
                     $faker = Faker::create();
                     $gender = $faker->randomElement(["03", "07", "08", "09", "05"]);
