@@ -126,16 +126,18 @@ class FtelPhoneController extends MY_Controller
 
     public function import(Request $request) 
     {
+        $validate = $request->validate(['excel' => 'mimes:xlsx'],['excel.mimes' => 'Sai định dạng file, vui lòng tải lên file có đuôi .xlsx']);
         $import = new FtelPhoneImport;
-        $path1 = $request->file('excel')->store('temp'); 
-        $path=storage_path('app').'/'.$path1;
-        $dataExcel = Excel::import($import, $path);
+        if($validate) {
+            $dataExcel = Excel::import($import, $request->file('excel'));
+        }
+        
         return redirect()->route('ftel_phone.create');
     }
 
     public function initDatatable(Request $request){
         if($request->ajax()){
-            $data = $this->model::query();
+            $data = $this->model->where('code', '!=' , 'null');
             return  DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
