@@ -98,24 +98,9 @@ Route::group([
                 Route::get('/create', [FtelPhoneController::class, 'create'])->name('ftel_phone.create');
                 Route::post('/store', [FtelPhoneController::class, 'store'])->name('ftel_phone.store');
                 Route::post('/import', [FtelPhoneController::class, 'import'])->name('ftel_phone.import');
-                Route::get('/export', [FtelPhoneController::class, 'viewExport'])->name('ftel_phone.viewExport');
                 Route::get('/exportPhone', [FtelPhoneController::class, 'export'])->name('ftel_phone.export');
-                Route::get('/destroy/{id}', [FtelPhoneController::class, 'destroy'])->name('ftel_phone.destroy');
-                Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');
-                Route::get('/initExportDatatable', [FtelPhoneController::class, 'initExportDatatable'])->name('ftel_phone.initExportDatatable');
-                Route::get('/seed', [FtelPhoneController::class, function(){
-                    $faker = Faker::create();
-                    $gender = $faker->randomElement(["03", "07", "08", "09", "05"]);
-                    $result = '';
-                    foreach (range(1,1001) as $index) {     
-                        $test = $gender.$faker->numberBetween(10000000,99999999);
-                        $result = $result.','.$test;
-                    }
-                    print_r($result);
-                }]);
-                            
+                Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');                       
             });
-
         });
         Route::namespace('Hdi')->group(function () {
             Route::prefix('checklistmanage')->group(function () {

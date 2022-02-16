@@ -39,4 +39,12 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+    @push('scripts')
+<script>
+    $(document).on('pjax:complete', function() {
+        changeFileFtelPhone();
+        datatableFtelPhoneExport();
+    });
+</script>
+@endpush
 @endsection

@@ -44,7 +44,7 @@ class FtelPhoneController extends MY_Controller
      * Số tồn tại trong db -> update lại nếu time > 1 tuần còn không bỏ qua
      * @return \Illuminate\Http\Response
      */
-    public function pushExport($getInfo, $phone, $dataExport, $id)
+    public function pushExport($getInfo, $phone, $dataExport)
     {
         array_push($dataExport, [
             'number_phone'=> $phone,
@@ -75,10 +75,9 @@ class FtelPhoneController extends MY_Controller
         $arrPhone = explode(',',$request->number_phone);
         $hrService = new HrService();
         $token = $hrService->loginHr()->authorization;
-        $dataExport = array(); $id = 0;
+        $dataExport = array();
         foreach($arrPhone as $arPhone)
         {
-            $id++;
             $phone = trim($arPhone);
             $findPhone = $this->model->where('number_phone',$phone)->first();
             if(isset($findPhone) && now()->subWeeks() >= $findPhone->updated_at) {
@@ -92,10 +91,7 @@ class FtelPhoneController extends MY_Controller
             } elseif(isset($findPhone)) {
                 $getInfo = $hrService->getInfoEmployee($phone,$token);
                 if(isset($getInfo)) {
-                    $findPhone->update($this->dataDB($getInfo, $phone));
-                    $dataExport = $this->pushExport($getInfo, $phone, $dataExport, $id);
-                } else {
-                    $findPhone->update([ 'updated_at' => now() ]);
+                    $dataExport = $this->pushExport($getInfo, $phone, $dataExport);
                 }
             } elseif(empty($findPhone)) {
                 $getInfo = $hrService->getInfoEmployee($phone,$token);
@@ -105,34 +101,31 @@ class FtelPhoneController extends MY_Controller
                     $code = $this->model->where('code',$getInfo->code)->first();
                     if(isset($code)) {
                         $code->update($this->dataDB($getInfo, $phone));
-                        $dataExport = $this->pushExport($getInfo, $phone, $dataExport, $id);
+                        $dataExport = $this->pushExport($getInfo, $phone, $dataExport);
                     } else {
                         $this->model->create($this->dataDB($getInfo, $phone));
-                        $dataExport = $this->pushExport($getInfo, $phone, $dataExport, $id);
+                        $dataExport = $this->pushExport($getInfo, $phone, $dataExport);
                     }               
                 }
             }
         }
-        return redirect()->route('ftel_phone.create')->with( ['data' => $dataExport])->withSuccess('success');
-        //return view('ftel-phone.edit')->with( ['data' => $dataExport] )->withSuccess('success', 'Success');
+        return view('ftel-phone.edit')->with( ['data' => $dataExport] );
     }
 
     public function export(Request $request)
     {
         $data = json_decode($request->data, TRUE);
-        $request->session()->flash('success', 'Task was successful!');
         return Excel::download(new Export($data), 'FtelPhone_'.now().'.xlsx');
     }
 
     public function import(Request $request) 
     {
-        $validate = $request->validate(['excel' => 'mimes:xlsx'],['excel.mimes' => 'Sai định dạng file, vui lòng tải lên file có đuôi .xlsx']);
+        $validate = $request->validate(['excel' => 'mimes:xlsx'],['excel.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx']);
         $import = new FtelPhoneImport;
         if($validate) {
-            $dataExcel = Excel::import($import, $request->file('excel'));
+            Excel::import($import, $request->file('excel'));
         }
-        
-        return redirect()->route('ftel_phone.create');
+        return view('ftel-phone.edit');
     }
 
     public function initDatatable(Request $request){

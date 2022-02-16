@@ -1,7 +1,7 @@
 <!-- Main content -->
 <section class="content">
             <div class="container-fluid">
-                        @if($data!=null && Auth::user()->role_id == ADMIN)
+                        @if(isset($data))
                         <form action="{{ route('ftel_phone.export') }}" type="POST" novalidate="novalidate" autocomplete="off">
                             @csrf
                             @method('POST')
@@ -13,8 +13,6 @@
                         @endif
                 <div class="card card-body col-sm-12 mt-2">
                     <table id="phoneExport" class="display nowrap" style="width:100%">
-
-                    @if($data!=null)
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -25,33 +23,21 @@
                             <th>Đơn vị</th>
                         </tr>
                     </thead>
+                    @if(isset($data))
                     <tbody>
-                    
-                    @foreach($data as $data)
+                    @foreach($data as $key => $value)
                     <tr>
-                        <td>{{ $id++ }}</td>
-                        <td>{{ $data['number_phone'] }}</td>
-                        <td>{{ $data['code'] }}</td>
-                        <td>{{ $data['emailAddress'] }}</td>
-                        <td>{{ $data['fullName'] }}</td>    
-                        <td>{{ $data['organizationCodePath'] }}</td>                        
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $value['number_phone'] }}</td>
+                        <td>{{ $value['code'] }}</td>
+                        <td>{{ $value['emailAddress'] }}</td>
+                        <td>{{ $value['fullName'] }}</td>    
+                        <td>{{ $value['organizationCodePath'] }}</td>                        
                     </tr>
                     @endforeach
-                    @else
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Phone</th>
-                            <th>Mã số nhân viên</th>
-                            <th>Email</th>
-                            <th>Tên đầy đủ</th>
-                            <th>Đơn vị</th>
-                        </tr>
-                    </thead>
                     @endif
                     </tbody>
                     </table>
-                    
                 </div>
             </div>
         </section>
