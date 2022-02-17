@@ -96,7 +96,7 @@ class FtelPhoneController extends MY_Controller
             } elseif(empty($findPhone)) {
                 $getInfo = $hrService->getInfoEmployee($phone,$token);
                 if(empty($getInfo)) {
-                    $this->model->create([ 'number_phone'=> $phone, 'created_by' => $this->user->id ]);
+                    $this->model->createSingleRecord([ 'number_phone'=> $phone]);
                 } else {                                  
                     $code = $this->model->where('code',$getInfo->code)->first();
                     if(isset($code)) {
@@ -133,6 +133,9 @@ class FtelPhoneController extends MY_Controller
             $data = $this->model->where('code', '!=' , 'null');
             return  DataTables::of($data)
             ->addIndexColumn()
+            ->editColumn('created_by',function($row){
+                return !empty($row->created_by) ? $row->createdBy->email : '';
+            })
             ->addColumn('action', function($row){
                 return view('layouts.button.action')->with(['row'=>$row,'module'=>'ftel_phone']);
             })

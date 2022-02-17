@@ -12,4 +12,11 @@ class FtelPhone extends MY_Model
     protected $table = 'ftel_phone';
     protected $primaryKey = 'id';
     protected $guarded = [];
+
+    public function createdBy(){
+        return $this->hasOne(User::class,'id','created_by');
+    }
+    public function updatedBy(){
+        return $this->hasOne(User::class,'id','updated_by');
+    }
 }
