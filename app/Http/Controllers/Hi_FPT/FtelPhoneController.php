@@ -72,39 +72,45 @@ class FtelPhoneController extends MY_Controller
     }
     public function store(FtelPhoneRequest $request)
     {
-        $arrPhone = explode(',',$request->number_phone);
+        $dataExport = array();
+        $dataPhoneDB = array();
         $hrService = new HrService();
         $token = $hrService->loginHr()->authorization;
-        $dataExport = array();
-        foreach($arrPhone as $arPhone)
-        {
-            $phone = trim($arPhone);
-            $findPhone = $this->model->where('number_phone',$phone)->first();
-            if(isset($findPhone) && now()->subWeeks() >= $findPhone->updated_at) {
-                $getInfo = $hrService->getInfoEmployee($phone,$token);
-                if(isset($getInfo)) {
-                    $findPhone->update($this->dataDB($getInfo, $phone));
-                    $dataExport = $this->pushExport($getInfo, $phone, $dataExport);
+        $arrPhone = explode(',',$request->number_phone);
+        $dataDB = $this->model->whereIn('number_phone', $arrPhone)->get();
+        if(isset($dataDB)) {
+            foreach($dataDB as $key => $value) // data co trong db > 7 day -> van goi api de update
+            {
+                if (now()->subWeeks() >= $value->updated_at) {
+                    $getInfo = $hrService->getInfoEmployee($value->number_phone,$token);
+                    if(isset($getInfo)) {
+                        $value->update($this->dataDB($getInfo, $value->number_phone));
+                        $dataExport = $this->pushExport($getInfo, $value->number_phone, $dataExport);
+                    } else {
+                        $value->update([ 'updated_at' => now() ]);
+                    }
                 } else {
-                    $findPhone->update([ 'updated_at' => now() ]);
+                    $dataExport = $this->pushExport($value, $value->number_phone, $dataExport); // sai trong TH data co db nhung api khong co (nhan vien nghi viec)
                 }
-            } elseif(isset($findPhone)) {
-                $getInfo = $hrService->getInfoEmployee($phone,$token);
-                if(isset($getInfo)) {
-                    $dataExport = $this->pushExport($getInfo, $phone, $dataExport);
-                }
-            } elseif(empty($findPhone)) {
-                $getInfo = $hrService->getInfoEmployee($phone,$token);
+                array_push($dataPhoneDB, $value->number_phone);
+            }
+        }
+
+        $dataAPI = array_diff($arrPhone, $dataPhoneDB);
+        if(isset($dataAPI)) {
+            foreach($dataAPI as $key => $value) // data ko co trong db -> goi api check
+            {
+                $getInfo = $hrService->getInfoEmployee($value,$token);
                 if(empty($getInfo)) {
-                    $this->model->createSingleRecord([ 'number_phone'=> $phone]);
+                    $this->model->create(['number_phone'=> $value, 'created_by' => $this->user->id]);
                 } else {                                  
                     $code = $this->model->where('code',$getInfo->code)->first();
                     if(isset($code)) {
-                        $code->update($this->dataDB($getInfo, $phone));
-                        $dataExport = $this->pushExport($getInfo, $phone, $dataExport);
+                        $code->update($this->dataDB($getInfo, $value));
+                        $dataExport = $this->pushExport($getInfo, $value, $dataExport);
                     } else {
-                        $this->model->create($this->dataDB($getInfo, $phone));
-                        $dataExport = $this->pushExport($getInfo, $phone, $dataExport);
+                        $this->model->create($this->dataDB($getInfo, $value));
+                        $dataExport = $this->pushExport($getInfo, $value, $dataExport);
                     }               
                 }
             }
