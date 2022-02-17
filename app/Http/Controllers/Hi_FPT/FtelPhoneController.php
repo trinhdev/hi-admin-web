@@ -90,7 +90,9 @@ class FtelPhoneController extends MY_Controller
                         $value->update([ 'updated_at' => now() ]);
                     }
                 } else {
-                    $dataExport = $this->pushExport($value, $value->number_phone, $dataExport); // sai trong TH data co db nhung api khong co (nhan vien nghi viec)
+                    if(isset($value->code)) {
+                        $dataExport = $this->pushExport($value, $value->number_phone, $dataExport); // sai trong TH data co db nhung api khong co (nhan vien nghi viec)
+                    }
                 }
                 array_push($dataPhoneDB, $value->number_phone);
             }
