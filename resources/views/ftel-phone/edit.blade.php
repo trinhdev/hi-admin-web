@@ -65,7 +65,6 @@
                                             </ol>
                                             </nav>
                                         </div>
-                                    </div>
                                     <div class="card-footer" style="text-align: center">
                                         <a href="/ftel-phone" type="button" class="btn btn-default">Cancel</a>
                                         <button id="check" type="submit" class="btn btn-info">Check</button>
