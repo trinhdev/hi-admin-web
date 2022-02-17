@@ -115,12 +115,6 @@ class FtelPhoneController extends MY_Controller
         return redirect()->back()->with( ['data' => $dataExport] );
     }
 
-    public function export(Request $request)
-    {
-        $data = json_decode($request->data, TRUE);
-        return $data;
-    }
-
     public function import(Request $request) 
     {
         $validate = $request->validate(['excel' => 'mimes:xlsx'],['excel.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx']);

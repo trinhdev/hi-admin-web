@@ -10,6 +10,7 @@ class FtelPhoneRequest extends FormRequest
     {
         parent::__construct();
         $this->limit = LIMIT_PHONE;
+        $this->email = EMAIL_FTEL_PHONE;
     }
     /**
      * Determine if the user is authorized to make this request.
@@ -36,7 +37,7 @@ class FtelPhoneRequest extends FormRequest
                     if (is_array($arrPhone) || is_object($arrPhone))
                     {
                         if(count($arrPhone) > $this->limit) {
-                            return $fail("Không được nhập quá giới hạn $this->limit số, nếu cần gấp vui lòng liên hệ email kĩ thuật phucnh74@fpt.com.vn !");
+                            return $fail("Quá giới hạn $this->limit số, nếu cần gấp vui lòng liên hệ kĩ thuật $this->email !");
                         }
                         foreach ($arrPhone as $arPhone) {
                             $phone = trim($arPhone);

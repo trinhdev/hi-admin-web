@@ -97,9 +97,7 @@ Route::group([
                 Route::get('/', [FtelPhoneController::class, 'index'])->name('ftel_phone.index');
                 Route::get('/create', [FtelPhoneController::class, 'create'])->name('ftel_phone.create');
                 Route::post('/store', [FtelPhoneController::class, 'store'])->name('ftel_phone.store');
-                Route::get('/import', [FtelPhoneController::class, 'create']);
                 Route::post('/import', [FtelPhoneController::class, 'import'])->name('ftel_phone.import');
-                Route::get('/exportPhone', [FtelPhoneController::class, 'export'])->name('ftel_phone.export');
                 Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');                       
             });
         });
