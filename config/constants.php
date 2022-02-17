@@ -1,5 +1,6 @@
 <?php
 define('ADMIN',1);
+define('LIMIT_PHONE',500);
 $listRedisKey = [
     'MODULE_BY_ROLE_ID' => 'acl_role_module', // acl_role_moduleX , X là role_id
     'SETTINGS' => 'settings',

@@ -9,7 +9,7 @@ class FtelPhoneRequest extends FormRequest
     public function __construct()
     {
         parent::__construct();
-        $this->limit = 500;
+        $this->limit = LIMIT_PHONE;
     }
     /**
      * Determine if the user is authorized to make this request.
