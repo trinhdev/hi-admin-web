@@ -1,16 +1,6 @@
 <!-- Main content -->
 <section class="content">
             <div class="container-fluid">
-                        @if(isset($data))
-                        <form action="{{ route('ftel_phone.export') }}" type="POST" novalidate="novalidate" autocomplete="off">
-                            @csrf
-                            @method('POST')
-                            <input type="hidden" name="data" value="{{ json_encode($data,TRUE)}}" />
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                <i class="fas fa-download"></i> Export
-                            </button>
-                        </form>
-                        @endif
                 <div class="card card-body col-sm-12 mt-2">
                     <table id="phoneExport" class="display nowrap" style="width:100%">
                     <thead>

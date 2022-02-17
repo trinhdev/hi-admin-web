@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers\Hi_FPT;
 use Excel;
-use Carbon\Carbon;
-use App\Exports\Export;
 use App\Models\FtelPhone;
 use App\Services\HrService;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use App\Imports\FtelPhoneImport;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\FtelPhoneRequest;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class FtelPhoneController extends MY_Controller
 {
@@ -46,12 +40,13 @@ class FtelPhoneController extends MY_Controller
      */
     public function pushExport($getInfo, $phone, $dataExport)
     {
+        $codePath = explode('/', $getInfo->organizationCodePath);
         array_push($dataExport, [
             'number_phone'=> $phone,
             'code' => $getInfo->code,
             'emailAddress' => $getInfo->emailAddress,
             'fullName'=> $getInfo->fullName,
-            'organizationCodePath' => substr( $getInfo->organizationCodePath, 13, 6 ), 
+            'organizationCodePath' => $codePath[2], 
         ]);
         $dataExport = array_unique($dataExport, SORT_REGULAR);
         return $dataExport;
@@ -123,7 +118,7 @@ class FtelPhoneController extends MY_Controller
     public function export(Request $request)
     {
         $data = json_decode($request->data, TRUE);
-        return Excel::download(new Export($data), 'FtelPhone_'.now().'.xlsx');
+        return $data;
     }
 
     public function import(Request $request) 

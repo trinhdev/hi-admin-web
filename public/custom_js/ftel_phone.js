@@ -8,6 +8,11 @@ function changeFileFtelPhone() {
 
 function datatableFtelPhoneExport() {
     $('#phoneExport').DataTable({
-        processing: true
+        processing: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+        ]
     });
 }

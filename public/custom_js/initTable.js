@@ -1299,6 +1299,8 @@ function initFtelPhone() {
         "bDestroy": true,
         "scrollX": true,
         retrieve: true,
+        "lengthMenu": [ 10, 25, 50, 75, 100 ],
+        "pageLength": 25,
         "ajax": {
             url: "/ftel-phone/initDatatable"
         },
