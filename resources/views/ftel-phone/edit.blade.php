@@ -2,6 +2,7 @@
 
 @section('content')
 @php
+    $data = session()->get( 'data' );
     $dataExcel = session()->get( 'dataExcel' );
 @endphp
 

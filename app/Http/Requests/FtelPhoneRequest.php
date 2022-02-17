@@ -6,6 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class FtelPhoneRequest extends FormRequest
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->limit = 500;
+    }
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -30,8 +35,8 @@ class FtelPhoneRequest extends FormRequest
                     $pattern = '/^(03|05|07|08|09)[0-9, ]*$/';
                     if (is_array($arrPhone) || is_object($arrPhone))
                     {
-                        if(count($arrPhone) > 1000) {
-                            return $fail("Không được nhập quá giới hạn 1000 số, nếu cần gấp vui lòng liên hệ email kĩ thuật phucnh74@fpt.com.vn !");
+                        if(count($arrPhone) > $this->limit) {
+                            return $fail("Không được nhập quá giới hạn $this->limit số, nếu cần gấp vui lòng liên hệ email kĩ thuật phucnh74@fpt.com.vn !");
                         }
                         foreach ($arrPhone as $arPhone) {
                             $phone = trim($arPhone);

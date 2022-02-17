@@ -109,7 +109,7 @@ class FtelPhoneController extends MY_Controller
                 }
             }
         }
-        return view('ftel-phone.edit')->with( ['data' => $dataExport] );
+        return redirect()->back()->with( ['data' => $dataExport] );
     }
 
     public function export(Request $request)
@@ -121,11 +121,8 @@ class FtelPhoneController extends MY_Controller
     public function import(Request $request) 
     {
         $validate = $request->validate(['excel' => 'mimes:xlsx'],['excel.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx']);
-        $import = new FtelPhoneImport;
-        if($validate) {
-            Excel::import($import, $request->file('excel'));
-        }
-        return view('ftel-phone.edit');
+        Excel::import(new FtelPhoneImport, $request->file('excel'));
+        return redirect()->back();
     }
 
     public function initDatatable(Request $request){
