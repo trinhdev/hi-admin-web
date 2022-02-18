@@ -29,9 +29,14 @@ $methodNewsEventDomain = [
     'GET_LIST_BANNER'       => 'provider/tool/banner/get-list-banner',
     'GET_DETAIL_BANNER'     => 'provider/tool/banner/get-detail-banner',
 ];
+$methodHr = [
+    'LOGIN' => 'api/services/hub/Login',
+    'GET_EMPLOYEE_INFO' => 'api/services/app/hifpt/GetEmployeeInfo',
+];
 return [
     'DOMAIN_INSIDE' => $methodInsideDomain,
     'DOMAIN_REPORT' => $methodReportDomain,
     'DOMAIN_SMS_WORLD' => $methodSmsWorld,
     'DOMAIN_NEWS_EVENT' =>  $methodNewsEventDomain,
+    'DOMAIN_HR'        => $methodHr
 ];
