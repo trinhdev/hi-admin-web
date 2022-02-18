@@ -56,6 +56,7 @@ $(document).ready(function () {
             case 'ftel-phone':
                 initFtelPhone();
                 break;
+            case '':
             case 'home':
                 drawChart();
                 break;
