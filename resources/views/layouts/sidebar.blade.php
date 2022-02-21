@@ -25,18 +25,25 @@
                     @if(!empty($groupModule))
                     @foreach($groupModule as $group)
                         @if(isset($group->children) && !empty($group->children))
-                           <li class="nav-item menu">
-                                <a href="#" class="nav-link">
+                            @php
+                                $uri = request()->segment(1);
+                                $is_exist = array_keys(array_column($group->children, 'uri'), $uri);
+                            @endphp
+                           <li class="nav-item menu {{ !empty($is_exist) ? "menu-is-opening menu-open" :"" }} ">
+                                <a href="#" class="nav-link {{ !empty($is_exist) ? 'active' : ''}}">
                                     <i class="nav-icon fas fa-tachometer-alt"></i>
                                     <p>
                                         {{ $group->group_module_name}}
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">
+                                <ul class="nav nav-treeview" style="display: {{ !empty($is_exist) ? 'block' : 'none'}}">
                                 @foreach($group->children as $module)
+                                    @php
+                                        $tmpUrl = $module->uri == "" ? "/" : $module->uri;
+                                    @endphp
                                     <li class="nav-item">
-                                        <a href="/{{ $module->uri }}" class="nav-link">
+                                        <a href="/{{ $module->uri }}" class="nav-link {{ (request()->is($tmpUrl) || request()->is($tmpUrl.'/*') ) ? 'active' : '' }}">
                                         <i class="nav-icon {{ $module->icon}}"></i>
                                         <p>{{ $module->module_name}}</p>
                                         </a>
@@ -46,7 +53,10 @@
                             </li>
                         @elseif(!isset($group->children))
                             <li class="nav-item">
-                                <a href="/{{ $group->uri }}" class="nav-link {{ request()->is($group->uri.'*') ? 'active' : '' }}">
+                                @php
+                                    $tmpUrl = $group->uri == "" ? "/" : $group->uri;
+                                @endphp
+                                <a href="/{{ $group->uri }}" class="nav-link {{ (request()->is($tmpUrl) || request()->is($tmpUrl.'/*') ) ? 'active' : '' }}">
                                 <i class="nav-icon {{ $group->icon}}"></i>
                                 <p>{{ $group->module_name}}</p>
                                 </a>

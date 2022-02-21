@@ -33,7 +33,7 @@
                         $isBannerPromotion = true;
                     }
                     @endphp
-                    <form action="{{$action}}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)">
+                    <form action="{{$action}}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)" onkeydown="checkEnableSave(this)">
                         @csrf
                         @if(!empty($banner))
                         @method('PUT')
@@ -130,7 +130,7 @@
                                             <label for="target_route">Điều hướng đến</label>
                                             <div id="collapseOne" tyle="transition: height 0.01s;">
                                                 {{-- <label for="target_route">Target Id</label> --}}
-                                                <select type="file" name="direction_id" class="form-control" id="target_route">
+                                                <select type="file" name="direction_id" class="form-control p" id="target_route" data-live-search="true" data-size="10">
                                                     <option selected value>None</option>
                                                     @if(!empty($list_target_route))
                                                     @foreach($list_target_route as $target)

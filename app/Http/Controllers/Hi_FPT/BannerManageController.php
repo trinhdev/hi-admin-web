@@ -207,16 +207,16 @@ class BannerManageController extends MY_Controller
             if(!empty($request->direction_id)){
                 $updateParams['directionId'] = $request->direction_id;
             }else{
-                $updateParams['directionId'] = NULL;
+                $updateParams['directionId'] = '';
             }
             if(!empty($request->direction_url)){
                 $updateParams['directionUrl'] = $request->direction_url;
             }else{
-                $updateParams['directionUrl'] = NULL;
+                $updateParams['directionUrl'] = '';
             }
         }else{
-            $updateParams['directionId'] = NULL;
-            $updateParams['directionUrl'] = NULL;
+            $updateParams['directionId'] = '';
+            $updateParams['directionUrl'] = '';
         };
 
         if(!empty($request->bannerType) && $request->bannerType =='promotion' && !empty($request->img_path_2_name) ){
@@ -229,16 +229,17 @@ class BannerManageController extends MY_Controller
         };
         if(!empty($request->cms_note)){
             $cms_note = json_decode($request->cms_note);
-            $cms_note->modified_by = $this->user->email;
+            $user_email = $this->user->email;
+            $cms_note->modified_by = substr($user_email, 0, strpos($user_email, '@'));
         }else{
             $cms_note = (object)[];
             $cms_note->created_by = null;
-            $cms_note->modified_by = $this->user->email;
+            $user_email = $this->user->email;
+            $cms_note->modified_by = substr($user_email, 0, strpos($user_email, '@'));
         }
         $updateParams['cms_note'] = json_encode($cms_note);
-        // my_debug($updateParams, false);
+        // my_debug(json$updateParams, false);
         $update_banner_response = $newsEventService->updateBanner($updateParams);
-        // dd($update_banner_response);
         if(isset($update_banner_response->statusCode) && $update_banner_response->statusCode == 0){
             return redirect()->route('bannermanage.index')->withSuccess('Success!');
         }
@@ -292,10 +293,14 @@ class BannerManageController extends MY_Controller
         if(!empty($request->has_target_route)){
             if(!empty($request->direction_id)){
                 $createParams['directionId'] = $request->direction_id;
-            };
+            }else{
+                $createParams['directionId'] = NULL;
+            }
             if(!empty($request->direction_url)){
                 $createParams['directionUrl'] = $request->direction_url;
-            };
+            }else{
+                $createParams['directionUrl'] = NULL;
+            }
         }
         if(!empty($request->bannerType) && $request->bannerType =='promotion'){
            $createParams['thumbImageFileName'] = $request->img_path_2_name;
@@ -303,12 +308,11 @@ class BannerManageController extends MY_Controller
         if(!empty($request->isHighlight)){
             $createParams['isHighlight'] = true;
         };
-
+        $user_email = $this->user->email;
         $createParams['cms_note'] = json_encode([
-            'created_by' => $this->user->email,
+            'created_by' => substr($user_email, 0, strpos($user_email, '@')),
             'modified_by' => null
         ]);
-        
         $create_banner_response = $newsEventService->addNewBanner($createParams);
         if(!empty($create_banner_response->data)){
             return redirect()->route('bannermanage.index')->withSuccess('Success!');
@@ -359,6 +363,7 @@ class BannerManageController extends MY_Controller
             'bannerType'    => 'required',
             'bannerId'  => 'required'
         ]);
+        $this->addToLog($request);
         $newsEventService = new NewsEventService();
         $updateOrder_response = $newsEventService->updateOrderBannder($request->bannerId, $request->bannerType, $request->ordering);
         return $updateOrder_response;

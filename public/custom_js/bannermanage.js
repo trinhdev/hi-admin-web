@@ -204,7 +204,7 @@ function updateOrdering(_thisInputTag){
     let row = _thisInputTag.closest('tr');
     let infoRow = row.querySelector('.infoRow');
     let updateParams = {
-        bannerId: infoRow.innerHTML,
+        bannerId: infoRow.getAttribute('data-id'),
         bannerType: infoRow.getAttribute('data-type'),
         ordering:_thisInputTag.value,
         _token: $('meta[name="csrf-token"]').attr('content')
@@ -213,6 +213,7 @@ function updateOrdering(_thisInputTag){
 }
 
 function callApiUpdateOderSuccess(response){
+    console.log(response);
     if(response.statusCode != 0){
         showError(response.message);
     }else{
@@ -263,7 +264,7 @@ function successGetViewBanner(response){
         BannerDetail_public_date_end.value = banner.public_date_end != undefined ? banner.public_date_end : '';
 
         //target route
-        if(banner.direction_id != undefined || banner.direction_url != undefined){
+        if(banner.direction_id || banner.direction_url ){
             has_target_route.checked = true;
             box_target.hidden = false;
             BannerDetail_directionId.value = (map_directionId != undefined) ?  map_directionId.name : '';

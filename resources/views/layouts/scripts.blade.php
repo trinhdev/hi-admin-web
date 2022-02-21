@@ -60,8 +60,12 @@
 <script src="{{ asset('/custom_js/otp.js')}}"></script>
 <script src="{{ asset('/custom_js/javascript.icon.js')}}"></script>
 <script src="{{ asset('/custom_js/iconmanagement.js')}}"></script>
+<<<<<<< HEAD
 <script src="{{ asset('/custom_js/icon_category.js')}}"></script>
 <script src="{{ asset('/custom_js/iconconfig.js')}}"></script>
+=======
+<script src="{{ asset('/custom_js/ftel_phone.js')}}"></script>
+>>>>>>> b43e3e89629ae33330f2909dce743867ce872a5e
 <script>
 @if($errors->any())
     showError('{{$errors->first()}}');

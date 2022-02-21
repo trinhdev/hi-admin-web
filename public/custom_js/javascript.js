@@ -60,13 +60,18 @@ function handleSubmit(e, form, withPopup = true) {
         }).then((result) => {
             if (result.isConfirmed) {
                 form.submit();
+<<<<<<< HEAD
                 let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
                 $('form').find(':button').prop('disabled', true);
                 $("#spinner").toggle("show");
+=======
+                showLoading();
+>>>>>>> b43e3e89629ae33330f2909dce743867ce872a5e
             }
         });
     } else {
         form.submit();
+<<<<<<< HEAD
         let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
         $('form').find(':button').prop('disabled', true);
         $("#spinner").toggle("show");
@@ -75,10 +80,22 @@ function handleSubmit(e, form, withPopup = true) {
     if (e.result == true) {
         // $("#spinner").addClass("hide");
         console.log('end submit');
+=======
+        showLoading();
+>>>>>>> b43e3e89629ae33330f2909dce743867ce872a5e
     }
 
 }
-
+function showLoading(){
+    $("#spinner").addClass("show");
+    $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+    $('form').find(':button').prop('disabled', true);
+    setTimeout(function() {
+        $("#spinner").removeClass("show");
+        $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', false);
+        $('form').find(':button').prop('disabled', false);
+      },5000);
+}
 function dialogConfirmWithAjax(sureCallbackFunction, data) {
     Swal.fire({
         title: 'Are you sure?',

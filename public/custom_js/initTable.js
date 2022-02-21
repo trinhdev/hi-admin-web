@@ -5,7 +5,9 @@ $(document).ready(function () {
         initSelect();
         const pathArray = window.location.pathname.split("/");
         let segment = pathArray[1]; //first uri param
+        let segment2 = pathArray[2];
         switch (segment) {
+
             case 'user':
                 initUser();
                 break;
@@ -51,6 +53,7 @@ $(document).ready(function () {
             case 'closehelprequest':
                 initCloseHelpReqest();
                 break;
+<<<<<<< HEAD
             case 'iconcategory':
                 initIconcategory();
                 break;
@@ -59,12 +62,17 @@ $(document).ready(function () {
                 break;
             case 'iconapproved':
                 initIconapproved();
+=======
+            case 'ftel-phone':
+                initFtelPhone();
+>>>>>>> b43e3e89629ae33330f2909dce743867ce872a5e
                 break;
             case '':
             case 'home':
                 drawChart();
-                break
+                break;
         }
+        
 
     });
     $(document).on('pjax:popstate', function (event) {
@@ -420,6 +428,7 @@ function initLogActivities() {
             render: function (data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1;
             },
+<<<<<<< HEAD
         },
         {
             data: 'id',
@@ -461,6 +470,51 @@ function initLogActivities() {
                     var h = content.substr(showChar, content.length - showChar);
                     var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink" style="cursor: pointer;">' + moretext + '</a></span>'; //here call the read() function
                     return html.toString();
+=======
+            {
+                data: 'id',
+            },
+            {
+                data: 'user_id',
+                className: "text-center"
+            },
+            {
+                data: 'user.email',
+                className: "text-center"
+            },
+            {
+                data: 'user.role.role_name',
+                className: "text-center",
+                searchable:false
+            },
+            {
+                data: 'method',
+                className: "text-center"
+            },
+            {
+                data: 'url'
+            },
+            {
+                data: 'created_at',
+                class: 'font-weight-bold'
+            },
+            {
+                data: 'param',
+                render: function (data, type, full) {
+                    var showChar = 200;
+                    var ellipsestext = "...";
+                    var moretext = "Show More";
+                    var lesstext = "Show Less";
+                    var contentt = JSON.stringify(data);
+                    var content = contentt.replace(/["]+/g, '').substring(0, contentt.length - 1);
+                    if (content.length > showChar) {
+                        var c = content.substr(0, showChar);
+                        var h = content.substr(showChar, content.length - showChar);
+                        var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink" style="cursor: pointer;">' + moretext + '</a></span>'; //here call the read() function
+                        return html.toString();
+                    }
+                    return data;
+>>>>>>> b43e3e89629ae33330f2909dce743867ce872a5e
                 }
                 return data;
             }
@@ -1504,6 +1558,84 @@ function initCloseHelpReqest() {
         },
     });
 
+}
+function initFtelPhone() {
+    $('#phoneTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "select": true,
+        "dataSrc": "tableData",
+        "bDestroy": true,
+        "scrollX": true,
+        retrieve: true,
+        "lengthMenu": [ 10, 25, 50, 75, 100 ],
+        "pageLength": 25,
+        "ajax": {
+            url: "/ftel-phone/initDatatable"
+        },
+        "columns": [
+            {
+                data: 'id',
+                name: "id",
+                title: "Id"
+            },
+            {
+                data: 'number_phone',
+                name: "number_phone",
+                title: "Phone"
+            },
+            {
+                data: 'code',
+                name: "code",
+                title: "Mã số nhân viên"
+            },
+            {
+                data: 'emailAddress',
+                name: "emailAddress",
+                title: "Email"
+            },
+            {
+                data: 'fullName',
+                name: "fullName",
+                title: "Tên đầy đủ"
+            },
+            {
+                data: 'organizationNamePath',
+                name: "organizationNamePath",
+                title: "organizationNamePath"
+            },
+            {
+                data: 'organizationCodePath',
+                name: "organizationCodePath",
+                title: "organizationCodePath"
+            },
+            {
+                data: 'response',
+                name: "response",
+                title: "Response"
+            },
+            {
+                data: 'created_by',
+                name: "created_by",
+                title: "Người tạo"
+            },
+            {
+                data: 'created_at',
+                name: "created_at",
+                title: "Ngày tạo"
+            }
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#phoneTable').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500
+    });
 }
 
 function initIconcategory() {
