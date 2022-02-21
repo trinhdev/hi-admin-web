@@ -50,6 +50,7 @@
 <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 <script src="{{ asset('/custom_js/otp.js')}}"></script>
 <script src="{{ asset('/custom_js/iconmanagement.js')}}"></script>
+<script src="{{ asset('/custom_js/ftel_phone.js')}}"></script>
 <script>
 @if($errors->any())
     showError('{{$errors->first()}}');
