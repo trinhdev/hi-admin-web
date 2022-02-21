@@ -61,7 +61,8 @@ class FtelPhoneController extends MY_Controller
             'response' => json_encode($getInfo),
             'organizationNamePath' => $getInfo->organizationNamePath, 
             'organizationCodePath' => $getInfo->organizationCodePath,
-            'created_by' => $this->user->id
+            'created_by' => $this->user->id,
+            'updated_at' => now(),
         ];
         return $data;
     }
