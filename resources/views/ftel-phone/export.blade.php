@@ -5,8 +5,8 @@
                     <table id="phoneExport" class="display nowrap" style="width:100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Phone</th>
+                            <th>STT</th>
+                            <th>Số điện thoại nhân viên</th>
                             <th>Mã số nhân viên</th>
                             <th>Email</th>
                             <th>Tên đầy đủ</th>
