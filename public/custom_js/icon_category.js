@@ -166,7 +166,6 @@ dragula([document.getElementById('all-product'), document.getElementById('select
     $(el).removeClass("active");
     $(el).removeClass("gu-transit");
     $(el).addClass("col-sm-2");
-
     $(el).css('margin-right', 0);
 
     var spanElement = $(el).find("span:first");
@@ -181,13 +180,4 @@ dragula([document.getElementById('all-product'), document.getElementById('select
         $(value).find("span.position").text($(value).index() + 1);
     });
 });
-
-function removeFromSelectedProduct(el) {
-    var parent_ul = $($("#" + el).parent());
-    $("#" + el).remove();
-    parent_ul.find("li").each((key, value) => {
-        $(value).find("span.position").text($(value).index() + 1);
-    });
-    
-}
 

@@ -6,7 +6,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Chi tiết sản phẩm</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Danh sách yêu cầu phê duyệt</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -92,17 +92,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản lý sản phẩm</h1>
-                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                        <a href="{{$controller}}/{{$action_edit}}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Thêm mới sản phẩm
-                        </a>
-                        @endif
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản lý yêu cầu phê duyệt</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                            <li class="breadcrumb-item active">Danh sách sản phẩm dịch vụ</li>
+                            <li class="breadcrumb-item active">Danh sách yêu cầu phê duyệt</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -115,7 +110,7 @@
             <div class="container-fluid">
                 <div class="row" style="margin-top: 20px">
                     <div class="card card-body col-sm-12">
-                        <table id="icon-management" class="display nowrap" style="width: 100%">
+                        <table id="icon-approved" class="display nowrap" style="width: 100%">
                         </table>                                          
                     </div>
                 </div>
@@ -250,7 +245,7 @@
             font-weight: bold
         }
 
-        #icon-management_filter {
+        #icon-approved_filter {
             float: left;
         }
 

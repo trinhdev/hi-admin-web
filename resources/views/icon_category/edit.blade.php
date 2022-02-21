@@ -24,8 +24,9 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-9">
-                    {!! Form::open(array('url' => route('iconcategory.save'),'method'=>'post' ,'id' => 'form-view','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
+                    {!! Form::open(array('url' => route('iconcategory.save'),'method'=>'post' ,'id' => 'icon-category-form','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data', 'onsubmit'=>"onsubmitIconForm(event,this,'selected-product')")) !!}
                     @csrf
+                    <input type="hidden" name="productTitleId" value="{{ @$data['productTitleId'] }}" />
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title uppercase">{{ (!empty($data['productTitleId'])) ? 'Cập nhật' : 'Thêm' }} Danh Mục</h3>
@@ -122,6 +123,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Danh sách sản phẩm</label>
+                                <input type="hidden" name="arrayId" id="selected-prod-id">
                                 <div class="row">
                                     <div class="direct-chat-msg">
                                         <img class="direct-chat-img" src="/images/information.png" alt="">
@@ -132,9 +134,10 @@
                                     <div class="card-body">
                                         <ul class="row" style="list-style: none; min-height: 100px" id="selected-product">
                                             @foreach ($data['productListInTitle'] as $key => $value)
-                                                <li class="col-sm-2" style="text-align: center" id="{{ @$value['productId'] }}-selected-product">
+                                                <li class="col-sm-2" style="text-align: center" id="{{ @$value['productId'] }}-selected-product" data-prodid="{{ @$value['productId'] }}">
+                                                    <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}">
+                                                    <br>
                                                     <button type="button" class="close-thik" onClick="removeFromSelectedProduct('{{ @$value['productId'] }}-selected-product')"><i class="fas fa-times-circle"></i></button>
-                                                    <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}" class="img-thumbnail">
                                                     <h6><span class="badge badge-dark">{{ $value['productNameVi'] }}</span></h6>
                                                     <h6><span class="badge badge-warning position">{{ $key + 1 }}</span></h6>
                                                 </li>
@@ -151,9 +154,10 @@
                                             <div class="col-sm-12">
                                                 <ul id="all-product" style="list-style: none">
                                                     @foreach ($data['productList'] as $key => $value)
-                                                        <li style="text-align: center" id="{{ @$value['productId'] }}">
+                                                        <li style="text-align: center" id="{{ @$value['productId'] }}" data-prodid="{{ @$value['productId'] }}">
+                                                            <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}">
+                                                            <br>
                                                             <button type="button" class="close-thik" onClick="removeFromSelectedProduct('{{ @$value['productId'] }}-selected-product')"><i class="fas fa-times-circle"></i></button>
-                                                            <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}" class="img-thumbnail">
                                                             <h6><span class="badge badge-light">{{ $value['productNameVi'] }}</span></h6>
                                                         </li>
                                                     @endforeach
@@ -169,7 +173,7 @@
                             <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
                             <button type="button" onClick="cancelButton('{{ route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
-                            <button type="button" onClick="deleteButton({{ $data['productTitleId'] }}, '{{ $data['productTitleNameVi'] }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            <button type="button" onClick="deleteButton(JSON.stringify(serializeObject($('#icon-category-form').serializeArray())), '{{ $data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                             @endif
                         </div>
                         <!-- /.card-footer -->
@@ -298,12 +302,17 @@
     } */
 
     #selected-product li {
-        margin-bottom: 20px
+        margin-bottom: 20px;
+        text-align: center;
     }
 
     #selected-product li img {
         width: 40%;
-        margin-bottom: 10px
+        margin-bottom: -10px
+    }
+
+    #all-product li {
+        text-align: center;
     }
 
     #all-product li img {
@@ -311,14 +320,18 @@
         margin-bottom: 10px
     }
 
+    #all-product button {
+        display: none;
+    }
+
     .direct-chat-text::after, .direct-chat-text::before {
         border-right-color: #6C757D
     }
 
     .close-thik {
-        position: absolute;
-        right: 55px;
-        top: -6px;
+        position: relative;
+        left: 20%;
+        bottom: 45%;
         background-color: transparent;
         border: none
     }

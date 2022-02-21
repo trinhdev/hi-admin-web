@@ -205,11 +205,6 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            @can('icon-check-data-permission')
-                                <div class="card-footer" style="text-align: center">
-                                    <button type="button" class="btn btn-info">DỮ LIỆU HỢP LỆ</button>
-                                </div>
-                            @endcan
                             <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
                             <button type="button" onClick="cancelButton('{{ route('iconmanagement.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (isset($data['productId']))

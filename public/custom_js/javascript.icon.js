@@ -18,6 +18,7 @@ function readURL(value, url) {
         success: (data) => {
             if (data.url) {
                 $("#img_icon").attr('src', '/images/upload/' + data.url);
+                $("#iconUrl").val('/images/upload/' + data.url);
             }
         },
         error: function (xhr) {
@@ -31,7 +32,7 @@ function readURL(value, url) {
     });
 }
 
-function deleteButton(id, name) {
+function deleteButton(form_data, name, url) {
     Swal.fire({
         title: 'Xóa sản phẩm',
         html: `Bạn có chắc muốn xóa sản phẩm <span class="badge bg-warning text-dark">${name}</span>?`,
@@ -45,11 +46,41 @@ function deleteButton(id, name) {
 
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log(id);
-            // form.submit();
-            // let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
-            // $('form').find(':button').prop('disabled', true);
-            // $("#spinner").addClass("show");
+            var formData = new FormData();
+            // var data = serializeObject(form_data);
+            formData.append('formData', form_data);
+            
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: (data) => {
+                    var result = JSON.parse(data);
+                    if(result.result) {
+                        Swal.fire({
+                            title: 'LƯU THÀNH CÔNG',
+                            text: result.message,
+                            icon: 'success',
+                        })
+                    }
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    showError(errorString);
+                }
+            });
         }
     });
 }
@@ -124,8 +155,58 @@ function filterStatusPheDuyet(tableId) {
         table.column(4).search(statusFilterArr.join('|'), true);
     }
     if (pheduyetFilterArr) {
+        console.log(pheduyetFilterArr.join('|'));
         table.column(5).search(pheduyetFilterArr.join('|'), true);
     }
     table.draw();
     $('#filter-status').modal('toggle');
+}
+
+function removeFromSelectedProduct(el) {
+    var remove_prod_id = $("#" + el).attr('data-prodid');
+    var parent_ul = $($("#" + el).parent());
+    $("#" + el).remove();
+    parent_ul.find("li").each((key, value) => {
+        $(value).find("span.position").text($(value).index() + 1);
+    });
+}
+
+function onsubmitIconForm(e, form, ul_id, withPopup = true) {
+    e.preventDefault();
+    var arrayId = [];
+    $("#" + ul_id).find("li").each((key, value) => {
+        arrayId.push($(value).attr('data-prodid'));
+    });
+    $("#selected-prod-id").val(arrayId.join(','));
+
+    if (withPopup) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Please Confirm This Action",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, Confirmed!',
+            reverseButtons: true
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+                let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+                $('form').find(':button').prop('disabled', true);
+                $("#spinner").toggle("show");
+            }
+        });
+    } else {
+        form.submit();
+        let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+        $('form').find(':button').prop('disabled', true);
+        $("#spinner").toggle("show");
+    }
+
+    if (e.result == true) {
+        // $("#spinner").addClass("hide");
+        console.log('end submit');
+    }
 }

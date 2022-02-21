@@ -61,8 +61,7 @@
 <script src="{{ asset('/custom_js/javascript.icon.js')}}"></script>
 <script src="{{ asset('/custom_js/iconmanagement.js')}}"></script>
 <script src="{{ asset('/custom_js/icon_category.js')}}"></script>
-<script src="{{ asset('/custom_js/test_drag_drop.js')}}"></script>
-<script src="{{ asset('/custom_js/test_carousel.js')}}"></script>
+<script src="{{ asset('/custom_js/iconconfig.js')}}"></script>
 <script>
 @if($errors->any())
     showError('{{$errors->first()}}');

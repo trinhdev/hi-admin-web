@@ -214,3 +214,18 @@ function removeVietnameseTones(str) {
     str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
     return str;
 }
+
+function serializeObject(obj) {
+    var jsn = {};
+    $.each(obj, function() {
+        if (jsn[this.name]) {
+            if (!jsn[this.name].push) {
+                jsn[this.name] = [jsn[this.name]];
+            }
+            jsn[this.name].push(this.value || '');
+        } else {
+            jsn[this.name] = this.value || '';
+        }
+    });
+    return jsn;
+};

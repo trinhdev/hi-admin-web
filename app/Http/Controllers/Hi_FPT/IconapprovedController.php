@@ -7,28 +7,33 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Settings;
 use Illuminate\Http\Request;
 use App\Http\Requests\IconSaveRequest;
-use App\Models\Icon;
+
 use App\Models\Icon_approve;
-use App\Models\Icon_approve_logs;
+use App\Models\Icon;
+use App\Models\Icon_Category;
+use App\Models\Icon_Config;
+
 use App\Http\Traits\DataTrait;
 use \stdClass;
-use Yajra\DataTables\DataTables;
-use App\Services\IconManagementService;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Gate;
 
-class IconmanagementController extends MY_Controller
+use Yajra\DataTables\DataTables;
+
+use App\Services\IconManagementService;
+
+use Illuminate\Support\Str;
+
+class IconapprovedController extends MY_Controller
 {
     use DataTrait;
-    protected $module_name = 'Icon management';
-    protected $model_name = "Icon";
+    protected $module_name = 'Icon approved';
+    protected $model_name = "Icon_approve";
     protected $iconManagement = null;
     public function __construct()
     {
         parent::__construct();
-        $this->title = 'Icon Management';
+        $this->title = 'Icon Approved';
         $this->iconManagement = new IconManagementService();
-        $this->model = $this->getModel('Icon');
+        $this->model = $this->getModel('Icon_approve');
     }
 
     public function index()
@@ -37,34 +42,53 @@ class IconmanagementController extends MY_Controller
         $data = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $data['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
-        return view('icon_management.list')->with($data);
+        return view('icon_approved.list')->with($data);
     }
 
-    public function edit() {
-        $data = [
-            'controller'    => 'iconmanagement'
-        ];
-        $id = request()->segment(3);
-        if(!empty($id)) {
-            $api_info = json_decode(json_encode($this->iconManagement->getProductById($id)), true);;            
-
-            if(empty($api_info['data'])) {
-                $icon = $this->model::where(['uuid' => $id])->get();
-                $api_info['data'] = (!empty($icon[0])) ? json_decode($icon[0], true) : [];
-            }
-            $data['data'] = (!empty($api_info['data'])) ? $api_info['data'] : [];
+    public function edit($id = null) {
+        $approved_data = $this->model::where('id', $id)->get();
+        // dd($data);
+        // // $data = [
+        // //     'controller'    => 'iconmanagement'
+        // // ];
+        // // $id = request()->segment(3);
+        $uuid = $approved_data[0]['product_id'];
+        switch($approved_data[0]['product_type']) {
+            case 'icon_management':
+                $url = "/iconmanagement/edit/$uuid";
+                break;
+            case 'icon_category':
+                $url = "/iconcategory/edit/$uuid";
+                break;
+            case 'icon_config':
+                $url = "/iconconfig/edit/$uuid";
+                break;
         }
 
-        if(!empty($data['data']['productNameVi'])) {
-            $data['data']['productNameVi'] = preg_replace('/\r|\n/', ' ', @$data['data']['productNameVi']);
-        }
+        return redirect()->to($url);
 
-        if(!empty($data['data']['productNameEn'])) {
-            $data['data']['productNameEn'] = preg_replace('/\r|\n/', ' ', @$data['data']['productNameEn']);
-        }
-        $loai_dieu_huong = Settings::where('name', 'icon_loai_dieu_huong')->get();
-        $data['loai_dieu_huong'] = (!empty($loai_dieu_huong[0]['value'])) ? json_decode($loai_dieu_huong[0]['value'], true) : [];
-        return view('icon_management.edit')->with($data);
+        // if(!empty($id)) {
+        //     $data = parent::edit1();
+
+        //     $api_info = json_decode(json_encode($this->iconManagement->getProductById($id)), true);;            
+
+        //     if(empty($api_info['data'])) {
+        //         $icon = Icon::where(['productId' => $id])->get();
+        //         $api_info['data'] = (!empty($icon[0])) ? json_decode($icon[0], true) : [];
+        //     }
+        //     $data['data'] = (!empty($api_info['data'])) ? $api_info['data'] : [];
+        // }
+
+        // if(!empty($data['data']['productNameVi'])) {
+        //     $data['data']['productNameVi'] = preg_replace('/\r|\n/', ' ', @$data['data']['productNameVi']);
+        // }
+
+        // if(!empty($data['data']['productNameEn'])) {
+        //     $data['data']['productNameEn'] = preg_replace('/\r|\n/', ' ', @$data['data']['productNameEn']);
+        // }
+        // $loai_dieu_huong = Settings::where('name', 'icon_loai_dieu_huong')->get();
+        // $data['loai_dieu_huong'] = (!empty($loai_dieu_huong[0]['value'])) ? json_decode($loai_dieu_huong[0]['value'], true) : [];
+        // return view('icon_management.edit')->with($data);
     }
 
     public function save(IconSaveRequest $request) {
@@ -147,12 +171,10 @@ class IconmanagementController extends MY_Controller
         if($request->ajax()) {
             $icon_approve = Settings::where('name', 'icon_approve')->get();
             $icon_approve_list = array_column(json_decode($icon_approve[0]['value'], true), 'value', 'key');
-            $response = json_decode(json_encode($this->iconManagement->getAllProduct()), true);
-            $icon_on_review = Icon::get()->toArray();
-            $data = [];
-            if(!empty($response['data'])) {
-                // $data = array_merge($icon_on_review, $response['data']);
-                $data = $response['data'];
+            $data_raw = $this->model::with(['user', 'icon', 'icon_category', 'icon_config'])->get();
+            $data = $data_raw->toArray();
+            foreach($data as $key => &$value) {
+                $value['approved_status_name'] = ($icon_approve_list[$value['approved_status']]) ? $icon_approve_list[$value['approved_status']] : $value['approved_status'];
             }
             return DataTables::of($data)
             ->addIndexColumn()

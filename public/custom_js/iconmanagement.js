@@ -1,5 +1,14 @@
 "use strict";
 
+var today = new Date();
+// today.setMinutes(today.getMinutes() - 1);
+// today.setSeconds(0);
+today.setHours(0, 0, 0, 0);
+
+var tomorrow = new Date();
+tomorrow.setDate(today.getDate() + 1);
+tomorrow.setHours(0, 0, 0, 0);
+
 $(document).ready(function () {
     if ($('#status-clock').is(':checked')) {
         $('#status-clock-date-time').show();
@@ -29,7 +38,9 @@ $(document).ready(function () {
             today: 'fas fa-calendar-day',
             clear: 'fas fa-trash',
             close: 'fas fa-window-close'
-        }
+        },
+        minDate: ($('#show_from').val()) ? new Date($('#show_from').val()) : today,
+        maxDate: ($('#show_to').val()) ? new Date($('#show_to').val()) : tomorrow,
     });
 
     $('#show_to').datetimepicker({
@@ -46,11 +57,12 @@ $(document).ready(function () {
             today: 'fas fa-calendar-day',
             clear: 'fas fa-trash',
             close: 'fas fa-window-close'
-        }
+        },
+        minDate: ($('#show_from').val()) ? new Date($('#show_from').val()) : tomorrow,
     });
 
     $('#new_from').datetimepicker({
-        format: "YYYY-MM-DD HH:mm:SS",
+        format: "YYYY-MM-DD HH:mm",
         useCurrent: false,
         sideBySide: true,
         icons: {
@@ -63,11 +75,13 @@ $(document).ready(function () {
             today: 'fas fa-calendar-day',
             clear: 'fas fa-trash',
             close: 'fas fa-window-close'
-        }
+        },
+        minDate: ($('#new_from').val()) ? new Date($('#new_from').val()) : today,
+        maxDate: ($('#new_to').val()) ? new Date($('#new_to').val()) : tomorrow,
     });
 
     $('#new_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm:SS",
+        format: "YYYY-MM-DD HH:mm",
         useCurrent: false,
         sideBySide: true,
         icons: {
@@ -80,7 +94,8 @@ $(document).ready(function () {
             today: 'fas fa-calendar-day',
             clear: 'fas fa-trash',
             close: 'fas fa-window-close'
-        }
+        },
+        minDate: ($('#new_from').val()) ? new Date($('#new_from').val()) : today,
     });
 });
 

@@ -26,6 +26,12 @@ class IconManagementService {
         return $response;
     }
 
+    public function getProductByListId($list_id) {
+        $url                = $this->baseUrl . $this->subDomain . 'products/get-by-id-list';
+        $response           = sendRequest($url, ['productIdList' => $list_id], $this->token);
+        return $response;
+    }
+
     public function getAllProductTitle(){
         $url                = $this->baseUrl . $this->subDomain . 'product-titles/get-all';
         $response           = sendRequest($url, [], $this->token);
