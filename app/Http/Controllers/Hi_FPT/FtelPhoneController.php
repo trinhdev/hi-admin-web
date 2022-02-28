@@ -47,8 +47,8 @@ class FtelPhoneController extends MY_Controller
             'emailAddress' => $getInfo->emailAddress,
             'fullName'=> $getInfo->fullName,
             'organizationCodePath' => $getInfo->organizationCodePath, //$codePath[2]
-            'organizationCodePath1' => $codePath[1],
-            'organizationCodePath3' => $codePath[3]
+            'organizationCodePath1' => $codePath[0],
+            'organizationCodePath3' => $codePath[2]
         ]);
         $dataExport = array_unique($dataExport, SORT_REGULAR);
         return $dataExport;
