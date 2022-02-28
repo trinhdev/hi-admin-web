@@ -40,13 +40,15 @@ class FtelPhoneController extends MY_Controller
      */
     public function pushExport($getInfo, $phone, $dataExport)
     {
-        //$codePath = explode('/', $getInfo->organizationCodePath);
+        $codePath = explode('/', $getInfo->organizationCodePath);
         array_push($dataExport, [
             'number_phone'=> $phone,
             'code' => $getInfo->code,
             'emailAddress' => $getInfo->emailAddress,
             'fullName'=> $getInfo->fullName,
             'organizationCodePath' => $getInfo->organizationCodePath, //$codePath[2]
+            'organizationCodePath1' => $codePath[1],
+            'organizationCodePath3' => $codePath[3]
         ]);
         $dataExport = array_unique($dataExport, SORT_REGULAR);
         return $dataExport;
