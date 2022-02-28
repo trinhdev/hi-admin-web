@@ -48,7 +48,7 @@
                                     <div class="form-group">
                                         <label for="titleVi" class="required_red_dot">Tiêu đề tiếng việt</label>
                                         <input type="text" class="form-control" id="titleVi" name="titleVi"
-                                               placeholder="Tiêu đề tiếng việt">
+                                               placeholder="Tiêu đề tiếng việt" value="@if(!empty($detailPopup->titleVi)){{$detailPopup->titleVi}}@endif">
                                     </div>
 {{--                                    <div class="form-group" id="objecttype">--}}
 {{--                                        <label>Loại Đối tượng</label>--}}
@@ -64,7 +64,7 @@
                                         <input type="file" accept="image/*" name="path_1" class="form-control"
                                                onchange="handleUploadImagePopup(this,event)"/>
                                         <img id="img_path_1"
-                                             src="{{ asset('/images/image_holder.png') }}"
+                                             src="@if(!empty($detailPopup->image)) {{env('URL_STATIC').'/upload/images/event/'.$detailPopup->image }} @else {{ asset('/images/image_holder.png') }}@endif"
                                              alt="your image" class="img-thumbnail img_viewable"
                                              style="max-width: 150px;padding:10px;margin-top:10px"/>
                                         <input name="img_path_1_name" id="img_path_1_name" value="" hidden/>
@@ -74,7 +74,7 @@
                                         <select class="form-control select2" name="templateType" id="listTypePopup"
                                                 style="width: 100%;">
                                             @foreach($listTypePopup as $key => $value)
-                                                <option value="{{$key}}">{{$value}}</option>
+                                                <option value="{{$key}}" @if(!empty($detailPopup->templateType) && $key == $detailPopup->templateType) selected @endif>{{$value}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -82,9 +82,8 @@
                                         <label>Điều hướng</label>
                                         <select class="form-control select2" name="directionId" id="directionId"
                                                 style="width: 100%;">
-                                            <option value="">------------</option>
                                             @foreach($listTargetRoute as $key => $value)
-                                                <option value="{{$value->id}}">{{$value->name}}</option>
+                                                <option value="{{$value->id}}" @if(!empty($detailPopup->directionId) && $value->id == $detailPopup->directionId) selected @endif>{{$value->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -112,7 +111,7 @@
                                     <div class="form-group">
                                         <label for="titleEn" class="required_red_dot">Tiêu đề tiếng anh</label>
                                         <input type="input" class="form-control" id="titleEn" name="titleEn"
-                                               placeholder="Tiêu đề tiếng anh">
+                                               placeholder="Tiêu đề tiếng anh" value="@if(!empty($detailPopup)){{$detailPopup->titleEn}}@endif">
                                     </div>
 {{--                                    <div class="form-group" id="object">--}}
 {{--                                        <label>Đối tượng</label>--}}
@@ -139,7 +138,7 @@
                                         <input type="file" accept="image/*" name="path_2" class="form-control"
                                                onchange="handleUploadImagePopup(this,event)"/>
                                         <img id="img_path_2"
-                                             src="{{ asset('/images/image_holder.png') }}"
+                                             src="@if(!empty($detailPopup->buttonImage)) {{env('URL_STATIC').'/upload/images/event/'.$detailPopup->buttonImage }} @else {{ asset('/images/image_holder.png') }}@endif"
                                              alt="your image" class="img-thumbnail img_viewable"
                                              style="max-width: 150px;padding:10px;margin-top:10px"/>
                                         <span class="warning-alert" id="path_2_required_alert" hidden>This field is

@@ -30,67 +30,67 @@ class PopupManageController extends MY_Controller
         return view('popup.index')->with(['list_template_popup' => $listTemplatePopup]);
     }
 
-    public function edit(Request $request, $bannerId, $bannerType)
-    {
-        $newsEventService = new NewsEventService();
-        $listTargetRoute = $newsEventService->getListTargetRoute();
-        $listTargetRoute = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
-
-        $listTypeBanner = $newsEventService->getListTypeBanner();
-        $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
-
-        $getDetailBanner_response = $newsEventService->getDetailBanner($bannerId, $bannerType);
-        if (!isset($getDetailBanner_response->statusCode) || $getDetailBanner_response->statusCode != 0) {
-            return redirect()->route('bannermanage.index')->withErrors($getDetailBanner_response->message);
-        }
-        $dataResponse = $getDetailBanner_response->data;
-        $bannerObj = (object)[
-            "bannerId" => null,
-            "bannerType" => null,
-            "public_date_start" => null,
-            "public_date_end" => null,
-            "title_vi" => null,
-            "title_en" => null,
-            "direction_id" => null,
-            "direction_url" => null,
-            "image" => null,
-            "thumb_image" => null,
-            "view_count" => 0,
-            "date_created" => null,
-            "date_modified" => null,
-            "created_by" => null,
-            "is_highlight" => false,
-        ];
-        if (isset($dataResponse->banner_id)) {
-            $bannerObj->bannerId = $dataResponse->banner_id;
-            $bannerObj->title_vi = $dataResponse->banner_title;
-            $bannerObj->bannerType = $dataResponse->custom_data;
-            $bannerObj->image = $dataResponse->image_url;
-            $bannerObj->view_count = $dataResponse->view_count;
-            $bannerObj->direction_id = $dataResponse->direction_id;
-            $bannerObj->direction_url = $dataResponse->direction_url;
-            $bannerObj->date_created = $dataResponse->date_created;
-
-        } else {
-            $bannerObj->bannerId = $dataResponse->event_id;
-            $bannerObj->title_vi = $dataResponse->title_vi;
-            $bannerObj->bannerType = ($dataResponse->event_type == "highlight") ? 'bannerHome' : $dataResponse->event_type;
-            $bannerObj->image = !empty($dataResponse->image) ? env('URL_STATIC') . '/upload/images/event/' . $dataResponse->image : null;
-            $bannerObj->view_count = $dataResponse->view_count;
-            // $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
-            $bannerObj->direction_id = $dataResponse->direction_id;
-            $bannerObj->direction_url = $dataResponse->event_url;
-            $bannerObj->date_created = $dataResponse->date_created;
-
-            $bannerObj->title_en = $dataResponse->title_en;
-            $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? env('URL_STATIC') . '/upload/images/event/' . $dataResponse->thumb_image : null;
-            $bannerObj->created_by = $dataResponse->created_by;
-            $bannerObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
-            $bannerObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
-            $bannerObj->is_highlight = (boolean)$dataResponse->is_highlight;
-        }
-        return view('banners.edit')->with(['list_target_route' => $listTargetRoute, 'list_type_banner' => $listTypeBanner, 'banner' => $bannerObj]);
-    }
+//    public function edit(Request $request, $bannerId, $bannerType)
+//    {
+//        $newsEventService = new NewsEventService();
+//        $listTargetRoute = $newsEventService->getListTargetRoute();
+//        $listTargetRoute = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
+//
+//        $listTypeBanner = $newsEventService->getListTypeBanner();
+//        $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
+//
+//        $getDetailBanner_response = $newsEventService->getDetailBanner($bannerId, $bannerType);
+//        if (!isset($getDetailBanner_response->statusCode) || $getDetailBanner_response->statusCode != 0) {
+//            return redirect()->route('bannermanage.index')->withErrors($getDetailBanner_response->message);
+//        }
+//        $dataResponse = $getDetailBanner_response->data;
+//        $templateObj = (object)[
+//            "bannerId" => null,
+//            "bannerType" => null,
+//            "public_date_start" => null,
+//            "public_date_end" => null,
+//            "title_vi" => null,
+//            "title_en" => null,
+//            "direction_id" => null,
+//            "direction_url" => null,
+//            "image" => null,
+//            "thumb_image" => null,
+//            "view_count" => 0,
+//            "date_created" => null,
+//            "date_modified" => null,
+//            "created_by" => null,
+//            "is_highlight" => false,
+//        ];
+//        if (isset($dataResponse->banner_id)) {
+//            $templateObj->bannerId = $dataResponse->banner_id;
+//            $templateObj->title_vi = $dataResponse->banner_title;
+//            $templateObj->bannerType = $dataResponse->custom_data;
+//            $templateObj->image = $dataResponse->image_url;
+//            $templateObj->view_count = $dataResponse->view_count;
+//            $templateObj->direction_id = $dataResponse->direction_id;
+//            $templateObj->direction_url = $dataResponse->direction_url;
+//            $templateObj->date_created = $dataResponse->date_created;
+//
+//        } else {
+//            $templateObj->bannerId = $dataResponse->event_id;
+//            $templateObj->title_vi = $dataResponse->title_vi;
+//            $templateObj->bannerType = ($dataResponse->event_type == "highlight") ? 'bannerHome' : $dataResponse->event_type;
+//            $templateObj->image = !empty($dataResponse->image) ? env('URL_STATIC') . '/upload/images/event/' . $dataResponse->image : null;
+//            $templateObj->view_count = $dataResponse->view_count;
+//            // $templateObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
+//            $templateObj->direction_id = $dataResponse->direction_id;
+//            $templateObj->direction_url = $dataResponse->event_url;
+//            $templateObj->date_created = $dataResponse->date_created;
+//
+//            $templateObj->title_en = $dataResponse->title_en;
+//            $templateObj->thumb_image = !empty($dataResponse->thumb_image) ? env('URL_STATIC') . '/upload/images/event/' . $dataResponse->thumb_image : null;
+//            $templateObj->created_by = $dataResponse->created_by;
+//            $templateObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
+//            $templateObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
+//            $templateObj->is_highlight = (boolean)$dataResponse->is_highlight;
+//        }
+//        return view('banners.edit')->with(['list_target_route' => $listTargetRoute, 'list_type_banner' => $listTypeBanner, 'banner' => $templateObj]);
+//    }
 
     public function update(Request $request, $id)
     {
@@ -162,19 +162,26 @@ class PopupManageController extends MY_Controller
         return redirect()->route('bannermanage.index')->withErrors(isset($update_banner_response->description) ? $update_banner_response->description : $update_banner_response->message);
     }
 
-    public function create(Request $request)
+    public function edit()
     {
         $data = array();
         $newsEventService = new NewsEventService();
+        $id = request()->segment(3);
+        if ($id) {
+            $getDetailPopup_response = $newsEventService->getDetailPopup($id);
+            if (isset($getDetailPopup_response->statusCode)) {
+                $data['detailPopup'] = ($getDetailPopup_response->statusCode == 0) ? $getDetailPopup_response->data : [];
+            } else
+                $data['detailPopup'] = [];
+        } else
+            $data['detailPopup'] = [];
         $listTargetRoute = $newsEventService->getListTargetRoute();
         if (isset($listTargetRoute->statusCode)) {
             $data['listTargetRoute'] = ($listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
         } else
             $data['listTargetRoute'] = [];
         $data['listTypePopup'] = config('platform_config.type_popup_service');
-        $data['object_type'] = config('platform_config.object_type');
-        $data['object'] = config('platform_config.object');
-        $data['repeatTime'] = config('platform_config.repeatTime');
+//        my_debug($data);
         return view('popup.edit')->with($data);
     }
 
@@ -205,7 +212,7 @@ class PopupManageController extends MY_Controller
         } else {
             $directionUrl = "";
         }
-        if  ($request->directionId == "url_open_out_app" || $request->directionId == "url_open_in_app"){
+        if ($request->directionId == "url_open_out_app" || $request->directionId == "url_open_in_app") {
             $rules['directionUrl'] = 'required';
         }
 //        $request->merge([
@@ -229,7 +236,7 @@ class PopupManageController extends MY_Controller
             $createParams['directionUrl'] = $directionUrl;
         }
         $create_banner_response = $newsEventService->addNewPopup($createParams);
-//        if (!empty($create_banner_response->data)) {
+        if (!empty($create_banner_response->data)) {
 //            $pushParams = [
 //                'popupTemplateId' => $create_banner_response->data->templatePersonalId,
 //                'repeatTime' => ($request->repeatTime != 'other') ? $request->repeatTime : $request->other_min,
@@ -239,9 +246,8 @@ class PopupManageController extends MY_Controller
 //                'objects' => $request->object,
 //            ];
 //            $push_response = $newsEventService->pushTemplate($pushParams);
-//            my_debug($push_response);
-//            return redirect()->route('popupmanage.index')->withSuccess('Success!');
-//        }
+            return redirect()->route('popupmanage.index')->withSuccess('Success!');
+        }
         return redirect()->route('popupmanage.index')->withErrors(isset($create_banner_response->description) ? $create_banner_response->description : $create_banner_response->message);
     }
 
@@ -296,5 +302,60 @@ class PopupManageController extends MY_Controller
         $newsEventService = new NewsEventService();
         $updateOrder_response = $newsEventService->updateOrderBannder($request->bannerId, $request->bannerType, $request->ordering);
         return $updateOrder_response;
+    }
+
+    public function view($id)
+    {
+        $newsEventService = new NewsEventService();
+        $result = [];
+        $listTargetRoute = $newsEventService->getListTargetRoute();
+
+        $listTargetRoute = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
+        $typePopup = config('platform_config.type_popup_service');
+
+        $getDetailPopup_response = $newsEventService->getDetailPopup($id);
+        if (!isset($getDetailPopup_response->statusCode) || $getDetailPopup_response->statusCode != 0) {
+            $result['error'] = $getDetailPopup_response->message;
+//            return $result;
+            return redirect()->route('popupmanage.index')->withErrors($getDetailPopup_response->message);
+        }
+        $dataResponse = $getDetailPopup_response->data;
+
+        $templateObj = (object)[
+            "templateId" => null,
+            "templateType" => null,
+            "titleVi" => null,
+            "titleEn" => null,
+            "directionId" => null,
+            "directionUrl" => null,
+            "image" => null,
+            "buttonImage" => null,
+            "view_count" => 0,
+            "dateCreated" => null,
+            "templatePersonalMaps" => null,
+        ];
+        $templateObj->templateId = $dataResponse->id;
+        $templateObj->templateType = $dataResponse->templateType;
+        $templateObj->titleVi = $dataResponse->titleVi;
+        $templateObj->titleEn = $dataResponse->titleEn;
+        $templateObj->image = $dataResponse->image;
+        $templateObj->buttonImage = $dataResponse->buttonImage;
+        $templateObj->actionType = $dataResponse->actionType;
+        $templateObj->dateCreated = $dataResponse->dateCreated;
+        $templateObj->dateModified = $dataResponse->dateModified;
+        $templateObj->ordering = $dataResponse->ordering;
+        $templateObj->directionUrl = $dataResponse->buttonActionValue;
+        $templateObj->directionId = $dataResponse->directionId;
+        $templateObj->templatePersonalMaps = $dataResponse->templatePersonalMaps;
+
+        $data = [
+            'detailTemplate' => $templateObj,
+            'list_target_route' => $listTargetRoute,
+            'list_type_popup' => $typePopup,
+        ];
+        $data['object_type'] = config('platform_config.object_type');
+        $data['object'] = config('platform_config.object');
+        $data['repeatTime'] = config('platform_config.repeatTime');
+        return view('popup.view')->with($data);
     }
 }

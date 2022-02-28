@@ -106,4 +106,12 @@ class NewsEventService
         $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey], 'POST');
         return $response;
     }
+    public function getDetailPopup($popupId){
+        $url = $this->baseUrl . $this->listMethod['GET_DETAIL_POPUP'];
+        $param = [
+            'templatePersonalId' => $popupId
+        ];
+        $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey],'POST');
+        return $response;
+    }
 }

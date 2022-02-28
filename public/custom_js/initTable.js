@@ -39,6 +39,9 @@ $(document).ready(function () {
             case 'popupmanage':
                 callApiGetListPopup();
                 break;
+            case 'detailpopup':
+                callApiGetDetailPopup();
+                break;
             case 'checkuserinfo':
                 initCheckUserInfo();
                 break;
@@ -895,9 +898,6 @@ function initBannerManage(response) {
         "bDestroy": true,
         "scrollX": true,
         "columns": columnData,
-        "language": {
-            "emptyTable": "No Record..."
-        },
         // "order": [[9, "desc"]],
         columnDefs: [{
                 width: '5%',
@@ -980,35 +980,35 @@ function initPopupManage(response) {
     var unactivePopup = [];
     var flagAcl = false;
     var stt = 1;
-    response.data.forEach(element => {
-        let subData = convertDetailPopup(element);
-        (subData.is_banner_expired) ? unactivePopup.push(subData): activePopup.push(subData);
-    });
-    activePopup = activePopup.sort(function (first, seccond) {
-        return new Date(seccond.date_created) - new Date(first.date_created);
-    });
-    unactivePopup.sort(function (first, seccond) {
-        return new Date(seccond.date_created) - new Date(first.date_created);
-    });
-    dataTable = activePopup.concat(unactivePopup);
-    console.log(dataTable);
+    let listTemplate = JSON.parse(listTemplateJson);
+    // response.data.forEach(element => {
+    //     let subData = convertDetailPopup(element);
+    //     (subData.is_banner_expired) ? unactivePopup.push(subData): activePopup.push(subData);
+    // });
+    // console.log(unactivePopup)
+    // activePopup = activePopup.sort(function (first, seccond) {
+    //     return new Date(seccond.date_created) - new Date(first.date_created);
+    // });
+    // unactivePopup.sort(function (first, seccond) {
+    //     return new Date(seccond.date_created) - new Date(first.date_created);
+    // });
+    dataTable = response.data;
     var columnData = [{
         title: 'STT',
         className: 'text-center',
         render: function (data, type, row, meta) {
             return `<span class ="infoRow" data-type="` + row.bannerType + `" data-id = "` + row.bannerId + `">` + parseInt(meta.row + 1) + `</span>`;
         },
-        className: 'text-center'
     },
         {
-            data: 'title_vi',
+            data: 'titleVi',
             title: "Tiêu Đề"
         },
         {
             data: 'image',
             title: "Ảnh Banner",
             "render": function (data, type, row) {
-                return `<img src="` + data + `"  style="width:150px" onerror="this.onerror=null;this.src='/images/img_404.svg';"  onclick ="window.open('` + data + `').focus()"/>`;
+                return `<img src="` + URL_STATIC+'/upload/images/event/' + data + `"  style="width:150px" onerror="this.onerror=null;this.src='/images/img_404.svg';"  onclick ="window.open('` + data + `').focus()"/>`;
             },
             "sortable": false,
             className: 'text-center'
@@ -1022,16 +1022,11 @@ function initPopupManage(response) {
         // },
         {
             data: 'templateType',
-            title: 'Loại Banner',
-            className: 'text-center'
-        },
-        {
-            data: 'public_date_start',
-            title: 'Ngày Hiển Thị'
-        },
-        {
-            data: 'public_date_end',
-            title: 'Ngày kết thúc'
+            title: 'Loại Popup',
+            className: 'text-center',
+            "render": function (data, type, row) {
+                return listTemplate[data];
+            }
         },
         {
             data: 'is_banner_expired',
@@ -1053,21 +1048,21 @@ function initPopupManage(response) {
             "sortable": false,
             className: 'text-center'
         },
+        // {
+        //     data: 'view_count',
+        //     title: 'Số lượt click',
+        //     className: 'text-center'
+        // },
         {
-            data: 'view_count',
-            title: 'Số lượt click',
-            className: 'text-center'
-        },
-        {
-            data: 'date_created',
+            data: 'dateCreated',
             title: 'Ngày tạo'
         },
         {
-            data: 'created_by',
+            data: 'createdBy',
             title: 'Người Tạo'
         },
         {
-            data: 'modified_by',
+            data: 'modifiedBy',
             title: 'Người cập nhật'
         }
     ];
@@ -1084,17 +1079,10 @@ function initPopupManage(response) {
         columnData.push({
             title: 'Hành Động',
             render: function (data, type, row) {
-                var bannerType = row.bannerType;
-                if (bannerType == 'highlight') {
-                    bannerType = 'bannerHome';
-                };
-                var exists = 0 != $('#show_at option[value=' + bannerType + ']').length;
-                if (exists === false) return "";
                 return `
-                    <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
-                   <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
+                    <a style="float: left; margin-right: 5px" type="button" href="`+tempRoute+`/`+row['id']+`" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
+                    <a style="" type="button" href="`+tempRoute+`/`+row['id']+`" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
                     `;
-                // return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
             },
             "sortable": false
         });
@@ -1119,9 +1107,6 @@ function initPopupManage(response) {
         "bDestroy": true,
         "scrollX": true,
         "columns": columnData,
-        "language": {
-            "emptyTable": "No Record..."
-        },
         // "order": [[9, "desc"]],
         columnDefs: [{
             width: '5%',
@@ -1133,50 +1118,42 @@ function initPopupManage(response) {
                 targets: 1
             }, // 2 Title
             {
-                width: '15%',
+                width: '20%',
                 targets: 2
             }, // 3 Image
             // { width: '10%', targets: 3 }, // 4 direction URL
             {
-                width: '5%',
+                width: '15%',
                 targets: 3
             }, // 5 Banner Type,
             {
-                width: '10%',
+                width: '5%',
                 targets: 4
-            }, // 6 public date start
-            {
-                width: '10%',
-                targets: 5
-            }, // 7 public date end
-            {
-                width: '3%',
-                targets: 6
             }, // is expired
             {
                 width: '5%',
-                targets: 7
+                targets: 5
             }, // 8 ordering
             {
-                width: '5%',
-                targets: 8
+                width: '10%',
+                targets: 6
             }, // 9 view count
             {
                 width: '10%',
-                targets: 9
+                targets: 7
             }, // 10 create at
             {
-                width: '7%',
-                targets: 10
-            }, // 11 create by
-            {
-                width: '7%',
-                targets: 11
+                width: '10%',
+                targets: 8
             }, // 11 create by
             {
                 width: '10%',
-                targets: 12
-            }, // 12 Action
+                targets: 9
+            }, // 11 create by
+            // {
+            //     width: '10%',
+            //     targets: 10
+            // }, // 12 Action
         ],
         language: {
             "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",

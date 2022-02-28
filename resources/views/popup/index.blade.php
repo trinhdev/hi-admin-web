@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <table id="popup_manage" class="display" style="width:100%; word-wrap:no-wrap;">
+                <table id="popup_manage" class="display" style="width:100%;">
                 </table>
             </div>
         </div>
@@ -74,4 +74,8 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+    <script>
+        var listTemplateJson = '{!! json_encode($list_template_popup->type) !!}';
+        var tempRoute = '{{ route('popupmanage.view') }}';
+    </script>
 @endsection
