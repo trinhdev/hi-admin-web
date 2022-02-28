@@ -25,15 +25,18 @@ function datatableFtelPhoneExport() {
                 }
             },
             {
-                extend: 'pdfHtml5',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 5 ]
-                }
+                extend: 'colvisGroup',
+                text: 'Show office info',
+                show: [ 1, 2, 3 ,4 ,6,7  ],
+                hide: [5]
+            },
+            {
+                extend: 'colvisGroup',
+                text: 'Show all',
+                show: [ 1, 2, 3 ,4, 5 ,6,7  ]
             },
             'colvis'
         ],
-        columnDefs: [
-            { "visible": false, "targets": 5 }
-          ]
+        
     });
 }
