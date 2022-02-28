@@ -31,7 +31,9 @@
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/bootstrap-select-1.13.14/dist/js/bootstrap-select.js"></script>
 <script src="{{asset('custom_js/jquery.pjax.js')}}"></script>
 <!-- DataTables -->
+
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables/jquery.dataTables.js"></script>
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 <!-- jquery-tmpl -->
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/jquery-tmpl/jquery-tmpl.min.js"></script>

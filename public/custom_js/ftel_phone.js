@@ -9,10 +9,31 @@ function changeFileFtelPhone() {
 function datatableFtelPhoneExport() {
     $('#phoneExport').DataTable({
         processing: true,
+        lengthChange: false,
         dom: 'Bfrtip',
         buttons: [
-            'copyHtml5',
-            'excelHtml5',
-        ]
+            {
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 5 ]
+                }
+            },
+            'colvis'
+        ],
+        columnDefs: [
+            { "visible": false, "targets": 5 }
+          ]
     });
 }
