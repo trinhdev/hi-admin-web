@@ -62,6 +62,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Chi tiết popup: {{$detailTemplate->titleVi}}</h3>
