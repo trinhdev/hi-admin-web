@@ -1,9 +1,7 @@
 <!-- Main content -->
-<style>
-    .dt-buttons .dt-button-collection{
-        margin-top: 20px !important;
-    }
-</style>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css"> 
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
 <section class="content">
             <div class="container-fluid">
                 <div class="card card-body col-sm-12 mt-2">

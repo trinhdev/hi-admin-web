@@ -154,7 +154,7 @@ $domainModemContractInfo = [
 ];
 $domainHr = [
     'local'             => [
-        'URL'           => 'http://hrapi.fpt.vn/',
+        'URL'           => 'http://hrapistag.fpt.vn/',
         'USERNAME'    => 'hifpt@hr.fpt.vn',
         'PASSWORD'    => '!@#hiFPT123'
     ],
