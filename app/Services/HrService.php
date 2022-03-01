@@ -28,7 +28,7 @@ class HrService
         return sendRequest($url,$param,null,$headerArray = ['Abp.TenantId' => '1']);
     }
 
-    public function getInfoEmployee(int $phone, string $token) {
+    public function getInfoEmployee($phone, $token) {
         $url = $this->baseUrl . $this->listMethod['GET_EMPLOYEE_INFO'];
         $param = [
             'phonenumber' => $phone
