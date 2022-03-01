@@ -46,7 +46,9 @@ class FtelPhoneController extends MY_Controller
             'code' => $getInfo->code,
             'emailAddress' => $getInfo->emailAddress,
             'fullName'=> $getInfo->fullName,
-            'organizationCodePath' => $codePath[2], 
+            'organizationCodePath' => $getInfo->organizationCodePath, //$codePath[2]
+            'organizationCodePath1' => $codePath[0],
+            'organizationCodePath3' => $codePath[2]
         ]);
         $dataExport = array_unique($dataExport, SORT_REGULAR);
         return $dataExport;
@@ -61,7 +63,8 @@ class FtelPhoneController extends MY_Controller
             'response' => json_encode($getInfo),
             'organizationNamePath' => $getInfo->organizationNamePath, 
             'organizationCodePath' => $getInfo->organizationCodePath,
-            'created_by' => $this->user->id
+            'created_by' => $this->user->id,
+            'updated_at' => now(),
         ];
         return $data;
     }
@@ -71,7 +74,7 @@ class FtelPhoneController extends MY_Controller
         $dataPhoneDB = array();
         $hrService = new HrService();
         $token = $hrService->loginHr()->authorization;
-        $arrPhone = explode(',',$request->number_phone);
+        $arrPhone = array_map('trim', explode(',', $request->number_phone));
         $dataDB = $this->model->whereIn('number_phone', $arrPhone)->get();
         if(isset($dataDB)) {
             foreach($dataDB as $key => $value) // data co trong db > 7 day -> van goi api de update
