@@ -60,7 +60,7 @@
                                             <nav aria-label="breadcrumb">
                                             <ol class="breadcrumb">
                                                 <ul>                                                  
-                                                    <b>Note</b>: Nhập bé hơn 1000 số cách nhau bằng dấu phẩy (đối với file exel, lưu 1 cột duy nhất theo hàng dọc, tải file mẫu <a href="https://docs.google.com/spreadsheets/d/1ifAR0UwfdV03Sidcshjvwl1pn1YmYBD9/edit?usp=sharing&ouid=113322866597815571901&rtpof=true&sd=true" target="_blank"> <b> tại đây</b></a>)
+                                                    <b>Note</b>: Nhập bé hơn 500 số cách nhau bằng dấu phẩy (đối với file exel, lưu 1 cột duy nhất theo hàng dọc, tải file mẫu <a href="https://docs.google.com/spreadsheets/d/1ifAR0UwfdV03Sidcshjvwl1pn1YmYBD9/edit?usp=sharing&ouid=113322866597815571901&rtpof=true&sd=true" target="_blank"> <b> tại đây</b></a>)
                                                 </ul>
                                             </ol>
                                             </nav>
