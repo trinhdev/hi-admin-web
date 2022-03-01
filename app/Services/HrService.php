@@ -15,7 +15,7 @@ class HrService
         $this->baseUrl      = $api_config['URL'];
         $this->username      = $api_config['USERNAME'];
         $this->password     = $api_config['PASSWORD'];
-        $this->listMethod = config('configMethod.DOMAIN_HR');
+        $this->listMethod = config('configMethod.DOMAIN_HR'); 
     }
 
     public function loginHr(){
@@ -28,11 +28,24 @@ class HrService
         return sendRequest($url,$param,null,$headerArray = ['Abp.TenantId' => '1']);
     }
 
-    public function getInfoEmployee($phone, $token) {
+    public function getInfoEmployee(int $phone, string $token) {
         $url = $this->baseUrl . $this->listMethod['GET_EMPLOYEE_INFO'];
         $param = [
             'phonenumber' => $phone
         ];
+        if(!empty($token)) {
+            return $response = sendRequest($url,$param,'Bearer '.$token,$headerArray = ['Abp.TenantId' => '1']);
+        }else{
+            return $response = 'Error!';
+        }
+    }
+
+    public function getListInfoEmployee($listPhone, $token) {
+        $url = $this->baseUrl . $this->listMethod['GET_LIST_EMPLOYEE_INFO'];
+        $param = [
+            "phonenumber" => $listPhone
+        ];
+ 
         if(!empty($token)) {
             return $response = sendRequest($url,$param,'Bearer '.$token,$headerArray = ['Abp.TenantId' => '1']);
         }else{

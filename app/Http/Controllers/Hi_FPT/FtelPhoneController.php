@@ -31,22 +31,15 @@ class FtelPhoneController extends MY_Controller
         return view('ftel-phone.edit');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * Số không tồn tại trong db -> chạy qua HR lấy info save ( nếu không có info thì lưu sdt, nếu thông tin đã có trong db thì update lại sdt mới )
-     * Số tồn tại trong db -> update lại nếu time > 1 tuần còn không bỏ qua
-     * @return \Illuminate\Http\Response
-     */
-    public function pushExport($getInfo, $phone, $dataExport)
+    public function pushExport($info, $phone, $dataExport)
     {
-        $codePath = explode('/', $getInfo->organizationCodePath);
+        $codePath = explode('/', $info->organizationCodePath);
         array_push($dataExport, [
             'number_phone'=> $phone,
-            'code' => $getInfo->code,
-            'emailAddress' => $getInfo->emailAddress,
-            'fullName'=> $getInfo->fullName,
-            'organizationCodePath' => $getInfo->organizationCodePath, //$codePath[2]
+            'code' => $info->code,
+            'emailAddress' => $info->emailAddress,
+            'fullName'=> $info->fullName,
+            'organizationCodePath' => $info->organizationCodePath, //$codePath[2]
             'organizationCodePath1' => $codePath[0],
             'organizationCodePath3' => $codePath[2]
         ]);
@@ -117,6 +110,17 @@ class FtelPhoneController extends MY_Controller
         }
         return redirect()->back()->with( ['data' => $dataExport] );
     }
+
+    // public function stores(FtelPhoneRequest $request)
+    // {  
+    //     $dataExport = array();
+    //     $hrService = new HrService();
+    //     $token = $hrService->loginHr()->authorization;
+    //     $arrPhone = array_map('trim', explode(',', $request->number_phone));
+    //     $listInfo = $hrService->getListInfoEmployee(json_encode($arrPhone), $token);
+    //     array_push($dataExport, $listInfo);
+    //     return redirect()->back()->with( ['data' => $dataExport] );
+    // }
 
     public function import(Request $request) 
     {

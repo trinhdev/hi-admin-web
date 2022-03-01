@@ -32,6 +32,7 @@ $methodNewsEventDomain = [
 $methodHr = [
     'LOGIN' => 'api/services/hub/Login',
     'GET_EMPLOYEE_INFO' => 'api/services/app/hifpt/GetEmployeeInfo',
+    'GET_LIST_EMPLOYEE_INFO' => 'api/services/app/hifpt/GetListEmployeeInfo',
 ];
 return [
     'DOMAIN_INSIDE' => $methodInsideDomain,
