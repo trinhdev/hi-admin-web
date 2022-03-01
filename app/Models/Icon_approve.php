@@ -20,25 +20,33 @@ class Icon_approve extends MY_Model
 
     protected $table = 'icon_approves';
     protected $primaryKey = 'id';
-    protected $fillable = ['product_type','product_id', 'updated_by', 'approved_type', 'approved_status', 'approved_by', 'approved_at', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = ['product_type','product_id', 'updated_by', 'approved_type', 'approved_status', 'approved_by', 'approved_at', 'created_at', 'updated_by', 'updated_at', 'deleted_at', 'requested_at', 'requested_by', 'checked_by', 'checked_at'];
     protected $casts = [
         'value' => 'array'
     ];
 
     public function icon() {
-        return $this->belongsTo(Icon::class, 'product_id', 'uuid');
+        return $this->belongsTo(Icon::class, 'product_id', 'uuid')->withTrashed();
     }
 
     public function icon_category() {
-        return $this->belongsTo(Icon_Category::class, 'product_id', 'uuid');
+        return $this->belongsTo(Icon_Category::class, 'product_id', 'uuid')->withTrashed();
     }
 
     public function icon_config() {
-        return $this->belongsTo(Icon_Config::class, 'product_id', 'uuid');
+        return $this->belongsTo(Icon_Config::class, 'product_id', 'uuid')->withTrashed();
     }
 
-    public function user() {
-        return $this->belongsTo(User::class, 'updated_by', 'id');
+    public function user_requested_by() {
+        return $this->belongsTo(User::class, 'requested_by', 'id');
+    }
+
+    public function user_checked_by() {
+        return $this->belongsTo(User::class, 'checked_by', 'id');
+    }
+
+    public function user_approved_by() {
+        return $this->belongsTo(User::class, 'approved_by', 'id');
     }
 
     public function settings() {

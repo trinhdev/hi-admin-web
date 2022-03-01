@@ -53,7 +53,6 @@ $(document).ready(function () {
             case 'closehelprequest':
                 initCloseHelpReqest();
                 break;
-<<<<<<< HEAD
             case 'iconcategory':
                 initIconcategory();
                 break;
@@ -62,10 +61,8 @@ $(document).ready(function () {
                 break;
             case 'iconapproved':
                 initIconapproved();
-=======
             case 'ftel-phone':
                 initFtelPhone();
->>>>>>> b43e3e89629ae33330f2909dce743867ce872a5e
                 break;
             case '':
             case 'home':
@@ -424,53 +421,11 @@ function initLogActivities() {
         },
         searchDelay: 500,
         columns: [{
-            title: 'No.',
-            render: function (data, type, row, meta) {
-                return meta.row + meta.settings._iDisplayStart + 1;
+                title: 'No.',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
             },
-<<<<<<< HEAD
-        },
-        {
-            data: 'id',
-        },
-        {
-            data: 'user_id',
-            className: "text-center"
-        },
-        {
-            data: 'email',
-            className: "text-center"
-        },
-        {
-            data: 'user_role',
-            className: "text-center"
-        },
-        {
-            data: 'method',
-            className: "text-center"
-        },
-        {
-            data: 'url'
-        },
-        {
-            data: 'created_at',
-            class: 'font-weight-bold'
-        },
-        {
-            data: 'param',
-            render: function (data, type, full) {
-                var showChar = 200;
-                var ellipsestext = "...";
-                var moretext = "Show More";
-                var lesstext = "Show Less";
-                var contentt = JSON.stringify(data);
-                var content = contentt.replace(/["]+/g, '').substring(0, contentt.length - 1);
-                if (content.length > showChar) {
-                    var c = content.substr(0, showChar);
-                    var h = content.substr(showChar, content.length - showChar);
-                    var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink" style="cursor: pointer;">' + moretext + '</a></span>'; //here call the read() function
-                    return html.toString();
-=======
             {
                 data: 'id',
             },
@@ -514,18 +469,15 @@ function initLogActivities() {
                         return html.toString();
                     }
                     return data;
->>>>>>> b43e3e89629ae33330f2909dce743867ce872a5e
                 }
-                return data;
+            },
+            {
+                data: 'ip',
+                className: "text-center",
+            },
+            {
+                data: 'agent'
             }
-        },
-        {
-            data: 'ip',
-            className: "text-center",
-        },
-        {
-            data: 'agent'
-        }
         ],
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
@@ -1194,7 +1146,6 @@ function initIconmanagement() {
             url: "/iconmanagement/initDatatable"
         },
         "data": [],
-        dom: 'Bfrtip',
         "columnDefs": [
             {
                 "searchable": false,
@@ -1309,42 +1260,10 @@ function initIconmanagement() {
             null,
             null
         ],
-        buttons: [
-            {
-                text: 'Tất cả',
-                action: function (e, dt, node, config) {
-                    icon_management_table.column(6).search('', true, false).draw();
-                }
-            },
-            {
-                text: 'Chờ kiểm tra',
-                action: function (e, dt, node, config) {
-                    icon_management_table.column(6).search('chokiemtra', true, false).draw();
-                }
-            },
-            {
-                text: 'Đã phê duyệt',
-                action: function (e, dt, node, config) {
-                    icon_management_table.column(6).search('dapheduyet', true, false).draw();
-                }
-            },
-            {
-                text: 'Phê duyệt thất bại',
-                action: function (e, dt, node, config) {
-                    icon_management_table.column(6).search('pheduyetthatbai', true, false).draw();
-                }
-            },
-            {
-                text: '<i class="fas fa-filter"></i> Lọc',
-                action: function (e, dt, node, config) {
-                    $('#filter-status').modal();
-                }
-            },
-        ]
     });
 
     $('#show_from').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
+        format: "YYYY-MM-DD HH:mm:ss",
         useCurrent: false,
         sideBySide: true,
         icons: {
@@ -1363,7 +1282,7 @@ function initIconmanagement() {
     });
 
     $('#show_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
+        format: "YYYY-MM-DD HH:mm:ss",
         useCurrent: false,
         sideBySide: true,
         icons: {
@@ -1381,7 +1300,7 @@ function initIconmanagement() {
     });
 
     $('#new_from').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
+        format: "YYYY-MM-DD HH:mm:ss",
         useCurrent: false,
         sideBySide: true,
         icons: {
@@ -1400,7 +1319,7 @@ function initIconmanagement() {
     });
 
     $('#new_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
+        format: "YYYY-MM-DD HH:mm:ss",
         useCurrent: false,
         sideBySide: true,
         icons: {
@@ -1650,7 +1569,6 @@ function initIconcategory() {
         "orderMulti": true,
         "retrieve": true,
         "serverSide": true,
-        dom: 'Bfrtip',
         "columnDefs": [
             {
                 "searchable": false,
@@ -1749,39 +1667,6 @@ function initIconcategory() {
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
         },
-        // searchDelay: 500
-        buttons: [
-            {
-                text: 'Tất cả',
-                action: function (e, dt, node, config) {
-                    icon_category.column(5).search('', true, false).draw();
-                }
-            },
-            {
-                text: 'Chờ kiểm tra',
-                action: function (e, dt, node, config) {
-                    icon_category.column(5).search('chokiemtra', true, false).draw();
-                }
-            },
-            {
-                text: 'Đã phê duyệt',
-                action: function (e, dt, node, config) {
-                    icon_category.column(5).search('dapheduyet', true, false).draw();
-                }
-            },
-            {
-                text: 'Phê duyệt thất bại',
-                action: function (e, dt, node, config) {
-                    icon_category.column(5).search('pheduyetthatbai', true, false).draw();
-                }
-            },
-            {
-                text: '<i class="fas fa-filter"></i> Lọc',
-                action: function (e, dt, node, config) {
-                    $('#filter-status').modal();
-                }
-            },
-        ]
     });
 
     if ($('#status-clock').is(':checked')) {
@@ -2007,7 +1892,6 @@ function initIconconfig() {
             url: "/iconconfig/initDatatable"
         },
         "data": [],
-        dom: 'Bfrtip',
         "columnDefs": [
             {
                 "searchable": false,
@@ -2110,38 +1994,6 @@ function initIconconfig() {
             null,
             null
         ],
-        buttons: [
-            {
-                text: 'Tất cả',
-                action: function (e, dt, node, config) {
-                    icon_config_table.column(5).search('', true, false).draw();
-                }
-            },
-            {
-                text: 'Chờ kiểm tra',
-                action: function (e, dt, node, config) {
-                    icon_config_table.column(5).search('chokiemtra', true, false).draw();
-                }
-            },
-            {
-                text: 'Đã phê duyệt',
-                action: function (e, dt, node, config) {
-                    icon_config_table.column(5).search('dapheduyet', true, false).draw();
-                }
-            },
-            {
-                text: 'Phê duyệt thất bại',
-                action: function (e, dt, node, config) {
-                    icon_config_table.column(5).search('pheduyetthatbai', true, false).draw();
-                }
-            },
-            {
-                text: '<i class="fas fa-filter"></i> Lọc',
-                action: function (e, dt, node, config) {
-                    $('#filter-status').modal();
-                }
-            },
-        ]
     });
 
     dragula([document.getElementById('all-product-config'), document.getElementById('selected-product-config')], {
@@ -2291,15 +2143,16 @@ function initIconapproved() {
         "orderMulti": true,
         "retrieve": true,
         "serverSide": true,
+        "order": [[ 7, "desc" ]],
         dom: 'Bfrtip',
         "columnDefs": [
             {
                 "searchable": false,
-                "targets": [0, 1, 3, 5]
+                "targets": [0, 1, 3, 4, 6, 7]
             },
             {
                 "searchable": true,
-                "targets": [4],
+                "targets": [5],
                 "visible": false
             },
         ],
@@ -2360,12 +2213,21 @@ function initIconapproved() {
             data: 'approved_type',
             name: 'approved_type',
             title: 'Loại yêu cầu',
-            className: 'text-center',
-        },
-        {
-            data: 'approved_status',
-            name: 'approved_status',
-            title: 'Trạng thái yêu cầu',
+            render: function(data, type, row, meta) {
+                var result = '';
+                switch(data) {
+                    case 'create':
+                        result = `<span class="badge badge-success">${data}</span>`;
+                        break;
+                    case 'update':
+                        result = `<span class="badge badge-warning">${data}</span>`;
+                        break;
+                    case 'delete':
+                        result = `<span class="badge badge-danger">${data}</span>`;
+                        break;
+                }
+                return result;
+            },
             className: 'text-center',
         },
         {
@@ -2396,18 +2258,41 @@ function initIconapproved() {
             className: 'text-center',
         },
         {
-            data: 'user',
-            name: 'user',
+            data: 'approved_status',
+            name: 'approved_status',
+            title: 'Trạng thái yêu cầu',
+            className: 'text-center',
+        },
+        {
+            data: 'user_requested_by',
+            name: 'user_requested_by',
             title: 'Người yêu cầu',
             render: function (data, type, row, meta) {
-                return (data && data['email']) ? data['email'] : row['updated_by'];
+                return (data && data['name']) ? data['name'] : row['requested_by'];
             },
             className: 'text-center',
         },
         {
-            data: 'approved_by',
-            name: 'approved_by',
+            data: 'requested_at',
+            name: 'requested_at',
+            title: 'Thời gian yêu cầu'
+        },
+        {
+            data: 'user_checked_by',
+            name: 'user_checked_by',
+            title: 'Người kiểm tra',
+            render: function (data, type, row, meta) {
+                return (data && data['name']) ? data['name'] : row['checked_by'];
+            },
+            className: 'text-center',
+        },
+        {
+            data: 'user_approved_by',
+            name: 'user_approved_by',
             title: 'Người phê duyệt',
+            render: function (data, type, row, meta) {
+                return (data && data['name']) ? data['name'] : row['approved_by'];
+            },
             className: 'text-center',
         },
         {
@@ -2429,6 +2314,8 @@ function initIconapproved() {
             null,
             null,
             null,
+            null,
+            null,
             null
         ],
         "language": {
@@ -2445,25 +2332,25 @@ function initIconapproved() {
             {
                 text: 'Tất cả',
                 action: function (e, dt, node, config) {
-                    icon_category.column(4).search('', true, false).draw();
+                    icon_category.column(5).search('', true, false).draw();
                 }
             },
             {
                 text: 'Chờ kiểm tra',
                 action: function (e, dt, node, config) {
-                    icon_category.column(4).search('chokiemtra', true, false).draw();
+                    icon_category.column(5).search('chokiemtra', true, false).draw();
                 }
             },
             {
                 text: 'Đã phê duyệt',
                 action: function (e, dt, node, config) {
-                    icon_category.column(4).search('dapheduyet', true, false).draw();
+                    icon_category.column(5).search('dapheduyet', true, false).draw();
                 }
             },
             {
                 text: 'Phê duyệt thất bại',
                 action: function (e, dt, node, config) {
-                    icon_category.column(4).search('pheduyetthatbai', true, false).draw();
+                    icon_category.column(5).search('pheduyetthatbai', true, false).draw();
                 }
             },
             {

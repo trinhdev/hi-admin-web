@@ -30,6 +30,22 @@
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title uppercase">{{ (!empty($data['productTitleId'])) ? 'Cập nhật' : 'Thêm' }} Danh Mục</h3>
+                            @if(Session::get('approved_data'))
+                            <h3 class="card-title uppercase" style="color: red; font-weight: bold; float: right">*{{ (!empty(Session::get('approved_data.user_requested_by.name'))) ? Session::get('approved_data.user_requested_by.name') : Session::get('approved_data.requested_by') }} đã yêu cầu @switch(Session::get('approved_data.approved_type'))
+                                @case('create')
+                                    <span>thêm</span>
+                                    @break
+                                @case('update')
+                                    <span>cập nhật</span>
+                                    @break
+                                @case('delete')
+                                    <span>xóa</span>
+                                    @break
+                            
+                                @default
+                                    
+                            @endswitch sản phẩm này</h3>
+                            @endif
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -167,16 +183,75 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
-                            <button type="button" onClick="cancelButton('{{ route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
-                            @if (!empty($id))
-                            <button type="button" onClick="deleteButton(JSON.stringify(serializeObject($('#icon-category-form').serializeArray())), '{{ $data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            @if (Session::get('approved_data'))
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="form-group row">
+                                        <label class="col-sm-6" style="padding-right: 0" for="action">Thông tin cập nhật</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7 offset-sm-1">
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày cập nhật</label>
+                                        <div class="col-sm-7">
+                                            <span>{{ (!empty(Session::get('approved_data.created_at'))) ? Session::get('approved_data.created_at') : '' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7 offset-sm-1">
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Nhân viên cập nhật</label>
+                                        <div class="col-sm-7">
+                                            <span>{{ (!empty(Session::get('approved_data.user_requested_by.name'))) ? Session::get('approved_data.user_requested_by.name') : Session::get('approved_data.requested_by') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7 offset-sm-1">
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Nhân viên kiểm tra</label>
+                                        <div class="col-sm-7">
+                                            <span>{{ (!empty(Session::get('approved_data.user_checked_by.name'))) ? Session::get('approved_data.user_checked_by.name') : Session::get('approved_data.checked_by') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7 offset-sm-1">
+                                    <div class="form-group row">
+                                        <label for="inputEmail3" class="col-sm-5 col-form-label">Nhân viên phê duyệt</label>
+                                        <div class="col-sm-7">
+                                            <span>{{ (!empty(Session::get('approved_data.user_approved_by.name'))) ? Session::get('approved_data.user_approved_by.name') : Session::get('approved_data.approved_by') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             @endif
                         </div>
-                        <!-- /.card-footer -->
+                        <div class="card-footer">
+                            @if(auth()->user()->cannot('icon-check-data-permission') && auth()->user()->cannot('icon-approve-data-permission'))
+                                <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
+                            @endif
+                            <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
+                            @if (!empty($id))
+                            <button type="button" onClick="deleteButton(JSON.stringify(serializeObject($('#icon-category-form').serializeArray())), '{{ @$data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            @endif
+                            @if (Session::get('approved_data'))
+                                @can('icon-check-data-permission')
+                                    <button type="button" style="margin-left: 5px" class="btn btn-warning float-right" {{ (!empty(Session::get('approved_data.approved_status')) && Session::get('approved_data.approved_status') != 'chokiemtra') ? 'disabled' : '' }} onClick="approve({'id': {{ (!empty(Session::get('approved_data.id')) ? Session::get('approved_data.id') : '' ) }}, 'approved_status': 'kiemtrathatbai'})">DỮ LIỆU KHÔNG HỢP LỆ</button>
+                                    <button type="button" style="margin-left: 5px" class="btn btn-success float-right" {{ (!empty(Session::get('approved_data.approved_status')) && Session::get('approved_data.approved_status') != 'chokiemtra') ? 'disabled' : '' }} onClick="approve({'id': {{ (!empty(Session::get('approved_data.id')) ? Session::get('approved_data.id') : '' ) }}, 'approved_status': 'chopheduyet'})">DỮ LIỆU HỢP LỆ</button>
+                                @endcan
+                                @can('icon-approve-data-permission')
+                                    <button type="button" style="margin-left: 5px" class="btn btn-warning float-right" {{ (!empty(Session::get('approved_data.approved_status')) && in_array(Session::get('approved_data.approved_status'), ['kiemtrathatbai', 'dapheduyet', 'pheduyetthatbai'])) ? 'disabled' : '' }} onClick="approve({'id': {{ (!empty(Session::get('approved_data.id')) ? Session::get('approved_data.id') : '' ) }}, 'approved_status': 'pheduyetthatbai'})">KHÔNG PHÊ DUYỆT</button>
+                                    <button type="button" style="margin-left: 5px" class="btn btn-success float-right" {{ (!empty(Session::get('approved_data.approved_status')) && in_array(Session::get('approved_data.approved_status'), ['kiemtrathatbai', 'dapheduyet', 'pheduyetthatbai'])) ? 'disabled' : '' }} onClick="approve({'id': {{ (!empty(Session::get('approved_data.id')) ? Session::get('approved_data.id') : '' ) }}, 'approved_status': 'dapheduyet'})">HOÀN TẤT PHÊ DUYỆT</button>
+                                @endcan
+                            @endif
+                        </div>
                     </div>
                     {!! Form::close() !!}
                 </div>

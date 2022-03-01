@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use stdClass;
 
 use Illuminate\Support\Str;
@@ -13,12 +14,13 @@ use Illuminate\Support\Str;
 class Icon_Category extends MY_Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'icon_categories';
     protected $primaryKey = 'uuid';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['uuid', 'productTitleId', 'productTitleNameVi', 'productTitleNameEn', 'arrayId', 'isDeleted', 'created_by'];
+    protected $fillable = ['uuid', 'productTitleId', 'productTitleNameVi', 'productTitleNameEn', 'arrayId', 'isDeleted', 'created_by', 'deleted_at'];
 
     protected static function boot() {
         parent::boot();

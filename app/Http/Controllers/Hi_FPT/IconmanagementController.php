@@ -8,12 +8,15 @@ use App\Models\Settings;
 use Illuminate\Http\Request;
 use App\Http\Requests\IconSaveRequest;
 use App\Models\Icon;
+use App\Models\Icon_Category;
+use App\Models\Icon_Config;
 use App\Models\Icon_approve;
 use App\Models\Icon_approve_logs;
 use App\Http\Traits\DataTrait;
 use \stdClass;
 use Yajra\DataTables\DataTables;
 use App\Services\IconManagementService;
+use App\Services\MailService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 
@@ -23,12 +26,17 @@ class IconmanagementController extends MY_Controller
     protected $module_name = 'Icon management';
     protected $model_name = "Icon";
     protected $iconManagement = null;
+    protected $mailService = null;
     public function __construct()
     {
         parent::__construct();
         $this->title = 'Icon Management';
         $this->iconManagement = new IconManagementService();
+        $this->mailService = new MailService();
         $this->model = $this->getModel('Icon');
+        $this->to    = filter_var(preg_replace('/\s+/', '', env('ICON_CHANGE_NOTI_TO')));
+        $this->cc    = filter_var(preg_replace('/\s+/', '', env('ICON_CHANGE_NOTI_CC')));
+        $this->bcc   = filter_var(preg_replace('/\s+/', '', env('ICON_CHANGE_NOTI_BCC')));
     }
 
     public function index()
@@ -49,7 +57,7 @@ class IconmanagementController extends MY_Controller
             $api_info = json_decode(json_encode($this->iconManagement->getProductById($id)), true);;            
 
             if(empty($api_info['data'])) {
-                $icon = $this->model::where(['uuid' => $id])->get();
+                $icon = $this->model::withTrashed()->where(['uuid' => $id])->get();
                 $api_info['data'] = (!empty($icon[0])) ? json_decode($icon[0], true) : [];
             }
             $data['data'] = (!empty($api_info['data'])) ? $api_info['data'] : [];
@@ -68,6 +76,7 @@ class IconmanagementController extends MY_Controller
     }
 
     public function save(IconSaveRequest $request) {
+        // dd(Auth::user());
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
@@ -81,17 +90,52 @@ class IconmanagementController extends MY_Controller
         }
 
         $icon = $this->createSingleRecord($this->model, $request->all());
+        $icon_approve = [
+            'product_type'          => 'icon_management',
+            // 'product_id'            => $icon->uuid,
+            'requested_by'          => Auth::check() ? Auth::user()->id : 0,
+            'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
+            'approved_status'       => 'chokiemtra',
+            'approved_type'         => $approved_status,
+            'approved_by'           => '',
+            'approved_at'           => null,
+        ];
 
         Icon_approve::create([
             'product_type'          => 'icon_management',
             'product_id'            => $icon->uuid,
-            'updated_by'            => Auth::check() ? Auth::user()->id : 0,
+            'requested_by'          => Auth::check() ? Auth::user()->id : 0,
+            'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
             'approved_status'       => 'chokiemtra',
             'approved_type'         => $approved_status,
             'approved_by'           => '',
             'approved_at'           => null,
         ]);
 
+        // Send email thong bao
+        $sendMailData = [
+            'email'                 => Auth::user()->email,
+            'name'                  => (!empty(Auth::user()->name)) ? Auth::user()->name : 'N/A',
+            'role'                  => Auth::user()->role->role_name,
+            'date'                  => date('Y-m-d', strtotime('now')),
+            'time'                  => date('H:i:s', strtotime('now')),
+            'approved_status'       => (empty($request['productId'])) ? 'Thêm' : 'Sửa',
+            'product_type'          => 'sản phẩm',
+            'url'                   => route('iconapproved.index')
+        ];
+
+        $mailContent = view('icon_approved_email.request_check_email')->with('data', $sendMailData)->render();
+
+        $mailInfo = [
+            'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
+            'Recipients'            => $this->to,
+            'CarbonCopys'           => $this->cc,
+            'BlindCarbonCopys'      => $this->bcc,
+            'Subject'               => '[ Hi FPT ] Hệ thống CMS vừa có 1 cập nhật mới',
+            'Body'                  => $mailContent
+        ];
+        
+        $this->mailService->sendMail($mailInfo);
         $this->addToLog(request());
         $request->session()->flash('success', 'success');
         $request->session()->flash('html', 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.');
@@ -107,7 +151,8 @@ class IconmanagementController extends MY_Controller
         Icon_approve::create([
             'product_type'          => 'icon_management',
             'product_id'            => $icon->uuid,
-            'updated_by'            => Auth::check() ? Auth::user()->id : 0,
+            'requested_by'          => Auth::check() ? Auth::user()->id : 0,
+            'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
             'approved_status'       => 'chokiemtra',
             'approved_type'         => 'delete',
             'approved_by'           => '',

@@ -31,7 +31,6 @@ class Icon_Management extends MY_Model
 
         static::creating(function($model) {
             if(empty($model->uuid)) {
-                dd($model);
                 $model->uuid = Str::uuid();
             }
         });

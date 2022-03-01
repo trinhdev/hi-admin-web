@@ -20,6 +20,7 @@ class CreateIconCategoriesTable extends Migration
             $table->string('productTitleNameEn')->nullable();
             $table->string('arrayId')->nullable();
             $table->string('isDeleted')->default('0');
+            $table->timestamp('deleted_at')->nullable();
             $table->string('created_by');
             $table->timestamps();
         });

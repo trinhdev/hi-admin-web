@@ -14,7 +14,7 @@ class IconManagementService {
         $this->token        = md5($api_config['CLIENT_KEY'] . '::' . $api_config['SECRET_KEY'] . date('Y-d-m'));
     }
 
-    public function getAllProduct(){
+    public function getAllProduct() {
         $url                = $this->baseUrl . $this->subDomain . 'products/get-all';
         $response           = sendRequest($url, [], $this->token);
         return $response;
@@ -32,6 +32,24 @@ class IconManagementService {
         return $response;
     }
 
+    public function addProduct($params) {
+        $url                = $this->baseUrl . $this->subDomain . 'products/add';
+        $response           = sendRequest($url, $params, $this->token, [], 'POST');
+        return $response;
+    }
+
+    public function updateProduct($params) {
+        $url                = $this->baseUrl . $this->subDomain . 'products/update';
+        $response           = sendRequest($url, $params, $this->token, [], 'POST');
+        return $response;
+    }
+
+    public function deleteProduct($params) {
+        $url                = $this->baseUrl . $this->subDomain . 'products/delete';
+        $response           = sendRequest($url, $params, $this->token, [], 'POST');
+        return $response;
+    }
+
     public function getAllProductTitle(){
         $url                = $this->baseUrl . $this->subDomain . 'product-titles/get-all';
         $response           = sendRequest($url, [], $this->token);
@@ -44,6 +62,24 @@ class IconManagementService {
         return $response;
     }
 
+    public function addProductTitle($params) {
+        $url                = $this->baseUrl . $this->subDomain . 'product-titles/add';
+        $response           = sendRequest($url, $params, $this->token, [], 'POST');
+        return $response;
+    }
+
+    public function updateProductTitle($params) {
+        $url                = $this->baseUrl . $this->subDomain . 'product-titles/update';
+        $response           = sendRequest($url, $params, $this->token, [], 'POST');
+        return $response;
+    }
+
+    public function deleteProductTitle($params) {
+        $url                = $this->baseUrl . $this->subDomain . 'product-titles/delete';
+        $response           = sendRequest($url, $params, $this->token, [], 'POST');
+        return $response;
+    }
+
     public function getAllProductConfig() {
         $url                = $this->baseUrl . $this->subDomain . 'product-configs/get-all';
         $response           = sendRequest($url, [], $this->token);
@@ -53,6 +89,24 @@ class IconManagementService {
     public function getProductConfigById($id) {
         $url                = $this->baseUrl . $this->subDomain . 'product-configs/get-by-id';
         $response           = sendRequest($url, ['productConfigId' => $id], $this->token);
+        return $response;
+    }
+
+    public function addProductConfig($params) {
+        $url                = $this->baseUrl . $this->subDomain . 'product-titles/add';
+        $response           = sendRequest($url, $params, $this->token, [], 'POST');
+        return $response;
+    }
+
+    public function updateProductConfig($params) {
+        $url                = $this->baseUrl . $this->subDomain . 'product-configs/update';
+        $response           = sendRequest($url, $params, $this->token, [], 'POST');
+        return $response;
+    }
+
+    public function deleteProductConfig($params) {
+        $url                = $this->baseUrl . $this->subDomain . 'product-configs/delete';
+        $response           = sendRequest($url, $params, $this->token, [], 'POST');
         return $response;
     }
 }

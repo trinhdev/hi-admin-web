@@ -155,7 +155,6 @@ function filterStatusPheDuyet(tableId) {
         table.column(4).search(statusFilterArr.join('|'), true);
     }
     if (pheduyetFilterArr) {
-        console.log(pheduyetFilterArr.join('|'));
         table.column(5).search(pheduyetFilterArr.join('|'), true);
     }
     table.draw();
@@ -209,4 +208,51 @@ function onsubmitIconForm(e, form, ul_id, withPopup = true) {
         // $("#spinner").addClass("hide");
         console.log('end submit');
     }
+}
+
+function approve(approved_data) {
+    Swal.fire({
+        title: 'Phê duyệt yêu cầu',
+        html: `Thông tin phê duyệt sẽ được lưu?`,
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Huỷ',
+        cancelButtonColor: '#d33',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Đồng ý',
+        reverseButtons: true
+
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var formData = new FormData();
+            formData.append('data', JSON.stringify(approved_data));
+            $.ajax({
+                type: 'POST',
+                url: '/iconapproved/save',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: (data) => {
+                    var response = JSON.parse(data);
+                    if(response.status) {
+                        window.location.href = "/iconapproved";
+                    }
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    showError(errorString);
+                }
+            });
+        }
+    });
 }

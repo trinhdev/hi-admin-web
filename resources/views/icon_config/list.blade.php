@@ -277,22 +277,6 @@
             width: 25%;
             font-weight: bold
         }
-
-        #icon-config_filter {
-            float: left;
-        }
-
-        .dt-buttons {
-            float: right;
-        }
-
-        #filter-status .col-form-label {
-            font-weight: unset!important;
-        }
-
-        #filter-status .form-group {
-            margin-bottom: 0
-        }
     </style>
 
     <script id="product-detail-template" type="text/x-jquery-tmpl">

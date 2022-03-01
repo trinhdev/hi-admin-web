@@ -250,14 +250,6 @@
             font-weight: bold
         }
 
-        #icon-category_filter {
-            float: left;
-        }
-
-        .dt-buttons {
-            float: right;
-        }
-
         #filter-status .col-form-label {
             font-weight: unset!important;
         }

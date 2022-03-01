@@ -152,7 +152,6 @@ $domainModemContractInfo = [
         'SECRET_KEY'    => 'xxxxxxhifpt2018'
     ],
 ];
-<<<<<<< HEAD
 
 $domainIconManagement = [
     'local'             => [
@@ -175,37 +174,49 @@ $domainIconManagement = [
     ],
 ];
 
-=======
 $domainHr = [
     'local'             => [
         'URL'           => 'http://hrapi.fpt.vn/',
-        'USERNAME'    => 'hifpt@hr.fpt.vn',
-        'PASSWORD'    => '!@#hiFPT123'
+        'USERNAME'      => 'hifpt@hr.fpt.vn',
+        'PASSWORD'      => '!@#hiFPT123'
     ],
     'staging'           => [
         'URL'           => 'http://hrapi.fpt.vn/',
-        'USERNAME'    => 'hifpt@hr.fpt.vn',
-        'PASSWORD'    => '!@#hiFPT123'
+        'USERNAME'      => 'hifpt@hr.fpt.vn',
+        'PASSWORD'      => '!@#hiFPT123'
     ],
     'production'        => [
         'URL'           => 'http://hrapi.fpt.vn/',
-        'USERNAME'    => 'hifpt@hr.fpt.vn',
-        'PASSWORD'    => '!@#hiFPT123'
+        'USERNAME'      => 'hifpt@hr.fpt.vn',
+        'PASSWORD'      => '!@#hiFPT123'
     ],
 ];
->>>>>>> b43e3e89629ae33330f2909dce743867ce872a5e
+
+$domainMail = [
+    'local'             => [
+        'URL'           => 'http://systemmailapi.fpt.vn/',
+        'SUB_DOMAIN'    => ['api', 'SendMailSMTP']
+    ],
+    'staging'           => [
+        'URL'           => 'http://systemmailapi.fpt.vn/',
+        'SUB_DOMAIN'    => ['api', 'SendMailSMTP']
+    ],
+    'production'        => [
+        'URL'           => 'http://systemmailapi.fpt.vn/',
+        'SUB_DOMAIN'    => ['api', 'SendMailSMTP']
+    ],
+];
+
 return [
-    'DOMAIN_REPORT'         => $domainReportConfig,
-    'DOMAIN_INSIDE'         => $domainInsideConfig,
-    'DOMAIN_CUSTOMER'       => $domainCustomerConfig,
-    'DOMAIN_SMS_WORLD'      => $domainSmsWorld,
-    'DOMAIN_NEWS_EVENT'     => $domainNewsEventConfig,
+    'DOMAIN_REPORT'                 => $domainReportConfig,
+    'DOMAIN_INSIDE'                 => $domainInsideConfig,
+    'DOMAIN_CUSTOMER'               => $domainCustomerConfig,
+    'DOMAIN_SMS_WORLD'              => $domainSmsWorld,
+    'DOMAIN_NEWS_EVENT'             => $domainNewsEventConfig,
     'DOMAIN_MODEM_INFO'             => $domainModemInfo,
     'DOMAIN_MODEM_ACCESS_POINT'     => $domainModemAccessPoint,
     'DOMAIN_MODEM_CONTRACT_INFO'    => $domainModemContractInfo,
-<<<<<<< HEAD
-    'DOMAIN_ICON_MANAGEMENT'        => $domainIconManagement
-=======
-    'DOMAIN_HR'             => $domainHr
->>>>>>> b43e3e89629ae33330f2909dce743867ce872a5e
+    'DOMAIN_ICON_MANAGEMENT'        => $domainIconManagement,
+    'DOMAIN_HR'                     => $domainHr,
+    'DOMAIN_MAIL'                   => $domainMail,
 ];

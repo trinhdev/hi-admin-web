@@ -51,6 +51,10 @@ class IconcategoryController extends MY_Controller
         if(!empty($id)) {
             $data['id'] = $id;
             $response = json_decode(json_encode($this->iconManagement->getProductTitleById($id)), true);
+            if(empty($response['data'])) {
+                $icon_category = $this->model::withTrashed()->where(['uuid' => $id])->get();
+                $response['data'] = (!empty($icon_category[0])) ? json_decode($icon_category[0], true) : [];
+            }
             $data['data']['productListId'] = (isset($response['data']['arrayId']) && is_string($response['data']['arrayId'])) ? explode(',', $response['data']['arrayId']) : [];
             foreach($data['data']['productListId'] as $productId) {
                 if(empty($data['data']['productList'][intval($productId)])) {
@@ -62,7 +66,6 @@ class IconcategoryController extends MY_Controller
                 $data['data'] = array_merge($response['data'], $data['data']);
             }
         }
-        
         $loai_dieu_huong = Settings::where('name', 'icon_loai_dieu_huong')->get();
         $data['loai_dieu_huong'] = (!empty($loai_dieu_huong[0]['value'])) ? json_decode($loai_dieu_huong[0]['value'], true) : [];
         return view('icon_category.edit')->with($data);
@@ -86,7 +89,8 @@ class IconcategoryController extends MY_Controller
         Icon_approve::create([
             'product_type'          => 'icon_category',
             'product_id'            => $icon_category->uuid,
-            'updated_by'            => Auth::check() ? Auth::user()->id : 0,
+            'requested_by'          => Auth::check() ? Auth::user()->id : 0,
+            'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
             'approved_status'       => 'chokiemtra',
             'approved_type'         => $approved_status,
             'approved_by'           => '',
@@ -126,14 +130,15 @@ class IconcategoryController extends MY_Controller
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
-        $icon = $this->createSingleRecord($this->model, json_decode($request['formData'], true));
+        $icon_category = $this->createSingleRecord($this->model, json_decode($request['formData'], true));
 
         Icon_approve::create([
             'product_type'          => 'icon_category',
-            'product_id'            => $icon->uuid,
-            'updated_by'            => Auth::check() ? Auth::user()->id : 0,
-            'approved_status'       => 'chokiemtra',
+            'product_id'            => $icon_category->uuid,
+            'requested_by'          => Auth::check() ? Auth::user()->id : 0,
+            'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
             'approved_type'         => 'delete',
+            'approved_status'       => 'chokiemtra',
             'approved_by'           => '',
             'approved_at'           => null,
         ]);

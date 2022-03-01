@@ -25,7 +25,7 @@ $(document).ready(function () {
     }
 
     $('#show_from').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
+        format: "YYYY-MM-DD HH:mm:ss",
         useCurrent: false,
         sideBySide: true,
         icons: {
@@ -44,7 +44,7 @@ $(document).ready(function () {
     });
 
     $('#show_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
+        format: "YYYY-MM-DD HH:mm:ss",
         useCurrent: false,
         sideBySide: true,
         icons: {
@@ -62,7 +62,7 @@ $(document).ready(function () {
     });
 
     $('#new_from').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
+        format: "YYYY-MM-DD HH:mm:ss",
         useCurrent: false,
         sideBySide: true,
         icons: {
@@ -81,7 +81,7 @@ $(document).ready(function () {
     });
 
     $('#new_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
+        format: "YYYY-MM-DD HH:mm:ss",
         useCurrent: false,
         sideBySide: true,
         icons: {

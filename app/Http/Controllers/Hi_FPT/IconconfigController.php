@@ -45,8 +45,11 @@ class IconconfigController extends MY_Controller
         ];
         $productList = json_decode(json_encode($this->iconconfig->getAllProduct()), true);
         $list_category = json_decode(json_encode($this->iconconfig->getAllProductTitle()), true);
-        if(!empty($list_category['data'])) {
-            foreach($list_category['data'] as &$category) {
+        $data['data']['list_category'] = (!empty($list_category['data'])) ? $list_category['data'] : [];
+        $data['data']['productList'] = (!empty($productList['data'])) ? array_column($productList['data'], null, 'productId') : [];
+        $data['data']['productListInConfig'] = [];
+        if(!empty($data['data']['list_category'])) {
+            foreach($data['data']['list_category'] as &$category) {
                 $category['productListInTitle'] = [];
                 foreach(explode(',', $category['arrayId']) as $productId) {
                     if(empty($data['data']['productList'][intval($productId)])) {
@@ -57,21 +60,24 @@ class IconconfigController extends MY_Controller
             } 
             
         }
-        $data['data']['list_category'] = (!empty($list_category['data'])) ? $list_category['data'] : [];
-        $data['data']['productList'] = (!empty($productList['data'])) ? array_column($productList['data'], null, 'productId') : [];
-        $data['data']['productListInConfig'] = [];
         $id = request()->segment(3);
         if(!empty($id)) {
             $data['id'] = $id;
             $response = json_decode(json_encode($this->iconconfig->getProductConfigById($id)), true);
-            if(!empty($response['data'])) {
+            if(empty($response['data'])) {
+                $icon_category = $this->model::withTrashed()->where(['uuid' => $id])->get();
+                $response['data'] = (!empty($icon_category[0])) ? json_decode($icon_category[0], true) : [];
+            }
+            if(!empty($response['data'])) {                
                 $data['data']['productListId'] = (isset($response['data']['arrayId']) && is_string($response['data']['arrayId'])) ? explode(',', $response['data']['arrayId']) : [];
+                // dd($data);
                 foreach($data['data']['productListId'] as $productId) {
                     if(empty($data['data']['productList'][intval($productId)])) {
                         continue;
                     }
                     array_push($data['data']['productListInConfig'], $data['data']['productList'][intval($productId)]);
                 }
+
                 $data['data'] = array_merge($response['data'], $data['data']);
             }
         }
@@ -99,7 +105,8 @@ class IconconfigController extends MY_Controller
         Icon_approve::create([
             'product_type'          => 'icon_config',
             'product_id'            => $icon_config->uuid,
-            'updated_by'            => Auth::check() ? Auth::user()->id : 0,
+            'requested_by'          => Auth::check() ? Auth::user()->id : 0,
+            'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
             'approved_status'       => 'chokiemtra',
             'approved_type'         => $approved_status,
             'approved_by'           => '',
@@ -140,14 +147,15 @@ class IconconfigController extends MY_Controller
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
-        $icon = $this->createSingleRecord($this->model, json_decode($request['formData'], true));
+        $icon_config = $this->createSingleRecord($this->model, json_decode($request['formData'], true));
 
         Icon_approve::create([
             'product_type'          => 'icon_config',
-            'product_id'            => $icon->uuid,
-            'updated_by'            => Auth::check() ? Auth::user()->id : 0,
-            'approved_status'       => 'chokiemtra',
+            'product_id'            => $icon_config->uuid,
+            'requested_by'          => Auth::check() ? Auth::user()->id : 0,
+            'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
             'approved_type'         => 'delete',
+            'approved_status'       => 'chokiemtra',
             'approved_by'           => '',
             'approved_at'           => null,
         ]);

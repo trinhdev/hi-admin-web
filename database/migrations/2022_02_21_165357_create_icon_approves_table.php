@@ -18,12 +18,16 @@ class CreateIconApprovesTable extends Migration
             $table->string('product_type');
             $table->string('product_id');
             $table->string('approved_type')->nullable(); // create, update, delete
-            $table->string('updated_by')->nullable();
+            $table->string('requested_by')->nullable();
+            $table->string('requested_at')->nullable();
+            $table->string('checked_by')->nullable();
+            $table->string('checked_at')->nullable();
             $table->string('approved_status')->nullable();
             $table->string('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->string('deleted_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }
