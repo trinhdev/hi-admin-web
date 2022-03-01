@@ -67,6 +67,7 @@ class FtelPhoneController extends MY_Controller
         $dataPhoneDB = array();
         $hrService = new HrService();
         $token = $hrService->loginHr()->authorization;
+        dd($token);
         $arrPhone = array_map('trim', explode(',', $request->number_phone));
         $dataDB = $this->model->whereIn('number_phone', $arrPhone)->get();
         if(isset($dataDB)) {

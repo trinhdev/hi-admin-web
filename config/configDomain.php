@@ -159,7 +159,7 @@ $domainHr = [
         'PASSWORD'    => '!@#hiFPT123'
     ],
     'staging'           => [
-        'URL'           => 'http://hrapistag.fpt.vn/',
+        'URL'           => 'http://hrapi.fpt.vn/',
         'USERNAME'    => 'hifpt@hr.fpt.vn',
         'PASSWORD'    => '!@#hiFPT123'
     ],
