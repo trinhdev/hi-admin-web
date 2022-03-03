@@ -24,7 +24,7 @@ return [
     'repeatTime' => [
         'once_time' => 'Chỉ hiển thị 1 lần, khi người dùng tắt hoặc xem chi tiết rồi thì không hiện nữa',
         'always' => 'Luôn luôn hiển thị khi mở app trong thời gian còn hiệu lực',
-        'other' => 'Chỉ hiển thị 1 lần trong thời gian N phút, quá N phút khi người dùng mở app thì mới hiển thị lại'
+//        'other' => 'Chỉ hiển thị 1 lần trong thời gian N phút, quá N phút khi người dùng mở app thì mới hiển thị lại'
     ],
 //  config cho banner và popup chung
     'object_type' => [

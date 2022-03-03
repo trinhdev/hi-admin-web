@@ -30,6 +30,8 @@ $methodNewsEventDomain = [
     'PUSH_POPUP'            => 'provider/tool/popup/push-popup',
     'GET_LIST_POPUP'        => 'provider/tool/popup/list-template',
     'GET_DETAIL_POPUP'      => 'provider/tool/popup/detail-template',
+    'UPDATE_PERSONAL_MAP'      => 'provider/tool/popup/update-template-personal-map',
+    'GET_DETAIL_PERSONAL_MAP'      => 'provider/tool/popup/detail-template-personal-map',
 ];
 return [
     'DOMAIN_INSIDE' => $methodInsideDomain,

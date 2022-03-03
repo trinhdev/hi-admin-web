@@ -35,13 +35,11 @@
                             </button>
                         </div>
                     </div>
-                @php
-                    $action = (empty($banner)) ? route('popupmanage.store') : route('popupmanage.update', [$banner->bannerId]);
-                @endphp
                 <!-- /.card-header -->
-                    <form action="{{$action}}" method="POST"
+                    <form action="{{route('popupmanage.save')}}" method="POST"
                           onchange="checkEnableSavePopup(this)" onSubmit="validateDataPopup(event,this)">
                         @csrf
+                        <input type="hidden" value="@if(!empty($detailPopup->id)){{$detailPopup->id}}@endif" name="id_popup">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
@@ -64,10 +62,10 @@
                                         <input type="file" accept="image/*" name="path_1" class="form-control"
                                                onchange="handleUploadImagePopup(this,event)"/>
                                         <img id="img_path_1"
-                                             src="@if(!empty($detailPopup->image)) {{env('URL_STATIC').'/upload/images/event/'.$detailPopup->image }} @else {{ asset('/images/image_holder.png') }}@endif"
+                                             src="@if(!empty($detailPopup->image)) {{env('URL_STATIC').'/upload/images/event/'.$detailPopup->image }}@else {{ asset('/images/image_holder.png') }}@endif"
                                              alt="your image" class="img-thumbnail img_viewable"
                                              style="max-width: 150px;padding:10px;margin-top:10px"/>
-                                        <input name="img_path_1_name" id="img_path_1_name" value="" hidden/>
+                                        <input name="img_path_1_name" id="img_path_1_name" value="@if(!empty($detailPopup->image)){{$detailPopup->image }}@endif" hidden/>
                                     </div>
                                     <div class="form-group">
                                         <label class="required_red_dot">Loại popup</label>
@@ -138,18 +136,18 @@
                                         <input type="file" accept="image/*" name="path_2" class="form-control"
                                                onchange="handleUploadImagePopup(this,event)"/>
                                         <img id="img_path_2"
-                                             src="@if(!empty($detailPopup->buttonImage)) {{env('URL_STATIC').'/upload/images/event/'.$detailPopup->buttonImage }} @else {{ asset('/images/image_holder.png') }}@endif"
+                                             src="@if(!empty($detailPopup->buttonImage)) {{env('URL_STATIC').'/upload/images/event/'.$detailPopup->buttonImage}}@else {{ asset('/images/image_holder.png') }}@endif"
                                              alt="your image" class="img-thumbnail img_viewable"
                                              style="max-width: 150px;padding:10px;margin-top:10px"/>
                                         <span class="warning-alert" id="path_2_required_alert" hidden>This field is
                                                 required!</span>
-                                        <input name="img_path_2_name" id="img_path_2_name" value="" hidden/>
+                                        <input name="img_path_2_name" id="img_path_2_name" value="@if(!empty($detailPopup->buttonImage)){{$detailPopup->buttonImage}}@endif" hidden/>
                                     </div>
 
                                     <div class="form-group" style="display: none" id="form_directionUrl">
                                         <label for="exampleInputEmail1">URL điều hướng</label>
                                         <input type="input" class="form-control" id="directionUrl" name="directionUrl"
-                                               placeholder="URL điều hướng">
+                                               placeholder="URL điều hướng" value="@if(!empty($detailPopup->buttonActionValue)){{$detailPopup->buttonActionValue}}@endif">
                                     </div>
 
                                 </div>

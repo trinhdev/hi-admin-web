@@ -11,7 +11,6 @@ $( document ).ready(function() {
         $('#directionUrl').show();
     }
     let type_direction = $('#directionId').val();
-    console.log(type_direction);
     if (type_direction == 'url_open_out_app' || type_direction == 'url_open_in_app') {
         $('#form_directionUrl').show();
     } else {
@@ -83,6 +82,7 @@ function validateDataPopup(event, form) {
 
 function checkEnableSavePopup(form) {
     var formData = getDataInForm(form);
+    console.log(checkSubmitPopup(formData).status);
     if (checkSubmitPopup(formData).status) {
         $('form').find(':submit').prop('disabled', false);
     } else {
@@ -188,16 +188,5 @@ function callApiGetListPopup(show_from = null, show_to = null, popupType = null)
         popupType: popupType,
         _token: $('meta[name="csrf-token"]').attr('content')
     };
-
-    callAPIHelper("/popupmanage/initDatatable", uploadParam, 'GET', initPopupManage);
-}
-function callApiGetDetailPopup(show_from = null, show_to = null, popupType = null) {
-    var uploadParam = {
-        public_date_from: show_from,
-        public_date_to: show_to,
-        popupType: popupType,
-        _token: $('meta[name="csrf-token"]').attr('content')
-    };
-
     callAPIHelper("/popupmanage/initDatatable", uploadParam, 'GET', initPopupManage);
 }

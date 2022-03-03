@@ -69,6 +69,11 @@
         html: `{{ (session()->has('html')) ? session()->get('html') : '' }}`
     });
 @endif
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 {{ session()->forget('error'); }}
 {{ session()->forget('success'); }}

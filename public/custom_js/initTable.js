@@ -39,9 +39,6 @@ $(document).ready(function () {
             case 'popupmanage':
                 callApiGetListPopup();
                 break;
-            case 'detailpopup':
-                callApiGetDetailPopup();
-                break;
             case 'checkuserinfo':
                 initCheckUserInfo();
                 break;
@@ -1080,8 +1077,8 @@ function initPopupManage(response) {
             title: 'Hành Động',
             render: function (data, type, row) {
                 return `
-                    <a style="float: left; margin-right: 5px" type="button" href="`+tempRoute+`/`+row['id']+`" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
-                    <a style="" type="button" href="`+tempRoute+`/`+row['id']+`" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
+                    <a style="float: left; margin-right: 5px" type="button" href="`+tempRouteView+`/`+row['id']+`" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
+                    <a style="" type="button" href="`+tempRouteEdit+`/`+row['id']+`" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
                     `;
             },
             "sortable": false

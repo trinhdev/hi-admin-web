@@ -76,6 +76,7 @@
 <!-- /.content-wrapper -->
     <script>
         var listTemplateJson = '{!! json_encode($list_template_popup->type) !!}';
-        var tempRoute = '{{ route('popupmanage.view') }}';
+        var tempRouteView = '{{ route('popupmanage.view') }}';
+        var tempRouteEdit = '{{ route('popupmanage.edit') }}';
     </script>
 @endsection

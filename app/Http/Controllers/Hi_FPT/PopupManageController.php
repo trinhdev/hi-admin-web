@@ -7,6 +7,7 @@ use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use App\Services\NewsEventService;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\returnArgument;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Carbon;
 
@@ -181,11 +182,10 @@ class PopupManageController extends MY_Controller
         } else
             $data['listTargetRoute'] = [];
         $data['listTypePopup'] = config('platform_config.type_popup_service');
-//        my_debug($data);
         return view('popup.edit')->with($data);
     }
 
-    public function store(Request $request)
+    public function save(Request $request)
     {
 //        $timeline = $request->all()['timeline'];
 //        $timeline_array = explode(" - ", $timeline);
@@ -199,11 +199,7 @@ class PopupManageController extends MY_Controller
             'templateType' => 'required',
             'titleVi' => 'required',
             'titleEn' => 'required',
-            'path_1' => 'required',
             'img_path_1_name' => 'required',
-            'timeline' => 'required',
-            'objecttype' => 'required',
-            'object' => 'required'
         ];
 //      banner có button
         if ($request->templateType == "popup_custom_image_transparent" || $request->templateType == "popup_full_screen") {
@@ -215,6 +211,7 @@ class PopupManageController extends MY_Controller
         if ($request->directionId == "url_open_out_app" || $request->directionId == "url_open_in_app") {
             $rules['directionUrl'] = 'required';
         }
+        $request->validate($rules);
 //        $request->merge([
 //            'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s'),
 //            'show_to' => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
@@ -235,8 +232,13 @@ class PopupManageController extends MY_Controller
         if ($request->directionId == 'url_open_out_app' || $request->directionId == 'url_open_in_app') {
             $createParams['directionUrl'] = $directionUrl;
         }
-        $create_banner_response = $newsEventService->addNewPopup($createParams);
-        if (!empty($create_banner_response->data)) {
+
+        if (!empty($request->id_popup)) {
+            $createParams['templatePersonalId'] = $request->id_popup;
+            $create_banner_response = $newsEventService->updatePopup($createParams);
+        } else
+            $create_banner_response = $newsEventService->addNewPopup($createParams);
+        if (($create_banner_response->statusCode == 0)) {
 //            $pushParams = [
 //                'popupTemplateId' => $create_banner_response->data->templatePersonalId,
 //                'repeatTime' => ($request->repeatTime != 'other') ? $request->repeatTime : $request->other_min,
@@ -287,21 +289,6 @@ class PopupManageController extends MY_Controller
         }
         $responseCallAPIGetListPopup->aclCurrentModule = $this->aclCurrentModule;
         return $responseCallAPIGetListPopup;
-    }
-
-    public function updateOrder(Request $request)
-    {
-        if (!$request->ajax()) {
-            return false;
-        }
-        $request->validate([
-            'ordering' => 'required',
-            'bannerType' => 'required',
-            'bannerId' => 'required'
-        ]);
-        $newsEventService = new NewsEventService();
-        $updateOrder_response = $newsEventService->updateOrderBannder($request->bannerId, $request->bannerType, $request->ordering);
-        return $updateOrder_response;
     }
 
     public function view($id)
@@ -357,5 +344,21 @@ class PopupManageController extends MY_Controller
         $data['object'] = config('platform_config.object');
         $data['repeatTime'] = config('platform_config.repeatTime');
         return view('popup.view')->with($data);
+    }
+
+    public function pushPopupTemplate()
+    {
+        $data = request()->all();
+        my_debug($data);
+        $params[''] = 1;
+        $newsEventService = new NewsEventService();
+        $newsEventService->pushTemplate($params);
+    }
+    public function getDetailPersonalMaps() {
+        $data = request()->all();
+        $personalID = $data['personalID'];
+        $newsEventService = new NewsEventService();
+        $detail_PersonalMaps = $newsEventService->getDetailPersonalMap($personalID);
+        return $detail_PersonalMaps;
     }
 }

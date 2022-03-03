@@ -26,11 +26,11 @@ class FileController extends MY_Controller
             'encodedImage' =>   base64_encode(file_get_contents($file))
         ];
         $newsEventService = new NewsEventService();
-//        $uploadImage_response = $newsEventService->uploadImage($param['imageFileName'], $param['encodedImage']);
+        $uploadImage_response = $newsEventService->uploadImage($param['imageFileName'], $param['encodedImage']);
         $obj = new stdClass();
         $image = new stdClass();
-        $image->uploadedImageUrl = 'https://hi-static.fpt.vn/upload/images/event/event_8548a77d59eeb051d724d1485f287213.jpg';
-        $image->uploadedImageFileName = 'event_8548a77d59eeb051d724d1485f287213.jpg';
+        $image->uploadedImageUrl = $uploadImage_response->data->uploadedImageUrl;
+        $image->uploadedImageFileName = $uploadImage_response->data->uploadedImageFileName;
         $obj->statusCode = 0;
         $obj->message = "Thành công";
         $obj->data = $image;
