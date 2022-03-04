@@ -33,29 +33,27 @@ class FtelPhoneController extends MY_Controller
 
     public function pushExport($info, $phone, $dataExport)
     {
-        $codePath = explode('/', $info->organizationCodePath);
+        //dd($info->organizationCodePath);
         array_push($dataExport, [
-            'number_phone'=> $phone,
+            'phoneNumber'=> $phone,
             'code' => $info->code,
             'emailAddress' => $info->emailAddress,
             'fullName'=> $info->fullName,
-            'organizationCodePath' => $info->organizationCodePath, //$codePath[2]
-            'organizationCodePath1' => $codePath[0],
-            'organizationCodePath3' => $codePath[2]
+            'organizationCodePath' => $info->organizationCodePath
         ]);
         $dataExport = array_unique($dataExport, SORT_REGULAR);
         return $dataExport;
     }
-    public function dataDB($getInfo, $phone)
+    public function dataDB($info)
     {
         $data = [
-            'number_phone' => $phone,
-            'code' => $getInfo->code,
-            'emailAddress' => $getInfo->emailAddress,
-            'fullName' => $getInfo->fullName,
-            'response' => json_encode($getInfo),
-            'organizationNamePath' => $getInfo->organizationNamePath, 
-            'organizationCodePath' => $getInfo->organizationCodePath,
+            'number_phone' => $info->phoneNumber,
+            'code' => $info->code,
+            'emailAddress' => $info->emailAddress,
+            'fullName' => $info->fullName,
+            'response' => json_encode($info),
+            'organizationNamePath' => $info->organizationNamePath, 
+            'organizationCodePath' => $info->organizationCodePath,
             'created_by' => $this->user->id,
             'updated_at' => now(),
         ];
@@ -111,16 +109,47 @@ class FtelPhoneController extends MY_Controller
         return redirect()->back()->with( ['data' => $dataExport] );
     }
 
-    // public function stores(FtelPhoneRequest $request)
-    // {  
-    //     $dataExport = array();
-    //     $hrService = new HrService();
-    //     $token = $hrService->loginHr()->authorization;
-    //     $arrPhone = array_map('trim', explode(',', $request->number_phone));
-    //     $listInfo = $hrService->getListInfoEmployee(json_encode($arrPhone), $token);
-    //     array_push($dataExport, $listInfo);
-    //     return redirect()->back()->with( ['data' => $dataExport] );
-    // }
+    public function stores(FtelPhoneRequest $request)
+    {  
+        $data = [];
+        $dataPhoneDB = [];
+        $hrService = new HrService();
+        $token = $hrService->loginHr()->authorization;
+        $arrPhone = array_map('trim', explode(',', $request->number_phone));
+        $dataDB = $this->model->whereIn('number_phone', $arrPhone)->get();
+        
+        if(!empty($dataDB)) {
+            foreach($dataDB as $value)
+            {
+                if($value->updated_at <= now()->subWeeks()) {
+                    $info = $hrService->getListInfoEmployee($value->number_phone, $token);
+                    dd($info);
+                    if(!empty($info)) {
+                        $value->update($this->dataDB($info));
+                        $data = $this->pushExport($info, $info->phoneNumber, $data);
+                    } else {
+                        $value->update([ 'updated_at' => now() ]);
+                    }
+                }
+                if(!empty($value->code)) {
+                    $data = $this->pushExport($value, $value->number_phone, $data);
+                }
+                $dataPhoneDB[] = $value->number_phone;
+            }
+        }
+        
+        $dataAPI = array_diff($arrPhone, $dataPhoneDB);
+        $chunk50 = array_chunk($dataAPI, 50);
+        foreach($chunk50 as $value) {
+            $dataExport = $hrService->getListInfoEmployee($value, $token);
+            foreach($dataExport as $data_value) {
+                $this->model->create($this->dataDB($data_value));
+                $data[] = $data_value;
+            }
+        }
+
+        return redirect()->back()->with( ['data' => json_decode(json_encode($data), true)] );
+    }
 
     public function import(Request $request) 
     {
