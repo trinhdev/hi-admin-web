@@ -31,75 +31,6 @@ class PopupManageController extends MY_Controller
         return view('popup.index')->with(['list_template_popup' => $listTemplatePopup]);
     }
 
-    public function update(Request $request, $id)
-    {
-        $rules = [
-            'bannerType' => 'required',
-            // 'title_vi'  =>'required',
-            // 'title_en'  =>'required',
-            // 'img_path_1_name' =>'required',
-            'object' => 'required',
-            'object_type' => 'required',
-            'show_from' => 'date_format:Y-m-d\TH:i|nullable',
-            'show_to' => 'date_format:Y-m-d\TH:i|nullable',
-            'direction_url' => 'required_if:directionId,url_open_in_app,url_open_out_app',
-            // 'img_path_2_name'   => 'required_if:bannerType,promotion',
-        ];
-
-        $request->validate($rules);
-
-        $request->merge([
-            'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s'),
-            'show_to' => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
-        ]);
-        $this->addToLog($request);
-        $newsEventService = new NewsEventService();
-        $updateParams = [
-            'bannerId' => $id,
-            'bannerType' => $request->bannerType,
-            'objects' => $request->object,
-            'objectType' => $request->object_type,
-        ];
-        if (!empty($request->title_vi)) {
-            $updateParams['titleVi'] = $request->title_vi;
-        };
-        if (!empty($request->show_from)) {
-            $updateParams['publicDateStart'] = $request->show_from;
-        };
-        if (!empty($request->show_to)) {
-            $updateParams['publicDateEnd'] = $request->show_to;
-        }
-        if (!empty($request->title_en)) {
-            $updateParams['titleEn'] = $request->title_en;
-        }
-        if (!empty($request->img_path_1_name)) {
-            $updateParams['imageFileName'] = $request->img_path_1_name;
-        };
-        if (!empty($request->has_target_route)) {
-            if (!empty($request->direction_id)) {
-                $updateParams['directionId'] = $request->direction_id;
-            };
-            if (!empty($request->direction_url)) {
-                $updateParams['directionUrl'] = $request->direction_url;
-            };
-        }
-        if (!empty($request->bannerType) && $request->bannerType == 'promotion' && !empty($request->img_path_2_name)) {
-            $updateParams['thumbImageFileName'] = $request->img_path_2_name;
-        };
-        if (!empty($request->isHighlight)) {
-            $updateParams['isHighlight'] = true;
-        } else {
-            $updateParams['isHighlight'] = false;
-        };
-        // my_debug($updateParams, false);
-        $update_banner_response = $newsEventService->updateBanner($updateParams);
-        // dd($update_banner_response);
-        if (isset($update_banner_response->statusCode) && $update_banner_response->statusCode == 0) {
-            return redirect()->route('bannermanage.index')->withSuccess('Success!');
-        }
-        // dd($update_banner_response);
-        return redirect()->route('bannermanage.index')->withErrors(isset($update_banner_response->description) ? $update_banner_response->description : $update_banner_response->message);
-    }
 
     public function edit()
     {
@@ -173,13 +104,13 @@ class PopupManageController extends MY_Controller
 
         if (!empty($request->id_popup)) {
             $createParams['templatePersonalId'] = $request->id_popup;
-            $create_banner_response = $newsEventService->updatePopup($createParams);
+            $create_popup_response = $newsEventService->updatePopup($createParams);
         } else
-            $create_banner_response = $newsEventService->addNewPopup($createParams);
-        if (($create_banner_response->statusCode == 0)) {
+            $create_popup_response = $newsEventService->addNewPopup($createParams);
+        if (($create_popup_response->statusCode == 0)) {
             return redirect()->route('popupmanage.index')->withSuccess('Success!');
         }
-        return redirect()->route('popupmanage.index')->withErrors(isset($create_banner_response->description) ? $create_banner_response->description : $create_banner_response->message);
+        return redirect()->route('popupmanage.index')->withErrors(isset($create_popup_response->description) ? $create_popup_response->description : $create_popup_response->message);
     }
 
     public function uploadImage(Request $request)
