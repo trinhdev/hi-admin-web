@@ -31,68 +31,6 @@ class PopupManageController extends MY_Controller
         return view('popup.index')->with(['list_template_popup' => $listTemplatePopup]);
     }
 
-//    public function edit(Request $request, $bannerId, $bannerType)
-//    {
-//        $newsEventService = new NewsEventService();
-//        $listTargetRoute = $newsEventService->getListTargetRoute();
-//        $listTargetRoute = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
-//
-//        $listTypeBanner = $newsEventService->getListTypeBanner();
-//        $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
-//
-//        $getDetailBanner_response = $newsEventService->getDetailBanner($bannerId, $bannerType);
-//        if (!isset($getDetailBanner_response->statusCode) || $getDetailBanner_response->statusCode != 0) {
-//            return redirect()->route('bannermanage.index')->withErrors($getDetailBanner_response->message);
-//        }
-//        $dataResponse = $getDetailBanner_response->data;
-//        $templateObj = (object)[
-//            "bannerId" => null,
-//            "bannerType" => null,
-//            "public_date_start" => null,
-//            "public_date_end" => null,
-//            "title_vi" => null,
-//            "title_en" => null,
-//            "direction_id" => null,
-//            "direction_url" => null,
-//            "image" => null,
-//            "thumb_image" => null,
-//            "view_count" => 0,
-//            "date_created" => null,
-//            "date_modified" => null,
-//            "created_by" => null,
-//            "is_highlight" => false,
-//        ];
-//        if (isset($dataResponse->banner_id)) {
-//            $templateObj->bannerId = $dataResponse->banner_id;
-//            $templateObj->title_vi = $dataResponse->banner_title;
-//            $templateObj->bannerType = $dataResponse->custom_data;
-//            $templateObj->image = $dataResponse->image_url;
-//            $templateObj->view_count = $dataResponse->view_count;
-//            $templateObj->direction_id = $dataResponse->direction_id;
-//            $templateObj->direction_url = $dataResponse->direction_url;
-//            $templateObj->date_created = $dataResponse->date_created;
-//
-//        } else {
-//            $templateObj->bannerId = $dataResponse->event_id;
-//            $templateObj->title_vi = $dataResponse->title_vi;
-//            $templateObj->bannerType = ($dataResponse->event_type == "highlight") ? 'bannerHome' : $dataResponse->event_type;
-//            $templateObj->image = !empty($dataResponse->image) ? env('URL_STATIC') . '/upload/images/event/' . $dataResponse->image : null;
-//            $templateObj->view_count = $dataResponse->view_count;
-//            // $templateObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
-//            $templateObj->direction_id = $dataResponse->direction_id;
-//            $templateObj->direction_url = $dataResponse->event_url;
-//            $templateObj->date_created = $dataResponse->date_created;
-//
-//            $templateObj->title_en = $dataResponse->title_en;
-//            $templateObj->thumb_image = !empty($dataResponse->thumb_image) ? env('URL_STATIC') . '/upload/images/event/' . $dataResponse->thumb_image : null;
-//            $templateObj->created_by = $dataResponse->created_by;
-//            $templateObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
-//            $templateObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
-//            $templateObj->is_highlight = (boolean)$dataResponse->is_highlight;
-//        }
-//        return view('banners.edit')->with(['list_target_route' => $listTargetRoute, 'list_type_banner' => $listTypeBanner, 'banner' => $templateObj]);
-//    }
-
     public function update(Request $request, $id)
     {
         $rules = [
@@ -172,6 +110,9 @@ class PopupManageController extends MY_Controller
             $getDetailPopup_response = $newsEventService->getDetailPopup($id);
             if (isset($getDetailPopup_response->statusCode)) {
                 $data['detailPopup'] = ($getDetailPopup_response->statusCode == 0) ? $getDetailPopup_response->data : [];
+//              clear buttonActionValue when deeplink define
+                if ($data['detailPopup']->buttonActionType == 'function')
+                    $data['detailPopup']->buttonActionValue = '';
             } else
                 $data['detailPopup'] = [];
         } else
@@ -187,10 +128,7 @@ class PopupManageController extends MY_Controller
 
     public function save(Request $request)
     {
-//        $timeline = $request->all()['timeline'];
-//        $timeline_array = explode(" - ", $timeline);
-//        $dateStart = $timeline_array[0];
-//        $dateEnd = $timeline_array[1];
+
         $ruleButtonImage = [
             'directionId' => 'required',
             'img_path_2_name' => 'required',
@@ -239,15 +177,6 @@ class PopupManageController extends MY_Controller
         } else
             $create_banner_response = $newsEventService->addNewPopup($createParams);
         if (($create_banner_response->statusCode == 0)) {
-//            $pushParams = [
-//                'popupTemplateId' => $create_banner_response->data->templatePersonalId,
-//                'repeatTime' => ($request->repeatTime != 'other') ? $request->repeatTime : $request->other_min,
-////                'dateStart' => $dateStart,
-////                'dateEnd' => $dateEnd,
-//                'objectType' => $request->objecttype,
-//                'objects' => $request->object,
-//            ];
-//            $push_response = $newsEventService->pushTemplate($pushParams);
             return redirect()->route('popupmanage.index')->withSuccess('Success!');
         }
         return redirect()->route('popupmanage.index')->withErrors(isset($create_banner_response->description) ? $create_banner_response->description : $create_banner_response->message);
@@ -349,10 +278,25 @@ class PopupManageController extends MY_Controller
     public function pushPopupTemplate()
     {
         $data = request()->all();
-        my_debug($data);
-        $params[''] = 1;
+        $timeline = $data['timeline'];
+        $timeline_array = explode(" - ", $timeline);
+        $dateStart = $timeline_array[0];
+        $dateEnd = $timeline_array[1];
+
+        $objecttype = $data['objecttype'];
+        $object = $data['object'];
+        $repeatTime = $data['repeatTime'];
+        $templateId = $data['templateId'];
+        $pushParams = [
+            'templateId' => $templateId,
+            'repeatTime' => $repeatTime,
+            'dateStart' => $dateStart,
+            'dateEnd' => $dateEnd,
+            'objectType' => $objecttype,
+            'objects' => $object,
+        ];
         $newsEventService = new NewsEventService();
-        $newsEventService->pushTemplate($params);
+        $push_response = $newsEventService->pushTemplate($pushParams);
     }
     public function getDetailPersonalMaps() {
         $data = request()->all();

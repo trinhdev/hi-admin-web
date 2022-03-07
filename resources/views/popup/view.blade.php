@@ -1,7 +1,7 @@
 @extends('layouts.default')
 @section('content')
     <style>
-        td{
+        td {
             word-break: break-all !important;
         }
     </style>
@@ -30,7 +30,8 @@
                     <div class="card-body">
                         <div class="row">
                             <table class="table">
-                                <input type="hidden" name="templateId" id="templateId" value="{{$detailTemplate->templateId}}">
+                                <input type="hidden" name="templateId" id="templateId"
+                                       value="{{$detailTemplate->templateId}}">
                                 <tbody>
                                 <tr>
                                     <td width="33%"><b>Tiêu đề tiếng việt</b></td>
@@ -49,12 +50,16 @@
                                 </tr>
                                 <tr>
                                     <td width="33%"><b>Ảnh</b></td>
-                                    <td><img width="300px" src="{{env('URL_STATIC').'/upload/images/event/'.$detailTemplate->image}}"></td>
+                                    <td><img width="300px"
+                                             src="{{env('URL_STATIC').'/upload/images/event/'.$detailTemplate->image}}">
+                                    </td>
                                 </tr>
                                 @if(!empty($detailTemplate->buttonImage))
                                     <tr>
                                         <td width="33%"><b>Nút điều hướng</b></td>
-                                        <td><img width="300px" src="{{env('URL_STATIC').'/upload/images/event/'.$detailTemplate->buttonImage}}"></td>
+                                        <td><img width="300px"
+                                                 src="{{env('URL_STATIC').'/upload/images/event/'.$detailTemplate->buttonImage}}">
+                                        </td>
                                     </tr>
                                 @endif
                                 </tbody>
@@ -67,7 +72,7 @@
                     <div class="card-header">
                         <h3 class="card-title">Chi tiết popup: {{$detailTemplate->titleVi}}</h3>
                         <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-toggle="modal" data-target="#myModal">
+                            <button type="button" class="btn btn-tool" onclick="clearForm()" data-toggle="modal" data-target="#myModal">
                                 <i class="fas fa-plus-circle"></i>
                             </button>
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -97,7 +102,11 @@
                                     <td>{{config('platform_config.object')[$value->pushedObject]}}</td>
                                     <td>{{$value->dateStart}}</td>
                                     <td>{{$value->dateEnd}}</td>
-                                    <td style="text-align: center"><a style="" type="button" onclick="getDetailPersonalMaps(this)" personalID="{{$value->templatePersonalMapId}}" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a></td>
+                                    <td style="text-align: center"><a style="" type="button"
+                                                                      onclick="getDetailPersonalMaps(this)"
+                                                                      personalID="{{$value->templatePersonalMapId}}"
+                                                                      class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -111,122 +120,125 @@
     <!-- Modal popup -->
     <div class="modal fade" id="myModal" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Chi tiết hiển thị popup </h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Loại Đối tượng</label>
-                                <select class="form-control select2" name="objecttype" id="objecttype">
-                                    @foreach($object_type as $key => $value)
-                                    <option value="{{$key}}">{{$value}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group" id="">
-                                <label>Tần suất popup xuất hiện</label>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <select class="form-control select2" name="repeatTime" id="repeatTime">
-                                            @foreach($repeatTime as $key => $value)
-                                                <option value="{{$key}}">{{$value}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    {{--<div class="col-3">--}}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Chi tiết hiển thị popup </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Loại Đối tượng</label>
+                                    <select class="form-control select2" name="objecttype" id="objecttype">
+                                        @foreach($object_type as $key => $value)
+                                            <option value="{{$key}}">{{$value}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group" id="">
+                                    <label>Tần suất popup xuất hiện</label>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <select class="form-control select2" name="repeatTime" id="repeatTime">
+                                                @foreach($repeatTime as $key => $value)
+                                                    <option value="{{$key}}">{{$value}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        {{--<div class="col-3">--}}
                                         {{--<input type="number" step="1" min="0" class="form-control"--}}
-                                               {{--style="display: none;" id="other_min" name="other_min"--}}
-                                               {{--placeholder="N (tính theo phút)">--}}
-                                    {{--</div>--}}
-                                </div>
-                            </div>
-                            <div class="form-group" >
-                                <label>Đối tượng</label>
-                                <select class="form-control select2" name="object" id="object">
-                                    @foreach($object as $key => $value)
-                                        <option value="{{$key}}">{{$value}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="required_red_dot">Thời gian hiển thị:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                        {{--style="display: none;" id="other_min" name="other_min"--}}
+                                        {{--placeholder="N (tính theo phút)">--}}
+                                        {{--</div>--}}
                                     </div>
-                                    <input type="text" class="form-control float-right" id="timeline"
-                                           name="timeline">
                                 </div>
-                                <!-- /.input group -->
+                                <div class="form-group">
+                                    <label>Đối tượng</label>
+                                    <select class="form-control select2" name="object" id="object">
+                                        @foreach($object as $key => $value)
+                                            <option value="{{$key}}">{{$value}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required_red_dot">Thời gian hiển thị:</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control float-right" id="timeline"
+                                               name="timeline">
+                                    </div>
+                                    <!-- /.input group -->
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="submitTargetPopup()">Save changes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="editPopup()">Save changes</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
         </div>
 
     </div>
 @endsection
 @push('scripts')
-<script>
-    $('#templatPersonList').DataTable();
-    function editPopup() {
-        var objecttype = document.getElementById("objecttype");
-        var repeatTime = document.getElementById("repeatTime");
-        var object = document.getElementById("object");
-        console.log(objecttype);
-        $.ajax({
-            type: 'POST',
-            url: '/popupmanage/pushPopupTemplate',
-            data: {'objecttype': objecttype, 'object': object, 'repeatTime': repeatTime},
-            processData: false,
-            contentType: false,
-            success: (data) => {
-                console.log(data);
-            },
-            error: function (xhr) {
-                var errorString = '';
-                $.each(xhr.responseJSON.errors, function (key, value) {
-                    errorString = value;
-                    return false;
-                });
-                showError(errorString);
-            }
-        });
-    }
-    function getDetailPersonalMaps(idPersonalMaps) {
-        $.ajax({
-            type: 'POST',
-            url: '/popupmanage/getDetailPersonalMaps',
-            data: {'personalID': idPersonalMaps.getAttribute("personalID")},
-            cache: false,
-            success: (data) => {
-                $("#object").val(data['pushedObject']).change();
-                $("#repeatTime").val(data['showOnceTime']).change();
-                console.log(data);
-            },
-            error: function (xhr) {
-                var errorString = '';
-                $.each(xhr.responseJSON.errors, function (key, value) {
-                    errorString = value;
-                    return false;
-                });
-                showError(errorString);
-            }
-        });
-        $("#myModal").modal()
-    }
-</script>
+    <script>
+        
+        $('#templatPersonList').DataTable();
+        function clearForm() {
+            $('#myModal select').prop('selectedIndex', 0).change();
+        }
+        function submitTargetPopup() {
+            var objecttype =  $("#objecttype").val();
+            var repeatTime = $("#repeatTime").val();
+            var object = $("#object").val();
+            var timeline =  $("#timeline").val();
+            var templateId =  $("#templateId").val();
+            $.ajax({
+                type: 'POST',
+                url: '/popupmanage/pushPopupTemplate',
+                data: {'objecttype': objecttype, 'object': object, 'repeatTime': repeatTime, 'timeline': timeline, 'templateId': templateId},
+                cache: false,
+                success: (data) => {
+                    console.log(data);
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    showError(errorString);
+                }
+            });
+        }
+
+        function getDetailPersonalMaps(idPersonalMaps) {
+            $.ajax({
+                type: 'POST',
+                url: '/popupmanage/getDetailPersonalMaps',
+                data: {'personalID': idPersonalMaps.getAttribute("personalID")},
+                cache: false,
+                success: (data) => {
+                    $("#object").val(data['pushedObject']).change();
+                    $("#repeatTime").val(data['showOnceTime']).change();
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    showError(errorString);
+                }
+            });
+            $("#myModal").modal()
+        }
+    </script>
 @endpush
