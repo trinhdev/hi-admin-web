@@ -87,7 +87,6 @@ class FtelPhoneController extends MY_Controller
                 $dataPhoneDB[] = $value->number_phone;
             }
         }
-        dd($data);
         
         $dataAPI = array_diff($arrPhone, $dataPhoneDB);
         $chunk50 = array_chunk($dataAPI, 50);
