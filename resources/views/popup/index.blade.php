@@ -42,9 +42,7 @@
 </div>
 <!-- /.content-wrapper -->
 
-<script>
-    $('#show_at').change(function(){
-        $('#popup_manage').DataTable().draw();
-    });
-</script>
 @endsection
+
+
+
