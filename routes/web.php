@@ -158,7 +158,7 @@ Route::group([
                 Route::get('/edit/{id?}','PopupManageController@edit')->name('popupmanage.edit');
                 Route::get('/create','PopupManageController@edit')->name('popupmanage.create');
                 Route::post('/save','PopupManageController@save')->name('popupmanage.save');
-                Route::get('/initDatatable','PopupManageController@initDatatable')->name('popupmanage.initDatatable');
+                //Route::get('/initDatatable','PopupManageController@initDatatable')->name('popupmanage.initDatatable');
                 Route::post('/updateordering','PopupManageController@updateOrder')->name('popupmanage.updateOrder');
                 Route::get('/view/{id?}','PopupManageController@view')->name('popupmanage.view');
                 Route::post('/pushPopupTemplate','PopupManageController@pushPopupTemplate')->name('popupmanage.pushPopupTemplate');

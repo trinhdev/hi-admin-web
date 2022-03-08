@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Hi_FPT;
 
-use App\Http\Controllers\Controller;
+use App\DataTables\Hi_FPT\PopUpDataTable;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use App\Services\NewsEventService;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\returnArgument;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Carbon;
 
 class PopupManageController extends MY_Controller
@@ -22,14 +21,19 @@ class PopupManageController extends MY_Controller
         $this->title = 'Popup Manage';
     }
 
-    public function index()
+    public function index(PopUpDataTable $dataTable)
     {
-        $newsEventService = new NewsEventService();
-        $listTemplatePopup = $newsEventService->getListTemplatePopup();
-        $listTemplatePopup->type = config('platform_config.type_popup_service');
-        $listTemplatePopup = (isset($listTemplatePopup->statusCode) && $listTemplatePopup->statusCode == 0) ? $listTemplatePopup : [];
-        return view('popup.index')->with(['list_template_popup' => $listTemplatePopup]);
+        return $dataTable->render('popup.index');
     }
+
+    // public function index()
+    // {
+    //     $newsEventService = new NewsEventService();
+    //     $listTemplatePopup = $newsEventService->getListTemplatePopup();
+    //     $listTemplatePopup->type = config('platform_config.type_popup_service');
+    //     $listTemplatePopup = (isset($listTemplatePopup->statusCode) && $listTemplatePopup->statusCode == 0) ? $listTemplatePopup : [];
+    //     return view('popup.index')->with(['list_template_popup' => $listTemplatePopup]);
+    // }
 
 
     public function edit()
@@ -128,27 +132,6 @@ class PopupManageController extends MY_Controller
         $newsEventService = new NewsEventService();
         $uploadImage_response = $newsEventService->uploadImage($param['imageFileName'], $param['encodedImage']);
         return $uploadImage_response;
-    }
-
-    public function initDatatable(Request $request)
-    {
-        $newsEventService = new NewsEventService();
-
-        // $toDay = Carbon::parse( date('Y-m-d h:i:s'))->format('Y-m-d\TH:i');
-        $param = [
-            'popupType' => empty($request->popupType) ? null : $request->popupType,
-            'publicDateStart' => empty($request->public_date_from) ? null : Carbon::parse($request->public_date_from)->format('Y-m-d H:i:s'),
-            'publicDateEnd' => empty($request->public_date_to) ? null : Carbon::parse($request->public_date_to)->format('Y-m-d H:i:s')
-        ];
-        $responseCallAPIGetListPopup = $newsEventService->getListTemplatePopup($param);
-        if (empty($responseCallAPIGetListPopup)) {
-            $responseCallAPIGetListPopup = (object)[];
-        };
-        if ($this->user->role_id == ADMIN) {
-            $responseCallAPIGetListPopup->isAdmin = true;
-        }
-        $responseCallAPIGetListPopup->aclCurrentModule = $this->aclCurrentModule;
-        return $responseCallAPIGetListPopup;
     }
 
     public function view($id)

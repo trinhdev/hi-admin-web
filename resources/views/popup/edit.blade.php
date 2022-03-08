@@ -157,7 +157,6 @@
             </div>
         </section>
     </div>
+
 @endsection
-{{--@section('scripts')--}}
-{{--    <script src="{{ asset('/custom_js/popupmanage.js')}}"></script>--}}
-{{--@endsection--}}
+

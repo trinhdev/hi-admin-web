@@ -1,6 +1,9 @@
 @extends('layouts.default')
 
 @section('content')
+@php 
+    $list_template_popup = config('platform_config.type_popup_service');
+@endphp 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -30,53 +33,18 @@
     <section class="content">
         <div class="container-fluid">
             <div class="card card-body col-sm-12">
-                <div class="container">
-                    <div class="card-body row form-inline">
-                        <div class="col-md-4">
-                            <div class="input-group mb-4">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Vị Trí Hiển Thị: </div>
-                                </div>
-                                <select class="form-control" name="popupType" id="show_at" placeholder="Show at" onchange="filterData()">
-                                    <option value=''>Tất Cả</option>
-                                    @if(!empty($list_template_popup))
-                                    @foreach($list_template_popup->type as $key => $value)
-                                            <option value="{{$key}}">{{$value}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group mb-4">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Từ: </div>
-                                </div>
-                                <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group mb-4">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Đến: </div>
-                                </div>
-                                <input type="datetime-local" name="show_to" class="form-control" id="show_to" placeholder="Date To" onchange="filterData()" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <table id="popup_manage" class="display" style="width:100%;">
-                </table>
+                @include('popup._custom-search')
+                @include('popup._table')
             </div>
         </div>
     </section>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-    <script>
-        var listTemplateJson = '{!! json_encode($list_template_popup->type) !!}';
-        var tempRouteView = '{{ route('popupmanage.view') }}';
-        var tempRouteEdit = '{{ route('popupmanage.edit') }}';
-    </script>
+
+<script>
+    $('#show_at').change(function(){
+        $('#popup_manage').DataTable().draw();
+    });
+</script>
 @endsection
