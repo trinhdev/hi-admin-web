@@ -41,7 +41,13 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
+@push('scripts')
+    <script>
+        $(document).on('pjax:complete', function() {
+            showHide();
+        });
+    </script>
+@endpush
 @endsection
 
 

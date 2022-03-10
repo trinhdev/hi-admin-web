@@ -157,6 +157,14 @@
             </div>
         </section>
     </div>
+    @push('scripts')
+    <script>
+        $(document).on('pjax:complete', function() {
+            showHide();
+        });
+        showHide();
+    </script>
+    @endpush
 
 @endsection
 

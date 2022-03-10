@@ -35,7 +35,6 @@ class PopupManageController extends MY_Controller
     //     return view('popup.index')->with(['list_template_popup' => $listTemplatePopup]);
     // }
 
-
     public function edit()
     {
         $data = array();
@@ -47,7 +46,7 @@ class PopupManageController extends MY_Controller
                 $data['detailPopup'] = ($getDetailPopup_response->statusCode == 0) ? $getDetailPopup_response->data : [];
 //              clear buttonActionValue when deeplink define
                 if ($data['detailPopup']->buttonActionType == 'function')
-                    $data['detailPopup']->buttonActionValue = '';
+                    $data['detailPopup']->buttonActionValue = ''; 
             } else
                 $data['detailPopup'] = [];
         } else
@@ -58,6 +57,7 @@ class PopupManageController extends MY_Controller
         } else
             $data['listTargetRoute'] = [];
         $data['listTypePopup'] = config('platform_config.type_popup_service');
+        //dd($listTargetRoute);
         return view('popup.edit')->with($data);
     }
 
@@ -110,6 +110,7 @@ class PopupManageController extends MY_Controller
             $createParams['templatePersonalId'] = $request->id_popup;
             $create_popup_response = $newsEventService->updatePopup($createParams);
         } else
+        // dd($createParams);
             $create_popup_response = $newsEventService->addNewPopup($createParams);
         if (($create_popup_response->statusCode == 0)) {
             return redirect()->route('popupmanage.index')->withSuccess('Success!');

@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Danh sách Popup</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('popupmanage.index') }}">Danh sách Popup</a></li>
                             <li class="breadcrumb-item active">{{$detailTemplate->titleVi}}</li>
                         </ol>
                     </div>
@@ -240,5 +240,10 @@
             });
             $("#myModal").modal()
         }
+    </script>
+     <script>
+        $(document).ready(function() {
+            showHide();
+        });
     </script>
 @endpush

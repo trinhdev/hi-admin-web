@@ -13,17 +13,38 @@ class PopUpDataTable extends DataTable
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
+    
     public function dataTable($query)
     {
         return datatables()
             ->collection($query)
+            // ->filter(function ($instance) use ($request) {
+            //     if (!empty($request->get('email'))) {
+            //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //             return Str::contains($row['email'], $request->get('email')) ? true : false;
+            //         });
+            //     }
+
+            //     if (!empty($request->get('search'))) {
+            //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //             if (Str::contains(Str::lower($row['email']), Str::lower($request->get('search')))){
+            //                 return true;
+            //             }else if (Str::contains(Str::lower($row['name']), Str::lower($request->get('search')))) {
+            //                 return true;
+            //             }
+
+            //             return false;
+            //         });
+            //     }
+
+            // })
             ->editColumn('image', function ($query) {
                 return '
                         <img src="'.env('URL_STATIC'). '/upload/images/event/' . $query->image .'" alt="" onclick ="window.open("' . $query->image .'").focus()" width="100" height="100"/>
                 ';
             })
-            ->addColumn('action', 'popup._action-menu')
-            ->rawColumns(['image','action']);
+            ->addColumn( 'action', 'popup._action-menu')
+            ->rawColumns(['id','image','action']);
     }
 
     public function query(NewsEventService $service)
@@ -44,7 +65,7 @@ class PopUpDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->responsive()
-                    ->orderBy(0)
+                    ->orderBy(1)
                     ->autoWidth(false)
                     ->parameters(['scrollX' => true])
                     ->addTableClass('table table-hover table-striped text-center')
@@ -69,10 +90,11 @@ class PopUpDataTable extends DataTable
     {
         return [
             
-            Column::make('id')->title('ID')->width(50),
+            Column::make('id')->title('STT')->width(50),
             Column::make('titleVi')->title('Tiêu đề'),
             Column::make('image')->title('Hình ảnh'),
             Column::make('templateType')->title('Loại template'),
+            Column::make('viewCount')->title('Số lượt view'),
             Column::make('dateCreated')->title('Ngày tạo'),
             Column::make('createdBy')->title('Người tạo'),
             Column::make('modifiedBy')->title('Người cập nhật'),

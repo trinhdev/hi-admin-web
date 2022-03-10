@@ -1,5 +1,6 @@
 "use strict";
-$( document ).ready(function() {
+
+function showHide() {
     let type_popup = $('#listTypePopup').val();
     if (type_popup == 'popup_image_transparent' || type_popup == 'popup_image_full_screen') {
         $('#dieuhuong').hide();
@@ -16,55 +17,58 @@ $( document ).ready(function() {
     } else {
         $('#form_directionUrl').hide();
     }
-});
-$('.select2').select2();
-$('#timeline').daterangepicker({
-    autoApply: true,
-    autoUpdateInput: true,
-    timePicker: true,
-    timePicker24Hour: true,
-    timePickerSeconds: true,
-    timePickerIncrement: 1,
-    locale: {
-        format: 'YYYY-MM-DD HH:mm:ss'
-    }
+}
 
-})
-$('input[name="timeline"]').on('apply.daterangepicker', function(ev, picker) {
-    $(this).val(picker.startDate.format('YYYY-MM-DD HH:mm:ss') + ' - ' + picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
-});
+    $('.select2').select2();
+    $('#timeline').daterangepicker({
+        autoApply: true,
+        autoUpdateInput: true,
+        timePicker: true,
+        timePicker24Hour: true,
+        timePickerSeconds: true,
+        timePickerIncrement: 1,
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        }
 
-$('input[name="timeline"]').on('cancel.daterangepicker', function(ev, picker) {
-    $(this).val('');
-});
-$('#listTypePopup').on("change", function () {
-    let type_popup = $('#listTypePopup').val();
-    if (type_popup == 'popup_image_transparent' || type_popup == 'popup_image_full_screen') {
-        $('#dieuhuong').hide();
-        $('#path_2').hide();
-        $('#directionUrl').hide();
-    } else {
-        $('#dieuhuong').show();
-        $('#path_2').show();
-        $('#directionUrl').show();
-    }
-})
-$('#repeatTime').on("change", function () {
-    let repeatTime = $('#repeatTime').val();
-    if (repeatTime == 'other') {
-        $('#other_min').show();
-    } else {
-        $('#other_min').hide();
-    }
-})
-$('#directionId').on("change", function () {
-    let type_direction = $('#directionId').val();
-    if (type_direction == 'url_open_out_app' || type_direction == 'url_open_in_app') {
-        $('#form_directionUrl').show();
-    } else {
-        $('#form_directionUrl').hide();
-    }
-})
+    })
+    $('input[name="timeline"]').on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD HH:mm:ss') + ' - ' + picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
+    });
+
+    $('input[name="timeline"]').on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+    });
+    $('#listTypePopup').on("change", function () {
+        let type_popup = $('#listTypePopup').val();
+        if (type_popup == 'popup_image_transparent' || type_popup == 'popup_image_full_screen') {
+            $('#dieuhuong').hide();
+            $('#path_2').hide();
+            $('#directionUrl').hide();
+        } else {
+            $('#dieuhuong').show();
+            $('#path_2').show();
+            $('#directionUrl').show();
+        }
+    })
+    $('#repeatTime').on("change", function () {
+        let repeatTime = $('#repeatTime').val();
+        if (repeatTime == 'other') {
+            $('#other_min').show();
+        } else {
+            $('#other_min').hide();
+        }
+    })
+    $('#directionId').on("change", function () {
+        let type_direction = $('#directionId').val();
+        if (type_direction == 'url_open_out_app' || type_direction == 'url_open_in_app') {
+            $('#form_directionUrl').show();
+        } else {
+            $('#form_directionUrl').hide();
+        }
+    })
+
+
 function validateDataPopup(event, form) {
     event.preventDefault();
 
@@ -109,7 +113,7 @@ function checkSubmitPopup(formData) {
         // 'objecttype': true
     };
 
-    if (formData.templateType != 'popup_image_transparent' && formData.templateType != 'popup_image_full_screen' ) {
+    if (formData.templateType != 'popup_image_transparent' && formData.templateType != 'popup_image_full_screen') {
         // data_required.path_2 = true;
         data_required.img_path_2_name = true;
         data_required.directionId = true;
@@ -153,7 +157,7 @@ async function handleUploadImagePopup(_this, event) {
         var uploadParam = {
             // 'imageFileName': file.name,
             // 'encodedImage': base64_img,
-            file:file,
+            file: file,
             _token: $('meta[name="csrf-token"]').attr('content')
         };
         uploadFileExternal(file, successCallUploadImagePopup, {
