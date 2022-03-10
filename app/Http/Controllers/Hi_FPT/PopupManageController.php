@@ -42,7 +42,7 @@ class PopupManageController extends MY_Controller
             if (isset($getDetailPopup_response->statusCode)) {
                 $data['detailPopup'] = ($getDetailPopup_response->statusCode == 0) ? $getDetailPopup_response->data : [];
 //              clear buttonActionValue when deeplink define
-                if ($data['detailPopup']->buttonActionType == 'function')
+                if ( isset($data['detailPopup']->buttonActionType) && $data['detailPopup']->buttonActionType == 'function')
                     $data['detailPopup']->buttonActionValue = '';
             } else
                 $data['detailPopup'] = [];
@@ -59,47 +59,29 @@ class PopupManageController extends MY_Controller
 
     public function save(Request $request)
     {
-
-        $ruleButtonImage = [
-            'directionId' => 'required',
-            'img_path_2_name' => 'required',
-        ];
-        $rules = [
+        $rules= [
             'templateType' => 'required',
             'titleVi' => 'required',
             'titleEn' => 'required',
             'img_path_1_name' => 'required',
+            'directionId' => 'required_if:templateType,popup_custom_image_transparent,popup_full_screen',
+            'directionUrl' => 'required_if:directionId,url_open_out_app,url_open_in_app',
+            'img_path_2_name' => 'required_if:templateType,popup_custom_image_transparent,popup_full_screen',
         ];
-//      banner có button
-        if ($request->templateType == "popup_custom_image_transparent" || $request->templateType == "popup_full_screen") {
-            $rules = array_merge($ruleButtonImage, $rules);
-            $directionUrl = $request->directionUrl;
-        } else {
-            $directionUrl = "";
-        }
-        if ($request->directionId == "url_open_out_app" || $request->directionId == "url_open_in_app") {
-            $rules['directionUrl'] = 'required';
-        }
         $request->validate($rules);
-//        $request->merge([
-//            'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s'),
-//            'show_to' => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
-//        ]);
         $this->addToLog($request);
         $newsEventService = new NewsEventService();
         $createParams = [
             'templateType' => $request->templateType,
             'titleVi' => $request->titleVi,
             'titleEn' => $request->titleEn,
-//            'publicDateStart' => $request->show_from,
-//            'publicDateEnd' => $request->show_to,
             'image' => $request->img_path_1_name,
             'directionId' => !empty($request->directionId) ? $request->directionId : "",
             'buttonImage' => !empty($request->img_path_2_name) ? $request->img_path_2_name : "",
         ];
 
         if ($request->directionId == 'url_open_out_app' || $request->directionId == 'url_open_in_app') {
-            $createParams['directionUrl'] = $directionUrl;
+            $createParams['directionUrl'] = $request->directionUrl;
         }
 
         if (!empty($request->id_popup)) {
@@ -206,18 +188,24 @@ class PopupManageController extends MY_Controller
         return view('popup.view')->with($data);
     }
 
-    public function pushPopupTemplate()
+    public function pushPopupTemplate(Request $request)
     {
-        $data = request()->all();
-        $timeline = $data['timeline'];
+        $rules = [
+            'timeline' => 'required',
+            'objecttype' => 'required',
+            'repeatTime'=> 'required',
+            'templateId'=> 'required',
+        ];
+        $request->validate($rules);
+        $timeline = $request->timeline;
         $timeline_array = explode(" - ", $timeline);
         $dateStart = $timeline_array[0];
         $dateEnd = $timeline_array[1];
 
-        $objecttype = $data['objecttype'];
-        $object = $data['object'];
-        $repeatTime = $data['repeatTime'];
-        $templateId = $data['templateId'];
+        $objecttype = $request->objecttype;
+        $object = $request->object;
+        $repeatTime = $request->repeatTime;
+        $templateId = $request->templateId;
         $pushParams = [
             'templateId' => $templateId,
             'repeatTime' => $repeatTime,
@@ -229,9 +217,12 @@ class PopupManageController extends MY_Controller
         $newsEventService = new NewsEventService();
         $push_response = $newsEventService->pushTemplate($pushParams);
     }
-    public function getDetailPersonalMaps() {
-        $data = request()->all();
-        $personalID = $data['personalID'];
+    public function getDetailPersonalMaps(Request $request) {
+        $rules = [
+            'personalID' => 'required',
+        ];
+        $request->validate($rules);
+        $personalID = $request->personalID;
         $newsEventService = new NewsEventService();
         $detail_PersonalMaps = $newsEventService->getDetailPersonalMap($personalID);
         return $detail_PersonalMaps;
