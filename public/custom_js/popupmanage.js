@@ -17,7 +17,6 @@ function showHide() {
     } else {
         $('#form_directionUrl').hide();
     }
-}
 
     $('.select2').select2();
     $('#timeline').daterangepicker({
@@ -67,7 +66,7 @@ function showHide() {
             $('#form_directionUrl').hide();
         }
     })
-
+}
 
 function validateDataPopup(event, form) {
     event.preventDefault();
