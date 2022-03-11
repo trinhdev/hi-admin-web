@@ -14,41 +14,33 @@ class PopUpDataTable extends DataTable
      * @return \Yajra\DataTables\DataTableAbstract
      */
     
+
     public function dataTable($query)
     {
+        $NewsEventService = new NewsEventService();
+        $listRoute = collect($NewsEventService->getListTargetRoute()->data);
         return datatables()
             ->collection($query)
-            // ->filter(function ($instance) use ($request) {
-            //     if (!empty($request->get('email'))) {
-            //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //             return Str::contains($row['email'], $request->get('email')) ? true : false;
-            //         });
-            //     }
-
-            //     if (!empty($request->get('search'))) {
-            //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //             if (Str::contains(Str::lower($row['email']), Str::lower($request->get('search')))){
-            //                 return true;
-            //             }else if (Str::contains(Str::lower($row['name']), Str::lower($request->get('search')))) {
-            //                 return true;
-            //             }
-
-            //             return false;
-            //         });
-            //     }
-
-            // })
+            ->addIndexColumn()
+            ->editColumn('buttonActionValue', function ($query) use ($listRoute){
+                
+                $name = $query->buttonActionType == 'function' 
+                        ?  $listRoute->where('id', $query->directionId)->first()->name 
+                        : $query->buttonActionValue;
+                return $name ? $name : 'null';
+            })
             ->editColumn('image', function ($query) {
                 return '
                         <img src="'.env('URL_STATIC'). '/upload/images/event/' . $query->image .'" alt="" onclick ="window.open("' . $query->image .'").focus()" width="100" height="100"/>
                 ';
             })
             ->addColumn( 'action', 'popup._action-menu')
-            ->rawColumns(['id','image','action']);
+            ->rawColumns(['buttonActionValue','image','action']);
     }
 
     public function query(NewsEventService $service)
     {
+        
         $model = $service->getListTemplatePopup();
         return collect($model->data);
     }
@@ -63,7 +55,7 @@ class PopUpDataTable extends DataTable
         return $this->builder()
                     ->setTableId('popup_manage')
                     ->columns($this->getColumns())
-                    ->minifiedAjax()
+                    ->minifiedAjax('',null, $data =[])
                     ->responsive()
                     ->orderBy(1)
                     ->autoWidth(false)
@@ -89,10 +81,10 @@ class PopUpDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            
-            Column::make('id')->title('STT')->width(50),
+            Column::make('DT_RowIndex')->title('STT')->width(20),
             Column::make('titleVi')->title('Tiêu đề'),
             Column::make('image')->title('Hình ảnh'),
+            Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template'),
             Column::make('viewCount')->title('Số lượt view'),
             Column::make('dateCreated')->title('Ngày tạo'),

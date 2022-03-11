@@ -155,10 +155,10 @@ Route::group([
 
             Route::prefix('popupmanage')->group(function () {
                 Route::get('/','PopupManageController@index')->name('popupmanage.index');
+                Route::post('/custom-search','PopupManageController@index')->name('popupmanage.search');
                 Route::get('/edit/{id?}','PopupManageController@edit')->name('popupmanage.edit');
                 Route::get('/create','PopupManageController@edit')->name('popupmanage.create');
                 Route::post('/save','PopupManageController@save')->name('popupmanage.save');
-                Route::post('/updateordering','PopupManageController@updateOrder')->name('popupmanage.updateOrder');
                 Route::get('/view/{id?}','PopupManageController@view')->name('popupmanage.view');
                 Route::post('/pushPopupTemplate','PopupManageController@pushPopupTemplate')->name('popupmanage.pushPopupTemplate');
                 Route::post('/getDetailPersonalMaps','PopupManageController@getDetailPersonalMaps')->name('popupmanage.getDetailPersonalMaps');

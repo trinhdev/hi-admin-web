@@ -1,4 +1,13 @@
 "use strict";
+function customF(){
+    $('#show_at').on('change', function(){
+        $.ajax({
+            url: "popupmanage/custom-search",
+            type: "POST",
+            data: { custom_search: $('#show_at').val()}
+        });
+    });
+}
 
 function showHide() {
     let type_popup = $('#listTypePopup').val();
@@ -65,9 +74,58 @@ function showHide() {
         } else {
             $('#form_directionUrl').hide();
         }
-    })
+    });
+}
+$('#templatPersonList').DataTable();
+function clearForm() {
+    $('#myModal select').prop('selectedIndex', 0).change();
+}
+function submitTargetPopup() {
+    var objecttype =  $("#objecttype").val();
+    var repeatTime = $("#repeatTime").val();
+    var object = $("#object").val();
+    var timeline =  $("#timeline").val();
+    var templateId =  $("#templateId").val();
+    $.ajax({
+        type: 'POST',
+        url: '/popupmanage/pushPopupTemplate',
+        data: {'objecttype': objecttype, 'object': object, 'repeatTime': repeatTime, 'timeline': timeline, 'templateId': templateId},
+        cache: false,
+        success: (data) => {
+            console.log(data);
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+        }
+    });
 }
 
+function getDetailPersonalMaps(idPersonalMaps) {
+    $.ajax({
+        type: 'POST',
+        url: '/popupmanage/getDetailPersonalMaps',
+        data: {'personalID': idPersonalMaps.getAttribute("personalID")},
+        cache: false,
+        success: (data) => {
+            $("#object").val(data['pushedObject']).change();
+            $("#repeatTime").val(data['showOnceTime']).change();
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+        }
+    });
+    $("#myModal").modal()
+}
 function validateDataPopup(event, form) {
     event.preventDefault();
 
@@ -95,7 +153,7 @@ function checkEnableSavePopup(form) {
 
 function checkSubmitPopup(formData) {
     const pathArray = window.location.pathname.split("/");
-    let action = pathArray[2]; // action ['create','edit']
+    let action = pathArray[2];
     if (action === 'edit') {
         return {
             status: true,
@@ -106,10 +164,7 @@ function checkSubmitPopup(formData) {
         'titleVi': true,
         'titleEn': true,
         'templateType': true,
-        // 'path_1': true,
         'img_path_1_name': true,
-        // 'object': true,
-        // 'objecttype': true
     };
 
     if (formData.templateType != 'popup_image_transparent' && formData.templateType != 'popup_image_full_screen') {

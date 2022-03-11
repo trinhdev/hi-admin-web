@@ -21,19 +21,11 @@ class PopupManageController extends MY_Controller
         $this->title = 'Popup Manage';
     }
 
-    public function index(PopUpDataTable $dataTable)
+    public function index(PopUpDataTable $dataTable, Request $request)
     {
-        return $dataTable->render('popup.index');
+        $value = $request->custom_search;
+        return $dataTable->with(['value' => $value])->render('popup.index');
     }
-
-    // public function index()
-    // {
-    //     $newsEventService = new NewsEventService();
-    //     $listTemplatePopup = $newsEventService->getListTemplatePopup();
-    //     $listTemplatePopup->type = config('platform_config.type_popup_service');
-    //     $listTemplatePopup = (isset($listTemplatePopup->statusCode) && $listTemplatePopup->statusCode == 0) ? $listTemplatePopup : [];
-    //     return view('popup.index')->with(['list_template_popup' => $listTemplatePopup]);
-    // }
 
     public function edit()
     {
@@ -100,23 +92,6 @@ class PopupManageController extends MY_Controller
         return redirect()->route('popupmanage.index')->withErrors(isset($create_popup_response->description) ? $create_popup_response->description : $create_popup_response->message);
     }
 
-    public function uploadImage(Request $request)
-    {
-        $request->validate([
-            // 'imageFileName' => 'required',
-            // 'encodedImage' =>'required'
-            'file' => 'required'
-        ]);
-        $file = $request->file('file');
-        $param = [
-            'imageFileName' => $file->getClientOriginalName(),
-            'encodedImage' => base64_encode(file_get_contents($file))
-        ];
-        $newsEventService = new NewsEventService();
-        $uploadImage_response = $newsEventService->uploadImage($param['imageFileName'], $param['encodedImage']);
-        return $uploadImage_response;
-    }
-
     public function view($id)
     {
         $newsEventService = new NewsEventService();
@@ -160,7 +135,6 @@ class PopupManageController extends MY_Controller
         $templateObj->directionUrl = $dataResponse->buttonActionValue;
         $templateObj->directionId = $dataResponse->directionId;
         $templateObj->templatePersonalMaps = $dataResponse->templatePersonalMaps;
-
         $data = [
             'detailTemplate' => $templateObj,
             'list_target_route' => $listTargetRoute,
@@ -191,7 +165,7 @@ class PopupManageController extends MY_Controller
         $repeatTime = $request->repeatTime;
         $templateId = $request->templateId;
         $pushParams = [
-            'templateId' => $templateId,
+            'popupTemplateId' => $templateId,
             'repeatTime' => $repeatTime,
             'dateStart' => $dateStart,
             'dateEnd' => $dateEnd,

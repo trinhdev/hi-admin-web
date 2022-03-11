@@ -41,14 +41,13 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+@endsection
+
 @push('scripts')
     <script>
         $(document).on('pjax:complete', function() {
-            showHide();
+            customF();
         });
     </script>
 @endpush
-@endsection
-
-
-

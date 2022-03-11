@@ -32,36 +32,25 @@
                             <table class="table">
                                 <input type="hidden" name="templateId" id="templateId"
                                        value="{{$detailTemplate->templateId}}">
-                                <tbody>
-                                <tr>
-                                    <td width="33%"><b>Tiêu đề tiếng việt</b></td>
-                                    <td>
-                                        {{$detailTemplate->titleVi}}
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td width="33%"><b>Tiêu đề tiếng anh</b></td>
-                                    <td>{{$detailTemplate->titleEn}}</td>
-                                </tr>
-                                <tr>
-                                    <td width="33%"><b>Loại popup</b></td>
-                                    <td>{{$list_type_popup[$detailTemplate->templateType]}}</td>
-                                </tr>
-                                <tr>
-                                    <td width="33%"><b>Ảnh</b></td>
-                                    <td><img width="300px"
-                                             src="{{env('URL_STATIC').'/upload/images/event/'.$detailTemplate->image}}">
-                                    </td>
-                                </tr>
-                                @if(!empty($detailTemplate->buttonImage))
-                                    <tr>
-                                        <td width="33%"><b>Nút điều hướng</b></td>
-                                        <td><img width="300px"
-                                                 src="{{env('URL_STATIC').'/upload/images/event/'.$detailTemplate->buttonImage}}">
-                                        </td>
+                               <thead>
+                                    <tr class="text-center">
+                                        <th scope="col">Tiêu đề tiếng việt</th>
+                                        <th scope="col">Tiêu đề tiếng anh</th>
+                                        <th scope="col">Loại popup</th>
+                                        <th scope="col">Ảnh</th>
+                                        <th scope="col">Nút điều hướng</th>
                                     </tr>
-                                @endif
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{$detailTemplate->titleVi}}</td>
+                                        <td>{{$detailTemplate->titleEn}}</td>
+                                        <td>{{$list_type_popup[$detailTemplate->templateType]}}</td>
+                                        <td><img width="200px" src="{{env('URL_STATIC').'/upload/images/event/'.$detailTemplate->image}}"></td>
+                                        @if(!empty($detailTemplate->buttonImage))
+                                        <td><img width="200px" src="{{env('URL_STATIC').'/upload/images/event/'.$detailTemplate->buttonImage}}"></td>
+                                        @endif
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -190,56 +179,7 @@
 @push('scripts')
     <script>
         
-        $('#templatPersonList').DataTable();
-        function clearForm() {
-            $('#myModal select').prop('selectedIndex', 0).change();
-        }
-        function submitTargetPopup() {
-            var objecttype =  $("#objecttype").val();
-            var repeatTime = $("#repeatTime").val();
-            var object = $("#object").val();
-            var timeline =  $("#timeline").val();
-            var templateId =  $("#templateId").val();
-            $.ajax({
-                type: 'POST',
-                url: '/popupmanage/pushPopupTemplate',
-                data: {'objecttype': objecttype, 'object': object, 'repeatTime': repeatTime, 'timeline': timeline, 'templateId': templateId},
-                cache: false,
-                success: (data) => {
-                    console.log(data);
-                },
-                error: function (xhr) {
-                    var errorString = '';
-                    $.each(xhr.responseJSON.errors, function (key, value) {
-                        errorString = value;
-                        return false;
-                    });
-                    showError(errorString);
-                }
-            });
-        }
 
-        function getDetailPersonalMaps(idPersonalMaps) {
-            $.ajax({
-                type: 'POST',
-                url: '/popupmanage/getDetailPersonalMaps',
-                data: {'personalID': idPersonalMaps.getAttribute("personalID")},
-                cache: false,
-                success: (data) => {
-                    $("#object").val(data['pushedObject']).change();
-                    $("#repeatTime").val(data['showOnceTime']).change();
-                },
-                error: function (xhr) {
-                    var errorString = '';
-                    $.each(xhr.responseJSON.errors, function (key, value) {
-                        errorString = value;
-                        return false;
-                    });
-                    showError(errorString);
-                }
-            });
-            $("#myModal").modal()
-        }
     </script>
      <script>
         $(document).ready(function() {

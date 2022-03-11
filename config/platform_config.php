@@ -36,7 +36,7 @@ return [
     ],
     'object'    => [
         'all' => 'Tất cả KH cài Hi FPT (bao gồm guest)',
-        'all_hifpt' => 'Tất cả KH có dùng dịch vụ (không bao gồm guest)',
+        'fpt_customer' => 'Tất cả KH có dùng dịch vụ (không bao gồm guest)',
         'guest' => 'Tất cả KH không dùng dịch vụ (guest)'
     ]
 ];
