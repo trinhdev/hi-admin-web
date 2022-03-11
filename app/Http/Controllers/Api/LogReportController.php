@@ -36,7 +36,6 @@ class LogReportController extends Controller
                 $msgData = $validatetor->getMessageBag();
                 throw new Exception('INVALID_INPUT');
             }
-
             extract($request->all());
             $listReportType = Log_Report_Type::get()->toArray();
             $is_report_type_id_valid = array_search($report_type_id, array_column($listReportType, 'id'));

@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::namespace('Api')->group(function () {
     Route::post('/log-report', 'LogReportController@saveReport');
 });
+
