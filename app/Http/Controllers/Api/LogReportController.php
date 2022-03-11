@@ -28,7 +28,9 @@ class LogReportController extends Controller
             $rules = [
                 'report_type_id' => 'required',
                 'date_report' => 'required|date_format:Y-m-d',
-                'data' => 'json',
+                'data' => 'required|array',
+                'data.list_column' => 'required',
+                'data.list_data' => 'required',
                 'source' => 'required',
             ];
             $validatetor = Validator::make($params, $rules);
@@ -47,7 +49,7 @@ class LogReportController extends Controller
             $createParams = [
                 'report_type_id' => $report_type_id,
                 'date_report' => $date_report,
-                'data' => $data,
+                'data' => json_encode($data),
                 'source' => $source
             ];
             Log_Report::create($createParams);
