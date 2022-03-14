@@ -1,12 +1,8 @@
 <?php
-
-use App\Http\Controllers\HomeController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
-
-use App\Http\Controllers\UserController;
-use PHPUnit\TextUI\XmlConfiguration\Group;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Hi_FPT\FtelPhoneController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,7 +91,13 @@ Route::group([
                 Route::delete('/destroy/{id}','LogactivitiesController@destroy')->name('logactivities.destroy');
                 Route::get('/initDatatable','LogactivitiesController@initDatatable')->name('logactivities.initDatatable');
             });
-
+            Route::prefix('ftel-phone')->group(function () {
+                Route::get('/', [FtelPhoneController::class, 'index'])->name('ftel_phone.index');
+                Route::get('/create', [FtelPhoneController::class, 'create'])->name('ftel_phone.create');
+                Route::post('/store', [FtelPhoneController::class, 'store'])->name('ftel_phone.store');
+                Route::post('/import', [FtelPhoneController::class, 'import'])->name('ftel_phone.import');
+                Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');                       
+            });
         });
         Route::namespace('Hdi')->group(function () {
             Route::prefix('checklistmanage')->group(function () {

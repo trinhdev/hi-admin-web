@@ -33,9 +33,15 @@ $methodNewsEventDomain = [
     'UPDATE_PERSONAL_MAP'      => 'provider/tool/popup/update-template-personal-map',
     'GET_DETAIL_PERSONAL_MAP'      => 'provider/tool/popup/detail-template-personal-map',
 ];
+$methodHr = [
+    'LOGIN' => 'api/services/hub/Login',
+    'GET_EMPLOYEE_INFO' => 'api/services/app/hifpt/GetEmployeeInfo',
+    'GET_LIST_EMPLOYEE_INFO' => 'api/services/app/hifpt/GetListEmployeeInfo',
+];
 return [
     'DOMAIN_INSIDE' => $methodInsideDomain,
     'DOMAIN_REPORT' => $methodReportDomain,
     'DOMAIN_SMS_WORLD' => $methodSmsWorld,
     'DOMAIN_NEWS_EVENT' =>  $methodNewsEventDomain,
+    'DOMAIN_HR'        => $methodHr
 ];

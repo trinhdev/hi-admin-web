@@ -207,16 +207,16 @@ class BannerManageController extends MY_Controller
             if(!empty($request->direction_id)){
                 $updateParams['directionId'] = $request->direction_id;
             }else{
-                $updateParams['directionId'] = NULL;
+                $updateParams['directionId'] = '';
             }
             if(!empty($request->direction_url)){
                 $updateParams['directionUrl'] = $request->direction_url;
             }else{
-                $updateParams['directionUrl'] = NULL;
+                $updateParams['directionUrl'] = '';
             }
         }else{
-            $updateParams['directionId'] = NULL;
-            $updateParams['directionUrl'] = NULL;
+            $updateParams['directionId'] = '';
+            $updateParams['directionUrl'] = '';
         };
 
         if(!empty($request->bannerType) && $request->bannerType =='promotion' && !empty($request->img_path_2_name) ){
@@ -348,6 +348,7 @@ class BannerManageController extends MY_Controller
             'bannerType'    => 'required',
             'bannerId'  => 'required'
         ]);
+        $this->addToLog($request);
         $newsEventService = new NewsEventService();
         $updateOrder_response = $newsEventService->updateOrderBannder($request->bannerId, $request->bannerType, $request->ordering);
         return $updateOrder_response;

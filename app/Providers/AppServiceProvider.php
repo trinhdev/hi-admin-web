@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\statusCodeObject;
 use Illuminate\Support\ServiceProvider;
 use igaster\laravelTheme\Facades\Theme;
 
@@ -15,6 +16,9 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->singleton('statusCodeObject', function ($app) {
+            return new statusCodeObject;
+        });
     }
 
     /**
@@ -26,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         require __DIR__ . '/../Helpers/platform_helper.php';
+
         $this->boot_theme();
     }
     private function boot_theme()

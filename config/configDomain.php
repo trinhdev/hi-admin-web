@@ -152,6 +152,23 @@ $domainModemContractInfo = [
         'SECRET_KEY'    => 'xxxxxxhifpt2018'
     ],
 ];
+$domainHr = [
+    'local'             => [
+        'URL'           => 'http://hrapistag.fpt.vn/',
+        'USERNAME'    => 'hifpt@hr.fpt.vn',
+        'PASSWORD'    => '!@#hiFPT123'
+    ],
+    'staging'           => [
+        'URL'           => 'http://hrapi.fpt.vn/',
+        'USERNAME'    => 'hifpt@hr.fpt.vn',
+        'PASSWORD'    => '!@#hiFPT123'
+    ],
+    'production'        => [
+        'URL'           => 'http://hrapi.fpt.vn/',
+        'USERNAME'    => 'hifpt@hr.fpt.vn',
+        'PASSWORD'    => '!@#hiFPT123'
+    ],
+];
 return [
     'DOMAIN_REPORT'         => $domainReportConfig,
     'DOMAIN_INSIDE'         => $domainInsideConfig,
@@ -161,4 +178,5 @@ return [
     'DOMAIN_MODEM_INFO'             => $domainModemInfo,
     'DOMAIN_MODEM_ACCESS_POINT'     => $domainModemAccessPoint,
     'DOMAIN_MODEM_CONTRACT_INFO'    => $domainModemContractInfo,
+    'DOMAIN_HR'             => $domainHr
 ];

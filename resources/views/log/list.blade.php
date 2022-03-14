@@ -24,6 +24,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid ">
+            @if(Auth::user()->role_id == ADMIN)
             <form action="{{route('logactivities.clearLog')}}" method="POST" onsubmit="var formData = new FormData(this);if(formData.get('clear_log_option') == '')return false;">
                 @csrf
                 <div class="row">
@@ -48,6 +49,7 @@
                     </div>
                 </div>
             </form>
+            @endif
             <div class="card card-body col-sm-12">
                 <table id="logTable" class="table table-hover table-striped text-center" style="width:100%;word-wrap:no-wrap;">
                     <thead>
