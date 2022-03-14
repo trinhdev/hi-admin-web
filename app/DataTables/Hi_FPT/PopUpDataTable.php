@@ -50,7 +50,7 @@ class PopUpDataTable extends DataTable
     public function query(NewsEventService $service)
     {
         
-        $model = $service->getListTemplatePopup();
+        $model = $service->getListTemplatePopup()->data;
         return collect($model->data);
     }
 
