@@ -49,7 +49,7 @@ class PopUpDataTable extends DataTable
     public function query(NewsEventService $service)
     {
         $model = $service->getListTemplatePopup();
-        if(isset($model->statusCode) && $model->statusCode == 1) {
+        if(isset($model->statusCode) && $model->statusCode == 0) {
             return collect($model->data->data);
         }
         session()->flash('error');
