@@ -43,11 +43,3 @@
 <!-- /.content-wrapper -->
 
 @endsection
-
-@push('scripts')
-    <script>
-        $(document).on('pjax:complete', function() {
-            customF();
-        });
-    </script>
-@endpush

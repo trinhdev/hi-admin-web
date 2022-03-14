@@ -9,7 +9,7 @@
                     <option value=''>Tất Cả</option>
                     @if(!empty($list_template_popup))
                     @foreach($list_template_popup as $key => $value)
-                            <option value="{{$key}}">{{$value}}</option>
+                            <option value="{{$value}}">{{$value}}</option>
                         @endforeach
                     @endif
                 </select>
