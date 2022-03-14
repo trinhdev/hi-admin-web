@@ -26,6 +26,10 @@ Route::group([
             Route::get('/', 'HomeController@index')->name('home');
             Route::get('/getDataChart', 'HomeController@getDataChart')->name('home.getDataChart');
         });
+        Route::prefix('file')->group(function () {
+            Route::any('/uploadImageExternal', 'FileController@uploadImageExternal')->name('uploadImageExternalB');
+
+        });
         Route::namespace('Admin')->group(function () {
             Route::prefix('settings')->group(function () {
                 Route::get('/','SettingsController@index')->name('settings.index');
@@ -136,7 +140,6 @@ Route::group([
                 Route::post('/store','BannerManageController@store')->name('bannermanage.store');
                 Route::put('/update/{id}/{type}','BannerManageController@update')->name('bannermanage.update');
                 Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
-                Route::post('/uploadImage','BannerManageController@uploadImage')->name('bannermanage.uploadImage');
                 Route::post('/updateordering','BannerManageController@updateOrder')->name('bannermanage.updateOrder');
                 Route::get('/view/{id}/{type}','BannerManageController@view')->name('bannermanage.view');
             });
@@ -149,6 +152,17 @@ Route::group([
                 Route::post('/upload','IconmanagementController@upload')->name('iconmanagement.upload');
                 // Route::get('/searchByContractNoOrId','IconmanagementController@searchByContractNoOrId')->name('iconmanagement.searchByContractNoOrId');
                 Route::get('/initDatatable','IconmanagementController@initDatatable')->name('iconmanagement.initDatatable');
+            });
+
+            Route::prefix('popupmanage')->group(function () {
+                Route::get('/','PopupManageController@index')->name('popupmanage.index');
+                Route::post('/custom-search','PopupManageController@index')->name('popupmanage.search');
+                Route::get('/edit/{id?}','PopupManageController@edit')->name('popupmanage.edit');
+                Route::get('/create','PopupManageController@edit')->name('popupmanage.create');
+                Route::post('/save','PopupManageController@save')->name('popupmanage.save');
+                Route::get('/view/{id?}','PopupManageController@view')->name('popupmanage.view');
+                Route::post('/pushPopupTemplate','PopupManageController@pushPopupTemplate')->name('popupmanage.pushPopupTemplate');
+                Route::post('/getDetailPersonalMaps','PopupManageController@getDetailPersonalMaps')->name('popupmanage.getDetailPersonalMaps');
             });
             
         });

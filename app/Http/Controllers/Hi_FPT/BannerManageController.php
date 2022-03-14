@@ -320,21 +320,6 @@ class BannerManageController extends MY_Controller
         return  redirect()->route('bannermanage.index')->withErrors(isset($create_banner_response->description) ? $create_banner_response->description : $create_banner_response->message);
     }
 
-    public function uploadImage(Request $request){
-        $request->validate([
-            // 'imageFileName' => 'required',
-            // 'encodedImage' =>'required'
-            'file'  =>'required'
-        ]);
-        $file = $request->file('file');
-        $param = [
-            'imageFileName'=>  $file->getClientOriginalName(),
-            'encodedImage' =>   base64_encode(file_get_contents($file))
-        ];
-        $newsEventService = new NewsEventService();
-        $uploadImage_response = $newsEventService->uploadImage($param['imageFileName'], $param['encodedImage']);
-        return $uploadImage_response;
-    }
 
     public function initDatatable(Request $request){
             $newsEventService = new NewsEventService();

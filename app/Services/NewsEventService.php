@@ -90,4 +90,41 @@ class NewsEventService
         $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
         return $response;
     }
+    public function addNewPopup($params) {
+        $url = $this->baseUrl . $this->listMethod['CREATE_TEMPLATE_POPUP'];
+        $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
+        return $response;
+    }
+    public function updatePopup($params) {
+        $url = $this->baseUrl . $this->listMethod['UPDATE_TEMPLATE_POPUP'];
+        $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
+        return $response;
+    }
+    public function pushTemplate($params) {
+        $url = $this->baseUrl . $this->listMethod['PUSH_POPUP'];
+        $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
+        return $response;
+    }
+    public function getListTemplatePopup($param = null)
+    {
+        $url = $this->baseUrl . $this->listMethod['GET_LIST_POPUP'];
+        $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey], 'POST');
+        return $response;
+    }
+    public function getDetailPopup($popupId){
+        $url = $this->baseUrl . $this->listMethod['GET_DETAIL_POPUP'];
+        $param = [
+            'templatePersonalId' => $popupId
+        ];
+        $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey],'POST');
+        return $response;
+    }
+    public function getDetailPersonalMap($personMapId){
+        $url = $this->baseUrl . $this->listMethod['GET_DETAIL_PERSONAL_MAP'];
+        $param = [
+            'templatePersonalMapId' => $personMapId
+        ];
+        $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey],'POST');
+        return $response;
+    }
 }
