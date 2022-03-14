@@ -1,7 +1,7 @@
 $(document).ready(function () {
     initSelect();
     settings_on_search();
-    $(document).on('pjax:end', function () {
+    // $(document).on('pjax:end', function () {
         initSelect();
         const pathArray = window.location.pathname.split("/");
         let segment = pathArray[1]; //first uri param
@@ -57,11 +57,11 @@ $(document).ready(function () {
                 break
         }
 
-    });
-    $(document).on('pjax:popstate', function (event) {
-        event.preventDefault();
-        $.pjax.reload('#pjax');
-    });
+    // });
+    // $(document).on('pjax:popstate', function (event) {
+    //     event.preventDefault();
+    //     $.pjax.reload('#pjax');
+    // });
     // $(document).on('pjax:error', function (event, xhr, textStatus, errorThrown, options) {
     //     $.pjax.reload('#pjax');
     // });

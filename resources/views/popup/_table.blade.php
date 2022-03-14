@@ -1,4 +1,6 @@
 <!--begin::Table-->
 {{ $dataTable->table() }}
 <!--end::Table-->
-{{ $dataTable->scripts() }}
+@push('scripts')
+    {{ $dataTable->scripts() }}
+@endpush
