@@ -59,7 +59,11 @@ class PopUpDataTable extends DataTable
                     ->responsive()
                     ->orderBy(1)
                     ->autoWidth(false)
-                    ->parameters(['scrollX' => true])
+                    ->parameters([
+                        'scrollX' => true,
+                        'searching' => true,
+                        'searchDelay' => 500,
+                    ])
                     ->addTableClass('table table-hover table-striped text-center')
                     ->languageEmptyTable('Không có dữ liệu')
                     ->languageInfoEmpty('Không có dữ liệu')
