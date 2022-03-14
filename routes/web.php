@@ -26,7 +26,6 @@ Route::group([
     ],
     function (){     
         Route::get('/', [HomeController::class, 'index'])->name('home');
-        Route::any('/uploadImage', 'FileController@uploadImage')->name('uploadImage');
         Route::prefix('home')->group(function () {
             Route::get('/', 'HomeController@index')->name('home');
             Route::get('/getDataChart', 'HomeController@getDataChart')->name('home.getDataChart');
