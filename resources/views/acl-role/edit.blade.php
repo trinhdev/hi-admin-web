@@ -12,7 +12,7 @@
             <br>
             <div class="ibox-content justify-content-center" id="subpanel_table_content_Module">
                 <div class="subpanel_table_content table-responsive" id="table_content_Module">
-                    <table class="table table-striped" align="center" id="aclRoleTable">
+                    <table class="table table-hover table-striped text-center" align="center" id="aclRoleTable">
                         <thead>
                             <tr>
                                 <th class="header">Module</th>
