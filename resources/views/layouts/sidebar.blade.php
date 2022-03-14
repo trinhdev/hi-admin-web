@@ -36,7 +36,11 @@
                                 <ul class="nav nav-treeview">
                                 @foreach($group->children as $module)
                                     <li class="nav-item">
-                                        <a href="/{{ $module->uri }}" class="nav-link">
+                                    @if(request()->is("/") || $module->uri == "")
+                                        <a href="/{{ $module->uri }}" class="nav-link {{ request()->is("/".$module->uri) ? 'active' : '' }}">
+                                    @else
+                                        <a href="/{{ $module->uri }}" class="nav-link {{ request()->is($module->uri.'*') ? 'active' : '' }}">
+                                    @endif
                                         <i class="nav-icon {{ $module->icon}}"></i>
                                         <p>{{ $module->module_name}}</p>
                                         </a>
@@ -46,7 +50,11 @@
                             </li>
                         @elseif(!isset($group->children))
                             <li class="nav-item">
-                                <a href="/{{ $group->uri }}" class="nav-link {{ request()->is($group->uri.'*') ? 'active' : '' }}">
+                                @if(request()->is("/") || $group->uri == "")
+                                <a href="/{{ $group->uri }}" class="nav-link {{ request()->is("/".$group->uri) ? 'active' : '' }}">
+                                @else
+                                <a href="/{{ $module->uri }}" class="nav-link {{ request()->is($module->uri.'*') ? 'active' : '' }}">
+                                @endif
                                 <i class="nav-icon {{ $group->icon}}"></i>
                                 <p>{{ $group->module_name}}</p>
                                 </a>

@@ -3,16 +3,23 @@ $(document).ready(function () {
     //     axis: "y",
     // });
     // $(document).pjax('a', '#pjax');
-    $('aside li.nav-item a').on('click', function (e) {
-        if ($(this).attr('href') != '#') {
-            $('aside').find(".menu-open > .nav-treeview").not($(this).parents('.menu-open > .nav-treeview')).slideUp()
-            $('aside').find(".menu-open").not($(this).parents('.menu-open')).removeClass("menu-is-opening menu-open");
-            $('li a').removeClass("active");
-            $(this).addClass("active");
-        }
-        $(this).parents('.nav-treeview').prevAll('.nav-link').addClass('active');
+    // $('aside li.nav-item a').on('click', function (e) {
+    //     if ($(this).attr('href') != '#') {
+    //         $('aside').find(".menu-open > .nav-treeview").not($(this).parents('.menu-open > .nav-treeview')).slideUp()
+    //         $('aside').find(".menu-open").not($(this).parents('.menu-open')).removeClass("menu-is-opening menu-open");
+    //         $('li a').removeClass("active");
+    //         $(this).addClass("active");
+    //     }
+    //     $(this).parents('.nav-treeview').prevAll('.nav-link').addClass('active');
 
-    });
+    // });
+    var moduleActive = document.querySelector('aside .active');
+    var parentModuleActive = moduleActive.parentNode.parentNode.parentNode;
+    if(parentModuleActive.classList.contains('menu')){ // if parent module is menu
+        parentModuleActive.classList.add('menu-open');
+        parentModuleActive.querySelector('.nav-link').classList.add('active');
+    }
+    // document.querySelector('.active').closest('.nav-item menu > li').classList.add('is-active');
     // reloadPjax();
 });
 
