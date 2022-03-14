@@ -29,7 +29,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
-                    <table id="rolesTable" class="table table-hover table-striped text-center" style="width:100%">
+                    <table id="rolesTable" class="table table-hover table-striped" style="width:100%">
                         <thead>
                         <tr>
                             <th>No.</th>
