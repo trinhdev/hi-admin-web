@@ -46,8 +46,6 @@
 
 @push('scripts')
     <script>
-        $(document).on('pjax:complete', function() {
-            customF();
-        });
+        customF();
     </script>
 @endpush

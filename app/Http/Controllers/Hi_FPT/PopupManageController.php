@@ -23,8 +23,7 @@ class PopupManageController extends MY_Controller
 
     public function index(PopUpDataTable $dataTable, Request $request)
     {
-        $value = $request->custom_search;
-        return $dataTable->with(['value' => $value])->render('popup.index');
+        return $dataTable->with(['request' => $request])->render('popup.index');
     }
 
     public function edit()

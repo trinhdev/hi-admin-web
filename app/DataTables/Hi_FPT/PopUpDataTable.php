@@ -2,9 +2,11 @@
 
 namespace App\DataTables\Hi_FPT;
 
-use App\Services\NewsEventService;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Html\Column;
+use App\Services\NewsEventService;
 use Yajra\DataTables\Services\DataTable;
+
 class PopUpDataTable extends DataTable
 {
     /**
@@ -17,8 +19,10 @@ class PopUpDataTable extends DataTable
 
     public function dataTable($query)
     {
+        $request = $this->request;
         $NewsEventService = new NewsEventService();
         $listRoute = collect($NewsEventService->getListTargetRoute()->data);
+        $list_template_popup = config('platform_config.type_popup_service');
         return datatables()
             ->collection($query)
             ->addIndexColumn()
@@ -28,6 +32,12 @@ class PopUpDataTable extends DataTable
                         ?  $listRoute->where('id', $query->directionId)->first()->name 
                         : $query->buttonActionValue;
                 return $name ? $name : 'null';
+            })
+            ->editColumn('templateType', function ($query) use ($list_template_popup){
+                $name = $list_template_popup[$query->templateType]
+                        ?  $list_template_popup[$query->templateType]
+                        : $query;
+                return $name ? $name : $query->templateType;
             })
             ->editColumn('image', function ($query) {
                 return '
@@ -63,6 +73,15 @@ class PopUpDataTable extends DataTable
                         'scrollX' => true,
                         'searching' => true,
                         'searchDelay' => 500,
+                        'initComplete' => "function () {
+                            this.api().columns([4]).every(function () {
+                                var column = this;
+                                var templateType = document.getElementById('show_at');
+                                $(templateType).on('change', function () {
+                                    column.search($(this).val()).draw();
+                                });
+                            });
+                         }"
                     ])
                     ->addTableClass('table table-hover table-striped text-center')
                     ->languageEmptyTable('Không có dữ liệu')
@@ -72,7 +91,6 @@ class PopUpDataTable extends DataTable
                     ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
                     ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
                     ->languageInfo('Trang _PAGE_ / _PAGES_ của _TOTAL_ dữ liệu')
-
                     ;
                     
     }
