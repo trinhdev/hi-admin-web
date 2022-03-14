@@ -2,7 +2,6 @@
 
 namespace App\DataTables\Hi_FPT;
 
-use Illuminate\Support\Str;
 use Yajra\DataTables\Html\Column;
 use App\Services\NewsEventService;
 use Yajra\DataTables\Services\DataTable;

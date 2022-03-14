@@ -43,9 +43,3 @@
 <!-- /.content-wrapper -->
 
 @endsection
-
-@push('scripts')
-    <script>
-        customF();
-    </script>
-@endpush

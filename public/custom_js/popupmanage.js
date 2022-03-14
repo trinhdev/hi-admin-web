@@ -1,13 +1,4 @@
 "use strict";
-function customF(){
-    $('#show_at').on('change', function(){
-        $.ajax({
-            url: "popupmanage/custom-search",
-            type: "POST",
-            data: { custom_search: $('#show_at').val()}
-        });
-    });
-}
 
 function showHide() {
     let type_popup = $('#listTypePopup').val();
