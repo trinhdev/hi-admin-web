@@ -59,10 +59,10 @@
 
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">Chi tiết popup: {{$detailTemplate->titleVi}}</h3>
+                        <h3 class="card-title">Lịch sử Push: {{$detailTemplate->titleVi}}</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" onclick="clearForm()" data-toggle="modal" data-target="#myModal">
-                                <i class="fas fa-plus-circle"></i>
+                                <i class="fas fa-plus-circle"> PUSH</i>
                             </button>
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
@@ -80,7 +80,7 @@
                                 <th>Loại Đối tượng</th>
                                 <th>Ngày bắt đầu</th>
                                 <th>Loại kết thúc</th>
-                                <th>Hành động</th>
+                                {{-- <th>Hành động</th> --}}
                             </tr>
                             </thead>
                             <tbody>
@@ -88,14 +88,18 @@
                                 <tr>
                                     <td>{{$value->templatePersonalMapId}}</td>
                                     <td>{{config('platform_config.repeatTime')[$value->showOnceTime]}}</td>
+                                    @if($value->pushedObject == "fpt_customer")
+                                    <td>{{config('platform_config.object')['all_hifpt']}}</td>
+                                    @else
                                     <td>{{config('platform_config.object')[$value->pushedObject]}}</td>
+                                    @endif
                                     <td>{{$value->dateStart}}</td>
                                     <td>{{$value->dateEnd}}</td>
-                                    <td style="text-align: center"><a style="" type="button"
+                                    {{-- <td style="text-align: center"><a style="" type="button"
                                                                       onclick="getDetailPersonalMaps(this)"
                                                                       personalID="{{$value->templatePersonalMapId}}"
                                                                       class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                             </tbody>
