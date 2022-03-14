@@ -18,7 +18,6 @@ class PopUpDataTable extends DataTable
 
     public function dataTable($query)
     {
-        $request = $this->request;
         $NewsEventService = new NewsEventService();
         $listRoute = collect($NewsEventService->getListTargetRoute()->data);
         $list_template_popup = config('platform_config.type_popup_service');
@@ -49,9 +48,13 @@ class PopUpDataTable extends DataTable
 
     public function query(NewsEventService $service)
     {
-        
-        $model = $service->getListTemplatePopup()->data;
-        return collect($model->data);
+        $model = $service->getListTemplatePopup();
+        if(isset($model->statusCode) && $model->statusCode == 1) {
+            return collect($model->data->data);
+        }
+        session()->flash('error');
+        return $model = [];
+        // return redirect()->back()->withErrors('Error');
     }
 
     /**

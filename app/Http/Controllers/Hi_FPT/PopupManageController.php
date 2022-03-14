@@ -21,9 +21,9 @@ class PopupManageController extends MY_Controller
         $this->title = 'Popup Manage';
     }
 
-    public function index(PopUpDataTable $dataTable, Request $request)
+    public function index(PopUpDataTable $dataTable)
     {
-        return $dataTable->with(['request' => $request])->render('popup.index');
+        return $dataTable->render('popup.index');
     }
 
     public function edit()
