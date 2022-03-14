@@ -83,7 +83,7 @@
                                 </div>
                             </form>
                         </div>
-                        <table id="icon-management" class="display nowrap" style="width: 100%">
+                        <table id="icon-management" class="table table-hover table-striped text-center" style="width: 100%">
                         </table>                                          
                     </div>
                 </div>

@@ -49,7 +49,7 @@
                 </div>
             </form>
             <div class="card card-body col-sm-12">
-                <table id="logTable" class="display" style="width:100%;word-wrap:no-wrap;">
+                <table id="logTable" class="table table-hover table-striped text-center" style="width:100%;word-wrap:no-wrap;">
                     <thead>
                         <tr>
                             <th>No.</th>
