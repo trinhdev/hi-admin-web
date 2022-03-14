@@ -98,36 +98,6 @@ function callAPIHelper(url, param, method, callback, passingData = null, isfile 
         }
     });
 }
-
-function uploadFile(file, callBack, passingData) {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    var formData = new FormData();
-    formData.append("file", file,file.name);
-    $.ajax({
-        type: 'POST',
-        url: '/bannermanage/uploadImage',
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: (data) => {
-            callBack(data,passingData);
-        },
-        error: function (xhr) {
-            var errorString = '';
-            $.each(xhr.responseJSON.errors, function (key, value) {
-                errorString = value;
-                return false;
-            });
-            showError(errorString);
-        }
-    });
-}
-//
 function uploadFileExternal(file, callBack, passingData) {
     $.ajaxSetup({
         headers: {
