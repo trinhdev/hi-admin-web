@@ -54,7 +54,6 @@ class PopUpDataTable extends DataTable
         }
         session()->flash('error');
         return $model = [];
-        // return redirect()->back()->withErrors('Error');
     }
 
     /**
