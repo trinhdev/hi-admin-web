@@ -105,9 +105,15 @@ class NewsEventService
         $response =  sendRequest($url, $params, $this->token, $header = ['clientKey' => $this->clientKey]);
         return $response;
     }
-    public function getListTemplatePopup($param = null)
+    public function getListTemplatePopup($perPage = null, $currentPage=null, $orderBy=null, $orderDirection='DESC')
     {
         $url = $this->baseUrl . $this->listMethod['GET_LIST_POPUP'];
+        $param = [
+            'perPage'           => $perPage,
+            'currentPage'       => $currentPage,
+            'orderBy'           => $orderBy,
+            'orderDirection'    => $orderDirection
+        ];
         $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey], 'POST');
         return $response;
     }

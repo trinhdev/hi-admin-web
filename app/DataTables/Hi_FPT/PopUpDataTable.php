@@ -18,14 +18,18 @@ class PopUpDataTable extends DataTable
 
     public function dataTable($query)
     {
+        //dd($query);
         $NewsEventService = new NewsEventService();
         $listRoute = collect($NewsEventService->getListTargetRoute()->data);
         $list_template_popup = config('platform_config.type_popup_service');
+        $tmp = $query;
+        $query = $query['data'];
+        $paginate = $tmp['pagination'];
+        $totalRecords = $paginate->totalPage * $paginate->perPage;
         return datatables()
             ->collection($query)
             ->addIndexColumn()
             ->editColumn('buttonActionValue', function ($query) use ($listRoute){
-                
                 $name = $query->buttonActionType == 'function' 
                         ?  $listRoute->where('id', $query->directionId)->first()->name 
                         : $query->buttonActionValue;
@@ -43,14 +47,16 @@ class PopUpDataTable extends DataTable
                 ';
             })
             ->addColumn( 'action', 'popup._action-menu')
-            ->rawColumns(['buttonActionValue','image','action']);
+            ->rawColumns(['buttonActionValue','image','action'])
+            ->setTotalRecords($totalRecords)
+            ;
     }
 
     public function query(NewsEventService $service)
     {
         $model = $service->getListTemplatePopup();
         if(isset($model->statusCode) && $model->statusCode == 0) {
-            return collect($model->data->data);
+            return collect($model->data);
         }
         session()->flash('error');
         return $model = [];
@@ -91,7 +97,8 @@ class PopUpDataTable extends DataTable
                     ->languageSearch('Tìm kiếm')
                     ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
                     ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
-                    ->languageInfo('Trang _PAGE_ / _PAGES_ của _TOTAL_ dữ liệu')
+                    ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang
+                    ')
                     ;
                     
     }
