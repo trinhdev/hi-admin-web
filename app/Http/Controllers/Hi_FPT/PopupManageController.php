@@ -173,6 +173,11 @@ class PopupManageController extends MY_Controller
         ];
         $newsEventService = new NewsEventService();
         $push_response = $newsEventService->pushTemplate($pushParams);
+        if(isset($push_response->statusCode) && $push_response->statusCode==0){
+            return redirect()->back()->withSuccess('Thành Công');
+        }else{
+            return redirect()->back()->withErrors($push_response->message);
+        }
     }
     public function getDetailPersonalMaps(Request $request) {
         $rules = [
