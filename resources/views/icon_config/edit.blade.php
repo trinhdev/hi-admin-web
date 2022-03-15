@@ -83,7 +83,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label>Trạng thái hiển thị</label>
                                 <div class="row">
                                     <div class="col-sm-2 offset-sm-1">
@@ -99,7 +99,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                 <div class="icheck-amethyst">
                                     <input type="radio" id="category-add" name="prod_add" value="category_add" />

@@ -20,7 +20,7 @@ class Icon_approve extends MY_Model
 
     protected $table = 'icon_approves';
     protected $primaryKey = 'id';
-    protected $fillable = ['product_type','product_id', 'updated_by', 'approved_type', 'approved_status', 'approved_by', 'approved_at', 'created_at', 'updated_by', 'updated_at', 'deleted_at', 'requested_at', 'requested_by', 'checked_by', 'checked_at'];
+    protected $fillable = ['product_type','product_id', 'approved_type', 'approved_status', 'approved_by', 'approved_at', 'created_at', 'updated_by', 'updated_at', 'deleted_at', 'requested_at', 'requested_by', 'checked_by', 'checked_at'];
     protected $casts = [
         'value' => 'array'
     ];

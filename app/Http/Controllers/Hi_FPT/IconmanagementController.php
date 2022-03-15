@@ -90,23 +90,13 @@ class IconmanagementController extends MY_Controller
         }
 
         $icon = $this->createSingleRecord($this->model, $request->all());
-        $icon_approve = [
-            'product_type'          => 'icon_management',
-            // 'product_id'            => $icon->uuid,
-            'requested_by'          => Auth::check() ? Auth::user()->id : 0,
-            'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
-            'approved_status'       => 'chokiemtra',
-            'approved_type'         => $approved_status,
-            'approved_by'           => '',
-            'approved_at'           => null,
-        ];
 
         Icon_approve::create([
             'product_type'          => 'icon_management',
             'product_id'            => $icon->uuid,
             'requested_by'          => Auth::check() ? Auth::user()->id : 0,
             'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
-            'approved_status'       => 'chokiemtra',
+            'approved_status'       => Gate::allows('icon-check-data-permission', Auth::user()) ? 'chopheduyet' : 'chokiemtra',
             'approved_type'         => $approved_status,
             'approved_by'           => '',
             'approved_at'           => null,
@@ -153,7 +143,7 @@ class IconmanagementController extends MY_Controller
             'product_id'            => $icon->uuid,
             'requested_by'          => Auth::check() ? Auth::user()->id : 0,
             'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
-            'approved_status'       => 'chokiemtra',
+            'approved_status'       => Gate::allows('icon-check-data-permission', Auth::user()) ? 'chopheduyet' : 'chokiemtra',
             'approved_type'         => 'delete',
             'approved_by'           => '',
             'approved_at'           => null,

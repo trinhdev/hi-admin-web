@@ -43,11 +43,11 @@ class AuthServiceProvider extends ServiceProvider
         // Check id Icon check data
         Gate::define('icon-check-data-permission', function($user) {
             $role = Auth::user()->role_id;
-            return $role === 5;
+            return $role === 6;
         });
         Gate::define('icon-approve-data-permission', function($user) {
             $role = Auth::user()->role_id;
-            return $role === 6;
+            return $role === 5;
         });
     }
 }

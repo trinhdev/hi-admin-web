@@ -16,6 +16,7 @@ use App\Models\Icon_approve;
 use App\Models\Icon_approve_logs;
 
 use App\Services\IconManagementService;
+use Illuminate\Support\Facades\Gate;
 
 class IconcategoryController extends MY_Controller
 {
@@ -91,7 +92,7 @@ class IconcategoryController extends MY_Controller
             'product_id'            => $icon_category->uuid,
             'requested_by'          => Auth::check() ? Auth::user()->id : 0,
             'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
-            'approved_status'       => 'chokiemtra',
+            'approved_status'       => Gate::allows('icon-check-data-permission', Auth::user()) ? 'chopheduyet' : 'chokiemtra',
             'approved_type'         => $approved_status,
             'approved_by'           => '',
             'approved_at'           => null,
@@ -138,7 +139,7 @@ class IconcategoryController extends MY_Controller
             'requested_by'          => Auth::check() ? Auth::user()->id : 0,
             'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
             'approved_type'         => 'delete',
-            'approved_status'       => 'chokiemtra',
+            'approved_status'       => Gate::allows('icon-check-data-permission', Auth::user()) ? 'chopheduyet' : 'chokiemtra',
             'approved_by'           => '',
             'approved_at'           => null,
         ]);

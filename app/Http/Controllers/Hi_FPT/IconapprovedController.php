@@ -115,7 +115,7 @@ class IconapprovedController extends MY_Controller
             'product_type'          => 'icon_management',
             'product_id'            => $icon->uuid,
             'updated_by'            => Auth::check() ? Auth::user()->id : 0,
-            'approved_status'       => 'chokiemtra',
+            'approved_status'       => Gate::allows('icon-check-data-permission', Auth::user()) ? 'chopheduyet' : 'chokiemtra',
             'approved_type'         => 'delete',
             'approved_by'           => '',
             'approved_at'           => null,
