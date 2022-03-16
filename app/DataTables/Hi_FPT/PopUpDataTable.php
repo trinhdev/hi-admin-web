@@ -57,8 +57,8 @@ class PopUpDataTable extends DataTable
 
     public function query(NewsEventService $service)
     {
+        $templateType = $this->templateType ?? '';
         $this->perPage = $this->length ?? 10;
-
         if(!isset($this->currentPage) || $this->start == 0){
             $this->currentPage = 1;
         }
@@ -69,9 +69,12 @@ class PopUpDataTable extends DataTable
         $orderColumn = $this->order[0]['column'];
         $this->orderBy = $this->columns[$orderColumn]['data'];
         $this->orderDirection = $this->order[0]['dir'];
-
-
-        $model = $service->getListTemplatePopup($this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
+        
+        if(empty($templateType)) {
+            $model = $service->getListTemplatePopup($templateType,$this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
+        } else {
+            $model = $service->getListTemplatePopup($this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
+        }
         if(isset($model->statusCode) && $model->statusCode == 0) {
             return collect($model->data);
         }
@@ -93,6 +96,7 @@ class PopUpDataTable extends DataTable
                     ->responsive()
                     ->orderBy(6)
                     ->autoWidth(true)
+                    ->deferLoading(false)
                     ->parameters([
                         'scrollX' => true,
                         'searching' => true,
@@ -102,7 +106,18 @@ class PopUpDataTable extends DataTable
                                 var column = this;
                                 var templateType = document.getElementById('show_at');
                                 $(templateType).on('change', function () {
-                                    column.search($(this).val()).draw();
+                                    $.ajax({
+                                        url: '/popupmanage',
+                                        type: 'post',
+                                        data: { templateType: $(this).val()},
+                                        success : function(data, textStatus, req) {
+                                            var table = $('#popup_manage').DataTable();
+                                            table.ajax.reload();
+                                        },
+                                        error: function(req, textStatus, errorThrown) {
+                                            alert('Ooops, something happened: ' + textStatus + ' ' +errorThrown);
+                                        }
+                                    });
                                 });
                             });
                          }"
@@ -128,9 +143,12 @@ class PopUpDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('DT_RowIndex')->title('STT')->width(20),
+            Column::make('DT_RowIndex')
+                    ->title('STT')
+                    ->width(20)
+                    ->sortable(false),
             Column::make('titleVi')->title('Tiêu đề'),
-            Column::make('image')->title('Hình ảnh'),
+            Column::make('image')->title('Hình ảnh')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template'),
             Column::make('viewCount')->title('Số lượt view'),

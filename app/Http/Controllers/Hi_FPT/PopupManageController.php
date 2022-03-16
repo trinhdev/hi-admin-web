@@ -23,12 +23,11 @@ class PopupManageController extends MY_Controller
 
     public function index(PopUpDataTable $dataTable, Request $request)
     {
-        if($request->has('start') && $request->start > 0){
-            // $request->start
-            // dd($request->columns);
+        if($request->has('templateType') && $request->templateType){
+            //dd($request->templateType);
         };
-        // dd($request->all());
         return $dataTable->with([
+            'templateType'=>$request->templateType,
             'start'=>$request->start,
             'length' => $request->length,
             'order' => $request->order,
