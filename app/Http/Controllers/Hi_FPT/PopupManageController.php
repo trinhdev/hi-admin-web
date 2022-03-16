@@ -26,7 +26,7 @@ class PopupManageController extends MY_Controller
         if($request->has('start') && $request->start > 0){
             // dd($request->start);
         };
-        return $dataTable->with(['start'=>$request->start])->render('popup.index');
+        return $dataTable->with(['start'=>$request->start, 'length' => $request->length])->render('popup.index');
     }
 
     public function edit()

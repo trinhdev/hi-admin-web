@@ -31,7 +31,7 @@ class PopUpDataTable extends DataTable
             ->addIndexColumn()
             ->editColumn('buttonActionValue', function ($query) use ($listRoute){
                 $name = $query->buttonActionType == 'function' 
-                        ?  $listRoute->where('id', $query->directionId)->first()->name 
+                        ?  !empty( $a = $listRoute->where('id', $query->directionId)->first() ) ? $a->name : 'null'
                         : $query->buttonActionValue;
                 return $name ? $name : 'null';
             })
@@ -54,17 +54,15 @@ class PopUpDataTable extends DataTable
 
     public function query(NewsEventService $service)
     {
-        if(!isset($this->perPage)){
-            $this->perPage = 10;
-        }
+        $this->perPage = $this->length ?? 10;
+
         if(!isset($this->currentPage) || $this->start == 0){
             $this->currentPage = 1;
         }
 
         if($this->start != 0){
             $this->currentPage =  ($this->start / $this->perPage) + 1 ;
-        }
-
+        };
         $model = $service->getListTemplatePopup($this->perPage, $this->currentPage, $orderBy=null, $orderDirection='DESC');
         if(isset($model->statusCode) && $model->statusCode == 0) {
             return collect($model->data);
@@ -85,7 +83,7 @@ class PopUpDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax('',null, $data =[])
                     ->responsive()
-                    ->orderBy(1)
+                    // ->orderBy(6)
                     ->autoWidth(false)
                     ->parameters([
                         'scrollX' => true,
