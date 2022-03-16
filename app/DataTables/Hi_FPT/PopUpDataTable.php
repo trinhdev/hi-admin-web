@@ -65,10 +65,8 @@ class PopUpDataTable extends DataTable
         if($this->start != 0){
             $this->currentPage =  ($this->start / $this->perPage) + 1 ;
         };
-        // $this->test = $this->columns ?? 'test';
         $orderColumn = $this->order[0]['column'];
-        // $this->orderBy = $this->columns[$orderColumn]['data'];
-        // dd($this->orderBy);
+        $this->orderBy = $this->columns[$orderColumn]['data'];
         $this->orderDirection = $this->order[0]['dir'];
 
 
