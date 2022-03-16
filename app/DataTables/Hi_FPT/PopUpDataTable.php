@@ -14,8 +14,10 @@ class PopUpDataTable extends DataTable
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
-    
-
+    private $perPage = 10;
+    private $orderBy = 'date_created';
+    private $orderDirection  = 'DESC';
+    private $currentPage = 1;
     public function dataTable($query)
     {
         //dd($query);
@@ -31,7 +33,7 @@ class PopUpDataTable extends DataTable
             ->addIndexColumn()
             ->editColumn('buttonActionValue', function ($query) use ($listRoute){
                 $name = $query->buttonActionType == 'function' 
-                        ?  !empty( $a = $listRoute->where('id', $query->directionId)->first() ) ? $a->name : 'null'
+                        ?  !empty( $routeObject = $listRoute->where('id', $query->directionId)->first() ) ? $routeObject->name : 'null'
                         : $query->buttonActionValue;
                 return $name ? $name : 'null';
             })
@@ -63,7 +65,14 @@ class PopUpDataTable extends DataTable
         if($this->start != 0){
             $this->currentPage =  ($this->start / $this->perPage) + 1 ;
         };
-        $model = $service->getListTemplatePopup($this->perPage, $this->currentPage, $orderBy=null, $orderDirection='DESC');
+        // $this->test = $this->columns ?? 'test';
+        $orderColumn = $this->order[0]['column'];
+        // $this->orderBy = $this->columns[$orderColumn]['data'];
+        // dd($this->orderBy);
+        $this->orderDirection = $this->order[0]['dir'];
+
+
+        $model = $service->getListTemplatePopup($this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
         if(isset($model->statusCode) && $model->statusCode == 0) {
             return collect($model->data);
         }
@@ -83,8 +92,8 @@ class PopUpDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax('',null, $data =[])
                     ->responsive()
-                    // ->orderBy(6)
-                    ->autoWidth(false)
+                    ->orderBy(6)
+                    ->autoWidth(true)
                     ->parameters([
                         'scrollX' => true,
                         'searching' => true,
@@ -99,7 +108,7 @@ class PopUpDataTable extends DataTable
                             });
                          }"
                     ])
-                    ->addTableClass('table table-hover table-striped text-center')
+                    ->addTableClass('table table-hover table-striped text-center w-100')
                     ->languageEmptyTable('Không có dữ liệu')
                     ->languageInfoEmpty('Không có dữ liệu')
                     ->languageProcessing('Đang tải')
