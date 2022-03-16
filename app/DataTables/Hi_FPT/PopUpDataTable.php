@@ -14,20 +14,26 @@ class PopUpDataTable extends DataTable
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
-    
-
+    private $perPage = 10;
+    private $orderBy = 'date_created';
+    private $orderDirection  = 'DESC';
+    private $currentPage = 1;
     public function dataTable($query)
     {
+        //dd($query);
         $NewsEventService = new NewsEventService();
         $listRoute = collect($NewsEventService->getListTargetRoute()->data);
         $list_template_popup = config('platform_config.type_popup_service');
+        $tmp = $query;
+        $query = $query['data'];
+        $paginate = $tmp['pagination'];
+        $totalRecords = $paginate->totalPage * $paginate->perPage;
         return datatables()
             ->collection($query)
             ->addIndexColumn()
             ->editColumn('buttonActionValue', function ($query) use ($listRoute){
-                
                 $name = $query->buttonActionType == 'function' 
-                        ?  $listRoute->where('id', $query->directionId)->first()->name 
+                        ?  !empty( $routeObject = $listRoute->where('id', $query->directionId)->first() ) ? $routeObject->name : 'null'
                         : $query->buttonActionValue;
                 return $name ? $name : 'null';
             })
@@ -43,14 +49,32 @@ class PopUpDataTable extends DataTable
                 ';
             })
             ->addColumn( 'action', 'popup._action-menu')
-            ->rawColumns(['buttonActionValue','image','action']);
+            ->rawColumns(['buttonActionValue','image','action'])
+            ->setTotalRecords($totalRecords)
+            ->skipPaging()
+            ;
     }
 
     public function query(NewsEventService $service)
     {
-        $model = $service->getListTemplatePopup();
+        $this->perPage = $this->length ?? 10;
+        if(!isset($this->currentPage) || $this->start == 0){
+            $this->currentPage = 1;
+        }
+        if(isset($this->templateType)){
+            dd($this->templateType);
+        }
+        if($this->start != 0){
+            $this->currentPage =  ($this->start / $this->perPage) + 1 ;
+        };
+        $orderColumn = $this->order[0]['column'];
+        $this->orderBy = $this->columns[$orderColumn]['data'];
+        $this->orderDirection = $this->order[0]['dir'];
+        $this->templateType = $this->templateType ?? '';
+        $model = $service->getListTemplatePopup( $this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
+
         if(isset($model->statusCode) && $model->statusCode == 0) {
-            return collect($model->data->data);
+            return collect($model->data);
         }
         session()->flash('error');
         return $model = [];
@@ -64,12 +88,13 @@ class PopUpDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('popup_manage')
+                    ->setTableId('popup_manage_table')
                     ->columns($this->getColumns())
                     ->minifiedAjax('',null, $data =[])
                     ->responsive()
-                    ->orderBy(1)
-                    ->autoWidth(false)
+                    ->orderBy(6)
+                    ->autoWidth(true)
+                    // ->deferLoading(false)
                     ->parameters([
                         'scrollX' => true,
                         'searching' => true,
@@ -79,19 +104,22 @@ class PopUpDataTable extends DataTable
                                 var column = this;
                                 var templateType = document.getElementById('show_at');
                                 $(templateType).on('change', function () {
-                                    column.search($(this).val()).draw();
+                                    var table = $('#popup_manage_table').DataTable();
+                                    table.ajax.reload();
+                                    return false;
                                 });
                             });
                          }"
                     ])
-                    ->addTableClass('table table-hover table-striped text-center')
+                    ->addTableClass('table table-hover table-striped text-center w-100')
                     ->languageEmptyTable('Không có dữ liệu')
                     ->languageInfoEmpty('Không có dữ liệu')
                     ->languageProcessing('Đang tải')
                     ->languageSearch('Tìm kiếm')
                     ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
                     ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
-                    ->languageInfo('Trang _PAGE_ / _PAGES_ của _TOTAL_ dữ liệu')
+                    ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang
+                    ')
                     ;
                     
     }
@@ -104,9 +132,12 @@ class PopUpDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('DT_RowIndex')->title('STT')->width(20),
+            Column::make('DT_RowIndex')
+                    ->title('STT')
+                    ->width(20)
+                    ->sortable(false),
             Column::make('titleVi')->title('Tiêu đề'),
-            Column::make('image')->title('Hình ảnh'),
+            Column::make('image')->title('Hình ảnh')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template'),
             Column::make('viewCount')->title('Số lượt view'),

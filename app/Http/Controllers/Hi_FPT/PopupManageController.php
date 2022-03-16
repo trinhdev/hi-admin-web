@@ -21,9 +21,18 @@ class PopupManageController extends MY_Controller
         $this->title = 'Popup Manage';
     }
 
-    public function index(PopUpDataTable $dataTable)
+    public function index(PopUpDataTable $dataTable, Request $request)
     {
-        return $dataTable->render('popup.index');
+        if($request->has('templateType') && $request->templateType){
+            //dd($request->templateType);
+        };
+        return $dataTable->with([
+            'templateType'=>$request->templateType,
+            'start'=>$request->start,
+            'length' => $request->length,
+            'order' => $request->order,
+            'columns' => $request->columns
+            ])->render('popup.index');
     }
 
     public function edit()
@@ -173,6 +182,11 @@ class PopupManageController extends MY_Controller
         ];
         $newsEventService = new NewsEventService();
         $push_response = $newsEventService->pushTemplate($pushParams);
+        if(isset($push_response->statusCode) && $push_response->statusCode==0){
+            return redirect()->back()->withSuccess('Thành Công');
+        }else{
+            return redirect()->back()->withErrors($push_response->message);
+        }
     }
     public function getDetailPersonalMaps(Request $request) {
         $rules = [

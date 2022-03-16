@@ -59,9 +59,9 @@
 
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">Lịch sử Push: {{$detailTemplate->titleVi}}</h3>
+                        <h3 class="card-title">Lịch sử Push của Template "{{$detailTemplate->titleVi}}"</h3>
                         <div class="card-tools">
-                            <button type="button" class="btn btn-tool" onclick="clearForm()" data-toggle="modal" data-target="#myModal">
+                            <button type="button" class="btn btn-tool" onclick="clearForm()" data-toggle="modal" data-target="#popupModal">
                                 <i class="fas fa-plus-circle"> PUSH</i>
                             </button>
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -76,10 +76,12 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Ngày Push</th>
                                 <th>Tần suất popup xuất hiện</th>
                                 <th>Loại Đối tượng</th>
                                 <th>Ngày bắt đầu</th>
-                                <th>Loại kết thúc</th>
+                                <th>Ngày kết thúc</th>
+                                <th>Trạng Thái</th>
                                 {{-- <th>Hành động</th> --}}
                             </tr>
                             </thead>
@@ -87,6 +89,7 @@
                             @foreach($detailTemplate->templatePersonalMaps as $key => $value)
                                 <tr>
                                     <td>{{$value->templatePersonalMapId}}</td>
+                                    <td>{{$value->date_created}}</td>
                                     <td>{{config('platform_config.repeatTime')[$value->showOnceTime]}}</td>
                                     @if($value->pushedObject == "fpt_customer")
                                     <td>{{config('platform_config.object')['all_hifpt']}}</td>
@@ -95,6 +98,13 @@
                                     @endif
                                     <td>{{$value->dateStart}}</td>
                                     <td>{{$value->dateEnd}}</td>
+                                    <td>
+                                    @if($value->process_status == 'deleted')
+                                    <b class ="badge badge-success">Thành công</b>
+                                    @else
+                                    <b class="badge badge-danger">Thất Bại</b>
+                                    @endif
+                                    </td>
                                     {{-- <td style="text-align: center"><a style="" type="button"
                                                                       onclick="getDetailPersonalMaps(this)"
                                                                       personalID="{{$value->templatePersonalMapId}}"
@@ -111,7 +121,11 @@
         </section>
     </div>
     <!-- Modal popup -->
-    <div class="modal fade" id="myModal" style="display: none;" aria-hidden="true">
+    {{-- <form> --}}
+    <div class="modal fade" id="popupModal" style="display: none;" aria-hidden="true">
+    <form action="{{ route('popupmanage.pushPopupTemplate') }}" method="POST">
+    @csrf
+    <input type="hidden" name="templateId" id="templateId" value="{{$detailTemplate->templateId}}">
         <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -125,7 +139,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Loại Đối tượng</label>
-                                    <select class="form-control select2" name="objecttype" id="objecttype">
+                                    <select class="form-control" name="objecttype" id="objecttype">
                                         @foreach($object_type as $key => $value)
                                             <option value="{{$key}}">{{$value}}</option>
                                         @endforeach
@@ -135,7 +149,7 @@
                                     <label>Tần suất popup xuất hiện</label>
                                     <div class="row">
                                         <div class="col-12">
-                                            <select class="form-control select2" name="repeatTime" id="repeatTime">
+                                            <select class="form-control" name="repeatTime" id="repeatTime">
                                                 @foreach($repeatTime as $key => $value)
                                                     <option value="{{$key}}">{{$value}}</option>
                                                 @endforeach
@@ -150,7 +164,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Đối tượng</label>
-                                    <select class="form-control select2" name="object" id="object">
+                                    <select class="form-control" name="object" id="object">
                                         @foreach($object as $key => $value)
                                             <option value="{{$key}}">{{$value}}</option>
                                         @endforeach
@@ -172,19 +186,15 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="submitTargetPopup()">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
         </div>
-
+        </form>
     </div>
 @endsection
 @push('scripts')
-    <script>
-        
-
-    </script>
      <script>
         $(document).ready(function() {
             showHide();

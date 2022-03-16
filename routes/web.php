@@ -156,6 +156,7 @@ Route::group([
 
             Route::prefix('popupmanage')->group(function () {
                 Route::get('/','PopupManageController@index')->name('popupmanage.index');
+                Route::post('/','PopupManageController@index');
                 Route::get('/edit/{id?}','PopupManageController@edit')->name('popupmanage.edit');
                 Route::get('/create','PopupManageController@edit')->name('popupmanage.create');
                 Route::post('/save','PopupManageController@save')->name('popupmanage.save');

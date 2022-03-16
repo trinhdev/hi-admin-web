@@ -67,34 +67,41 @@ function showHide() {
         }
     });
 }
-$('#templatPersonList').DataTable();
+$('#templatPersonList').DataTable({
+    "order": [[1, "desc"]],
+});
 function clearForm() {
-    $('#myModal select').prop('selectedIndex', 0).change();
+    $('#popupModal select').prop('selectedIndex', 0).change();
 }
-function submitTargetPopup() {
-    var objecttype =  $("#objecttype").val();
-    var repeatTime = $("#repeatTime").val();
-    var object = $("#object").val();
-    var timeline =  $("#timeline").val();
-    var templateId =  $("#templateId").val();
-    $.ajax({
-        type: 'POST',
-        url: '/popupmanage/pushPopupTemplate',
-        data: {'objecttype': objecttype, 'object': object, 'repeatTime': repeatTime, 'timeline': timeline, 'templateId': templateId},
-        cache: false,
-        success: (data) => {
-            console.log(data);
-        },
-        error: function (xhr) {
-            var errorString = '';
-            $.each(xhr.responseJSON.errors, function (key, value) {
-                errorString = value;
-                return false;
-            });
-            showError(errorString);
-        }
-    });
-}
+// function submitTargetPopup() {
+//     var objecttype =  $("#objecttype").val();
+//     var repeatTime = $("#repeatTime").val();
+//     var object = $("#object").val();
+//     var timeline =  $("#timeline").val();
+//     var templateId =  $("#templateId").val();
+//     $.ajax({
+//         type: 'POST',
+//         url: '/popupmanage/pushPopupTemplate',
+//         data: {'objecttype': objecttype, 'object': object, 'repeatTime': repeatTime, 'timeline': timeline, 'templateId': templateId},
+//         cache: false,
+//         success: (data) => {
+//             if(data.statusCode == 0){
+//                 showSuccess('Thành công');
+//             }else{
+//                 showError(data.message);
+//             }
+//             $('#popupModal').modal('toggle');
+//         },
+//         error: function (xhr) {
+//             var errorString = '';
+//             $.each(xhr.responseJSON.errors, function (key, value) {
+//                 errorString = value;
+//                 return false;
+//             });
+//             showError(errorString);
+//         }
+//     });
+// }
 
 function getDetailPersonalMaps(idPersonalMaps) {
     $.ajax({
@@ -115,7 +122,7 @@ function getDetailPersonalMaps(idPersonalMaps) {
             showError(errorString);
         }
     });
-    $("#myModal").modal()
+    $("#popupModal").modal()
 }
 function validateDataPopup(event, form) {
     event.preventDefault();
