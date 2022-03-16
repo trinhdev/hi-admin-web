@@ -57,24 +57,22 @@ class PopUpDataTable extends DataTable
 
     public function query(NewsEventService $service)
     {
-        $templateType = $this->templateType ?? '';
         $this->perPage = $this->length ?? 10;
         if(!isset($this->currentPage) || $this->start == 0){
             $this->currentPage = 1;
         }
-
+        if(isset($this->templateType)){
+            dd($this->templateType);
+        }
         if($this->start != 0){
             $this->currentPage =  ($this->start / $this->perPage) + 1 ;
         };
         $orderColumn = $this->order[0]['column'];
         $this->orderBy = $this->columns[$orderColumn]['data'];
         $this->orderDirection = $this->order[0]['dir'];
-        
-        if(empty($templateType)) {
-            $model = $service->getListTemplatePopup($templateType,$this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
-        } else {
-            $model = $service->getListTemplatePopup($this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
-        }
+        $this->templateType = $this->templateType ?? '';
+        $model = $service->getListTemplatePopup( $this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
+
         if(isset($model->statusCode) && $model->statusCode == 0) {
             return collect($model->data);
         }
@@ -90,13 +88,13 @@ class PopUpDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('popup_manage')
+                    ->setTableId('popup_manage_table')
                     ->columns($this->getColumns())
                     ->minifiedAjax('',null, $data =[])
                     ->responsive()
                     ->orderBy(6)
                     ->autoWidth(true)
-                    ->deferLoading(false)
+                    // ->deferLoading(false)
                     ->parameters([
                         'scrollX' => true,
                         'searching' => true,
@@ -106,18 +104,9 @@ class PopUpDataTable extends DataTable
                                 var column = this;
                                 var templateType = document.getElementById('show_at');
                                 $(templateType).on('change', function () {
-                                    $.ajax({
-                                        url: '/popupmanage',
-                                        type: 'post',
-                                        data: { templateType: $(this).val()},
-                                        success : function(data, textStatus, req) {
-                                            var table = $('#popup_manage').DataTable();
-                                            table.ajax.reload();
-                                        },
-                                        error: function(req, textStatus, errorThrown) {
-                                            alert('Ooops, something happened: ' + textStatus + ' ' +errorThrown);
-                                        }
-                                    });
+                                    var table = $('#popup_manage_table').DataTable();
+                                    table.ajax.reload();
+                                    return false;
                                 });
                             });
                          }"
