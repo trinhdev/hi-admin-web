@@ -51,6 +51,7 @@ class PopUpDataTable extends DataTable
             ->addColumn( 'action', 'popup._action-menu')
             ->rawColumns(['buttonActionValue','image','action'])
             ->setTotalRecords($totalRecords)
+            ->skipPaging()
             ;
     }
 
