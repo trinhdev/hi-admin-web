@@ -61,9 +61,6 @@ class PopUpDataTable extends DataTable
         if(!isset($this->currentPage) || $this->start == 0){
             $this->currentPage = 1;
         }
-        if(isset($this->templateType)){
-            dd($this->templateType);
-        }
         if($this->start != 0){
             $this->currentPage =  ($this->start / $this->perPage) + 1 ;
         };
