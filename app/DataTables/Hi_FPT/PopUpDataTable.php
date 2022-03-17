@@ -98,11 +98,8 @@ class PopUpDataTable extends DataTable
                         'initComplete' => "function () {
                             var templateType = $('#show_at');
                             var table = $('#popup_manage_table').DataTable();
-                            $(templateType).on('change', function () {   
-                                table.on('preXhr.dt', function(e, settings, data){
-                                    data.templateType = templateType.val();
-                                });
-                                table.draw();
+                            $(templateType).on('change', function () { 
+                                table.ajax.reload();
                             });
                          }"
                     ])
