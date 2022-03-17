@@ -53,7 +53,7 @@
                                 @if(request()->is("/") || $group->uri == "")
                                 <a href="/{{ $group->uri }}" class="nav-link {{ request()->is("/".$group->uri) ? 'active' : '' }}">
                                 @else
-                                <a href="/{{ $module->uri }}" class="nav-link {{ request()->is($module->uri.'*') ? 'active' : '' }}">
+                                <a href="/{{ $group->uri }}" class="nav-link {{ request()->is($group->uri.'*') ? 'active' : '' }}">
                                 @endif
                                 <i class="nav-icon {{ $group->icon}}"></i>
                                 <p>{{ $group->module_name}}</p>
