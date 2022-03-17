@@ -163,6 +163,7 @@ class PopupManageController extends MY_Controller
             'templateId'=> 'required',
         ];
         $request->validate($rules);
+        $this->addToLog($request);
         $timeline = $request->timeline;
         $timeline_array = explode(" - ", $timeline);
         $dateStart = $timeline_array[0];
