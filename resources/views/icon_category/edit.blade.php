@@ -139,7 +139,6 @@
                             </div>
                             <div class="form-group">
                                 <label>Danh sách sản phẩm</label>
-                                <input type="hidden" name="arrayId" id="selected-prod-id">
                                 <div class="row">
                                     <div class="direct-chat-msg">
                                         <img class="direct-chat-img" src="/images/information.png" alt="">
@@ -239,7 +238,7 @@
                             @endif
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
-                            <button type="button" onClick="deleteButton(JSON.stringify(serializeObject($('#icon-category-form').serializeArray())), '{{ @$data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            <button type="button" onClick="deleteButton('#icon-category-form', '{{ @$data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}', 'selected-product')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                             @endif
                             @if (Session::get('approved_data'))
                                 @can('icon-check-data-permission')

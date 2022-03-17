@@ -149,7 +149,7 @@ class IconmanagementController extends MY_Controller
             'approved_at'           => null,
         ]);
         $this->addToLog(request());
-        echo json_encode(['result' => 1, 'message' => 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.']);
+        echo json_encode(['result' => 1, 'message' => 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.', 'url' => route('iconmanagement.index')]);
     }
 
     public function detail($productId) {

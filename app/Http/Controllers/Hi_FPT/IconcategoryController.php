@@ -17,6 +17,7 @@ use App\Models\Icon_approve_logs;
 
 use App\Services\IconManagementService;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 
 class IconcategoryController extends MY_Controller
 {
@@ -128,6 +129,16 @@ class IconcategoryController extends MY_Controller
     }
 
     public function destroy(Request $request) {
+        $request->validate([
+            'arrayId' => [
+                function ($attribute, $value, $fail) {
+                    // dd($value);
+                    if(strlen($value) > 0) {
+                        $fail('Xin vui lòng xoá hết sản phẩm trong danh mục sản phẩm được chọn trước khi xoá danh mục');
+                    }
+                },
+            ],
+        ]);
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
@@ -144,7 +155,7 @@ class IconcategoryController extends MY_Controller
             'approved_at'           => null,
         ]);
         $this->addToLog(request());
-        echo json_encode(['result' => 1, 'message' => 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.']);
+        echo json_encode(['result' => 1, 'message' => 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.', 'url' => route('iconcategory.index')]);
     }
 
     public function upload(Request $request) {

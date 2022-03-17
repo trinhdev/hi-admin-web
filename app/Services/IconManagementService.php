@@ -15,6 +15,7 @@ class IconManagementService {
     }
 
     public function getAllProduct() {
+        // dd($this->token);
         $url                = $this->baseUrl . $this->subDomain . 'products/get-all';
         $response           = sendRequest($url, [], $this->token);
         return $response;

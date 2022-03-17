@@ -32,7 +32,80 @@ function readURL(value, url) {
     });
 }
 
-function deleteButton(form_data, name, url) {
+// function deleteButton(form_data, name, url, ul_id) {
+//     var arrayId = [];
+//     $("#" + ul_id).find("li").each((key, value) => {
+//         arrayId.push($(value).attr('data-prodid'));
+//     });
+//     // $("#selected-prod-id").val(arrayId.join(','));
+//     if (arrayId.length > 0) {
+//         Swal.fire({
+//             title: 'Cảnh báo',
+//             html: `Xin vui lòng xoá trống danh sách sản phẩm được chọn trước khi xoá danh mục`,
+//             icon: 'warning',
+//             showCancelButton: true,
+//             cancelButtonText: 'Huỷ',
+//             cancelButtonColor: '#d33',
+//             confirmButtonColor: '#3085d6',
+//             confirmButtonText: 'Đồng ý',
+//             reverseButtons: true
+
+//         })
+//     }
+
+//     Swal.fire({
+//         title: 'Xóa sản phẩm',
+//         html: `Bạn có chắc muốn xóa sản phẩm <span class="badge bg-warning text-dark">${name}</span>?`,
+//         icon: 'warning',
+//         showCancelButton: true,
+//         cancelButtonText: 'Huỷ',
+//         cancelButtonColor: '#d33',
+//         confirmButtonColor: '#3085d6',
+//         confirmButtonText: 'Đồng ý',
+//         reverseButtons: true
+
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             var formData = new FormData();
+//             // var data = serializeObject(form_data);
+//             formData.append('formData', form_data);
+
+//             $.ajaxSetup({
+//                 headers: {
+//                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//                 }
+//             });
+//             $.ajax({
+//                 type: 'POST',
+//                 url: url,
+//                 data: formData,
+//                 processData: false,
+//                 contentType: false,
+//                 cache: false,
+//                 success: (data) => {
+//                     var result = JSON.parse(data);
+//                     if (result.result) {
+//                         Swal.fire({
+//                             title: 'LƯU THÀNH CÔNG',
+//                             text: result.message,
+//                             icon: 'success',
+//                         })
+//                     }
+//                 },
+//                 error: function (xhr) {
+//                     var errorString = '';
+//                     $.each(xhr.responseJSON.errors, function (key, value) {
+//                         errorString = value;
+//                         return false;
+//                     });
+//                     showError(errorString);
+//                 }
+//             });
+//         }
+//     });
+// }
+
+function deleteButton(form_data, name, url, ul_id) {
     Swal.fire({
         title: 'Xóa sản phẩm',
         html: `Bạn có chắc muốn xóa sản phẩm <span class="badge bg-warning text-dark">${name}</span>?`,
@@ -46,10 +119,21 @@ function deleteButton(form_data, name, url) {
 
     }).then((result) => {
         if (result.isConfirmed) {
-            var formData = new FormData();
-            // var data = serializeObject(form_data);
-            formData.append('formData', form_data);
-            
+            try {
+                var data = JSON.parse(form_data);
+            } catch (e) {
+                var formData = $(form_data).serializeArray();
+                var data = serializeObject(formData);
+                // data['_token'] = data['_token'][0];
+                delete data['_token'];
+                if (ul_id) {
+                    var arrayId = [];
+                    $("#" + ul_id).find("li").each((key, value) => {
+                        arrayId.push($(value).attr('data-prodid'));
+                    });
+                    data['arrayId'] = arrayId.join(",");
+                }
+            }
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -58,18 +142,20 @@ function deleteButton(form_data, name, url) {
             $.ajax({
                 type: 'POST',
                 url: url,
-                data: formData,
-                processData: false,
-                contentType: false,
-                cache: false,
-                success: (data) => {
-                    var result = JSON.parse(data);
-                    if(result.result) {
+                data: data,
+                dataType: "json",
+                success: (result) => {
+                    // var result = JSON.parse(data);
+                    if (result.result) {
                         Swal.fire({
-                            title: 'LƯU THÀNH CÔNG',
+                            title: 'Xoá thành công',
                             text: result.message,
                             icon: 'success',
-                        })
+                        }).then((alertOption) => {
+                            if (alertOption.isConfirmed) {
+                                window.location.href = result.url;
+                            }
+                        });
                     }
                 },
                 error: function (xhr) {
@@ -240,7 +326,7 @@ function approve(approved_data) {
                 processData: false,
                 success: (data) => {
                     var response = JSON.parse(data);
-                    if(response.status) {
+                    if (response.status) {
                         window.location.href = "/iconapproved";
                     }
                 },

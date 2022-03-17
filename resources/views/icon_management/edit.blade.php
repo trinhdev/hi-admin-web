@@ -275,7 +275,7 @@
                             @endif
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconmanagement.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (isset($data['productId']))
-                            <button type="button" onClick="deleteButton(JSON.stringify(serializeObject($('#icon-form').serializeArray())), '{{ @$data['productNameVi'] }}', '{{ route('iconmanagement.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            <button type="button" onClick="deleteButton('#icon-form', '{{ @$data['productNameVi'] }}', '{{ route('iconmanagement.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                             @endif
                             @if (Session::get('approved_data'))
                                 @can('icon-check-data-permission')

@@ -1,14 +1,14 @@
 "use strict";
 
-$( document ).ready(function() {
-    if($('#status-clock').is(':checked')) {
+$(document).ready(function () {
+    if ($('#status-clock').is(':checked')) {
         $('#status-clock-date-time').show();
     }
     else {
         $('#status-clock-date-time').hide();
     }
 
-    if($('#is-new-show').is(':checked')) {
+    if ($('#is-new-show').is(':checked')) {
         $('#is-new-icon-show-date-time').show();
     }
     else {
@@ -94,49 +94,49 @@ $( document ).ready(function() {
         enableDrag: false,
         enableTouch: false,
         pager: false
-    });  
+    });
 });
 
 $("#show_from").on("dp.change", function (e) {
-    if($('#show_to').data("DateTimePicker") != undefined) {
+    if ($('#show_to').data("DateTimePicker") != undefined) {
         $('#show_to').data("DateTimePicker").minDate(e.date);
     }
-});      
+});
 
 $("#show_to").on("dp.change", function (e) {
-    if($('#show_from').data("DateTimePicker") != undefined) {
+    if ($('#show_from').data("DateTimePicker") != undefined) {
         $('#show_from').data("DateTimePicker").maxDate(e.date);
     }
 });
 
 $("#new_from").on("dp.change", function (e) {
-    if($('#new_to').data("DateTimePicker") != undefined) {
+    if ($('#new_to').data("DateTimePicker") != undefined) {
         $('#new_to').data("DateTimePicker").minDate(e.date);
     }
-});      
+});
 
 $("#new_to").on("dp.change", function (e) {
-    if($('#new_from').data("DateTimePicker") != undefined) {
+    if ($('#new_from').data("DateTimePicker") != undefined) {
         $('#new_from').data("DateTimePicker").maxDate(e.date);
     }
 });
 
 $('input:radio[name="status"]').change(() => {
-    if($('#status-clock').is(':checked')) {
+    if ($('#status-clock').is(':checked')) {
         $('#status-clock-date-time').show();
     }
     else {
         $('#status-clock-date-time').hide();
-    } 
+    }
 });
 
 $('input:checkbox[name="is_new_show"]').change(() => {
-    if($('#is-new-show').is(':checked')) {
+    if ($('#is-new-show').is(':checked')) {
         $('#is-new-icon-show-date-time').show();
     }
     else {
         $('#is-new-icon-show-date-time').hide();
-    } 
+    }
 });
 
 // Dragula CSS Release 3.2.0 from: https://github.com/bevacqua/dragula
@@ -148,7 +148,7 @@ dragula([document.getElementById('all-product'), document.getElementById('select
     },
     accepts: function (el, target, source, sibling) {
         var li_all = $(el).attr('id');
-        if($('#' + li_all + '-selected-product').length != 0) {
+        if ($('#' + li_all + '-selected-product').length != 0) {
             swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -160,6 +160,7 @@ dragula([document.getElementById('all-product'), document.getElementById('select
         return target !== document.getElementById('all-product')
     }
 }).on('drop', (el, target, source, sibling) => {
+    var arrayId = [];
     var li_all = $(el).attr('id');
     $(el).attr('id', li_all + '-selected-product');
     $(el).removeClass("lslide");
@@ -172,12 +173,15 @@ dragula([document.getElementById('all-product'), document.getElementById('select
     $(spanElement).removeClass("badge-light");
     $(spanElement).addClass("badge-dark");
 
-    if($(el).find('span.position').length < 1) {
+    if ($(el).find('span.position').length < 1) {
         $(el).append(`<h6><span class="badge badge-warning position">${$(el).index() + 1}</span></h6>`);
     }
 
     $(target).find("li").each((key, value) => {
         $(value).find("span.position").text($(value).index() + 1);
+        arrayId.push($(value).attr('data-prodid'));
     });
+
+    // $("#selected-prod-id").val(arrayId.join(','));
 });
 
