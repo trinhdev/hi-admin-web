@@ -33,7 +33,7 @@ class PopUpDataTable extends DataTable
             ->addIndexColumn()
             ->editColumn('buttonActionValue', function ($query) use ($listRoute){
                 $name = $query->buttonActionType == 'function' 
-                        ?  !empty( $routeObject = $listRoute->where('id', $query->directionId)->first() ) ? $routeObject->name : 'null'
+                        ?  ($routeObject = $listRoute->where('id', $query->directionId)->first()) ? $routeObject->name : 'null'
                         : $query->buttonActionValue;
                 return $name ? $name : 'null';
             })
@@ -61,12 +61,10 @@ class PopUpDataTable extends DataTable
         if(!isset($this->currentPage) || $this->start == 0){
             $this->currentPage = 1;
         }
-        if(isset($this->templateType)){
-            dd($this->templateType);
-        }
         if($this->start != 0){
             $this->currentPage =  ($this->start / $this->perPage) + 1 ;
         };
+        //$this->start == 0 ? $this->currentPage = 1 : $this->currentPage =  ($this->start / $this->perPage) + 1;
         $orderColumn = $this->order[0]['column'];
         $this->orderBy = $this->columns[$orderColumn]['data'];
         $this->orderDirection = $this->order[0]['dir'];
@@ -90,24 +88,21 @@ class PopUpDataTable extends DataTable
         return $this->builder()
                     ->setTableId('popup_manage_table')
                     ->columns($this->getColumns())
-                    ->minifiedAjax('',null, $data =[])
                     ->responsive()
                     ->orderBy(6)
                     ->autoWidth(true)
-                    // ->deferLoading(false)
                     ->parameters([
                         'scrollX' => true,
                         'searching' => true,
                         'searchDelay' => 500,
                         'initComplete' => "function () {
-                            this.api().columns([4]).every(function () {
-                                var column = this;
-                                var templateType = document.getElementById('show_at');
-                                $(templateType).on('change', function () {
-                                    var table = $('#popup_manage_table').DataTable();
-                                    table.ajax.reload();
-                                    return false;
+                            var templateType = $('#show_at');
+                            var table = $('#popup_manage_table').DataTable();
+                            $(templateType).on('change', function () {   
+                                table.on('preXhr.dt', function(e, settings, data){
+                                    data.templateType = templateType.val();
                                 });
+                                table.draw();
                             });
                          }"
                     ])
