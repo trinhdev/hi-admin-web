@@ -207,6 +207,25 @@ $domainMail = [
     ],
 ];
 
+$domainUploadIcon = [
+    'local'             => [
+        'URL'           => 'https://staging-hi-static.fpt.vn/',
+        'CLIENT_KEY'    => 'hifpt_static_CMS',
+        'SECRET_KEY'    => 'xxxxxxhifpt2022'
+    ],
+    'staging'           => [
+        'URL'           => 'https://staging-hi-static.fpt.vn/',
+        'CLIENT_KEY'    => 'hifpt_static_CMS',
+        'SECRET_KEY'    => 'xxxxxxhifpt2022'
+    ],
+    'production'        => [
+        'URL'           => 'https://staging-hi-static.fpt.vn/',
+        // 'URL'           => 'https://hi-static.fpt.vn/upload_CMS.php/',
+        'CLIENT_KEY'    => 'hifpt_static_CMS',
+        'SECRET_KEY'    => 'xxxxxxhifpt2022'
+    ],
+];
+
 return [
     'DOMAIN_REPORT'                 => $domainReportConfig,
     'DOMAIN_INSIDE'                 => $domainInsideConfig,
@@ -219,4 +238,5 @@ return [
     'DOMAIN_ICON_MANAGEMENT'        => $domainIconManagement,
     'DOMAIN_HR'                     => $domainHr,
     'DOMAIN_MAIL'                   => $domainMail,
+    'DOMAIN_UPLOAD'                 => $domainUploadIcon
 ];

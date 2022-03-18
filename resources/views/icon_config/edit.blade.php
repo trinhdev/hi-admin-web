@@ -54,15 +54,21 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-3 col-form-label">Tên vị trí</label>
+                                        <label for="inputEmail3" class="col-sm-3 col-form-label">Tên vị trí <span class="required">*</span></label>
                                         <div class="col-sm-9">
                                             <input type="name" class="form-control" id="vi-name" placeholder="Tên vị trí" name="titleVi" value="{{ @$data['titleVi'] }}">
+                                            @error('titleVi')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-3 col-form-label">Tên vị trí - code</label>
+                                        <label for="inputEmail3" class="col-sm-3 col-form-label">Tên vị trí - code <span class="required">*</span></label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="code-name" placeholder="Tên vị trí - code" name="name" value="{{ @$data['name'] }}" readonly="true">
+                                            <input type="text" class="form-control" id="code-name" placeholder="Tên vị trí - code" name="name" value="{{ @$data['name'] }}" {{ (isset($data['productConfigId'])) ? 'readonly="true"' : '' }} >
+                                            @error('name')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -72,13 +78,19 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-3 col-form-label">Số icon trên 1 dòng</label>
+                                        <label for="inputEmail3" class="col-sm-3 col-form-label">Số icon trên 1 dòng <span class="required">*</span></label>
                                         <div class="col-sm-3">
                                             <input type="number" class="form-control" id="icon-per-row" placeholder="Số icon trên 1 dòng" name="iconsPerRow" value="{{ @$data['iconsPerRow'] }}">
+                                            @error('iconsPerRow')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                        <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Số dòng tối đa</label>
+                                        <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Số dòng tối đa <span class="required">*</span></label>
                                         <div class="col-sm-3">
                                             <input type="number" class="form-control" id="row-on-page" placeholder="Số dòng tối đa" name="rowOnPage" value="{{ @$data['rowOnPage'] }}">
+                                            @error('rowOnPage')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -115,8 +127,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Danh sách sản phẩm</label>
-                                <input type="hidden" name="arrayId" id="selected-prod-id" value="{{ $data['arrayId'] }}">
+                                <label>Danh sách sản phẩm <span class="required">*</span></label>
+                                @error('arrayId')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                <input type="hidden" name="arrayId" id="selected-prod-id" value="{{ @$data['arrayId'] }}">
                                 <div class="row product-add">
                                     <div class="direct-chat-msg">
                                         <img class="direct-chat-img" src="/images/information.png" alt="">
@@ -131,7 +146,7 @@
                                 </div>
                                 <div class="card card-info">
                                     <div class="card-body">
-                                        <ul class="row" style="list-style: none; min-height: 100px; max-width: {{ (!empty($data['iconsPerRow'])) ? $data['iconsPerRow'] * 100 / 5 : 100 }}%" id="selected-product-config">
+                                        <ul class="row" style="list-style: none; min-height: 100px; max-width: {{ (!empty($data['iconsPerRow'])) ? $data['iconsPerRow'] * 100 / 4 : 100 }}%" id="selected-product-config">
                                             @foreach ($data['productListInConfig'] as $key => $value)
                                                 <li class="selected-li" id="{{ @$value['productId'] }}-selected-product-config" data-prodid="{{ @$value['productId'] }}">
                                                     <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}">
@@ -429,6 +444,10 @@
 
     #all-title-config button {
         display: none;
+    }
+
+    .required {
+        color: red
     }
 </style>
 @endsection

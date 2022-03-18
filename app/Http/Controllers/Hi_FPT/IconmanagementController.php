@@ -18,6 +18,7 @@ use \stdClass;
 use Yajra\DataTables\DataTables;
 use App\Services\IconManagementService;
 use App\Services\MailService;
+use App\Services\UploadImageService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 
@@ -28,12 +29,15 @@ class IconmanagementController extends MY_Controller
     protected $model_name = "Icon";
     protected $iconManagement = null;
     protected $mailService = null;
+    protected $uploadService = null;
+
     public function __construct()
     {
         parent::__construct();
         $this->title = 'Icon Management';
         $this->iconManagement = new IconManagementService();
         $this->mailService = new MailService();
+        $this->uploadService = new UploadImageService();
         $this->model = $this->getModel('Icon');
         $this->to    = filter_var(preg_replace('/\s+/', '', env('ICON_CHANGE_NOTI_TO')));
         $this->cc    = filter_var(preg_replace('/\s+/', '', env('ICON_CHANGE_NOTI_CC')));
@@ -220,19 +224,36 @@ class IconmanagementController extends MY_Controller
         return $detail_prod_title->render();
     }
 
+    // public function upload(Request $request) {
+    //     $request->validate([
+    //         'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //     ]);
+
+    //     if ($request->file('file')) {
+    //         $imagePath = $request->file('file');
+    //         $imageName = $imagePath->getClientOriginalName();
+
+    //         $path = $request->file('file')->storeAs('uploads', $imageName, 'public');
+    //     }
+    //     $request->file->move(public_path('images/upload'), $imageName);
+    //     return ['success' => 'You have successfully upload image.', 'url' => $imageName];
+    // }
+
     public function upload(Request $request) {
         $request->validate([
             'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
         if ($request->file('file')) {
             $imagePath = $request->file('file');
-            $imageName = $imagePath->getClientOriginalName();
-
-            $path = $request->file('file')->storeAs('uploads', $imageName, 'public');
+            $imageName = pathinfo($imagePath->getClientOriginalName(), PATHINFO_FILENAME);
+            $data = file_get_contents($imagePath);
+            $params = [
+                'urlImage'  => base64_encode($data),
+                'name'      => $imageName
+            ];
+            $resultUpload = json_decode(json_encode($this->uploadService->uploadImage($params)), true);
+            return ['success' => 'You have successfully upload image.', 'url' => (!empty($resultUpload['urlImage'])) ? $resultUpload['urlImage'] : ''];
         }
-        $request->file->move(public_path('images/upload'), $imageName);
-        return ['success' => 'You have successfully upload image.', 'url' => $imageName];
     }
 
     public function initDatatable(Request $request){

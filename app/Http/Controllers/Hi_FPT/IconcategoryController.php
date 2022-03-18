@@ -15,6 +15,7 @@ use App\Models\Settings;
 use App\Models\Icon_approve;
 use App\Models\Icon_approve_logs;
 use App\Models\Roles;
+use App\Http\Requests\IconCategorySaveRequest;
 
 use App\Services\IconManagementService;
 use App\Services\MailService;
@@ -77,7 +78,7 @@ class IconcategoryController extends MY_Controller
         return view('icon_category.edit')->with($data);
     }
 
-    public function save(Request $request) {
+    public function save(IconCategorySaveRequest $request) {
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];

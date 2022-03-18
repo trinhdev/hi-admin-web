@@ -8,6 +8,7 @@ use App\Models\Settings;
 use App\Models\Icon_approve;
 use App\Models\Icon_approve_logs;
 use Illuminate\Http\Request;
+use App\Http\Requests\IconConfigSaveRequest;
 
 use App\Http\Traits\DataTrait;
 use \stdClass;
@@ -87,7 +88,7 @@ class IconconfigController extends MY_Controller
         return view('icon_config.edit')->with($data);
     }
 
-    public function save(Request $request) {
+    public function save(IconConfigSaveRequest $request) {
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
