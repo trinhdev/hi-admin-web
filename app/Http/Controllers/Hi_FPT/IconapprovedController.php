@@ -12,6 +12,8 @@ use App\Models\Icon_approve;
 use App\Models\Icon;
 use App\Models\Icon_Category;
 use App\Models\Icon_Config;
+use App\Models\Roles;
+use App\Models\User;
 
 use App\Http\Traits\DataTrait;
 use \stdClass;
@@ -19,6 +21,7 @@ use \stdClass;
 use Yajra\DataTables\DataTables;
 
 use App\Services\IconManagementService;
+use App\Services\MailService;
 
 use Illuminate\Support\Str;
 
@@ -28,11 +31,13 @@ class IconapprovedController extends MY_Controller
     protected $module_name = 'Icon approved';
     protected $model_name = "Icon_approve";
     protected $iconManagement = null;
+    protected $mailService = null;
     public function __construct()
     {
         parent::__construct();
         $this->title = 'Icon Approved';
         $this->iconManagement = new IconManagementService();
+        $this->mailService = new MailService();
         $this->model = $this->getModel('Icon_approve');
     }
 
@@ -47,28 +52,17 @@ class IconapprovedController extends MY_Controller
 
     public function edit($id = null) {
         $approved_data = $this->model::with(['user_requested_by', 'user_approved_by', 'user_checked_by'])->where('id', $id)->get();
-        // dd($approved_data->toArray());
         $uuid = $approved_data[0]['product_id'];
-        switch($approved_data[0]['product_type']) {
-            case 'icon_management':
-                $url = "/iconmanagement/edit/$uuid";
-                break;
-            case 'icon_category':
-                $url = "/iconcategory/edit/$uuid";
-                break;
-            case 'icon_config':
-                $url = "/iconconfig/edit/$uuid";
-                break;
-        }
-
+        $url = '/' . str_replace('_', '', $approved_data[0]['product_type']) . '/edit/' . $uuid;
         return redirect()->to($url)->with('approved_data', $approved_data[0]);
     }
 
     public function save(Request $request) {
+        $user = Auth::user();
         $update_data = json_decode($request->data, true);
         $id = $update_data['id'];
         unset($update_data['id']);
-        $approved_data = $this->model::where('id', $id)->get();
+        $approved_data = $this->model::where('id', $id)->with(['user_requested_by'])->get();
         $table = '';
         $api_function = '';                                  
         switch($approved_data[0]['product_type']) {
@@ -94,34 +88,143 @@ class IconapprovedController extends MY_Controller
             case 'dapheduyet':
                 if($update_data['approved_status'] == 'dapheduyet') {
                     $result = $this->pushApiApproved($approved_data[0]);
+                    // dd($result);
+                    Icon_approve::where('id', $id)->update([
+                        'api_logs'  => json_encode($result)
+                    ]);
                 }
                 $update_data = array_merge($update_data, ['approved_by' => Auth::check() ? Auth::user()->id : 0, 'approved_at' => date('Y-m-d H:i:s', strtotime('now'))]);
                 $table::where('uuid', $approved_data[0]['product_id'])->delete();
                 break;
         }
-        
+
         $module = $this->updateById($this->model, $id, $update_data);
+
+        // Send email thong bao
+        $listApprovedStatusRaw = Settings::where('name', 'icon_approve')->get()->toArray();
+        $ccBgd = Settings::where('name', 'icon_cc_bgd')->get()->toArray();
+        $listApprovedStatus = json_decode($listApprovedStatusRaw[0]['value'], true);
+        $approvedStatus = array_column($listApprovedStatus, 'value', 'key');
+        $routeName = str_replace('_', '', $approved_data[0]['product_type']);
+
+        $sendMailData = [
+            'date'                  => date('Y-m-d', strtotime('now')),
+            'time'                  => date('H:i:s', strtotime('now')),
+            'approved_status'       => $approvedStatus[$update_data['approved_status']],
+            'approved_by'           => $user->email,
+            'url'                   => route($routeName . '.edit') . '/' . $approved_data[0]['product_id']
+        ];
+
+        $mailContent = view('icon_approved_email.request_approved_email')->with('data', $sendMailData)->render();
+        // dd($mailContent);
+        
+        $to = $approved_data[0]['user_requested_by']['email'];
+        $to = 'oanhltn3@fpt.com.vn';
+
+        $cc = [];
+        if(!empty($ccBgd[0]['value'])) {
+            $cc = json_decode($ccBgd[0]['value'], true);
+        }
+
+        if(!empty($to)) {
+            $mailInfo = [
+                'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
+                'Recipients'            => $to,
+                'CarbonCopys'           => implode(',', $cc),
+                'BlindCarbonCopys'      => '',
+                'Subject'               => '[ Hi FPT ] Yêu cầu cập nhật của bạn đã ' . $approvedStatus[$update_data['approved_status']],
+                'Body'                  => $mailContent
+            ];
+            
+            $mailResult = $this->mailService->sendMail($mailInfo);
+        }
+        
         $this->addToLog($request);
         echo json_encode(['status' => 1, 'message' => 'Success', 'data' => null]);
     }
 
     public function destroy(Request $request) {
+        // dd($request->all());
+        $user = Auth::user();
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
-        $icon = $this->createSingleRecord($this->model, json_decode($request['formData'], true));
+
+        switch($request->product_type) {
+            case 'icon_management':
+                $table = 'App\Models\Icon';
+                break;
+            case 'icon_category':
+                $table = 'App\Models\Icon_Category';
+                break;
+            case 'icon_config':
+                $table = 'App\Models\Icon_Config';
+                break;
+        }
+
+        $product = $table::create($request->all());
+        $request->merge([
+            'approved_type' => 'delete',
+            'product_id'    => $product->uuid
+        ]);
 
         Icon_approve::create([
-            'product_type'          => 'icon_management',
-            'product_id'            => $icon->uuid,
-            'updated_by'            => Auth::check() ? Auth::user()->id : 0,
-            'approved_status'       => Gate::allows('icon-check-data-permission', Auth::user()) ? 'chopheduyet' : 'chokiemtra',
+            'product_type'          => $request->product_type,
+            'product_id'            => $product->uuid,
+            'updated_by'            => Auth::check() ? $user->id : 0,
+            'approved_status'       => 'dapheduyet',
             'approved_type'         => 'delete',
-            'approved_by'           => '',
-            'approved_at'           => null,
+            'approved_by'           => Auth::check() ? $user->id : 0,
+            'approved_at'           => date('Y-m-d H:i:s', strtotime('now')),
+            'requested_by'          => Auth::check() ? $user->id : 0,
+            'requested_at'          => date('Y-m-d H:i:s', strtotime('now')),
+            'checked_by'            => Auth::check() ? $user->id : 0,
+            'checked_at'            => date('Y-m-d H:i:s', strtotime('now')),
         ]);
+
+        $result = $this->pushApiApproved($request);
+
+        // Send email thong bao
+        $listApprovedStatusRaw = Settings::where('name', 'icon_approve')->get()->toArray();
+        $ccBgd = Settings::where('name', 'icon_cc_bgd')->get()->toArray();
+        $listApprovedStatus = json_decode($listApprovedStatusRaw[0]['value'], true);
+        $approvedStatus = array_column($listApprovedStatus, 'value', 'key');
+        $routeName = str_replace('_', '', $request->product_type);
+
+        $sendMailData = [
+            'date'                  => date('Y-m-d', strtotime('now')),
+            'time'                  => date('H:i:s', strtotime('now')),
+            'approved_status'       => $approvedStatus['dapheduyet'],
+            'approved_by'           => $user->email,
+            'url'                   => route($routeName . '.edit') . '/' . $product->product_id
+        ];
+
+        $mailContent = view('icon_approved_email.request_approved_email')->with('data', $sendMailData)->render();
+        // dd($mailContent);
+
+        $to = $user->email;
+        $to = 'oanhltn3@fpt.com.vn';
+
+        $cc = [];
+        if(!empty($ccBgd[0]['value'])) {
+            $cc = json_decode($ccBgd[0]['value'], true);
+        }
+
+        if(!empty($to)) {
+            $mailInfo = [
+                'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
+                'Recipients'            => $to,
+                'CarbonCopys'           => implode(',', $cc),
+                'BlindCarbonCopys'      => '',
+                'Subject'               => '[ Hi FPT ] Yêu cầu cập nhật của bạn đã ' . $approvedStatus['dapheduyet'],
+                'Body'                  => $mailContent
+            ];
+            
+            $mailResult = $this->mailService->sendMail($mailInfo);
+        }
+
         $this->addToLog(request());
-        echo json_encode(['result' => 1, 'message' => 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.']);
+        echo json_encode(['result' => 1, 'message' => 'Đã xoá thành công. Xin cảm ơn.', 'url' => route($routeName . '.index')]);
     }
 
     public function detail($productId) {
@@ -196,7 +299,7 @@ class IconapprovedController extends MY_Controller
                     'isNew'                 => (!empty($icon_info->isNew)) ? $icon_info->isNew : '0',
                     'newBeginDay'           => (!empty($icon_info->newBeginDay)) ? $icon_info->newBeginDay : date('Y-m-d H:i:s', strtotime('today midnight')),
                     'newEndDay'             => (!empty($icon_info->newEndDay)) ? $icon_info->newEndDay : date('Y-m-d H:i:s', strtotime('tomorrow midnight')),
-                    'isDisplay'             => (!empty($icon_info->isDisplay)) ? $icon_info->isDisplay : '',
+                    'isDisplay'             => (!empty($icon_info->isDisplay)) ? $icon_info->isDisplay : '0',
                     'displayBeginDay'       => (!empty($icon_info->displayBeginDay)) ? $icon_info->displayBeginDay : date('Y-m-d H:i:s', strtotime('today midnight')),
                     'displayEndDay'         => (!empty($icon_info->displayEndDay)) ? $icon_info->displayEndDay : date('Y-m-d H:i:s', strtotime('tomorrow midnight')),
                     'decriptionVi'          => (!empty($icon_info->decriptionVi)) ? $icon_info->decriptionVi : '',
@@ -232,6 +335,7 @@ class IconapprovedController extends MY_Controller
                 ];
                 break;
         }
+        // dd($params);
         $result = $this->iconManagement->$function_name($params);
         return $result;
     }

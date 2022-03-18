@@ -139,6 +139,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Danh sách sản phẩm</label>
+                                <input type="hidden" id="selected-prod-id" name="arrayId" value="{{ $data['arrayId'] }}"/>
                                 <div class="row">
                                     <div class="direct-chat-msg">
                                         <img class="direct-chat-img" src="/images/information.png" alt="">

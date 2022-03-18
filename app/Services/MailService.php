@@ -15,6 +15,7 @@ class MailService {
 
     public function sendMail($input){
         $url                = $this->baseUrl . $this->subDomain . 'InsertInfoSendMailSMTP';
+        // dd($input);
         $response           = sendRequest($url, $input);
         return $response;
     }

@@ -10,34 +10,12 @@
     <table align="left" border="0" cellpadding="0" cellspacing="0" width="800" style="border-collapse: collapse;">
         <tr>
             <td width="20%" style="font-weight: bold">
-                Email:
-            </td>
-            <td>
-                {{ $data['email'] }}
-            </td>
-            <td width="10%" style="font-weight: bold">
-                Tên user:
-            </td>
-            <td width="20%">
-                {{ $data['name'] }}
-            </td>
-        </tr>
-        <tr>
-            <td width="20%" style="font-weight: bold">
-                (Phân quyền):
-            </td>
-            <td width="20%">
-                {{ $data['role'] }}
-            </td>
-        </tr>
-        <tr>
-            <td width="20%" style="font-weight: bold">
                 Ngày:
             </td>
             <td width="20%">
                 {{ $data['date'] }}
             </td>
-            <td width="10%" style="font-weight: bold">
+            <td width="20%" style="font-weight: bold">
                 Vào lúc (giờ):
             </td>
             <td>
@@ -45,8 +23,8 @@
             </td>
         </tr>
         <tr>
-            <td>
-                Đã <span style="font-weight: bold">{{ $data['approved_status'] }}</span> đối tượng <span style="font-weight: bold">{{ $data['product_type'] }}</span>
+            <td colspan="4">
+                Yêu cầu của bạn đã <span style="font-weight: bold">{{ $data['approved_status'] }}</span> bởi <span style="font-weight: bold">{{ $data['approved_by'] }}</span>
             </td>
         </tr>
         <tr>

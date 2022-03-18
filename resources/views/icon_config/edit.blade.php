@@ -116,7 +116,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Danh sách sản phẩm</label>
-                                <input type="hidden" name="arrayId" id="selected-prod-id">
+                                <input type="hidden" name="arrayId" id="selected-prod-id" value="{{ $data['arrayId'] }}">
                                 <div class="row product-add">
                                     <div class="direct-chat-msg">
                                         <img class="direct-chat-img" src="/images/information.png" alt="">

@@ -178,8 +178,9 @@ Route::group([
                 Route::get('/','IconapprovedController@index')->name('iconapproved.index');
                 Route::get('/edit/{id?}','IconapprovedController@edit')->name('iconapproved.edit');
                 Route::post('/save','IconapprovedController@save')->name('iconapproved.save');
-                Route::get('/detail/{id?}','IconapprovedController@detail')->name('iconapproved.edit');
+                Route::get('/detail/{id?}','IconapprovedController@detail')->name('iconapproved.detail');
                 Route::post('/upload','IconapprovedController@upload')->name('iconapproved.upload');
+                Route::post('/destroy','IconapprovedController@destroy')->name('iconapproved.destroy');
                 Route::get('/initDatatable','IconapprovedController@initDatatable')->name('iconapproved.initDatatable');
             });
             

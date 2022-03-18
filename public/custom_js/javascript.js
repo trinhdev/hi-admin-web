@@ -76,19 +76,19 @@ function handleSubmit(e, form, withPopup = true) {
     if (e.result == true) {
         // $("#spinner").addClass("hide");
         console.log('end submit');
-        showLoading();
+        showLoading(form);
     }
 
 }
-function showLoading(){
+function showLoading(form = null) {
     $("#spinner").addClass("show");
     $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
     $('form').find(':button').prop('disabled', true);
-    setTimeout(function() {
+    setTimeout(function () {
         $("#spinner").removeClass("show");
         $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', false);
         $('form').find(':button').prop('disabled', false);
-      },5000);
+    }, 5000);
 }
 function dialogConfirmWithAjax(sureCallbackFunction, data) {
     Swal.fire({
@@ -228,7 +228,7 @@ function removeVietnameseTones(str) {
 
 function serializeObject(obj) {
     var jsn = {};
-    $.each(obj, function() {
+    $.each(obj, function () {
         if (jsn[this.name]) {
             if (!jsn[this.name].push) {
                 jsn[this.name] = [jsn[this.name]];

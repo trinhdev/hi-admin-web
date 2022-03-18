@@ -14,8 +14,11 @@ use Yajra\DataTables\DataTables;
 use App\Models\Settings;
 use App\Models\Icon_approve;
 use App\Models\Icon_approve_logs;
+use App\Models\Roles;
 
 use App\Services\IconManagementService;
+use App\Services\MailService;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,6 +33,7 @@ class IconcategoryController extends MY_Controller
         parent::__construct();
         $this->title = 'Icon Category';
         $this->iconManagement = new IconManagementService();
+        $this->mailService = new MailService();
         $this->model = $this->getModel($this->model_name);
     }
 
@@ -88,7 +92,7 @@ class IconcategoryController extends MY_Controller
 
         $icon_category = $this->createSingleRecord($this->model, $request->all());
 
-        Icon_approve::create([
+        $approved = Icon_approve::create([
             'product_type'          => 'icon_category',
             'product_id'            => $icon_category->uuid,
             'requested_by'          => Auth::check() ? Auth::user()->id : 0,
@@ -98,6 +102,46 @@ class IconcategoryController extends MY_Controller
             'approved_by'           => '',
             'approved_at'           => null,
         ]);
+
+        // Send email thong bao
+        $sendMailData = [
+            'email'                 => Auth::user()->email,
+            'name'                  => (!empty(Auth::user()->name)) ? Auth::user()->name : 'N/A',
+            'role'                  => Auth::user()->role->role_name,
+            'date'                  => date('Y-m-d', strtotime('now')),
+            'time'                  => date('H:i:s', strtotime('now')),
+            'approved_status'       => (empty($request['productTitleId'])) ? 'Thêm' : 'Sửa',
+            'product_type'          => 'danh mục',
+            'url'                   => route('iconapproved.edit') . '/' . $approved->id
+        ];
+
+        $mailContent = view('icon_approved_email.request_check_email')->with('data', $sendMailData)->render();
+
+        $approvedRoleIDRaw = Settings::where('name', 'icon_approved_role_id')->get();
+        $approvedRoleID = (!empty($approvedRoleIDRaw[0]['value'])) ? json_decode($approvedRoleIDRaw[0]['value']) : [];
+        $roles = Roles::whereIn('id', $approvedRoleID)->with(['users'])->get();
+
+        $to = [];
+        foreach($roles->toArray() as $role) {
+            if(!empty($role['users'])) {
+                $to = array_merge($to, array_column($role['users'], 'email'));
+            }
+        }
+
+        $to = ['oanhltn3@fpt.com.vn'];
+
+        if(!empty($to)) {
+            $mailInfo = [
+                'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
+                'Recipients'            => implode(',', $to),
+                'CarbonCopys'           => '',
+                'BlindCarbonCopys'      => '',
+                'Subject'               => '[ Hi FPT ] Hệ thống CMS vừa có 1 cập nhật mới',
+                'Body'                  => $mailContent
+            ];
+            
+            $mailResult = $this->mailService->sendMail($mailInfo);
+        }
 
         $this->addToLog(request());
         $request->session()->flash('success', 'success');
@@ -144,7 +188,7 @@ class IconcategoryController extends MY_Controller
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
         $icon_category = $this->createSingleRecord($this->model, json_decode($request['formData'], true));
 
-        Icon_approve::create([
+        $approved = Icon_approve::create([
             'product_type'          => 'icon_category',
             'product_id'            => $icon_category->uuid,
             'requested_by'          => Auth::check() ? Auth::user()->id : 0,
@@ -154,6 +198,47 @@ class IconcategoryController extends MY_Controller
             'approved_by'           => '',
             'approved_at'           => null,
         ]);
+
+        // Send email thong bao
+        $sendMailData = [
+            'email'                 => Auth::user()->email,
+            'name'                  => (!empty(Auth::user()->name)) ? Auth::user()->name : 'N/A',
+            'role'                  => Auth::user()->role->role_name,
+            'date'                  => date('Y-m-d', strtotime('now')),
+            'time'                  => date('H:i:s', strtotime('now')),
+            'approved_status'       => (empty($request['productId'])) ? 'Thêm' : 'Sửa',
+            'product_type'          => 'danh mục',
+            'url'                   => route('iconapproved.edit') . '/' . $approved->id
+        ];
+
+        $mailContent = view('icon_approved_email.request_check_email')->with('data', $sendMailData)->render();
+
+        $approvedRoleIDRaw = Settings::where('name', 'icon_approved_role_id')->get();
+        $approvedRoleID = (!empty($approvedRoleIDRaw[0]['value'])) ? json_decode($approvedRoleIDRaw[0]['value']) : [];
+        $roles = Roles::whereIn('id', $approvedRoleID)->with(['users'])->get();
+
+        $to = [];
+        foreach($roles->toArray() as $role) {
+            if(!empty($role['users'])) {
+                $to = array_merge($to, array_column($role['users'], 'email'));
+            }
+        }
+
+        $to = ['oanhltn3@fpt.com.vn'];
+
+        if(!empty($to)) {
+            $mailInfo = [
+                'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
+                'Recipients'            => implode(',', $to),
+                'CarbonCopys'           => '',
+                'BlindCarbonCopys'      => '',
+                'Subject'               => '[ Hi FPT ] Hệ thống CMS vừa có 1 cập nhật mới',
+                'Body'                  => $mailContent
+            ];
+            
+            $mailResult = $this->mailService->sendMail($mailInfo);
+        }
+
         $this->addToLog(request());
         echo json_encode(['result' => 1, 'message' => 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.', 'url' => route('iconcategory.index')]);
     }
