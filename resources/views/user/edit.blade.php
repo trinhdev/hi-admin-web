@@ -60,7 +60,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    @if(!empty($user))
+                                    {{-- @if(!empty($user)) --}}
                                     <div class="form-group">
                                         <label for="password">Password</label>
                                         <input type="password" id="password" name="password" class="form-control" placeholder="User Password">
@@ -69,7 +69,7 @@
                                         <label for="password_confirmation">Confirm Password</label>
                                         <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="User Password">
                                     </div>
-                                    @endif
+                                    {{-- @endif --}}
                                 </div>
                             </div>
                             <div class="card-footer" style="text-align: center">
