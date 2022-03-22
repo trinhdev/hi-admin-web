@@ -33,6 +33,7 @@
 <!-- DataTables -->
 
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables/jquery.dataTables.js"></script>
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 <!-- jquery-tmpl -->
@@ -50,6 +51,7 @@
 <script src="{{ asset('/custom_js/smsworld.js')}}"></script>
 <script src="{{ asset('/custom_js/checkuserinfo.js')}}"></script>
 <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
+<script src="{{ asset('/custom_js/popupmanage.js')}}"></script>
 <script src="{{ asset('/custom_js/otp.js')}}"></script>
 <script src="{{ asset('/custom_js/iconmanagement.js')}}"></script>
 <script src="{{ asset('/custom_js/ftel_phone.js')}}"></script>
@@ -71,8 +73,14 @@
         html: `{{ (session()->has('html')) ? session()->get('html') : '' }}`
     });
 @endif
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 {{ session()->forget('error'); }}
 {{ session()->forget('success'); }}
 {{ session()->forget('html'); }}
+
 </script>

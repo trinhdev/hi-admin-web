@@ -2,18 +2,25 @@ $(document).ready(function () {
     // $('#sidebar').sortable({
     //     axis: "y",
     // });
-    $(document).pjax('a', '#pjax');
-    $('aside li.nav-item a').on('click', function (e) {
-        if ($(this).attr('href') != '#') {
-            $('aside').find(".menu-open > .nav-treeview").not($(this).parents('.menu-open > .nav-treeview')).slideUp()
-            $('aside').find(".menu-open").not($(this).parents('.menu-open')).removeClass("menu-is-opening menu-open");
-            $('li a').removeClass("active");
-            $(this).addClass("active");
-        }
-        $(this).parents('.nav-treeview').prevAll('.nav-link').addClass('active');
+    // $(document).pjax('a', '#pjax');
+    // $('aside li.nav-item a').on('click', function (e) {
+    //     if ($(this).attr('href') != '#') {
+    //         $('aside').find(".menu-open > .nav-treeview").not($(this).parents('.menu-open > .nav-treeview')).slideUp()
+    //         $('aside').find(".menu-open").not($(this).parents('.menu-open')).removeClass("menu-is-opening menu-open");
+    //         $('li a').removeClass("active");
+    //         $(this).addClass("active");
+    //     }
+    //     $(this).parents('.nav-treeview').prevAll('.nav-link').addClass('active');
 
-    });
-    reloadPjax();
+    // });
+    var moduleActive = document.querySelector('aside .active');
+    var parentModuleActive = moduleActive.parentNode.parentNode.parentNode;
+    if(parentModuleActive.classList.contains('menu')){ // if parent module is menu
+        parentModuleActive.classList.add('menu-open');
+        parentModuleActive.querySelector('.nav-link').classList.add('active');
+    }
+    // document.querySelector('.active').closest('.nav-item menu > li').classList.add('is-active');
+    // reloadPjax();
 });
 
 function reloadPjax() {
@@ -96,8 +103,7 @@ function callAPIHelper(url, param, method, callback, passingData = null, isfile 
         }
     });
 }
-
-function uploadFile(file, callBack, passingData) {
+function uploadFileExternal(file, callBack, passingData) {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -107,7 +113,7 @@ function uploadFile(file, callBack, passingData) {
     formData.append("file", file,file.name);
     $.ajax({
         type: 'POST',
-        url: '/bannermanage/uploadImage',
+        url: '/file/uploadImageExternal',
         data: formData,
         cache: false,
         contentType: false,

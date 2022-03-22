@@ -21,13 +21,17 @@ $methodNewsEventDomain = [
     'CREATE_BANNER'=> 'provider/tool/banner/create',
     'UPDATE_BANNER' => 'provider/tool/banner/update',
     'UPDATE_ORDERING'   => 'provider/tool/banner/update-orderings',
+    'GET_LIST_BANNER'       => 'provider/tool/banner/get-list-banner',
+    'GET_DETAIL_BANNER'     => 'provider/tool/banner/get-detail-banner',
 
     // pop up
     'CREATE_TEMPLATE_POPUP' => 'provider/tool/popup/create-template',
     'UPDATE_TEMPLATE_POPUP' => 'provider/tool/popup/update-template',
     'PUSH_POPUP'            => 'provider/tool/popup/push-popup',
-    'GET_LIST_BANNER'       => 'provider/tool/banner/get-list-banner',
-    'GET_DETAIL_BANNER'     => 'provider/tool/banner/get-detail-banner',
+    'GET_LIST_POPUP'        => 'provider/tool/popup/list-template',
+    'GET_DETAIL_POPUP'      => 'provider/tool/popup/detail-template',
+    'UPDATE_PERSONAL_MAP'      => 'provider/tool/popup/update-template-personal-map',
+    'GET_DETAIL_PERSONAL_MAP'      => 'provider/tool/popup/detail-template-personal-map',
 ];
 $methodHr = [
     'LOGIN' => 'api/services/hub/Login',

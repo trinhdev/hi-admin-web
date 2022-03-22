@@ -73,7 +73,7 @@
                     </div>
                     <div class="card-footer" style="text-align: center">
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">Đóng</button>
-                        <a href="" type="button" class="btn btn-info modal-close" onclick="editBanner(this)" data-type="" data-id ="" id="BannerDetail_link_to_edit">Chỉnh sửa</a>
+                        <button href="" type="button" class="btn btn-info modal-close" onclick="editBanner(this)" data-type="" data-id ="" id="BannerDetail_link_to_edit">Chỉnh sửa</button>
                     </div>
                 </div>
             </form>

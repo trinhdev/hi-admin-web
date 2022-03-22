@@ -1,7 +1,7 @@
 $(document).ready(function () {
     initSelect();
     settings_on_search();
-    $(document).on('pjax:end', function () {
+    // $(document).on('pjax:end', function () {
         initSelect();
         const pathArray = window.location.pathname.split("/");
         let segment = pathArray[1]; //first uri param
@@ -63,11 +63,11 @@ $(document).ready(function () {
         }
         
 
-    });
-    $(document).on('pjax:popstate', function (event) {
-        event.preventDefault();
-        $.pjax.reload('#pjax');
-    });
+    // });
+    // $(document).on('pjax:popstate', function (event) {
+    //     event.preventDefault();
+    //     $.pjax.reload('#pjax');
+    // });
     // $(document).on('pjax:error', function (event, xhr, textStatus, errorThrown, options) {
     //     $.pjax.reload('#pjax');
     // });
@@ -869,7 +869,7 @@ function initBannerManage(response) {
                 };
                 var exists = 0 != $('#show_at option[value=' + bannerType + ']').length;
                 if (exists === false) return "";
-                return `
+                return `<div style="display:flex; justify-content:center">
                     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
                    <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
                     `;
@@ -898,9 +898,6 @@ function initBannerManage(response) {
         "bDestroy": true,
         "scrollX": true,
         "columns": columnData,
-        "language": {
-            "emptyTable": "No Record..."
-        },
         // "order": [[9, "desc"]],
         columnDefs: [{
                 width: '5%',

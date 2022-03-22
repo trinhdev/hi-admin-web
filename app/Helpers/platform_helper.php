@@ -149,3 +149,29 @@ if (!function_exists('sendRequest')) {
         return json_decode($output);
     }
 }
+
+if (!function_exists('printJson')) {
+    function printJson($data, $statusObject = null, $lang = null){
+       if($statusObject == null){
+           $statusObject = buildStatusObject('HTTP_OK');
+       };
+       $response = [];
+       $response['statusCode'] = $statusObject->code;
+       $response['message'] = ($lang == 'en') ? $statusObject->message_en : $statusObject->message;
+       $response['data'] = $data;
+       return response()->json($response);
+   }
+}
+
+if (!function_exists('buildStatusObject')) {
+    function buildStatusObject($status){
+        $statusCodeObject = app('statusCodeObject')->getObject($status);
+        return $statusCodeObject;
+    }
+}
+if (!function_exists('isJson')) {
+    function isJson($string) {
+        json_decode($string);
+        return json_last_error() === JSON_ERROR_NONE;
+    }
+}

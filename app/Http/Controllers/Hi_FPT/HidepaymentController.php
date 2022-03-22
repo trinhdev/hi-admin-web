@@ -56,7 +56,7 @@ class HidepaymentController extends MY_Controller
             }
         );
         if (! $executed) {
-            abort(419);
+            abort(429);
         }
 
         $version_setting = Settings::where('name', 'hide_payment_version')->get();
