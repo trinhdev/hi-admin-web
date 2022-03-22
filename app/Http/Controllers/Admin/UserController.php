@@ -91,6 +91,13 @@ class UserController extends MY_Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'password' => 'required|min:1',
+            'password_confirmation' => 'required|same:password'
+        ]);
+        $request->merge([
+            'password' => Hash::make($request->password)
+        ]);
         $this->updateById($this->model,$id,$request->all());
         $this->addToLog($request);
         return redirect()->route('user.index')->withSuccess('Success!');
