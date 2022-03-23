@@ -33,7 +33,6 @@ class FtelPhoneController extends MY_Controller
 
     public function pushExport($info, $phone, $data)
     {
-        //dd($info->organizationCodePath);
         array_push($data, [
             'phoneNumber'=> $phone,
             'code' => $info->code,
@@ -42,21 +41,6 @@ class FtelPhoneController extends MY_Controller
             'organizationCodePath' => $info->organizationCodePath
         ]);
         $data = array_unique($data, SORT_REGULAR);
-        return $data;
-    }
-    public function dataDB($info)
-    {
-        $data = [
-            'number_phone' => $info->phoneNumber,
-            'code' => $info->code,
-            'emailAddress' => $info->emailAddress,
-            'fullName' => $info->fullName,
-            'response' => json_encode($info),
-            'organizationNamePath' => $info->organizationNamePath, 
-            'organizationCodePath' => $info->organizationCodePath,
-            'created_by' => $this->user->id,
-            'updated_at' => now(),
-        ];
         return $data;
     }
 
