@@ -1,7 +1,4 @@
 <!-- Main content -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css"> 
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
-
 <section class="content">
             <div class="container-fluid">
                 <div class="card card-body col-sm-12 mt-2">
@@ -21,15 +18,18 @@
                     @if(isset($data))
                     <tbody>
                     @foreach($data as $key => $value)
+                    @php 
+                        $codePath = explode('/', $value['organizationCodePath']);
+                    @endphp
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $value['number_phone'] }}</td>
                         <td>{{ $value['code'] }}</td>
+                        <td>{{ $value['phoneNumber'] }}</td>
                         <td>{{ $value['emailAddress'] }}</td>
                         <td>{{ $value['fullName'] }}</td>    
-                        <td>{{ $value['organizationCodePath'] }}</td>                        
-                        <td>{{ $value['organizationCodePath1'] }}</td>                        
-                        <td>{{ $value['organizationCodePath3'] }}</td>                        
+                        <td>{{ $value['organizationCodePath'] }}</td>
+                        <td>{{ $codePath[0] }}</td>
+                        <td>{{ $codePath[2] }}</td>                                    
                     </tr>
                     @endforeach
                     @endif

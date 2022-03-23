@@ -40,7 +40,7 @@ class HrService
         }
     }
 
-    public function getListInfoEmployee($listPhone, $token) {
+    public function getListInfoEmployee(array $listPhone, $token) {
         $url = $this->baseUrl . $this->listMethod['GET_LIST_EMPLOYEE_INFO'];
         $param = [
             "phonenumber" => $listPhone
