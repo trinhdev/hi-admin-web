@@ -29,7 +29,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <table class="table">
+                            <table class="table text-center">
                                 <input type="hidden" name="templateId" id="templateId"
                                        value="{{$detailTemplate->templateId}}">
                                <thead>
@@ -61,9 +61,11 @@
                     <div class="card-header">
                         <h3 class="card-title">Lịch sử Push của Template "{{$detailTemplate->titleVi}}"</h3>
                         <div class="card-tools">
+                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->update == 1)
                             <button type="button" class="btn btn-tool" onclick="clearForm()" data-toggle="modal" data-target="#popupModal">
                                 <i class="fas fa-plus-circle"> PUSH</i>
                             </button>
+                        @endif
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
                             </button>
