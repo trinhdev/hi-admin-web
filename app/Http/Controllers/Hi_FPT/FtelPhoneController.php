@@ -63,47 +63,56 @@ class FtelPhoneController extends MY_Controller
     public function stores(FtelPhoneRequest $request)
     {  
         $data = [];
-        $dataPhoneDB = [];
+        $dataUpdateDB = [];
         $hrService = new HrService();
         $token = $hrService->loginHr()->authorization;
-        $arrPhone = array_map('trim', explode(',', $request->number_phone));
-        $dataDB = $this->model->whereIn('number_phone', $arrPhone)->get();
-        
+        $arrPhone = array_map('trim', explode(',', $request->number_phone)); // input
+        $dataDB = $this->model->whereIn('number_phone', $arrPhone)->get(); // data DB
+        $arrPhoneDB = $dataDB->pluck('number_phone')->toArray(); // data phone DB
         if(!empty($dataDB)) {
             foreach($dataDB as $value)
             {
                 if($value->updated_at <= now()->subWeeks()) {
-                    $info = $hrService->getInfoEmployee($value->number_phone, $token);
-                    if(!empty($info)) {
-                        $value->update($this->dataDB($info));
-                        $data = $this->pushExport($info, $info->phoneNumber, $data);
-                    } else {
-                        $value->update([ 'updated_at' => now() ]);
-                    }
-                }
-                if(!empty($value->code)) {
+                    $dataUpdateDB[] = $value->number_phone; // push vào mảng để gọi api 1 lần
+                } else {
                     $data = $this->pushExport($value, $value->number_phone, $data);
                 }
-                $dataPhoneDB[] = $value->number_phone;
             }
         }
-        
-        $dataAPI = array_diff($arrPhone, $dataPhoneDB);
-        $chunk50 = array_chunk($dataAPI, 50);
-        foreach($chunk50 as $value) {
+        $dataAPI = array_unique(array_merge(array_diff($arrPhone, $arrPhoneDB),$dataUpdateDB)); // [data input api] + [data > 7day] => call api
+        foreach(array_chunk($dataAPI, 50) as $value) {
             $dataExport = $hrService->getListInfoEmployee($value, $token);
             foreach($dataExport as $data_value) {
-                $this->model->create($this->dataDB($data_value));
                 $data[] = $data_value;
+                $dataSaveDb = [];
+                $dataSaveDb['number_phone'] = $data_value->phoneNumber;
+                $dataSaveDb['code'] = $data_value->code;
+                $dataSaveDb['emailAddress'] = $data_value->emailAddress;
+                $dataSaveDb['fullName'] = $data_value->fullName;
+                $dataSaveDb['response'] = json_encode($data_value);
+                $dataSaveDb['organizationNamePath'] = $data_value->organizationNamePath; 
+                $dataSaveDb['organizationCodePath'] = $data_value->organizationCodePath;
+                $dataSaveDb['created_by'] = $this->user->id;
+                $dataSaveDb['updated_at'] = now();
+                $saveDB[] = $dataSaveDb;
             }
+            
         }
-
+        if(empty($saveDB)) {
+            return redirect()->back()->with( ['data' => json_decode(json_encode($data), true)] );
+        }
+        $this->model->upsert(
+            $saveDB, 
+            ['code'],
+            ['number_phone','emailAddress','fullName','response','organizationNamePath','organizationCodePath'],
+        );
+        
         return redirect()->back()->with( ['data' => json_decode(json_encode($data), true)] );
     }
 
     public function import(Request $request) 
     {
-        $validate = $request->validate(['excel' => 'mimes:xlsx'],['excel.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx']);
+        $request->validate(['excel' => 'mimes:xlsx'],['excel.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx']);
         Excel::import(new FtelPhoneImport, $request->file('excel'));
         return redirect()->back();
     }
