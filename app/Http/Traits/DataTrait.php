@@ -91,7 +91,7 @@ trait DataTrait
         if(isset($params['_method'])){
             unset($params['_method']);
         };
-        if(isset($params['password_confirmation'])){
+        if(isset($params['password_confirmation']))  {
             unset($params['password_confirmation']);
         };
         $params['updated_by'] = Auth::user()->id;
