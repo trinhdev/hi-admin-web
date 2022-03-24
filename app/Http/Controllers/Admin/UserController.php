@@ -92,12 +92,18 @@ class UserController extends MY_Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'password' => 'required|min:1',
-            'password_confirmation' => 'required|same:password'
+            'password' => 'nullable|min:1',
+            'password_confirmation' => 'nullable|same:password'
         ]);
-        $request->merge([
-            'password' => Hash::make($request->password)
-        ]);
+        $request->request->remove('password_confirmation');
+        if($request->password != null){
+            $request->merge([
+                'password' => Hash::make($request->password)
+            ]);
+        }else{
+            $request->request->remove('password');
+            $request->request->remove('password_confirmation');
+        }
         $this->updateById($this->model,$id,$request->all());
         $this->addToLog($request);
         return redirect()->route('user.index')->withSuccess('Success!');
