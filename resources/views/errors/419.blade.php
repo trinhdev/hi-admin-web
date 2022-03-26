@@ -28,10 +28,10 @@
                 <div class="error-content">
                     <h3>
                         <i class="fas fa-exclamation-triangle text-danger"></i>
-                        Oops! Too many request.
+                        Oops! Error token miss match!
                     </h3>
                     <p>
-                        You just send too many request in 1 minute. Please wait for few minutes and retry again or try another page.
+                        Error token miss match.
                     </p>
                 </div>
             </div>

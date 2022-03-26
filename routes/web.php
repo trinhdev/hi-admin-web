@@ -26,6 +26,10 @@ Route::group([
             Route::get('/', 'HomeController@index')->name('home');
             Route::get('/getDataChart', 'HomeController@getDataChart')->name('home.getDataChart');
         });
+        Route::prefix('file')->group(function () {
+            Route::any('/uploadImageExternal', 'FileController@uploadImageExternal')->name('uploadImageExternalB');
+
+        });
         Route::namespace('Admin')->group(function () {
             Route::prefix('settings')->group(function () {
                 Route::get('/','SettingsController@index')->name('settings.index');
@@ -90,7 +94,7 @@ Route::group([
             Route::prefix('ftel-phone')->group(function () {
                 Route::get('/', [FtelPhoneController::class, 'index'])->name('ftel_phone.index');
                 Route::get('/create', [FtelPhoneController::class, 'create'])->name('ftel_phone.create');
-                Route::post('/store', [FtelPhoneController::class, 'store'])->name('ftel_phone.store');
+                Route::post('/store', [FtelPhoneController::class, 'stores'])->name('ftel_phone.store');
                 Route::post('/import', [FtelPhoneController::class, 'import'])->name('ftel_phone.import');
                 Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');                       
             });
@@ -136,7 +140,6 @@ Route::group([
                 Route::post('/store','BannerManageController@store')->name('bannermanage.store');
                 Route::put('/update/{id}/{type}','BannerManageController@update')->name('bannermanage.update');
                 Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
-                Route::post('/uploadImage','BannerManageController@uploadImage')->name('bannermanage.uploadImage');
                 Route::post('/updateordering','BannerManageController@updateOrder')->name('bannermanage.updateOrder');
                 Route::get('/view/{id}/{type}','BannerManageController@view')->name('bannermanage.view');
             });
@@ -182,6 +185,14 @@ Route::group([
                 Route::post('/upload','IconapprovedController@upload')->name('iconapproved.upload');
                 Route::post('/destroy','IconapprovedController@destroy')->name('iconapproved.destroy');
                 Route::get('/initDatatable','IconapprovedController@initDatatable')->name('iconapproved.initDatatable');
+            Route::prefix('popupmanage')->group(function () {
+                Route::get('/','PopupManageController@index')->name('popupmanage.index');
+                Route::get('/edit/{id?}','PopupManageController@edit')->name('popupmanage.edit');
+                Route::get('/create','PopupManageController@edit')->name('popupmanage.create');
+                Route::post('/save','PopupManageController@save')->name('popupmanage.save');
+                Route::get('/view/{id?}','PopupManageController@view')->name('popupmanage.view');
+                Route::post('/pushPopupTemplate','PopupManageController@pushPopupTemplate')->name('popupmanage.pushPopupTemplate');
+                Route::post('/getDetailPersonalMaps','PopupManageController@getDetailPersonalMaps')->name('popupmanage.getDetailPersonalMaps');
             });
             
         });

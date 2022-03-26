@@ -30,7 +30,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
-                    <table id="modules" class="display nowrap" style="width:100%">
+                    <table id="modules" class="table table-hover table-striped" style="width:100%">
                         </thead>
                     </table>
                 </div>

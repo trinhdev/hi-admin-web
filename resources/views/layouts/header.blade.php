@@ -40,9 +40,14 @@
     
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables/css/jquery.dataTables.min.css">
+
+    <!-- Datatables -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+    {{-- <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables/css/jquery.dataTables.min.css"> --}}
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/sweetalert2/sweetalert2.all.min.js"></script> 
-
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">

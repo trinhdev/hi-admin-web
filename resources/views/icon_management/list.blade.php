@@ -115,7 +115,33 @@
             <div class="container-fluid">
                 <div class="row" style="margin-top: 20px">
                     <div class="card card-body col-sm-12">
-                        <table id="icon-management" class="display nowrap" style="width: 100%">
+                        <div class="container">
+                            <form action="{{ route('iconmanagement.index') }}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
+                                <div class="card-body row form-inline">
+                                    <div class="col-sm-6">
+                                        <div class="input-group mb-4">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Tên sản phẩm</div>
+                                            </div>
+                                            <input type="name" class="form-control" id="vi-name" placeholder="Nhập tên sản phẩm" name="group_name" value="@if(!empty($data)){{$data->group_name}}@endif">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group mb-4">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Trạng thái sản phẩm</div>
+                                            </div>
+                                            <select name="action" id="status-filter" class="selectpicker form-control">
+                                                <option value="">Vui lòng chọn trạng thái</option>
+                                                <option value="1">Hiện</option>
+                                                <option value="0">Ẩn</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <table id="icon-management" class="table table-hover table-striped text-center" style="width: 100%">
                         </table>                                          
                     </div>
                 </div>

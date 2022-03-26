@@ -33,7 +33,7 @@ class FtelPhoneRequest extends FormRequest
             'number_phone' => [
                 function ($attribute,$value, $fail){
                     $arrPhone = explode(',',$value);
-                    $pattern = '/^(03|05|07|08|09)[0-9, ]*$/';
+                    $pattern = '/^(03|05|06|07|08|09)[0-9, ]*$/';
                     if (is_array($arrPhone) || is_object($arrPhone))
                     {
                         if(count($arrPhone) > $this->limit) {
