@@ -115,8 +115,8 @@
             <div class="container-fluid">
                 <div class="row" style="margin-top: 20px">
                     <div class="card card-body col-sm-12">
-                        <div class="container">
-                            <form action="{{ route('iconmanagement.index') }}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
+                        <!-- <div class="container"> -->
+                            <!-- <form action="{{ route('iconmanagement.index') }}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
                                 <div class="card-body row form-inline">
                                     <div class="col-sm-6">
                                         <div class="input-group mb-4">
@@ -139,8 +139,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </form> -->
+                        <!-- </div> -->
                         <table id="icon-management" class="table table-hover table-striped text-center" style="width: 100%">
                         </table>                                          
                     </div>

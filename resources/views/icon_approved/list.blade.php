@@ -226,7 +226,7 @@
         }
 
         .dt-buttons {
-            float: right;
+            float: right!important;
         }
 
         #filter-status .col-form-label {
