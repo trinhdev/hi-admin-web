@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Policies\RolePermissionPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Settings;
 
@@ -37,6 +38,16 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
             return false;
+        });
+
+        // Check id Icon check data
+        Gate::define('icon-check-data-permission', function($user) {
+            $role = Auth::user()->role_id;
+            return $role === 6;
+        });
+        Gate::define('icon-approve-data-permission', function($user) {
+            $role = Auth::user()->role_id;
+            return $role === 5;
         });
     }
 }

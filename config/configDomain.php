@@ -152,31 +152,91 @@ $domainModemContractInfo = [
         'SECRET_KEY'    => 'xxxxxxhifpt2018'
     ],
 ];
+
+$domainIconManagement = [
+    'local'             => [
+        'URL'           => 'http://hi-customer-stag.fpt.vn/',
+        'SUB_DOMAIN'    => ['hi-customer-local', 'tool'],
+        'CLIENT_KEY'    => 'hifpt_customer_local',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+    ],
+    'staging'           => [
+        'URL'           => 'http://hi-customer-stag.fpt.vn/',
+        'SUB_DOMAIN'    => ['hi-customer-local', 'tool'],
+        'CLIENT_KEY'    => 'hifpt_customer_local',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+    ],
+    'production'        => [
+        'URL'           => 'http://hi-customer-stag.fpt.vn/',
+        'SUB_DOMAIN'    => ['hi-customer-local', 'tool'],
+        'CLIENT_KEY'    => 'hifpt_customer_local',
+        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+    ],
+];
+
 $domainHr = [
     'local'             => [
         'URL'           => 'http://hrapi.fpt.vn/',
-        'USERNAME'    => 'hifpt@hr.fpt.vn',
-        'PASSWORD'    => '!@#hiFPT123'
+        'USERNAME'      => 'hifpt@hr.fpt.vn',
+        'PASSWORD'      => '!@#hiFPT123'
     ],
     'staging'           => [
         'URL'           => 'http://hrapi.fpt.vn/',
-        'USERNAME'    => 'hifpt@hr.fpt.vn',
-        'PASSWORD'    => '!@#hiFPT123'
+        'USERNAME'      => 'hifpt@hr.fpt.vn',
+        'PASSWORD'      => '!@#hiFPT123'
     ],
     'production'        => [
         'URL'           => 'http://hrapi.fpt.vn/',
-        'USERNAME'    => 'hifpt@hr.fpt.vn',
-        'PASSWORD'    => '!@#hiFPT123'
+        'USERNAME'      => 'hifpt@hr.fpt.vn',
+        'PASSWORD'      => '!@#hiFPT123'
     ],
 ];
+
+$domainMail = [
+    'local'             => [
+        'URL'           => 'http://systemmailapi.fpt.vn/',
+        'SUB_DOMAIN'    => ['api', 'SendMailSMTP']
+    ],
+    'staging'           => [
+        'URL'           => 'http://systemmailapi.fpt.vn/',
+        'SUB_DOMAIN'    => ['api', 'SendMailSMTP']
+    ],
+    'production'        => [
+        'URL'           => 'http://systemmailapi.fpt.vn/',
+        'SUB_DOMAIN'    => ['api', 'SendMailSMTP']
+    ],
+];
+
+$domainUploadIcon = [
+    'local'             => [
+        'URL'           => 'https://staging-hi-static.fpt.vn/',
+        'CLIENT_KEY'    => 'hifpt_static_CMS',
+        'SECRET_KEY'    => 'xxxxxxhifpt2022'
+    ],
+    'staging'           => [
+        'URL'           => 'https://staging-hi-static.fpt.vn/',
+        'CLIENT_KEY'    => 'hifpt_static_CMS',
+        'SECRET_KEY'    => 'xxxxxxhifpt2022'
+    ],
+    'production'        => [
+        'URL'           => 'https://staging-hi-static.fpt.vn/',
+        // 'URL'           => 'https://hi-static.fpt.vn/upload_CMS.php/',
+        'CLIENT_KEY'    => 'hifpt_static_CMS',
+        'SECRET_KEY'    => 'xxxxxxhifpt2022'
+    ],
+];
+
 return [
-    'DOMAIN_REPORT'         => $domainReportConfig,
-    'DOMAIN_INSIDE'         => $domainInsideConfig,
-    'DOMAIN_CUSTOMER'       => $domainCustomerConfig,
-    'DOMAIN_SMS_WORLD'      => $domainSmsWorld,
-    'DOMAIN_NEWS_EVENT'     => $domainNewsEventConfig,
+    'DOMAIN_REPORT'                 => $domainReportConfig,
+    'DOMAIN_INSIDE'                 => $domainInsideConfig,
+    'DOMAIN_CUSTOMER'               => $domainCustomerConfig,
+    'DOMAIN_SMS_WORLD'              => $domainSmsWorld,
+    'DOMAIN_NEWS_EVENT'             => $domainNewsEventConfig,
     'DOMAIN_MODEM_INFO'             => $domainModemInfo,
     'DOMAIN_MODEM_ACCESS_POINT'     => $domainModemAccessPoint,
     'DOMAIN_MODEM_CONTRACT_INFO'    => $domainModemContractInfo,
-    'DOMAIN_HR'             => $domainHr
+    'DOMAIN_ICON_MANAGEMENT'        => $domainIconManagement,
+    'DOMAIN_HR'                     => $domainHr,
+    'DOMAIN_MAIL'                   => $domainMail,
+    'DOMAIN_UPLOAD'                 => $domainUploadIcon
 ];

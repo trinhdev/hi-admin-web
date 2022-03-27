@@ -11,6 +11,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
@@ -27,6 +28,19 @@
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/summernote/summernote-bs4.min.css">
     <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/bootstrap-select-1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/dragula-master/dist/dragula.min.css">
+    <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/simple-line-icons/style.min.css">
+    <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/lightslider-master/dist/css/lightslider.min.css">
+    <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/bootstrap-datetimepicker/css/tempus-dominus.min.css">
+    <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-searchpanes/css/searchPanes.bootstrap4.min.css">
+    {{-- <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/app-assets/css/colors.min.css"> --}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css">
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.bootstrap4.min.css"/> --}}
+    
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+    <link rel="stylesheet" href="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables/css/jquery.dataTables.min.css">
+
     <!-- Datatables -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
