@@ -20,8 +20,7 @@ Auth::routes();
 Route::group([
     'middleware' => ['auth','can:role-permission']
     ],
-    function (){     
-        dd('test');
+    function (){
         Route::get('/', [HomeController::class, 'index'])->name('home');
         Route::prefix('home')->group(function () {
             Route::get('/', 'HomeController@index')->name('home');
@@ -186,6 +185,7 @@ Route::group([
                 Route::post('/upload','IconapprovedController@upload')->name('iconapproved.upload');
                 Route::post('/destroy','IconapprovedController@destroy')->name('iconapproved.destroy');
                 Route::get('/initDatatable','IconapprovedController@initDatatable')->name('iconapproved.initDatatable');
+            });
             Route::prefix('popupmanage')->group(function () {
                 Route::get('/','PopupManageController@index')->name('popupmanage.index');
                 Route::get('/edit/{id?}','PopupManageController@edit')->name('popupmanage.edit');
@@ -207,4 +207,5 @@ Route::group([
                 Route::any('/{phonecode?}/{phone?}/{date?}','OtpController@logs')->name('smsworld.logs');
             });
         });
-});
+    }
+);
