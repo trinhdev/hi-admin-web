@@ -314,7 +314,6 @@ function convertDetailBanner(element){
         modified_by: '',
         is_banner_expired: false
     };
-    console.log(element);
     if (element.banner_id != undefined) {
         subData.bannerId = element.banner_id;
         subData.title_vi = element.banner_title != undefined ? element.banner_title : '';
