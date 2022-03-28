@@ -17,6 +17,7 @@ use \stdClass;
 use Yajra\DataTables\DataTables;
 
 use App\Services\IconManagementService;
+use App\Services\MailService;
 use Illuminate\Support\Facades\Gate;
 
 class IconconfigController extends MY_Controller
@@ -31,6 +32,7 @@ class IconconfigController extends MY_Controller
         $this->title = 'Icon Management';
         $this->iconconfig = new IconManagementService();
         $this->model = $this->getModel('Icon_Config');
+        $this->mailService = new MailService();
     }
 
     public function index()
