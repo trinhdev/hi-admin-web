@@ -245,7 +245,7 @@
                             @endif
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
-                            <button type="button" onClick="deleteButton('#icon-category-form', '{{ @$data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}', 'selected-product')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            <button type="button" onClick="deleteButton('icon_category', '#icon-category-form', '{{ @$data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}', 'selected-product')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                             @endif
                             @if (Session::get('approved_data'))
                                 @can('icon-check-data-permission')
