@@ -2,74 +2,74 @@ $(document).ready(function () {
     initSelect();
     settings_on_search();
     // $(document).on('pjax:end', function () {
-        initSelect();
-        const pathArray = window.location.pathname.split("/");
-        let segment = pathArray[1]; //first uri param
-        let segment2 = pathArray[2];
-        switch (segment) {
+    initSelect();
+    const pathArray = window.location.pathname.split("/");
+    let segment = pathArray[1]; //first uri param
+    let segment2 = pathArray[2];
+    switch (segment) {
 
-            case 'user':
-                initUser();
-                break;
-            case 'modules':
-                initModule();
-                break;
-            case 'groups':
-                initGroup();
-                break;
-            case 'roles':
-                initRoles();
-                break;
-            case 'groupmodule':
-                initGroupModule();
-                break;
-            case 'manageotp':
-                initManageOtp();
-            case 'logactivities':
-                initLogActivities();
-                break;
-            case 'settings':
-                initSettings();
-                settings_on_search();
-                break;
-            case 'hidepayment':
-                initHidePaymentLogs();
-                break;
-            case 'bannermanage':
-                callApiGetListBanner();
-                break;
-            case 'checkuserinfo':
-                initCheckUserInfo();
-                break;
-            case 'smsworld':
-                initSmsWorld();
-                break;
-            case 'checklistmanage':
-                initCheckListManage();
-                break;
-            case 'iconmanagement':
-                initIconmanagement();
-                break;
-            case 'closehelprequest':
-                initCloseHelpReqest();
-                break;
-            case 'iconcategory':
-                initIconcategory();
-                break;
-            case 'iconconfig':
-                initIconconfig();
-                break;
-            case 'iconapproved':
-                initIconapproved();
-            case 'ftel-phone':
-                initFtelPhone();
-                break;
-            case '':
-            case 'home':
-                drawChart();
-                break;
-        }
-        
+        case 'user':
+            initUser();
+            break;
+        case 'modules':
+            initModule();
+            break;
+        case 'groups':
+            initGroup();
+            break;
+        case 'roles':
+            initRoles();
+            break;
+        case 'groupmodule':
+            initGroupModule();
+            break;
+        case 'manageotp':
+            initManageOtp();
+        case 'logactivities':
+            initLogActivities();
+            break;
+        case 'settings':
+            initSettings();
+            settings_on_search();
+            break;
+        case 'hidepayment':
+            initHidePaymentLogs();
+            break;
+        case 'bannermanage':
+            callApiGetListBanner();
+            break;
+        case 'checkuserinfo':
+            initCheckUserInfo();
+            break;
+        case 'smsworld':
+            initSmsWorld();
+            break;
+        case 'checklistmanage':
+            initCheckListManage();
+            break;
+        case 'iconmanagement':
+            initIconmanagement();
+            break;
+        case 'closehelprequest':
+            initCloseHelpReqest();
+            break;
+        case 'iconcategory':
+            initIconcategory();
+            break;
+        case 'iconconfig':
+            initIconconfig();
+            break;
+        case 'iconapproved':
+            initIconapproved();
+        case 'ftel-phone':
+            initFtelPhone();
+            break;
+        case '':
+        case 'home':
+            drawChart();
+            break;
+    }
+
 
     // });
     // $(document).on('pjax:popstate', function (event) {
@@ -421,63 +421,63 @@ function initLogActivities() {
         },
         searchDelay: 500,
         columns: [{
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
+            title: 'No.',
+            render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
             },
-            {
-                data: 'id',
-            },
-            {
-                data: 'user_id',
-                className: "text-center"
-            },
-            {
-                data: 'user.email',
-                className: "text-center"
-            },
-            {
-                data: 'user.role.role_name',
-                className: "text-center",
-                searchable:false
-            },
-            {
-                data: 'method',
-                className: "text-center"
-            },
-            {
-                data: 'url'
-            },
-            {
-                data: 'created_at',
-                class: 'font-weight-bold'
-            },
-            {
-                data: 'param',
-                render: function (data, type, full) {
-                    var showChar = 200;
-                    var ellipsestext = "...";
-                    var moretext = "Show More";
-                    var lesstext = "Show Less";
-                    var contentt = JSON.stringify(data);
-                    var content = contentt.replace(/["]+/g, '').substring(0, contentt.length - 1);
-                    if (content.length > showChar) {
-                        var c = content.substr(0, showChar);
-                        var h = content.substr(showChar, content.length - showChar);
-                        var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink" style="cursor: pointer;">' + moretext + '</a></span>'; //here call the read() function
-                        return html.toString();
-                    }
-                    return data;
+        },
+        {
+            data: 'id',
+        },
+        {
+            data: 'user_id',
+            className: "text-center"
+        },
+        {
+            data: 'user.email',
+            className: "text-center"
+        },
+        {
+            data: 'user.role.role_name',
+            className: "text-center",
+            searchable: false
+        },
+        {
+            data: 'method',
+            className: "text-center"
+        },
+        {
+            data: 'url'
+        },
+        {
+            data: 'created_at',
+            class: 'font-weight-bold'
+        },
+        {
+            data: 'param',
+            render: function (data, type, full) {
+                var showChar = 200;
+                var ellipsestext = "...";
+                var moretext = "Show More";
+                var lesstext = "Show Less";
+                var contentt = JSON.stringify(data);
+                var content = contentt.replace(/["]+/g, '').substring(0, contentt.length - 1);
+                if (content.length > showChar) {
+                    var c = content.substr(0, showChar);
+                    var h = content.substr(showChar, content.length - showChar);
+                    var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink" style="cursor: pointer;">' + moretext + '</a></span>'; //here call the read() function
+                    return html.toString();
                 }
-            },
-            {
-                data: 'ip',
-                className: "text-center",
-            },
-            {
-                data: 'agent'
+                return data;
             }
+        },
+        {
+            data: 'ip',
+            className: "text-center",
+        },
+        {
+            data: 'agent'
+        }
         ],
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
@@ -875,7 +875,7 @@ function initBannerManage(response) {
                 if (bannerType == 'highlight') {
                     bannerType = 'bannerHome';
                 };
-                var exists = 0 != $('#show_at option[value="'+bannerType+'"]').length;
+                var exists = 0 != $('#show_at option[value="' + bannerType + '"]').length;
                 if (exists === false) return "";
                 return `<div style="display:flex; justify-content:center">
                     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
@@ -1136,7 +1136,7 @@ function initIconmanagement() {
         "pageLength": 5,
         "lengthMenu": [5, 10, 25, 50, 75, 100],
         "orderMulti": true,
-        "order": [[ 1, "desc" ]],
+        "order": [[1, "desc"]],
         "retrieve": true,
         "serverSide": true,
         "ajax": {
@@ -1229,7 +1229,7 @@ function initIconmanagement() {
                 return `<div>
                 <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconmanagement/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                             <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
+                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash" onClick="deleteButton('icon_category', '${row_data}', '${productName}', '/iconmanagement/destroy', '')"></i></button>
                         </div>`;
             },
             className: 'text-center',
@@ -1407,8 +1407,8 @@ function initIconmanagement() {
         }
     });
 
-    $('#icon-management tbody').on( 'click', '.delete-button', function () {
-        var data = icon_management_table.row( $(this).parents('tr') ).data();
+    $('#icon-management tbody').on('click', '.delete-button', function () {
+        var data = icon_management_table.row($(this).parents('tr')).data();
         deleteButton(JSON.stringify(data), data['productNameVi'], '/iconmanagement/destroy');
     });
 }
@@ -1484,7 +1484,7 @@ function initFtelPhone() {
         "bDestroy": true,
         "scrollX": true,
         retrieve: true,
-        "lengthMenu": [ 10, 25, 50, 75, 100 ],
+        "lengthMenu": [10, 25, 50, 75, 100],
         "pageLength": 25,
         "ajax": {
             url: "/ftel-phone/initDatatable"
@@ -1863,8 +1863,8 @@ function initIconcategory() {
         }
     });
 
-    $('#icon-category tbody').on( 'click', '.delete-button', function () {
-        var data = icon_category.row( $(this).parents('tr') ).data();
+    $('#icon-category tbody').on('click', '.delete-button', function () {
+        var data = icon_category.row($(this).parents('tr')).data();
         deleteButton(JSON.stringify(data), data['productTitleNameVi'], '/iconcategory/destroy');
     });
 }
@@ -2010,11 +2010,11 @@ function initIconconfig() {
                 });
                 return false;
             }
-    
+
             var iconsPerRow = ($('#icon-per-row').val()) ? $('#icon-per-row').val() : 1;
             var rowOnPage = ($('#row-on-page').val()) ? $('#row-on-page').val() : 1;
-    
-            if($('#selected-product-config li').length > iconsPerRow * rowOnPage) {
+
+            if ($('#selected-product-config li').length > iconsPerRow * rowOnPage) {
                 swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -2022,7 +2022,7 @@ function initIconconfig() {
                 });
                 return false;
             }
-    
+
             return target !== document.getElementById('all-product-config')
         }
     }).on('drop', (el, target, source, sibling) => {
@@ -2031,21 +2031,21 @@ function initIconconfig() {
         $(el).removeClass("lslide");
         $(el).removeClass("active");
         $(el).removeClass("gu-transit");
-    
+
         $(el).css('margin-right', 0);
-    
+
         var spanElement = $(el).find("span:first");
         $(spanElement).removeClass("badge-light");
         $(spanElement).addClass("badge-dark");
-    
+
         if ($(el).find('span.position').length < 1) {
             $(el).append(`<h6><span class="badge badge-warning position">${$(el).index() + 1}</span></h6>`);
         }
-    
+
         $(target).find("li").each((key, value) => {
             $(value).find("span.position").text($(value).index() + 1);
         });
-    }); 
+    });
 
     // lightSlider
     $('#all-product-config').lightSlider({
@@ -2078,17 +2078,17 @@ function initIconconfig() {
         }
     });
 
-    $('#icon-per-row').change(function() {
+    $('#icon-per-row').change(function () {
         $("#selected-product-config").css({
             "maxWidth": ($('#icon-per-row').val()) ? $('#icon-per-row').val() * 100 / 5 + "%" : "100%",
         });
     });
 
-    $("input[name='prod_add']").change(function() {
-        if(this.value == 'category_add') {
+    $("input[name='prod_add']").change(function () {
+        if (this.value == 'category_add') {
             $('.category-add').css('display', 'block');
             $('.product-add').css('display', 'none');
-            if($('#all-title-config')) {
+            if ($('#all-title-config')) {
                 $('#all-title-config').lightSlider({
                     item: 5,
                     loop: true,
@@ -2105,7 +2105,7 @@ function initIconconfig() {
         else {
             $('.category-add').css('display', 'none');
             $('.product-add').css('display', 'block');
-            if($('#all-product-config')) {
+            if ($('#all-product-config')) {
                 $('#all-product-config').lightSlider({
                     item: 5,
                     loop: true,
@@ -2122,8 +2122,8 @@ function initIconconfig() {
         // console.log(this.value);
     });
 
-    $('#icon-config tbody').on( 'click', '.delete-button', function () {
-        var data = icon_config_table.row( $(this).parents('tr') ).data();
+    $('#icon-config tbody').on('click', '.delete-button', function () {
+        var data = icon_config_table.row($(this).parents('tr')).data();
         deleteButton(JSON.stringify(data), data['name'], '/iconconfig/destroy');
     });
 }
@@ -2140,7 +2140,7 @@ function initIconapproved() {
         "orderMulti": true,
         "retrieve": true,
         "serverSide": true,
-        "order": [[ 7, "desc" ]],
+        "order": [[7, "desc"]],
         dom: 'Bfrtip',
         "columnDefs": [
             {
@@ -2167,9 +2167,9 @@ function initIconapproved() {
             data: 'product_type',
             name: "product_type",
             title: "Loại",
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
                 var product_type = '';
-                switch(data) {
+                switch (data) {
                     case 'icon_management':
                         product_type = `<span class="badge badge-success">Sản phẩm</span>`;
                         break;
@@ -2188,17 +2188,17 @@ function initIconapproved() {
             data: 'icon',
             name: "icon",
             title: "Tên",
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
                 var productInfo = '';
-                if(row['icon'] && row['icon']['productNameVi']) {
+                if (row['icon'] && row['icon']['productNameVi']) {
                     productInfo = row['icon']['productNameVi'];
                 }
 
-                if(row['icon_category'] && row['icon_category']['productTitleNameVi']) {
+                if (row['icon_category'] && row['icon_category']['productTitleNameVi']) {
                     productInfo = row['icon_category']['productTitleNameVi'];
                 }
 
-                if(row['icon_config'] && row['icon_config']['name']) {
+                if (row['icon_config'] && row['icon_config']['name']) {
                     productInfo = row['icon_config']['name'];
                 }
 
@@ -2210,9 +2210,9 @@ function initIconapproved() {
             data: 'approved_type',
             name: 'approved_type',
             title: 'Loại yêu cầu',
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
                 var result = '';
-                switch(data) {
+                switch (data) {
                     case 'create':
                         result = `<span class="badge badge-success">${data}</span>`;
                         break;
@@ -2231,9 +2231,9 @@ function initIconapproved() {
             data: 'approved_status_name',
             name: 'approved_status_name',
             title: 'Trạng thái yêu cầu',
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
                 var approved_status_name = '';
-                switch(row['approved_status']) {
+                switch (row['approved_status']) {
                     case 'chokiemtra':
                         approved_status_name = `<span class="badge badge-success">${data}</span>`;
                         break;
