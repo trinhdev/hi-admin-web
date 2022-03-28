@@ -19,6 +19,7 @@ use Yajra\DataTables\DataTables;
 use App\Services\IconManagementService;
 use App\Services\MailService;
 use App\Services\UploadImageService;
+use App\Services\Minio;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 
@@ -42,6 +43,7 @@ class IconmanagementController extends MY_Controller
         $this->to    = filter_var(preg_replace('/\s+/', '', env('ICON_CHANGE_NOTI_TO')));
         $this->cc    = filter_var(preg_replace('/\s+/', '', env('ICON_CHANGE_NOTI_CC')));
         $this->bcc   = filter_var(preg_replace('/\s+/', '', env('ICON_CHANGE_NOTI_BCC')));
+        $this->minio = new Minio;
     }
 
     public function index()
@@ -239,20 +241,41 @@ class IconmanagementController extends MY_Controller
     //     return ['success' => 'You have successfully upload image.', 'url' => $imageName];
     // }
 
+    // public function upload(Request $request) {
+    //     $request->validate([
+    //         'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //     ]);
+    //     if ($request->file('file')) {
+    //         $imagePath = $request->file('file');
+    //         $imageName = pathinfo($imagePath->getClientOriginalName(), PATHINFO_FILENAME);
+    //         $data = file_get_contents($imagePath);
+    //         $params = [
+    //             'urlImage'  => base64_encode($data),
+    //             'name'      => $imageName
+    //         ];
+    //         $resultUpload = json_decode(json_encode($this->uploadService->uploadImage($params)), true);
+    //         return ['success' => 'You have successfully upload image.', 'url' => (!empty($resultUpload['urlImage'])) ? $resultUpload['urlImage'] : ''];
+    //     }
+    // }
+
     public function upload(Request $request) {
         $request->validate([
             'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
         if ($request->file('file')) {
+            $minioUrl = 'https://hi-static.fpt.vn/sys';
             $imagePath = $request->file('file');
-            $imageName = pathinfo($imagePath->getClientOriginalName(), PATHINFO_FILENAME);
+            $imageName = pathinfo($imagePath->getClientOriginalName(), PATHINFO_FILENAME) . '.' . pathinfo($imagePath->getClientOriginalName(), PATHINFO_EXTENSION);
             $data = file_get_contents($imagePath);
-            $params = [
-                'urlImage'  => base64_encode($data),
-                'name'      => $imageName
-            ];
-            $resultUpload = json_decode(json_encode($this->uploadService->uploadImage($params)), true);
-            return ['success' => 'You have successfully upload image.', 'url' => (!empty($resultUpload['urlImage'])) ? $resultUpload['urlImage'] : ''];
+            try {
+                $uploadResult = $this->minio->uploadMinio('/hifpt/images/icons/' . $imageName, $data);
+            }
+            catch(Exception $e) {
+                return ['error' => 'Upload ảnh thất bại. Xin thử lại lúc sau.', 'url' => ''];
+            }
+
+            return ['success' => 'You have successfully upload image.', 'url' => $minioUrl . '/hifpt/images/icons/' . $imageName];
         }
     }
 

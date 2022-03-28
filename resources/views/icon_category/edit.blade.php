@@ -154,7 +154,7 @@
                                 </div>
                                 <div class="card card-info">
                                     <div class="card-body">
-                                        <ul class="row" style="list-style: none; min-height: 100px" id="selected-product">
+                                        <ul class="row" style="list-style: none; min-height: 200px" id="selected-product">
                                             @foreach ($data['productListInTitle'] as $key => $value)
                                                 <li class="col-sm-2" style="text-align: center" id="{{ @$value['productId'] }}-selected-product" data-prodid="{{ @$value['productId'] }}">
                                                     <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}">
@@ -412,7 +412,7 @@
     .close-thik {
         position: relative;
         left: 20%;
-        bottom: 45%;
+        bottom: 33%;
         background-color: transparent;
         border: none
     }

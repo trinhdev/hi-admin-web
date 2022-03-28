@@ -115,7 +115,7 @@
             <div class="container-fluid">
                 <div class="row" style="margin-top: 20px">
                     <div class="card card-body col-sm-12">
-                        <table id="icon-category" class="display nowrap" style="width: 100%">
+                        <table id="icon-category" class="table table-hover table-striped dataTable no-footer" style="width: 100%">
                         </table>                                          
                     </div>
                 </div>
@@ -256,6 +256,10 @@
 
         #filter-status .form-group {
             margin-bottom: 0
+        }
+
+        table.dataTable tbody td {
+            vertical-align: middle;
         }
     </style>
 
