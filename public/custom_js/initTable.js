@@ -36,7 +36,7 @@ $(document).ready(function () {
                 initHidePaymentLogs();
                 break;
             case 'bannermanage':
-                callApiGetListBanner();
+                // callApiGetListBanner();
                 break;
             case 'checkuserinfo':
                 initCheckUserInfo();

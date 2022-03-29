@@ -2,6 +2,8 @@
 
 @section('content')
 <!-- Content Wrapper. Contains page content -->
+<?php
+?>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -66,8 +68,10 @@
                     </div>
                 </div>
 
-                <table id="banner_manage" class="table table-hover table-striped text-center" style="width:100%; word-wrap:no-wrap;">
-                </table>
+                {{-- <table id="banner_manage" class="table table-hover table-striped text-center" style="width:100%; word-wrap:no-wrap;">
+                </table> --}}
+                {{ $dataTable->table([], true) }}
+
             </div>
         </div>
     </section>
@@ -89,3 +93,13 @@
 </div>
 <!-- /.content-wrapper -->
 @endsection
+<!--end::Table-->
+@push('scripts')
+    {{ $dataTable->scripts() }}
+    {{-- <script>
+        const table = $('#popup_manage_table');
+        table.on('preXhr.dt', function(e, settings, data){
+            data.templateType = $('#show_at').val();
+        });
+    </script> --}}
+@endpush

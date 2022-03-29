@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Hi_FPT;
 
+use App\DataTables\Hi_FPT\BannerDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
@@ -20,11 +21,21 @@ class BannerManageController extends MY_Controller
         $this->title = 'Banner Manage';
         $this->model = $this->getModel('Banner');
     }
-    public function index(){
+    public function index(BannerDataTable $dataTable, Request $request){
         $newsEventService = new NewsEventService();
         $listTypeBanner = $newsEventService->getListTypeBanner();
         $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
-        return view('banners.index')->with(['list_type_banner' => $listTypeBanner]);
+        // return view('banners.index')->with(['list_type_banner' => $listTypeBanner]);
+        return $dataTable->with([
+            'bannerType'=>$request->bannerType,
+            'public_date_from' => $request->public_date_from,
+            'public_date_to' => $request->public_date_to,
+            'start'=>$request->start,
+            'length' => $request->length,
+            'order' => $request->order,
+            'columns' => $request->columns,
+            'list_type_banner' => $listTypeBanner
+            ])->render('banners.index', ['list_type_banner' => $listTypeBanner]);
     }
     public function view(Request $request, $bannerId, $bannerType){
         $newsEventService = new NewsEventService();
