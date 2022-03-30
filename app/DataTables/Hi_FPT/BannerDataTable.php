@@ -25,12 +25,11 @@ class BannerDataTable extends DataTable
     private $currentPage = 1;
     public function dataTable($query)
     {
-        $NewsEventService = new NewsEventService();
-        $listRoute = collect($NewsEventService->getListTargetRoute()->data);
-        $list_banner_type = $NewsEventService->getListTypeBanner();
-        $list_banner_type = (isset($list_banner_type->statusCode) && $list_banner_type->statusCode == 0) ? $list_banner_type->data : [];
-        $tmp = $query;
-        $query = $query['data'];
+        // $NewsEventService = new NewsEventService();
+        // $listRoute = collect($NewsEventService->getListTargetRoute()->data);
+        $list_banner_type = $query['list_type_banner'];
+        $tmp = $query['result'];
+        $query = $query['result']['data'];
         $paginate = $tmp['pagination'];
         $totalRecords = $paginate->totalPage * $paginate->perPage;
         return datatables()
@@ -97,6 +96,10 @@ class BannerDataTable extends DataTable
      */
     public function query(NewsEventService $service)
     {
+        $result = [
+            'result' => [],
+            'list_type_banner' => $this->list_type_banner
+        ];
         $this->perPage = $this->length ?? 10;
         if(!isset($this->currentPage) || $this->start == 0){
             $this->currentPage = 1;
@@ -124,11 +127,11 @@ class BannerDataTable extends DataTable
         // print_r($param);
         // dd($model);
         if(isset($model->statusCode) && $model->statusCode == 0) {
-            
-            return !empty($model->data) ? collect($model->data) : [];
+            $result['result'] = !empty($model->data) ? collect($model->data) : [];
+            return $result;
         }
         session()->flash('error');
-        return $model = [];
+        return $result;
     }
 
     /**
