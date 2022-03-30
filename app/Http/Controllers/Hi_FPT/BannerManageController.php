@@ -37,7 +37,7 @@ class BannerManageController extends MY_Controller
             'list_type_banner' => $listTypeBanner
             ])->render('banners.index', ['list_type_banner' => $listTypeBanner]);
     }
-    public function view(Request $request, $bannerId, $bannerType){
+    public function view(Request $request, $bannerId){
         $newsEventService = new NewsEventService();
         $result = [];
         $listTargetRoute = $newsEventService->getListTargetRoute();
@@ -46,7 +46,7 @@ class BannerManageController extends MY_Controller
         $listTypeBanner = $newsEventService->getListTypeBanner();
         $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
 
-        $getDetailBanner_response = $newsEventService->getDetailBanner($bannerId,$bannerType);
+        $getDetailBanner_response = $newsEventService->getDetailBanner($bannerId);
         if(!isset($getDetailBanner_response->statusCode) || $getDetailBanner_response->statusCode != 0){
             $result['error'] = $getDetailBanner_response->message;
             return $result;
@@ -106,7 +106,7 @@ class BannerManageController extends MY_Controller
         return $result;
     }
 
-    public function edit(Request $request, $bannerId, $bannerType){
+    public function edit(Request $request, $bannerId){
         $newsEventService = new NewsEventService();
         $listTargetRoute = $newsEventService->getListTargetRoute();
         $listTargetRoute = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
@@ -114,7 +114,7 @@ class BannerManageController extends MY_Controller
         $listTypeBanner = $newsEventService->getListTypeBanner();
         $listTypeBanner = (isset($listTypeBanner->statusCode) && $listTypeBanner->statusCode == 0) ? $listTypeBanner->data : [];
 
-        $getDetailBanner_response = $newsEventService->getDetailBanner($bannerId,$bannerType);
+        $getDetailBanner_response = $newsEventService->getDetailBanner($bannerId);
         if(!isset($getDetailBanner_response->statusCode) || $getDetailBanner_response->statusCode != 0){
             return redirect()->route('bannermanage.index')->withErrors($getDetailBanner_response->message);
         }
