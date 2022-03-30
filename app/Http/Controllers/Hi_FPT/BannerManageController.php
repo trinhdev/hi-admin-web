@@ -84,7 +84,7 @@ class BannerManageController extends MY_Controller
             $bannerObj->bannerId = $dataResponse->event_id;
             $bannerObj->title_vi = $dataResponse->title_vi;
             $bannerObj->bannerType = ($dataResponse->event_type == "highlight" ) ? 'bannerHome' : $dataResponse->event_type;
-            $bannerObj->image = !empty($dataResponse->image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->image : null;
+            $bannerObj->image = !empty($dataResponse->image) ? $dataResponse->image : null;
             $bannerObj->view_count = $dataResponse->view_count;
             // $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
             $bannerObj->direction_id = $dataResponse->direction_id;
@@ -92,7 +92,7 @@ class BannerManageController extends MY_Controller
             $bannerObj->date_created = $dataResponse->date_created;
 
             $bannerObj->title_en = $dataResponse->title_en;
-            $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->thumb_image : null;
+            $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? $dataResponse->thumb_image : null;
             $bannerObj->created_by = $dataResponse->created_by;
             $bannerObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
             $bannerObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
@@ -151,7 +151,7 @@ class BannerManageController extends MY_Controller
             $bannerObj->bannerId = $dataResponse->event_id;
             $bannerObj->title_vi = $dataResponse->title_vi;
             $bannerObj->bannerType = ($dataResponse->event_type == "highlight" ) ? 'bannerHome' : $dataResponse->event_type;
-            $bannerObj->image = !empty($dataResponse->image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->image : null;
+            $bannerObj->image = !empty($dataResponse->image) ? $dataResponse->image : null;
             $bannerObj->view_count = $dataResponse->view_count;
             // $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
             $bannerObj->direction_id = $dataResponse->direction_id;
@@ -160,7 +160,7 @@ class BannerManageController extends MY_Controller
             $bannerObj->cms_note = $dataResponse->cms_note;
 
             $bannerObj->title_en = $dataResponse->title_en;
-            $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? env('URL_STATIC').'/upload/images/event/'.$dataResponse->thumb_image : null;
+            $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? $dataResponse->thumb_image : null;
             $bannerObj->created_by = $dataResponse->created_by;
             $bannerObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
             $bannerObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
@@ -356,7 +356,7 @@ class BannerManageController extends MY_Controller
         }
         $request->validate([
             'ordering' => 'required',
-            'bannerType'    => 'required',
+            // 'bannerType'    => 'required',
             'bannerId'  => 'required'
         ]);
         $this->addToLog($request);

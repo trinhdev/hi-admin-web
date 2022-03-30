@@ -36,6 +36,9 @@ class BannerDataTable extends DataTable
         return datatables()
             ->collection($query)
             ->addIndexColumn()
+            ->editColumn('event_type', function($row){
+                return '<span class="infoRow" data-id="'.$row->event_id.'">'.$row->event_type.'</span>';
+            })
             ->editColumn('image', function ($row) {
                return '<img src="'.$row->image.'" style="width:150px" onerror="this.onerror=null;this.src='."'/images/img_404.svg'". '"  onclick="window.open(`'.$row->image.'`)" />';
             })
@@ -61,7 +64,24 @@ class BannerDataTable extends DataTable
                     return "";
                 }
             })
-            ->rawColumns(['image','status'])
+            ->editColumn('ordering', function($row){
+                $is_expired = $row->public_date_end <= now() ? 'disabled' : '';
+                return '<input type="number" onchange="updateOrdering(this)" style="width:50px" value="'.$row->ordering.'" '.$is_expired.'/>';
+            })
+            ->editColumn('action',function($row) use ($list_banner_type){
+                $bannerType = $row->event_type;
+                if ($bannerType == 'highlight') {
+                    $bannerType = 'bannerHome';
+                };
+                $exists = array_search($bannerType, array_column($list_banner_type, 'id'));
+                if ($exists === false){
+                    return "";
+                }
+                return '<div style="display:flex; justify-content:center">
+                    <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
+                   <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>';
+            })
+            ->rawColumns(['image','status','action','ordering','event_type'])
             ->setTotalRecords($totalRecords)
             ->skipPaging()
             ;
@@ -160,14 +180,15 @@ class BannerDataTable extends DataTable
             Column::make('public_date_start')->title('Ngày Kết Thúc'),
             Column::make('public_date_end')->title('Ngày Kết Thúc'),
             Column::make('status')->title('Trạng Thái'),
+            Column::make('ordering')->title('Độ ưu tiên'),
             Column::make('view_count')->title('Số Lượt Click'),
             Column::make('date_created')->title('Ngày Tạo'),
             Column::make('created_by')->title('Người Tạo'),
             Column::make('updated_by')->title('Người Cập Nhật'),
-            // Column::computed('action')
-            //       ->searching(false)
-            //       ->width(80)
-            //       ->addClass('text-center')
+            Column::computed('action')
+                  ->searching(false)
+                  ->width(80)
+                  ->addClass('text-center')
             
         ];
     }
