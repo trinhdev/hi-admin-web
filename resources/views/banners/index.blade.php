@@ -35,7 +35,7 @@
                 <div class="container">
                     <div class="card-body row form-inline">
                         <div class="col-md-4">
-                            <div class="input-group mb-4">
+                            <div class="input-group input-group-sm mb-4">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Vị Trí Hiển Thị: </div>
                                 </div>
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="input-group mb-4">
+                            <div class="input-group input-group-sm mb-4">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Từ: </div>
                                 </div>
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="input-group mb-4">
+                            <div class="input-group input-group-sm mb-4">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Đến: </div>
                                 </div>

@@ -40,11 +40,26 @@ class BannerDataTable extends DataTable
                return '<img src="'.$row->image.'" style="width:150px" onerror="this.onerror=null;this.src='."'/images/img_404.svg'". '"  onclick="window.open(`'.$row->image.'`)" />';
             })
             ->editColumn('status', function($row){
-                $now = date('Y-m-d H:i:s');
                 $is_expired = $row->public_date_end <= now() ? 'Hết hạn' : 'Còn Hạn';
                 $badge = $is_expired == 'Hết hạn' ? 'badge badge-danger' : 'badge badge-success';
                 return '<h4 class="'.$badge.'">'.$is_expired.'</h4>';
                 
+            })
+            ->editColumn('created_by',function($row){
+                if(!empty($row->cms_note)){
+                    $JSONcms_note = json_decode($row->cms_note);
+                    return !empty($JSONcms_note->created_by) ? $JSONcms_note->created_by : "";
+                }else{
+                    return "";
+                }
+            })
+            ->editColumn('updated_by', function($row){
+                if(!empty($row->cms_note)){
+                    $JSONcms_note = json_decode($row->cms_note);
+                    return !empty($JSONcms_note->modified_by) ? $JSONcms_note->modified_by : "";
+                }else{
+                    return "";
+                }
             })
             ->rawColumns(['image','status'])
             ->setTotalRecords($totalRecords)
@@ -78,7 +93,7 @@ class BannerDataTable extends DataTable
             'publicDateEnd' => empty($this->public_date_to) ? null : Carbon::parse($this->public_date_to)->format('Y-m-d H:i:s'),
             'order_by' => $this->orderBy,
             'per_page' => $this->perPage,
-            'current_page' => $this->current_page,
+            'current_page' => $this->currentPage,
             'order_direction' => empty($this->orderBy) ? null : $this->orderDirection
         ];
         // dd($param);
@@ -149,10 +164,10 @@ class BannerDataTable extends DataTable
             Column::make('date_created')->title('Ngày Tạo'),
             Column::make('created_by')->title('Người Tạo'),
             Column::make('updated_by')->title('Người Cập Nhật'),
-            Column::computed('action')
-                  ->searching(false)
-                  ->width(80)
-                  ->addClass('text-center')
+            // Column::computed('action')
+            //       ->searching(false)
+            //       ->width(80)
+            //       ->addClass('text-center')
             
         ];
     }
