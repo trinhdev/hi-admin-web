@@ -131,9 +131,9 @@
                                     <div class="row">
                                         <div class="col-sm-7 offset-sm-1">
                                             <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày bắt đầu</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày kết thúc</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                    <input type="text" name="show_to" class="form-control" id="show_to" placeholder="Date From" onchange="filterData()" />
                                                 </div>
                                             </div>
                                         </div>

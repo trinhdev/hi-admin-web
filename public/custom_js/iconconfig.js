@@ -110,6 +110,29 @@ $("input[name='prod_add']").change(function() {
     // console.log(this.value);
 });
 
+$("#status-all").change(function () {
+    if (this.checked) {
+        $("input[name='status']").prop('checked', true);
+    }
+    else {
+        $("input[name='status']").prop('checked', false);
+    }
+});
+
+$("#pheduyet-all").change(function () {
+    if (this.checked) {
+        $("input[name='pheduyet']").prop('checked', true);
+    }
+    else {
+        $("input[name='pheduyet']").prop('checked', false);
+    }
+});
+
+$('#icon-config tbody').on('click', '.delete-button', function () {
+    var data = icon_config_table.row($(this).parents('tr')).data();
+    deleteButton(JSON.stringify(data), data['name'], '/iconconfig/destroy');
+});
+
 function changeSelectedProduct(productList) {
     var new_selected_prod_list = ``;
     $.each(productList, function(key, value) {

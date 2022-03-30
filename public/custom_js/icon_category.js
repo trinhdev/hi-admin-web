@@ -140,48 +140,68 @@ $('input:checkbox[name="is_new_show"]').change(() => {
 });
 
 // Dragula CSS Release 3.2.0 from: https://github.com/bevacqua/dragula
-// dragula([document.getElementById('all-product'), document.getElementById('selected-product')], {
-//     direction: 'horizontal',
-//     revertOnSpill: true,
-//     copy: function (el, source) {
-//         return source === document.getElementById('all-product')
-//     },
-//     accepts: function (el, target, source, sibling) {
-//         var li_all = $(el).attr('id');
-//         if ($('#' + li_all + '-selected-product').length != 0) {
-//             swal.fire({
-//                 icon: 'error',
-//                 title: 'Oops...',
-//                 html: `Sản phẩm này đã tồn tại trong danh mục`
-//             });
-//             return false;
-//         }
+dragula([document.getElementById('all-product'), document.getElementById('selected-product')], {
+    direction: 'horizontal',
+    revertOnSpill: true,
+    copy: function (el, source) {
+        return source === document.getElementById('all-product')
+    },
+    accepts: function (el, target, source, sibling) {
+        var li_all = $(el).attr('id');
+        if ($('#' + li_all + '-selected-product').length != 0) {
+            swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                html: `Sản phẩm này đã tồn tại trong danh mục`
+            });
+            return false;
+        }
 
-//         return target !== document.getElementById('all-product')
-//     }
-// }).on('drop', (el, target, source, sibling) => {
-//     var arrayId = [];
-//     var li_all = $(el).attr('id');
-//     $(el).attr('id', li_all + '-selected-product');
-//     $(el).removeClass("lslide");
-//     $(el).removeClass("active");
-//     $(el).removeClass("gu-transit");
-//     $(el).addClass("col-sm-2");
-//     $(el).css('margin-right', 0);
+        return target !== document.getElementById('all-product')
+    }
+}).on('drop', (el, target, source, sibling) => {
+    var li_all = $(el).attr('id');
+    $(el).attr('id', li_all + '-selected-product');
+    $(el).removeClass("lslide");
+    $(el).removeClass("active");
+    $(el).removeClass("gu-transit");
+    $(el).addClass("col-sm-2");
 
-//     var spanElement = $(el).find("span:first");
-//     $(spanElement).removeClass("badge-light");
-//     $(spanElement).addClass("badge-dark");
+    $(el).css('margin-right', 0);
 
-//     if ($(el).find('span.position').length < 1) {
-//         $(el).append(`<h6><span class="badge badge-warning position">${$(el).index() + 1}</span></h6>`);
-//     }
+    var spanElement = $(el).find("span:first");
+    $(spanElement).removeClass("badge-light");
+    $(spanElement).addClass("badge-dark");
 
-//     $(target).find("li").each((key, value) => {
-//         $(value).find("span.position").text($(value).index() + 1);
-//         arrayId.push($(value).attr('data-prodid'));
-//     });
+    if ($(el).find('span.position').length < 1) {
+        $(el).append(`<h6><span class="badge badge-warning position">${$(el).index() + 1}</span></h6>`);
+    }
 
-//     // $("#selected-prod-id").val(arrayId.join(','));
-// });
+    $(target).find("li").each((key, value) => {
+        $(value).find("span.position").text($(value).index() + 1);
+    });
+});
+
+$("#status-all").change(function () {
+    if (this.checked) {
+        $("input[name='status']").prop('checked', true);
+    }
+    else {
+        $("input[name='status']").prop('checked', false);
+    }
+});
+
+$("#pheduyet-all").change(function () {
+    if (this.checked) {
+        $("input[name='pheduyet']").prop('checked', true);
+    }
+    else {
+        $("input[name='pheduyet']").prop('checked', false);
+    }
+});
+
+$('#icon-category tbody').on('click', '.delete-button', function () {
+    var data = icon_category.row($(this).parents('tr')).data();
+    deleteButton(JSON.stringify(data), data['productTitleNameVi'], '/iconcategory/destroy');
+});
 
