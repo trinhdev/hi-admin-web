@@ -43,7 +43,7 @@
                                     <option value=''>Tất Cả</option>
                                     @if(!empty($list_type_banner))
                                     @foreach($list_type_banner as $type)
-                                         <option value="{{$type->id}}">&#8920; {{ $type->id}} &#x22D9;: {{$type->name}}</option>
+                                         <option value="{{$type->key}}">&#8920; {{ $type->key}} &#x22D9;: {{$type->name}}</option>
                                     @endforeach
                                     @endif
                                 </select>
@@ -54,7 +54,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Từ: </div>
                                 </div>
-                                <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" />
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -62,7 +62,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Đến: </div>
                                 </div>
-                                <input type="datetime-local" name="show_to" class="form-control" id="show_to" placeholder="Date To" onchange="filterData()" />
+                                <input type="datetime-local" name="show_to" class="form-control" id="show_to" placeholder="Date To" />
                             </div>
                         </div>
                     </div>
@@ -100,6 +100,8 @@
         const table = $('#banner_manage');
         table.on('preXhr.dt', function(e, settings, data){
             data.bannerType = $('#show_at').val();
+            data.public_date_start = $('#show_from').val();
+            data.public_date_end = $('#show_to').val();
         });
     </script>
 @endpush

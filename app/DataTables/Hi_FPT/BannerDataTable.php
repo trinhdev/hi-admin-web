@@ -70,15 +70,15 @@ class BannerDataTable extends DataTable
             })
             ->editColumn('action',function($row) use ($list_banner_type){
                 // check if banner type is defined
-                $bannerType = $row->event_type;
-                if ($bannerType == 'highlight') {
-                    $bannerType = 'bannerHome';
-                };
-                $exists = array_search($bannerType, array_column($list_banner_type, 'id'));
+                // $bannerType = $row->event_type;
+                // if ($bannerType == 'highlight') {
+                //     $bannerType = 'bannerHome';
+                // };
+                // $exists = array_search($bannerType, array_column($list_banner_type, 'id'));
                 // end check
-                if ($exists === false){
-                    return "";
-                }
+                // if ($exists === false){
+                //     return "";
+                // }
                 return '<div style="display:flex; justify-content:center">
                     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
                    <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>';
@@ -109,19 +109,23 @@ class BannerDataTable extends DataTable
         $this->orderBy = $this->columns[$orderColumn]['data'] == "DT_RowIndex" ? null : $this->columns[$orderColumn]['data'];
         $this->orderDirection = $this->order[0]['dir'];
         $this->templateType = $this->templateType ?? '';
-        // dd($this->bannerType);
+        $publicDateStart = $this->public_date_start;
+        $publicDateEnd = $this->public_date_end;
         $param = [
             'banner_type' => $this->bannerType,
-            'public_date_start' => empty($this->public_date_from) ? null : Carbon::parse($this->public_date_from)->format('Y-m-d H:i:s'),
-            'public_date_end' => empty($this->public_date_to) ? null : Carbon::parse($this->public_date_to)->format('Y-m-d H:i:s'),
+            'public_date_start' => !empty($publicDateStart) ? Carbon::parse($publicDateStart)->format('Y-m-d H:i:s'): null,
+            'public_date_end' => !empty($publicDateEnd) ? Carbon::parse($publicDateEnd)->format('Y-m-d H:i:s') : null,
             'order_by' => $this->orderBy,
             'per_page' => $this->perPage,
             'current_page' => $this->currentPage,
             'order_direction' => empty($this->orderBy) ? null : $this->orderDirection
         ];
         $model = $service->getListbanner($param);
+        // print_r($param);
+        // dd($model);
         if(isset($model->statusCode) && $model->statusCode == 0) {
-            return collect($model->data);
+            
+            return !empty($model->data) ? collect($model->data) : [];
         }
         session()->flash('error');
         return $model = [];
@@ -141,12 +145,20 @@ class BannerDataTable extends DataTable
                     ->autoWidth(true)
                     ->parameters([
                         'scrollX' => true,
-                        'searching' => true,
+                        'searching' => false,
                         'searchDelay' => 500,
                         'initComplete' => "function () {
                             var bannerType = $('#show_at');
+                            var public_date_start = $('#show_from');
+                            var public_date_end = $('#show_to');
                             var table = $('#banner_manage').DataTable();
                             $(bannerType).on('change', function () { 
+                                table.ajax.reload();
+                            });
+                            $(public_date_start).on('change', function () { 
+                                table.ajax.reload();
+                            });
+                            $(public_date_end).on('change', function () { 
                                 table.ajax.reload();
                             });
                          }"
@@ -178,16 +190,15 @@ class BannerDataTable extends DataTable
             Column::make('title_vi')->title('Tiêu đề'),
             Column::make('image')->title('Ảnh Banner')->sortable(false),
             Column::make('event_type')->title('Loại Banner'),
-            Column::make('event_type')->title('Ngày Hiển Thị'),
-            Column::make('public_date_start')->title('Ngày Kết Thúc'),
+            Column::make('public_date_start')->title('Ngày Hiển Thị'),
             Column::make('public_date_end')->title('Ngày Kết Thúc'),
-            Column::make('status')->title('Trạng Thái'),
+            Column::make('status')->title('Trạng Thái')->sortable(false),
             Column::make('ordering')->title('Độ ưu tiên'),
             Column::make('view_count')->title('Số Lượt Click'),
             Column::make('date_created')->title('Ngày Tạo'),
-            Column::make('created_by')->title('Người Tạo'),
-            Column::make('updated_by')->title('Người Cập Nhật'),
-            Column::computed('action')
+            Column::make('created_by')->title('Người Tạo')->sortable(false),
+            Column::make('updated_by')->title('Người Cập Nhật')->sortable(false),
+            Column::computed('action')->sortable(false)
                   ->searching(false)
                   ->width(80)
                   ->addClass('text-center')

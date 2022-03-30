@@ -28,8 +28,8 @@ class BannerManageController extends MY_Controller
         // return view('banners.index')->with(['list_type_banner' => $listTypeBanner]);
         return $dataTable->with([
             'bannerType'=>$request->bannerType,
-            'public_date_from' => $request->public_date_from,
-            'public_date_to' => $request->public_date_to,
+            'public_date_start' => $request->public_date_start,
+            'public_date_end' => $request->public_date_end,
             'start'=>$request->start,
             'length' => $request->length,
             'order' => $request->order,
