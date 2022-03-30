@@ -357,7 +357,7 @@ class BannerManageController extends MY_Controller
         $request->validate([
             'ordering' => 'required',
             // 'bannerType'    => 'required',
-            'bannerId'  => 'required'
+            'eventId'  => 'required'
         ]);
         $this->addToLog($request);
         $newsEventService = new NewsEventService();

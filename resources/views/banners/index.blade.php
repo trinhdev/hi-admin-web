@@ -39,7 +39,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Vị Trí Hiển Thị: </div>
                                 </div>
-                                <select class="form-control" name="position" id="show_at" placeholder="Show at" onchange="filterData()">
+                                <select class="form-control" name="position" id="show_at" placeholder="Show at">
                                     <option value=''>Tất Cả</option>
                                     @if(!empty($list_type_banner))
                                     @foreach($list_type_banner as $type)
@@ -96,10 +96,10 @@
 <!--end::Table-->
 @push('scripts')
     {{ $dataTable->scripts() }}
-    {{-- <script>
-        const table = $('#popup_manage_table');
+    <script>
+        const table = $('#banner_manage');
         table.on('preXhr.dt', function(e, settings, data){
-            data.templateType = $('#show_at').val();
+            data.bannerType = $('#show_at').val();
         });
-    </script> --}}
+    </script>
 @endpush

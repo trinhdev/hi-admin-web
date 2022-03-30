@@ -107,16 +107,16 @@ class BannerDataTable extends DataTable
         $this->orderBy = $this->columns[$orderColumn]['data'] == "DT_RowIndex" ? null : $this->columns[$orderColumn]['data'];
         $this->orderDirection = $this->order[0]['dir'];
         $this->templateType = $this->templateType ?? '';
+        // dd($this->bannerType);
         $param = [
-            'bannerType' => empty($this->bannerType) ? null : $this->bannerType,
-            'publicDateStart' => empty($this->public_date_from) ? null : Carbon::parse($this->public_date_from)->format('Y-m-d H:i:s'),
-            'publicDateEnd' => empty($this->public_date_to) ? null : Carbon::parse($this->public_date_to)->format('Y-m-d H:i:s'),
+            'banner_type' => $this->bannerType,
+            'public_date_start' => empty($this->public_date_from) ? null : Carbon::parse($this->public_date_from)->format('Y-m-d H:i:s'),
+            'public_date_end' => empty($this->public_date_to) ? null : Carbon::parse($this->public_date_to)->format('Y-m-d H:i:s'),
             'order_by' => $this->orderBy,
             'per_page' => $this->perPage,
             'current_page' => $this->currentPage,
             'order_direction' => empty($this->orderBy) ? null : $this->orderDirection
         ];
-        // dd($param);
         $model = $service->getListbanner($param);
         if(isset($model->statusCode) && $model->statusCode == 0) {
             return collect($model->data);
@@ -142,9 +142,9 @@ class BannerDataTable extends DataTable
                         'searching' => true,
                         'searchDelay' => 500,
                         'initComplete' => "function () {
-                            var templateType = $('#show_at');
-                            var table = $('#popup_manage_table').DataTable();
-                            $(templateType).on('change', function () { 
+                            var bannerType = $('#show_at');
+                            var table = $('#banner_manage').DataTable();
+                            $(bannerType).on('change', function () { 
                                 table.ajax.reload();
                             });
                          }"
