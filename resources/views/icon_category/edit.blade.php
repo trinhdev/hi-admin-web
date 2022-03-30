@@ -422,3 +422,8 @@
     }
 </style>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('/custom_js/icon_category.js') }}"></script>
+    <script src="{{ asset('/custom_js/javascript.icon.js')}}"></script>
+@endpush
