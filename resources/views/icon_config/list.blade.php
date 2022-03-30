@@ -143,7 +143,7 @@
                                 </div>
                             </form>
                         </div> --}}
-                        <table id="icon-config" class="display nowrap" style="width: 100%">
+                        <table id="icon-config" class="table table-hover table-striped dataTable no-footer" style="width: 100%">
                         </table>                                          
                     </div>
                 </div>
@@ -276,6 +276,10 @@
         .product-detail .title {
             width: 25%;
             font-weight: bold
+        }
+
+        table.dataTable tbody td {
+            vertical-align: middle;
         }
     </style>
 

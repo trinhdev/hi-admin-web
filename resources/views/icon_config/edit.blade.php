@@ -259,7 +259,7 @@
                             @endif
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconconfig.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
-                            <button type="button" onClick="deleteButton('#icon-config-form', '{{ @$data['name'] }}', '{{ route('iconconfig.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            <button type="button" onClick="deleteButton('icon_config', '#icon-config-form', '{{ @$data['name'] }}', '{{ route('iconconfig.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                             @endif
                             @if (Session::get('approved_data'))
                                 @can('icon-check-data-permission')

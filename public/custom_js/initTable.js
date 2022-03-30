@@ -2,74 +2,74 @@ $(document).ready(function () {
     initSelect();
     settings_on_search();
     // $(document).on('pjax:end', function () {
-        initSelect();
-        const pathArray = window.location.pathname.split("/");
-        let segment = pathArray[1]; //first uri param
-        let segment2 = pathArray[2];
-        switch (segment) {
+    initSelect();
+    const pathArray = window.location.pathname.split("/");
+    let segment = pathArray[1]; //first uri param
+    let segment2 = pathArray[2];
+    switch (segment) {
 
-            case 'user':
-                initUser();
-                break;
-            case 'modules':
-                initModule();
-                break;
-            case 'groups':
-                initGroup();
-                break;
-            case 'roles':
-                initRoles();
-                break;
-            case 'groupmodule':
-                initGroupModule();
-                break;
-            case 'manageotp':
-                initManageOtp();
-            case 'logactivities':
-                initLogActivities();
-                break;
-            case 'settings':
-                initSettings();
-                settings_on_search();
-                break;
-            case 'hidepayment':
-                initHidePaymentLogs();
-                break;
-            case 'bannermanage':
-                // callApiGetListBanner();
-                break;
-            case 'checkuserinfo':
-                initCheckUserInfo();
-                break;
-            case 'smsworld':
-                initSmsWorld();
-                break;
-            case 'checklistmanage':
-                initCheckListManage();
-                break;
-            case 'iconmanagement':
-                initIconmanagement();
-                break;
-            case 'closehelprequest':
-                initCloseHelpReqest();
-                break;
-            case 'iconcategory':
-                initIconcategory();
-                break;
-            case 'iconconfig':
-                initIconconfig();
-                break;
-            case 'iconapproved':
-                initIconapproved();
-            case 'ftel-phone':
-                initFtelPhone();
-                break;
-            case '':
-            case 'home':
-                drawChart();
-                break;
-        }
-        
+        case 'user':
+            initUser();
+            break;
+        case 'modules':
+            initModule();
+            break;
+        case 'groups':
+            initGroup();
+            break;
+        case 'roles':
+            initRoles();
+            break;
+        case 'groupmodule':
+            initGroupModule();
+            break;
+        case 'manageotp':
+            initManageOtp();
+        case 'logactivities':
+            initLogActivities();
+            break;
+        case 'settings':
+            initSettings();
+            settings_on_search();
+            break;
+        case 'hidepayment':
+            initHidePaymentLogs();
+            break;
+        case 'bannermanage':
+            // callApiGetListBanner();
+            break;
+        case 'checkuserinfo':
+            initCheckUserInfo();
+            break;
+        case 'smsworld':
+            initSmsWorld();
+            break;
+        case 'checklistmanage':
+            initCheckListManage();
+            break;
+        case 'iconmanagement':
+            initIconmanagement();
+            break;
+        case 'closehelprequest':
+            initCloseHelpReqest();
+            break;
+        case 'iconcategory':
+            initIconcategory();
+            break;
+        case 'iconconfig':
+            initIconconfig();
+            break;
+        case 'iconapproved':
+            initIconapproved();
+        case 'ftel-phone':
+            initFtelPhone();
+            break;
+        case '':
+        case 'home':
+            drawChart();
+            break;
+    }
+
 
     // });
     // $(document).on('pjax:popstate', function (event) {
@@ -421,63 +421,63 @@ function initLogActivities() {
         },
         searchDelay: 500,
         columns: [{
-                title: 'No.',
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
+            title: 'No.',
+            render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
             },
-            {
-                data: 'id',
-            },
-            {
-                data: 'user_id',
-                className: "text-center"
-            },
-            {
-                data: 'user.email',
-                className: "text-center"
-            },
-            {
-                data: 'user.role.role_name',
-                className: "text-center",
-                searchable:false
-            },
-            {
-                data: 'method',
-                className: "text-center"
-            },
-            {
-                data: 'url'
-            },
-            {
-                data: 'created_at',
-                class: 'font-weight-bold'
-            },
-            {
-                data: 'param',
-                render: function (data, type, full) {
-                    var showChar = 200;
-                    var ellipsestext = "...";
-                    var moretext = "Show More";
-                    var lesstext = "Show Less";
-                    var contentt = JSON.stringify(data);
-                    var content = contentt.replace(/["]+/g, '').substring(0, contentt.length - 1);
-                    if (content.length > showChar) {
-                        var c = content.substr(0, showChar);
-                        var h = content.substr(showChar, content.length - showChar);
-                        var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink" style="cursor: pointer;">' + moretext + '</a></span>'; //here call the read() function
-                        return html.toString();
-                    }
-                    return data;
+        },
+        {
+            data: 'id',
+        },
+        {
+            data: 'user_id',
+            className: "text-center"
+        },
+        {
+            data: 'user.email',
+            className: "text-center"
+        },
+        {
+            data: 'user.role.role_name',
+            className: "text-center",
+            searchable: false
+        },
+        {
+            data: 'method',
+            className: "text-center"
+        },
+        {
+            data: 'url'
+        },
+        {
+            data: 'created_at',
+            class: 'font-weight-bold'
+        },
+        {
+            data: 'param',
+            render: function (data, type, full) {
+                var showChar = 200;
+                var ellipsestext = "...";
+                var moretext = "Show More";
+                var lesstext = "Show Less";
+                var contentt = JSON.stringify(data);
+                var content = contentt.replace(/["]+/g, '').substring(0, contentt.length - 1);
+                if (content.length > showChar) {
+                    var c = content.substr(0, showChar);
+                    var h = content.substr(showChar, content.length - showChar);
+                    var html = c + '<span class="moreellipses">' + ellipsestext + '</span><span class="morecontent"><span style="display:none">' + h + '</span>&nbsp;&nbsp;<a onclick="read(this)" class="morelink" style="cursor: pointer;">' + moretext + '</a></span>'; //here call the read() function
+                    return html.toString();
                 }
-            },
-            {
-                data: 'ip',
-                className: "text-center",
-            },
-            {
-                data: 'agent'
+                return data;
             }
+        },
+        {
+            data: 'ip',
+            className: "text-center",
+        },
+        {
+            data: 'agent'
+        }
         ],
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
@@ -762,226 +762,226 @@ function initHidePaymentLogs() {
     });
 }
 
-function initBannerManage(response) {
-    var dataTable = [];
-    var activeBanner = [];
-    var unactiveBanner = [];
-    var flagAcl = false;
-    var stt = 1;
-    response.data.forEach(element => {
-        let subData = convertDetailBanner(element);
-        (subData.is_banner_expired) ? unactiveBanner.push(subData) : activeBanner.push(subData);
-    });
-    activeBanner = activeBanner.sort(function (first, seccond) {
-        return new Date(seccond.date_created) - new Date(first.date_created);
-    });
-    unactiveBanner.sort(function (first, seccond) {
-        return new Date(seccond.date_created) - new Date(first.date_created);
-    });
-    dataTable = activeBanner.concat(unactiveBanner);
-    var columnData = [{
-        title: 'STT',
-        className: 'text-center',
-        render: function (data, type, row, meta) {
-            return `<span class ="infoRow" data-type="` + row.bannerType + `" data-id = "` + row.bannerId + `">` + parseInt(meta.row + 1) + `</span>`;
-        },
-        className: 'text-center'
-    },
-    {
-        data: 'title_vi',
-        title: "Tiêu Đề"
-    },
-    {
-        data: 'image',
-        title: "Ảnh Banner",
-        "render": function (data, type, row) {
-            return `<img src="` + data + `"  style="width:150px" onerror="this.onerror=null;this.src='/images/img_404.svg';"  onclick ="window.open('` + data + `').focus()"/>`;
-        },
-        "sortable": false,
-        className: 'text-center'
-    },
-    // {
-    //     data :'direction_url',
-    //     title: "Direction URL",
-    //     "render": function(data, type, row) {
-    //         return `<a href="`+data+`" target="_blank">`+data+`</a>`;
-    //     }
-    // },
-    {
-        data: 'bannerType',
-        title: 'Loại Banner',
-        className: 'text-center'
-    },
-    {
-        data: 'public_date_start',
-        title: 'Ngày Hiển Thị'
-    },
-    {
-        data: 'public_date_end',
-        title: 'Ngày kết thúc'
-    },
-    {
-        data: 'is_banner_expired',
-        title: 'Trạng Thái',
-        render: function (data, type, row) {
-            let is_show = (data) ? 'Hết hạn' : 'Còn hạn';
-            let badge = (data) ? 'badge badge-danger' : 'badge badge-success';
-            return `<h4 class="` + badge + `">` + is_show + `</h4>`;
-        },
-        className: 'text-center'
-    },
-    {
-        data: 'ordering',
-        title: 'Độ ưu tiên',
-        "render": function (data, type, row) {
-            let disable = row.is_banner_expired ? 'disabled' : '';
-            return `<input type="number" onchange="updateOrdering(this)" style="width:50px" value="` + data + `" ` + disable + `/>`;
-        },
-        "sortable": false,
-        className: 'text-center'
-    },
-    {
-        data: 'view_count',
-        title: 'Số lượt click',
-        className: 'text-center'
-    },
-    {
-        data: 'date_created',
-        title: 'Ngày tạo'
-    },
-    {
-        data: 'created_by',
-        title: 'Người Tạo'
-    },
-    {
-        data: 'modified_by',
-        title: 'Người cập nhật'
-    }
-    ];
+// function initBannerManage(response) {
+//     var dataTable = [];
+//     var activeBanner = [];
+//     var unactiveBanner = [];
+//     var flagAcl = false;
+//     var stt = 1;
+//     response.data.forEach(element => {
+//         let subData = convertDetailBanner(element);
+//         (subData.is_banner_expired) ? unactiveBanner.push(subData) : activeBanner.push(subData);
+//     });
+//     activeBanner = activeBanner.sort(function (first, seccond) {
+//         return new Date(seccond.date_created) - new Date(first.date_created);
+//     });
+//     unactiveBanner.sort(function (first, seccond) {
+//         return new Date(seccond.date_created) - new Date(first.date_created);
+//     });
+//     dataTable = activeBanner.concat(unactiveBanner);
+//     var columnData = [{
+//         title: 'STT',
+//         className: 'text-center',
+//         render: function (data, type, row, meta) {
+//             return `<span class ="infoRow" data-type="` + row.bannerType + `" data-id = "` + row.bannerId + `">` + parseInt(meta.row + 1) + `</span>`;
+//         },
+//         className: 'text-center'
+//     },
+//     {
+//         data: 'title_vi',
+//         title: "Tiêu Đề"
+//     },
+//     {
+//         data: 'image',
+//         title: "Ảnh Banner",
+//         "render": function (data, type, row) {
+//             return `<img src="` + data + `"  style="width:150px" onerror="this.onerror=null;this.src='/images/img_404.svg';"  onclick ="window.open('` + data + `').focus()"/>`;
+//         },
+//         "sortable": false,
+//         className: 'text-center'
+//     },
+//     // {
+//     //     data :'direction_url',
+//     //     title: "Direction URL",
+//     //     "render": function(data, type, row) {
+//     //         return `<a href="`+data+`" target="_blank">`+data+`</a>`;
+//     //     }
+//     // },
+//     {
+//         data: 'bannerType',
+//         title: 'Loại Banner',
+//         className: 'text-center'
+//     },
+//     {
+//         data: 'public_date_start',
+//         title: 'Ngày Hiển Thị'
+//     },
+//     {
+//         data: 'public_date_end',
+//         title: 'Ngày kết thúc'
+//     },
+//     {
+//         data: 'is_banner_expired',
+//         title: 'Trạng Thái',
+//         render: function (data, type, row) {
+//             let is_show = (data) ? 'Hết hạn' : 'Còn hạn';
+//             let badge = (data) ? 'badge badge-danger' : 'badge badge-success';
+//             return `<h4 class="` + badge + `">` + is_show + `</h4>`;
+//         },
+//         className: 'text-center'
+//     },
+//     {
+//         data: 'ordering',
+//         title: 'Độ ưu tiên',
+//         "render": function (data, type, row) {
+//             let disable = row.is_banner_expired ? 'disabled' : '';
+//             return `<input type="number" onchange="updateOrdering(this)" style="width:50px" value="` + data + `" ` + disable + `/>`;
+//         },
+//         "sortable": false,
+//         className: 'text-center'
+//     },
+//     {
+//         data: 'view_count',
+//         title: 'Số lượt click',
+//         className: 'text-center'
+//     },
+//     {
+//         data: 'date_created',
+//         title: 'Ngày tạo'
+//     },
+//     {
+//         data: 'created_by',
+//         title: 'Người Tạo'
+//     },
+//     {
+//         data: 'modified_by',
+//         title: 'Người cập nhật'
+//     }
+//     ];
 
-    if (response.isAdmin === true) {
-        flagAcl = true;
-    } else {
-        var aclCurrentModule = response.aclCurrentModule;
-        if (aclCurrentModule.update == 1) {
-            flagAcl = true;
-        }
-    }
-    if (flagAcl) {
-        columnData.push({
-            title: 'Hành Động',
-            render: function (data, type, row) {
-                var bannerType = row.bannerType;
-                if (bannerType == 'highlight') {
-                    bannerType = 'bannerHome';
-                };
-                var exists = 0 != $('#show_at option[value="'+bannerType+'"]').length;
-                if (exists === false) return "";
-                return `<div style="display:flex; justify-content:center">
-                    <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
-                   <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
-                    `;
-                // return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
-            },
-            "sortable": false
-        });
-    } else {
-        columnData.push({
-            title: 'Hành Động',
-            render: function (data, type, row) {
-                if (row.bannerType === 'event_normal') return "";
-                return `<div></div>`;
-            },
-            className: 'text-center',
-            "sortable": false
-        });
-    };
-    $('#banner_manage').DataTable({
-        // "bAutoWidth": false,
-        // "autoWidth":false,
-        data: dataTable,
-        "processing": true,
-        "select": true,
-        responsive: true,
-        "bDestroy": true,
-        "scrollX": true,
-        "columns": columnData,
-        // "order": [[9, "desc"]],
-        columnDefs: [{
-            width: '5%',
-            targets: 0
-        }, //stt
-        // { width: '10%', targets: 1 }, // 1 bannerId
-        {
-            width: '10%',
-            targets: 1
-        }, // 2 Title
-        {
-            width: '15%',
-            targets: 2
-        }, // 3 Image
-        // { width: '10%', targets: 3 }, // 4 direction URL
-        {
-            width: '5%',
-            targets: 3
-        }, // 5 Banner Type,
-        {
-            width: '10%',
-            targets: 4
-        }, // 6 public date start
-        {
-            width: '10%',
-            targets: 5
-        }, // 7 public date end
-        {
-            width: '3%',
-            targets: 6
-        }, // is expired
-        {
-            width: '5%',
-            targets: 7
-        }, // 8 ordering
-        {
-            width: '5%',
-            targets: 8
-        }, // 9 view count
-        {
-            width: '10%',
-            targets: 9
-        }, // 10 create at
-        {
-            width: '7%',
-            targets: 10
-        }, // 11 create by
-        {
-            width: '7%',
-            targets: 11
-        }, // 11 create by
-        {
-            width: '10%',
-            targets: 12
-        }, // 12 Action
-        ],
-        language: {
-            "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
-            "zeroRecords": "Không có dữ liệu",
-            "info": "Trang _PAGE_ / _PAGES_ của _TOTAL_ dữ liệu",
-            "infoEmpty": "Không có dữ liệu",
-            "paginate": {
-                "first": "Đầu",
-                "last": "Cuối",
-                "next": "Sau",
-                "previous": "Trước"
-            },
-            "search": "Tìm kiếm:",
-        }
-        // "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
-        //     if(data.is_banner_expired){
-        //         $('td', row).css('background-color', 'rgb(255 108 94 / 51%)');
-        //     }
-        // }
-    });
-}
+//     if (response.isAdmin === true) {
+//         flagAcl = true;
+//     } else {
+//         var aclCurrentModule = response.aclCurrentModule;
+//         if (aclCurrentModule.update == 1) {
+//             flagAcl = true;
+//         }
+//     }
+//     if (flagAcl) {
+//         columnData.push({
+//             title: 'Hành Động',
+//             render: function (data, type, row) {
+//                 var bannerType = row.bannerType;
+//                 if (bannerType == 'highlight') {
+//                     bannerType = 'bannerHome';
+//                 };
+//                 var exists = 0 != $('#show_at option[value="' + bannerType + '"]').length;
+//                 if (exists === false) return "";
+//                 return `<div style="display:flex; justify-content:center">
+//                     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
+//                    <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
+//                     `;
+//                 // return `<a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>`;
+//             },
+//             "sortable": false
+//         });
+//     } else {
+//         columnData.push({
+//             title: 'Hành Động',
+//             render: function (data, type, row) {
+//                 if (row.bannerType === 'event_normal') return "";
+//                 return `<div></div>`;
+//             },
+//             className: 'text-center',
+//             "sortable": false
+//         });
+//     };
+//     $('#banner_manage').DataTable({
+//         // "bAutoWidth": false,
+//         // "autoWidth":false,
+//         data: dataTable,
+//         "processing": true,
+//         "select": true,
+//         responsive: true,
+//         "bDestroy": true,
+//         "scrollX": true,
+//         "columns": columnData,
+//         // "order": [[9, "desc"]],
+//         columnDefs: [{
+//             width: '5%',
+//             targets: 0
+//         }, //stt
+//         // { width: '10%', targets: 1 }, // 1 bannerId
+//         {
+//             width: '10%',
+//             targets: 1
+//         }, // 2 Title
+//         {
+//             width: '15%',
+//             targets: 2
+//         }, // 3 Image
+//         // { width: '10%', targets: 3 }, // 4 direction URL
+//         {
+//             width: '5%',
+//             targets: 3
+//         }, // 5 Banner Type,
+//         {
+//             width: '10%',
+//             targets: 4
+//         }, // 6 public date start
+//         {
+//             width: '10%',
+//             targets: 5
+//         }, // 7 public date end
+//         {
+//             width: '3%',
+//             targets: 6
+//         }, // is expired
+//         {
+//             width: '5%',
+//             targets: 7
+//         }, // 8 ordering
+//         {
+//             width: '5%',
+//             targets: 8
+//         }, // 9 view count
+//         {
+//             width: '10%',
+//             targets: 9
+//         }, // 10 create at
+//         {
+//             width: '7%',
+//             targets: 10
+//         }, // 11 create by
+//         {
+//             width: '7%',
+//             targets: 11
+//         }, // 11 create by
+//         {
+//             width: '10%',
+//             targets: 12
+//         }, // 12 Action
+//         ],
+//         language: {
+//             "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
+//             "zeroRecords": "Không có dữ liệu",
+//             "info": "Trang _PAGE_ / _PAGES_ của _TOTAL_ dữ liệu",
+//             "infoEmpty": "Không có dữ liệu",
+//             "paginate": {
+//                 "first": "Đầu",
+//                 "last": "Cuối",
+//                 "next": "Sau",
+//                 "previous": "Trước"
+//             },
+//             "search": "Tìm kiếm:",
+//         }
+//         // "fnRowCallback": function(row, data, iDisplayIndex, iDisplayIndexFull) {
+//         //     if(data.is_banner_expired){
+//         //         $('td', row).css('background-color', 'rgb(255 108 94 / 51%)');
+//         //     }
+//         // }
+//     });
+// }
 
 function initCheckUserInfo() {
     var columnData = [{
@@ -1136,7 +1136,7 @@ function initIconmanagement() {
         "pageLength": 5,
         "lengthMenu": [5, 10, 25, 50, 75, 100],
         "orderMulti": true,
-        "order": [[ 1, "desc" ]],
+        "order": [[1, "desc"]],
         "retrieve": true,
         "serverSide": true,
         "ajax": {
@@ -1229,7 +1229,7 @@ function initIconmanagement() {
                 return `<div>
                 <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconmanagement/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                             <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>
+                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButton('icon_management', '${row_data}', '${productName}', '/iconmanagement/destroy')"><i class="fas fa-trash"></i></button>
                         </div>`;
             },
             className: 'text-center',
@@ -1257,159 +1257,6 @@ function initIconmanagement() {
             null,
             null
         ],
-    });
-
-    $('#show_from').datetimepicker({
-        format: "YYYY-MM-DD HH:mm:ss",
-        useCurrent: false,
-        sideBySide: true,
-        icons: {
-            time: 'fas fa-clock',
-            date: 'fas fa-calendar',
-            up: 'fas fa-arrow-up',
-            down: 'fas fa-arrow-down',
-            previous: 'fas fa-arrow-left',
-            next: 'fas fa-arrow-right',
-            today: 'fas fa-calendar-day',
-            clear: 'fas fa-trash',
-            close: 'fas fa-window-close'
-        },
-        minDate: ($('#show_from').val()) ? new Date($('#show_from').val()) : today,
-        maxDate: ($('#show_to').val()) ? new Date($('#show_to').val()) : tomorrow,
-    });
-
-    $('#show_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm:ss",
-        useCurrent: false,
-        sideBySide: true,
-        icons: {
-            time: 'fas fa-clock',
-            date: 'fas fa-calendar',
-            up: 'fas fa-arrow-up',
-            down: 'fas fa-arrow-down',
-            previous: 'fas fa-arrow-left',
-            next: 'fas fa-arrow-right',
-            today: 'fas fa-calendar-day',
-            clear: 'fas fa-trash',
-            close: 'fas fa-window-close'
-        },
-        minDate: ($('#show_from').val()) ? new Date($('#show_from').val()) : tomorrow,
-    });
-
-    $('#new_from').datetimepicker({
-        format: "YYYY-MM-DD HH:mm:ss",
-        useCurrent: false,
-        sideBySide: true,
-        icons: {
-            time: 'fas fa-clock',
-            date: 'fas fa-calendar',
-            up: 'fas fa-arrow-up',
-            down: 'fas fa-arrow-down',
-            previous: 'fas fa-arrow-left',
-            next: 'fas fa-arrow-right',
-            today: 'fas fa-calendar-day',
-            clear: 'fas fa-trash',
-            close: 'fas fa-window-close'
-        },
-        minDate: ($('#new_from').val()) ? new Date($('#new_from').val()) : today,
-        maxDate: ($('#new_to').val()) ? new Date($('#new_to').val()) : tomorrow,
-    });
-
-    $('#new_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm:ss",
-        useCurrent: false,
-        sideBySide: true,
-        icons: {
-            time: 'fas fa-clock',
-            date: 'fas fa-calendar',
-            up: 'fas fa-arrow-up',
-            down: 'fas fa-arrow-down',
-            previous: 'fas fa-arrow-left',
-            next: 'fas fa-arrow-right',
-            today: 'fas fa-calendar-day',
-            clear: 'fas fa-trash',
-            close: 'fas fa-window-close'
-        },
-        minDate: ($('#new_from').val()) ? new Date($('#new_from').val()) : today,
-    });
-
-    $("#show_from").on("dp.change", function (e) {
-        if ($('#show_to').data("DateTimePicker") != undefined) {
-            $('#show_to').data("DateTimePicker").minDate(e.date);
-        }
-    });
-
-    $("#show_to").on("dp.change", function (e) {
-        if ($('#show_from').data("DateTimePicker") != undefined) {
-            $('#show_from').data("DateTimePicker").maxDate(e.date);
-        }
-    });
-
-    $("#new_from").on("dp.change", function (e) {
-        if ($('#new_to').data("DateTimePicker") != undefined) {
-            $('#new_to').data("DateTimePicker").minDate(e.date);
-        }
-    });
-
-    $("#new_to").on("dp.change", function (e) {
-        if ($('#new_from').data("DateTimePicker") != undefined) {
-            $('#new_from').data("DateTimePicker").maxDate(e.date);
-        }
-    });
-
-    if ($('#status-clock').is(':checked')) {
-        $('#status-clock-date-time').show();
-    }
-    else {
-        $('#status-clock-date-time').hide();
-    }
-
-    if ($('#is-new-show').is(':checked')) {
-        $('#is-new-icon-show-date-time').show();
-    }
-    else {
-        $('#is-new-icon-show-date-time').hide();
-    }
-
-    $('input:radio[name="isDisplay"]').change(() => {
-        if ($('#status-clock').is(':checked')) {
-            $('#status-clock-date-time').show();
-        }
-        else {
-            $('#status-clock-date-time').hide();
-        }
-    });
-
-    $('input:checkbox[name="isNew"]').change(() => {
-        if ($('#is-new-show').is(':checked')) {
-            $('#is-new-icon-show-date-time').show();
-        }
-        else {
-            $('#is-new-icon-show-date-time').hide();
-        }
-    });
-
-    $("#status-all").change(function () {
-        if (this.checked) {
-            $("input[name='status']").prop('checked', true);
-        }
-        else {
-            $("input[name='status']").prop('checked', false);
-        }
-    });
-
-    $("#pheduyet-all").change(function () {
-        if (this.checked) {
-            $("input[name='pheduyet']").prop('checked', true);
-        }
-        else {
-            $("input[name='pheduyet']").prop('checked', false);
-        }
-    });
-
-    $('#icon-management tbody').on( 'click', '.delete-button', function () {
-        var data = icon_management_table.row( $(this).parents('tr') ).data();
-        deleteButton(JSON.stringify(data), data['productNameVi'], '/iconmanagement/destroy');
     });
 }
 
@@ -1484,7 +1331,7 @@ function initFtelPhone() {
         "bDestroy": true,
         "scrollX": true,
         retrieve: true,
-        "lengthMenu": [ 10, 25, 50, 75, 100 ],
+        "lengthMenu": [10, 25, 50, 75, 100],
         "pageLength": 25,
         "ajax": {
             url: "/ftel-phone/initDatatable"
@@ -1665,215 +1512,9 @@ function initIconcategory() {
             $.pjax.reload('#pjax');
         },
     });
-
-    if ($('#status-clock').is(':checked')) {
-        $('#status-clock-date-time').show();
-    }
-    else {
-        $('#status-clock-date-time').hide();
-    }
-
-    if ($('#is-new-show').is(':checked')) {
-        $('#is-new-icon-show-date-time').show();
-    }
-    else {
-        $('#is-new-icon-show-date-time').hide();
-    }
-
-    $('#show_from').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
-        useCurrent: false,
-        sideBySide: true,
-        icons: {
-            time: 'fas fa-clock',
-            date: 'fas fa-calendar',
-            up: 'fas fa-arrow-up',
-            down: 'fas fa-arrow-down',
-            previous: 'fas fa-arrow-left',
-            next: 'fas fa-arrow-right',
-            today: 'fas fa-calendar-day',
-            clear: 'fas fa-trash',
-            close: 'fas fa-window-close'
-        }
-    });
-
-    $('#show_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm",
-        useCurrent: false,
-        sideBySide: true,
-        icons: {
-            time: 'fas fa-clock',
-            date: 'fas fa-calendar',
-            up: 'fas fa-arrow-up',
-            down: 'fas fa-arrow-down',
-            previous: 'fas fa-arrow-left',
-            next: 'fas fa-arrow-right',
-            today: 'fas fa-calendar-day',
-            clear: 'fas fa-trash',
-            close: 'fas fa-window-close'
-        }
-    });
-
-    $('#new_from').datetimepicker({
-        format: "YYYY-MM-DD HH:mm:SS",
-        useCurrent: false,
-        sideBySide: true,
-        icons: {
-            time: 'fas fa-clock',
-            date: 'fas fa-calendar',
-            up: 'fas fa-arrow-up',
-            down: 'fas fa-arrow-down',
-            previous: 'fas fa-arrow-left',
-            next: 'fas fa-arrow-right',
-            today: 'fas fa-calendar-day',
-            clear: 'fas fa-trash',
-            close: 'fas fa-window-close'
-        }
-    });
-
-    $('#new_to').datetimepicker({
-        format: "YYYY-MM-DD HH:mm:SS",
-        useCurrent: false,
-        sideBySide: true,
-        icons: {
-            time: 'fas fa-clock',
-            date: 'fas fa-calendar',
-            up: 'fas fa-arrow-up',
-            down: 'fas fa-arrow-down',
-            previous: 'fas fa-arrow-left',
-            next: 'fas fa-arrow-right',
-            today: 'fas fa-calendar-day',
-            clear: 'fas fa-trash',
-            close: 'fas fa-window-close'
-        }
-    });
-
-    // lightSlider
-    $('#all-product').lightSlider({
-        item: 5,
-        loop: true,
-        slideMove: 1,
-        easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
-        speed: 600,
-        slideMargin: 15,
-        enableDrag: false,
-        enableTouch: false,
-        pager: false
-    });
-
-    $("#show_from").on("dp.change", function (e) {
-        if ($('#show_to').data("DateTimePicker") != undefined) {
-            $('#show_to').data("DateTimePicker").minDate(e.date);
-        }
-    });
-
-    $("#show_to").on("dp.change", function (e) {
-        if ($('#show_from').data("DateTimePicker") != undefined) {
-            $('#show_from').data("DateTimePicker").maxDate(e.date);
-        }
-    });
-
-    $("#new_from").on("dp.change", function (e) {
-        if ($('#new_to').data("DateTimePicker") != undefined) {
-            $('#new_to').data("DateTimePicker").minDate(e.date);
-        }
-    });
-
-    $("#new_to").on("dp.change", function (e) {
-        if ($('#new_from').data("DateTimePicker") != undefined) {
-            $('#new_from').data("DateTimePicker").maxDate(e.date);
-        }
-    });
-
-    $('input:radio[name="status"]').change(() => {
-        if ($('#status-clock').is(':checked')) {
-            $('#status-clock-date-time').show();
-        }
-        else {
-            $('#status-clock-date-time').hide();
-        }
-    });
-
-    $('input:checkbox[name="is_new_show"]').change(() => {
-        if ($('#is-new-show').is(':checked')) {
-            $('#is-new-icon-show-date-time').show();
-        }
-        else {
-            $('#is-new-icon-show-date-time').hide();
-        }
-    });
-
-    dragula([document.getElementById('all-product'), document.getElementById('selected-product')], {
-        direction: 'horizontal',
-        revertOnSpill: true,
-        copy: function (el, source) {
-            return source === document.getElementById('all-product')
-        },
-        accepts: function (el, target, source, sibling) {
-            var li_all = $(el).attr('id');
-            if ($('#' + li_all + '-selected-product').length != 0) {
-                swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: `Sản phẩm này đã tồn tại trong danh mục`
-                });
-                return false;
-            }
-
-            return target !== document.getElementById('all-product')
-        }
-    }).on('drop', (el, target, source, sibling) => {
-        var li_all = $(el).attr('id');
-        $(el).attr('id', li_all + '-selected-product');
-        $(el).removeClass("lslide");
-        $(el).removeClass("active");
-        $(el).removeClass("gu-transit");
-        $(el).addClass("col-sm-2");
-
-        $(el).css('margin-right', 0);
-
-        var spanElement = $(el).find("span:first");
-        $(spanElement).removeClass("badge-light");
-        $(spanElement).addClass("badge-dark");
-
-        if ($(el).find('span.position').length < 1) {
-            $(el).append(`<h6><span class="badge badge-warning position">${$(el).index() + 1}</span></h6>`);
-        }
-
-        $(target).find("li").each((key, value) => {
-            $(value).find("span.position").text($(value).index() + 1);
-        });
-    });
-
-    $("#status-all").change(function () {
-        if (this.checked) {
-            $("input[name='status']").prop('checked', true);
-        }
-        else {
-            $("input[name='status']").prop('checked', false);
-        }
-    });
-
-    $("#pheduyet-all").change(function () {
-        if (this.checked) {
-            $("input[name='pheduyet']").prop('checked', true);
-        }
-        else {
-            $("input[name='pheduyet']").prop('checked', false);
-        }
-    });
-
-    $('#icon-category tbody').on( 'click', '.delete-button', function () {
-        var data = icon_category.row( $(this).parents('tr') ).data();
-        deleteButton(JSON.stringify(data), data['productTitleNameVi'], '/iconcategory/destroy');
-    });
 }
 
 function initIconconfig() {
-    // $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
-    //     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
-    // } );
-
     var icon_config_table = $('#icon-config').DataTable({
         "processing": true,
         "select": true,
@@ -1992,140 +1633,6 @@ function initIconconfig() {
             null
         ],
     });
-
-    dragula([document.getElementById('all-product-config'), document.getElementById('selected-product-config')], {
-        direction: 'horizontal',
-        revertOnSpill: true,
-        copy: function (el, source) {
-            console.log('copy');
-            return source === document.getElementById('all-product-config')
-        },
-        accepts: function (el, target, source, sibling) {
-            var li_all = $(el).attr('id');
-            if ($('#' + li_all + '-selected-product-config').length != 0) {
-                swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: `Sản phẩm này đã tồn tại trong danh mục`
-                });
-                return false;
-            }
-    
-            var iconsPerRow = ($('#icon-per-row').val()) ? $('#icon-per-row').val() : 1;
-            var rowOnPage = ($('#row-on-page').val()) ? $('#row-on-page').val() : 1;
-    
-            if($('#selected-product-config li').length > iconsPerRow * rowOnPage) {
-                swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: `Chỉ có thể thêm tối đa ${iconsPerRow * rowOnPage} icon vào vị trí này. Đã quá tổng số sản phẩm có thể thêm. Vui lòng xóa bớt sản phẩm trước khi thêm vào vị trí.`
-                });
-                return false;
-            }
-    
-            return target !== document.getElementById('all-product-config')
-        }
-    }).on('drop', (el, target, source, sibling) => {
-        var li_all = $(el).attr('id');
-        $(el).attr('id', li_all + '-selected-product-config');
-        $(el).removeClass("lslide");
-        $(el).removeClass("active");
-        $(el).removeClass("gu-transit");
-    
-        $(el).css('margin-right', 0);
-    
-        var spanElement = $(el).find("span:first");
-        $(spanElement).removeClass("badge-light");
-        $(spanElement).addClass("badge-dark");
-    
-        if ($(el).find('span.position').length < 1) {
-            $(el).append(`<h6><span class="badge badge-warning position">${$(el).index() + 1}</span></h6>`);
-        }
-    
-        $(target).find("li").each((key, value) => {
-            $(value).find("span.position").text($(value).index() + 1);
-        });
-    }); 
-
-    // lightSlider
-    $('#all-product-config').lightSlider({
-        item: 5,
-        loop: true,
-        slideMove: 1,
-        easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
-        speed: 600,
-        slideMargin: 15,
-        enableDrag: false,
-        enableTouch: false,
-        pager: false
-    });
-
-    $("#status-all").change(function () {
-        if (this.checked) {
-            $("input[name='status']").prop('checked', true);
-        }
-        else {
-            $("input[name='status']").prop('checked', false);
-        }
-    });
-
-    $("#pheduyet-all").change(function () {
-        if (this.checked) {
-            $("input[name='pheduyet']").prop('checked', true);
-        }
-        else {
-            $("input[name='pheduyet']").prop('checked', false);
-        }
-    });
-
-    $('#icon-per-row').change(function() {
-        $("#selected-product-config").css({
-            "maxWidth": ($('#icon-per-row').val()) ? $('#icon-per-row').val() * 100 / 5 + "%" : "100%",
-        });
-    });
-
-    $("input[name='prod_add']").change(function() {
-        if(this.value == 'category_add') {
-            $('.category-add').css('display', 'block');
-            $('.product-add').css('display', 'none');
-            if($('#all-title-config')) {
-                $('#all-title-config').lightSlider({
-                    item: 5,
-                    loop: true,
-                    slideMove: 1,
-                    easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
-                    speed: 600,
-                    slideMargin: 15,
-                    enableDrag: false,
-                    enableTouch: false,
-                    pager: false
-                });
-            }
-        }
-        else {
-            $('.category-add').css('display', 'none');
-            $('.product-add').css('display', 'block');
-            if($('#all-product-config')) {
-                $('#all-product-config').lightSlider({
-                    item: 5,
-                    loop: true,
-                    slideMove: 1,
-                    easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
-                    speed: 600,
-                    slideMargin: 15,
-                    enableDrag: false,
-                    enableTouch: false,
-                    pager: false
-                });
-            }
-        }
-        // console.log(this.value);
-    });
-
-    $('#icon-config tbody').on( 'click', '.delete-button', function () {
-        var data = icon_config_table.row( $(this).parents('tr') ).data();
-        deleteButton(JSON.stringify(data), data['name'], '/iconconfig/destroy');
-    });
 }
 
 function initIconapproved() {
@@ -2140,7 +1647,7 @@ function initIconapproved() {
         "orderMulti": true,
         "retrieve": true,
         "serverSide": true,
-        "order": [[ 7, "desc" ]],
+        "order": [[7, "desc"]],
         dom: 'Bfrtip',
         "columnDefs": [
             {
@@ -2167,9 +1674,9 @@ function initIconapproved() {
             data: 'product_type',
             name: "product_type",
             title: "Loại",
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
                 var product_type = '';
-                switch(data) {
+                switch (data) {
                     case 'icon_management':
                         product_type = `<span class="badge badge-success">Sản phẩm</span>`;
                         break;
@@ -2188,17 +1695,17 @@ function initIconapproved() {
             data: 'icon',
             name: "icon",
             title: "Tên",
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
                 var productInfo = '';
-                if(row['icon'] && row['icon']['productNameVi']) {
+                if (row['icon'] && row['icon']['productNameVi']) {
                     productInfo = row['icon']['productNameVi'];
                 }
 
-                if(row['icon_category'] && row['icon_category']['productTitleNameVi']) {
+                if (row['icon_category'] && row['icon_category']['productTitleNameVi']) {
                     productInfo = row['icon_category']['productTitleNameVi'];
                 }
 
-                if(row['icon_config'] && row['icon_config']['name']) {
+                if (row['icon_config'] && row['icon_config']['name']) {
                     productInfo = row['icon_config']['name'];
                 }
 
@@ -2210,9 +1717,9 @@ function initIconapproved() {
             data: 'approved_type',
             name: 'approved_type',
             title: 'Loại yêu cầu',
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
                 var result = '';
-                switch(data) {
+                switch (data) {
                     case 'create':
                         result = `<span class="badge badge-success">${data}</span>`;
                         break;
@@ -2231,9 +1738,9 @@ function initIconapproved() {
             data: 'approved_status_name',
             name: 'approved_status_name',
             title: 'Trạng thái yêu cầu',
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
                 var approved_status_name = '';
-                switch(row['approved_status']) {
+                switch (row['approved_status']) {
                     case 'chokiemtra':
                         approved_status_name = `<span class="badge badge-success">${data}</span>`;
                         break;

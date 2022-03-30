@@ -141,3 +141,26 @@ $('input:checkbox[name="isNew"]').change(() => {
     }
 });
 
+$("#status-all").change(function () {
+    if (this.checked) {
+        $("input[name='status']").prop('checked', true);
+    }
+    else {
+        $("input[name='status']").prop('checked', false);
+    }
+});
+
+$("#pheduyet-all").change(function () {
+    if (this.checked) {
+        $("input[name='pheduyet']").prop('checked', true);
+    }
+    else {
+        $("input[name='pheduyet']").prop('checked', false);
+    }
+});
+
+$('#icon-management tbody').on('click', '.delete-button', function () {
+    var data = icon_management_table.row($(this).parents('tr')).data();
+    deleteButton(JSON.stringify(data), data['productNameVi'], '/iconmanagement/destroy');
+});
+

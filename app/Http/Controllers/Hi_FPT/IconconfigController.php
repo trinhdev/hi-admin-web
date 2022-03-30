@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Settings;
 use App\Models\Icon_approve;
 use App\Models\Icon_approve_logs;
+use App\Models\Roles;
 use Illuminate\Http\Request;
 use App\Http\Requests\IconConfigSaveRequest;
 
@@ -16,6 +17,7 @@ use \stdClass;
 use Yajra\DataTables\DataTables;
 
 use App\Services\IconManagementService;
+use App\Services\MailService;
 use Illuminate\Support\Facades\Gate;
 
 class IconconfigController extends MY_Controller
@@ -30,6 +32,7 @@ class IconconfigController extends MY_Controller
         $this->title = 'Icon Management';
         $this->iconconfig = new IconManagementService();
         $this->model = $this->getModel('Icon_Config');
+        $this->mailService = new MailService();
     }
 
     public function index()

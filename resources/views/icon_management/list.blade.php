@@ -141,7 +141,7 @@
                                 </div>
                             </form> -->
                         <!-- </div> -->
-                        <table id="icon-management" class="table table-hover table-striped text-center" style="width: 100%">
+                        <table id="icon-management" class="table table-hover table-striped dataTable no-footer" style="width: 100%">
                         </table>                                          
                     </div>
                 </div>
@@ -282,6 +282,10 @@
 
         #filter-status .form-group {
             margin-bottom: 0
+        }
+
+        table.dataTable tbody td {
+            vertical-align: middle;
         }
     </style>
 @endsection

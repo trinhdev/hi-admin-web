@@ -17,8 +17,8 @@ function readURL(value, url) {
         processData: false,
         success: (data) => {
             if (data.url) {
-                $("#img_icon").attr('src', '/images/upload/' + data.url);
-                $("#iconUrl").val('/images/upload/' + data.url);
+                $("#img_icon").attr('src', data.url);
+                $("#iconUrl").val(data.url);
             }
         },
         error: function (xhr) {
@@ -410,4 +410,19 @@ function approve(approved_data) {
             });
         }
     });
+}
+
+function serializeObject(obj) {
+    var jsn = {};
+    $.each(obj, function () {
+        if (jsn[this.name]) {
+            if (!jsn[this.name].push) {
+                jsn[this.name] = [jsn[this.name]];
+            }
+            jsn[this.name].push(this.value || '');
+        } else {
+            jsn[this.name] = this.value || '';
+        }
+    });
+    return jsn;
 }

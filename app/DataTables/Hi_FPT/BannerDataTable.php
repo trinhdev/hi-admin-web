@@ -69,11 +69,13 @@ class BannerDataTable extends DataTable
                 return '<input type="number" onchange="updateOrdering(this)" style="width:50px" value="'.$row->ordering.'" '.$is_expired.'/>';
             })
             ->editColumn('action',function($row) use ($list_banner_type){
+                // check if banner type is defined
                 $bannerType = $row->event_type;
                 if ($bannerType == 'highlight') {
                     $bannerType = 'bannerHome';
                 };
                 $exists = array_search($bannerType, array_column($list_banner_type, 'id'));
+                // end check
                 if ($exists === false){
                     return "";
                 }

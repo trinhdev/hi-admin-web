@@ -131,9 +131,9 @@
                                     <div class="row">
                                         <div class="col-sm-7 offset-sm-1">
                                             <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày bắt đầu</label>
+                                                <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày kết thúc</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                    <input type="text" name="show_to" class="form-control" id="show_to" placeholder="Date From" onchange="filterData()" />
                                                 </div>
                                             </div>
                                         </div>
@@ -154,7 +154,7 @@
                                 </div>
                                 <div class="card card-info">
                                     <div class="card-body">
-                                        <ul class="row" style="list-style: none; min-height: 100px" id="selected-product">
+                                        <ul class="row" style="list-style: none; min-height: 200px" id="selected-product">
                                             @foreach ($data['productListInTitle'] as $key => $value)
                                                 <li class="col-sm-2" style="text-align: center" id="{{ @$value['productId'] }}-selected-product" data-prodid="{{ @$value['productId'] }}">
                                                     <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}">
@@ -245,7 +245,7 @@
                             @endif
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
-                            <button type="button" onClick="deleteButton('#icon-category-form', '{{ @$data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}', 'selected-product')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                            <button type="button" onClick="deleteButton('icon_category', '#icon-category-form', '{{ @$data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}', 'selected-product')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                             @endif
                             @if (Session::get('approved_data'))
                                 @can('icon-check-data-permission')
@@ -412,7 +412,7 @@
     .close-thik {
         position: relative;
         left: 20%;
-        bottom: 45%;
+        bottom: 33%;
         background-color: transparent;
         border: none
     }

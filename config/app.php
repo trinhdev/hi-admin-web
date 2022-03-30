@@ -178,6 +178,7 @@ return [
         Igaster\LaravelTheme\themeServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class, 
+        App\Providers\MinIOServiceProvider::class,
 
     ],
 

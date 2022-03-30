@@ -160,13 +160,13 @@ dragula([document.getElementById('all-product'), document.getElementById('select
         return target !== document.getElementById('all-product')
     }
 }).on('drop', (el, target, source, sibling) => {
-    var arrayId = [];
     var li_all = $(el).attr('id');
     $(el).attr('id', li_all + '-selected-product');
     $(el).removeClass("lslide");
     $(el).removeClass("active");
     $(el).removeClass("gu-transit");
     $(el).addClass("col-sm-2");
+
     $(el).css('margin-right', 0);
 
     var spanElement = $(el).find("span:first");
@@ -179,9 +179,29 @@ dragula([document.getElementById('all-product'), document.getElementById('select
 
     $(target).find("li").each((key, value) => {
         $(value).find("span.position").text($(value).index() + 1);
-        arrayId.push($(value).attr('data-prodid'));
     });
+});
 
-    // $("#selected-prod-id").val(arrayId.join(','));
+$("#status-all").change(function () {
+    if (this.checked) {
+        $("input[name='status']").prop('checked', true);
+    }
+    else {
+        $("input[name='status']").prop('checked', false);
+    }
+});
+
+$("#pheduyet-all").change(function () {
+    if (this.checked) {
+        $("input[name='pheduyet']").prop('checked', true);
+    }
+    else {
+        $("input[name='pheduyet']").prop('checked', false);
+    }
+});
+
+$('#icon-category tbody').on('click', '.delete-button', function () {
+    var data = icon_category.row($(this).parents('tr')).data();
+    deleteButton(JSON.stringify(data), data['productTitleNameVi'], '/iconcategory/destroy');
 });
 
