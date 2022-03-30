@@ -54,11 +54,11 @@ class NewsEventService
         return $response;
     }
 
-    public function getDetailBanner($bannerId,$bannerType){
+    public function getDetailBanner($bannerId){
         $url = $this->baseUrl . $this->listMethod['GET_DETAIL_BANNER'];
         $param = [
             'bannerId' => $bannerId,
-            'bannerType'  => $bannerType
+            // 'bannerType'  => $bannerType
         ];
         $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey],'GET');
         return $response;

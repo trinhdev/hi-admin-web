@@ -54,11 +54,6 @@ async function handleUploadImage(_this, event) {
             'input_tag': _this,
             'file': file
         });
-        // callAPIHelper("/bannermanage/uploadImage", uploadParam, 'POST', successCallUploadImage, {
-        //     'img_tag': img_tag,
-        //     'input_tag': _this,
-        //     'file': file
-        // });
     }
 }
 
@@ -157,27 +152,10 @@ function checkSubmit(formData) {
     return result;
 }
 
-function callApiGetListBanner(show_from = null, show_to = null, bannerType = null) {
-    var uploadParam = {
-        public_date_from: show_from,
-        public_date_to: show_to,
-        bannerType: bannerType,
-        _token: $('meta[name="csrf-token"]').attr('content')
-    };
-
-    callAPIHelper("/bannermanage/initDatatable", uploadParam, 'GET', initBannerManage);
-}
-
-function filterData() {
-    // $('#banner_manage').DataTable().destroy();
-    $('#banner_manage').DataTable().clear();
-    callApiGetListBanner(show_from.value, show_to.value, show_at.value);
-}
-
 function getDetailBanner(_this) {
     let row = _this.closest('tr');
     let infoRow = row.querySelector('.infoRow');
-    window.location.href = `/bannermanage/edit/` + infoRow.getAttribute('data-id') + `/` + infoRow.getAttribute('data-type');
+    window.location.href = `/bannermanage/edit/` + infoRow.getAttribute('data-id');
 }
 function changeFormatDateTimeLocal(dateInput) {
     var date = new Date(dateInput);
@@ -233,14 +211,14 @@ function viewBanner(_this){
     let row = _this.closest('tr');
     let infoRow = row.querySelector('.infoRow');
 
-    callAPIHelper("/bannermanage/view/" + infoRow.getAttribute('data-id') + `/` + infoRow.getAttribute('data-type'),null,'GET',successGetViewBanner);
+    callAPIHelper("/bannermanage/view/" + infoRow.getAttribute('data-id'),null,'GET',successGetViewBanner);
 }
 
 function successGetViewBanner(response){
     if(response.error != undefined){
         showError(response.error)
     }else{
-        console.log(response);
+        // console.log(response);
         var banner = response.banner;
         var listTargetRoute = response.list_target_route;
         var listTypeBanner = response.list_type_banner;
@@ -287,73 +265,7 @@ function successGetViewBanner(response){
     }
 }
 function editBanner(button){
-    var bannerType = button.getAttribute('data-type');
     var bannerId = button.getAttribute('data-id');
-
-    bannerType = (bannerType == 'bannerHome') ? 'highlight' : bannerType;
-    var editBannerLink =  base_url+`/bannermanage/edit/` + bannerId + `/` + bannerType;
+    var editBannerLink =  base_url+`/bannermanage/edit/` + bannerId;
     window.location.href = editBannerLink;
-}
-function convertDetailBanner(element){
-    var toDay = new Date();
-    let subData = {
-        bannerId: '',
-        bannerType: '',
-        public_date_start: '',
-        public_date_end: '',
-        title_vi: '',
-        title_en: '',
-        direction_id: '',
-        direction_url: '',
-        image: '',
-        thumb_image: '',
-        ordering: '-1',
-        view_count: 0,
-        date_created: '',
-        created_by: '',
-        modified_by: '',
-        is_banner_expired: false
-    };
-    if (element.banner_id != undefined) {
-        subData.bannerId = element.banner_id;
-        subData.title_vi = element.banner_title != undefined ? element.banner_title : '';
-        subData.bannerType = element.custom_data != undefined ? element.custom_data : '';
-        subData.image = element.image_url != undefined ? element.image_url : '';
-        subData.ordering = element.ordering != undefined ? element.ordering : '-1';
-        subData.view_count = element.view_count != undefined ? element.view_count : '0';
-        subData.direction_url = element.direction_url != undefined ? element.direction_url : '';
-        subData.date_created = element.date_created;
-        subData.is_banner_expired = element.is_selected ? false : true;
-    } else {
-        let public_date_end = new Date(element.public_date_end);
-        subData.bannerId = element.event_id;
-        subData.title_vi = element.title_vi != undefined ? element.title_vi : '';
-        subData.bannerType = element.event_type != undefined ? element.event_type : '';
-        if(subData.bannerType === 'promotion'){
-            subData.image = element.thumb_image != undefined ? (URL_STATIC+'/upload/images/event/'+element.thumb_image) : element.image;
-        }else{
-            subData.image = element.image != undefined ? element.image : '';
-        }
-        subData.ordering = element.ordering != undefined ? element.ordering_on_home : '-1';
-        subData.view_count = element.view_count != undefined ? element.view_count : '0';
-        subData.direction_url = element.event_url != undefined ? element.event_url : '';
-        subData.date_created = element.date_created;
-        subData.is_banner_expired = (public_date_end < toDay) ? true : false;
-
-        subData.created_by = element.created_by != undefined ? element.created_by : '';
-        subData.public_date_start = element.public_date_start != undefined ? element.public_date_start : '';
-        subData.public_date_end = element.public_date_end != undefined ? element.public_date_end : '';
-        subData.modified_by = element.modified_by != undefined ? element.modified_by : '';
-    }
-
-    if(element.cms_note != undefined && !isEmpty(element.cms_note)){
-        var JSONcms_note = JSON.parse(element.cms_note);
-        subData.created_by = (JSONcms_note.created_by != undefined ) ? JSONcms_note.created_by : '';
-        subData.modified_by =  (JSONcms_note.modified_by != undefined ) ? JSONcms_note.modified_by : '';
-    }else{
-        // console.log(element.cms_note);
-        subData.created_by = '';
-        subData.modified_by = '';
-    }
-    return subData;
 }
