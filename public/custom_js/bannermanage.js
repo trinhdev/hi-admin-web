@@ -182,8 +182,7 @@ function updateOrdering(_thisInputTag){
     let row = _thisInputTag.closest('tr');
     let infoRow = row.querySelector('.infoRow');
     let updateParams = {
-        bannerId: infoRow.getAttribute('data-id'),
-        bannerType: infoRow.getAttribute('data-type'),
+        eventId: infoRow.getAttribute('data-id'),
         ordering:_thisInputTag.value,
         _token: $('meta[name="csrf-token"]').attr('content')
     };

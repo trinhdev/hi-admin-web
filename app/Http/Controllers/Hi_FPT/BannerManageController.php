@@ -359,9 +359,10 @@ class BannerManageController extends MY_Controller
             // 'bannerType'    => 'required',
             'eventId'  => 'required'
         ]);
+
         $this->addToLog($request);
         $newsEventService = new NewsEventService();
-        $updateOrder_response = $newsEventService->updateOrderBannder($request->bannerId, $request->bannerType, $request->ordering);
+        $updateOrder_response = $newsEventService->updateOrderBannder($request->eventId, $request->ordering);
         return $updateOrder_response;
     }
 }
