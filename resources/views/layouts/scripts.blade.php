@@ -62,10 +62,6 @@
 <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 <script src="{{ asset('/custom_js/popupmanage.js')}}"></script>
 <script src="{{ asset('/custom_js/otp.js')}}"></script>
-{{-- <script src="{{ asset('/custom_js/javascript.icon.js')}}"></script> --}}
-{{-- <script src="{{ asset('/custom_js/iconmanagement.js')}}"></script> --}}
-{{-- <script src="{{ asset('/custom_js/icon_category.js')}}"></script> --}}
-{{-- <script src="{{ asset('/custom_js/iconconfig.js')}}"></script> --}}
 <script src="{{ asset('/custom_js/ftel_phone.js')}}"></script>
 <script>
 @if($errors->any())
