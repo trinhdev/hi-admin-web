@@ -63,9 +63,9 @@ class BannerDataTable extends DataTable
                     return "";
                 }
             })
-            ->editColumn('ordering', function($row){
+            ->editColumn('ordering_on_home', function($row){
                 $is_expired = $row->public_date_end <= now() ? 'disabled' : '';
-                return '<input type="number" onchange="updateOrdering(this)" style="width:50px" value="'.$row->ordering.'" '.$is_expired.'/>';
+                return '<input type="number" onchange="updateOrdering(this)" style="width:50px" value="'.$row->ordering_on_home.'" '.$is_expired.'/>';
             })
             ->editColumn('action',function($row) use ($list_banner_type){
                 // check if banner type is defined
@@ -82,7 +82,7 @@ class BannerDataTable extends DataTable
                     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
                    <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>';
             })
-            ->rawColumns(['image','status','action','ordering','event_type'])
+            ->rawColumns(['image','status','action','ordering_on_home','event_type'])
             ->setTotalRecords($totalRecords)
             ->skipPaging()
             ;
@@ -196,7 +196,7 @@ class BannerDataTable extends DataTable
             Column::make('public_date_start')->title('Ngày Hiển Thị'),
             Column::make('public_date_end')->title('Ngày Kết Thúc'),
             Column::make('status')->title('Trạng Thái')->sortable(false),
-            Column::make('ordering')->title('Độ ưu tiên'),
+            Column::make('ordering_on_home')->title('Độ ưu tiên'),
             Column::make('view_count')->title('Số Lượt Click'),
             Column::make('date_created')->title('Ngày Tạo'),
             Column::make('created_by')->title('Người Tạo')->sortable(false),
