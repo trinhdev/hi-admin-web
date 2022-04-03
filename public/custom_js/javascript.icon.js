@@ -105,6 +105,70 @@ function readURL(value, url) {
 //     });
 // }
 
+function deleteButtonTable(from, tableId, productName, url, ul_id) {
+    var table = $('#' + tableId).DataTable();
+    $('#' + tableId + ' tbody').on('click', 'button', function () {
+        var data = table.row($(this).parents('tr')).data();
+        if (ul_id) {
+            var arrayId = [];
+            $("#" + ul_id).find("li").each((key, value) => {
+                arrayId.push($(value).attr('data-prodid'));
+            });
+            data['arrayId'] = arrayId.join(",");
+        }
+        console.log(data);
+        Swal.fire({
+            title: 'Xóa sản phẩm',
+            html: `Bạn có chắc muốn xóa sản phẩm <span class="badge bg-warning text-dark">${productName}</span>?`,
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Huỷ',
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Đồng ý',
+            reverseButtons: true
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+                data['product_type'] = from;
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: data,
+                    dataType: "json",
+                    success: (result) => {
+                        // var result = JSON.parse(data);
+                        if (result.result) {
+                            Swal.fire({
+                                title: 'Xoá thành công',
+                                text: result.message,
+                                icon: 'success',
+                            }).then((alertOption) => {
+                                if (alertOption.isConfirmed) {
+                                    window.location.href = result.url;
+                                }
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        var errorString = '';
+                        $.each(xhr.responseJSON.errors, function (key, value) {
+                            errorString = value;
+                            return false;
+                        });
+                        showError(errorString);
+                    }
+                });
+            }
+        });
+    });
+}
+
 function deleteButton(from, form_data, name, url, ul_id) {
     Swal.fire({
         title: 'Xóa sản phẩm',
@@ -119,21 +183,17 @@ function deleteButton(from, form_data, name, url, ul_id) {
 
     }).then((result) => {
         if (result.isConfirmed) {
-            try {
-                var data = JSON.parse(form_data);
-            } catch (e) {
-                var formData = $(form_data).serializeArray();
-                var data = serializeObject(formData);
-                // data['_token'] = data['_token'][0];
-                delete data['_token'];
-                delete data['arrayId'];
-                if (ul_id) {
-                    var arrayId = [];
-                    $("#" + ul_id).find("li").each((key, value) => {
-                        arrayId.push($(value).attr('data-prodid'));
-                    });
-                    data['arrayId'] = arrayId.join(",");
-                }
+            var formData = $(form_data).serializeArray();
+            var data = serializeObject(formData);
+            // data['_token'] = data['_token'][0];
+            delete data['_token'];
+            delete data['arrayId'];
+            if (ul_id) {
+                var arrayId = [];
+                $("#" + ul_id).find("li").each((key, value) => {
+                    arrayId.push($(value).attr('data-prodid'));
+                });
+                data['arrayId'] = arrayId.join(",");
             }
             data['product_type'] = from;
             $.ajaxSetup({

@@ -289,3 +289,8 @@
         }
     </style>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('/custom_js/iconmanagement.js') }}"></script>
+    <script src="{{ asset('/custom_js/javascript.icon.js')}}"></script>
+@endpush

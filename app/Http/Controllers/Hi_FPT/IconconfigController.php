@@ -189,10 +189,21 @@ class IconconfigController extends MY_Controller
     }
 
     public function destroy(Request $request) {
+        $request->validate([
+            'arrayId' => [
+                function ($attribute, $value, $fail) {
+                    // dd($value);
+                    if(strlen($value) > 0) {
+                        $fail('Xin vui lòng xoá hết sản phẩm trong danh mục sản phẩm được chọn trước khi xoá danh mục');
+                    }
+                },
+            ],
+        ]);
+
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
-        $icon_config = $this->createSingleRecord($this->model, json_decode($request['formData'], true));
+        $icon_config = $this->createSingleRecord($this->model, $request->all());
 
         $approved = Icon_approve::create([
             'product_type'          => 'icon_config',

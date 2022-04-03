@@ -348,3 +348,8 @@
         </table>
     </script>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('/custom_js/iconconfig.js') }}"></script>
+    <script src="{{ asset('/custom_js/javascript.icon.js')}}"></script>
+@endpush

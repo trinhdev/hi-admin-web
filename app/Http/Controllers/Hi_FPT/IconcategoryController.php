@@ -187,7 +187,7 @@ class IconcategoryController extends MY_Controller
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
-        $icon_category = $this->createSingleRecord($this->model, json_decode($request['formData'], true));
+        $icon_category = $this->createSingleRecord($this->model, $request->all());
 
         $approved = Icon_approve::create([
             'product_type'          => 'icon_category',

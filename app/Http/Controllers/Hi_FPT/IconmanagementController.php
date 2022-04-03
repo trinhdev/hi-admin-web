@@ -155,10 +155,11 @@ class IconmanagementController extends MY_Controller
     }
 
     public function destroy(Request $request) {
+        // dd($request->all());
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
-        $icon = $this->createSingleRecord($this->model, json_decode($request['formData'], true));
+        $icon = $this->createSingleRecord($this->model, $request->all(), true);
 
         $approved = Icon_approve::create([
             'product_type'          => 'icon_management',
