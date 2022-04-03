@@ -1,5 +1,6 @@
 $(document).ready(function () {
     if ($('#icon-per-row').val()) {
+        console.log($('#icon-per-row').val() * 100 / 4 + 5);
         $("#selected-product-config").css({
             "maxWidth": ($('#icon-per-row').val()) ? ($('#icon-per-row').val() * 100 / 4 + 5) + "%" : "100%",
         });
@@ -74,7 +75,7 @@ dragula([document.getElementById('all-product-config'), document.getElementById(
 
 $('#icon-per-row').change(function () {
     $("#selected-product-config").css({
-        "maxWidth": ($('#icon-per-row').val()) ? $('#icon-per-row').val() * 100 / 4 + "%" : "100%",
+        "maxWidth": ($('#icon-per-row').val()) ? ($('#icon-per-row').val() * 100 / 4 + 5) + "%" : "100%",
     });
 });
 
