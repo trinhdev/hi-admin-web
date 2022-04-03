@@ -143,7 +143,7 @@
                                 </div>
                                 <div class="card card-info">
                                     <div class="card-body">
-                                        <ul class="row" style="list-style: none; min-height: 100px; max-width: {{ (!empty($data['iconsPerRow'])) ? $data['iconsPerRow'] * 100 / 4 : 100 }}%" id="selected-product-config">
+                                        <ul class="row" style="list-style: none; min-height: 100px" id="selected-product-config">
                                             @foreach ($data['productListInConfig'] as $key => $value)
                                                 <li class="selected-li" id="{{ @$value['productId'] }}-selected-product-config" data-prodid="{{ @$value['productId'] }}">
                                                     <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}">

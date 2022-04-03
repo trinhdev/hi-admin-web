@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    if ($('#icon-per-row').val()) {
+        $("#selected-product-config").css({
+            "maxWidth": ($('#icon-per-row').val()) ? $('#icon-per-row').val() * 100 / 4 + "%" : "100%",
+        });
+    }
+
     // lightSlider
     $('#all-product-config').lightSlider({
         item: 5,
