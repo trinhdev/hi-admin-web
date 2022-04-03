@@ -1,7 +1,7 @@
 $(document).ready(function () {
     if ($('#icon-per-row').val()) {
         $("#selected-product-config").css({
-            "maxWidth": ($('#icon-per-row').val()) ? $('#icon-per-row').val() * 100 / 4 + "%" : "100%",
+            "maxWidth": ($('#icon-per-row').val()) ? ($('#icon-per-row').val() * 100 / 4 + 5) + "%" : "100%",
         });
     }
 
