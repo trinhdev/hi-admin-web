@@ -26,7 +26,6 @@ class IconConfigSaveRequest extends FormRequest
     public function rules()
     {
         return [
-            'titleVi'       => 'required',
             'name'          => 'required',
             'iconsPerRow'   => 'required|numeric|min:0|not_in:0',
             'rowOnPage'     => 'required|numeric|min:0|not_in:0',

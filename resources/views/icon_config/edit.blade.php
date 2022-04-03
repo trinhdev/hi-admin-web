@@ -54,12 +54,9 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-3 col-form-label">Tên vị trí <span class="required">*</span></label>
+                                        <label for="inputEmail3" class="col-sm-3 col-form-label">Tên vị trí</label>
                                         <div class="col-sm-9">
                                             <input type="name" class="form-control" id="vi-name" placeholder="Tên vị trí" name="titleVi" value="{{ @$data['titleVi'] }}">
-                                            @error('titleVi')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row">
