@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+$(document).ready(function () {
     // lightSlider
     $('#all-product-config').lightSlider({
         item: 5,
@@ -33,7 +33,7 @@ dragula([document.getElementById('all-product-config'), document.getElementById(
         var iconsPerRow = ($('#icon-per-row').val()) ? $('#icon-per-row').val() : 1;
         var rowOnPage = ($('#row-on-page').val()) ? $('#row-on-page').val() : 1;
 
-        if($('#selected-product-config li').length > iconsPerRow * rowOnPage) {
+        if ($('#selected-product-config li').length > iconsPerRow * rowOnPage) {
             swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -64,19 +64,19 @@ dragula([document.getElementById('all-product-config'), document.getElementById(
     $(target).find("li").each((key, value) => {
         $(value).find("span.position").text($(value).index() + 1);
     });
-}); 
+});
 
-$('#icon-per-row').change(function() {
+$('#icon-per-row').change(function () {
     $("#selected-product-config").css({
-        "maxWidth": ($('#icon-per-row').val()) ? $('#icon-per-row').val() * 100 / 5 + "%" : "100%",
+        "maxWidth": ($('#icon-per-row').val()) ? $('#icon-per-row').val() * 100 / 4 + "%" : "100%",
     });
 });
 
-$("input[name='prod_add']").change(function() {
-    if(this.value == 'category_add') {
+$("input[name='prod_add']").change(function () {
+    if (this.value == 'category_add') {
         $('.category-add').css('display', 'block');
         $('.product-add').css('display', 'none');
-        if($('#all-title-config')) {
+        if ($('#all-title-config')) {
             $('#all-title-config').lightSlider({
                 item: 5,
                 loop: true,
@@ -93,7 +93,7 @@ $("input[name='prod_add']").change(function() {
     else {
         $('.category-add').css('display', 'none');
         $('.product-add').css('display', 'block');
-        if($('#all-product-config')) {
+        if ($('#all-product-config')) {
             $('#all-product-config').lightSlider({
                 item: 5,
                 loop: true,
@@ -135,7 +135,7 @@ $('#icon-config tbody').on('click', '.delete-button', function () {
 
 function changeSelectedProduct(productList) {
     var new_selected_prod_list = ``;
-    $.each(productList, function(key, value) {
+    $.each(productList, function (key, value) {
         new_selected_prod_list += `
                                     <li class="selected-li" id="${value['productId']}-selected-product-config" data-prodid="${value['productId']}">
                                         <img src="${value['iconUrl']}" alt="${value['productNameVi']}">

@@ -398,12 +398,12 @@
 
     #selected-product-config li {
         margin-bottom: 20px;
-        width: 186px!important;
+        width: 180px!important;
         text-align: center;
     }
 
     #selected-product-config li img {
-        width: 40%;
+        width: 30%;
         margin-bottom: -10px
     }
 
