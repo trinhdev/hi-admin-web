@@ -183,6 +183,7 @@ class IconapprovedController extends MY_Controller
         ]);
 
         $result = $this->pushApiApproved($request);
+        dd($result);
 
         // Send email thong bao
         $listApprovedStatusRaw = Settings::where('name', 'icon_approve')->get()->toArray();
