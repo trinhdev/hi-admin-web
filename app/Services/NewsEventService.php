@@ -54,24 +54,23 @@ class NewsEventService
         return $response;
     }
 
-    public function getDetailBanner($bannerId,$bannerType){
+    public function getDetailBanner($bannerId){
         $url = $this->baseUrl . $this->listMethod['GET_DETAIL_BANNER'];
         $param = [
             'bannerId' => $bannerId,
-            'bannerType'  => $bannerType
+            // 'bannerType'  => $bannerType
         ];
         $response =  sendRequest($url, $param, $this->token, $header = ['clientKey' => $this->clientKey],'GET');
         return $response;
     }
 
-    public function updateOrderBannder($bannerId, $bannerType, $ordering){
+    public function updateOrderBannder($eventId, $ordering){
         $url = $this->baseUrl . $this->listMethod['UPDATE_ORDERING'];
         
         $updateParam = [
-            'bannerType'    => ($bannerType == 'highlight') ? 'bannerHome' : $bannerType,
             'orderings'     => [
                 [
-                    'bannerId'  => $bannerId,
+                    'eventId'  => $eventId,
                     'ordering'  => $ordering
                 ]
             ]

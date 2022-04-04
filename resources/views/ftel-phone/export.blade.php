@@ -6,13 +6,14 @@
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Số điện thoại nhân viên</th>
                             <th>Mã số nhân viên</th>
+                            <th>Số điện thoại</th>
                             <th>Email</th>
                             <th>Tên đầy đủ</th>
                             <th>Đơn vị đầy đủ</th>
-                            <th>Đơn vị công ty</th>
-                            <th>Đơn vị phòng ban</th>
+                            <th>Đơn vị</th>
+                            <th>Đơn vị(theo data)</th>
+                            <th>Đơn vị/Phòng ban</th>
                         </tr>
                     </thead>
                     @if(isset($data))
@@ -29,6 +30,7 @@
                         <td>{{ $value['fullName'] }}</td>    
                         <td>{{ $value['organizationCodePath'] }}</td>
                         <td>{{ $codePath[0] }}</td>
+                        <td>{{ $codePath[1] }}</td>
                         <td>{{ $codePath[2] }}</td>                                    
                     </tr>
                     @endforeach

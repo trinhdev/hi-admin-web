@@ -27,13 +27,13 @@ function datatableFtelPhoneExport() {
             {
                 extend: 'colvisGroup',
                 text: 'Show all',
-                show: [ 1, 2, 3 ,4, 5 ,6,7  ]
+                show: [ 1, 2, 3 ,4, 5 ,6,7,8  ]
             },
             'colvis'
         ],
         "columnDefs": [
             {
-                "targets": [ 6,7 ],
+                "targets": [ 6,7,8 ],
                 "visible": false
             }
         ]

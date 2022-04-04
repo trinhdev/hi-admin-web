@@ -33,12 +33,21 @@
 <!-- DataTables -->
 
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables/jquery.dataTables.js"></script>
+{{-- <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-searchpanes/js/dataTables.searchPanes.min.js"></script>
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-searchpanes/js/searchPanes.bootstrap4.min.js"></script> --}}
+{{-- <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script> --}}
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-select/js/dataTables.select.min.js"></script>
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 <!-- jquery-tmpl -->
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/jquery-tmpl/jquery-tmpl.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
+
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/dragula-master/dist/dragula.min.js"></script>
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/lightslider-master/dist/js/lightslider.min.js"></script>
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
 
 <script src="{{ asset('js/dataTablebutton.min.js') }}"></script>
 <script src="{{ asset('js/buttonHtml5.js') }}"></script>
@@ -53,7 +62,6 @@
 <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 <script src="{{ asset('/custom_js/popupmanage.js')}}"></script>
 <script src="{{ asset('/custom_js/otp.js')}}"></script>
-<script src="{{ asset('/custom_js/iconmanagement.js')}}"></script>
 <script src="{{ asset('/custom_js/ftel_phone.js')}}"></script>
 <script>
 @if($errors->any())

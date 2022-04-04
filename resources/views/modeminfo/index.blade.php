@@ -26,7 +26,7 @@
             <div class="container-fluid">
                 <div class="row" style="margin-bottom: 30px">
                     <div class="col-md-12">
-                        <form action="{{ route('modeminfo.searchByContractNoOrId') }}" onsubmit="handleSubmit(event,this)" onKeyPress="return checkSubmit(event)" method="GET">
+                        <form action="{{ route('modeminfo.searchByContractNoOrId') }}" onsubmit="handleSubmit(event,this)" method="GET">
                             {{-- @csrf --}}
                             <div class="input-group">
                                 <input type="search" class="form-control" placeholder="Xin nhập số hợp đồng cần tra cứu tại đây" name="modemNo" id="modemNo">

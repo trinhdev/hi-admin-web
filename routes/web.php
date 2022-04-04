@@ -20,7 +20,7 @@ Auth::routes();
 Route::group([
     'middleware' => ['auth','can:role-permission']
     ],
-    function (){     
+    function (){
         Route::get('/', [HomeController::class, 'index'])->name('home');
         Route::prefix('home')->group(function () {
             Route::get('/', 'HomeController@index')->name('home');
@@ -135,25 +135,57 @@ Route::group([
 
             Route::prefix('bannermanage')->group(function () {
                 Route::get('/','BannerManageController@index')->name('bannermanage.index');
-                Route::get('/edit/{id}/{type}','BannerManageController@edit')->name('bannermanage.edit');
+                Route::get('/edit/{id}','BannerManageController@edit')->name('bannermanage.edit');
                 Route::get('/create','BannerManageController@create')->name('bannermanage.create');
                 Route::post('/store','BannerManageController@store')->name('bannermanage.store');
-                Route::put('/update/{id}/{type}','BannerManageController@update')->name('bannermanage.update');
+                Route::put('/update/{id}','BannerManageController@update')->name('bannermanage.update');
                 Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
                 Route::post('/updateordering','BannerManageController@updateOrder')->name('bannermanage.updateOrder');
-                Route::get('/view/{id}/{type}','BannerManageController@view')->name('bannermanage.view');
+                Route::get('/view/{id}','BannerManageController@view')->name('bannermanage.view');
             });
 
             Route::prefix('iconmanagement')->group(function () {
                 Route::get('/','IconmanagementController@index')->name('iconmanagement.index');
                 Route::get('/edit/{id?}','IconmanagementController@edit')->name('iconmanagement.edit');
-                Route::get('/save/{id?}','IconmanagementController@edit')->name('iconmanagement.edit');
-                Route::get('/detail/{id?}','IconmanagementController@edit')->name('iconmanagement.edit');
+                Route::post('/save','IconmanagementController@save')->name('iconmanagement.save');
+                Route::get('/detail/{id?}','IconmanagementController@detail')->name('iconmanagement.detail');
                 Route::post('/upload','IconmanagementController@upload')->name('iconmanagement.upload');
+                Route::post('/destroy','IconmanagementController@destroy')->name('iconmanagement.destroy');
                 // Route::get('/searchByContractNoOrId','IconmanagementController@searchByContractNoOrId')->name('iconmanagement.searchByContractNoOrId');
                 Route::get('/initDatatable','IconmanagementController@initDatatable')->name('iconmanagement.initDatatable');
             });
 
+            Route::prefix('iconcategory')->group(function () {
+                Route::get('/','IconcategoryController@index')->name('iconcategory.index');
+                Route::get('/edit/{id?}','IconcategoryController@edit')->name('iconcategory.edit');
+                Route::post('/save','IconcategoryController@save')->name('iconcategory.save');
+                Route::get('/detail/{id?}','IconcategoryController@detail')->name('iconcategory.detail');
+                Route::post('/upload','IconcategoryController@upload')->name('iconcategory.upload');
+                Route::post('/destroy','IconcategoryController@destroy')->name('iconcategory.destroy');
+                // Route::get('/searchByContractNoOrId','IconmanagementController@searchByContractNoOrId')->name('iconmanagement.searchByContractNoOrId');
+                Route::get('/initDatatable','IconcategoryController@initDatatable')->name('iconcategory.initDatatable');
+            });
+
+            Route::prefix('iconconfig')->group(function () {
+                Route::get('/','IconconfigController@index')->name('iconconfig.index');
+                Route::get('/edit/{id?}','IconconfigController@edit')->name('iconconfig.edit');
+                Route::post('/save','IconconfigController@save')->name('iconconfig.save');
+                Route::get('/detail/{id?}','IconconfigController@detail')->name('iconconfig.edit');
+                Route::post('/upload','IconconfigController@upload')->name('iconconfig.upload');
+                Route::post('/destroy','IconconfigController@destroy')->name('iconconfig.destroy');
+                // Route::get('/searchByContractNoOrId','IconconfigController@searchByContractNoOrId')->name('iconconfig.searchByContractNoOrId');
+                Route::get('/initDatatable','IconconfigController@initDatatable')->name('iconconfig.initDatatable');
+            });
+
+            Route::prefix('iconapproved')->group(function () {
+                Route::get('/','IconapprovedController@index')->name('iconapproved.index');
+                Route::get('/edit/{id?}','IconapprovedController@edit')->name('iconapproved.edit');
+                Route::post('/save','IconapprovedController@save')->name('iconapproved.save');
+                Route::get('/detail/{id?}','IconapprovedController@detail')->name('iconapproved.detail');
+                Route::post('/upload','IconapprovedController@upload')->name('iconapproved.upload');
+                Route::post('/destroy','IconapprovedController@destroy')->name('iconapproved.destroy');
+                Route::get('/initDatatable','IconapprovedController@initDatatable')->name('iconapproved.initDatatable');
+            });
             Route::prefix('popupmanage')->group(function () {
                 Route::get('/','PopupManageController@index')->name('popupmanage.index');
                 Route::get('/edit/{id?}','PopupManageController@edit')->name('popupmanage.edit');
@@ -175,4 +207,5 @@ Route::group([
                 Route::any('/{phonecode?}/{phone?}/{date?}','OtpController@logs')->name('smsworld.logs');
             });
         });
-});
+    }
+);

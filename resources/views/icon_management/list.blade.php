@@ -1,8 +1,8 @@
 @extends('layouts.default')
 
 @section('content')
-    <!-- Modal -->
-    <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!-- Modal view detail -->
+    <div class="modal fade bd-example-modal-lg" id="iconModal" tabindex="-1" role="dialog" aria-labelledby="iconModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,12 +12,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" id="product-modal-body"></div>
-                {{-- <div class="row">
-                    <div class="col-sm-12" style="text-align: center">
-                        <img alt="icon_img">
-                    </div>
-                </div> --}}
+                <div class="row" id="icon-modal-body"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -26,6 +21,69 @@
         </div>
     </div>
     <!-- Modal -->
+
+    {{-- Modal filter --}}
+    <div class="modal fade" id="filter-status" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Lọc</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12"><b>Trạng thái</b></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Tất cả</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="status-all" value="all" />
+                            <label class="float-right" for="status-all"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Trạng thái hiện</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="status-show" name="status" value="1" />
+                            <label class="float-right" for="status-show"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Trạng thái ẩn</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="status-hide" name="status" value="0" />
+                            <label class="float-right" for="status-hide"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12"><b>Phê duyệt</b></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Tất cả</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="pheduyet-all" value="all" />
+                            <label class="float-right" for="pheduyet-all"></label>
+                        </div>
+                    </div>
+                    @foreach($icon_approve as $approve)
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">{{ $approve['value'] }}</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="pheduyet-{{ $approve['key'] }}" name="pheduyet" value="{{ $approve['key'] }}" />
+                            <label class="float-right" for="pheduyet-{{ $approve['key'] }}"></label>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onClick="filterStatusPheDuyet('#icon-management')">Lọc</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -57,8 +115,8 @@
             <div class="container-fluid">
                 <div class="row" style="margin-top: 20px">
                     <div class="card card-body col-sm-12">
-                        <div class="container">
-                            <form action="{{ route('iconmanagement.index') }}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
+                        <!-- <div class="container"> -->
+                            <!-- <form action="{{ route('iconmanagement.index') }}" method="GET" autocomplete="off" onsubmit="handleSubmit(event,this, withPopup = false)">
                                 <div class="card-body row form-inline">
                                     <div class="col-sm-6">
                                         <div class="input-group mb-4">
@@ -81,9 +139,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <table id="icon-management" class="table table-hover table-striped text-center" style="width: 100%">
+                            </form> -->
+                        <!-- </div> -->
+                        <table id="icon-management" class="table table-hover table-striped dataTable no-footer" style="width: 100%">
                         </table>                                          
                     </div>
                 </div>
@@ -217,70 +275,22 @@
             width: 25%;
             font-weight: bold
         }
+
+        #filter-status .col-form-label {
+            font-weight: unset!important;
+        }
+
+        #filter-status .form-group {
+            margin-bottom: 0
+        }
+
+        table.dataTable tbody td {
+            vertical-align: middle;
+        }
     </style>
-
-    <script id="product-detail-template" type="text/x-jquery-tmpl">
-        <table class="product-detail">
-            <tr>
-                <td style="text-align: center; width: 100%; padding-bottom: 30px" colspan="2">
-                    <img class="img-thumbnail" src="${icon_url}" style="width: 150px" />
-                </td>
-            </tr>
-            <tr>
-                <td class="title">Tên</td>
-                <td>${productNameVi}</td>
-            </tr>
-            <tr>
-                <td class="title" style="width: 25%;">Mô tả</td>
-                <td>${description}</td>
-            </tr>
-            <tr>
-                <td class="title" style="padding-bottom: 30px">Thông tin bổ sung</td>
-                <td style="padding-bottom: 30px"></td>
-            </tr>
-
-            <tr>
-                <td class="title">Trạng thái hiển thị</td>
-                <td>${status}</td>
-            </tr>
-            <tr>
-                <td class="title">Ngày bắt đầu</td>
-                <td>31/12/2021</td>
-            </tr>
-            <tr>
-                <td class="title" style="padding-bottom: 30px">Ngày kết thúc</td>
-                <td style="padding-bottom: 30px">15/01/2022</td>
-            </tr>
-            
-            <tr>
-                <td class="title">Hiển thị icon mới</td>
-                <td>Bật</td>
-            </tr>
-            <tr>
-                <td class="title">Ngày bắt đầu</td>
-                <td>31/12/2021</td>
-            </tr>
-            <tr>
-                <td class="title" style="padding-bottom: 30px">Ngày kết thúc</td>
-                <td style="padding-bottom: 30px">15/01/2022</td>
-            </tr>
-            
-            <tr>
-                <td class="title">Loại điều hướng</td>
-                <td>Mở webkit kèm access token</td>
-            </tr>
-            <tr>
-                <td class="title">Link Production</td>
-                <td>https://google.com.vn</td>
-            </tr>
-            <tr>
-                <td class="title">Link Staging</td>
-                <td>https://google.com.vn</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
-    </script>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('/custom_js/iconmanagement.js') }}"></script>
+    <script src="{{ asset('/custom_js/javascript.icon.js')}}"></script>
+@endpush

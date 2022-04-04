@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 class Roles extends MY_Model
 {
     use SoftDeletes;
@@ -14,6 +15,9 @@ class Roles extends MY_Model
 
     public function acls(){
         return $this->hasMany(Acl_Roles::class,'role_id','id');
+    }
+    public function users() {
+        return $this->hasMany(User::class,'role_id','id');
     }
     public function createdBy(){
         return $this->hasOne(User::class,'id','created_by');

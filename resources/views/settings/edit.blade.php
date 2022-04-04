@@ -58,8 +58,8 @@
                                             <label for="value">Value</label>
                                             <input type="hidden" name="value" id="hidden-value" value="{{ $setting->value }}" />
                                             <select id="value" class="form-control selectpicker" data-live-search="true" data-size="10" multiple>
-                                                @foreach (json_decode($setting->value) as $one_value)
-                                                    <option value="{{ json_encode($one_value) }}" selected>{{ json_encode($one_value) }}</option>
+                                                @foreach (json_decode($setting->value, true) as $one_value)
+                                                    <option value="{{ json_encode($one_value) }}" selected>{{ json_encode($one_value, JSON_UNESCAPED_UNICODE) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
