@@ -70,34 +70,24 @@ class BannerManageController extends MY_Controller
             "created_by" => null,
             "is_highlight" => false,
         ];
-        if(isset($dataResponse->banner_id)){
-            $bannerObj->bannerId = $dataResponse->banner_id;
-            $bannerObj->title_vi = $dataResponse->banner_title;
-            $bannerObj->bannerType = $dataResponse->custom_data;
-            $bannerObj->image = $dataResponse->image_url;
-            $bannerObj->view_count = $dataResponse->view_count;
-            $bannerObj->direction_id = $dataResponse->direction_id;
-            $bannerObj->direction_url = $dataResponse->direction_url;
-            $bannerObj->date_created = $dataResponse->date_created;
-            
-        }else{
-            $bannerObj->bannerId = $dataResponse->event_id;
-            $bannerObj->title_vi = $dataResponse->title_vi;
-            $bannerObj->bannerType = ($dataResponse->event_type == "highlight" ) ? 'bannerHome' : $dataResponse->event_type;
-            $bannerObj->image = !empty($dataResponse->image) ? $dataResponse->image : null;
-            $bannerObj->view_count = $dataResponse->view_count;
-            // $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
-            $bannerObj->direction_id = $dataResponse->direction_id;
-            $bannerObj->direction_url = $dataResponse->event_url;
-            $bannerObj->date_created = $dataResponse->date_created;
 
-            $bannerObj->title_en = $dataResponse->title_en;
-            $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? $dataResponse->thumb_image : null;
-            $bannerObj->created_by = $dataResponse->created_by;
-            $bannerObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
-            $bannerObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
-            $bannerObj->is_highlight = (boolean) $dataResponse->is_highlight;
-        }
+        $bannerObj->bannerId = $dataResponse->event_id;
+        $bannerObj->title_vi = $dataResponse->title_vi;
+        $bannerObj->bannerType = ($dataResponse->event_type == "highlight" ) ? 'bannerHome' : $dataResponse->event_type;
+        $bannerObj->image = !empty($dataResponse->image) ? $dataResponse->image : null;
+        $bannerObj->view_count = $dataResponse->view_count;
+        // $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
+        $bannerObj->direction_id = $dataResponse->direction_id;
+        $bannerObj->direction_url = $dataResponse->event_url;
+        $bannerObj->date_created = $dataResponse->date_created;
+
+        $bannerObj->title_en = $dataResponse->title_en;
+        $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? $dataResponse->thumb_image : null;
+        $bannerObj->created_by = $dataResponse->created_by;
+        $bannerObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
+        $bannerObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
+        $bannerObj->is_highlight = (boolean) $dataResponse->is_highlight;
+        
         $result = [
             'list_target_route'=>$listTargetRoute,
             'list_type_banner' => $listTypeBanner,
@@ -137,35 +127,25 @@ class BannerManageController extends MY_Controller
             "is_highlight" => false,
             "cms_note" => null
         ];
-        if(isset($dataResponse->banner_id)){
-            $bannerObj->bannerId = $dataResponse->banner_id;
-            $bannerObj->title_vi = $dataResponse->banner_title;
-            $bannerObj->bannerType = $dataResponse->custom_data;
-            $bannerObj->image = $dataResponse->image_url;
-            $bannerObj->view_count = $dataResponse->view_count;
-            $bannerObj->direction_id = $dataResponse->direction_id;
-            $bannerObj->direction_url = $dataResponse->direction_url;
-            $bannerObj->date_created = $dataResponse->date_created;
-            $bannerObj->cms_note = $dataResponse->cms_note;
-        }else{
-            $bannerObj->bannerId = $dataResponse->event_id;
-            $bannerObj->title_vi = $dataResponse->title_vi;
-            $bannerObj->bannerType = ($dataResponse->event_type == "highlight" ) ? 'bannerHome' : $dataResponse->event_type;
-            $bannerObj->image = !empty($dataResponse->image) ? $dataResponse->image : null;
-            $bannerObj->view_count = $dataResponse->view_count;
-            // $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
-            $bannerObj->direction_id = $dataResponse->direction_id;
-            $bannerObj->direction_url = $dataResponse->event_url;
-            $bannerObj->date_created = $dataResponse->date_created;
-            $bannerObj->cms_note = $dataResponse->cms_note;
 
-            $bannerObj->title_en = $dataResponse->title_en;
-            $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? $dataResponse->thumb_image : null;
-            $bannerObj->created_by = $dataResponse->created_by;
-            $bannerObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
-            $bannerObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
-            $bannerObj->is_highlight = (boolean) $dataResponse->is_highlight;
-        }
+        $bannerObj->bannerId = $dataResponse->event_id;
+        $bannerObj->title_vi = $dataResponse->title_vi;
+        $bannerObj->bannerType = ($dataResponse->event_type == "highlight" ) ? 'bannerHome' : $dataResponse->event_type;
+        $bannerObj->image = !empty($dataResponse->image) ? $dataResponse->image : null;
+        $bannerObj->view_count = $dataResponse->view_count;
+        // $bannerObj->direction_id = $dataResponse->target == 'open_url_in_browser' ? 'url_open_out_app' :  $dataResponse->target;
+        $bannerObj->direction_id = $dataResponse->direction_id;
+        $bannerObj->direction_url = $dataResponse->event_url;
+        $bannerObj->date_created = $dataResponse->date_created;
+        $bannerObj->cms_note = $dataResponse->cms_note;
+
+        $bannerObj->title_en = $dataResponse->title_en;
+        $bannerObj->thumb_image = !empty($dataResponse->thumb_image) ? $dataResponse->thumb_image : null;
+        $bannerObj->created_by = $dataResponse->created_by;
+        $bannerObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
+        $bannerObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
+        $bannerObj->is_highlight = (boolean) $dataResponse->is_highlight;
+        
         return view('banners.edit')->with(['list_target_route'=>$listTargetRoute, 'list_type_banner' => $listTypeBanner, 'banner'=>$bannerObj]);
     }
 
