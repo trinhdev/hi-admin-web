@@ -424,6 +424,11 @@
     .required {
         color: red
     }
+
+    .badge-dark {
+        width: 100%;
+        white-space: normal;
+    }
 </style>
 @endsection
 

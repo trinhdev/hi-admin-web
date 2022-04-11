@@ -143,8 +143,6 @@ class IconconfigController extends MY_Controller
             }
         }
 
-        $to = ['oanhltn3@fpt.com.vn'];
-
         if(!empty($to)) {
             $mailInfo = [
                 'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
@@ -161,7 +159,7 @@ class IconconfigController extends MY_Controller
         $this->addToLog(request());
         $request->session()->flash('success', 'success');
         $request->session()->flash('html', 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.');
-        return redirect()->route('iconconfig.index')->with($result);
+        return redirect()->route('iconconfig.index');
     }
 
     public function detail($productConfigId) {

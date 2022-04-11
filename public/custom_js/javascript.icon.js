@@ -1,4 +1,5 @@
 function readURL(value, url) {
+    $("#spinner").addClass("show");
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -19,9 +20,11 @@ function readURL(value, url) {
             if (data.url) {
                 $("#img_icon").attr('src', data.url);
                 $("#iconUrl").val(data.url);
+                $("#spinner").removeClass("show");
             }
         },
         error: function (xhr) {
+            $("#spinner").removeClass("show");
             var errorString = '';
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
@@ -116,7 +119,6 @@ function deleteButtonTable(from, tableId, productName, url, ul_id) {
             });
             data['arrayId'] = arrayId.join(",");
         }
-        console.log(data);
         Swal.fire({
             title: 'Xóa sản phẩm',
             html: `Bạn có chắc muốn xóa sản phẩm <span class="badge bg-warning text-dark">${productName}</span>?`,
@@ -130,6 +132,7 @@ function deleteButtonTable(from, tableId, productName, url, ul_id) {
 
         }).then((result) => {
             if (result.isConfirmed) {
+                $("#spinner").addClass("show");
                 data['product_type'] = from;
                 $.ajaxSetup({
                     headers: {
@@ -144,6 +147,7 @@ function deleteButtonTable(from, tableId, productName, url, ul_id) {
                     success: (result) => {
                         // var result = JSON.parse(data);
                         if (result.result) {
+                            $("#spinner").removeClass("show");
                             Swal.fire({
                                 title: 'Xoá thành công',
                                 text: result.message,
@@ -156,6 +160,7 @@ function deleteButtonTable(from, tableId, productName, url, ul_id) {
                         }
                     },
                     error: function (xhr) {
+                        $("#spinner").removeClass("show");
                         var errorString = '';
                         $.each(xhr.responseJSON.errors, function (key, value) {
                             errorString = value;
@@ -183,6 +188,7 @@ function deleteButton(from, form_data, name, url, ul_id) {
 
     }).then((result) => {
         if (result.isConfirmed) {
+            $("#spinner").addClass("show");
             var formData = $(form_data).serializeArray();
             var data = serializeObject(formData);
             // data['_token'] = data['_token'][0];
@@ -209,6 +215,7 @@ function deleteButton(from, form_data, name, url, ul_id) {
                 success: (result) => {
                     // var result = JSON.parse(data);
                     if (result.result) {
+                        $("#spinner").removeClass("show");
                         Swal.fire({
                             title: 'Xoá thành công',
                             text: result.message,
@@ -221,6 +228,7 @@ function deleteButton(from, form_data, name, url, ul_id) {
                     }
                 },
                 error: function (xhr) {
+                    $("#spinner").removeClass("show");
                     var errorString = '';
                     $.each(xhr.responseJSON.errors, function (key, value) {
                         errorString = value;
@@ -407,16 +415,18 @@ function onsubmitIconForm(e, form, ul_id, withPopup = true) {
         }).then((result) => {
             if (result.isConfirmed) {
                 form.submit();
+                showLoadingIcon();
                 let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
                 $('form').find(':button').prop('disabled', true);
-                $("#spinner").toggle("show");
+                // $("#spinner").toggle("show");
             }
         });
     } else {
         form.submit();
+        showLoadingIcon();
         let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
         $('form').find(':button').prop('disabled', true);
-        $("#spinner").toggle("show");
+        // $("#spinner").toggle("show");
     }
 
     if (e.result == true) {
@@ -439,6 +449,7 @@ function approve(approved_data) {
 
     }).then((result) => {
         if (result.isConfirmed) {
+            $("#spinner").addClass("show");
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -454,6 +465,7 @@ function approve(approved_data) {
                 contentType: false,
                 processData: false,
                 success: (data) => {
+                    // $("#spinner").removeClass("show");
                     var response = JSON.parse(data);
                     if (response.status) {
                         window.location.href = "/iconapproved";
@@ -485,4 +497,11 @@ function serializeObject(obj) {
         }
     });
     return jsn;
+}
+
+function showLoadingIcon() {
+    $("#spinner").addClass("show");
+    setTimeout(function () {
+        $("#spinner").removeClass("show");
+    }, 50000);
 }

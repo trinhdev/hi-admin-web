@@ -119,7 +119,7 @@ class IconapprovedController extends MY_Controller
         // dd($mailContent);
         
         $to = $approved_data[0]['user_requested_by']['email'];
-        $to = 'oanhltn3@fpt.com.vn';
+        // $to = 'oanhltn3@fpt.com.vn';
 
         $cc = [];
         if(!empty($ccBgd[0]['value'])) {
@@ -183,7 +183,6 @@ class IconapprovedController extends MY_Controller
         ]);
 
         $result = $this->pushApiApproved($request);
-        dd($result);
 
         // Send email thong bao
         $listApprovedStatusRaw = Settings::where('name', 'icon_approve')->get()->toArray();

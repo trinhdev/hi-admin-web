@@ -991,11 +991,13 @@ function initIconmanagement() {
             title: 'Action',
             data: 'productId',
             render: function (data, type, row) {
+                console.log(row);
                 var productName = row['productNameVi'].replace(/(\\r\\n|\\n|\\r)/gm, "");
+                var url = (row['isApprovedRole']) ? '/iconapproved/destroy' : '/iconmanagement/destroy';
                 return `<div>
                 <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconmanagement/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                             <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButtonTable('icon_management', 'icon-management', '${productName}', '/iconmanagement/destroy')"><i class="fas fa-trash"></i></button>
+                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButtonTable('icon_management', 'icon-management', '${productName}', '${url}')"><i class="fas fa-trash"></i></button>
                         </div>`.replaceAll(/[\r\n]+/gm, "");
             },
             className: 'text-center',

@@ -129,8 +129,6 @@ class IconcategoryController extends MY_Controller
             }
         }
 
-        $to = ['oanhltn3@fpt.com.vn'];
-
         if(!empty($to)) {
             $mailInfo = [
                 'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
@@ -147,7 +145,7 @@ class IconcategoryController extends MY_Controller
         $this->addToLog(request());
         $request->session()->flash('success', 'success');
         $request->session()->flash('html', 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.');
-        return redirect()->route('iconcategory.index')->with($result);
+        return redirect()->route('iconcategory.index');
     }
 
     public function detail($productTitleId) {

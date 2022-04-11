@@ -151,7 +151,7 @@ class IconmanagementController extends MY_Controller
         $this->addToLog(request());
         $request->session()->flash('success', 'success');
         $request->session()->flash('html', 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.');
-        return redirect()->route('iconmanagement.index')->with($result);
+        return redirect()->route('iconmanagement.index');
     }
 
     public function destroy(Request $request) {
@@ -160,7 +160,13 @@ class IconmanagementController extends MY_Controller
         $icon_approve = Settings::where('name', 'icon_approve')->get();
         $result['icon_approve'] = (!empty($icon_approve[0]['value'])) ? json_decode($icon_approve[0]['value'], true) : [];
         $icon = $this->createSingleRecord($this->model, $request->all(), true);
-
+        // if(!empty($request['productId'])) {
+        //     $categoryHasProduct = $this->iconManagement->getProductTitleByProductId($request['productId']);
+        //     $configHasProduct = $this->iconManagement->getProductConfigByProductId($request['productId']);
+        //     dd($configHasProduct);
+        // }
+        // dd('test');
+        
         $approved = Icon_approve::create([
             'product_type'          => 'icon_management',
             'product_id'            => $icon->uuid,
@@ -290,6 +296,9 @@ class IconmanagementController extends MY_Controller
             if(!empty($response['data'])) {
                 // $data = array_merge($icon_on_review, $response['data']);
                 $data = $response['data'];
+                foreach($data as $key => &$value) {
+                    $value['isApprovedRole'] = auth()->user()->can('icon-approve-data-permission');
+                }
             }
             return DataTables::of($data)
             ->addIndexColumn()
