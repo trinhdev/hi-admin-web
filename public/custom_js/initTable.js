@@ -889,7 +889,6 @@ function initIconmanagement() {
     var today = new Date();
     today.setMinutes(today.getMinutes() - 1);
     today.setSeconds(0);
-    console.log(today);
 
     var tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
@@ -907,6 +906,7 @@ function initIconmanagement() {
         "order": [[1, "desc"]],
         "retrieve": true,
         "serverSide": true,
+        dom: 'Bfrtip',
         "ajax": {
             url: "/iconmanagement/initDatatable"
         },
@@ -991,7 +991,6 @@ function initIconmanagement() {
             title: 'Action',
             data: 'productId',
             render: function (data, type, row) {
-                console.log(row);
                 var productName = row['productNameVi'].replace(/(\\r\\n|\\n|\\r)/gm, "");
                 var url = (row['isApprovedRole']) ? '/iconapproved/destroy' : '/iconmanagement/destroy';
                 return `<div>
@@ -1025,6 +1024,20 @@ function initIconmanagement() {
             null,
             null
         ],
+        buttons: [
+            {
+                text: 'Tất cả',
+                action: function (e, dt, node, config) {
+                    icon_category.column(5).search('', true, false).draw();
+                }
+            },
+            {
+                text: '<i class="fas fa-filter"></i> Lọc',
+                action: function (e, dt, node, config) {
+                    $('#filter-status').modal();
+                }
+            },
+        ]
     });
 }
 
@@ -1181,6 +1194,7 @@ function initIconcategory() {
         "orderMulti": true,
         "retrieve": true,
         "serverSide": true,
+        "dom": 'Bfrtip',
         "columnDefs": [
             {
                 "searchable": false,
@@ -1271,6 +1285,20 @@ function initIconcategory() {
             null,
             null
         ],
+        buttons: [
+            {
+                text: 'Tất cả',
+                action: function (e, dt, node, config) {
+                    icon_category.column(5).search('', true, false).draw();
+                }
+            },
+            {
+                text: '<i class="fas fa-filter"></i> Lọc',
+                action: function (e, dt, node, config) {
+                    $('#filter-status').modal();
+                }
+            },
+        ],
         "language": {
             "emptyTable": "No Record..."
         },
@@ -1302,7 +1330,7 @@ function initIconconfig() {
         "columnDefs": [
             {
                 "searchable": false,
-                "targets": [0, 2, 3, 5]
+                "targets": [0, 2, 3]
             },
         ],
         "columns": [{
@@ -1332,40 +1360,40 @@ function initIconconfig() {
             title: "Số dòng",
             className: 'text-center',
         },
-        {
-            data: "isDisplay",
-            name: "isDisplay",
-            title: "Trạng thái",
-            render: function (data, type, row) {
-                var html = '';
-                if ('isDisplay' in row) {
-                    switch (row['isDisplay']) {
-                        case "0":
-                            html = `<div class="df-switch">
-                                    <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off" disabled>
-                                        <div class="inner-handle"></div>
-                                        <div class="handle"></div>
-                                    </button>
-                                </div>`;
-                            break;
-                        case "1":
-                            html = `<div class="df-switch">
-                                    <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
-                                        <div class="inner-handle"></div>
-                                        <div class="handle"></div>
-                                    </button>
-                                </div>`;
-                            break;
-                        case "2":
-                            html = (row['displayBeginDay']) ? `Hẹn ngày bật <span class="badge badge-warning">${row['displayBeginDay']}</span>` : '';
-                            break;
-                        default:
-                    }
-                }
-                return html;
-            },
-            className: 'text-center',
-        },
+        // {
+        //     data: "isDisplay",
+        //     name: "isDisplay",
+        //     title: "Trạng thái",
+        //     render: function (data, type, row) {
+        //         var html = '';
+        //         if ('isDisplay' in row) {
+        //             switch (row['isDisplay']) {
+        //                 case "0":
+        //                     html = `<div class="df-switch">
+        //                             <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off" disabled>
+        //                                 <div class="inner-handle"></div>
+        //                                 <div class="handle"></div>
+        //                             </button>
+        //                         </div>`;
+        //                     break;
+        //                 case "1":
+        //                     html = `<div class="df-switch">
+        //                             <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
+        //                                 <div class="inner-handle"></div>
+        //                                 <div class="handle"></div>
+        //                             </button>
+        //                         </div>`;
+        //                     break;
+        //                 case "2":
+        //                     html = (row['displayBeginDay']) ? `Hẹn ngày bật <span class="badge badge-warning">${row['displayBeginDay']}</span>` : '';
+        //                     break;
+        //                 default:
+        //             }
+        //         }
+        //         return html;
+        //     },
+        //     className: 'text-center',
+        // },
         {
             title: 'Action',
             data: 'productConfigId',
@@ -1421,7 +1449,7 @@ function initIconapproved() {
         "columnDefs": [
             {
                 "searchable": false,
-                "targets": [0, 1, 3, 4, 6, 7]
+                "targets": [0, 3, 4, 6, 7]
             },
             {
                 "searchable": true,
@@ -1608,24 +1636,24 @@ function initIconapproved() {
                     icon_category.column(5).search('', true, false).draw();
                 }
             },
-            {
-                text: 'Chờ kiểm tra',
-                action: function (e, dt, node, config) {
-                    icon_category.column(5).search('chokiemtra', true, false).draw();
-                }
-            },
-            {
-                text: 'Đã phê duyệt',
-                action: function (e, dt, node, config) {
-                    icon_category.column(5).search('dapheduyet', true, false).draw();
-                }
-            },
-            {
-                text: 'Phê duyệt thất bại',
-                action: function (e, dt, node, config) {
-                    icon_category.column(5).search('pheduyetthatbai', true, false).draw();
-                }
-            },
+            // {
+            //     text: 'Chờ kiểm tra',
+            //     action: function (e, dt, node, config) {
+            //         icon_category.column(5).search('chokiemtra', true, false).draw();
+            //     }
+            // },
+            // {
+            //     text: 'Đã phê duyệt',
+            //     action: function (e, dt, node, config) {
+            //         icon_category.column(5).search('dapheduyet', true, false).draw();
+            //     }
+            // },
+            // {
+            //     text: 'Phê duyệt thất bại',
+            //     action: function (e, dt, node, config) {
+            //         icon_category.column(5).search('pheduyetthatbai', true, false).draw();
+            //     }
+            // },
             {
                 text: '<i class="fas fa-filter"></i> Lọc',
                 action: function (e, dt, node, config) {

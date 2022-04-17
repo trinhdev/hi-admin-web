@@ -346,17 +346,17 @@ function openDetail(url) {
 
 function filterStatusPheDuyet(tableId) {
     var table = $(tableId).DataTable();
-    var statusFilterArr = [];
+    var typeFilterArr = [];
     var pheduyetFilterArr = [];
-    $("#filter-status input[name='status']").filter(function () {
-        var status = $(this).val();
+    $("#filter-status input[name='type']").filter(function () {
+        var type = $(this).val();
         if (this.checked) {
-            statusFilterArr.push(status);
+            typeFilterArr.push(type);
         }
         else {
-            // statusFilterArr.remove(status);
-            statusFilterArr = $.grep(statusFilterArr, function (value) {
-                return value != status;
+            // typeFilterArr.remove(status);
+            typeFilterArr = $.grep(typeFilterArr, function (value) {
+                return value != type;
             });
         }
     });
@@ -367,18 +367,40 @@ function filterStatusPheDuyet(tableId) {
             pheduyetFilterArr.push(pheduyet);
         }
         else {
-            // statusFilterArr.remove(status);
+            // typeFilterArr.remove(status);
             pheduyetFilterArr = $.grep(pheduyetFilterArr, function (value) {
                 return value != pheduyet;
             });
         }
     });
 
-    if (statusFilterArr) {
-        table.column(4).search(statusFilterArr.join('|'), true);
+    if (typeFilterArr) {
+        table.column(1).search(typeFilterArr.join('|'), true);
     }
     if (pheduyetFilterArr) {
         table.column(5).search(pheduyetFilterArr.join('|'), true);
+    }
+    table.draw();
+    $('#filter-status').modal('toggle');
+}
+
+function filterStatus(tableId, colNum) {
+    var table = $(tableId).DataTable();
+    var statusFilterArr = [];
+    $("#filter-status input[name='status']").filter(function () {
+        var status = $(this).val();
+        if (this.checked) {
+            statusFilterArr.push(status);
+        }
+        else {
+            // typeFilterArr.remove(status);
+            statusFilterArr = $.grep(statusFilterArr, function (value) {
+                return value != status;
+            });
+        }
+    });
+    if (statusFilterArr) {
+        table.column(colNum).search(statusFilterArr.join('|'), true);
     }
     table.draw();
     $('#filter-status').modal('toggle');
