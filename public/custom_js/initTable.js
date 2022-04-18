@@ -64,6 +64,9 @@ $(document).ready(function () {
         case 'ftel-phone':
             initFtelPhone();
             break;
+        case 'appinstallreport':
+            initappinstallreport();
+            break;
         case '':
         case 'home':
             drawChart();
@@ -1662,6 +1665,377 @@ function initIconapproved() {
             },
         ]
     });
+}
+
+function initappinstallreport() {
+    var installedappday = $('#appinstallreportday').DataTable({
+        "processing": true,
+        "select": true,
+        "bDestroy": true,
+        "scrollX": true,
+        "scrollCollapse": true,
+        "pageLength": 5,
+        "lengthMenu": [5, 10, 25, 50, 75, 100],
+        // "orderMulti": true,
+        "ordering": false,
+        "retrieve": true,
+        "serverSide": true,
+        // "order": [[0, "asc"]],
+        "dom": "Blrtp",
+        buttons: [
+            {
+                text: 'Xuất dữ liệu',
+                action: function ( e, dt, node, config ) {
+                    console.log({group_by: 'week', from: $('#min').val(), to: $('#max').val()});
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        // datatype: 'JSON',
+                        url: '/appinstallreport/export',
+                        data: {group_by: 'date', from: $('#min').val(), to: $('#max').val()},
+                        cache: false,
+                        success: (response) => {
+                            var link = document.createElement('a');
+                            link.href = response.file;
+                            link.download = `AppInstallReportByDate_` + moment() + `.xlsx`;
+                            link.click();
+                        },
+                        error: function (xhr) {
+                            // $("#spinner").removeClass("show");
+                            // var errorString = '';
+                            // $.each(xhr.responseJSON.errors, function (key, value) {
+                            //     errorString = value;
+                            //     return false;
+                            // });
+                            // showError(errorString);
+                        }
+                    });
+                },
+                className: 'btn-success'
+            }
+        ],
+        "columnDefs": [
+            { "searchable": false },
+            { "width": "30%", "targets": 0 }
+        ],
+        "ajax": {
+            url: "/appinstallreport/initDatatableByDate",
+            data: function (d) {
+                d.from = $('#min').val();
+                d.to = $('#max').val();
+            }
+        },
+        "data": [],
+        "columns": [{
+            data: 'date_report',
+            name: 'date_report',
+            title: 'Thời gian báo cáo',
+            render: function (data, type, row, meta) {
+                var date = moment(data);
+                return date.format("DD-MM-YYYY");
+            },
+        },
+        {
+            data: 'countInstallWithContract',
+            name: "countInstallWithContract",
+            title: "Cài app có HĐ FTEL",
+            className: 'text-center',
+            render: function (data, type, row, meta) {
+                return JSON.parse(row['list_data'])[0];
+            },
+        },
+        {
+            data: 'countInstallWithOutContract',
+            name: "countInstallWithOutContract",
+            title: "Cài app vãng lai",
+            className: 'text-center',
+            render: function (data, type, row, meta) {
+                return JSON.parse(row['list_data'])[1];
+            },
+        }],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#appinstallreportday').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500
+    });
+
+    var installedappweek = $('#appinstallreportweek').DataTable({
+        "processing": true,
+        "select": true,
+        "bDestroy": true,
+        "scrollX": true,
+        "scrollCollapse": true,
+        "pageLength": 5,
+        "lengthMenu": [5, 10, 25, 50, 75, 100],
+        // "orderMulti": true,
+        "ordering": false,
+        "retrieve": true,
+        "serverSide": true,
+        "dom": "Blrtp",
+        "ajax": {
+            url: "/appinstallreport/initDatatableByWeek",
+            data: function (d) {
+                d.from = $('#min').val();
+                d.to = $('#max').val();
+            }
+        },
+        buttons: [
+            {
+                text: 'Xuất dữ liệu',
+                action: function ( e, dt, node, config ) {
+                    console.log({group_by: 'week', from: $('#min').val(), to: $('#max').val()});
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        // datatype: 'JSON',
+                        url: '/appinstallreport/export',
+                        data: {group_by: 'week', from: $('#min').val(), to: $('#max').val()},
+                        cache: false,
+                        success: (response) => {
+                            var link = document.createElement('a');
+                            link.href = response.file;
+                            link.download = `AppInstallReportByWeek_` + moment() + `.xlsx`;
+                            link.click();
+                        },
+                        error: function (xhr) {
+                            // $("#spinner").removeClass("show");
+                            // var errorString = '';
+                            // $.each(xhr.responseJSON.errors, function (key, value) {
+                            //     errorString = value;
+                            //     return false;
+                            // });
+                            // showError(errorString);
+                        }
+                    });
+                },
+                className: 'btn-success'
+            }
+        ],
+        exportOptions: {
+            columns: ':visible',
+            orthogonal: 'excel',
+            modifier: {
+                order: 'current',
+                page: 'all',
+                selected: false,
+            },
+        },
+        "data": [],
+        "columnDefs": [
+            { "searchable": false },
+            { "width": "30%", "targets": 0 }
+        ],
+        "columns": [{
+            data: 'reported_at',
+            name: 'reported_at',
+            title: 'Thời gian báo cáo',
+            render: function (data, type, row, meta) {
+                var from_date = moment(row[0]['date_report']);
+                var to_date = moment(row[Object.keys(row).length - 2]['date_report']);
+                return 'Tuần ' + row[0]['week_number'] + ' (' + from_date.format("DD-MM-YYYY") + ' - ' + to_date.format("DD-MM-YYYY") + ')';
+            },
+        },
+        {
+            data: 'countInstallWithContract',
+            name: "countInstallWithContract",
+            title: "Cài app có HĐ FTEL",
+            className: 'text-center',
+            render: function (data, type, row, meta) {
+                var result = 0;
+                $.each(row, function(key, value) {
+                    var list_data = (value['list_data']) ? JSON.parse(value['list_data']) : [];
+                    result += (list_data[0]) ? list_data[0] : 0;
+                });
+                // console.log(row);
+                return result;
+            },
+        },
+        {
+            data: 'countInstallWithOutContract',
+            name: "countInstallWithOutContract",
+            title: "Cài app vãng lai",
+            className: 'text-center',
+            render: function (data, type, row, meta) {
+                var result = 0;
+                $.each(row, function(key, value) {
+                    var list_data = (value['list_data']) ? JSON.parse(value['list_data']) : [];
+                    result += (list_data[1]) ? list_data[1] : 0;
+                });
+                // console.log(row);
+                return result;
+            },
+        }],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#appinstallreportweek').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500
+    });
+
+    var installedappmonth = $('#appinstallreportmonth').DataTable({
+        "processing": true,
+        "select": true,
+        "bDestroy": true,
+        "scrollX": true,
+        "scrollCollapse": true,
+        "pageLength": 5,
+        "lengthMenu": [5, 10, 25, 50, 75, 100],
+        // "orderMulti": true,
+        "ordering": false,
+        "retrieve": true,
+        "serverSide": true,
+        "dom": "Blrtp",
+        buttons: [
+            {
+                text: 'Xuất dữ liệu',
+                action: function ( e, dt, node, config ) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        // datatype: 'JSON',
+                        url: '/appinstallreport/export',
+                        data: {group_by: 'month', from: $('#min').val(), to: $('#max').val()},
+                        cache: false,
+                        success: (response) => {
+                            var link = document.createElement('a');
+                            link.href = response.file;
+                            link.download = `AppInstallReportByMonth_` + moment() + `.xlsx`;
+                            link.click();
+                        },
+                        error: function (xhr) {
+                            // $("#spinner").removeClass("show");
+                            // var errorString = '';
+                            // $.each(xhr.responseJSON.errors, function (key, value) {
+                            //     errorString = value;
+                            //     return false;
+                            // });
+                            // showError(errorString);
+                        }
+                    });
+                },
+                className: 'btn-success'
+            }
+        ],
+        exportOptions: {
+            columns: ':visible',
+            orthogonal: 'excel',
+            modifier: {
+                order: 'current',
+                page: 'all',
+                selected: false,
+            },
+        },
+        "ajax": {
+            url: "/appinstallreport/initDatatableByMonth",
+            data: function (d) {
+                d.from = $('#min').val();
+                d.to = $('#max').val();
+            }
+        },
+        "data": [],
+        "columnDefs": [
+            { "searchable": false },
+            { "width": "30%", "targets": 0 }
+        ],
+        "columns": [{
+            data: 'reported_at',
+            name: 'reported_at',
+            title: 'Thời gian báo cáo',
+            render: function (data, type, row, meta) {
+                var from_date = moment(row[0]['date_report']);
+                var to_date = moment(row[Object.keys(row).length - 2]['date_report']);
+                return 'Tháng ' + row[0]['month_number'] + ' (' + from_date.format("DD-MM-YYYY") + ' - ' + to_date.format("DD-MM-YYYY") + ')';
+            },
+        },
+        {
+            data: 'countInstallWithContract',
+            name: "countInstallWithContract",
+            title: "Cài app có HĐ FTEL",
+            className: 'text-center',
+            render: function (data, type, row, meta) {
+                var result = 0;
+                $.each(row, function(key, value) {
+                    var list_data = (value['list_data']) ? JSON.parse(value['list_data']) : [];
+                    result += (list_data[0]) ? list_data[0] : 0;
+                });
+                return result;
+            },
+        },
+        {
+            data: 'countInstallWithOutContract',
+            name: "countInstallWithOutContract",
+            title: "Cài app vãng lai",
+            className: 'text-center',
+            render: function (data, type, row, meta) {
+                var result = 0;
+                $.each(row, function(key, value) {
+                    var list_data = (value['list_data']) ? JSON.parse(value['list_data']) : [];
+                    result += (list_data[1]) ? list_data[1] : 0;
+                });
+                // console.log(row);
+                return result;
+            },
+        }],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#appinstallreportmonth').show();
+        },
+        error: function (xhr, error, code) {
+            $.pjax.reload('#pjax');
+        },
+        searchDelay: 500
+    });
+
+    // $('#min, #max').on('change', function () {
+    //     if($("#min").val() && $("#max").val()) {
+    //         installedappday.draw();
+    //         installedappweek.draw();
+    //         installedappmonth.draw();
+    //     }
+    // });
+
+    // $.fn.dataTable.ext.search.push(
+    //     function( settings, data, dataIndex ) {
+    //         var min = $("#min").val();
+    //         var max = $("#min").val();
+    //         var date = new Date( data[1] );
+    
+    //         if (
+    //             ( min === null && max === null ) ||
+    //             ( min === null && date <= max ) ||
+    //             ( min <= date   && max === null ) ||
+    //             ( min <= date   && date <= max )
+    //         ) {
+    //             return true;
+    //         }
+    //         return false;
+    //     }
+    // );
 }
 
 function badgeArrayView(arrayInput) {

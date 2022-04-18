@@ -207,5 +207,15 @@ Route::group([
                 Route::any('/{phonecode?}/{phone?}/{date?}','OtpController@logs')->name('smsworld.logs');
             });
         });
+
+        Route::namespace('Report')->group(function() {
+            Route::prefix('appinstallreport')->group(function() {
+                Route::get('/', 'AppinstallreportController@index')->name('appinstallreport.index');
+                Route::get('/initDatatableByDate','AppinstallreportController@initDatatableByDate')->name('appinstallreport.initDatatableByDate');
+                Route::get('/initDatatableByWeek','AppinstallreportController@initDatatableByWeek')->name('appinstallreport.initDatatableByWeek');
+                Route::get('/initDatatableByMonth','AppinstallreportController@initDatatableByMonth')->name('appinstallreport.initDatatableByMonth');
+                Route::post('/export','AppinstallreportController@export')->name('appinstallreport.export');
+            });
+        });
     }
 );
