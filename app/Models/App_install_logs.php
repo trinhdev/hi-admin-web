@@ -26,7 +26,7 @@ class App_install_logs extends MY_Model
      */
     protected static function booted() {
         static::addGlobalScope('report_type_id', function (Builder $builder) {
-            $builder->where('report_type_id', '=', 6);
+            $builder->where('report_type_id', '=', 1);
         });
     }
 
