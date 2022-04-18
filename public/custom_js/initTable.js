@@ -997,9 +997,9 @@ function initIconmanagement() {
                 var productName = row['productNameVi'].replace(/(\\r\\n|\\n|\\r)/gm, "");
                 var url = (row['isApprovedRole']) ? '/iconapproved/destroy' : '/iconmanagement/destroy';
                 return `<div>
-                <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconmanagement/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
-                            <a style="float: left; margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButtonTable('icon_management', 'icon-management', '${productName}', '${url}')"><i class="fas fa-trash"></i></button>
+                <button style="margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconmanagement/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                            <a style="margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
+                            <button type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButtonTable('icon_management', 'icon-management', '${productName}', '${url}')"><i class="fas fa-trash"></i></button>
                         </div>`.replaceAll(/[\r\n]+/gm, "");
             },
             className: 'text-center',
@@ -1271,9 +1271,9 @@ function initIconcategory() {
             data: 'productTitleId',
             render: function (data, type, row) {
                 var productName = row['productTitleNameVi'].replace(/(\\r\\n|\\n|\\r)/gm, "");
-                return `<button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconcategory/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
-                            <a style="float: left; margin-right: 5px" href="/iconcategory/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButtonTable('icon_category', 'icon-category', '${productName}', '/iconcategory/destroy')"><i class="fas fa-trash"></i></button>`;
+                return `<button style="margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconcategory/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                            <a style="margin-right: 5px" href="/iconcategory/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
+                            <button type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButtonTable('icon_category', 'icon-category', '${productName}', '/iconcategory/destroy')"><i class="fas fa-trash"></i></button>`;
             },
             "sortable": false,
             className: 'text-center',
@@ -1403,9 +1403,9 @@ function initIconconfig() {
             render: function (data, type, row) {
                 var productName = row.name.replace(/(\\r\\n|\\n|\\r)/gm, " ");
                 return `<div>
-                            <button style="float: left; margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconconfig/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
-                            <a style="float: left; margin-right: 5px" href="/iconconfig/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button style="float: left;" type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButtonTable('icon_config', 'icon-config', '${productName}', '/iconconfig/destroy')"><i class="fas fa-trash"></i></button>
+                            <button style="margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconconfig/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
+                            <a style="margin-right: 5px" href="/iconconfig/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
+                            <button type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButtonTable('icon_config', 'icon-config', '${productName}', '/iconconfig/destroy')"><i class="fas fa-trash"></i></button>
                         </div>`;
             },
             className: 'text-center',
@@ -1603,8 +1603,8 @@ function initIconapproved() {
             title: 'Action',
             data: 'productTitleId',
             render: function (data, type, row) {
-                return `<a style="float: left; margin-right: 5px" href="/iconapproved/edit/${row['id']}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                        <button style="float: left; type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>`;
+                return `<a style="margin-right: 5px" href="/iconapproved/edit/${row['id']}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
+                        <button type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>`;
             },
             "sortable": false,
             className: 'text-center',
