@@ -89,6 +89,9 @@ class IconapprovedController extends MY_Controller
                 if($update_data['approved_status'] == 'dapheduyet') {
                     $result = $this->pushApiApproved($approved_data[0]);
                     // dd($result);
+                    if(!empty($result->message)) {
+                        $result->message = convert_vi_to_en($result->message);
+                    }
                     Icon_approve::where('id', $id)->update([
                         'api_logs'  => json_encode($result)
                     ]);
