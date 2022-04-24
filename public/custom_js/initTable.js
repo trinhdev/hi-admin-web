@@ -1603,8 +1603,8 @@ function initIconapproved() {
             title: 'Action',
             data: 'productTitleId',
             render: function (data, type, row) {
-                return `<a style="margin-right: 5px" href="/iconapproved/edit/${row['id']}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                        <button type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>`;
+                return `<a style="margin-right: 5px" href="/iconapproved/edit/${row['id']}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>`;
+                        // <button type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>`;
             },
             "sortable": false,
             className: 'text-center',
