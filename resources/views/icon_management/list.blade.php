@@ -269,6 +269,20 @@
         .dt-buttons {
             float: right!important;
         }
+
+        .dataTables_wrapper .dataTables_filter input:not(:valid):not(:focus){
+            box-shadow: 0 0 5px #fff!important;
+        }
+        .dataTables_wrapper .dataTables_filter input::-webkit-search-cancel-button {
+            -webkit-appearance: none!important;
+        }
+        .dataTables_wrapper .dataTables_filter button{
+            visibility: hidden;
+            outline: none;
+        }
+        .dataTables_wrapper .dataTables_filter input:valid ~ button{
+            visibility: visible;
+        }
     </style>
 @endsection
 

@@ -1,3 +1,10 @@
+$(document).ready( function () {
+    var table = $('.table').DataTable();
+    table.on('draw.dt', function() {
+      $('.dataTables_empty').html('Không tìm thấy kết quả cho từ khoá <b>' + table.search() + '</b>');
+    })
+} );
+
 function readURL(value, url) {
     $("#spinner").addClass("show");
     $.ajaxSetup({

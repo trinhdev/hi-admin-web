@@ -86,7 +86,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Mô tả danh mục</label>
                                         <div class="col-sm-9">
-                                            <textarea class="form-control" rows="4" id="comment"></textarea>
+                                            <textarea class="form-control" rows="4" id="comment" name="description"></textarea>
                                         </div>
                                     </div>
                                 </div>

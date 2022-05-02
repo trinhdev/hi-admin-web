@@ -1015,6 +1015,23 @@ function initIconmanagement() {
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
         },
+        initComplete: function(settings) {
+            //settings.nTable.id --> Get table ID
+            $('#'+settings.nTable.id+'_filter input').wrap(`
+                <div class="d-inline-flex position-relative"></div>
+            `).after(`
+                <button type="button" class="close position-absolute" aria-label="Close" style="right:5px">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            `).attr('required','required').attr('title','Search');
+      
+            // Click Event on Clear button
+            $(document).on('click', '#'+settings.nTable.id+'_filter button', function(){
+               $('#'+settings.nTable.id).DataTable({
+                 "retrieve": true,
+                }).search('').draw(); // reDraw table
+            });
+        },
         // searchDelay: 500,
         "searchCols": [
             null,
@@ -1272,8 +1289,7 @@ function initIconcategory() {
             render: function (data, type, row) {
                 var productName = row['productTitleNameVi'].replace(/(\\r\\n|\\n|\\r)/gm, "");
                 return `<button style="margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconcategory/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
-                            <a style="margin-right: 5px" href="/iconcategory/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButtonTable('icon_category', 'icon-category', '${productName}', '/iconcategory/destroy')"><i class="fas fa-trash"></i></button>`;
+                            <a style="margin-right: 5px" href="/iconcategory/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>`;
             },
             "sortable": false,
             className: 'text-center',
@@ -1310,6 +1326,23 @@ function initIconcategory() {
         },
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
+        },
+        initComplete: function(settings) {
+            //settings.nTable.id --> Get table ID
+            $('#'+settings.nTable.id+'_filter input').wrap(`
+                <div class="d-inline-flex position-relative"></div>
+            `).after(`
+                <button type="button" class="close position-absolute" aria-label="Close" style="right:5px">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            `).attr('required','required').attr('title','Search');
+      
+            // Click Event on Clear button
+            $(document).on('click', '#'+settings.nTable.id+'_filter button', function(){
+               $('#'+settings.nTable.id).DataTable({
+                 "retrieve": true,
+                }).search('').draw(); // reDraw table
+            });
         },
     });
 }
@@ -1420,6 +1453,23 @@ function initIconconfig() {
         },
         error: function (xhr, error, code) {
             $.pjax.reload('#pjax');
+        },
+        initComplete: function(settings) {
+            //settings.nTable.id --> Get table ID
+            $('#'+settings.nTable.id+'_filter input').wrap(`
+                <div class="d-inline-flex position-relative"></div>
+            `).after(`
+                <button type="button" class="close position-absolute" aria-label="Close" style="right:5px">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            `).attr('required','required').attr('title','Search');
+      
+            // Click Event on Clear button
+            $(document).on('click', '#'+settings.nTable.id+'_filter button', function(){
+               $('#'+settings.nTable.id).DataTable({
+                 "retrieve": true,
+                }).search('').draw(); // reDraw table
+            });
         },
         // searchDelay: 500,
         "searchCols": [
