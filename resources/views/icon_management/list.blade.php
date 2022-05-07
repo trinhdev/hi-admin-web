@@ -39,14 +39,14 @@
                     <div class="form-group row">
                         <label class="col-form-label col-sm-6">Trạng thái hiện</label>
                         <div class="col-sm-6 icheck-primary" style="width: auto">
-                            <input type="checkbox" id="status-show" name="status" value="1" />
+                            <input type="radio" id="status-show" name="status" value="1" />
                             <label class="float-right" for="status-show"></label>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-sm-6">Trạng thái ẩn</label>
                         <div class="col-sm-6 icheck-primary" style="width: auto">
-                            <input type="checkbox" id="status-hide" name="status" value="0" />
+                            <input type="radio" id="status-hide" name="status" value="0" />
                             <label class="float-right" for="status-hide"></label>
                         </div>
                     </div>

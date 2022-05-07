@@ -1048,7 +1048,7 @@ function initIconmanagement() {
             {
                 text: 'Tất cả',
                 action: function (e, dt, node, config) {
-                    icon_category.column(5).search('', true, false).draw();
+                    icon_management_table.column(5).search('', true, false).draw();
                 }
             },
             {
@@ -1308,7 +1308,7 @@ function initIconcategory() {
             {
                 text: 'Tất cả',
                 action: function (e, dt, node, config) {
-                    icon_category.column(5).search('', true, false).draw();
+                    icon_category.column(4).search('', true, false).draw();
                 }
             },
             {
@@ -1686,7 +1686,7 @@ function initIconapproved() {
             {
                 text: 'Tất cả',
                 action: function (e, dt, node, config) {
-                    icon_category.column(5).search('', true, false).draw();
+                    icon_category.search('').columns().search( '' ).draw();
                 }
             },
             // {

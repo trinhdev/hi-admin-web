@@ -409,6 +409,9 @@ function filterStatus(tableId, colNum) {
     if (statusFilterArr) {
         table.column(colNum).search(statusFilterArr.join('|'), true);
     }
+    else {
+        table.column(colNum).search('');
+    }
     table.draw();
     $('#filter-status').modal('toggle');
 }
