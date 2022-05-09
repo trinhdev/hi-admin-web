@@ -409,20 +409,46 @@ function filterStatus(tableId, colNum) {
     if (statusFilterArr) {
         table.column(colNum).search(statusFilterArr.join('|'), true);
     }
-    else {
-        table.column(colNum).search('');
-    }
     table.draw();
     $('#filter-status').modal('toggle');
 }
 
-function removeFromSelectedProduct(el) {
+async function removeFromSelectedProduct(el) {
     var remove_prod_id = $("#" + el).attr('data-prodid');
+    var img = $('#' + remove_prod_id + '-selected-product').find("img");
+    var span = $('#' + remove_prod_id + '-selected-product').find("span:first");
+    var button = $('#' + remove_prod_id + '-selected-product').find("button");
+    var h6 = $('#' + remove_prod_id + '-selected-product').find("h6:first");
+    $(h6).find('span').removeClass("badge-light");
+    $(h6).find('span').addClass("badge-dark");
     var parent_ul = $($("#" + el).parent());
     $("#" + el).remove();
     parent_ul.find("li").each((key, value) => {
         $(value).find("span.position").text($(value).index() + 1);
     });
+
+    var li = $("<li>", {id: remove_prod_id});
+    li.addClass("lslide");
+
+    // li.css("text-align", "center");
+    // li.css("width", "211.55px");
+    // li.css("margin-right", "15px");
+    li.attr('data-prodid', remove_prod_id);
+
+    li.append(img);
+    li.append('<br>');
+    li.append(button);
+    li.append(h6);
+
+    // li.insertBefore('#all-product #' + (remove_prod_id + 1));
+    $("#all-product").prepend(li);
+    var checkExist = setInterval(function() {
+        if ($('#all-product #' + remove_prod_id).length) {
+           console.log("Exists!");
+           slider.refresh();
+           clearInterval(checkExist);
+        }
+    }, 100);
 }
 
 function onsubmitIconForm(e, form, ul_id, withPopup = true) {
@@ -431,12 +457,12 @@ function onsubmitIconForm(e, form, ul_id, withPopup = true) {
     $("#" + ul_id).find("li").each((key, value) => {
         arrayId.push($(value).attr('data-prodid'));
     });
+
     $("#selected-prod-id").val(arrayId.join(','));
 
     if (withPopup) {
         Swal.fire({
-            title: 'Are you sure?',
-            text: "Please Confirm This Action",
+            text: "Các thông tin bạn nhập sẽ được chuyển vào yêu cầu kiểm duyệt",
             icon: 'warning',
             showCancelButton: true,
             cancelButtonColor: '#d33',
@@ -454,11 +480,35 @@ function onsubmitIconForm(e, form, ul_id, withPopup = true) {
             }
         });
     } else {
-        form.submit();
-        showLoadingIcon();
-        let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
-        $('form').find(':button').prop('disabled', true);
-        // $("#spinner").toggle("show");
+        if(arrayId.length <= 0) {
+            console.log(arrayId.length);
+            Swal.fire({
+                text: "Danh mục hiện tại không có sản phẩm nào, bạn có chắc muốn thêm?",
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonColor: '#d33',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy',
+                reverseButtons: true
+    
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                    showLoadingIcon();
+                    let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+                    $('form').find(':button').prop('disabled', true);
+                    // $("#spinner").toggle("show");
+                }
+            });
+        }
+        else {
+            form.submit();
+            showLoadingIcon();
+            let submitBtn = $(form).closest('form').find('button').append('&ensp;<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+            $('form').find(':button').prop('disabled', true);
+            // $("#spinner").toggle("show");
+        }
     }
 
     if (e.result == true) {

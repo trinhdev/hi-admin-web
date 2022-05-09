@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-9">
-                    {!! Form::open(array('url' => route('iconcategory.save'),'method'=>'post' ,'id' => 'icon-category-form','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data', 'onsubmit'=>"onsubmitIconForm(event,this,'selected-product')")) !!}
+                    {!! Form::open(array('url' => route('iconcategory.save'),'method'=>'post' ,'id' => 'icon-category-form','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data', 'onsubmit'=>"onsubmitIconForm(event,this,'selected-product',false)")) !!}
                     @csrf
                     <input type="hidden" name="productTitleId" value="{{ @$data['productTitleId'] }}" />
                     <div class="card card-info">

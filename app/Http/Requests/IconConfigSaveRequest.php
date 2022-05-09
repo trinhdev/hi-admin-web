@@ -28,8 +28,7 @@ class IconConfigSaveRequest extends FormRequest
         return [
             'name'          => 'required',
             'iconsPerRow'   => 'required|numeric|min:0|not_in:0',
-            'rowOnPage'     => 'required|numeric|min:0|not_in:0',
-            'arrayId'       => 'required'
+            'rowOnPage'     => 'required|numeric|min:0|not_in:0'
         ];
     }
 
@@ -44,7 +43,6 @@ class IconConfigSaveRequest extends FormRequest
         'rowOnPage.required'    => 'Số dòng tối đa không được để trống',
         'rowOnPage.required'    => 'Số dòng tối đa không được để trống',
         'rowOnPage.not_in'      => 'Số dòng tối đa phải lớn hơn 0',
-        'arrayId.required'      => 'Xin vui lòng chọn sản phẩm cho cấu hình'
     ];
 }
 }

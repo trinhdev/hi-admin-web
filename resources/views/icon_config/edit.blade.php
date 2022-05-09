@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-9">
-                    {!! Form::open(array('url' => route('iconconfig.save'),'method'=>'post' ,'id' => 'icon-config-form','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data', 'onsubmit'=>"onsubmitIconForm(event,this,'selected-product-config')")) !!}
+                    {!! Form::open(array('url' => route('iconconfig.save'),'method'=>'post' ,'id' => 'icon-config-form','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data', 'onsubmit'=>"onsubmitIconForm(event,this,'selected-product-config',false)")) !!}
                     @csrf
                     <input type="hidden" name="productConfigId" value="{{ @$data['productConfigId'] }}"/>
                     <div class="card card-info">

@@ -1016,6 +1016,8 @@ function initIconmanagement() {
             $.pjax.reload('#pjax');
         },
         initComplete: function(settings) {
+            var input = $('.dataTables_filter input').unbind(),
+            self = this.api();
             //settings.nTable.id --> Get table ID
             $('#'+settings.nTable.id+'_filter input').wrap(`
                 <div class="d-inline-flex position-relative"></div>
@@ -1023,13 +1025,22 @@ function initIconmanagement() {
                 <button type="button" class="close position-absolute" aria-label="Close" style="right:5px">
                   <span aria-hidden="true">&times;</span>
                 </button>
+                <button type="button" class="find position-absolute" aria-label="Close" style="right:22px; background-color: transparent; border: none">
+                  <span aria-hidden="true" style="font-size: 14px; color: #6c757d"><i class="fas fa-search"></i></span>
+                </button>
             `).attr('required','required').attr('title','Search');
       
             // Click Event on Clear button
-            $(document).on('click', '#'+settings.nTable.id+'_filter button', function(){
+            $(document).on('click', '#'+settings.nTable.id+'_filter .close', function(){
                $('#'+settings.nTable.id).DataTable({
                  "retrieve": true,
                 }).search('').draw(); // reDraw table
+            });
+
+            $(document).on('click', '#'+settings.nTable.id+'_filter .find', function(){
+                $('#'+settings.nTable.id).DataTable({
+                  "retrieve": true,
+                 }).search(input.val()).draw(); // reDraw table
             });
         },
         // searchDelay: 500,
@@ -1328,6 +1339,8 @@ function initIconcategory() {
             $.pjax.reload('#pjax');
         },
         initComplete: function(settings) {
+            var input = $('.dataTables_filter input').unbind(),
+            self = this.api();
             //settings.nTable.id --> Get table ID
             $('#'+settings.nTable.id+'_filter input').wrap(`
                 <div class="d-inline-flex position-relative"></div>
@@ -1335,13 +1348,22 @@ function initIconcategory() {
                 <button type="button" class="close position-absolute" aria-label="Close" style="right:5px">
                   <span aria-hidden="true">&times;</span>
                 </button>
+                <button type="button" class="find position-absolute" aria-label="Close" style="right:22px; background-color: transparent; border: none">
+                  <span aria-hidden="true" style="font-size: 14px; color: #6c757d"><i class="fas fa-search"></i></span>
+                </button>
             `).attr('required','required').attr('title','Search');
       
             // Click Event on Clear button
-            $(document).on('click', '#'+settings.nTable.id+'_filter button', function(){
+            $(document).on('click', '#'+settings.nTable.id+'_filter .close', function(){
                $('#'+settings.nTable.id).DataTable({
                  "retrieve": true,
                 }).search('').draw(); // reDraw table
+            });
+
+            $(document).on('click', '#'+settings.nTable.id+'_filter .find', function(){
+                $('#'+settings.nTable.id).DataTable({
+                  "retrieve": true,
+                 }).search(input.val()).draw(); // reDraw table
             });
         },
     });
@@ -1455,6 +1477,8 @@ function initIconconfig() {
             $.pjax.reload('#pjax');
         },
         initComplete: function(settings) {
+            var input = $('.dataTables_filter input').unbind(),
+            self = this.api();
             //settings.nTable.id --> Get table ID
             $('#'+settings.nTable.id+'_filter input').wrap(`
                 <div class="d-inline-flex position-relative"></div>
@@ -1462,13 +1486,22 @@ function initIconconfig() {
                 <button type="button" class="close position-absolute" aria-label="Close" style="right:5px">
                   <span aria-hidden="true">&times;</span>
                 </button>
+                <button type="button" class="find position-absolute" aria-label="Close" style="right:22px; background-color: transparent; border: none">
+                  <span aria-hidden="true" style="font-size: 14px; color: #6c757d"><i class="fas fa-search"></i></span>
+                </button>
             `).attr('required','required').attr('title','Search');
       
             // Click Event on Clear button
-            $(document).on('click', '#'+settings.nTable.id+'_filter button', function(){
+            $(document).on('click', '#'+settings.nTable.id+'_filter .close', function(){
                $('#'+settings.nTable.id).DataTable({
                  "retrieve": true,
                 }).search('').draw(); // reDraw table
+            });
+
+            $(document).on('click', '#'+settings.nTable.id+'_filter .find', function(){
+                $('#'+settings.nTable.id).DataTable({
+                  "retrieve": true,
+                 }).search(input.val()).draw(); // reDraw table
             });
         },
         // searchDelay: 500,
@@ -1686,7 +1719,7 @@ function initIconapproved() {
             {
                 text: 'Tất cả',
                 action: function (e, dt, node, config) {
-                    icon_category.search('').columns().search( '' ).draw();
+                    icon_category.column(5).search('', true, false).draw();
                 }
             },
             // {
