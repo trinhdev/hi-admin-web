@@ -33,16 +33,16 @@ class IconConfigSaveRequest extends FormRequest
     }
 
     public function messages()
-{
-    return [
-        'titleVi.required'      => 'Tên cấu hình không được để trống',
-        'iconUrl.required'      => 'Tên cấu hình - code không được để trống',
-        'iconsPerRow.required'  => 'Số icon trên 1 dòng không được để trống',
-        'iconsPerRow.numeric'   => 'Số icon trên 1 dòng phải là số',
-        'iconsPerRow.not_in'    => 'Số icon trên 1 dòng phải lớn hơn 0',
-        'rowOnPage.required'    => 'Số dòng tối đa không được để trống',
-        'rowOnPage.required'    => 'Số dòng tối đa không được để trống',
-        'rowOnPage.not_in'      => 'Số dòng tối đa phải lớn hơn 0',
-    ];
-}
+    {
+        return [
+            'titleVi.required'      => 'Tên cấu hình không được để trống',
+            'iconUrl.required'      => 'Tên cấu hình - code không được để trống',
+            'iconsPerRow.required'  => 'Số icon trên 1 dòng không được để trống',
+            'iconsPerRow.numeric'   => 'Số icon trên 1 dòng phải là số',
+            'iconsPerRow.not_in'    => 'Số icon trên 1 dòng phải lớn hơn 0',
+            'rowOnPage.required'    => 'Số dòng tối đa không được để trống',
+            'rowOnPage.required'    => 'Số dòng tối đa không được để trống',
+            'rowOnPage.not_in'      => 'Số dòng tối đa phải lớn hơn 0',
+        ];
+    }
 }

@@ -1,4 +1,16 @@
 $(document).ready(function () {
+    var $form = $('form');
+    var initialState = $form.serialize();
+    
+    $form.change(function (e) {
+        if (initialState === $form.serialize()) {
+            $( "#submit-button" ).prop( "disabled", true );
+        } else {
+            $( "#submit-button" ).prop( "disabled", false );
+        }
+        e.preventDefault();
+    });
+
     if ($('#icon-per-row').val()) {
         console.log($('#icon-per-row').val() * 100 / 4 + 5);
         $("#selected-product-config").css({

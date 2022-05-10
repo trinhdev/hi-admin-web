@@ -241,7 +241,7 @@
                         </div>
                         <div class="card-footer">
                             @if(auth()->user()->cannot('icon-check-data-permission') && auth()->user()->cannot('icon-approve-data-permission'))
-                                <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
+                                <button id="submit-button" type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
                             @endif
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))

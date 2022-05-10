@@ -1460,7 +1460,6 @@ function initIconconfig() {
                 return `<div>
                             <button style="margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconconfig/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                             <a style="margin-right: 5px" href="/iconconfig/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
-                            <button type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa" onClick="deleteButtonTable('icon_config', 'icon-config', '${productName}', '/iconconfig/destroy')"><i class="fas fa-trash"></i></button>
                         </div>`;
             },
             className: 'text-center',
