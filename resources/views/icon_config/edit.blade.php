@@ -62,7 +62,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-3 col-form-label">Tên vị trí - code <span class="required">*</span></label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="code-name" placeholder="Tên vị trí - code" name="name" value="{{ @$data['name'] }}" {{ (isset($data['productConfigId'])) ? 'readonly="true"' : '' }} >
+                                            <input type="text" class="form-control" id="code-name" placeholder="Tên vị trí - code" name="name" value="{{ @$data['name'] }}" {{ (isset($data['productConfigId'])) ? 'readonly="true"' : '' }} style="text-transform: uppercase" >
                                             @error('name')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror

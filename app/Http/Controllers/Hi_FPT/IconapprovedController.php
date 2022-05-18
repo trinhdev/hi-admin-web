@@ -52,6 +52,9 @@ class IconapprovedController extends MY_Controller
 
     public function edit($id = null) {
         $approved_data = $this->model::with(['user_requested_by', 'user_approved_by', 'user_checked_by'])->where('id', $id)->get();
+        if(empty($approved_data)) {
+            return view('iconapproved.edit_not_found');
+        }
         $uuid = $approved_data[0]['product_id'];
         $url = '/' . str_replace('_', '', $approved_data[0]['product_type']) . '/edit/' . $uuid;
         return redirect()->to($url)->with('approved_data', $approved_data[0]);
@@ -125,7 +128,7 @@ class IconapprovedController extends MY_Controller
         // $to = 'oanhltn3@fpt.com.vn';
 
         $cc = [];
-        if(!empty($ccBgd[0]['value'])) {
+        if(!empty($ccBgd[0]['value']) && $update_data['approved_status'] == 'dapheduyet') {
             $cc = json_decode($ccBgd[0]['value'], true);
         }
 

@@ -68,6 +68,11 @@ class IconmanagementController extends MY_Controller
                 $api_info['data'] = (!empty($icon[0])) ? json_decode($icon[0], true) : [];
             }
             $data['data'] = (!empty($api_info['data'])) ? $api_info['data'] : [];
+
+        }
+
+        if(empty($data['data'])) {
+            return view('icon_management.edit_not_found');
         }
 
         if(!empty($data['data']['productNameVi'])) {

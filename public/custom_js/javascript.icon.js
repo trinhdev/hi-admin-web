@@ -315,23 +315,28 @@ function deleteButtonApprovedRole(form_data, name, url, ul_id) {
     });
 }
 
-function cancelButton(url) {
-    Swal.fire({
-        title: 'Đóng biểu mẫu',
-        html: `Các thông tin đã nhập sẽ không được lưu?`,
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'Huỷ',
-        cancelButtonColor: '#d33',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Đồng ý',
-        reverseButtons: true
-
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = url;
-        }
-    });
+function cancelButton(url, withPopup = true) {
+    if(withPopup) {
+        Swal.fire({
+            title: 'Đóng biểu mẫu',
+            html: `Các thông tin đã nhập sẽ không được lưu?`,
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Huỷ',
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Đồng ý',
+            reverseButtons: true
+    
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    }
+    else {
+        window.location.href = url;
+    }
 }
 
 function openDetail(url) {
