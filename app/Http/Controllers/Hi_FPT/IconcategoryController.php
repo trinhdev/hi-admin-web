@@ -72,10 +72,10 @@ class IconcategoryController extends MY_Controller
             if(!empty($response['data'])) {
                 $data['data'] = array_merge($response['data'], $data['data']);
             }
-        }
 
-        if(empty($data['data'])) {
-            return view('iconcategory.edit_not_found');
+            if(empty($data['data'])) {
+                return view('iconcategory.edit_not_found');
+            }
         }
 
         $loai_dieu_huong = Settings::where('name', 'icon_loai_dieu_huong')->get();

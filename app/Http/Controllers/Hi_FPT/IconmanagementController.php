@@ -69,10 +69,9 @@ class IconmanagementController extends MY_Controller
             }
             $data['data'] = (!empty($api_info['data'])) ? $api_info['data'] : [];
 
-        }
-
-        if(empty($data['data'])) {
-            return view('icon_management.edit_not_found');
+            if(empty($data['data'])) {
+                return view('icon_management.edit_not_found');
+            }
         }
 
         if(!empty($data['data']['productNameVi'])) {

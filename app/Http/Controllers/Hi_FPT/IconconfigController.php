@@ -85,10 +85,10 @@ class IconconfigController extends MY_Controller
 
                 $data['data'] = array_merge($response['data'], $data['data']);
             }
-        }
 
-        if(empty($data['data'])) {
-            return view('iconconfig.edit_not_found');
+            if(empty($data['data'])) {
+                return view('iconconfig.edit_not_found');
+            }
         }
 
         $loai_dieu_huong = Settings::where('name', 'icon_loai_dieu_huong')->get();
