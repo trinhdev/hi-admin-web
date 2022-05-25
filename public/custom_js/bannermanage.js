@@ -5,6 +5,13 @@ function onchangeTypeBanner(_this) {
     } else {
         path_2.hidden = true;
     }
+
+    if(_this.value == 'promotion') {
+        $("#isShowHomeGroup").show();
+    }
+    else {
+        $("#isShowHomeGroup").hide();
+    }
 }
 
 function onchangeDirection() {
@@ -251,10 +258,10 @@ function successGetViewBanner(response){
             has_target_route.checked = false;
         }
 
-        if(banner.is_highlight == 1){
-            isHighlight.checked = true;
+        if(banner.is_show_home == 1){
+            isShowHome.checked = true;
         }else{
-            isHighlight.checked = false;
+            isShowHome.checked = false;
         }
 
         BannerDetail_link_to_edit.setAttribute('data-type', banner.bannerType);

@@ -67,6 +67,14 @@ class BannerDataTable extends DataTable
                 $is_expired = $row->public_date_end <= now() ? 'disabled' : '';
                 return '<input type="number" onchange="updateOrdering(this)" style="width:50px" value="'.$row->ordering_on_home.'" '.$is_expired.'/>';
             })
+            ->editColumn('is_show_home', function($row) {
+                if($row->is_show_home) {
+                    return '<span><i style="color: green" class="fas fa-check-circle"></i></span>';
+                }
+                else {
+                    return '<span><i style="color: red" class="fas fa-times-circle"></i></span>';
+                }
+            })
             ->editColumn('action',function($row) use ($list_banner_type){
                 // check if banner type is defined
                 // $bannerType = $row->event_type;
@@ -82,10 +90,9 @@ class BannerDataTable extends DataTable
                     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
                    <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>';
             })
-            ->rawColumns(['image','status','action','ordering_on_home','event_type'])
+            ->rawColumns(['image','status','action','ordering_on_home','event_type', 'is_show_home'])
             ->setTotalRecords($totalRecords)
-            ->skipPaging()
-            ;
+            ->skipPaging();
     }
 
     /**
@@ -198,6 +205,7 @@ class BannerDataTable extends DataTable
             Column::make('status')->title('Trạng Thái')->sortable(false),
             Column::make('ordering_on_home')->title('Độ ưu tiên'),
             Column::make('view_count')->title('Số Lượt Click'),
+            Column::make('is_show_home')->title('Có hiện ở home'),
             Column::make('date_created')->title('Ngày Tạo'),
             Column::make('created_by')->title('Người Tạo')->sortable(false),
             Column::make('updated_by')->title('Người Cập Nhật')->sortable(false),
