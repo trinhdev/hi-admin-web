@@ -297,12 +297,9 @@ class BannerManageController extends MY_Controller
         if(!empty($request->bannerType) && $request->bannerType =='promotion'){
            $createParams['thumbImageFileName'] = $request->img_path_2_name;
         };
-        // if(!empty($request->isShowHome)){
-        //     $createParams['isShowHome'] = 1;
-        // }
-        // else {
-        //     $createParams['isShowHome'] = 0;
-        // };
+        if(!empty($request->isShowHome)){
+            $createParams['isShowHome'] = 1;
+        }
         $user_email = $this->user->email;
         $createParams['cms_note'] = json_encode([
             'created_by' => substr($user_email, 0, strpos($user_email, '@')),
