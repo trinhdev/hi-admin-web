@@ -65,8 +65,8 @@
                             </div>
                             <div class="form-group">
                                 <div class="icheck-carrot">
-                                    <input type="checkbox" id="isHighlight" name="isHighlight" disabled>
-                                    <label for="isHighlight">Hiện ở Home</label>
+                                    <input type="checkbox" id="isShowHome" name="isShowHome" disabled>
+                                    <label for="isShowHome">Hiện ở Home</label>
                                 </div>
                             </div>
                         </div>

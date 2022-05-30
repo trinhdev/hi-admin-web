@@ -1,6 +1,20 @@
 "use strict";
 
+var slider;
+
 $(document).ready(function () {
+    var $form = $('form');
+    var initialState = $form.serialize();
+    
+    $form.change(function (e) {
+        if (initialState === $form.serialize()) {
+            $( "#submit-button" ).prop( "disabled", true );
+        } else {
+            $( "#submit-button" ).prop( "disabled", false );
+        }
+        e.preventDefault();
+    });
+
     if ($('#status-clock').is(':checked')) {
         $('#status-clock-date-time').show();
     }
@@ -84,7 +98,7 @@ $(document).ready(function () {
     });
 
     // lightSlider
-    $('#all-product').lightSlider({
+    slider = $('#all-product').lightSlider({
         item: 5,
         loop: true,
         slideMove: 1,
@@ -143,9 +157,9 @@ $('input:checkbox[name="is_new_show"]').change(() => {
 dragula([document.getElementById('all-product'), document.getElementById('selected-product')], {
     direction: 'horizontal',
     revertOnSpill: true,
-    copy: function (el, source) {
-        return source === document.getElementById('all-product')
-    },
+    // copy: function (el, source) {
+    //     return source === document.getElementById('all-product')
+    // },
     accepts: function (el, target, source, sibling) {
         var li_all = $(el).attr('id');
         if ($('#' + li_all + '-selected-product').length != 0) {
@@ -180,6 +194,8 @@ dragula([document.getElementById('all-product'), document.getElementById('select
     $(target).find("li").each((key, value) => {
         $(value).find("span.position").text($(value).index() + 1);
     });
+
+    // $("#" + li_all).remove();
 });
 
 $("#status-all").change(function () {

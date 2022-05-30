@@ -36,22 +36,49 @@
                     <div class="row">
                         <div class="col-sm-12"><b>Phê duyệt</b></div>
                     </div>
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label class="col-form-label col-sm-6">Tất cả</label>
                         <div class="col-sm-6 icheck-primary" style="width: auto">
                             <input type="checkbox" id="pheduyet-all" value="all" />
                             <label class="float-right" for="pheduyet-all"></label>
                         </div>
-                    </div>
+                    </div> -->
                     @foreach($icon_approve as $approve)
+                        @if(!empty($approve['isSearch']))
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-6">{{ $approve['value'] }}</label>
+                                <div class="col-sm-6 icheck-primary" style="width: auto">
+                                    <input type="checkbox" id="pheduyet-{{ $approve['key'] }}" name="pheduyet" value="{{ $approve['key'] }}" />
+                                    <label class="float-right" for="pheduyet-{{ $approve['key'] }}"></label>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+
+                    <div class="row">
+                        <div class="col-sm-12"><b>Loại</b></div>
+                    </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-sm-6">{{ $approve['value'] }}</label>
+                        <label class="col-form-label col-sm-6">Sản phẩm</label>
                         <div class="col-sm-6 icheck-primary" style="width: auto">
-                            <input type="checkbox" id="pheduyet-{{ $approve['key'] }}" name="pheduyet" value="{{ $approve['key'] }}" />
-                            <label class="float-right" for="pheduyet-{{ $approve['key'] }}"></label>
+                            <input type="checkbox" id="type-icon_management" name="type" value="icon_management" />
+                            <label class="float-right" for="type-icon_management"></label>
                         </div>
                     </div>
-                    @endforeach
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Danh mục</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="type-icon_category" name="type" value="icon_category" />
+                            <label class="float-right" for="type-icon_category"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Vị trí</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="checkbox" id="type-icon_config" name="type" value="icon_config" />
+                            <label class="float-right" for="type-icon_config"></label>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -242,3 +269,7 @@
         }
     </style>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('/custom_js/javascript.icon.js')}}"></script>
+@endpush

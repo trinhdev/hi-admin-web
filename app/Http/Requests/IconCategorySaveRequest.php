@@ -23,19 +23,20 @@ class IconCategorySaveRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            'productTitleNameVi'    => 'required',
-            'arrayId'               => 'required',
+            'productTitleNameVi'    => 'required|max:50',
+            'productTitleNameEn'    => 'max:50',
+            'description'           => 'max:120'
         ];
     }
 
-    public function messages()
-{
-    return [
-        'productTitleNameVi.required'   => 'Tên danh mục không được để trống',
-        'arrayId.required'              => 'Xin vui lòng chọn sản phẩm cho danh mục',
-    ];
-}
+    public function messages() {
+        return [
+            'productTitleNameVi.required'   => 'Tên danh mục không được để trống',
+            'productTitleNameVi.max'        => 'Tên danh mục chỉ giới hạn trong 50 ký tự',
+            'productTitleNameEn.max'        => 'Tên danh mục chỉ giới hạn trong 50 ký tự',
+            'description'                   => 'Mô tả chỉ giới hạn trong 120 ký tự'
+        ];
+    }
 }

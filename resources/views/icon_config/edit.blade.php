@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-9">
-                    {!! Form::open(array('url' => route('iconconfig.save'),'method'=>'post' ,'id' => 'icon-config-form','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data', 'onsubmit'=>"onsubmitIconForm(event,this,'selected-product-config')")) !!}
+                    {!! Form::open(array('url' => route('iconconfig.save'),'method'=>'post' ,'id' => 'icon-config-form','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data', 'onsubmit'=>"onsubmitIconForm(event,this,'selected-product-config',false)")) !!}
                     @csrf
                     <input type="hidden" name="productConfigId" value="{{ @$data['productConfigId'] }}"/>
                     <div class="card card-info">
@@ -62,7 +62,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-3 col-form-label">Tên vị trí - code <span class="required">*</span></label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="code-name" placeholder="Tên vị trí - code" name="name" value="{{ @$data['name'] }}" {{ (isset($data['productConfigId'])) ? 'readonly="true"' : '' }} >
+                                            <input type="text" class="form-control" id="code-name" placeholder="Tên vị trí - code" name="name" value="{{ @$data['name'] }}" {{ (isset($data['productConfigId'])) ? 'readonly="true"' : '' }} style="text-transform: uppercase" >
                                             @error('name')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
@@ -252,7 +252,7 @@
                         </div>
                         <div class="card-footer">
                             @if(auth()->user()->cannot('icon-check-data-permission') && auth()->user()->cannot('icon-approve-data-permission'))
-                                <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
+                                <button id="submit-button" type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
                             @endif
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconconfig.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))

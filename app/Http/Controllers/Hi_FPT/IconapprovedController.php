@@ -52,6 +52,9 @@ class IconapprovedController extends MY_Controller
 
     public function edit($id = null) {
         $approved_data = $this->model::with(['user_requested_by', 'user_approved_by', 'user_checked_by'])->where('id', $id)->get();
+        if(empty($approved_data)) {
+            return view('iconapproved.edit_not_found');
+        }
         $uuid = $approved_data[0]['product_id'];
         $url = '/' . str_replace('_', '', $approved_data[0]['product_type']) . '/edit/' . $uuid;
         return redirect()->to($url)->with('approved_data', $approved_data[0]);
@@ -89,6 +92,9 @@ class IconapprovedController extends MY_Controller
                 if($update_data['approved_status'] == 'dapheduyet') {
                     $result = $this->pushApiApproved($approved_data[0]);
                     // dd($result);
+                    if(!empty($result->message)) {
+                        $result->message = convert_vi_to_en($result->message);
+                    }
                     Icon_approve::where('id', $id)->update([
                         'api_logs'  => json_encode($result)
                     ]);
@@ -119,10 +125,10 @@ class IconapprovedController extends MY_Controller
         // dd($mailContent);
         
         $to = $approved_data[0]['user_requested_by']['email'];
-        $to = 'oanhltn3@fpt.com.vn';
+        // $to = 'oanhltn3@fpt.com.vn';
 
         $cc = [];
-        if(!empty($ccBgd[0]['value'])) {
+        if(!empty($ccBgd[0]['value']) && $update_data['approved_status'] == 'dapheduyet') {
             $cc = json_decode($ccBgd[0]['value'], true);
         }
 
@@ -183,7 +189,6 @@ class IconapprovedController extends MY_Controller
         ]);
 
         $result = $this->pushApiApproved($request);
-        dd($result);
 
         // Send email thong bao
         $listApprovedStatusRaw = Settings::where('name', 'icon_approve')->get()->toArray();
