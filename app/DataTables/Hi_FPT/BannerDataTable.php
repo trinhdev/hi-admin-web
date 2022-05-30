@@ -5,6 +5,7 @@ namespace App\DataTables\Hi_FPT;
 use App\Models\Banner;
 use App\Services\NewsEventService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -45,7 +46,7 @@ class BannerDataTable extends DataTable
                 $is_expired = $row->public_date_end <= now() ? 'Hết hạn' : 'Còn Hạn';
                 $badge = $is_expired == 'Hết hạn' ? 'badge badge-danger' : 'badge badge-success';
                 return '<h4 class="'.$badge.'">'.$is_expired.'</h4>';
-                
+
             })
             ->editColumn('created_by',function($row){
                 if(!empty($row->cms_note)){
@@ -92,7 +93,7 @@ class BannerDataTable extends DataTable
      * Get query source of dataTable.
      *
      * @param \App\Models\Hi_FPT/Banner $model
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function query(NewsEventService $service)
     {
@@ -147,7 +148,7 @@ class BannerDataTable extends DataTable
                     ->responsive()
                     ->autoWidth(true)
                     ->parameters([
-                        'scrollX' => true,
+                        'scroll' => false,
                         'searching' => false,
                         'searchDelay' => 500,
                         'initComplete' => "function () {
@@ -155,13 +156,13 @@ class BannerDataTable extends DataTable
                             var public_date_start = $('#show_from');
                             var public_date_end = $('#show_to');
                             var table = $('#banner_manage').DataTable();
-                            $(bannerType).on('change', function () { 
+                            $(bannerType).on('change', function () {
                                 table.ajax.reload();
                             });
-                            $(public_date_start).on('change', function () { 
+                            $(public_date_start).on('change', function () {
                                 table.ajax.reload();
                             });
-                            $(public_date_end).on('change', function () { 
+                            $(public_date_end).on('change', function () {
                                 table.ajax.reload();
                             });
                          }"
@@ -205,7 +206,7 @@ class BannerDataTable extends DataTable
                   ->searching(false)
                   ->width(80)
                   ->addClass('text-center')
-            
+
         ];
     }
 
