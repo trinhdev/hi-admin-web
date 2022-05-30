@@ -198,7 +198,7 @@ class BannerDataTable extends DataTable
                     ->title('STT')
                     ->width(20)
                     ->sortable(false),
-            Column::make('title_vi')->title('Tiêu đề'),
+            Column::make('title_vi')->title('Tiêu đề 1'),
             Column::make('image')->title('Ảnh Banner')->sortable(false),
             Column::make('event_type')->title('Loại Banner'),
             Column::make('public_date_start')->title('Ngày Hiển Thị'),
