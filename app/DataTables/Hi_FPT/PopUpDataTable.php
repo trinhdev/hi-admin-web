@@ -21,7 +21,6 @@ class PopUpDataTable extends DataTable
 
     public function dataTable($query)
     {
-        //dd($query);
         $NewsEventService = new NewsEventService();
         $listRoute = collect($NewsEventService->getListTargetRoute()->data);
         $list_template_popup = config('platform_config.type_popup_service');
