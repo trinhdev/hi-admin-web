@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-9">
-                    {!! Form::open(array('url' => route('iconcategory.save'),'method'=>'post' ,'id' => 'icon-category-form','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data', 'onsubmit'=>"onsubmitIconForm(event,this,'selected-product')")) !!}
+                    {!! Form::open(array('url' => route('iconcategory.save'),'method'=>'post' ,'id' => 'icon-category-form','action' =>'index','class'=>'form-horizontal','enctype' =>'multipart/form-data', 'onsubmit'=>"onsubmitIconForm(event,this,'selected-product',false)")) !!}
                     @csrf
                     <input type="hidden" name="productTitleId" value="{{ @$data['productTitleId'] }}" />
                     <div class="card card-info">
@@ -86,7 +86,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Mô tả danh mục</label>
                                         <div class="col-sm-9">
-                                            <textarea class="form-control" rows="4" id="comment"></textarea>
+                                            <textarea class="form-control" rows="4" id="comment" name="description"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -241,7 +241,7 @@
                         </div>
                         <div class="card-footer">
                             @if(auth()->user()->cannot('icon-check-data-permission') && auth()->user()->cannot('icon-approve-data-permission'))
-                                <button type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
+                                <button id="submit-button" type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
                             @endif
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
@@ -423,6 +423,11 @@
 
     .required {
         color: red
+    }
+
+    .badge-dark {
+        width: 100%;
+        white-space: normal;
     }
 </style>
 @endsection

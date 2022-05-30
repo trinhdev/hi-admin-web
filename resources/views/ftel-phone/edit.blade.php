@@ -45,7 +45,7 @@
                                         </div>
                                     {!! Form::close() !!}
                                     
-                                    {!! Form::open(array('url' => route('ftel_phone.store'),'method'=>'post' ,'enctype' =>'multipart/form-data','onsubmit'=>"handleSubmit(event,this)")) !!}
+                                    {!! Form::open(array('url' => route('ftel_phone.store'),'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
                                         @csrf
                                         <div class="form-group">
                                             <label for="number_phone">Phone</label>
@@ -67,8 +67,9 @@
                                             </nav>
                                         </div>
                                     <div class="card-footer" style="text-align: center">
+                                        <button name="action" type="submit" value="check" class="btn btn-info">Check</button>
+                                        <button name="action" type="submit" value="data" class="btn btn-info">Get Data</button>
                                         <a href="/ftel-phone" type="button" class="btn btn-default">Cancel</a>
-                                        <button id="check" type="submit" class="btn btn-info">Check</button>
                                     </div>
                                 {!! Form::close() !!}
                             </div>

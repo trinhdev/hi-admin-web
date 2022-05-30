@@ -72,7 +72,12 @@ class IconcategoryController extends MY_Controller
             if(!empty($response['data'])) {
                 $data['data'] = array_merge($response['data'], $data['data']);
             }
+
+            if(empty($data['data'])) {
+                return view('iconcategory.edit_not_found');
+            }
         }
+
         $loai_dieu_huong = Settings::where('name', 'icon_loai_dieu_huong')->get();
         $data['loai_dieu_huong'] = (!empty($loai_dieu_huong[0]['value'])) ? json_decode($loai_dieu_huong[0]['value'], true) : [];
         return view('icon_category.edit')->with($data);
@@ -129,8 +134,6 @@ class IconcategoryController extends MY_Controller
             }
         }
 
-        $to = ['oanhltn3@fpt.com.vn'];
-
         if(!empty($to)) {
             $mailInfo = [
                 'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
@@ -147,7 +150,7 @@ class IconcategoryController extends MY_Controller
         $this->addToLog(request());
         $request->session()->flash('success', 'success');
         $request->session()->flash('html', 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.');
-        return redirect()->route('iconcategory.index')->with($result);
+        return redirect()->route('iconcategory.index');
     }
 
     public function detail($productTitleId) {

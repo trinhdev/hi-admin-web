@@ -146,10 +146,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div id="isShowHomeGroup" class="form-group" style="display: {{ (!empty($banner) && $banner->bannerType == 'promotion') ? 'block' : 'none' }}">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" id="isHighlight" name="isHighlight" {{ (!empty($banner) && $banner->is_highlight) ? 'checked' : ''}}/>
-                                            <label for="isHighlight">Hiện ở Home</label>
+                                            <input type="checkbox" id="isShowHome" name="isShowHome" {{ (!empty($banner) && $banner->is_show_home) ? 'checked' : ''}} />
+                                            <label for="isShowHome">Hiện ở Home</label>
                                         </div>
                                     </div>
                                     @if(!empty($banner))

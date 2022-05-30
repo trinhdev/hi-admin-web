@@ -14,13 +14,13 @@ class PopUpDataTable extends DataTable
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
-    private $perPage = 10;
+    private $perPage;
     private $orderBy = 'date_created';
-    private $orderDirection  = 'DESC';
+    private $orderDirection = 'DESC';
     private $currentPage = 1;
+
     public function dataTable($query)
     {
-        //dd($query);
         $NewsEventService = new NewsEventService();
         $listRoute = collect($NewsEventService->getListTargetRoute()->data);
         $list_template_popup = config('platform_config.type_popup_service');
@@ -31,47 +31,46 @@ class PopUpDataTable extends DataTable
         return datatables()
             ->collection($query)
             ->addIndexColumn()
-            ->editColumn('buttonActionValue', function ($query) use ($listRoute){
-                $name = $query->buttonActionType == 'function' 
-                        ?  ($routeObject = $listRoute->where('id', $query->directionId)->first()) ? $routeObject->name : 'null'
-                        : $query->buttonActionValue;
+            ->editColumn('buttonActionValue', function ($query) use ($listRoute) {
+                $name = $query->buttonActionType == 'function'
+                    ? ($routeObject = $listRoute->where('id', $query->directionId)->first()) ? $routeObject->name : 'null'
+                    : $query->buttonActionValue;
                 return $name ? $name : 'null';
             })
-            ->editColumn('templateType', function ($query) use ($list_template_popup){
+            ->editColumn('templateType', function ($query) use ($list_template_popup) {
                 $name = $list_template_popup[$query->templateType]
-                        ?  $list_template_popup[$query->templateType]
-                        : $query;
+                    ? $list_template_popup[$query->templateType]
+                    : $query;
                 return $name ? $name : $query->templateType;
             })
             ->editColumn('image', function ($query) {
                 return '
-                        <img src="'.env('URL_STATIC'). '/upload/images/event/' . $query->image .'" alt="" onclick ="window.open("' . $query->image .'").focus()" width="100" height="100"/>
+                        <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->image . '" alt="" onclick ="window.open("' . $query->image . '").focus()" width="100" height="100"/>
                 ';
             })
-            ->addColumn( 'action', 'popup._action-menu')
-            ->rawColumns(['buttonActionValue','image','action'])
+            ->addColumn('action', 'popup._action-menu')
+            ->rawColumns(['buttonActionValue', 'image', 'action'])
             ->setTotalRecords($totalRecords)
-            ->skipPaging()
-            ;
+            ->skipPaging();
     }
 
     public function query(NewsEventService $service)
     {
         $this->perPage = $this->length ?? 10;
-        if(!isset($this->currentPage) || $this->start == 0){
+        if (!isset($this->currentPage) || $this->start == 0) {
             $this->currentPage = 1;
         }
-        if($this->start != 0){
-            $this->currentPage =  ($this->start / $this->perPage) + 1 ;
+        if ($this->start != 0) {
+            $this->currentPage = ($this->start / $this->perPage) + 1;
         };
         //$this->start == 0 ? $this->currentPage = 1 : $this->currentPage =  ($this->start / $this->perPage) + 1;
         $orderColumn = $this->order[0]['column'];
         $this->orderBy = $this->columns[$orderColumn]['data'];
         $this->orderDirection = $this->order[0]['dir'];
         $this->templateType = $this->templateType ?? '';
-        $model = $service->getListTemplatePopup( $this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
+        $model = $service->getListTemplatePopup($this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
 
-        if(isset($model->statusCode) && $model->statusCode == 0) {
+        if (isset($model->statusCode) && $model->statusCode == 0) {
             return collect($model->data);
         }
         session()->flash('error');
@@ -86,34 +85,32 @@ class PopUpDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('popup_manage_table')
-                    ->columns($this->getColumns())
-                    ->responsive()
-                    ->orderBy(6)
-                    ->autoWidth(true)
-                    ->parameters([
-                        'scrollX' => true,
-                        'searching' => true,
-                        'searchDelay' => 500,
-                        'initComplete' => "function () {
+            ->setTableId('popup_manage_table')
+            ->columns($this->getColumns())
+            ->responsive()
+            ->orderBy(6)
+            ->autoWidth(true)
+            ->parameters([
+                'scroll' => false,
+                'searching' => true,
+                'searchDelay' => 500,
+                'initComplete' => "function () {
                             var templateType = $('#show_at');
                             var table = $('#popup_manage_table').DataTable();
-                            $(templateType).on('change', function () { 
+                            $(templateType).on('change', function () {
                                 table.ajax.reload();
                             });
                          }"
-                    ])
-                    ->addTableClass('table table-hover table-striped text-center w-100')
-                    ->languageEmptyTable('Không có dữ liệu')
-                    ->languageInfoEmpty('Không có dữ liệu')
-                    ->languageProcessing('Đang tải')
-                    ->languageSearch('Tìm kiếm')
-                    ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
-                    ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
-                    ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang
-                    ')
-                    ;
-                    
+            ])
+            ->addTableClass('table table-hover table-striped text-center w-100')
+            ->languageEmptyTable('Không có dữ liệu')
+            ->languageInfoEmpty('Không có dữ liệu')
+            ->languageProcessing('Đang tải')
+            ->languageSearch('Tìm kiếm')
+            ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
+            ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
+            ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang
+                    ');
     }
 
     /**
@@ -121,13 +118,13 @@ class PopUpDataTable extends DataTable
      *
      * @return array
      */
-    protected function getColumns()
+    protected function getColumns(): array
     {
         return [
             Column::make('DT_RowIndex')
-                    ->title('STT')
-                    ->width(20)
-                    ->sortable(false),
+                ->title('STT')
+                ->width(20)
+                ->sortable(false),
             Column::make('titleVi')->title('Tiêu đề'),
             Column::make('image')->title('Hình ảnh')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
@@ -137,10 +134,10 @@ class PopUpDataTable extends DataTable
             Column::make('createdBy')->title('Người tạo'),
             Column::make('modifiedBy')->title('Người cập nhật'),
             Column::computed('action')
-                  ->searching(false)
-                  ->width(80)
-                  ->addClass('text-center')
-            
+                ->searching(false)
+                ->width(80)
+                ->addClass('text-center')
+
         ];
     }
 
@@ -149,7 +146,7 @@ class PopUpDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'Popup_' . date('YmdHis');
     }

@@ -63,6 +63,12 @@ class IconManagementService {
         return $response;
     }
 
+    public function getProductTitleByProductId($id) {
+        $url                = $this->baseUrl . $this->subDomain . 'product-titles/get-by-product-id';
+        $response           = sendRequest($url, ['productId' => $id], $this->token);
+        return $response;
+    }
+
     public function addProductTitle($params) {
         $url                = $this->baseUrl . $this->subDomain . 'product-titles/add';
         $response           = sendRequest($url, $params, $this->token, [], 'POST');
@@ -90,6 +96,12 @@ class IconManagementService {
     public function getProductConfigById($id) {
         $url                = $this->baseUrl . $this->subDomain . 'product-configs/get-by-id';
         $response           = sendRequest($url, ['productConfigId' => $id], $this->token);
+        return $response;
+    }
+
+    public function getProductConfigByProductId($id) {
+        $url                = $this->baseUrl . $this->subDomain . 'product-configs/get-by-product-id';
+        $response           = sendRequest($url, ['productId' => $id], $this->token);
         return $response;
     }
 

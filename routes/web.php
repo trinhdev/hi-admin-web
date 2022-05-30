@@ -95,6 +95,7 @@ Route::group([
                 Route::get('/', [FtelPhoneController::class, 'index'])->name('ftel_phone.index');
                 Route::get('/create', [FtelPhoneController::class, 'create'])->name('ftel_phone.create');
                 Route::post('/store', [FtelPhoneController::class, 'stores'])->name('ftel_phone.store');
+                Route::post('/check', [FtelPhoneController::class, 'check'])->name('ftel_phone.check');
                 Route::post('/import', [FtelPhoneController::class, 'import'])->name('ftel_phone.import');
                 Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');                       
             });
@@ -205,6 +206,16 @@ Route::group([
         Route::namespace('SmsWorld')->group(function () {
             Route::prefix('smsworld')->group(function () {
                 Route::any('/{phonecode?}/{phone?}/{date?}','OtpController@logs')->name('smsworld.logs');
+            });
+        });
+
+        Route::namespace('Report')->group(function() {
+            Route::prefix('appinstallreport')->group(function() {
+                Route::get('/', 'AppinstallreportController@index')->name('appinstallreport.index');
+                Route::get('/initDatatableByDate','AppinstallreportController@initDatatableByDate')->name('appinstallreport.initDatatableByDate');
+                Route::get('/initDatatableByWeek','AppinstallreportController@initDatatableByWeek')->name('appinstallreport.initDatatableByWeek');
+                Route::get('/initDatatableByMonth','AppinstallreportController@initDatatableByMonth')->name('appinstallreport.initDatatableByMonth');
+                Route::post('/export','AppinstallreportController@export')->name('appinstallreport.export');
             });
         });
     }

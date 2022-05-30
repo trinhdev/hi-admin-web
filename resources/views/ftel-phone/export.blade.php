@@ -14,24 +14,26 @@
                             <th>Đơn vị</th>
                             <th>Đơn vị(theo data)</th>
                             <th>Đơn vị/Phòng ban</th>
+                            <th>Nhân viên FPT</th>
                         </tr>
                     </thead>
                     @if(isset($data))
                     <tbody>
                     @foreach($data as $key => $value)
                     @php 
-                        $codePath = explode('/', $value['organizationCodePath']);
+                        $codePath = explode('/', $value['organizationCodePath'] ?? null);
                     @endphp
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $value['code'] }}</td>
-                        <td>{{ $value['phoneNumber'] }}</td>
-                        <td>{{ $value['emailAddress'] }}</td>
-                        <td>{{ $value['fullName'] }}</td>    
-                        <td>{{ $value['organizationCodePath'] }}</td>
-                        <td>{{ $codePath[0] }}</td>
-                        <td>{{ $codePath[1] }}</td>
-                        <td>{{ $codePath[2] }}</td>                                    
+                        <td>{{ $value['code'] ?? null }}</td>
+                        <td>{{ $value['phoneNumber'] ?? null }}</td>
+                        <td>{{ $value['emailAddress'] ?? null }}</td>
+                        <td>{{ $value['fullName'] ?? null }}</td>    
+                        <td>{{ $value['organizationCodePath'] ?? null }}</td>
+                        <td>{{ $codePath[0] ?? null }}</td>
+                        <td>{{ $codePath[1] ?? null }}</td>
+                        <td>{{ $codePath[2] ?? null }}</td>
+                        <td>{{ $value['check'] ?? $value['check'] = null }}</td>
                     </tr>
                     @endforeach
                     @endif

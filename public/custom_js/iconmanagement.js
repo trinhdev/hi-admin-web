@@ -10,6 +10,18 @@ tomorrow.setDate(today.getDate() + 1);
 tomorrow.setHours(0, 0, 0, 0);
 
 $(document).ready(function () {
+    var $form = $('form');
+    var initialState = $form.serialize();
+    
+    $form.change(function (e) {
+        if (initialState === $form.serialize()) {
+            $( "#submit-button" ).prop( "disabled", true );
+        } else {
+            $( "#submit-button" ).prop( "disabled", false );
+        }
+        e.preventDefault();
+    });
+
     if ($('#status-clock').is(':checked')) {
         $('#status-clock-date-time').show();
     }
@@ -164,3 +176,6 @@ $('#icon-management tbody').on('click', '.delete-button', function () {
     deleteButton(JSON.stringify(data), data['productNameVi'], '/iconmanagement/destroy');
 });
 
+// $(function() {
+    
+// });

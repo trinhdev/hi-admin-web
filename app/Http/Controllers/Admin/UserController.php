@@ -129,6 +129,9 @@ class UserController extends MY_Controller
             $json =   DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
+                    if($row->role_id == ADMIN){
+                        return "";
+                    }
                     return view('layouts.button.action')->with(['row' => $row, 'module' => 'user']);
                 })
                 ->editColumn('role_id', function ($row) {

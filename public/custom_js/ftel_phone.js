@@ -6,7 +6,7 @@ function changeFileFtelPhone() {
     });
 }
 
-function datatableFtelPhoneExport() {
+function datatableFtelPhoneExport(){
     $('#phoneExport').DataTable({
         processing: true,
         lengthChange: false,
@@ -27,16 +27,16 @@ function datatableFtelPhoneExport() {
             {
                 extend: 'colvisGroup',
                 text: 'Show all',
-                show: [ 1, 2, 3 ,4, 5 ,6,7,8  ]
+                show: [ 1, 2, 3 ,4, 5 ,6,7,8,9  ]
             },
             'colvis'
         ],
         "columnDefs": [
             {
-                "targets": [ 6,7,8 ],
+                "targets": [ 6,7,8,9 ],
                 "visible": false
             }
         ]
-        
+
     });
 }

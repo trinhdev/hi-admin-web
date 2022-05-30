@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Helpers\statusCodeObject;
 use Illuminate\Support\ServiceProvider;
 use igaster\laravelTheme\Facades\Theme;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         require __DIR__ . '/../Helpers/platform_helper.php';
 
         $this->boot_theme();
+        $this->alpha_underscore();
     }
     private function boot_theme()
     {
@@ -47,5 +49,12 @@ class AppServiceProvider extends ServiceProvider
 
         // path to upload folder
         \Theme::find(config('platform_config.current_theme'))->assetPath = "";
+    }
+
+    private function alpha_underscore() {
+        Validator::extend('alpha_underscore', function ($attribute, $value, $parameters, $validator) {
+            return preg_match("/^[A-Za-z_]*$/", $value);
+            // return ucwords($value) === $value;
+        });
     }
 }

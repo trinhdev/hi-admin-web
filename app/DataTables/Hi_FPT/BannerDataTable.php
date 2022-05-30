@@ -5,6 +5,7 @@ namespace App\DataTables\Hi_FPT;
 use App\Models\Banner;
 use App\Services\NewsEventService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -45,7 +46,7 @@ class BannerDataTable extends DataTable
                 $is_expired = $row->public_date_end <= now() ? 'Hết hạn' : 'Còn Hạn';
                 $badge = $is_expired == 'Hết hạn' ? 'badge badge-danger' : 'badge badge-success';
                 return '<h4 class="'.$badge.'">'.$is_expired.'</h4>';
-                
+
             })
             ->editColumn('created_by',function($row){
                 if(!empty($row->cms_note)){
@@ -67,6 +68,14 @@ class BannerDataTable extends DataTable
                 $is_expired = $row->public_date_end <= now() ? 'disabled' : '';
                 return '<input type="number" onchange="updateOrdering(this)" style="width:50px" value="'.$row->ordering_on_home.'" '.$is_expired.'/>';
             })
+            ->editColumn('is_show_home', function($row) {
+                if($row->is_show_home) {
+                    return '<span><i style="color: green" class="fas fa-check-circle"></i></span>';
+                }
+                else {
+                    return '<span><i style="color: red" class="fas fa-times-circle"></i></span>';
+                }
+            })
             ->editColumn('action',function($row) use ($list_banner_type){
                 // check if banner type is defined
                 // $bannerType = $row->event_type;
@@ -82,17 +91,16 @@ class BannerDataTable extends DataTable
                     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
                    <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>';
             })
-            ->rawColumns(['image','status','action','ordering_on_home','event_type'])
+            ->rawColumns(['image','status','action','ordering_on_home','event_type', 'is_show_home'])
             ->setTotalRecords($totalRecords)
-            ->skipPaging()
-            ;
+            ->skipPaging();
     }
 
     /**
      * Get query source of dataTable.
      *
      * @param \App\Models\Hi_FPT/Banner $model
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function query(NewsEventService $service)
     {
@@ -147,7 +155,7 @@ class BannerDataTable extends DataTable
                     ->responsive()
                     ->autoWidth(true)
                     ->parameters([
-                        'scrollX' => true,
+                        'scroll' => false,
                         'searching' => false,
                         'searchDelay' => 500,
                         'initComplete' => "function () {
@@ -155,13 +163,13 @@ class BannerDataTable extends DataTable
                             var public_date_start = $('#show_from');
                             var public_date_end = $('#show_to');
                             var table = $('#banner_manage').DataTable();
-                            $(bannerType).on('change', function () { 
+                            $(bannerType).on('change', function () {
                                 table.ajax.reload();
                             });
-                            $(public_date_start).on('change', function () { 
+                            $(public_date_start).on('change', function () {
                                 table.ajax.reload();
                             });
-                            $(public_date_end).on('change', function () { 
+                            $(public_date_end).on('change', function () {
                                 table.ajax.reload();
                             });
                          }"
@@ -198,6 +206,7 @@ class BannerDataTable extends DataTable
             Column::make('status')->title('Trạng Thái')->sortable(false),
             Column::make('ordering_on_home')->title('Độ ưu tiên'),
             Column::make('view_count')->title('Số Lượt Click'),
+            Column::make('is_show_home')->title('Có hiện ở home'),
             Column::make('date_created')->title('Ngày Tạo'),
             Column::make('created_by')->title('Người Tạo')->sortable(false),
             Column::make('updated_by')->title('Người Cập Nhật')->sortable(false),
@@ -205,7 +214,7 @@ class BannerDataTable extends DataTable
                   ->searching(false)
                   ->width(80)
                   ->addClass('text-center')
-            
+
         ];
     }
 
