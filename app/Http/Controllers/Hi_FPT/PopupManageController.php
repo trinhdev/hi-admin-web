@@ -41,13 +41,13 @@ class PopupManageController extends MY_Controller
         $id = request()->segment(3);
         if (!empty($id)) {
             $getDetailPopup_response = $newsEventService->getDetailPopup($id);
-            if (empty($getDetailPopup_response->statusCode)) {
-                $data['detailPopup'] = [];
-            }
-            $data['detailPopup'] = ($getDetailPopup_response->statusCode == 0) ? $getDetailPopup_response->data : [];
+            if (isset($getDetailPopup_response->statusCode)) {
+                $data['detailPopup'] = ($getDetailPopup_response->statusCode == 0) ? $getDetailPopup_response->data : [];
 //              clear buttonActionValue when deeplink define
-            if (isset($data['detailPopup']->buttonActionType) && $data['detailPopup']->buttonActionType == 'function')
-                $data['detailPopup']->buttonActionValue = '';
+                if ( isset($data['detailPopup']->buttonActionType) && $data['detailPopup']->buttonActionType == 'function')
+                    $data['detailPopup']->buttonActionValue = '';
+            } else
+                $data['detailPopup'] = [];
         } else {
             $data['detailPopup'] = [];
             $listTargetRoute = $newsEventService->getListTargetRoute();
