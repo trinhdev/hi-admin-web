@@ -24,43 +24,44 @@ class PopupManageController extends MY_Controller
     public function index(PopUpDataTable $dataTable, Request $request)
     {
         return $dataTable->with([
-            'templateType'=>$request->templateType,
-            'start'=>$request->start,
+            'templateType' => $request->templateType,
+            'start' => $request->start,
             'length' => $request->length,
             'order' => $request->order,
             'columns' => $request->columns
-            ])->render('popup.index');
+        ])->render('popup.index');
     }
 
     public function edit()
     {
         $data = array();
+        $data['listTypePopup'] = config('platform_config.type_popup_service');
+        $data['listTargetRoute'] = [];
         $newsEventService = new NewsEventService();
         $id = request()->segment(3);
-        if ($id) {
+        if (!empty($id)) {
             $getDetailPopup_response = $newsEventService->getDetailPopup($id);
-            if (isset($getDetailPopup_response->statusCode)) {
-                $data['detailPopup'] = ($getDetailPopup_response->statusCode == 0) ? $getDetailPopup_response->data : [];
-//              clear buttonActionValue when deeplink define
-                if ( isset($data['detailPopup']->buttonActionType) && $data['detailPopup']->buttonActionType == 'function')
-                    $data['detailPopup']->buttonActionValue = '';
-            } else
+            if (empty($getDetailPopup_response->statusCode)) {
                 $data['detailPopup'] = [];
-        } else
+            }
+            $data['detailPopup'] = ($getDetailPopup_response->statusCode == 0) ? $getDetailPopup_response->data : [];
+//              clear buttonActionValue when deeplink define
+            if (isset($data['detailPopup']->buttonActionType) && $data['detailPopup']->buttonActionType == 'function')
+                $data['detailPopup']->buttonActionValue = '';
+        } else {
             $data['detailPopup'] = [];
-        $listTargetRoute = $newsEventService->getListTargetRoute();
-        if (isset($listTargetRoute->statusCode)) {
-            $data['listTargetRoute'] = ($listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
-        } else
-            $data['listTargetRoute'] = [];
-        $data['listTypePopup'] = config('platform_config.type_popup_service');
-        //dd($listTargetRoute);
+            $listTargetRoute = $newsEventService->getListTargetRoute();
+            if (isset($listTargetRoute->statusCode)) {
+                $data['listTargetRoute'] = ($listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
+            }
+        }
+
         return view('popup.edit')->with($data);
     }
 
     public function save(Request $request)
     {
-        $rules= [
+        $rules = [
             'templateType' => 'required',
             'titleVi' => 'required',
             'titleEn' => 'required',
@@ -89,7 +90,7 @@ class PopupManageController extends MY_Controller
             $createParams['templatePersonalId'] = $request->id_popup;
             $create_popup_response = $newsEventService->updatePopup($createParams);
         } else
-        // dd($createParams);
+            // dd($createParams);
             $create_popup_response = $newsEventService->addNewPopup($createParams);
         if (($create_popup_response->statusCode == 0)) {
             return redirect()->route('popupmanage.index')->withSuccess('Success!');
@@ -100,14 +101,13 @@ class PopupManageController extends MY_Controller
     public function view($id)
     {
         $newsEventService = new NewsEventService();
-        $result = [];
         $listTargetRoute = $newsEventService->getListTargetRoute();
-
         $listTargetRoute = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
         $typePopup = config('platform_config.type_popup_service');
 
         $getDetailPopup_response = $newsEventService->getDetailPopup($id);
         if (!isset($getDetailPopup_response->statusCode) || $getDetailPopup_response->statusCode != 0) {
+            $result = [];
             $result['error'] = $getDetailPopup_response->message;
 //            return $result;
             return redirect()->route('popupmanage.index')->withErrors($getDetailPopup_response->message);
@@ -156,8 +156,8 @@ class PopupManageController extends MY_Controller
         $rules = [
             'timeline' => 'required',
             'objecttype' => 'required',
-            'repeatTime'=> 'required',
-            'templateId'=> 'required',
+            'repeatTime' => 'required',
+            'templateId' => 'required',
         ];
         $request->validate($rules);
         $this->addToLog($request);
@@ -180,13 +180,15 @@ class PopupManageController extends MY_Controller
         ];
         $newsEventService = new NewsEventService();
         $push_response = $newsEventService->pushTemplate($pushParams);
-        if(isset($push_response->statusCode) && $push_response->statusCode==0){
+        if (isset($push_response->statusCode) && $push_response->statusCode == 0) {
             return redirect()->back()->withSuccess('Thành Công');
-        }else{
+        } else {
             return redirect()->back()->withErrors($push_response->message);
         }
     }
-    public function getDetailPersonalMaps(Request $request) {
+
+    public function getDetailPersonalMaps(Request $request)
+    {
         $rules = [
             'personalID' => 'required',
         ];
