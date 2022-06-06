@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Hi_FPT\AppController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -198,7 +199,9 @@ Route::group([
                 Route::post('/pushPopupTemplate',[PopupManageController::class, 'pushPopupTemplate'])->name('popupmanage.pushPopupTemplate');
                 Route::post('/getDetailPersonalMaps',[PopupManageController::class, 'getDetailPersonalMaps'])->name('popupmanage.getDetailPersonalMaps');
             });
-
+            Route::prefix('app')->group(function () {
+                Route::get('/', [AppController::class, 'index'])->name('app.index');
+            });
         });
         Route::prefix('profile')->group(function () {
             Route::post('/changePassword','ProfileController@changePassword')->name('profile.changePassword');

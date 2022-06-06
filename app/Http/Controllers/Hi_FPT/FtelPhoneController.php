@@ -31,21 +31,20 @@ class FtelPhoneController extends MY_Controller
         return view('ftel-phone.edit');
     }
 
-    public function pushExport($info, $phone, $data)
+    public function pushExport($info, $phone, $data): array
     {
-        array_push($data, [
-            'phoneNumber'=> $phone,
+        $data[] = [
+            'phoneNumber' => $phone,
             'code' => $info->code ?? null,
             'emailAddress' => $info->emailAddress ?? null,
-            'fullName'=> $info->fullName ?? null,
+            'fullName' => $info->fullName ?? null,
             'organizationCodePath' => $info->organizationCodePath ?? null
-        ]);
-        $data = array_unique($data, SORT_REGULAR);
-        return $data;
+        ];
+        return array_unique($data, SORT_REGULAR);
     }
 
     public function stores(Request $request)
-    { 
+    {
         if(empty($request->input('action'))) {
             return redirect()->back()->with('message', 'Error!');
         }
@@ -99,7 +98,7 @@ class FtelPhoneController extends MY_Controller
                         $dataSaveDb['emailAddress'] = $data_value->emailAddress;
                         $dataSaveDb['fullName'] = $data_value->fullName;
                         $dataSaveDb['response'] = json_encode($data_value);
-                        $dataSaveDb['organizationNamePath'] = $data_value->organizationNamePath; 
+                        $dataSaveDb['organizationNamePath'] = $data_value->organizationNamePath;
                         $dataSaveDb['organizationCodePath'] = $data_value->organizationCodePath;
                         $dataSaveDb['created_by'] = $this->user->id;
                         $dataSaveDb['updated_at'] = now();
@@ -110,7 +109,7 @@ class FtelPhoneController extends MY_Controller
                     return redirect()->back()->with( ['data' => json_decode(json_encode($data), true)] );
                 }
                 $this->model->upsert(
-                    $saveDB, 
+                    $saveDB,
                     ['code'],
                     ['number_phone','emailAddress','fullName','response','organizationNamePath','organizationCodePath'],
                 );
@@ -119,7 +118,7 @@ class FtelPhoneController extends MY_Controller
         }
     }
 
-    public function import(Request $request) 
+    public function import(Request $request)
     {
         $request->validate(['excel' => 'mimes:xlsx'],['excel.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx']);
         Excel::import(new FtelPhoneImport, $request->file('excel'));
