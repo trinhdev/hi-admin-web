@@ -54,7 +54,7 @@ class AppDataTable extends DataTable
                     var public_date_end = $('#show_to');
                     var table = $('#app_table').DataTable();
                     $(type).on('change', function () {
-                        console.log(Filter Type By TrinhHDP);
+                        console.log('Filter Type By TrinhHDP');
                         table.ajax.reload();
                     });
                     $(public_date_end).on('change', function () {
