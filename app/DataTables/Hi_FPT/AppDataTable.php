@@ -56,7 +56,7 @@ class AppDataTable extends DataTable
                 'searching' => true,
                 'searchDelay' => 500,
                 'dom' => '<"row container mx-auto"<"col-md-4"B><"col-md-4 mt-2 "l><"col-md-2 mt-2"f>>rtip',
-                'buttons' => ['copy'],
+                'buttons' => [ 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdf' ],
                 'initComplete' => "function () {
                     var type = $('#show_at');
                     var public_date_start = $('#show_from');
