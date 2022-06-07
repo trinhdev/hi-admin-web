@@ -19,11 +19,16 @@ class AppController extends MY_Controller
     }
 
     public function index(AppDataTable $dataTable, Request $request){
-        $action_name = AppLog::select('action_name')->distinct()->get()->toArray();
-        return $dataTable->with([
-            'public_date_start' => $request->public_date_start,
-            'public_date_end' => $request->public_date_end,
-            'type' => $request->type
-        ])->render('app.index', ['action_name' => $action_name]);
+        $type = AppLog::select('type')->distinct()->get()->toArray();
+        return $dataTable
+            ->withHtml(function(\Yajra\DataTables\Html\Builder $builder) {
+                $builder->buttons([ 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5' ] );
+            })
+            ->with([
+                'public_date_start' => $request->public_date_start,
+                'public_date_end' => $request->public_date_end,
+                'type' => $request->type
+            ])
+            ->render('app.index', ['type' => $type]);
     }
 }

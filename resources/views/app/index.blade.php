@@ -36,9 +36,9 @@
                                     </div>
                                     <select class="form-control" name="position" id="show_at" placeholder="Show at">
                                         <option value=''>Tất Cả</option>
-                                        @if(!empty($action_name))
-                                            @foreach($action_name as $value)
-                                                <option value="{{$value['action_name']}}">{{$value['action_name']}}</option>
+                                        @if(!empty($type))
+                                            @foreach($type as $value)
+                                                <option value="{{$value['type']}}">{{$value['type']}}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -83,4 +83,5 @@
             data.public_date_end = $('#show_to').val();
         });
     </script>
+
 @endpush
