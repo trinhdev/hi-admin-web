@@ -17,7 +17,7 @@ class AppDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->editColumn('date_action',function($row){
-                return Carbon::parse($row->date_action)->diffForHumans();
+                return $row->date_action . ' ('.Carbon::parse($row->date_action)->diffForHumans().')';
             })
             ;
     }
@@ -39,7 +39,7 @@ class AppDataTable extends DataTable
         if(empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
             $model = $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
         }
-        return $model;
+        return $model->orderByDesc('id');
     }
 
     public function html()
