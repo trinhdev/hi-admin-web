@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Hi_FPT;
+use App\DataTables\Hi_FPT\FtelPhoneDatatable;
+use App\Models\AppLog;
 use Excel;
 use App\Models\FtelPhone;
 use App\Services\HrService;
@@ -21,9 +23,8 @@ class FtelPhoneController extends MY_Controller
         $this->model = $this->getModel('FtelPhone');
     }
 
-    public function index()
-    {
-        return view('ftel-phone.index');
+    public function index(FtelPhoneDatatable $dataTable, Request $request){
+        return $dataTable->render('ftel-phone.index');
     }
 
     public function create()
@@ -123,21 +124,5 @@ class FtelPhoneController extends MY_Controller
         $request->validate(['excel' => 'mimes:xlsx'],['excel.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx']);
         Excel::import(new FtelPhoneImport, $request->file('excel'));
         return redirect()->back();
-    }
-
-    public function initDatatable(Request $request){
-        if($request->ajax()){
-            $data = $this->model->where('code', '!=' , 'null');
-            return  DataTables::of($data)
-            ->addIndexColumn()
-            ->editColumn('created_by',function($row){
-                return !empty($row->created_by) ? $row->createdBy->email : '';
-            })
-            ->addColumn('action', function($row){
-                return view('layouts.button.action')->with(['row'=>$row,'module'=>'ftel_phone']);
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-        }
     }
 }

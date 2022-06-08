@@ -30,21 +30,16 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
-                    <table id="phoneTable" class="display nowrap" style="width:100%">
-                        </thead>
-                    </table>
+                    {!! $dataTable->table() !!}
+
                 </div>
             </div>
         </section>
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    @push('scripts')
-<script>
-    $(document).on('pjax:complete', function() {
-        changeFileFtelPhone();
-        datatableFtelPhoneExport();
-    });
-</script>
-@endpush
+
 @endsection
+@push('scripts')
+    {{ $dataTable->scripts() }}
+@endpush
