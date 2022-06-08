@@ -64,6 +64,7 @@
                     </div>
                     <!--begin::Table-->
                         {!! $dataTable->table() !!}
+                    {{print_r($filter)}}
                     <!--end::Table-->
                 </div>
             </div>
