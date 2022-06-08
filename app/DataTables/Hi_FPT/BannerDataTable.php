@@ -166,9 +166,6 @@ class BannerDataTable extends DataTable
                             $(bannerType).on('change', function () {
                                 table.ajax.reload();
                             });
-                            $(public_date_start).on('change', function () {
-                                table.ajax.reload();
-                            });
                             $(public_date_end).on('change', function () {
                                 table.ajax.reload();
                             });

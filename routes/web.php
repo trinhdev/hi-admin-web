@@ -1,4 +1,7 @@
 <?php
+
+use App\Http\Controllers\Hi_FPT\AppController;
+use App\Http\Controllers\Hi_FPT\PopupManageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -97,7 +100,7 @@ Route::group([
                 Route::post('/store', [FtelPhoneController::class, 'stores'])->name('ftel_phone.store');
                 Route::post('/check', [FtelPhoneController::class, 'check'])->name('ftel_phone.check');
                 Route::post('/import', [FtelPhoneController::class, 'import'])->name('ftel_phone.import');
-                Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');                       
+                Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');
             });
         });
         Route::namespace('Hdi')->group(function () {
@@ -188,15 +191,17 @@ Route::group([
                 Route::get('/initDatatable','IconapprovedController@initDatatable')->name('iconapproved.initDatatable');
             });
             Route::prefix('popupmanage')->group(function () {
-                Route::get('/','PopupManageController@index')->name('popupmanage.index');
-                Route::get('/edit/{id?}','PopupManageController@edit')->name('popupmanage.edit');
-                Route::get('/create','PopupManageController@edit')->name('popupmanage.create');
-                Route::post('/save','PopupManageController@save')->name('popupmanage.save');
-                Route::get('/view/{id?}','PopupManageController@view')->name('popupmanage.view');
-                Route::post('/pushPopupTemplate','PopupManageController@pushPopupTemplate')->name('popupmanage.pushPopupTemplate');
-                Route::post('/getDetailPersonalMaps','PopupManageController@getDetailPersonalMaps')->name('popupmanage.getDetailPersonalMaps');
+                Route::get('/', [PopupManageController::class, 'index'])->name('popupmanage.index');
+                Route::get('/edit/{id?}',[PopupManageController::class, 'edit'])->name('popupmanage.edit');
+                Route::get('/create',[PopupManageController::class, 'edit'])->name('popupmanage.create');
+                Route::post('/save',[PopupManageController::class, 'save'])->name('popupmanage.save');
+                Route::get('/view/{id?}',[PopupManageController::class, 'view'])->name('popupmanage.view');
+                Route::post('/pushPopupTemplate',[PopupManageController::class, 'pushPopupTemplate'])->name('popupmanage.pushPopupTemplate');
+                Route::post('/getDetailPersonalMaps',[PopupManageController::class, 'getDetailPersonalMaps'])->name('popupmanage.getDetailPersonalMaps');
             });
-            
+            Route::prefix('app')->group(function () {
+                Route::get('/', [AppController::class, 'index'])->name('app.index');
+            });
         });
         Route::prefix('profile')->group(function () {
             Route::post('/changePassword','ProfileController@changePassword')->name('profile.changePassword');
