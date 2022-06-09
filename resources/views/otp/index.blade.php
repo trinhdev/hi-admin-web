@@ -45,12 +45,15 @@
                                 </div>
                                 
                                 <div class="card-footer" style="text-align: center">
-                                    <button value="get_otp" type="submit" onclick="setAction('get_otp')" class="btn btn-info">Get OTP</button>
                                     <button value="reset_otp" type="submit" onclick="setAction('reset_otp')" class="btn btn-primary">Reset OTP</button>
                                 </div>
                             </div>
                         </form>
                     </div>
+                </div>
+
+                <div class="card card-body col-sm-12">
+                    {{ $dataTable->table([], true) }}
                 </div>
             </div>
         </section>
@@ -63,3 +66,15 @@
         }
     </style>
 @endsection
+
+@push('scripts')
+    {{ $dataTable->scripts() }}
+    <script>
+        const table = $('#banner_manage');
+        // table.on('preXhr.dt', function(e, settings, data){
+        //     data.bannerType = $('#show_at').val();
+        //     data.public_date_start = $('#show_from').val();
+        //     data.public_date_end = $('#show_to').val();
+        // });
+    </script>
+@endpush
