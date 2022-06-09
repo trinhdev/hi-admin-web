@@ -49,13 +49,13 @@ class AppDataTable extends DataTable
             ->columns($this->getColumns())
             ->responsive()
             ->autoWidth(true)
-            ->lengthMenu([10,25,50,100,200,500,100000000])
-            ->pageLength(25)
+            ->lengthMenu([10,25,50,100,200,500,100000])
+            ->pageLength(10)
             ->parameters([
                 'scroll' => false,
                 'searching' => true,
                 'searchDelay' => 500,
-                'dom' => '<"row container mx-auto"<"col-md-4"B><"col-md-4 mt-2 "l><"col-md-2 mt-2"f>>rtip',
+                'dom' => '<"row container mx-auto"<"col-md-4"B><"col-md-4 mt-2 "l><"col-md-2 mt-2"f>>irtp',
                 'buttons' => [ 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdf' ],
                 'initComplete' => "function () {
                     var type = $('#show_at');
@@ -78,7 +78,7 @@ class AppDataTable extends DataTable
             ->languageSearch('Tìm kiếm')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
             ->languageLengthMenu('Hiển thị _MENU_')
-            ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang')
+            ->languageInfo('TỔNG LOG: _TOTAL_')
             ;
     }
 
@@ -94,12 +94,7 @@ class AppDataTable extends DataTable
             Column::make('type')->title('Loại'),
             Column::make('phone')->title('Số điện thoại'),
             Column::make('url'),
-            Column::make('date_action')->title('Thời gian log'),
-//            Column::computed('last_visit')->sortable(false)
-//                ->title('Lần cuối truy cập')
-//                ->searching(false)
-//                ->width(80)
-//                ->addClass('text-center')
+            Column::make('date_action')->title('Thời gian log')
         ];
     }
 

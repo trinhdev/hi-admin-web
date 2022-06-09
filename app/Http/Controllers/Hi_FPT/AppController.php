@@ -26,6 +26,6 @@ class AppController extends MY_Controller
                 'public_date_end' => $request->public_date_end,
                 'type' => $request->type
             ])
-            ->render('app.index', ['type' => $type]);
+            ->render('app.index', ['type' => $type, 'filter' => $dataTable->recordsFiltered]);
     }
 }
