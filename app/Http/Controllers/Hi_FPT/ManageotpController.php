@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Hi_FPT;
-
+use App\DataTables\Hi_FPT\OtpResetLogDataTable;
 use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 use App\Services\HdiCustomer;
@@ -17,14 +17,20 @@ class ManageotpController extends MY_Controller
     public function __construct()
     {
         $this->title = 'Manage OTP';
+        $this->model = $this->getModel('Otp_Reset_Logs');
         parent::__construct();
     }
-    public function index()
+    public function index(OtpResetLogDataTable $dataTable, Request $request)
     {
-        return view('otp.index')->with(['phone' => '', 'action' => '']);
+        return $dataTable->with([
+            'start'     => $request->start,
+            'length'    => $request->length,
+            'order'     => $request->order,
+            'columns'   => $request->columns,
+            ])->render('otp.index', ['phone' => @$request['phone'], 'action' => @$request['action']]);
     }
 
-    public function handle(Request $request) {
+    public function handle(OtpResetLogDataTable $dataTable, Request $request) {
         $executed = RateLimiter::attempt(
             'request-otp-with-phone' . $request['phone'],
             $perMinute = 2,
@@ -44,23 +50,9 @@ class ManageotpController extends MY_Controller
         $result = [];
 
         switch($request->action) {
-            case 'get_otp':
-                $hiCustomer = new HdiCustomer();
-                $data = $hiCustomer->postOTPByPhone('/help-tool/otp-by-phone', ["phone" => $request["phone"]]);
-                if(!empty($data['data']['otp'])) {
-                    $result = ['success' => 'success', 'html' => $data['data']['otp']];
-                    $request->session()->flash('success', 'success');
-                    $request->session()->flash('html', $data['data']['otp']);
-                }
-                else {
-                    $result = ['error' => 'error', 'html' => $data['message']];
-                    $request->session()->flash('error', 'error');
-                    $request->session()->flash('html', $data['message']);
-                }
-                break;
             case 'reset_otp':
                 $hiCustomer = new HdiCustomer();
-                $data = $hiCustomer->postResetOTPByPhone('/help-tool/reset-otp', ["phone" => $request["phone"]]);
+                $data = $hiCustomer->postResetOTPByPhone(["phone" => $request["phone"]]);
                 
                 if(!empty($data['status'])) {
                     $result = ['success' => 'success', 'html' => $data['message']];
@@ -78,9 +70,37 @@ class ManageotpController extends MY_Controller
         
         $result['phone'] = $request['phone'];
         $result['action'] = $request['action'];
+        $log_data = [
+            'phone'         => $request['phone'],
+            'api_result'    => json_encode($data),
+            'created_by'    => $this->user->id
+        ];
+        $this->model->create($log_data);
         $this->addToLog($request);
-        // my_debug(json_encode($result));
-        // return redirect()->route('manageotp.index')->with($result);
-        return view('otp.index')->with($result);
+        return $dataTable->with([
+            'start'     => $request->start,
+            'length'    => $request->length,
+            'order'     => $request->order,
+            'columns'   => $request->columns,
+            ])->render('otp.index', ['phone' => $request['phone'], 'action' => $request['action']]);
     }
+
+    public function initDatatable(Request $request){
+        $newsEventService = new NewsEventService();
+        // $toDay = Carbon::parse( date('Y-m-d h:i:s'))->format('Y-m-d\TH:i');
+        $param = [
+            'bannerType' => empty($request->bannerType) ? null : $request->bannerType,
+            'publicDateStart' => empty($request->public_date_from) ? null : Carbon::parse($request->public_date_from)->format('Y-m-d H:i:s'),
+            'publicDateEnd' => empty($request->public_date_to) ? null : Carbon::parse($request->public_date_to)->format('Y-m-d H:i:s')
+        ];
+        $responseCallAPIGetListBanner = $newsEventService->getListbanner($param);
+        if(empty($responseCallAPIGetListBanner)){
+            $responseCallAPIGetListBanner = (object)[];
+        };
+        if($this->user->role_id == ADMIN){
+            $responseCallAPIGetListBanner->isAdmin = true;
+        }
+        $responseCallAPIGetListBanner->aclCurrentModule  = $this->aclCurrentModule;
+        return $responseCallAPIGetListBanner;
+}
 }
