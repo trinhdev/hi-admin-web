@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->boot_theme();
         $this->alpha_underscore();
+        $this->limit_icon_in_array();
     }
     private function boot_theme()
     {
@@ -55,6 +56,13 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('alpha_underscore', function ($attribute, $value, $parameters, $validator) {
             return preg_match("/^[A-Za-z_]*$/", $value);
             // return ucwords($value) === $value;
+        });
+    }
+
+    private function limit_icon_in_array() {
+        Validator::extend('limit_icon_in_array', function ($attribute, $value, $parameters, $validator) {
+            $data = $validator->getData();
+            return count(explode(",", $value)) <= (intval($data['iconsPerRow']) * intval($data['rowOnPage']));
         });
     }
 }

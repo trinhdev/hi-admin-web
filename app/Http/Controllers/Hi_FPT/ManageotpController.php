@@ -27,7 +27,7 @@ class ManageotpController extends MY_Controller
             'length'    => $request->length,
             'order'     => $request->order,
             'columns'   => $request->columns,
-            ])->render('otp.index', ['phone' => @$request['phone'], 'action' => @$request['action']]);
+            ])->render('otp.index');
     }
 
     public function handle(OtpResetLogDataTable $dataTable, Request $request) {
@@ -77,30 +77,6 @@ class ManageotpController extends MY_Controller
         ];
         $this->model->create($log_data);
         $this->addToLog($request);
-        return $dataTable->with([
-            'start'     => $request->start,
-            'length'    => $request->length,
-            'order'     => $request->order,
-            'columns'   => $request->columns,
-            ])->render('otp.index', ['phone' => $request['phone'], 'action' => $request['action']]);
+        return redirect()->route('manageotp.index');
     }
-
-    public function initDatatable(Request $request){
-        $newsEventService = new NewsEventService();
-        // $toDay = Carbon::parse( date('Y-m-d h:i:s'))->format('Y-m-d\TH:i');
-        $param = [
-            'bannerType' => empty($request->bannerType) ? null : $request->bannerType,
-            'publicDateStart' => empty($request->public_date_from) ? null : Carbon::parse($request->public_date_from)->format('Y-m-d H:i:s'),
-            'publicDateEnd' => empty($request->public_date_to) ? null : Carbon::parse($request->public_date_to)->format('Y-m-d H:i:s')
-        ];
-        $responseCallAPIGetListBanner = $newsEventService->getListbanner($param);
-        if(empty($responseCallAPIGetListBanner)){
-            $responseCallAPIGetListBanner = (object)[];
-        };
-        if($this->user->role_id == ADMIN){
-            $responseCallAPIGetListBanner->isAdmin = true;
-        }
-        $responseCallAPIGetListBanner->aclCurrentModule  = $this->aclCurrentModule;
-        return $responseCallAPIGetListBanner;
-}
 }

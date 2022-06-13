@@ -28,7 +28,8 @@ class IconConfigSaveRequest extends FormRequest
             'titleVi'       => 'max:100',
             'name'          => 'required|max:100|alpha_underscore',
             'iconsPerRow'   => 'required|numeric|min:0|between:1,4',
-            'rowOnPage'     => 'required|numeric|min:0|not_in:0'
+            'rowOnPage'     => 'required|numeric|min:0|not_in:0',
+            'arrayId'       => 'limit_icon_in_array'
         ];
     }
 
@@ -43,6 +44,7 @@ class IconConfigSaveRequest extends FormRequest
             'rowOnPage.required'            => 'Số dòng tối đa không được để trống',
             'rowOnPage.required'            => 'Số dòng tối đa không được để trống',
             'rowOnPage.not_in'              => 'Số dòng tối đa phải lớn hơn 0',
+            'arrayId.limit_icon_in_array'   => 'Số Icon trong danh sách icon không được lớn hơn số icon tối đa 1 dòng * số dòng tối đa'
         ];
     }
 }
