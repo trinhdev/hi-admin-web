@@ -15,7 +15,7 @@ class AppDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables()
-            ->eloquent($query)
+            ->eloquent($query->distinct())
             ->editColumn('date_action',function($row){
                 return $row->date_action . ' ('.Carbon::parse($row->date_action)->diffForHumans().')';
             })
@@ -25,6 +25,8 @@ class AppDataTable extends DataTable
     public function query(AppLog $model)
     {
         $type = $this->type;
+        $filter_duplicate = $this->filter_duplicate;
+
         $publicDateStart = $this->public_date_start ? Carbon::parse($this->public_date_start)->format('Y-m-d H:i:s'): null;
         $publicDateEnd = $this->public_date_end ? Carbon::parse($this->public_date_end)->format('Y-m-d H:i:s'): null;
         if(!empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
@@ -56,16 +58,27 @@ class AppDataTable extends DataTable
                 'searching' => true,
                 'searchDelay' => 500,
                 'dom' => '<"row container mx-auto"<"col-md-4"B><"col-md-4 mt-2 "l><"col-md-2 mt-2"f>>irtp',
-                'buttons' => [ 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdf' ],
+                'buttons' => [
+                    [
+                        'text' =>'<i class="fa fa-filter"></i> ' . 'Filter duplicate log',
+                        'className' => 'filter_duplicate filter_duplicate1'
+                    ],
+                    'copyHtml5',
+                    'excel'
+                ],
                 'initComplete' => "function () {
                     var type = $('#show_at');
                     var public_date_start = $('#show_from');
                     var public_date_end = $('#show_to');
+                    var filter_duplicate = $('.filter_duplicate');
                     var table = $('#app_table').DataTable();
                     $(type).on('change', function () {
                         table.ajax.reload();
                     });
                     $(public_date_end).on('change', function () {
+                        table.ajax.reload();
+                    });
+                    $(filter_duplicate).on('click', function () {
                         table.ajax.reload();
                     });
                  }"

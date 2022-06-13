@@ -226,6 +226,42 @@ $domainUploadIcon = [
     ],
 ];
 
+$domainAuth = [
+    'local'             => [
+        'URL'           => 'http://hi-authapi-stag.fpt.vn/',
+        'CLIENT_KEY'    => 'HiFPTProvider',
+        'SECRET_KEY'    => 'dwudjsoakpiudjfkspalskdjao'
+    ],
+    'staging'           => [
+        'URL'           => 'http://hi-authapi-stag.fpt.vn/',
+        'CLIENT_KEY'    => 'HiFPTProvider',
+        'SECRET_KEY'    => 'dwudjsoakpiudjfkspalskdjao'
+    ],
+    'production'        => [
+        'URL'           => 'http://hi-authapi.fpt.vn/',
+        'CLIENT_KEY'    => 'HiFPTProvider',
+        'SECRET_KEY'    => 'dwudjsoakpiudjfkspalskdjao'
+    ],
+];
+
+$domainPayment = [
+    'local'             => [
+        'URL'           => 'http://hi-payment-stag.fpt.vn/',
+        'CLIENT_KEY'    => 'HiFPTProvider',
+        'SECRET_KEY'    => 'dwudjsoakpiudjfkspalskdjao'
+    ],
+    'staging'           => [
+        'URL'           => 'http://hi-payment-stag.fpt.vn/',
+        'CLIENT_KEY'    => 'HiFPTProvider',
+        'SECRET_KEY'    => 'dwudjsoakpiudjfkspalskdjao'
+    ],
+    'production'        => [
+        'URL'           => 'http://hi-payment.fpt.vn/',
+        'CLIENT_KEY'    => 'HiFPTProvider',
+        'SECRET_KEY'    => 'dwudjsoakpiudjfkspalskdjao'
+    ],
+];
+
 return [
     'DOMAIN_REPORT'                 => $domainReportConfig,
     'DOMAIN_INSIDE'                 => $domainInsideConfig,
@@ -238,5 +274,7 @@ return [
     'DOMAIN_ICON_MANAGEMENT'        => $domainIconManagement,
     'DOMAIN_HR'                     => $domainHr,
     'DOMAIN_MAIL'                   => $domainMail,
-    'DOMAIN_UPLOAD'                 => $domainUploadIcon
+    'DOMAIN_UPLOAD'                 => $domainUploadIcon,
+    'DOMAIN_AUTH'                   => $domainAuth,
+    'DOMAIN_PAYMENT'                => $domainPayment,
 ];

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Hi_FPT\FtelPhoneController;
-
+use App\Http\Controllers\Hi_FPT\PaymentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -201,6 +201,9 @@ Route::group([
             });
             Route::prefix('app')->group(function () {
                 Route::get('/', [AppController::class, 'index'])->name('app.index');
+            });
+            Route::prefix('payment')->group(function () {
+                Route::get('/', [PayMentController::class, 'index'])->name('payment.index');
             });
         });
         Route::prefix('profile')->group(function () {

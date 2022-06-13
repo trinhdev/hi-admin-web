@@ -109,8 +109,7 @@ class PopUpDataTable extends DataTable
             ->languageSearch('Tìm kiếm')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
             ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
-            ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang
-                    ');
+            ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang');
     }
 
     /**
