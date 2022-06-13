@@ -25,7 +25,7 @@ class AppDataTable extends DataTable
     public function query(AppLog $model)
     {
         $type = $this->type;
-        $filter_duplicate = $this->filter_duplicate;
+        $this->filter_duplicate ? $f_dup = true : $f_dup = false;
 
         $publicDateStart = $this->public_date_start ? Carbon::parse($this->public_date_start)->format('Y-m-d H:i:s'): null;
         $publicDateEnd = $this->public_date_end ? Carbon::parse($this->public_date_end)->format('Y-m-d H:i:s'): null;
@@ -41,7 +41,13 @@ class AppDataTable extends DataTable
         if(empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
             $model = $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
         }
-        return $model->orderByDesc('id');
+        $query = $model->when($f_dup, function ($query) {
+                            \DB::statement("SET SQL_MODE=''");
+                            return $query->groupBy(['phone','type']);
+                        }, function ($query) {
+                            return $query->orderByDesc('id');
+                        });
+        return $query;
     }
 
     public function html()
@@ -51,7 +57,7 @@ class AppDataTable extends DataTable
             ->columns($this->getColumns())
             ->responsive()
             ->autoWidth(true)
-            ->lengthMenu([10,25,50,100,200,500,100000])
+            ->lengthMenu([10,25,50,100,200,500,2000,5000])
             ->pageLength(10)
             ->parameters([
                 'scroll' => false,
@@ -61,7 +67,7 @@ class AppDataTable extends DataTable
                 'buttons' => [
                     [
                         'text' =>'<i class="fa fa-filter"></i> ' . 'Filter duplicate log',
-                        'className' => 'filter_duplicate filter_duplicate1'
+                        'className' => 'filter_duplicate'
                     ],
                     'copyHtml5',
                     'excel'
@@ -79,7 +85,10 @@ class AppDataTable extends DataTable
                         table.ajax.reload();
                     });
                     $(filter_duplicate).on('click', function () {
-                        table.ajax.reload();
+                            table.on('preXhr.dt', function(e, settings, data){
+                                data.filter_click = true;
+                            });
+                          table.ajax.reload();
                     });
                  }"
             ])

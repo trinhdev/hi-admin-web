@@ -71,7 +71,6 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <input type="hidden" id="filter_duplicate" value="true"/>
 @endsection
 <!--end::Table-->
 @push('scripts')
@@ -80,7 +79,6 @@
         const table = $('#app_table');
         table.on('preXhr.dt', function(e, settings, data){
             data.type = $('#show_at').val();
-            data.filter_duplicate = $('#filter_duplicate').val();
             data.public_date_start = $('#show_from').val();
             data.public_date_end = $('#show_to').val();
         });
