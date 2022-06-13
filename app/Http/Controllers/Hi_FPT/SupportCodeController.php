@@ -34,7 +34,6 @@ class SupportCodeController extends MY_Controller
     }
     
     public function openSupportCode(Request $request) {
-        // dd($request);
         $log_data = [];
         $hdiCustomer = new HdiCustomer();
         $api_result = $hdiCustomer->resetDeviceLockByCode(['supportCode' => $request->supportCode]);
@@ -47,6 +46,7 @@ class SupportCodeController extends MY_Controller
                 $log_data['last_updated'] = date('Y-m-d H:i:s', strtotime(@$api_result['data']['last_updated']));
                 $log_data['api_result'] = json_encode($api_result);
                 $log_data['created_by'] = Auth::check() ? Auth::user()->id : 0;
+                $log_data['note'] = $request->note;
             }
         }
 
