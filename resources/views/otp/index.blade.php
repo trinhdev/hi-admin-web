@@ -35,8 +35,8 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Please input phone number" value="{{ $phone }}" >
-                                            <input type="hidden" id="action" name="action" value="{{ $action }}">
+                                            <input type="text" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Please input phone number" value="{{ @$phone }}" >
+                                            <input type="hidden" id="action" name="action" value="{{ @$action }}">
                                             @error('phone')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
                                             @enderror

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 class HdiCustomer
 {
     private $clientKey;
@@ -17,8 +16,8 @@ class HdiCustomer
         $this->version      = $api_config['HI_AUTH_VERSION'];
         $this->clientKey    = $api_config['HI_CUSTOMER_CLIENT_ID'];
         $this->secretKey    = $api_config['HI_CUSTOMER_SECRET'];
-        // $this->token        = $this->clientKey . '::' . md5($this->clientKey . "::" . $this->secretKey . date("Y-d-m"));
-        $this->token        = md5($this->clientKey . "::" . $this->secretKey . date("Y-d-m"));
+        $this->token        = $this->clientKey . '::' . md5($this->clientKey . "::" . $this->secretKey . date("Y-d-m"));
+        // $this->token        = md5($this->clientKey . "::" . $this->secretKey . date("Y-d-m"));
     }
 
     public function postResetOTPByPhone($params = ['phone' => '']){
@@ -36,6 +35,18 @@ class HdiCustomer
             $data['message']    = (!empty($result['message'])) ? $result['message'] : "Có lỗi trong quá trình reset OTP";
         }
         return $data;
+    }
+
+    public function findLikeCode($params = ['supportCode' => '', 'page' => 1]) {
+        $url = $this->baseUrl . 'provider/cms/customers/find-like-code';
+        $result = json_decode($this->sendRequest($url, $params, $this->token), true);
+        return $result;
+    }
+
+    public function resetDeviceLockByCode($params = ['supportCode' => '']) {
+        $url = $this->baseUrl . 'provider/cms/customers/reset-device-lock-by-code';
+        $result = json_decode($this->sendRequest($url, $params, $this->token), true);
+        return $result;
     }
 
     public function sendRequest($url, $params, $token = null){
