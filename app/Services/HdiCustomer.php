@@ -17,29 +17,13 @@ class HdiCustomer
         $this->version      = $api_config['HI_AUTH_VERSION'];
         $this->clientKey    = $api_config['HI_CUSTOMER_CLIENT_ID'];
         $this->secretKey    = $api_config['HI_CUSTOMER_SECRET'];
+        // $this->token        = $this->clientKey . '::' . md5($this->clientKey . "::" . $this->secretKey . date("Y-d-m"));
         $this->token        = md5($this->clientKey . "::" . $this->secretKey . date("Y-d-m"));
     }
 
-    public function postOTPByPhone($method_name, $params = ['phone' => '']){
-        // Call api to get OTP by phone
-        $url = $this->baseUrl . $this->version . $method_name;
-        $result = json_decode($this->sendRequest($url, $params, $this->token), true);
-        
-        if(isset($result) && $result['statusCode'] == 0){
-            $data['status']     = true;
-            $data['data']       = $result['data'];
-            $data['message']    = '';
-        }
-        else{
-            $data['status']     = false;
-            $data['message']    = (!empty($result['message'])) ? $result['message'] : "Không tìm thấy OTP";
-        }
-        return $data;
-    }
-
-    public function postResetOTPByPhone($method_name, $params = ['phone' => '']){
+    public function postResetOTPByPhone($params = ['phone' => '']){
         // Call api to reset OTP by phone
-        $url = $this->baseUrl . $this->version . $method_name;
+        $url = $this->baseUrl . 'provider/cms/customers/reset-limit-otp';
         $result = json_decode($this->sendRequest($url, $params, $this->token), true);
 
         if(isset($result) && $result['statusCode'] == 0){
@@ -56,7 +40,7 @@ class HdiCustomer
 
     public function sendRequest($url, $params, $token = null){
         $headers[] = "Content-Type: application/json";
-        $headers[] = (!empty($token)) ? "Authorization: " . $token : null;
+        $headers[] = (!empty($token)) ? "Token: " . $token : null;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);

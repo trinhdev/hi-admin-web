@@ -44,7 +44,7 @@ class FtelPhoneController extends MY_Controller
         return array_unique($data, SORT_REGULAR);
     }
 
-    public function stores(Request $request)
+    public function stores(FtelPhoneRequest $request)
     {
         if(empty($request->input('action'))) {
             return redirect()->back()->with('message', 'Error!');

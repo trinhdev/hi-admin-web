@@ -118,7 +118,7 @@ if (!function_exists('sendRequest')) {
                 $headers[] = $key.": ". $val;
             }
         }
-        // my_debug($headers);
+        //dd($headers);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);

@@ -46,7 +46,7 @@ class FtelPhoneRequest extends FormRequest
                             }
                             if ((strlen($phone)!==10)) {
                                 return $fail("Trường $phone phải đúng 10 kí tự");
-                            }                            
+                            }
                             if(!preg_match($pattern, $phone)) {
                                 return $fail("Trường $phone sai định dạng số điện thoại Việt Nam");
                             }

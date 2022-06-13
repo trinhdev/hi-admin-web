@@ -22,6 +22,7 @@ class AppController extends MY_Controller
         $type = AppLog::select('type')->distinct()->get()->toArray();
         return $dataTable
             ->with([
+                'filter_duplicate' => $request->filter_duplicate,
                 'public_date_start' => $request->public_date_start,
                 'public_date_end' => $request->public_date_end,
                 'type' => $request->type

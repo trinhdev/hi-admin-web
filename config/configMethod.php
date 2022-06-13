@@ -38,10 +38,22 @@ $methodHr = [
     'GET_EMPLOYEE_INFO' => 'api/services/app/hifpt/GetEmployeeInfo',
     'GET_LIST_EMPLOYEE_INFO' => 'api/services/app/hifpt/GetListEmployeeInfo',
 ];
+
+$methodAuth = [
+    'RESET_CODE_SUPPORT' => 'provider/cms/customers/reset-device-lock-by-code',
+    'FIND_LIKE_CODE' => 'provider/cms/customers/find-like-code',
+    'RESET_LIMIT_OTP' => 'provider/cms/customers/reset-limit-otp',
+];
+
+$methodPayment = [
+    'GET_TRANSACTION_BY_PHONE' => 'payment-merchant/provider/order/list'
+];
 return [
-    'DOMAIN_INSIDE' => $methodInsideDomain,
-    'DOMAIN_REPORT' => $methodReportDomain,
-    'DOMAIN_SMS_WORLD' => $methodSmsWorld,
+    'DOMAIN_INSIDE'     => $methodInsideDomain,
+    'DOMAIN_REPORT'     => $methodReportDomain,
+    'DOMAIN_SMS_WORLD'  => $methodSmsWorld,
     'DOMAIN_NEWS_EVENT' => $methodNewsEventDomain,
-    'DOMAIN_HR' => $methodHr
+    'DOMAIN_HR'         => $methodHr,
+    'DOMAIN_AUTH'       => $methodAuth,
+    'DOMAIN_PAYMENT'    => $methodPayment,
 ];
