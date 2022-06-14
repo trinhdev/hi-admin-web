@@ -190,6 +190,7 @@ Route::group([
                 Route::post('/destroy','IconapprovedController@destroy')->name('iconapproved.destroy');
                 Route::get('/initDatatable','IconapprovedController@initDatatable')->name('iconapproved.initDatatable');
             });
+
             Route::prefix('popupmanage')->group(function () {
                 Route::get('/', [PopupManageController::class, 'index'])->name('popupmanage.index');
                 Route::get('/edit/{id?}',[PopupManageController::class, 'edit'])->name('popupmanage.edit');
@@ -198,6 +199,12 @@ Route::group([
                 Route::get('/view/{id?}',[PopupManageController::class, 'view'])->name('popupmanage.view');
                 Route::post('/pushPopupTemplate',[PopupManageController::class, 'pushPopupTemplate'])->name('popupmanage.pushPopupTemplate');
                 Route::post('/getDetailPersonalMaps',[PopupManageController::class, 'getDetailPersonalMaps'])->name('popupmanage.getDetailPersonalMaps');
+            });
+
+            Route::prefix('supportcode')->group(function () {
+                Route::get('/','SupportCodeController@index')->name('supportcode.index');
+                Route::post('/open-support-code','SupportCodeController@openSupportCode')->name('supportcode.openSupportCode');
+                
             });
             Route::prefix('app')->group(function () {
                 Route::get('/', [AppController::class, 'index'])->name('app.index');
