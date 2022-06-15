@@ -2,6 +2,7 @@
 
 namespace App\DataTables\Hi_FPT;
 
+use Carbon\Carbon;
 use Yajra\DataTables\Html\Column;
 use App\Services\NewsEventService;
 use Yajra\DataTables\Services\DataTable;
@@ -48,8 +49,13 @@ class PopUpDataTable extends DataTable
                         <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->image . '" alt="" onclick ="window.open("' . $query->image . '").focus()" width="100" height="100"/>
                 ';
             })
+            ->editColumn('buttonImage', function ($query) {
+                return '
+                        <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->buttonImage . '" alt="" onclick ="window.open("' . $query->buttonImage . '").focus()" width="100" height="100"/>
+                ';
+            })
             ->addColumn('action', 'popup._action-menu')
-            ->rawColumns(['buttonActionValue', 'image', 'action'])
+            ->rawColumns(['buttonActionValue', 'image', 'action','buttonImage'])
             ->setTotalRecords($totalRecords)
             ->skipPaging();
     }
@@ -95,12 +101,12 @@ class PopUpDataTable extends DataTable
                 'searching' => true,
                 'searchDelay' => 500,
                 'initComplete' => "function () {
-                            var templateType = $('#show_at');
-                            var table = $('#popup_manage_table').DataTable();
-                            $(templateType).on('change', function () {
-                                table.ajax.reload();
-                            });
-                         }"
+                    var templateType = $('#show_at');
+                    var table = $('#popup_manage_table').DataTable();
+                    $(templateType).on('change', function () {
+                        table.ajax.reload();
+                    });
+                 }"
             ])
             ->addTableClass('table table-hover table-striped text-center w-100')
             ->languageEmptyTable('Không có dữ liệu')
@@ -126,12 +132,12 @@ class PopUpDataTable extends DataTable
                 ->sortable(false),
             Column::make('titleVi')->title('Tiêu đề'),
             Column::make('image')->title('Hình ảnh')->sortable(false),
+            Column::make('buttonImage')->title('Ảnh button')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template'),
             Column::make('viewCount')->title('Số lượt view'),
-            Column::make('dateCreated')->title('Ngày tạo'),
             Column::make('createdBy')->title('Người tạo'),
-            Column::make('modifiedBy')->title('Người cập nhật'),
+            Column::make('dateCreated')->title('Ngày tạo'),
             Column::computed('action')
                 ->searching(false)
                 ->width(80)

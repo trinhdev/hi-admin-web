@@ -1,9 +1,9 @@
 @extends('layouts.default')
 
 @section('content')
-@php 
+@php
     $list_template_popup = config('platform_config.type_popup_service');
-@endphp 
+@endphp
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -41,5 +41,49 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
+<div id="show_detail_popup" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Thông tin pop up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span></button>
+            </div>
+            <div class="modal-body" id="modal-detail-popup">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+@push('scripts')
+
+    <script>
+        //Edit modal window
+        $('body').on('click', '#detailPopup', function (event) {
+            event.preventDefault();
+            var id = $(this).data('id');
+            $.ajax({
+                url: 'popupmanage/detail/' + id,
+                type:'GET',
+                data: {
+                    id: id
+                }, success: function (response){
+                    let modalBody = $('#show_detail_popup').find('#modal-detail-popup');
+                    let html = '';
+                    for (const [key, value] of Object.entries(response)) {
+                        if(value && typeof value === 'string') {
+                            if(key === 'templatePersonalMaps'){
+                                value.value = null
+                            }
+                            html+=`<div class="form-group text-monospace text-capitalize"><b>`+ key+`:</b>     ` +value+`</div>`;
+                        }
+                    }
+                    $(modalBody).html(html)
+                    $('#show_detail_popup').modal('toggle');
+                }
+            })
+        });
+    </script>
+@endpush
+
+

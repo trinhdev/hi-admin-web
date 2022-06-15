@@ -48,12 +48,20 @@ $methodAuth = [
 $methodPayment = [
     'GET_TRANSACTION_BY_PHONE' => 'payment-merchant/provider/order/list'
 ];
+
+$methodPopUpPrivate = [
+    'ADD' => 'hi-customer-local/tool/popup/add',
+    'UPDATE' => 'hi-customer-local/tool/popup/update',
+    'DELETE' => 'hi-customer-local/tool/popup/delete',
+    'IMPORT' => 'hi-customer-local/tool/popup/import-phone-list',
+];
 return [
-    'DOMAIN_INSIDE'     => $methodInsideDomain,
-    'DOMAIN_REPORT'     => $methodReportDomain,
-    'DOMAIN_SMS_WORLD'  => $methodSmsWorld,
-    'DOMAIN_NEWS_EVENT' => $methodNewsEventDomain,
-    'DOMAIN_HR'         => $methodHr,
-    'DOMAIN_AUTH'       => $methodAuth,
-    'DOMAIN_PAYMENT'    => $methodPayment,
+    'DOMAIN_INSIDE'         => $methodInsideDomain,
+    'DOMAIN_REPORT'         => $methodReportDomain,
+    'DOMAIN_SMS_WORLD'      => $methodSmsWorld,
+    'DOMAIN_NEWS_EVENT'     => $methodNewsEventDomain,
+    'DOMAIN_HR'             => $methodHr,
+    'DOMAIN_AUTH'           => $methodAuth,
+    'DOMAIN_PAYMENT'        => $methodPayment,
+    'DOMAIN_POPUP_PRIVATE'  => $methodPopUpPrivate,
 ];

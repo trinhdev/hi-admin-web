@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\DataTables\Hi_FPT\PopUpDataTable;
+use App\DataTables\Hi_FPT\PopupDetailDataTable;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use App\Services\NewsEventService;
+use App\Services\PopupPrivateService;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use function PHPUnit\Framework\returnArgument;
-use Illuminate\Support\Carbon;
 
 class PopupManageController extends MY_Controller
 {
@@ -98,57 +99,39 @@ class PopupManageController extends MY_Controller
         return redirect()->route('popupmanage.index')->withErrors(isset($create_popup_response->description) ? $create_popup_response->description : $create_popup_response->message);
     }
 
-    public function view($id)
+    public function get_data_detail($id)
+    {
+        $newsEventService = new NewsEventService();
+        $detail = json_decode(json_encode($newsEventService->getDetailPopup($id)), true);
+        if (!isset($detail['statusCode']) || $detail['statusCode'] != 0) {
+            return redirect()->back()->withErrors($detail['message']);
+        }
+        return $detail['data'];
+    }
+
+    public function view(PopupDetailDataTable $dataTable, Request $request, $id)
     {
         $newsEventService = new NewsEventService();
         $listTargetRoute = $newsEventService->getListTargetRoute();
-        $listTargetRoute = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
-        $typePopup = config('platform_config.type_popup_service');
+        $list_target_route = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
+        $list_type_popup = config('platform_config.type_popup_service');
 
-        $getDetailPopup_response = $newsEventService->getDetailPopup($id);
-        if (!isset($getDetailPopup_response->statusCode) || $getDetailPopup_response->statusCode != 0) {
-            $result = [];
-            $result['error'] = $getDetailPopup_response->message;
-//            return $result;
-            return redirect()->route('popupmanage.index')->withErrors($getDetailPopup_response->message);
-        }
-        $dataResponse = $getDetailPopup_response->data;
+        $dataResponse = $this->get_data_detail($id);
+        $object_type = config('platform_config.object_type');
+        $object = config('platform_config.object');
+        $repeatTime = config('platform_config.repeatTime');
 
-        $templateObj = (object)[
-            "templateId" => null,
-            "templateType" => null,
-            "titleVi" => null,
-            "titleEn" => null,
-            "directionId" => null,
-            "directionUrl" => null,
-            "image" => null,
-            "buttonImage" => null,
-            "view_count" => 0,
-            "dateCreated" => null,
-            "templatePersonalMaps" => null,
-        ];
-        $templateObj->templateId = $dataResponse->id;
-        $templateObj->templateType = $dataResponse->templateType;
-        $templateObj->titleVi = $dataResponse->titleVi;
-        $templateObj->titleEn = $dataResponse->titleEn;
-        $templateObj->image = $dataResponse->image;
-        $templateObj->buttonImage = $dataResponse->buttonImage;
-        $templateObj->actionType = $dataResponse->actionType;
-        $templateObj->dateCreated = $dataResponse->dateCreated;
-        $templateObj->dateModified = $dataResponse->dateModified;
-        $templateObj->ordering = $dataResponse->ordering;
-        $templateObj->directionUrl = $dataResponse->buttonActionValue;
-        $templateObj->directionId = $dataResponse->directionId;
-        $templateObj->templatePersonalMaps = $dataResponse->templatePersonalMaps;
-        $data = [
-            'detailTemplate' => $templateObj,
-            'list_target_route' => $listTargetRoute,
-            'list_type_popup' => $typePopup,
-        ];
-        $data['object_type'] = config('platform_config.object_type');
-        $data['object'] = config('platform_config.object');
-        $data['repeatTime'] = config('platform_config.repeatTime');
-        return view('popup.view')->with($data);
+        return $dataTable->with([
+            'data' => $dataResponse
+        ])->render('popup.view', compact('list_target_route','list_type_popup', 'object_type', 'repeatTime','object'));
+    }
+
+    public function detail($id)
+    {
+        $dataDetail = $this->get_data_detail($id);
+        return request()->ajax() ?
+                response()->json($dataDetail,Response::HTTP_OK)
+                : redirect()->back()->withErrors('Error! System maintain!');
     }
 
     public function pushPopupTemplate(Request $request)

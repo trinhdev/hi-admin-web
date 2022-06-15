@@ -197,6 +197,7 @@ Route::group([
                 Route::get('/create',[PopupManageController::class, 'edit'])->name('popupmanage.create');
                 Route::post('/save',[PopupManageController::class, 'save'])->name('popupmanage.save');
                 Route::get('/view/{id?}',[PopupManageController::class, 'view'])->name('popupmanage.view');
+                Route::get('/detail/{id?}',[PopupManageController::class, 'detail'])->name('popupmanage.detail');
                 Route::post('/pushPopupTemplate',[PopupManageController::class, 'pushPopupTemplate'])->name('popupmanage.pushPopupTemplate');
                 Route::post('/getDetailPersonalMaps',[PopupManageController::class, 'getDetailPersonalMaps'])->name('popupmanage.getDetailPersonalMaps');
             });
@@ -204,7 +205,7 @@ Route::group([
             Route::prefix('supportcode')->group(function () {
                 Route::get('/','SupportCodeController@index')->name('supportcode.index');
                 Route::post('/open-support-code','SupportCodeController@openSupportCode')->name('supportcode.openSupportCode');
-                
+
             });
             Route::prefix('app')->group(function () {
                 Route::get('/', [AppController::class, 'index'])->name('app.index');
