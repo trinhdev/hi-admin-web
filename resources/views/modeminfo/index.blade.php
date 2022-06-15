@@ -7,10 +7,15 @@
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
+                    <div class="col-sm-2">
                         <h1 class="m-0" style="font-weight: bold">{{ (!empty($data['ModemInfo']['ModelModem'])) ? $data['ModemInfo']['ModelModem'] : 'Không tìm thấy thông tin modem' }}</h1><span class="badge bg-primary" style="padding: 0.4em 0.4em; font-size: 13px">{{ (!empty($data['ModemInfo']['IpAdress'])) ? $data['ModemInfo']['IpAdress'] : '' }}</span>
                     </div><!-- /.col -->
-                    <div class="col-sm-6">
+                    <div class="col-sm-7">
+                        <div class="alert alert-danger" role="alert" style="display:{{ (!empty($data['errorBodyMsg'])) ? 'block' : 'none' }}">
+                            {{ $data['errorBodyMsg'] }}
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
                             <li class="breadcrumb-item active">Modem info v1</li>
