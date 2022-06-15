@@ -30,7 +30,7 @@ class IconSaveRequest extends FormRequest
             'decriptionVi'          => 'max:120',
             'iconUrl'               => 'required',
             'dataActionStaging'     => 'required',
-            'dataActionProduction'  => 'required',
+            // 'dataActionProduction'  => 'required',
         ];
     }
 
