@@ -12,7 +12,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-7">
                         <div class="alert alert-danger" role="alert" style="display:{{ (!empty($data['errorBodyMsg'])) ? 'block' : 'none' }}">
-                            {{ $data['errorBodyMsg'] }}
+                            {{ @$data['errorBodyMsg'] }}
                         </div>
                     </div>
                     <div class="col-sm-3">
