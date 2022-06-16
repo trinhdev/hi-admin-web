@@ -12,11 +12,11 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Popup</h1>
-                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                            <a href="{{ route('popupmanage.create') }}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-plus"></i> Thêm Mới
-                            </a>
-                        @endif
+{{--                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)--}}
+{{--                            <a href="{{ route('popupmanage.create') }}" class="btn btn-primary btn-sm">--}}
+{{--                                <i class="fas fa-plus"></i> Thêm Mới--}}
+{{--                            </a>--}}
+{{--                        @endif--}}
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -33,7 +33,6 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
-                    @include('popup._custom-search')
                     @include('popup._table')
                 </div>
             </div>
@@ -58,6 +57,9 @@
 @push('scripts')
     <script>
         actionAjaxPopup();
+        table.on('preXhr.dt', function(e, settings, data){
+            data.filter_click = true;
+        });
     </script>
 @endpush
 

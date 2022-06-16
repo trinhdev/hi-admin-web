@@ -52,7 +52,7 @@ class FtelPhoneDatatable extends DataTable
                         'scrollX' => false,
                         'searching' => true,
                         'searchDelay' => 500,
-                        'dom' => '<"row container mx-auto"<"col-md-4"B><"col-md-4 mt-2 "l><"col-md-2 mt-2"f>>rtip',
+                        'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-8"B><"col-md-2 mt-2 "l><"col-md-1 mt-2"f>>irtp',
                         'buttons' => [ 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdf' ]
                     ])
                     ->addTableClass('table table-hover table-striped text-center w-100')

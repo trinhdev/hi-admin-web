@@ -26,6 +26,15 @@ class PopupDetailDataTable extends DataTable
             ->editColumn('pushedObject',function($row) {
                 return config('platform_config.object')[$row['pushedObject']];
             })
+            ->editColumn('process_status',function($row) {
+                if($row['process_status'] == 'deleted') {
+                    return '<span style="color: #006400" class="badge border border-blue">Hoạt động <i class="fas fa-check-circle"></i></span>';
+                }
+                else {
+                    return '<span style="color: #A52A2A" class="badge border border-blue" >Hết hạn <i class="fas fa-times-circle"></i></span>';
+                }
+            })
+
             ->addIndexColumn()
             ->rawColumns(['process_status', 'action']);
     }
@@ -50,29 +59,15 @@ class PopupDetailDataTable extends DataTable
                 'scroll' => false,
                 'searching' => true,
                 'searchDelay' => 500,
-                'dom' => '<"row container mx-auto"<"col-md-4"B><"col-md-4 mt-2 "l><"col-md-2 mt-2"f>>irtp',
+                'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-9"B><"col-md-1 float-left mt-2 "l><"col-md-1 mt-2"f>>irtp',
                 'buttons' => [
                     [
                         'extend'=> 'collection',
-                        'text' =>'<i class="fa fa-rocket"></i> Push pop-up',
+                        'text' =>'Push popup',
                         'autoClose'=> true,
-                        'buttons'=> [
-                            [
-                                'text'      =>'Pop-up Public',
-                                'action'    => 'function ( e, dt, node, config ) {}',
-                                'attr'      =>  [
-                                    'id'=>'push_popup_public'
-                                ]
-                            ],
-                            [
-                                'text' => 'Pop-up Private',
-                                'action'=> 'function ( e, dt, node, config ) {
-                                    dt.column( -2 ).visible( ! dt.column( -2 ).visible() );
-                                }',
-                                'attr'      =>  [
-                                    'id'    => 'push_popup_private'
-                                ]
-                            ]
+                        'action'    => 'function ( e, dt, node, config ) {}',
+                        'attr'      =>  [
+                            'id'=>'push_popup_public'
                         ]
                     ],
                     'copyHtml5',

@@ -167,6 +167,15 @@
         $(document).ready(function() {
             showHide();
             pushAjaxPopup();
+            var table = $('#popup_detail_table').DataTable();
+            table.button()[0].disable();
+            console.log(table.button());
+            if ( table.rows( { selected: true } ).indexes().length === 0 ) {
+                table.button()[0].disable();
+            }
+            else {
+                table.button( 'edit:name' ).enable();
+            }
         });
     </script>
 @endpush
