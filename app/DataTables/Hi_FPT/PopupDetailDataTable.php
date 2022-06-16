@@ -5,6 +5,7 @@ namespace App\DataTables\Hi_FPT;
 use App\Services\NewsEventService;
 use App\Services\PaymentService;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 
 class PopupDetailDataTable extends DataTable
@@ -25,13 +26,6 @@ class PopupDetailDataTable extends DataTable
             ->editColumn('pushedObject',function($row) {
                 return config('platform_config.object')[$row['pushedObject']];
             })
-            ->editColumn('process_status',function($row) {
-                if($row['process_status'] == 'public') {
-                    return '<a style="" class="btn btn-sm btn-icon rounded-circle bg-olive"></a>';
-                } else {
-                    return '<a class="btn btn-sm btn-icon rounded-circle bg-danger"></a>';
-                }
-            })
             ->addIndexColumn()
             ->rawColumns(['process_status', 'action']);
     }
@@ -39,19 +33,19 @@ class PopupDetailDataTable extends DataTable
     public function query()
     {
         $data = $this->data;
-        empty($data) ? $response=null : $response=collect($data['templatePersonalMaps']);
-        return $response;
+        return empty($data) ? $response=null : $response=collect($data['templatePersonalMaps']);
     }
 
     public function html()
     {
         return $this->builder()
-            ->setTableId('payment_table')
+            ->setTableId('popup_detail_table')
             ->columns($this->getColumns())
             ->responsive()
             ->autoWidth(true)
             ->lengthMenu([10,25,50])
             ->pageLength(10)
+            ->orderBy(4)
             ->parameters([
                 'scroll' => false,
                 'searching' => true,
@@ -61,33 +55,34 @@ class PopupDetailDataTable extends DataTable
                     [
                         'extend'=> 'collection',
                         'text' =>'<i class="fa fa-rocket"></i> Push pop-up',
-                        'className' => 'push_popup_public',
+                        'autoClose'=> true,
                         'buttons'=> [
                             [
-                                'text' =>'Pop-up Public',
-                                'className' => 'push_popup_private',
+                                'text'      =>'Pop-up Public',
+                                'action'    => 'function ( e, dt, node, config ) {}',
+                                'attr'      =>  [
+                                    'id'=>'push_popup_public'
+                                ]
                             ],
                             [
                                 'text' => 'Pop-up Private',
-                                'className' => 'push_popup_private',
+                                'action'=> 'function ( e, dt, node, config ) {
+                                    dt.column( -2 ).visible( ! dt.column( -2 ).visible() );
+                                }',
+                                'attr'      =>  [
+                                    'id'    => 'push_popup_private'
+                                ]
                             ]
                         ]
                     ],
                     'copyHtml5',
                     'excel'
-                ],
-                'initComplete' => "function () {
-                    var table = $('#payment_table').DataTable();
-                    var button = $('#button');
-                    $(button).on('click', function () {
-                        table.ajax.reload();
-                    });
-                 }"
+                ]
             ])
-            ->addTableClass('table table-hover table-striped text-center w-100')
+            ->addTableClass('table table-hover text-center w-100')
             ->languageEmptyTable('Không có dữ liệu')
             ->languageInfoEmpty('Không có dữ liệu')
-            ->languageProcessing('Đang tải')
+            ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
             ->languageSearchPlaceholder('Tìm kiếm')
             ->languageSearch('Tìm kiếm')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
@@ -102,7 +97,7 @@ class PopupDetailDataTable extends DataTable
             Column::make('templatePersonalMapId')->title('ID'),
             Column::make('date_created')->title('Ngày push'),
             Column::make('showOnceTime')->title('Tần xuất popup xuất hiện')->addClass('text-left'),
-            Column::make('pushedObject')->title('Loại đối tượng')->addClass('text-left'),
+            Column::make('pushedObject')->title('Đối tượng')->addClass('text-left'),
             Column::make('dateStart')->title('Thời gian bắt đầu'),
             Column::make('dateEnd')->title('Thời gian kết thúc'),
             Column::make('process_status')->title('Trạng thái'),

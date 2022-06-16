@@ -73,35 +73,6 @@ $('#templatPersonList').DataTable({
 function clearForm() {
     $('#popupModal select').prop('selectedIndex', 0).change();
 }
-// function submitTargetPopup() {
-//     var objecttype =  $("#objecttype").val();
-//     var repeatTime = $("#repeatTime").val();
-//     var object = $("#object").val();
-//     var timeline =  $("#timeline").val();
-//     var templateId =  $("#templateId").val();
-//     $.ajax({
-//         type: 'POST',
-//         url: '/popupmanage/pushPopupTemplate',
-//         data: {'objecttype': objecttype, 'object': object, 'repeatTime': repeatTime, 'timeline': timeline, 'templateId': templateId},
-//         cache: false,
-//         success: (data) => {
-//             if(data.statusCode == 0){
-//                 showSuccess('Thành công');
-//             }else{
-//                 showError(data.message);
-//             }
-//             $('#popupModal').modal('toggle');
-//         },
-//         error: function (xhr) {
-//             var errorString = '';
-//             $.each(xhr.responseJSON.errors, function (key, value) {
-//                 errorString = value;
-//                 return false;
-//             });
-//             showError(errorString);
-//         }
-//     });
-// }
 
 function getDetailPersonalMaps(idPersonalMaps) {
     $.ajax({
@@ -230,6 +201,101 @@ function successCallUploadImagePopup(response, passingdata) {
         document.getElementById(passingdata.img_tag.id + '_name').value = "";
         showError(response.message);
     }
+}
+
+function actionAjaxPopup() {
+    $('body').on('click', '#detailPopup', function (event) {
+        event.preventDefault();
+        var id = $(this).data('id');
+        $.ajax({
+            url: 'popupmanage/detail/' + id,
+            type:'GET',
+            data: {
+                id: id
+            }, success: function (response){
+                let modalBody = $('#show_detail_popup').find('#modal-detail-popup');
+                let html = '';
+                for (const [key, value] of Object.entries(response)) {
+                    if(value && typeof value === 'string') {
+                        if(key === 'templatePersonalMaps'){
+                            value.value = null
+                        }
+                        html+=`<div class="form-group text-monospace text-capitalize"><b>`+ key+`:</b>     ` +value+`</div>`;
+                    }
+                }
+                $(modalBody).html(html)
+                $('#show_detail_popup').modal('toggle');
+            }
+        })
+    });
+}
+
+function pushAjaxPopup() {
+    $('body').on('click', '#push_popup_public', function (event) {
+        $('#popupModal').modal('toggle');
+        $('#formPopup').on('click', '#submitButton', function (e){
+            const form = document.querySelector('#formPopup');
+            const data = Object.fromEntries(new FormData(form).entries());
+            let url = $(form).data('action');
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                cache: false,
+                success: (data) => {
+                    if(data.data.statusCode == 0){
+                        $('#popupModal').modal('toggle');
+                        showSuccess('Thành công');
+                    }else{
+                        showError(data.data.message);
+                    }
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    showError(errorString);
+                    console.log(data);
+                }
+            });
+        })
+    });
+}
+
+function pushAjaxPopupPrivate() {
+    $('body').on('click', '#push_popup_private', function () {
+        $('#popupModalPrivate').modal('toggle');
+        $('#formPopupPrivate').on('click', '#submitButton', function (e){
+            const form = document.querySelector('#formPopupPrivate');
+            const data = Object.fromEntries(new FormData(form).entries());
+            let url = $(form).data('action');
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                cache: false,
+                success: (data) => {
+                    if(data.data.statusCode == 0){
+                        $('#popupModal').modal('toggle');
+                        showSuccess('Thành công');
+                    }else{
+                        showError(data.data.message);
+                    }
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    showError(errorString);
+                    console.log(data);
+                }
+            });
+        })
+    });
 }
 
 

@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 
 class PopupManageController extends MY_Controller
 {
-    //
     use DataTrait;
 
     public function __construct()
@@ -99,36 +98,31 @@ class PopupManageController extends MY_Controller
         return redirect()->route('popupmanage.index')->withErrors(isset($create_popup_response->description) ? $create_popup_response->description : $create_popup_response->message);
     }
 
-    public function get_data_detail($id)
+    public function get_api_data_detail($id)
     {
         $newsEventService = new NewsEventService();
         $detail = json_decode(json_encode($newsEventService->getDetailPopup($id)), true);
         if (!isset($detail['statusCode']) || $detail['statusCode'] != 0) {
-            return redirect()->back()->withErrors($detail['message']);
+            return redirect()->back()->withErrors($detail['message']) ?? redirect()->back();
         }
         return $detail['data'];
     }
 
     public function view(PopupDetailDataTable $dataTable, Request $request, $id)
     {
-        $newsEventService = new NewsEventService();
-        $listTargetRoute = $newsEventService->getListTargetRoute();
-        $list_target_route = (isset($listTargetRoute->statusCode) && $listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
-        $list_type_popup = config('platform_config.type_popup_service');
-
-        $dataResponse = $this->get_data_detail($id);
+        $dataResponse = $this->get_api_data_detail($id);
         $object_type = config('platform_config.object_type');
         $object = config('platform_config.object');
         $repeatTime = config('platform_config.repeatTime');
 
         return $dataTable->with([
             'data' => $dataResponse
-        ])->render('popup.view', compact('list_target_route','list_type_popup', 'object_type', 'repeatTime','object'));
+        ])->render('popup.view', compact('object_type', 'repeatTime','object', 'id'));
     }
 
     public function detail($id)
     {
-        $dataDetail = $this->get_data_detail($id);
+        $dataDetail = $this->get_api_data_detail($id);
         return request()->ajax() ?
                 response()->json($dataDetail,Response::HTTP_OK)
                 : redirect()->back()->withErrors('Error! System maintain!');
@@ -144,30 +138,19 @@ class PopupManageController extends MY_Controller
         ];
         $request->validate($rules);
         $this->addToLog($request);
-        $timeline = $request->timeline;
-        $timeline_array = explode(" - ", $timeline);
-        $dateStart = $timeline_array[0];
-        $dateEnd = $timeline_array[1];
-
-        $objecttype = $request->objecttype;
-        $object = $request->object;
-        $repeatTime = $request->repeatTime;
+        $timeline_array = explode(" - ", $request->timeline);
         $templateId = $request->templateId;
         $pushParams = [
             'popupTemplateId' => $templateId,
-            'repeatTime' => $repeatTime,
-            'dateStart' => $dateStart,
-            'dateEnd' => $dateEnd,
-            'objectType' => $objecttype,
-            'objects' => $object,
+            'repeatTime' => $request->repeatTime,
+            'dateStart' => $timeline_array[0],
+            'dateEnd' => $timeline_array[1],
+            'objectType' => $request->objecttype,
+            'objects' => $request->object,
         ];
         $newsEventService = new NewsEventService();
         $push_response = $newsEventService->pushTemplate($pushParams);
-        if (isset($push_response->statusCode) && $push_response->statusCode == 0) {
-            return redirect()->back()->withSuccess('Thành Công');
-        } else {
-            return redirect()->back()->withErrors($push_response->message);
-        }
+        return response()->json(['data' => $push_response]);
     }
 
     public function getDetailPersonalMaps(Request $request)

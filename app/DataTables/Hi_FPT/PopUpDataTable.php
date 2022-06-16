@@ -94,10 +94,11 @@ class PopUpDataTable extends DataTable
             ->setTableId('popup_manage_table')
             ->columns($this->getColumns())
             ->responsive()
-            ->orderBy(6)
+            ->orderBy(8)
             ->autoWidth(true)
             ->parameters([
                 'scroll' => false,
+                'scrollX' => false,
                 'searching' => true,
                 'searchDelay' => 500,
                 'initComplete' => "function () {

@@ -192,6 +192,7 @@ Route::group([
             });
 
             Route::prefix('popupmanage')->group(function () {
+                // Popup public
                 Route::get('/', [PopupManageController::class, 'index'])->name('popupmanage.index');
                 Route::get('/edit/{id?}',[PopupManageController::class, 'edit'])->name('popupmanage.edit');
                 Route::get('/create',[PopupManageController::class, 'edit'])->name('popupmanage.create');
@@ -200,6 +201,11 @@ Route::group([
                 Route::get('/detail/{id?}',[PopupManageController::class, 'detail'])->name('popupmanage.detail');
                 Route::post('/pushPopupTemplate',[PopupManageController::class, 'pushPopupTemplate'])->name('popupmanage.pushPopupTemplate');
                 Route::post('/getDetailPersonalMaps',[PopupManageController::class, 'getDetailPersonalMaps'])->name('popupmanage.getDetailPersonalMaps');
+                // Popup Private
+                Route::post('/addPrivate',[PopupManageController::class, 'addPrivate'])->name('popupmanage.addPrivate');
+                Route::post('/updatePrivate',[PopupManageController::class, 'updatePrivate'])->name('popupmanage.updatePrivate');
+                Route::post('/deletePrivate',[PopupManageController::class, 'deletePrivate'])->name('popupmanage.deletePrivate');
+                Route::post('/importPrivate',[PopupManageController::class, 'importPrivate'])->name('popupmanage.importPrivate');
             });
 
             Route::prefix('supportcode')->group(function () {

@@ -5,6 +5,13 @@
  * Date: 2021-11-03
  * Time: 09:29
  */
+
+/**
+ * Updated by PhpStorm.
+ * User: trinhdev
+ * Date: 2022-06-16
+ * Time: 09:29
+ */
 return [
     'current_theme' => 'themes',
     'background' =>[
@@ -36,7 +43,7 @@ return [
     ],
     'object'    => [
         'all' => 'Tất cả KH cài Hi FPT (bao gồm guest)',
-        'all_hifpt' => 'Tất cả KH có dùng dịch vụ (không bao gồm guest)',
+        'fpt_customer' => 'Tất cả KH có dùng dịch vụ (không bao gồm guest)',
         'guest' => 'Tất cả KH không dùng dịch vụ (guest)'
     ]
 ];
