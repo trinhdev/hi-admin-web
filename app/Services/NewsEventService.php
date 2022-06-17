@@ -66,7 +66,7 @@ class NewsEventService
 
     public function updateOrderBannder($eventId, $ordering){
         $url = $this->baseUrl . $this->listMethod['UPDATE_ORDERING'];
-        
+
         $updateParam = [
             'orderings'     => [
                 [

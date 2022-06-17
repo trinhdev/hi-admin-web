@@ -41,10 +41,10 @@
                                         @csrf
                                         <div class="form-group">
                                             <label class="" for="number_phone_import"><i>Upload with file exel</i></label>
-                                            <input onchange="uploadFile()" type="file" id="number_phone_import" name="excel" class="form-control @error('exel') is-invalid @enderror" accept=".xlsx">           
+                                            <input onchange="uploadFile()" type="file" id="number_phone_import" name="excel" class="form-control @error('exel') is-invalid @enderror" accept=".xlsx">
                                         </div>
                                     {!! Form::close() !!}
-                                    
+
                                     {!! Form::open(array('url' => route('ftel_phone.store'),'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
                                         @csrf
                                         <div class="form-group">
@@ -52,7 +52,7 @@
                                             @if($dataExcel!=null)
                                                 <input value="{{ str_replace(['[', ']', '"'], '', json_encode($dataExcel,TRUE)) }}" type="text" id="number_phone" name="number_phone" class="form-control @error('number_phone') is-invalid @enderror" placeholder="Có thể thêm nhiều số điện thoại cách nhau bằng dấu phẩy ','" >
                                             @else
-                                            <input type="text" id="number_phone" name="number_phone" class="form-control @error('number_phone') is-invalid @enderror" placeholder="Có thể thêm nhiều số điện thoại cách nhau bằng dấu phẩy ','" >                                           
+                                            <input type="text" id="number_phone" name="number_phone" class="form-control @error('number_phone') is-invalid @enderror" placeholder="Có thể thêm nhiều số điện thoại cách nhau bằng dấu phẩy ','" >
                                             @endif
                                             @error('number_phone')
                                                 <span class="error invalid-feedback">{{ $message }}</span>
@@ -60,15 +60,16 @@
                                             <br>
                                             <nav aria-label="breadcrumb">
                                             <ol class="breadcrumb">
-                                                <ul>                                                  
+                                                <ul>
                                                     <b>Note</b>: Nhập bé hơn {{ $limitPhone }} số cách nhau bằng dấu phẩy (đối với file exel, lưu 1 cột duy nhất theo hàng dọc, tải file mẫu <a href="https://docs.google.com/spreadsheets/d/1ifAR0UwfdV03Sidcshjvwl1pn1YmYBD9/edit?usp=sharing&ouid=113322866597815571901&rtpof=true&sd=true" target="_blank"> <b> tại đây</b></a>)
                                                 </ul>
                                             </ol>
                                             </nav>
                                         </div>
                                     <div class="card-footer" style="text-align: center">
-                                        <button name="action" type="submit" value="check" class="btn btn-info">Check</button>
-                                        <button name="action" type="submit" value="data" class="btn btn-info">Get Data</button>
+                                        <button name="action" type="submit" value="check" class="btn btn-info">Check nhân viên</button>
+                                        <button name="action" type="submit" value="data" class="btn btn-info">GET DATA API</button>
+                                        <button name="action" type="submit" value="db" class="btn btn-info">GET DATA SYSTEM</button>
                                         <a href="/ftel-phone" type="button" class="btn btn-default">Cancel</a>
                                     </div>
                                 {!! Form::close() !!}

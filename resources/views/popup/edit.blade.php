@@ -40,15 +40,6 @@
                                         <input type="text" class="form-control" id="titleVi" name="titleVi"
                                                placeholder="Tiêu đề tiếng việt" value="@if(!empty($detailPopup->titleVi)){{$detailPopup->titleVi}}@endif">
                                     </div>
-{{--                                    <div class="form-group" id="objecttype">--}}
-{{--                                        <label>Loại Đối tượng</label>--}}
-{{--                                        <select class="form-control select2" name="objecttype" id="objecttype"--}}
-{{--                                                style="width: 100%;">--}}
-{{--                                            @foreach($object_type as $key => $value)--}}
-{{--                                                <option value="{{$key}}">{{$value}}</option>--}}
-{{--                                            @endforeach--}}
-{{--                                        </select>--}}
-{{--                                    </div>--}}
                                     <div class="form-group" id="path_1">
                                         <label class="required_red_dot">Ảnh</label>
                                         <input type="file" accept="image/*" name="path_1" class="form-control"

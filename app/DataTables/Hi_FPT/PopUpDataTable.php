@@ -2,6 +2,7 @@
 
 namespace App\DataTables\Hi_FPT;
 
+use Carbon\Carbon;
 use Yajra\DataTables\Html\Column;
 use App\Services\NewsEventService;
 use Yajra\DataTables\Services\DataTable;
@@ -48,8 +49,16 @@ class PopUpDataTable extends DataTable
                         <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->image . '" alt="" onclick ="window.open("' . $query->image . '").focus()" width="100" height="100"/>
                 ';
             })
+            ->editColumn('popupType', function () {
+                if(true) {
+                    return '<span style="color: #006400" class="badge border border-blue">Public <i class="fas fa-check-circle"></i></span>';
+                }
+                else {
+                    return '<span style="color: #111111" class="badge border border-blue" >Private <i class="fas fa-check-circle"></i></span>';
+                }
+            })
             ->addColumn('action', 'popup._action-menu')
-            ->rawColumns(['buttonActionValue', 'image', 'action'])
+            ->rawColumns(['buttonActionValue', 'image', 'action','buttonImage', 'popupType'])
             ->setTotalRecords($totalRecords)
             ->skipPaging();
     }
@@ -70,10 +79,9 @@ class PopUpDataTable extends DataTable
         $this->templateType = $this->templateType ?? '';
         $model = $service->getListTemplatePopup($this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
 
-        if (isset($model->statusCode) && $model->statusCode == 0) {
+        if (isset($model->statusCode) && $model->statusCode == 0 && !empty($model->data)) {
             return collect($model->data);
         }
-        session()->flash('error');
         return $model = [];
     }
 
@@ -88,28 +96,105 @@ class PopUpDataTable extends DataTable
             ->setTableId('popup_manage_table')
             ->columns($this->getColumns())
             ->responsive()
-            ->orderBy(6)
+            ->orderBy(8)
             ->autoWidth(true)
             ->parameters([
                 'scroll' => false,
+                'scrollX' => false,
                 'searching' => true,
                 'searchDelay' => 500,
-                'initComplete' => "function () {
-                            var templateType = $('#show_at');
-                            var table = $('#popup_manage_table').DataTable();
-                            $(templateType).on('change', function () {
-                                table.ajax.reload();
-                            });
-                         }"
+                'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-9"B><"col-md-1 float-left mt-2 "l><"col-md-1 mt-2"f>>irtp',
+                'buttons' => [
+                    [
+                        'extend'=> 'collection',
+                        'text' =>'<i class="fa fa-plus"></i> Thêm mới pop-up',
+                        'autoClose'=> true,
+                        'buttons'=> [
+                            [
+                                'text'      =>'Pop-up Public',
+                                'action'    => 'function ( e, dt, node, config ) {}',
+                                'attr'      =>  [
+                                    'id'=>'push_popup_public'
+                                ]
+                            ],
+                            [
+                                'text' => 'Pop-up Private',
+                                'action'=> 'function ( e, dt, node, config ) {
+                                    alert("Xin lỗi! Chức năng đang bảo trì, vui lòng liên hệ trinhhdp@fpt.com.vn");
+                                 }',
+                                'attr'      =>  [
+                                    'id'    => 'push_popup_private'
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        'extend'=> 'collection',
+                        'text' =>'<i class="fa fa-filter"></i> Lọc hiển thị template',
+                        'autoClose'=> true,
+                        'buttons'=> [
+                            [
+                                'text'      =>'Center box có button',
+                                'action'    => 'function ( e, dt, node, config ) {
+                                    dt.on("preXhr.dt", function(e, settings, data){
+                                        data.templateType = "popup_custom_image_transparent";
+                                    });
+                                    dt.ajax.reload();
+                                }',
+                                'attr'      =>  [
+                                    'id'=>'popup_custom_image_transparent'
+                                ]
+                            ],
+                            [
+                                'text' => 'Center box không có button',
+                                'action'    => 'function ( e, dt, node, config ) {
+                                    dt.on("preXhr.dt", function(e, settings, data){
+                                        data.templateType = "popup_image_transparent";
+                                    });
+                                    dt.ajax.reload();
+                                }',
+                                'attr'      =>  [
+                                    'id'    => 'popup_image_transparent'
+                                ]
+                            ],
+                            [
+                                'text' => 'Full screen có button',
+                                'action'    => 'function ( e, dt, node, config ) {
+                                    dt.on("preXhr.dt", function(e, settings, data){
+                                        data.templateType = "popup_full_screen";
+                                    });
+                                    dt.ajax.reload();
+                                }',
+                                'attr'      =>  [
+                                    'id'    => 'popup_full_screen'
+                                ]
+                            ],
+                            [
+                                'text' => 'Full screen không có button',
+                                'action'    => 'function ( e, dt, node, config ) {
+                                    dt.on("preXhr.dt", function(e, settings, data){
+                                        data.templateType = "popup_image_full_screen";
+                                    });
+                                    dt.ajax.reload();
+                                }',
+                                'attr'      =>  [
+                                    'id'    => 'popup_image_full_screen'
+                                ]
+                            ]
+                        ]
+                    ],
+                    'copyHtml5',
+                    'excel'
+                ]
             ])
-            ->addTableClass('table table-hover table-striped text-center w-100')
+            ->addTableClass('table table-hover text-center w-100')
             ->languageEmptyTable('Không có dữ liệu')
             ->languageInfoEmpty('Không có dữ liệu')
-            ->languageProcessing('Đang tải')
+            ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
             ->languageSearch('Tìm kiếm')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
-            ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
-            ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang');
+            ->languageLengthMenu('Hiển thị _MENU_')
+            ->languageInfo('TỔNG DÒNG: _TOTAL_');
     }
 
     /**
@@ -122,16 +207,22 @@ class PopUpDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')
                 ->title('STT')
-                ->width(20)
+                ->width(10)
                 ->sortable(false),
             Column::make('titleVi')->title('Tiêu đề'),
             Column::make('image')->title('Hình ảnh')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template'),
+
             Column::make('viewCount')->title('Số lượt view'),
-            Column::make('dateCreated')->title('Ngày tạo'),
             Column::make('createdBy')->title('Người tạo'),
-            Column::make('modifiedBy')->title('Người cập nhật'),
+
+            Column::computed('popupType')
+                ->searching(false)
+                ->width(100)
+                ->addClass('text-center')
+                ->title('Loại popup'),
+            Column::make('dateCreated')->title('Ngày tạo'),
             Column::computed('action')
                 ->searching(false)
                 ->width(80)

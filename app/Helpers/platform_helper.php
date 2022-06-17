@@ -22,6 +22,18 @@ if (!function_exists('backend_path')) {
         return __DIR__ . '/../' . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
+if (!function_exists('change_key')) {
+    function change_key( $array, $old_key, $new_key ) {
+
+        if( ! array_key_exists( $old_key, $array ) )
+            return $array;
+
+        $keys = array_keys( $array );
+        $keys[ array_search( $old_key, $keys ) ] = $new_key;
+
+        return array_combine( $keys, $array );
+    }
+}
 if (!function_exists('write_log_file')) {
     function write_log_file($filename = 'error', $message = NULL, $level = 'error')
     {

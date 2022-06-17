@@ -47,6 +47,8 @@ class SupportCodeController extends MY_Controller
                 $log_data['api_result'] = json_encode($api_result);
                 $log_data['created_by'] = Auth::check() ? Auth::user()->id : 0;
                 $log_data['note'] = $request->note;
+                $log_data['created_at'] = (!empty($request->created_at)) ? $request->created_at : date('Y-m-d H:i:s', strtotime('now'));
+                $log_data['updated_at'] = (!empty($request->created_at)) ? $request->created_at : date('Y-m-d H:i:s', strtotime('now'));
             }
         }
 

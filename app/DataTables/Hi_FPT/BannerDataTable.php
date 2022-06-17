@@ -174,7 +174,7 @@ class BannerDataTable extends DataTable
                     ->addTableClass('table table-hover table-striped text-center w-100')
                     ->languageEmptyTable('Không có dữ liệu')
                     ->languageInfoEmpty('Không có dữ liệu')
-                    ->languageProcessing('Đang tải')
+                    ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
                     ->languageSearch('Tìm kiếm')
                     ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
                     ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
