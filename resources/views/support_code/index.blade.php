@@ -65,6 +65,16 @@
                         <label for="note">Ghi chú</label>
                         <textarea class="form-control" name="note"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="show_from">Ngày tạo</label>
+                        <input type="datetime-local" name="created_at" class="form-control" id="created_at" placeholder="Ngày tạo" />
+                        {{-- <div class='input-group date' id='datetimepicker2'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                         </div> --}}
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -85,6 +95,22 @@
         table.on('preXhr.dt', function(e, settings, data) {
             console.log($('#support-code').val());
             data.supportCode = $('#support-code').val();
+        });
+        $('#created_at').datetimepicker({
+            format: "YYYY-MM-DD HH:mm:ss",
+            useCurrent: true,
+            sideBySide: true,
+            icons: {
+                time: 'fas fa-clock',
+                date: 'fas fa-calendar',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+                previous: 'fas fa-arrow-left',
+                next: 'fas fa-arrow-right',
+                today: 'fas fa-calendar-day',
+                clear: 'fas fa-trash',
+                close: 'fas fa-window-close'
+            },
         });
     </script>
 @endpush
