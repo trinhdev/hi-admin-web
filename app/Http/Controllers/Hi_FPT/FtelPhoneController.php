@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Hi_FPT;
 use App\DataTables\Hi_FPT\FtelPhoneDatatable;
 use App\Models\AppLog;
 use Excel;
-use App\Models\FtelPhone;
+use App\Models\Employees;
 use App\Services\HrService;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
@@ -115,6 +115,34 @@ class FtelPhoneController extends MY_Controller
                     ['number_phone','emailAddress','fullName','response','organizationNamePath','organizationCodePath'],
                 );
                 return redirect()->back()->with( ['data' => json_decode(json_encode($data), true)] );
+                break;
+            case 'db':
+                $employee = Employees::whereIn('phone', $arrPhone)->get()->toArray();
+                $employee = array_map(function($tag) {
+                    return array(
+                        'code' => $tag['employee_code'],
+                        'name' => $tag['name'],
+                        'fullName' => $tag['full_name'],
+                        'phoneNumber' => $tag['phone'],
+                        'emailAddress' => $tag['emailAddress'],
+                        'location_id' => $tag['location_id'],
+                        'branch_code' => $tag['branch_code'],
+                        'area_code' => $tag['code'],
+                        'organizationCode' => $tag['organizationCode'],
+                        'organizationCodePath' => $tag['organizationCodePath'],
+                        'location' => $tag['location'],
+                        'isActive' => $tag['isActive'],
+                        'checkUpdate' => $tag['checkUpdate'],
+                        'created_at' => $tag['created_at'],
+                        'organizationNamePath' => $tag['organizationNamePath'],
+                        'dept_id' => $tag['dept_id'],
+                        'dept_name_1' => $tag['dept_name_1'],
+                        'dept_name_2' => $tag['dept_name_2'],
+                        'updated_at' => $tag['updated_at'],
+                        'updated_from' => $tag['updated_from']
+                    );
+                }, $employee);
+                return redirect()->back()->with( ['data' => json_decode(json_encode($employee), true)] );
                 break;
         }
     }
