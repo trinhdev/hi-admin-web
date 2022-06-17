@@ -1,3 +1,5 @@
+'use strict';
+
 $(document).ready(function () {
     // $('#sidebar').sortable({
     //     axis: "y",
@@ -44,7 +46,7 @@ function handleSubmit(e, form, withPopup = true) {
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'Yes, Confirmed!',
             reverseButtons: true
-    
+
         }).then((result) => {
             if (result.isConfirmed) {
                 form.submit();
@@ -109,8 +111,8 @@ function uploadFileExternal(file, callBack, passingData) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    var formData = new FormData();
-    formData.append("file", file,file.name);
+    let formData = new FormData();
+    formData.append('file', file,file.name);
     $.ajax({
         type: 'POST',
         url: '/file/uploadImageExternal',

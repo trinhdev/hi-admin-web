@@ -23,13 +23,16 @@ class PopupManageController extends MY_Controller
 
     public function index(PopUpDataTable $dataTable, Request $request)
     {
+        $newsEventService = new NewsEventService();
+        $list_type_popup = config('platform_config.type_popup_service');
+        $list_route = $newsEventService->getListTargetRoute()->data ?? null;
         return $dataTable->with([
             'templateType' => $request->templateType,
             'start' => $request->start,
             'length' => $request->length,
             'order' => $request->order,
             'columns' => $request->columns
-        ])->render('popup.index');
+        ])->render('popup.index', compact('list_type_popup', 'list_route'));
     }
 
     public function edit()
@@ -65,21 +68,22 @@ class PopupManageController extends MY_Controller
             'templateType' => 'required',
             'titleVi' => 'required',
             'titleEn' => 'required',
-            'img_path_1_name' => 'required',
+            'image_popup_name' => 'required',
             'directionId' => 'required_if:templateType,popup_custom_image_transparent,popup_full_screen',
             'directionUrl' => 'required_if:directionId,url_open_out_app,url_open_in_app',
-            'img_path_2_name' => 'required_if:templateType,popup_custom_image_transparent,popup_full_screen',
+            'buttonImage_popup_name' => 'required_if:templateType,popup_custom_image_transparent,popup_full_screen',
         ];
         $request->validate($rules);
         $this->addToLog($request);
+
         $newsEventService = new NewsEventService();
         $createParams = [
             'templateType' => $request->templateType,
             'titleVi' => $request->titleVi,
             'titleEn' => $request->titleEn,
-            'image' => $request->img_path_1_name,
+            'image' => $request->image_popup_name,
             'directionId' => !empty($request->directionId) ? $request->directionId : "",
-            'buttonImage' => !empty($request->img_path_2_name) ? $request->img_path_2_name : "",
+            'buttonImage' => !empty($request->buttonImage_popup_name) ? $request->buttonImage_popup_name : "",
         ];
 
         if ($request->directionId == 'url_open_out_app' || $request->directionId == 'url_open_in_app') {
@@ -90,7 +94,6 @@ class PopupManageController extends MY_Controller
             $createParams['templatePersonalId'] = $request->id_popup;
             $create_popup_response = $newsEventService->updatePopup($createParams);
         } else
-            // dd($createParams);
             $create_popup_response = $newsEventService->addNewPopup($createParams);
         if (($create_popup_response->statusCode == 0)) {
             return redirect()->route('popupmanage.index')->withSuccess('Success!');

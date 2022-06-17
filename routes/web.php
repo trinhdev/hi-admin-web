@@ -194,8 +194,8 @@ Route::group([
             Route::prefix('popupmanage')->group(function () {
                 // Popup public
                 Route::get('/', [PopupManageController::class, 'index'])->name('popupmanage.index');
-                Route::get('/edit/{id?}',[PopupManageController::class, 'edit'])->name('popupmanage.edit');
-                Route::get('/create',[PopupManageController::class, 'edit'])->name('popupmanage.create');
+//                Route::get('/edit/{id?}',[PopupManageController::class, 'edit'])->name('popupmanage.edit');
+//                Route::get('/create',[PopupManageController::class, 'edit'])->name('popupmanage.create');
                 Route::post('/save',[PopupManageController::class, 'save'])->name('popupmanage.save');
                 Route::get('/view/{id?}',[PopupManageController::class, 'view'])->name('popupmanage.view');
                 Route::get('/detail/{id?}',[PopupManageController::class, 'detail'])->name('popupmanage.detail');

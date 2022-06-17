@@ -17,9 +17,9 @@ class PopupDetailDataTable extends DataTable
     {
         return datatables()
             ->collection($query)
-            ->editColumn('action',function($row) {
-                return '<a class="btn btn-sm fa fa-bell btn-icon bg-olive"></a>';
-            })
+//            ->editColumn('action',function($row) {
+//                return '<a class="btn btn-sm fa fa-bell btn-icon bg-olive"></a>';
+//            })
             ->editColumn('showOnceTime',function($row) {
                 return config('platform_config.repeatTime')[$row['showOnceTime']];
             })
@@ -96,10 +96,10 @@ class PopupDetailDataTable extends DataTable
             Column::make('dateStart')->title('Thời gian bắt đầu'),
             Column::make('dateEnd')->title('Thời gian kết thúc'),
             Column::make('process_status')->title('Trạng thái'),
-            Column::computed('action')
-                ->searching(false)
-                ->width(80)
-                ->addClass('text-center')
+//            Column::computed('action')
+//                ->searching(false)
+//                ->width(80)
+//                ->addClass('text-center')
         ];
     }
 

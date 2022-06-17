@@ -49,13 +49,16 @@ class PopUpDataTable extends DataTable
                         <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->image . '" alt="" onclick ="window.open("' . $query->image . '").focus()" width="100" height="100"/>
                 ';
             })
-            ->editColumn('buttonImage', function ($query) {
-                return '
-                        <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->buttonImage . '" alt="" onclick ="window.open("' . $query->buttonImage . '").focus()" width="100" height="100"/>
-                ';
+            ->editColumn('popupType', function () {
+                if(true) {
+                    return '<span style="color: #006400" class="badge border border-blue">Public <i class="fas fa-check-circle"></i></span>';
+                }
+                else {
+                    return '<span style="color: #111111" class="badge border border-blue" >Private <i class="fas fa-check-circle"></i></span>';
+                }
             })
             ->addColumn('action', 'popup._action-menu')
-            ->rawColumns(['buttonActionValue', 'image', 'action','buttonImage'])
+            ->rawColumns(['buttonActionValue', 'image', 'action','buttonImage', 'popupType'])
             ->setTotalRecords($totalRecords)
             ->skipPaging();
     }
@@ -79,7 +82,6 @@ class PopUpDataTable extends DataTable
         if (isset($model->statusCode) && $model->statusCode == 0 && !empty($model->data)) {
             return collect($model->data);
         }
-        session()->flash('error');
         return $model = [];
     }
 
@@ -110,9 +112,7 @@ class PopUpDataTable extends DataTable
                         'buttons'=> [
                             [
                                 'text'      =>'Pop-up Public',
-                                'action'    => 'function ( e, dt, node, config ) {
-                                    window.location="/popupmanage/create";
-                                }',
+                                'action'    => 'function ( e, dt, node, config ) {}',
                                 'attr'      =>  [
                                     'id'=>'push_popup_public'
                                 ]
@@ -187,14 +187,14 @@ class PopUpDataTable extends DataTable
                     'excel'
                 ]
             ])
-            ->addTableClass('table table-hover table-striped text-center w-100')
+            ->addTableClass('table table-hover text-center w-100')
             ->languageEmptyTable('Không có dữ liệu')
             ->languageInfoEmpty('Không có dữ liệu')
             ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
             ->languageSearch('Tìm kiếm')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
-            ->languageLengthMenu('Show _MENU_')
-            ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang');
+            ->languageLengthMenu('Hiển thị _MENU_')
+            ->languageInfo('TỔNG DÒNG: _TOTAL_');
     }
 
     /**
@@ -207,15 +207,21 @@ class PopUpDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')
                 ->title('STT')
-                ->width(20)
+                ->width(10)
                 ->sortable(false),
             Column::make('titleVi')->title('Tiêu đề'),
             Column::make('image')->title('Hình ảnh')->sortable(false),
-            Column::make('buttonImage')->title('Ảnh button')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template'),
+
             Column::make('viewCount')->title('Số lượt view'),
             Column::make('createdBy')->title('Người tạo'),
+
+            Column::computed('popupType')
+                ->searching(false)
+                ->width(100)
+                ->addClass('text-center')
+                ->title('Loại popup'),
             Column::make('dateCreated')->title('Ngày tạo'),
             Column::computed('action')
                 ->searching(false)
