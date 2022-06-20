@@ -105,7 +105,7 @@ class IconconfigController extends MY_Controller
 
         if(empty($request['productConfigId'])) {
             $request->merge([
-                'productConfigId' => '',
+                'productConfigId'   => '',
             ]);
             $approved_status = 'create';
         }
@@ -283,6 +283,7 @@ class IconconfigController extends MY_Controller
             $icon_approve = Settings::where('name', 'icon_approve')->get();
             $icon_approve_list = array_column(json_decode($icon_approve[0]['value'], true), 'value', 'key');
             $response = json_decode(json_encode($this->iconconfig->getAllProductConfig()), true);
+            // dd($response);
             $data = [];
             if(!empty($response['data'])) {
                 $data = $response['data'];

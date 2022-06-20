@@ -144,6 +144,11 @@
                                 <div class="card card-info">
                                     <div class="card-body">
                                         <ul class="row" style="list-style: none; min-height: 100px" id="selected-product-config">
+                                            
+                                            @php
+                                                $countIconPerRow = 0;
+                                            @endphp
+                                            <p>
                                             @foreach ($data['productListInConfig'] as $key => $value)
                                                 <li class="selected-li" id="{{ @$value['productId'] }}-selected-product-config" data-prodid="{{ @$value['productId'] }}">
                                                     <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}">
@@ -152,7 +157,24 @@
                                                     <h6><span class="badge badge-dark">{{ $value['productNameVi'] }}</span></h6>
                                                     <h6><span class="badge badge-warning position">{{ $key + 1 }}</span></h6>
                                                 </li>
+                                                @if($countIconPerRow >= $data['iconsPerRow'] - 1)
+                                                    </p><p>
+                                                        <li class="selected-li" id="{{ @$value['productId'] }}-selected-product-config" data-prodid="{{ @$value['productId'] }}">
+                                                            <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}">
+                                                            <br>
+                                                            <button type="button" class="close-thik" onClick="removeFromSelectedProduct('{{ @$value['productId'] }}-selected-product-config')"><i class="fas fa-times-circle"></i></button>
+                                                            <h6><span class="badge badge-dark">{{ $value['productNameVi'] }}</span></h6>
+                                                            <h6><span class="badge badge-warning position">{{ $key + 1 }}</span></h6>
+                                                        </li>
+                                                    @php
+                                                        $countIconPerRow = 0;
+                                                    @endphp
+                                                @endif
+                                                @php
+                                                    $countIconPerRow++;
+                                                @endphp
                                             @endforeach
+                                            </p>
                                         </ul>
                                     </div>
                                 </div>
