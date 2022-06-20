@@ -83,9 +83,11 @@
                                         <select class="form-control select2" name="directionId" id="directionId_popup"
                                                 style="width: 100%;">
                                                 <option value="" selected>-- Chọn nơi điều hướng --</option>
+                                            @if($list_route)
                                                 @foreach($list_route as $key => $value)
                                                     <option value="{{$value->id}}">{{$value->name}}</option>
                                                 @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                 </div>

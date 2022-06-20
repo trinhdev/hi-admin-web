@@ -5,10 +5,9 @@ namespace App\DataTables\Hi_FPT;
 use App\Services\PopupPrivateService;
 use Carbon\Carbon;
 use Yajra\DataTables\Html\Column;
-use App\Services\NewsEventService;
 use Yajra\DataTables\Services\DataTable;
 
-class PopUpDataTable extends DataTable
+class PopUpPrivateDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -83,28 +82,9 @@ class PopUpDataTable extends DataTable
         $this->templateType = $this->templateType ?? '';
 
         $popup_public = $service_public->getListTemplatePopup($this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
-        $popup_private = collect($service_private->get())->toArray();
-        /** @var TYPE_NAME $private1 */
-        $private1 = array_map(function ($tag) {
-                return array(
-                    'id' => $tag['id'],
-                    'titleVi' => $tag['titleVi'],
-                    'titleEn' => $tag['titleEn'],
-                    'descriptionVi' => $tag['desVi'],
-                    'descriptionEn' => $tag['desEn'],
-                    'image' => null,
-                    'buttonActionValue' => $tag['dataAction'],
-                    'templateType' => $tag['type'],
-                    'viewCount' => 0,
-                    'popupType' => 'Private',
-                    'dateCreated' => $tag['dateCreated']
-                );
-            }, $popup_private);
-        $data[] = json_decode(json_encode(get_data_api($popup_public)))->data;
-        $data[] = json_decode(json_encode(get_data_api($private1)));
-        $dt = collect($data)->collapse();
-        dd($dt);
-        return $dt ?? $data = [];
+        $data[] = get_data_api($popup_public);
+
+        return collect($data) ?? $data = [];
 
     }
 
@@ -234,7 +214,9 @@ class PopUpDataTable extends DataTable
             Column::make('image')->title('Hình ảnh')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template'),
+
             Column::make('viewCount')->title('Số lượt view'),
+            Column::make('createdBy')->title('Người tạo'),
 
             Column::computed('popupType')
                 ->searching(false)
