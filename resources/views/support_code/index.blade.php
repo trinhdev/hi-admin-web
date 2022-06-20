@@ -96,21 +96,21 @@
             console.log($('#support-code').val());
             data.supportCode = $('#support-code').val();
         });
-        $('#created_at').datetimepicker({
-            format: "YYYY-MM-DD HH:mm:ss",
-            useCurrent: true,
-            sideBySide: true,
-            icons: {
-                time: 'fas fa-clock',
-                date: 'fas fa-calendar',
-                up: 'fas fa-arrow-up',
-                down: 'fas fa-arrow-down',
-                previous: 'fas fa-arrow-left',
-                next: 'fas fa-arrow-right',
-                today: 'fas fa-calendar-day',
-                clear: 'fas fa-trash',
-                close: 'fas fa-window-close'
-            },
-        });
+        // $('#created_at').datetimepicker({
+        //     format: "YYYY-MM-DD HH:mm:ss",
+        //     useCurrent: true,
+        //     sideBySide: true,
+        //     icons: {
+        //         time: 'fas fa-clock',
+        //         date: 'fas fa-calendar',
+        //         up: 'fas fa-arrow-up',
+        //         down: 'fas fa-arrow-down',
+        //         previous: 'fas fa-arrow-left',
+        //         next: 'fas fa-arrow-right',
+        //         today: 'fas fa-calendar-day',
+        //         clear: 'fas fa-trash',
+        //         close: 'fas fa-window-close'
+        //     },
+        // });
     </script>
 @endpush

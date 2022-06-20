@@ -57,7 +57,6 @@ class SettingsController extends MY_Controller
             'name'  => 'required|unique:settings|max:255',
             'value' => 'required|json'
         ]);
-        
         $setting = $this->createSingleRecord($this->model, $request->all());
         $this->addToLog(request());
         return redirect()->route('settings.index');
@@ -100,7 +99,6 @@ class SettingsController extends MY_Controller
             'name'  => 'required|max:255',
             'value' => 'required|json'
         ]);
-
         $setting = $this->updateById($this->model, $id, $request->all());
         $this->addToLog($request);
         return redirect()->route('settings.index');
