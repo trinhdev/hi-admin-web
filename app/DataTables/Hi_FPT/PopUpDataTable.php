@@ -2,7 +2,6 @@
 
 namespace App\DataTables\Hi_FPT;
 
-use App\Services\PopupPrivateService;
 use Carbon\Carbon;
 use Yajra\DataTables\Html\Column;
 use App\Services\NewsEventService;
@@ -64,11 +63,8 @@ class PopUpDataTable extends DataTable
             ->skipPaging();
     }
 
-    public function query()
+    public function query(NewsEventService $service)
     {
-        $data = [];
-        $service_public = new NewsEventService();
-        $service_private = new PopupPrivateService();
         $this->perPage = $this->length ?? 10;
         if (!isset($this->currentPage) || $this->start == 0) {
             $this->currentPage = 1;
@@ -81,31 +77,9 @@ class PopUpDataTable extends DataTable
         $this->orderBy = $this->columns[$orderColumn]['data'];
         $this->orderDirection = $this->order[0]['dir'];
         $this->templateType = $this->templateType ?? '';
-
-        $popup_public = $service_public->getListTemplatePopup($this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
-        $popup_private = collect($service_private->get())->toArray();
-        /** @var TYPE_NAME $private1 */
-        $private1 = array_map(function ($tag) {
-                return array(
-                    'id' => $tag['id'],
-                    'titleVi' => $tag['titleVi'],
-                    'titleEn' => $tag['titleEn'],
-                    'descriptionVi' => $tag['desVi'],
-                    'descriptionEn' => $tag['desEn'],
-                    'image' => null,
-                    'buttonActionValue' => $tag['dataAction'],
-                    'templateType' => $tag['type'],
-                    'viewCount' => 0,
-                    'popupType' => 'Private',
-                    'dateCreated' => $tag['dateCreated']
-                );
-            }, $popup_private);
-        $data[] = json_decode(json_encode(get_data_api($popup_public)))->data;
-        $data[] = json_decode(json_encode(get_data_api($private1)));
-        $dt = collect($data)->collapse();
-        dd($dt);
-        return $dt ?? $data = [];
-
+        $model = $service->getListTemplatePopup($this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
+        dd($model);
+        return collect(get_data_api($model)) ?? [];
     }
 
     /**
@@ -132,21 +106,9 @@ class PopUpDataTable extends DataTable
                         'extend'=> 'collection',
                         'text' =>'<i class="fa fa-plus"></i> Thêm mới pop-up',
                         'autoClose'=> true,
-                        'buttons'=> [
-                            [
-                                'text'      =>'Pop-up Public',
-                                'action'    => 'function ( e, dt, node, config ) {}',
-                                'attr'      =>  [
-                                    'id'=>'push_popup_public'
-                                ]
-                            ],
-                            [
-                                'text' => 'Pop-up Private',
-                                'action'=> 'function ( e, dt, node, config ) {}',
-                                'attr'      =>  [
-                                    'id'    => 'push_popup_private'
-                                ]
-                            ]
+                        'action'    => 'function ( e, dt, node, config ) {}',
+                        'attr'      =>  [
+                            'id'=>'push_popup_public'
                         ]
                     ],
                     [
@@ -234,7 +196,9 @@ class PopUpDataTable extends DataTable
             Column::make('image')->title('Hình ảnh')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template'),
+
             Column::make('viewCount')->title('Số lượt view'),
+            Column::make('createdBy')->title('Người tạo'),
 
             Column::computed('popupType')
                 ->searching(false)

@@ -25,13 +25,13 @@ function showHide() {
 
     $('#templateType_popup').on('change', function () {
         if ($('#templateType_popup').val() === 'popup_image_transparent' || $('#templateType_popup').val() === 'popup_image_full_screen') {
-            $('#directionId_popup').hide();
-            $('#buttonImage').hide();
-            $('#buttonActionValue_popup').hide();
+            $('#directionId_popup').attr('style', 'display: none !important');
+            $('#buttonImage').attr('style', 'display: none !important');
+            $('#form_directionUrl').attr('style', 'display: none !important');
         } else {
-            $('#directionId_popup').show();
-            $('#buttonImage').show();
-            $('#buttonActionValue_popup').show();
+            $('#directionId_popup').attr('style', 'display: inline');
+            $('#buttonImage').attr('style', 'display: inline');
+            $('#form_directionUrl').attr('style', 'display: ');
         }
     });
 
@@ -223,7 +223,7 @@ function actionAjaxPopup() {
     });
 }
 
-function pushAjaxPopup() {
+function pushTemplateAjaxPopup() {
     $('body').on('click', '#push_popup_public', function (e) {
         e.preventDefault();
         $('#popupModal').modal('toggle');
@@ -260,59 +260,29 @@ function pushAjaxPopup() {
 }
 
 function methodAjaxPopupPrivate() {
-    $('body').on('click', '#push_popup_private', function () {
-        $('#popupModalPrivate').modal('toggle');
-        $('#formPopupPrivate').on('click', '#submitButton', function (e){
-            const form = document.querySelector('#formPopupPrivate');
-            const data = Object.fromEntries(new FormData(form).entries());
-            let url = $(form).data('action');
+    $('body').on('click', '#push_popup_public', function (event) {
+        event.preventDefault();
+        var form = document.querySelector('#formAction');
+        document.getElementById('formAction').reset();
+        document.getElementById('image_popup').attributes[1].value = '';
+        document.getElementById('buttonImage_popup').attributes[1].value = '';
+        const data = Object.fromEntries(new FormData(form).entries());
+        $('#show_detail_popup').modal('toggle');
+        $(form).on('submit', function (e){
+            e.preventDefault();
             $.ajax({
-                type: 'POST',
-                url: url,
-                data: data,
-                cache: false,
-                success: (data) => {
-                    if(data.data.statusCode === 0){
-                        $('#popupModal').modal('toggle');
-                        showSuccess('Thành công');
-                    }else{
-                        showError(data.data.message);
-                    }
-                },
-                error: function (xhr) {
-                    var errorString = '';
-                    $.each(xhr.responseJSON.errors, function (key, value) {
-                        errorString = value;
-                        return false;
-                    });
-                    showError(errorString);
+                url: 'popupmanage/save',
+                type:'POST',
+                data: { data: data },
+                processData: false,
+                contentType: false,
+                success: function(data) {
                     console.log(data);
                 }
             });
         });
     });
 
-    $('body').on('click', '#delete_popup', function (event) {
-        event.preventDefault();
-        var id = $(this).data('id');
-        $.ajax({
-            url: 'popupmanage/deletePrivate',
-            type:'POST',
-            data: {
-                id: id
-            }, success: function (response){
-                for (const [key, value] of Object.entries(response)) {
-                    if(key==='image' || key==='buttonImage') {
-                        $('#'+key+'_popup').attr("src",URL_STATIC + "/upload/images/event/" + value);
-                        $('#'+key+'_popup_name').val(value);
-                    }else {
-                        $('#'+key+'_popup').val(value);
-                    }
-                }
-                $('#show_detail_popup').modal('toggle');
-            }
-        });
-    });
 
     $('body').on('click', '#import_phone_popup', function (event) {
         event.preventDefault();
@@ -332,6 +302,41 @@ function methodAjaxPopupPrivate() {
                     }
                 }
                 $('#show_detail_popup').modal('toggle');
+            }
+        });
+    });
+
+    $('body').on('click', '#deletePopup', function (event) {
+        event.preventDefault();
+        var check = $(this).data('check-delete');
+        console.log(check);
+        if (confirm('Chắc chắn xóa!') !== true && check!==1) {
+            return false;
+        }
+        if (check===1) {
+            var id = $(this).data('id');
+        } else {
+            showError('Pop up này đã xóa, vui lòng kiểm tra lại!');
+            return false;
+        }
+        $.ajax({
+            url: '/popup-private/deletePrivate',
+            type:'POST',
+            data: {
+                id: id
+            }, success: function (response){
+                showSuccess(response.message);
+                var table = $('#popup_private_table').DataTable();
+                table.ajax.reload();
+            },
+            error: function (xhr) {
+                var errorString = '';
+                $.each(xhr.responseJSON.errors, function (key, value) {
+                    errorString = value;
+                    return false;
+                });
+                showError(errorString);
+                console.log(data);
             }
         });
     });

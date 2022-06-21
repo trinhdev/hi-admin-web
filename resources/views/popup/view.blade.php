@@ -166,7 +166,7 @@
      <script>
         $(document).ready(function() {
             showHide();
-            pushAjaxPopup();
+            pushTemplateAjaxPopup();
             var table = $('#popup_detail_table').DataTable();
             table.button()[0].disable();
             console.log(table.button());

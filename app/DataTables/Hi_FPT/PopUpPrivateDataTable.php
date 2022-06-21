@@ -3,6 +3,7 @@
 namespace App\DataTables\Hi_FPT;
 
 use App\Services\PopupPrivateService;
+use App\Services\NewsEventService;
 use Carbon\Carbon;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -15,76 +16,57 @@ class PopUpPrivateDataTable extends DataTable
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
-    private $perPage;
-    private $orderBy = 'date_created';
-    private $orderDirection = 'DESC';
-    private $currentPage = 1;
 
     public function dataTable($query)
     {
         $NewsEventService = new NewsEventService();
         $listRoute = collect($NewsEventService->getListTargetRoute()->data);
         $list_template_popup = config('platform_config.type_popup_service');
-        $tmp = $query;
-        $query = $query['data'];
-        $paginate = $tmp['pagination'];
-        $totalRecords = $paginate->totalPage * $paginate->perPage;
+        $type = $this->type;
         return datatables()
             ->collection($query)
-            ->addIndexColumn()
-            ->editColumn('buttonActionValue', function ($query) use ($listRoute) {
-                $name = $query->buttonActionType == 'function'
-                    ? ($routeObject = $listRoute->where('id', $query->directionId)->first()) ? $routeObject->name : 'null'
-                    : $query->buttonActionValue;
-                return $name ? $name : 'null';
-            })
-            ->editColumn('templateType', function ($query) use ($list_template_popup) {
-                $name = $list_template_popup[$query->templateType]
-                    ? $list_template_popup[$query->templateType]
+            ->editColumn('type', function ($query) use ($list_template_popup) {
+                $name = $list_template_popup[$query->type]
+                    ? $list_template_popup[$query->type]
                     : $query;
-                return $name ? $name : $query->templateType;
+                return $name ? $name : $query->type;
             })
-            ->editColumn('image', function ($query) {
+            ->editColumn('iconUrl', function ($query) {
                 return '
-                        <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->image . '" alt="" onclick ="window.open("' . $query->image . '").focus()" width="100" height="100"/>
+                        <img src="' .$query->iconUrl. '" alt="" onclick ="window.open("' . $query->iconUrl . '").focus()" width="100" height="100"/>
+                ';
+            })
+            ->editColumn('iconButtonUrl', function ($query) {
+                return '
+                        <img src="' .$query->iconButtonUrl. '" alt="" onclick ="window.open("' . $query->iconButtonUrl . '").focus()" width="100" height="100"/>
                 ';
             })
             ->editColumn('popupType', function () {
-                if(true) {
-                    return '<span style="color: #006400" class="badge border border-blue">Public <i class="fas fa-check-circle"></i></span>';
-                }
-                else {
-                    return '<span style="color: #111111" class="badge border border-blue" >Private <i class="fas fa-check-circle"></i></span>';
+                return '<span style="color: #111111" class="badge border border-blue" >Private <i class="fas fa-check-circle"></i></span>';
+            })
+            ->editColumn('isActive', function ($query) {
+                if ($query->isActive === 1) {
+                    return '<span style="color: rgb(0,86,13)" class="badge border border-blue" >Active <i class="fas fa-check-circle"></i></span>';
+                } else {
+                    return '<span style="color: #9f3535" class="badge border border-blue" >Delete <i class="fas fa-check-circle"></i></span>';
                 }
             })
-            ->addColumn('action', 'popup._action-menu')
-            ->rawColumns(['buttonActionValue', 'image', 'action','buttonImage', 'popupType'])
-            ->setTotalRecords($totalRecords)
-            ->skipPaging();
+            ->filter(function ($instance) use ($type) {
+                if (!empty($type)) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($type) {
+                        return (bool)$type;
+                    });
+                }
+            })
+            ->addColumn('action', 'popup-private._action-menu')
+            ->rawColumns(['iconUrl','iconButtonUrl', 'action' ,'isActive','type', 'popupType']);
     }
 
     public function query()
     {
-        $data = [];
-        $service_public = new NewsEventService();
         $service_private = new PopupPrivateService();
-        $this->perPage = $this->length ?? 10;
-        if (!isset($this->currentPage) || $this->start == 0) {
-            $this->currentPage = 1;
-        }
-        if ($this->start != 0) {
-            $this->currentPage = ($this->start / $this->perPage) + 1;
-        };
-        //$this->start == 0 ? $this->currentPage = 1 : $this->currentPage =  ($this->start / $this->perPage) + 1;
-        $orderColumn = $this->order[0]['column'];
-        $this->orderBy = $this->columns[$orderColumn]['data'];
-        $this->orderDirection = $this->order[0]['dir'];
-        $this->templateType = $this->templateType ?? '';
-
-        $popup_public = $service_public->getListTemplatePopup($this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
-        $data[] = get_data_api($popup_public);
-
-        return collect($data) ?? $data = [];
+        $popup_private = $service_private->get();
+        return collect(get_data_api($popup_private)) ?? $data = [];
 
     }
 
@@ -96,7 +78,7 @@ class PopUpPrivateDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('popup_manage_table')
+            ->setTableId('popup_private_table')
             ->columns($this->getColumns())
             ->responsive()
             ->orderBy(8)
@@ -109,79 +91,9 @@ class PopUpPrivateDataTable extends DataTable
                 'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-9"B><"col-md-1 float-left mt-2 "l><"col-md-1 mt-2"f>>irtp',
                 'buttons' => [
                     [
-                        'extend'=> 'collection',
                         'text' =>'<i class="fa fa-plus"></i> Thêm mới pop-up',
-                        'autoClose'=> true,
-                        'buttons'=> [
-                            [
-                                'text'      =>'Pop-up Public',
-                                'action'    => 'function ( e, dt, node, config ) {}',
-                                'attr'      =>  [
-                                    'id'=>'push_popup_public'
-                                ]
-                            ],
-                            [
-                                'text' => 'Pop-up Private',
-                                'action'=> 'function ( e, dt, node, config ) {}',
-                                'attr'      =>  [
-                                    'id'    => 'push_popup_private'
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        'extend'=> 'collection',
-                        'text' =>'<i class="fa fa-filter"></i> Lọc hiển thị template',
-                        'autoClose'=> true,
-                        'buttons'=> [
-                            [
-                                'text'      =>'Center box có button',
-                                'action'    => 'function ( e, dt, node, config ) {
-                                    dt.on("preXhr.dt", function(e, settings, data){
-                                        data.templateType = "popup_custom_image_transparent";
-                                    });
-                                    dt.ajax.reload();
-                                }',
-                                'attr'      =>  [
-                                    'id'=>'popup_custom_image_transparent'
-                                ]
-                            ],
-                            [
-                                'text' => 'Center box không có button',
-                                'action'    => 'function ( e, dt, node, config ) {
-                                    dt.on("preXhr.dt", function(e, settings, data){
-                                        data.templateType = "popup_image_transparent";
-                                    });
-                                    dt.ajax.reload();
-                                }',
-                                'attr'      =>  [
-                                    'id'    => 'popup_image_transparent'
-                                ]
-                            ],
-                            [
-                                'text' => 'Full screen có button',
-                                'action'    => 'function ( e, dt, node, config ) {
-                                    dt.on("preXhr.dt", function(e, settings, data){
-                                        data.templateType = "popup_full_screen";
-                                    });
-                                    dt.ajax.reload();
-                                }',
-                                'attr'      =>  [
-                                    'id'    => 'popup_full_screen'
-                                ]
-                            ],
-                            [
-                                'text' => 'Full screen không có button',
-                                'action'    => 'function ( e, dt, node, config ) {
-                                    dt.on("preXhr.dt", function(e, settings, data){
-                                        data.templateType = "popup_image_full_screen";
-                                    });
-                                    dt.ajax.reload();
-                                }',
-                                'attr'      =>  [
-                                    'id'    => 'popup_image_full_screen'
-                                ]
-                            ]
+                        'attr'      =>  [
+                            'id'=>'push_popup_public'
                         ]
                     ],
                     'copyHtml5',
@@ -206,18 +118,14 @@ class PopUpPrivateDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::make('DT_RowIndex')
-                ->title('STT')
-                ->width(10)
-                ->sortable(false),
+            Column::make('id')->title('ID'),
             Column::make('titleVi')->title('Tiêu đề'),
-            Column::make('image')->title('Hình ảnh')->sortable(false),
-            Column::make('buttonActionValue')->title('Nơi điều hướng'),
-            Column::make('templateType')->title('Loại template'),
-
-            Column::make('viewCount')->title('Số lượt view'),
-            Column::make('createdBy')->title('Người tạo'),
-
+            Column::make('iconUrl')->title('Hình ảnh')->sortable(false),
+            Column::make('actionType')->title('Nơi điều hướng'),
+            Column::make('type')->title('Loại template'),
+            Column::make('iconButtonUrl')->title('Ảnh button'),
+            Column::make('popupGroupId')->title('Nhóm PopUp'),
+            Column::make('isActive')->title('Trạng thái'),
             Column::computed('popupType')
                 ->searching(false)
                 ->width(100)
@@ -239,6 +147,6 @@ class PopUpPrivateDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Popup_' . date('YmdHis');
+        return 'Popup_private_' . date('YmdHis');
     }
 }

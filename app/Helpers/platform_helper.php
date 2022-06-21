@@ -29,6 +29,14 @@ if (!function_exists('get_data_api')) {
         }
     }
 }
+
+if (!function_exists('check_status_code_api')) {
+    function check_status_code_api( $response ) {
+        if (isset($response->statusCode) && $response->statusCode == 0) {
+            return $response;
+        }
+    }
+}
 if (!function_exists('write_log_file')) {
     function write_log_file($filename = 'error', $message = NULL, $level = 'error')
     {

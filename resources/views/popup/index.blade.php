@@ -9,11 +9,6 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Popup</h1>
-{{--                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)--}}
-{{--                            <a href="{{ route('popupmanage.create') }}" class="btn btn-primary btn-sm">--}}
-{{--                                <i class="fas fa-plus"></i> Thêm Mới--}}
-{{--                            </a>--}}
-{{--                        @endif--}}
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -104,7 +99,7 @@
                                                onchange="handleUploadImagePopup(this,event)"/>
                                         <img id="buttonImage_popup"
                                              src=""
-                                             alt="your image" class="img-thumbnail img_viewable"
+                                             alt="Hình ảnh" class="img-thumbnail img_viewable"
                                              style="max-width: 150px;padding:10px;margin-top:10px"/>
                                         <span class="warning-alert" id="path_2_required_alert" hidden>This field is
                                                 required!</span>
@@ -122,7 +117,6 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-
                             <button type="submit" class="btn btn-info" id="submit_data" disabled >Lưu</button>
                         </div>
                     </form>

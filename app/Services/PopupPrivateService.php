@@ -79,6 +79,15 @@ class PopupPrivateService
         return sendRequest($url, $param, $this->token);
     }
 
+    public function getById(array $params)
+    {
+        $url = $this->baseUrl . $this->listMethod['GET_BY_ID'];
+        $param = [
+            'id' => $params['0']
+        ];
+        return sendRequest($url, $param, $this->token);
+    }
+
     public function delete(array $params)
     {
         $url = $this->baseUrl . $this->listMethod['DELETE'];
