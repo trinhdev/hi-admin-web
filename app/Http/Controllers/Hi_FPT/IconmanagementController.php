@@ -193,7 +193,7 @@ class IconmanagementController extends MY_Controller
         if(auth()->user()->can('icon-approve-data-permission')) {
             $this->iconManagement->saveByApprovedRole($approved->id);
             $this->addToLog(request());
-            echo json_encode(['result' => 1, 'message' => 'Đã lưu thành công.', 'url' => route('iconmanagement.index')]);
+            echo json_encode(['result' => 1, 'message' => 'Đã xóa thành công.', 'url' => route('iconmanagement.index')]);
         }
         else {
             // Send email thong bao

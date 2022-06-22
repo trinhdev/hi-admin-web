@@ -150,7 +150,7 @@ class IconapprovedController extends MY_Controller
     }
 
     public function destroy(Request $request) {
-        // dd($request->all());
+        dd($request->all());
         $user = Auth::user();
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
