@@ -78,7 +78,6 @@ class PopUpDataTable extends DataTable
         $this->orderDirection = $this->order[0]['dir'];
         $this->templateType = $this->templateType ?? '';
         $model = $service->getListTemplatePopup($this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
-        dd($model);
         return collect(get_data_api($model)) ?? [];
     }
 

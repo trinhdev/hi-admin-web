@@ -168,7 +168,7 @@ class FtelPhoneController extends MY_Controller
                 }
             ]
         ];
-        $excel = Excel::toArray(new FtelPhoneImport, $request->file('excel')->getRealPath());
+        $excel = Excel::toArray(new FtelPhoneImport, $request->file('excel'));
         $change_to_data_validate = collect($excel)->flatten()->toArray();
         Validator::make(array('phone' => $change_to_data_validate), $rules_phone)->validate();
 
