@@ -9,6 +9,7 @@ use App\Services\HrService;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use App\Imports\FtelPhoneImport;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\FtelPhoneRequest;
@@ -72,7 +73,7 @@ class FtelPhoneController extends MY_Controller
                         }
                     }
                 }
-                return redirect()->back()->with( ['data' => json_decode(json_encode($data), true)] );
+                return redirect()->back()->with( ['data' => $data] );
                 break;
             case 'data':
                 $dataUpdateDB = [];
@@ -150,7 +151,28 @@ class FtelPhoneController extends MY_Controller
     public function import(Request $request)
     {
         $request->validate(['excel' => 'mimes:xlsx'],['excel.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx']);
-        Excel::import(new FtelPhoneImport, $request->file('excel'));
-        return redirect()->back();
+        $rules_phone = [
+            'phone.*' => [
+                function ($attribute,$value, $fail){
+                    $pattern = '/^(03|05|07|08|09)[0-9, ]*$/';
+                    if($value == null) {
+                        return $fail("Số có giá trị trống, thử xóa hết form và nhập lại đúng định dạng");
+                    }
+                    if ((strlen($value)!==10)) {
+                        return $fail("Số $value phải đúng 10 kí tự");
+                    }
+                    if(!preg_match($pattern, $value)) {
+                        return $fail("Số $value sai định dạng số điện thoại Việt Nam");
+                    }
+
+                }
+            ]
+        ];
+        $excel = Excel::toArray(new FtelPhoneImport, $request->file('excel')->getRealPath());
+        $change_to_data_validate = collect($excel)->flatten()->toArray();
+        Validator::make(array('phone' => $change_to_data_validate), $rules_phone)->validate();
+
+        $data = implode(',', $change_to_data_validate);
+        return response()->json(['data'=>$data, 'message'=>'Import thành công'], 200);
     }
 }

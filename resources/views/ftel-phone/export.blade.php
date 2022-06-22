@@ -55,7 +55,15 @@
                         <td>{{ $value['created_at'] ?? null }}</td>
                         <td>{{ $value['updated_at'] ?? null }}</td>
                         <td>{{ $value['updated_from'] ?? null }}</td>
-                        <td>{{ $value['check'] ?? $value['check'] = null }}</td>
+                        <td>
+                            @if($value['check']==='TRUE')
+                                <div class="text-success text-bold">TRUE</div>
+                            @elseif($value['check']==='FALSE')
+                                <div class="text-danger text-bold">FALSE</div>
+                            @else
+                                <i>null</i>
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                     @endif
