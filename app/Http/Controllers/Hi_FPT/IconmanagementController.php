@@ -152,7 +152,7 @@ class IconmanagementController extends MY_Controller
                 'Recipients'            => implode(',', $to),
                 'CarbonCopys'           => '',
                 'BlindCarbonCopys'      => '',
-                'Subject'               => '[ Hi FPT ] Hệ thống CMS vừa có 1 cập nhật mới',
+                'Subject'               => '[ Hi FPT ] Hệ thống CMS vừa có 1 cập nhật mới (save)',
                 'Body'                  => $mailContent
             ];
             
@@ -229,7 +229,7 @@ class IconmanagementController extends MY_Controller
                     'Recipients'            => implode(',', $to),
                     'CarbonCopys'           => '',
                     'BlindCarbonCopys'      => '',
-                    'Subject'               => '[ Hi FPT ] Hệ thống CMS vừa có 1 cập nhật mới',
+                    'Subject'               => '[ Hi FPT ] Hệ thống CMS vừa có 1 cập nhật mới (destroy)',
                     'Body'                  => $mailContent
                 ];
                 
