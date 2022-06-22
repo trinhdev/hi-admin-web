@@ -56,12 +56,15 @@
                         <td>{{ $value['updated_at'] ?? null }}</td>
                         <td>{{ $value['updated_from'] ?? null }}</td>
                         <td>
-                            @if($value['check']==='TRUE')
-                                <div class="text-success text-bold">TRUE</div>
-                            @elseif($value['check']==='FALSE')
-                                <div class="text-danger text-bold">FALSE</div>
-                            @else
-                                <i>null</i>
+                            @if(!empty($value['check']))
+                                @if($value['check']==='TRUE')
+                                    <div class="text-success text-bold">TRUE</div>
+                                @elseif($value['check']==='FALSE')
+                                    <div class="text-danger text-bold">FALSE</div>
+                                @else
+                                    <i>null</i>
+                                @endif
+                            @else null
                             @endif
                         </td>
                     </tr>

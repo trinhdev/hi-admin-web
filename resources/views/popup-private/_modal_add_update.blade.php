@@ -140,20 +140,7 @@ END ADD FIELD
                         </div>
                         <div class="form-group">
                             <label for="number_phone">Danh sách số điện thoại cần hiển thị</label>
-                            @if(!empty($dataExcel))
-                                <input
-                                    value="{{ str_replace(['[', ']', '"'], '', json_encode($dataExcel,TRUE)) }}"
-                                    type="text" id="number_phone" name="number_phone"
-                                    class="form-control @error('number_phone') is-invalid @enderror"
-                                    placeholder="Có thể thêm nhiều số điện thoại cách nhau bằng dấu phẩy ','">
-                            @else
-                                <input type="text" id="number_phone" name="number_phone"
-                                       class="form-control @error('number_phone') is-invalid @enderror"
-                                       placeholder="Có thể thêm nhiều số điện thoại cách nhau bằng dấu phẩy tại đây">
-                            @endif
-                            @error('number_phone')
-                            <span class="error invalid-feedback">{{ $message }}</span>
-                            @enderror
+                            <textarea type="text" id="number_phone" name="number_phone" class="form-control" placeholder="Có thể thêm nhiều số điện thoại cách nhau bằng dấu phẩy ','" ></textarea>
                         </div>
                     </div>
                 </form>
