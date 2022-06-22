@@ -345,4 +345,6 @@ class IconapprovedController extends MY_Controller
         $result = $this->iconManagement->$function_name($params);
         return $result;
     }
+
+    
 }

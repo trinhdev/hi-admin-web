@@ -96,18 +96,18 @@
                                 <div class="row">
                                     <div class="col-sm-2 offset-sm-1">
                                         <div class="icheck-sunflower">
-                                            <input type="radio" id="status-show" name="status" value="hide" checked />
+                                            <input type="radio" id="status-show" name="isDeleted" value="hide" checked />
                                             <label for="status-show">Bật</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="icheck-sunflower">
-                                            <input type="radio" id="status-hide" name="status" value="show" />
+                                            <input type="radio" id="status-hide" name="isDeleted" value="show" />
                                             <label for="status-hide">Tắt</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-sm-11 offset-sm-1">
                                         <div class="form-group">
                                             <div class="icheck-sunflower">
@@ -138,7 +138,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="form-group">
                                 <label>Danh sách sản phẩm</label> <span class="required">*</span>
@@ -240,9 +240,10 @@
                             @endif
                         </div>
                         <div class="card-footer">
-                            @if(auth()->user()->cannot('icon-check-data-permission') && auth()->user()->cannot('icon-approve-data-permission'))
+                            {{-- @if(auth()->user()->cannot('icon-check-data-permission') && auth()->user()->cannot('icon-approve-data-permission'))
                                 <button id="submit-button" type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
-                            @endif
+                            @endif --}}
+                            <button id="submit-button" type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
                                 @if(auth()->user()->can('icon-approve-data-permission'))

@@ -270,9 +270,10 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            @if(auth()->user()->cannot('icon-check-data-permission') && auth()->user()->cannot('icon-approve-data-permission'))
+                            {{-- @if(auth()->user()->cannot('icon-check-data-permission') && auth()->user()->cannot('icon-approve-data-permission'))
                                 <button id="submit-button" type="submit" class="btn btn-info float-right" style="margin-left: 5px" disabled>Lưu</button>
-                            @endif
+                            @endif --}}
+                            <button id="submit-button" type="submit" class="btn btn-info float-right" style="margin-left: 5px" disabled>Lưu</button>
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconmanagement.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (isset($data['productId']))
                                 @if(auth()->user()->can('icon-approve-data-permission'))

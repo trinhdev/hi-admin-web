@@ -123,6 +123,14 @@ class IconconfigController extends MY_Controller
             'approved_at'           => null,
         ]);
 
+        if(auth()->user()->can('icon-approve-data-permission')) {
+            $this->iconManagement->saveByApprovedRole($approved->id);
+            $this->addToLog(request());
+            $request->session()->flash('success', 'success');
+            $request->session()->flash('html', 'Đã lưu thành công. .');
+            return redirect()->route('iconconfig.index');
+        }
+
         // Send email thong bao
         $sendMailData = [
             'email'                 => Auth::user()->email,
@@ -219,48 +227,57 @@ class IconconfigController extends MY_Controller
             'approved_at'           => null,
         ]);
 
-        // Send email thong bao
-        $sendMailData = [
-            'email'                 => Auth::user()->email,
-            'name'                  => (!empty(Auth::user()->name)) ? Auth::user()->name : 'N/A',
-            'role'                  => Auth::user()->role->role_name,
-            'date'                  => date('Y-m-d', strtotime('now')),
-            'time'                  => date('H:i:s', strtotime('now')),
-            'approved_status'       => 'Xoá',
-            'product_type'          => 'cấu hình',
-            'url'                   => route('iconapproved.edit') . '/' . $approved->id
-        ];
-
-        $mailContent = view('icon_approved_email.request_check_email')->with('data', $sendMailData)->render();
-
-        $approvedRoleIDRaw = Settings::where('name', 'icon_approved_role_id')->get();
-        $approvedRoleID = (!empty($approvedRoleIDRaw[0]['value'])) ? json_decode($approvedRoleIDRaw[0]['value']) : [];
-        $roles = Roles::whereIn('id', $approvedRoleID)->with(['users'])->get();
-
-        $to = [];
-        foreach($roles->toArray() as $role) {
-            if(!empty($role['users'])) {
-                $to = array_merge($to, array_column($role['users'], 'email'));
-            }
+        if(auth()->user()->can('icon-approve-data-permission')) {
+            $this->iconManagement->saveByApprovedRole($approved->id);
+            $this->addToLog(request());
+            echo json_encode(['result' => 1, 'message' => 'Đã lưu thành công.', 'url' => route('iconconfig.index')]);
         }
-
-        $to = ['oanhltn3@fpt.com.vn'];
-
-        if(!empty($to)) {
-            $mailInfo = [
-                'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
-                'Recipients'            => implode(',', $to),
-                'CarbonCopys'           => '',
-                'BlindCarbonCopys'      => '',
-                'Subject'               => '[ Hi FPT ] Hệ thống CMS vừa có 1 cập nhật mới',
-                'Body'                  => $mailContent
+        else {
+            // Send email thong bao
+            $sendMailData = [
+                'email'                 => Auth::user()->email,
+                'name'                  => (!empty(Auth::user()->name)) ? Auth::user()->name : 'N/A',
+                'role'                  => Auth::user()->role->role_name,
+                'date'                  => date('Y-m-d', strtotime('now')),
+                'time'                  => date('H:i:s', strtotime('now')),
+                'approved_status'       => 'Xoá',
+                'product_type'          => 'cấu hình',
+                'url'                   => route('iconapproved.edit') . '/' . $approved->id
             ];
-            
-            $mailResult = $this->mailService->sendMail($mailInfo);
+
+            $mailContent = view('icon_approved_email.request_check_email')->with('data', $sendMailData)->render();
+
+            $approvedRoleIDRaw = Settings::where('name', 'icon_approved_role_id')->get();
+            $approvedRoleID = (!empty($approvedRoleIDRaw[0]['value'])) ? json_decode($approvedRoleIDRaw[0]['value']) : [];
+            $roles = Roles::whereIn('id', $approvedRoleID)->with(['users'])->get();
+
+            $to = [];
+            foreach($roles->toArray() as $role) {
+                if(!empty($role['users'])) {
+                    $to = array_merge($to, array_column($role['users'], 'email'));
+                }
+            }
+
+            $to = ['oanhltn3@fpt.com.vn'];
+
+            if(!empty($to)) {
+                $mailInfo = [
+                    'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
+                    'Recipients'            => implode(',', $to),
+                    'CarbonCopys'           => '',
+                    'BlindCarbonCopys'      => '',
+                    'Subject'               => '[ Hi FPT ] Hệ thống CMS vừa có 1 cập nhật mới',
+                    'Body'                  => $mailContent
+                ];
+                
+                $mailResult = $this->mailService->sendMail($mailInfo);
+            }
+
+            $this->addToLog(request());
+            echo json_encode(['result' => 1, 'message' => 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.', 'url' => route('iconconfig.index')]);
         }
 
-        $this->addToLog(request());
-        echo json_encode(['result' => 1, 'message' => 'Đã gửi yêu cầu đến bộ phận kiểm duyệt. Vui lòng chờ kiểm tra và phê duyệt trước khi hoàn tất yêu cầu.', 'url' => route('iconcategory.index')]);
+        
     }
 
     public function upload(Request $request) {
