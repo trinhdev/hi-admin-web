@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Popup</h1>
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Popup Công Khai</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -77,7 +77,7 @@
                                         <label>Điều hướng</label>
                                         <select class="form-control select2" name="directionId" id="directionId_popup"
                                                 style="width: 100%;">
-                                                <option value="" selected>-- Chọn nơi điều hướng --</option>
+                                                <option value="">-- Chọn nơi điều hướng --</option>
                                             @if($list_route)
                                                 @foreach($list_route as $key => $value)
                                                     <option value="{{$value->id}}">{{$value->name}}</option>

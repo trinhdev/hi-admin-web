@@ -19,10 +19,7 @@ class PopUpPrivateDataTable extends DataTable
 
     public function dataTable($query)
     {
-        $NewsEventService = new NewsEventService();
-        $listRoute = collect($NewsEventService->getListTargetRoute()->data);
         $list_template_popup = config('platform_config.type_popup_service');
-        $type = $this->type;
         return datatables()
             ->collection($query)
             ->editColumn('type', function ($query) use ($list_template_popup) {
@@ -33,37 +30,42 @@ class PopUpPrivateDataTable extends DataTable
             })
             ->editColumn('iconUrl', function ($query) {
                 return '
-                        <img src="' .$query->iconUrl. '" alt="" onclick ="window.open("' . $query->iconUrl . '").focus()" width="100" height="100"/>
+                        <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->iconUrl . '" alt="" onclick ="window.open("' . $query->iconUrl . '").focus()" width="100" height="100"/>
                 ';
             })
             ->editColumn('iconButtonUrl', function ($query) {
                 return '
-                        <img src="' .$query->iconButtonUrl. '" alt="" onclick ="window.open("' . $query->iconButtonUrl . '").focus()" width="100" height="100"/>
+                        <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->iconButtonUrl . '" alt="" onclick ="window.open("' . $query->iconButtonUrl . '").focus()" width="100" height="100"/>
                 ';
-            })
-            ->editColumn('popupType', function () {
-                return '<span style="color: #111111" class="badge border border-blue" >Private <i class="fas fa-check-circle"></i></span>';
             })
             ->editColumn('isActive', function ($query) {
                 if ($query->isActive === 1) {
-                    return '<span style="color: rgb(0,86,13)" class="badge border border-blue" >Active <i class="fas fa-check-circle"></i></span>';
+                    return '<span style="color: rgb(0,86,13)" class="badge border border-blue" >Running <i class="fas fa-check-circle"></i></span>';
                 } else {
-                    return '<span style="color: #9f3535" class="badge border border-blue" >Delete <i class="fas fa-check-circle"></i></span>';
-                }
-            })
-            ->filter(function ($instance) use ($type) {
-                if (!empty($type)) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($type) {
-                        return (bool)$type;
-                    });
+                    return '<span style="color: #9f3535" class="badge border border-blue" >Stop <i class="fas fa-circle"></i></span>';
                 }
             })
             ->addColumn('action', 'popup-private._action-menu')
-            ->rawColumns(['iconUrl','iconButtonUrl', 'action' ,'isActive','type', 'popupType']);
+            ->rawColumns(['iconUrl', 'iconButtonUrl', 'action', 'isActive', 'type', 'popupType']);
     }
 
     public function query()
     {
+//        $this->perPage = $this->length ?? 10;
+//        if (!isset($this->currentPage) || $this->start == 0) {
+//            $this->currentPage = 1;
+//        }
+//        if ($this->start != 0) {
+//            $this->currentPage = ($this->start / $this->perPage) + 1;
+//        };
+//
+//
+//        $param = [
+//            $this->perPage,
+//            $this->currentPage
+//        ];
+//
+//        $popup_private = $service_private->getPaginate($param);
         $service_private = new PopupPrivateService();
         $popup_private = $service_private->get();
         return collect(get_data_api($popup_private)) ?? $data = [];
@@ -81,7 +83,6 @@ class PopUpPrivateDataTable extends DataTable
             ->setTableId('popup_private_table')
             ->columns($this->getColumns())
             ->responsive()
-            ->orderBy(8)
             ->autoWidth(true)
             ->parameters([
                 'scroll' => false,
@@ -91,13 +92,26 @@ class PopUpPrivateDataTable extends DataTable
                 'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-9"B><"col-md-1 float-left mt-2 "l><"col-md-1 mt-2"f>>irtp',
                 'buttons' => [
                     [
-                        'text' =>'<i class="fa fa-plus"></i> Thêm mới pop-up',
-                        'attr'      =>  [
-                            'id'=>'push_popup_public'
+                        'text' => 'Add pop-up',
+                        'attr' => [
+                            'id' => 'push_popup_private_form',
+                            'class' =>'btn btn-sm btn-primary'
                         ]
                     ],
-                    'copyHtml5',
-                    'excel'
+                    [
+                        'text' => 'Copy',
+                        'extend' => 'copyHtml5',
+                        'attr' => [
+                            'class' =>'btn btn-sm btn-primary px-4'
+                        ]
+                    ],
+                    [
+                        'text' => 'Excel',
+                        'extend' => 'excel',
+                        'attr' => [
+                            'class' =>'btn btn-sm btn-primary px-4'
+                        ]
+                    ]
                 ]
             ])
             ->addTableClass('table table-hover text-center w-100')
@@ -119,19 +133,14 @@ class PopUpPrivateDataTable extends DataTable
     {
         return [
             Column::make('id')->title('ID'),
-            Column::make('titleVi')->title('Tiêu đề'),
             Column::make('iconUrl')->title('Hình ảnh')->sortable(false),
-            Column::make('actionType')->title('Nơi điều hướng'),
+            Column::make('dataAction')->title('Nơi điều hướng'),
             Column::make('type')->title('Loại template'),
             Column::make('iconButtonUrl')->title('Ảnh button'),
-            Column::make('popupGroupId')->title('Nhóm PopUp'),
-            Column::make('isActive')->title('Trạng thái'),
-            Column::computed('popupType')
-                ->searching(false)
-                ->width(100)
-                ->addClass('text-center')
-                ->title('Loại popup'),
+            Column::make('dateBegin')->title('Ngày bắt đầu'),
+            Column::make('dateEnd')->title('Ngày kết thúc'),
             Column::make('dateCreated')->title('Ngày tạo'),
+            Column::make('isActive')->title('Trạng thái'),
             Column::computed('action')
                 ->searching(false)
                 ->width(80)

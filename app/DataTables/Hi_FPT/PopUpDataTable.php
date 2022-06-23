@@ -103,17 +103,21 @@ class PopUpDataTable extends DataTable
                 'buttons' => [
                     [
                         'extend'=> 'collection',
-                        'text' =>'<i class="fa fa-plus"></i> Thêm mới pop-up',
+                        'text' =>'Add pop-up',
                         'autoClose'=> true,
                         'action'    => 'function ( e, dt, node, config ) {}',
                         'attr'      =>  [
-                            'id'=>'push_popup_public'
+                            'id'=>'push_popup_public',
+                            'class' =>'btn btn-sm btn-primary'
                         ]
                     ],
                     [
                         'extend'=> 'collection',
-                        'text' =>'<i class="fa fa-filter"></i> Lọc hiển thị template',
+                        'text' =>'Lọc hiển thị',
                         'autoClose'=> true,
+                        'attr' => [
+                            'class' =>'btn btn-sm btn-primary'
+                        ],
                         'buttons'=> [
                             [
                                 'text'      =>'Center box có button',
@@ -165,8 +169,20 @@ class PopUpDataTable extends DataTable
                             ]
                         ]
                     ],
-                    'copyHtml5',
-                    'excel'
+                    [
+                        'text' => 'Copy',
+                        'extend' => 'copyHtml5',
+                        'attr' => [
+                            'class' =>'btn btn-sm btn-primary px-4'
+                        ]
+                    ],
+                    [
+                        'text' => 'Excel',
+                        'extend' => 'excel',
+                        'attr' => [
+                            'class' =>'btn btn-sm btn-primary px-4'
+                        ]
+                    ]
                 ]
             ])
             ->addTableClass('table table-hover text-center w-100')
@@ -195,10 +211,8 @@ class PopUpDataTable extends DataTable
             Column::make('image')->title('Hình ảnh')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template'),
-
             Column::make('viewCount')->title('Số lượt view'),
             Column::make('createdBy')->title('Người tạo'),
-
             Column::computed('popupType')
                 ->searching(false)
                 ->width(100)

@@ -156,9 +156,7 @@ class PopupManageController extends MY_Controller
         return $dataTablePrivate->with([
             'type' => $request->type,
             'start' => $request->start,
-            'length' => $request->length,
-            'order' => $request->order,
-            'columns' => $request->columns
+            'length' => $request->length
         ])->render('popup-private.index', compact('list_type_popup', 'list_route'));
     }
 
@@ -178,14 +176,13 @@ class PopupManageController extends MY_Controller
     public function addPrivate(Request $request)
     {
         $rules = [
-            'type' => 'required',
-            'actionType' => 'required',
-            'dataAction' => 'required',
-            'iconButtonUrl' => 'required',
+            'type'      => 'required',
             'iconUrl' => 'required',
-            'dateBegin' => 'required',
-            'dateEnd' => 'required',
-            'phoneList' => 'required'
+            'timeline' => 'required',
+            'number_phone' => 'required',
+            'dataAction' => 'required',
+            'actionType' => 'required',
+            'iconButtonUrl' => 'required_if:type,popup_custom_image_transparent,popup_full_screen',
         ];
         $request->validate($rules);
         $this->addToLog($request);
@@ -194,25 +191,24 @@ class PopupManageController extends MY_Controller
             $request->type,
             $request->actionType,
             $request->dataAction,
-            $request->iconButtonUrl,
+            $request->iconButtonUrl ?? '',
             $request->iconUrl,
-            $request->$timeline_array[0],
-            $request->$timeline_array[1],
-            $request->phoneList,
-            $request->titleVi,
-            $request->titleEn,
-            $request->desVi,
-            $request->desEn,
-            $request->popupGroupId
+            $timeline_array[0],
+            $timeline_array[1],
+            $request->number_phone,
+            $request->titleVi ?? '',
+            $request->titleEn ?? '',
+            $request->desVi ?? '',
+            $request->desEn ?? ''
         ];
 
         $popup_private = new PopupPrivateService();
         try {
-            $popup_private->add($paramsStatic);
+            $response = $popup_private->add($paramsStatic);
         } catch (Exception $e) {
             return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
         }
-        return response()->json(['status_code' => '0', 'message' => 'Add Success']);
+        return response()->json(['status_code' => '0', 'data' => $response]);
 
     }
 
@@ -224,9 +220,7 @@ class PopupManageController extends MY_Controller
             'dataAction' => 'required',
             'iconButtonUrl' => 'required',
             'iconUrl' => 'required',
-            'dateBegin' => 'required',
-            'dateEnd' => 'required',
-            'phoneList' => 'required',
+            'timeline' => 'required',
             'id' => 'required',
             'popupGroupId' => 'required',
             'temPerId' => 'required',
@@ -239,65 +233,58 @@ class PopupManageController extends MY_Controller
             $request->type,
             $request->actionType,
             $request->dataAction,
-            $request->iconButtonUrl,
+            $request->iconButtonUrl ?? '',
             $request->iconUrl,
-            $request->$timeline_array[0],
-            $request->$timeline_array[1],
-            $request->phoneList,
-            $request->titleVi,
-            $request->titleEn,
-            $request->desVi,
-            $request->desEn,
+            $timeline_array[0],
+            $timeline_array[1],
+            $request->titleVi ?? '',
+            $request->titleEn ?? '',
+            $request->desVi ?? '',
+            $request->desEn ?? '',
             $request->popupGroupId,
             $request->temPerId
         ];
 
         $popup_private = new PopupPrivateService();
         try {
-            $popup_private->update($paramsStatic);
+            $response = $popup_private->update($paramsStatic);
+            if($request->has('number_phone')) {
+                $popup_private->import([$request->id, $request->number_phone]);
+            }
         } catch (Exception $e) {
             return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
         }
-        return response()->json(['status_code' => '0', 'message' => 'Update Success']);
+        return response()->json(['status_code' => '0', 'data' => $response]);
     }
 
     public function deletePrivate(Request $request)
     {
-        $request->validate(['id' => 'required']);
-        $this->addToLog($request);
-        $popup_private = new PopupPrivateService();
-        $response = $popup_private->delete([$request->id]);
-        $res = check_status_code_api($response);
-        if(empty($res)) {
-            return response()->json(['message' => 'Lỗi! Liên hệ trinhhdp@fpt.com.vn'], 500);
+        if(request()->ajax()) {
+            $request->validate(['id' => 'required']);
+            $this->addToLog($request);
+            $popup_private = new PopupPrivateService();
+            $response = $popup_private->delete([$request->id]);
+            $res = check_status_code_api($response);
+            if(empty($res)) {
+                return response()->json($res, 500);
+            }
+            return response()->json(['data' => $res], 200);
         }
-        return response()->json(['data' => $res]);
     }
 
     public function getByIdPrivate(Request $request)
     {
-        $request->validate(['id' => 'required']);
-        $this->addToLog($request);
-        $popup_private = new PopupPrivateService();
-        $response = $popup_private->getById([$request->id]);
-        $res = check_status_code_api($response);
-        if(empty($res)) {
-            return response()->json(['message' => 'Lỗi! Liên hệ trinhhdp@fpt.com.vn'], 500);
+        if(request()->ajax()) {
+            $request->validate(['id' => 'required']);
+            $this->addToLog($request);
+            $popup_private = new PopupPrivateService();
+            $data = $popup_private->getById([$request->id]);
+            $response = check_status_code_api($data);
+            if(empty($response)) {
+                return redirect()->back()->withErrors('Error! System maintain!');
+            }
+            return response()->json(get_data_api($response), Response::HTTP_OK);
         }
-        return response()->json(['data' => $res]);
-    }
 
-    public function importPrivate(Request $request)
-    {
-        $request->validate(['id' => 'required', 'phoneList' => 'required|array']);
-        $this->addToLog($request);
-
-        $popup_private = new PopupPrivateService();
-        try {
-            $popup_private->import([$request->id, $request->phoneList]);
-        } catch (Exception $e) {
-            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
-        }
-        return response()->json(['status_code' => '0', 'message' => 'Delete Success']);
     }
 }

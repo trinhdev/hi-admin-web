@@ -51,8 +51,8 @@ class PopupPrivateService
             'titleEn'       =>$params['9'] ?? '',
             'desVi'         =>$params['10'] ?? '',
             'desEn'         =>$params['11'] ?? '',
-            'popupGroupId'  =>$params['12'] ?? '',
-            'temPerId'      =>$params['13'] ?? ''
+//            'popupGroupId'  =>$params['12'] ?? '',
+//            'temPerId'      =>$params['13'] ?? ''
         ];
         return sendRequest($url, $param, $this->token);
     }

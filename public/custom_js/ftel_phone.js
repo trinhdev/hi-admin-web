@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function changeFileFtelPhone() {
     $('#number_phone_import').change(function(e) {

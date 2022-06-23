@@ -11,6 +11,16 @@ END ACTION PAGE
 --}}
 
 <div class="d-flex justify-content-center">
-    <a id="detailPopup" data-id="{{ $model->id }}" style="float: left; margin-right: 5px" type="button" href="#" class="btn btn-sm fa fa-eye btn-icon bg-dark"></a>
-    <a id="deletePopup"  data-id="{{ $model->id }}"  data-check-delete="{{ $model->isActive }}" type="button" href="#" class="btn btn-sm fas fa-trash-alt btn-icon bg-dark"></a>
+    @if($model->isActive == 1)
+        <a id="deletePopup" data-check-delete="{{ $model->isActive }}" data-id="{{ $model->id }}"
+           style="float: left; margin-right: 5px;"
+           type="button" href="#" class="btn btn-sm bg-primary"><i class="fa fa-pause" aria-hidden="true"></i></a>
+    @else
+        <a id="deletePopup" data-check-delete="{{ $model->isActive }}" data-id="{{ $model->id }}"
+           style="float: left; margin-right: 5px;"
+           type="button" href="#" class="btn btn-sm bg-primary"><i class="fa fa-play" aria-hidden="true"></i></a>
+    @endif
+    <a id="detailPopup" data-id="{{ $model->id }}"
+       style="float: left; margin-right: 5px; background: #007bff" type="button" href="#"
+       class="btn btn-sm fas fa-edit btn-icon bg-primary"></a>
 </div>

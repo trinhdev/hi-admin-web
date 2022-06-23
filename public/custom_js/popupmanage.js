@@ -35,12 +35,31 @@ function showHide() {
         }
     });
 
+    $('#type_popup').on('change', function () {
+        if ($('#type_popup').val() === 'popup_image_transparent' || $('#type_popup').val() === 'popup_image_full_screen') {
+            $('#iconButtonUrl').attr('style', 'display: none !important');
+        } else {
+            $('#iconButtonUrl').attr('style', 'display: inline');
+        }
+    });
+
     $('#repeatTime').on('change', function () {
         let repeatTime = $('#repeatTime').val();
         if (repeatTime === 'other') {
             $('#other_min').show();
         } else {
             $('#other_min').hide();
+        }
+    });
+
+    $('#actionType_popup').on('change', function () {
+        let type_direction = $('#actionType_popup').val();
+        if (type_direction === 'url_open_out_app' || type_direction === 'url_open_in_app') {
+            $('#dataAction_popup').prop('disabled', false);
+            $('#dataAction_popup').val('https://example.com');
+        } else {
+            $('#dataAction_popup').prop('disabled', true);
+            $('#dataAction_popup').val($('#actionType_popup').find(':selected').text());
         }
     });
 
@@ -168,7 +187,6 @@ function successCallUploadImagePopup(response, passingdata) {
     if (response.statusCode === 0 && response.data !== null) {
         passingdata.img_tag.src = URL.createObjectURL(passingdata.file);
         document.getElementById(passingdata.img_tag.id + '_name').value = response.data.uploadedImageFileName;
-        checkEnableSavePopup(passingdata.input_tag.closest('form'));
     } else {
         resetData(passingdata.input_tag, passingdata.img_tag);
         document.getElementById(passingdata.img_tag.id + '_name').value = "";
@@ -186,11 +204,15 @@ function actionAjaxPopup() {
             data: {
                 id: id
             }, success: function (response){
+                console.table(response);
                 for (const [key, value] of Object.entries(response)) {
                     if(key==='image' || key==='buttonImage') {
                         $('#'+key+'_popup').attr("src",URL_STATIC + "/upload/images/event/" + value);
                         $('#'+key+'_popup_name').val(value);
-                    }else {
+                    }else if(key==='templateType' || key==='directionId') {
+                        $('#'+key+'_popup').val(value);
+                        $('#'+key+'_popup').trigger('change');
+                    } else {
                         $('#'+key+'_popup').val(value);
                     }
                 }
@@ -259,64 +281,93 @@ function pushTemplateAjaxPopup() {
     });
 }
 
-function methodAjaxPopupPrivate() {
-    $('body').on('click', '#push_popup_public', function (event) {
+function handlePushPopUpPrivate(url, type, form) {
+    $(form).on('click', '#submit', function (event){
         event.preventDefault();
-        var form = document.querySelector('#formAction');
-        document.getElementById('formAction').reset();
-        document.getElementById('image_popup').attributes[1].value = '';
-        document.getElementById('buttonImage_popup').attributes[1].value = '';
-        const data = Object.fromEntries(new FormData(form).entries());
-        $('#show_detail_popup').modal('toggle');
-        $(form).on('submit', function (e){
-            e.preventDefault();
-            $.ajax({
-                url: 'popupmanage/save',
-                type:'POST',
-                data: { data: data },
-                processData: false,
-                contentType: false,
-                success: function(data) {
-                    console.log(data);
+        let data = $(form).serialize();
+        $.ajax({
+            url: url,
+            type: type,
+            dataType: 'json',
+            data: data,
+            cache: false,
+            success: (data) => {
+                if(data.data.statusCode === 0){
+                    $('#push_popup_private').modal('toggle');
+                    showSuccess('Thành công');
+                }else{
+                    showError(data.data.message);
                 }
-            });
+            },
+            error: function (xhr) {
+                var errorString = '';
+                $.each(xhr.responseJSON.errors, function (key, value) {
+                    errorString = value;
+                    return false;
+                });
+                showError(errorString);
+                console.log(data);
+            }
         });
     });
+}
 
+function methodAjaxPopupPrivate() {
+    $('body').on('click', '#push_popup_private_form', function (e) {
+        e.preventDefault();
+        $('#push_popup_private').modal('toggle');
+        document.getElementById('formActionPrivate').reset();
+        document.getElementById('iconUrl_popup').attributes[1].value = '';
+        document.getElementById('iconButtonUrl_popup').attributes[1].value = '';
+        handlePushPopUpPrivate('/popup-private/addPrivate', 'POST', $('#formActionPrivate'));
 
-    $('body').on('click', '#import_phone_popup', function (event) {
+    });
+
+    $('body').on('click', '#detailPopup', function (event) {
         event.preventDefault();
         var id = $(this).data('id');
         $.ajax({
-            url: 'popupmanage/importPrivate',
-            type:'POST',
+            url: '/popup-private/getByIdPrivate/',
+            type:'GET',
             data: {
                 id: id
             }, success: function (response){
-                for (const [key, value] of Object.entries(response)) {
-                    if(key==='image' || key==='buttonImage') {
-                        $('#'+key+'_popup').attr("src",URL_STATIC + "/upload/images/event/" + value);
-                        $('#'+key+'_popup_name').val(value);
-                    }else {
+                for (const [key, value] of Object.entries(response[0])) {
+                    if(key==='dateBegin') {
+                        $('#timeline').val(value);
+                    }
+                    if(key==='dateEnd') {
+                        let timeline_current = $('#timeline').val();
+                        let timeline = timeline_current + ' - ' + value;
+                        $('#timeline').val(timeline);
+                    }
+                    if(key==='iconUrl' || key==='iconButtonUrl') {
+                        $('#' + key + '_popup').attr('src', URL_STATIC + '/upload/images/event/' + value);
+                        $('#' + key + '_popup_name').val(value);
+                    }
+                    if(key==='type') {
+                        $('#'+key+'_popup').val(value);
+                        $('#'+key+'_popup').trigger('change');
+                    }
+                    else {
                         $('#'+key+'_popup').val(value);
                     }
                 }
-                $('#show_detail_popup').modal('toggle');
+                $('#push_popup_private').modal('toggle');
+                handlePushPopUpPrivate('/popup-private/updatePrivate', 'POST', $('#formActionPrivate'));
             }
         });
+
     });
 
     $('body').on('click', '#deletePopup', function (event) {
         event.preventDefault();
         var check = $(this).data('check-delete');
         console.log(check);
-        if (confirm('Chắc chắn xóa!') !== true && check!==1) {
-            return false;
-        }
-        if (check===1) {
+        if (confirm('Chắc chắn xóa!') === true && check===1) {
             var id = $(this).data('id');
         } else {
-            showError('Pop up này đã xóa, vui lòng kiểm tra lại!');
+            showError('Update popup trước khi bật lại!');
             return false;
         }
         $.ajax({
@@ -341,5 +392,6 @@ function methodAjaxPopupPrivate() {
         });
     });
 }
+
 
 
