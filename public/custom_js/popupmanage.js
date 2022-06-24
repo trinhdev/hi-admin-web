@@ -275,6 +275,7 @@ function pushTemplateAjaxPopup() {
 
 function handlePushPopUpPrivate(url, type, form) {
     $('body').on('click', '#submit', function (event){
+        $(this).attr('disabled','disabled');
         event.preventDefault();
         let data = $(form).serialize();
         $.ajax({
@@ -287,10 +288,12 @@ function handlePushPopUpPrivate(url, type, form) {
                 if(data.data.statusCode === 0){
                     $('#push_popup_private').modal('toggle');
                     showSuccess(data.data.message);
+                    $('#submit').prop('disabled', false);
                     var table = $('#popup_private_table').DataTable();
                     table.ajax.reload();
                 }else{
                     showError(data.data.message);
+                    $('#submit').prop('disabled', false);
                 }
             },
             error: function (xhr) {
@@ -300,7 +303,7 @@ function handlePushPopUpPrivate(url, type, form) {
                     return false;
                 });
                 showError(errorString);
-                console.log(data);
+                $('#submit').prop('disabled', false);
             }
         });
     });
@@ -314,7 +317,6 @@ function methodAjaxPopupPrivate() {
         document.getElementById('iconUrl_popup').attributes[1].value = '/images/image_holder.png';
         document.getElementById('iconButtonUrl_popup').attributes[1].value = '/images/image_holder.png';
         handlePushPopUpPrivate('/popup-private/addPrivate', 'POST', $('#formActionPrivate'));
-
     });
 
     $('body').on('click', '#detailPopup', function (event) {

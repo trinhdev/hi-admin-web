@@ -42,7 +42,7 @@
                 </div>
                 <div class="modal-body" id="modal-detail-popup">
                     <form id="formAction" action="{{route('popupmanage.save')}}" method="POST"
-                          onchange="checkEnableSavePopup(this)" onSubmit="validateDataPopup(event,this)">
+                          onchange="checkEnableSavePopup(this)" onsubmit="validateDataPopup(event,this)">
                         @csrf
                         <input type="hidden" name="id_popup">
                         <div class="card-body">
