@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    console.log($('#all-title-config li').width());
+
     var $form = $('form');
     var initialState = $form.serialize();
     
@@ -12,9 +14,8 @@ $(document).ready(function () {
     });
 
     if ($('#icon-per-row').val()) {
-        console.log($('#icon-per-row').val() * 100 / 4 + 5);
         $("#selected-product-config").css({
-            "maxWidth": ($('#icon-per-row').val()) ? ($('#icon-per-row').val() * 100 / 4 + 5) + "%" : "100%",
+            "maxWidth": ($('#icon-per-row').val()) ? ((parseInt($('#icon-per-row').val()) + 1) * 180 / $(".card-info").width()) * 100 + "%" : "100%",
         });
     }
 
@@ -87,7 +88,8 @@ dragula([document.getElementById('all-product-config'), document.getElementById(
 
 $('#icon-per-row').change(function () {
     $("#selected-product-config").css({
-        "maxWidth": ($('#icon-per-row').val()) ? ($('#icon-per-row').val() * 100 / 4 + 5) + "%" : "100%",
+        // "maxWidth": ($('#icon-per-row').val()) ? ($('#icon-per-row').val() * 100 / ($("#selected-product-config").width() / 180)) + "%" : "100%",
+        "maxWidth": ($('#icon-per-row').val()) ? ((parseInt($('#icon-per-row').val()) + 1) * 180 / $(".card-info").width()) * 100 + "%" : "100%",
     });
 });
 
