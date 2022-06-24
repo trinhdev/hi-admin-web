@@ -326,7 +326,10 @@ function methodAjaxPopupPrivate() {
             data: {
                 id: id
             }, success: function (response){
+                console.table(response);
+                let dataAction = response[0]['dataAction'];
                 for (const [key, value] of Object.entries(response[0])) {
+                    console.table();
                     if(key==='dateBegin') {
                         $('#timeline').val(value);
                     }
@@ -339,7 +342,7 @@ function methodAjaxPopupPrivate() {
                         $('#' + key + '_popup').attr('src', URL_STATIC + '/upload/images/event/' + value);
                         $('#' + key + '_popup_name').val(value);
                     }
-                    if(key==='type') {
+                    if(key==='type' || key==='actionType') {
                         $('#'+key+'_popup').val(value);
                         $('#'+key+'_popup').trigger('change');
                     }
