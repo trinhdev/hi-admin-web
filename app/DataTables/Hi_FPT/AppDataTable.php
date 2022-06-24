@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AppDataTable extends DataTable
 {
+    protected $exportClass = UsersExport::class;
 
     public function dataTable($query)
     {
@@ -32,7 +33,7 @@ class AppDataTable extends DataTable
         if(!empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
             $model = $model->where('type', $type)->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
         } else {
-            $model = $model->newQuery();
+
         }
 
         if(!empty($type) && empty($publicDateEnd) && empty($publicDateStart)) {
@@ -41,7 +42,7 @@ class AppDataTable extends DataTable
         if(empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
             $model = $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
         }
-        $query = $model->when($f_dup, function ($query) {
+        $query = $model->when($f_dup, function ($query){
                             \DB::statement("SET SQL_MODE=''");
                             return $query->groupBy(['phone','type']);
                         }, function ($query) {

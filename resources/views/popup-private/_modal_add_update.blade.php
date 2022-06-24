@@ -34,12 +34,12 @@ END ADD FIELD
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item" aria-current="page">
                             <p>*** LƯU Ý ***<br>
-                                - Chỉ được tải lên tối đa 30.000 số điện thoại (chuẩn số điện thoại Việt Nam)<br>
+                                - Chỉ được nhập tối đa 30.000 số điện thoại chuẩn định dạng số điện thoại Việt Nam cách nhau bằng dấu phẩy,(nếu như tải lên file exel, lưu số điện thoại theo 1 cột duy nhất theo hàng dọc, tải file mẫu <a href="https://docs.google.com/spreadsheets/d/1ifAR0UwfdV03Sidcshjvwl1pn1YmYBD9/edit?usp=sharing&ouid=113322866597815571901&rtpof=true&sd=true" target="_blank"> <b> tại đây</b><a/><br>
                                 - Trong một phút chỉ được thêm tối đa 5 popup <br>
                                 - Các trường có kí hiệu <span class="text-bold text-danger">(*)</span> là những
                                 trường bắt buộc phải nhập <br>
                                 - Các trường hợp xảy ra lỗi ngoại lệ vui lòng liên hệ <a
-                                    href="https://zalo.me/0354370175" target="_blank">hỗ trợ</a>
+                                    href="https://zalo.me/0354370175" target="_blank"><b> hỗ trợ</b></a>
                             </p> <br>
                         </li>
                     </ol>
@@ -47,10 +47,12 @@ END ADD FIELD
                 <div class="col-12">
                     <form id="importExcel">
                         <div class="form-group">
-                            <label class="" for="number_phone_import">Tải lên danh sách số điện thoại tại đây</label>
-                            <input onchange="uploadFile();" type="file" id="number_phone_import" name="excel"
-                                   class="form-control"
-                                   accept=".xlsx, .csv">
+                            <label for="number_phone"><span class="required_red_dot">Nhập vào danh sách số điện thoại</span> <br>
+                                <p class="fa-xs">hoặc tải file excel lên tại đây
+                                <input onchange="uploadFile();" type="file" id="number_phone_import" name="excel"
+                                       accept=".xlsx, .csv"></p>
+                            </label>
+
                         </div>
                     </form>
                 </div>
@@ -60,8 +62,6 @@ END ADD FIELD
                     <input type="hidden" id="popupGroupId_popup" name="popupGroupId">
                     <div class="col-12">
                         <div class="form-group">
-                            <label class="required_red_dot" for="number_phone">Danh sách số điện thoại cần hiển
-                                thị</label>
                             <textarea type="text" id="number_phone" name="number_phone" class="form-control"
                                       placeholder="Có thể thêm nhiều số điện thoại cách nhau bằng dấu phẩy ','"></textarea>
                         </div>
@@ -140,7 +140,7 @@ END ADD FIELD
                             </div>
 
                             <div class="form-group" id="form_directionUrl">
-                                <label for="dataAction_popup"> URL điều hướng </label>
+                                <label class="required_red_dot" for="dataAction_popup"> URL điều hướng </label>
 
                                 <input type="input" class="form-control" id="dataAction_popup"
                                        name="dataAction" placeholder="URL điều hướng">

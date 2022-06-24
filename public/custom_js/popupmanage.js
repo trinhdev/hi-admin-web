@@ -328,10 +328,7 @@ function methodAjaxPopupPrivate() {
             data: {
                 id: id
             }, success: function (response){
-                console.table(response);
-                let dataAction = response[0]['dataAction'];
                 for (const [key, value] of Object.entries(response[0])) {
-                    console.table();
                     if(key==='dateBegin') {
                         $('#timeline').val(value);
                     }
