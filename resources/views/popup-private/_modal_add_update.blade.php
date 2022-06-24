@@ -22,7 +22,7 @@ END ADD FIELD
 --}}
 
 <div id="push_popup_private" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5>Thông tin pop up</h5>
@@ -30,10 +30,24 @@ END ADD FIELD
                     <span aria-hidden="true">X</span></button>
             </div>
             <div class="modal-body" id="modal-detail-popup">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item" aria-current="page">
+                            <p>*** LƯU Ý ***<br>
+                                - Chỉ được tải lên tối đa 30.000 số điện thoại (chuẩn số điện thoại Việt Nam)<br>
+                                - Trong một phút chỉ được thêm tối đa 5 popup <br>
+                                - Các trường có kí hiệu <span class="text-bold text-danger">(*)</span> là những
+                                trường bắt buộc phải nhập <br>
+                                - Các trường hợp xảy ra lỗi ngoại lệ vui lòng liên hệ <a
+                                    href="https://zalo.me/0354370175" target="_blank">hỗ trợ</a>
+                            </p> <br>
+                        </li>
+                    </ol>
+                </nav>
                 <div class="col-12">
                     <form id="importExcel">
                         <div class="form-group">
-                            <label class="" for="number_phone_import">Upload phone with excel</label>
+                            <label class="" for="number_phone_import">Tải lên danh sách số điện thoại tại đây</label>
                             <input onchange="uploadFile();" type="file" id="number_phone_import" name="excel"
                                    class="form-control"
                                    accept=".xlsx, .csv">
@@ -143,25 +157,11 @@ END ADD FIELD
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item" aria-current="page">
-                                <p>*** LƯU Ý ***<br>
-                                    - Chỉ được tải lên tối đa 30.000 số điện thoại (chuẩn số điện thoại Việt Nam)<br>
-                                    - Trong một phút chỉ được thêm tối đa 5 popup <br>
-                                    - Các trường có kí hiệu <span class="text-bold text-danger">(*)</span> là những
-                                    trường bắt buộc phải nhập <br>
-                                    - Các trường hợp xảy ra lỗi ngoại lệ vui lòng liên hệ <a
-                                        href="https://zalo.me/0354370175" target="_blank">hỗ trợ</a>
-                                </p> <br>
-                            </li>
-                        </ol>
-                    </nav>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-info float-right" id="submit">Lưu</button>
-                    </div>
+
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info float-right" id="submit">Lưu</button>
             </div>
         </div>
     </div>

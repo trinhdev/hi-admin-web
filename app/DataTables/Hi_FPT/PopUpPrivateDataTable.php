@@ -7,6 +7,7 @@ use App\Services\NewsEventService;
 use Carbon\Carbon;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Support\Facades\Http;
 
 class PopUpPrivateDataTable extends DataTable
 {
@@ -19,24 +20,24 @@ class PopUpPrivateDataTable extends DataTable
 
     public function dataTable($query)
     {
-        $list_template_popup = config('platform_config.type_popup_service');
+        $list_template = config('platform_config.type_popup_service');
         return datatables()
             ->collection($query)
-            ->editColumn('type', function ($query) use ($list_template_popup) {
-                $name = $list_template_popup[$query->type]
-                    ? $list_template_popup[$query->type]
-                    : $query;
-                return $name ? $name : $query->type;
+            ->editColumn('type', function ($query) use ($list_template) {
+                return !empty($list_template[$query->type]) ? $list_template[$query->type] : $query->type;
             })
             ->editColumn('iconUrl', function ($query) {
                 return '
-                        <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->iconUrl . '" alt="" onclick ="window.open("' . $query->iconUrl . '").focus()" width="100" height="100"/>
+                        <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->iconUrl . '" width="100" height="100"/>
                 ';
             })
             ->editColumn('iconButtonUrl', function ($query) {
-                return '
-                        <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->iconButtonUrl . '" alt="" onclick ="window.open("' . $query->iconButtonUrl . '").focus()" width="100" height="100"/>
-                ';
+                if(!empty($query->iconButtonUrl)) {
+                    $image = env("URL_STATIC").'/upload/images/event/'.$query->iconButtonUrl;
+                }else {
+                    $image = '/images/image_holder.png';
+                }
+                return '<img src="'.$image.'" width="100" height="100"/>';
             })
             ->editColumn('isActive', function ($query) {
                 if ($query->isActive === 1) {
@@ -89,7 +90,7 @@ class PopUpPrivateDataTable extends DataTable
                 'scrollX' => false,
                 'searching' => true,
                 'searchDelay' => 500,
-                'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-9"B><"col-md-1 float-left mt-2 "l><"col-md-1 mt-2"f>>irtp',
+                'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-8"B><"col-1 mt-2 "><"col-2 mt-2"f>>irtp',
                 'buttons' => [
                     [
                         'text' => 'Add pop-up',
@@ -121,7 +122,7 @@ class PopUpPrivateDataTable extends DataTable
             ->languageSearch('Tìm kiếm')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
             ->languageLengthMenu('Hiển thị _MENU_')
-            ->languageInfo('TỔNG DÒNG: _TOTAL_');
+            ->languageInfo('<div class="text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
     }
 
     /**
@@ -134,9 +135,9 @@ class PopUpPrivateDataTable extends DataTable
         return [
             Column::make('id')->title('ID'),
             Column::make('iconUrl')->title('Hình ảnh')->sortable(false),
+            Column::make('iconButtonUrl')->title('Ảnh button'),
             Column::make('dataAction')->title('Nơi điều hướng'),
             Column::make('type')->title('Loại template'),
-            Column::make('iconButtonUrl')->title('Ảnh button'),
             Column::make('dateBegin')->title('Ngày bắt đầu'),
             Column::make('dateEnd')->title('Ngày kết thúc'),
             Column::make('dateCreated')->title('Ngày tạo'),

@@ -12,6 +12,8 @@ use App\Services\PopupPrivateService;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Matrix\Exception;
+use Illuminate\Support\Facades\Http;
+
 
 class PopupManageController extends MY_Controller
 {
@@ -166,7 +168,6 @@ class PopupManageController extends MY_Controller
         $popup_private = new PopupPrivateService();
         try {
             $data = $popup_private->getPaginate();
-            dd($data);
         } catch (Exception $e) {
             return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
         }
@@ -184,7 +185,16 @@ class PopupManageController extends MY_Controller
             'actionType' => 'required',
             'iconButtonUrl' => 'required_if:type,popup_custom_image_transparent,popup_full_screen',
         ];
-        $request->validate($rules);
+        $message = [
+            'type.required'         => 'Loại popup không được bỏ trống!',
+            'iconUrl.required'      => 'Ảnh popup không được bỏ trống!',
+            'timeline.required'     => 'Thời gian hiển thị không được bỏ trống!',
+            'number_phone.required' => 'Danh sách số điện thoại không được bỏ trống!',
+            'dataAction.required'   => 'URL điều hướng không được bỏ trống!',
+            'actionType.required'   => 'Nơi điều hướng không được bỏ trống!',
+            'iconButtonUrl.required_if' => 'Ảnh nút điều hướng không được bỏ trống!',
+        ];
+        $this->validate($request, $rules, $message);
         $this->addToLog($request);
         $timeline_array = explode(" - ", $request->timeline);
         $paramsStatic = [
@@ -225,7 +235,15 @@ class PopupManageController extends MY_Controller
             'popupGroupId' => 'required',
             'temPerId' => 'required',
         ];
-        $request->validate($rules);
+        $message = [
+            'type.required'         => 'Loại popup không được bỏ trống!',
+            'iconUrl.required'      => 'Ảnh popup không được bỏ trống!',
+            'timeline.required'     => 'Thời gian hiển thị không được bỏ trống!',
+            'dataAction.required'   => 'URL điều hướng không được bỏ trống!',
+            'actionType.required'   => 'Nơi điều hướng không được bỏ trống!',
+            'iconButtonUrl.required_if' => 'Ảnh nút điều hướng không được bỏ trống!',
+        ];
+        $this->validate($request, $rules, $message);
         $this->addToLog($request);
         $timeline_array = explode(" - ", $request->timeline);
         $paramsStatic = [
@@ -248,7 +266,7 @@ class PopupManageController extends MY_Controller
         $popup_private = new PopupPrivateService();
         try {
             $response = $popup_private->update($paramsStatic);
-            if($request->has('number_phone')) {
+            if($request->has('number_phone') && !empty($request->number_phone)) {
                 $popup_private->import([$request->id, $request->number_phone]);
             }
         } catch (Exception $e) {

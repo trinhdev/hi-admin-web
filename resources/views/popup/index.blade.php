@@ -101,8 +101,6 @@
                                              src=""
                                              alt="Hình ảnh" class="img-thumbnail img_viewable"
                                              style="max-width: 150px;padding:10px;margin-top:10px"/>
-                                        <span class="warning-alert" id="path_2_required_alert" hidden>This field is
-                                                required!</span>
                                         <input name="buttonImage_popup_name" id="buttonImage_popup_name" hidden/>
                                     </div>
 
@@ -117,7 +115,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-info" id="submit_data" disabled >Lưu</button>
+                            <button type="submit" class="btn btn-info" id="submit_data" >Lưu</button>
                         </div>
                     </form>
                 </div>

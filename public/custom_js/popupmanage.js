@@ -55,10 +55,10 @@ function showHide() {
     $('#actionType_popup').on('change', function () {
         let type_direction = $('#actionType_popup').val();
         if (type_direction === 'url_open_out_app' || type_direction === 'url_open_in_app') {
-            $('#dataAction_popup').prop('disabled', false);
+            $('#dataAction_popup').prop('readonly', false);
             $('#dataAction_popup').val('https://example.com');
         } else {
-            $('#dataAction_popup').prop('disabled', true);
+            $('#dataAction_popup').prop('readonly', true);
             $('#dataAction_popup').val($('#actionType_popup').find(':selected').text());
         }
     });
@@ -72,21 +72,17 @@ function showHide() {
         }
     });
 }
+function resetData(input_tag, img_tag) {
+    input_tag.value = null;
+    img_tag.src = "/images/image_holder.png";
+}
 
 function clearForm() {
     $('#popupModal select').prop('selectedIndex', 0).change();
 }
 
 function checkSubmitPopup(formData) {
-    let pathArray = window.location.pathname.split('/');
-    let action = pathArray[2];
-    if (action === 'edit') {
-        return {
-            status: true,
-            data: null
-        };
-    }
-    var data_required = {
+    let data_required = {
         'titleVi': true,
         'titleEn': true,
         'templateType': true,
@@ -94,10 +90,8 @@ function checkSubmitPopup(formData) {
     };
 
     if (formData.templateType !== 'popup_image_transparent' && formData.templateType !== 'popup_image_full_screen') {
-        // data_required.path_2 = true;
         data_required.buttonImage_popup_name = true;
         data_required.directionId = true;
-        console.log(formData.directionId);
         if (formData.directionId === 'url_open_out_app' || formData.directionId === 'url_open_in_app') {
             data_required.directionId = true;
         }
@@ -148,7 +142,7 @@ function validateDataPopup(event, form) {
 }
 
 function checkEnableSavePopup(form) {
-    var formData = getDataInForm(form);
+    let formData = getDataInForm(form);
     console.log(checkSubmitPopup(formData).status);
     if (checkSubmitPopup(formData).status) {
         $('form').find(':submit').prop('disabled', false);
@@ -160,11 +154,8 @@ function checkEnableSavePopup(form) {
 
 async function handleUploadImagePopup(_this, event) {
     event.preventDefault();
-    var img_tag_name = _this.name + '_popup';
-    if (img_tag_name == 'buttonImage') {
-        path_2_required_alert.hidden = true;
-    }
-    var img_tag = document.getElementById(img_tag_name);
+    let img_tag_name = _this.name + '_popup';
+    let img_tag = document.getElementById(img_tag_name);
     if (_this.value === '') {
         resetData(_this, img_tag);
     }
@@ -187,6 +178,7 @@ function successCallUploadImagePopup(response, passingdata) {
     if (response.statusCode === 0 && response.data !== null) {
         passingdata.img_tag.src = URL.createObjectURL(passingdata.file);
         document.getElementById(passingdata.img_tag.id + '_name').value = response.data.uploadedImageFileName;
+        checkEnableSavePopup(passingdata.input_tag.closest('form'));
     } else {
         resetData(passingdata.input_tag, passingdata.img_tag);
         document.getElementById(passingdata.img_tag.id + '_name').value = "";
@@ -225,8 +217,8 @@ function actionAjaxPopup() {
         event.preventDefault();
         var form = document.querySelector('#formAction');
         document.getElementById('formAction').reset();
-        document.getElementById('image_popup').attributes[1].value = '';
-        document.getElementById('buttonImage_popup').attributes[1].value = '';
+        document.getElementById('image_popup').attributes[1].value = '/images/image_holder.png';
+        document.getElementById('buttonImage_popup').attributes[1].value = '/images/image_holder.png';
         const data = Object.fromEntries(new FormData(form).entries());
         $('#show_detail_popup').modal('toggle');
         $(form).on('submit', function (e){
@@ -282,7 +274,7 @@ function pushTemplateAjaxPopup() {
 }
 
 function handlePushPopUpPrivate(url, type, form) {
-    $(form).on('click', '#submit', function (event){
+    $('body').on('click', '#submit', function (event){
         event.preventDefault();
         let data = $(form).serialize();
         $.ajax({
@@ -294,7 +286,9 @@ function handlePushPopUpPrivate(url, type, form) {
             success: (data) => {
                 if(data.data.statusCode === 0){
                     $('#push_popup_private').modal('toggle');
-                    showSuccess('Thành công');
+                    showSuccess(data.data.message);
+                    var table = $('#popup_private_table').DataTable();
+                    table.ajax.reload();
                 }else{
                     showError(data.data.message);
                 }
@@ -317,8 +311,8 @@ function methodAjaxPopupPrivate() {
         e.preventDefault();
         $('#push_popup_private').modal('toggle');
         document.getElementById('formActionPrivate').reset();
-        document.getElementById('iconUrl_popup').attributes[1].value = '';
-        document.getElementById('iconButtonUrl_popup').attributes[1].value = '';
+        document.getElementById('iconUrl_popup').attributes[1].value = '/images/image_holder.png';
+        document.getElementById('iconButtonUrl_popup').attributes[1].value = '/images/image_holder.png';
         handlePushPopUpPrivate('/popup-private/addPrivate', 'POST', $('#formActionPrivate'));
 
     });
@@ -362,14 +356,15 @@ function methodAjaxPopupPrivate() {
 
     $('body').on('click', '#deletePopup', function (event) {
         event.preventDefault();
-        var check = $(this).data('check-delete');
-        console.log(check);
-        if (confirm('Chắc chắn xóa!') === true && check===1) {
-            var id = $(this).data('id');
-        } else {
+        let check_delete = $(this).data('check-delete');
+        if(check_delete === 0) {
             showError('Update popup trước khi bật lại!');
             return false;
         }
+        if (confirm('Bạn có chắc muốn dừng popup?') === false) {
+            return false;
+        }
+        let id = $(this).data('id');
         $.ajax({
             url: '/popup-private/deletePrivate',
             type:'POST',

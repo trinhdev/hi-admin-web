@@ -100,8 +100,7 @@ class AppDataTable extends DataTable
             ->languageSearch('Tìm kiếm')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
             ->languageLengthMenu('Hiển thị _MENU_')
-            ->languageInfo('TỔNG LOG: _TOTAL_')
-            ;
+            ->languageInfo('<div class="border border-black wrap-border col-2 p-auto text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
     }
 
     /**
