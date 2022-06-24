@@ -278,10 +278,17 @@ class PopupManageController extends MY_Controller
     public function deletePrivate(Request $request)
     {
         if(request()->ajax()) {
+            $STOP = '0';
+            $ACTIVE = '1';
             $request->validate(['id' => 'required']);
             $this->addToLog($request);
             $popup_private = new PopupPrivateService();
-            $response = $popup_private->delete([$request->id]);
+            if($request->check == 1) {
+                $param = [$request->id,$STOP];
+            } else {
+                $param = [$request->id,$ACTIVE];
+            }
+            $response = $popup_private->delete($param);
             $res = check_status_code_api($response);
             if(empty($res)) {
                 return response()->json($res, 500);

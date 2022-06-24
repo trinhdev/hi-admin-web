@@ -92,7 +92,8 @@ class PopupPrivateService
     {
         $url = $this->baseUrl . $this->listMethod['DELETE'];
         $param = [
-            'id' => $params['0']
+            'id' => $params['0'],
+            'active' => $params['1']
         ];
         return sendRequest($url, $param, $this->token);
     }

@@ -359,20 +359,17 @@ function methodAjaxPopupPrivate() {
 
     $('body').on('click', '#deletePopup', function (event) {
         event.preventDefault();
-        let check_delete = $(this).data('check-delete');
-        if(check_delete === 0) {
-            showError('Update popup trước khi bật lại!');
-            return false;
-        }
         if (confirm('Bạn có chắc muốn dừng popup?') === false) {
             return false;
         }
+        let check_delete = $(this).data('check-delete');
         let id = $(this).data('id');
         $.ajax({
             url: '/popup-private/deletePrivate',
             type:'POST',
             data: {
-                id: id
+                id: id,
+                check: check_delete,
             }, success: function (response){
                 showSuccess(response.message);
                 var table = $('#popup_private_table').DataTable();
