@@ -227,7 +227,7 @@ Route::group([
             });
             Route::prefix('helper')->group(function () {
                 Route::get('/','HelperController@index')->name('helper.index');
-                Route::post('/create','HelperController@create')->name('helper.create');
+                Route::get('/create','HelperController@create')->name('helper.create');
                 Route::post('/store','HelperController@store')->name('helper.store');
 
             });
