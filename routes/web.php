@@ -225,6 +225,12 @@ Route::group([
             Route::prefix('payment')->group(function () {
                 Route::get('/', [PayMentController::class, 'index'])->name('payment.index');
             });
+            Route::prefix('helper')->group(function () {
+                Route::get('/','HelperController@index')->name('helper.index');
+                Route::post('/create','HelperController@create')->name('helper.create');
+                Route::post('/store','HelperController@store')->name('helper.store');
+
+            });
         });
         Route::prefix('profile')->group(function () {
             Route::post('/changePassword','ProfileController@changePassword')->name('profile.changePassword');
