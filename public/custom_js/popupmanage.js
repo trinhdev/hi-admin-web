@@ -1,5 +1,4 @@
 'use strict';
-
 function showHide() {
     $('.select2').select2();
     $('#timeline').daterangepicker({
@@ -12,7 +11,6 @@ function showHide() {
         locale: {
             format: 'YYYY-MM-DD HH:mm:ss'
         }
-
     });
 
     $('input[name="timeline"]').on('apply.daterangepicker', function (ev, picker) {
@@ -273,14 +271,14 @@ function pushTemplateAjaxPopup() {
     });
 }
 
-function handlePushPopUpPrivate(url, type, form) {
+function handlePushPopUpPrivate() {
     $('body').on('click', '#submit', function (event){
         $(this).attr('disabled','disabled');
         event.preventDefault();
-        let data = $(form).serialize();
+        let data = $('#formActionPrivate').serialize();
         $.ajax({
-            url: url,
-            type: type,
+            url: urlMethod,
+            type: 'POST',
             dataType: 'json',
             data: data,
             cache: false,
@@ -313,10 +311,10 @@ function methodAjaxPopupPrivate() {
     $('body').on('click', '#push_popup_private_form', function (e) {
         e.preventDefault();
         $('#push_popup_private').modal('toggle');
-        document.getElementById('formActionPrivate').reset();
+        document.getElementById('timeline').value = getDate() + " 00:00:00" + " - " + getDate() + " 23:59:59";
         document.getElementById('iconUrl_popup').attributes[1].value = '/images/image_holder.png';
         document.getElementById('iconButtonUrl_popup').attributes[1].value = '/images/image_holder.png';
-        handlePushPopUpPrivate('/popup-private/addPrivate', 'POST', $('#formActionPrivate'));
+        window.urlMethod = '/popup-private/addPrivate';
     });
 
     $('body').on('click', '#detailPopup', function (event) {
@@ -328,6 +326,7 @@ function methodAjaxPopupPrivate() {
             data: {
                 id: id
             }, success: function (response){
+                $('#number_phone').val('');
                 for (const [key, value] of Object.entries(response[0])) {
                     if(key==='dateBegin') {
                         $('#timeline').val(value);
@@ -350,40 +349,37 @@ function methodAjaxPopupPrivate() {
                     }
                 }
                 $('#push_popup_private').modal('toggle');
-                handlePushPopUpPrivate('/popup-private/updatePrivate', 'POST', $('#formActionPrivate'));
+                window.urlMethod = '/popup-private/updatePrivate';
             }
         });
+
 
     });
+}
 
-    $('body').on('click', '#deletePopup', function (event) {
-        event.preventDefault();
-        if (confirm('Bạn có chắc muốn dừng popup?') === false) {
-            return false;
+function deletePopUpPrivate(data){
+    let check_delete = $(data).data('check-delete');
+    let id = $(data).data('id');
+    $.ajax({
+        url: '/popup-private/deletePrivate',
+        type:'POST',
+        data: {
+            id: id,
+            check: check_delete,
+        }, success: function (response){
+            showSuccess(response.message);
+            var table = $('#popup_private_table').DataTable();
+            table.ajax.reload();
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+            console.log(data);
         }
-        let check_delete = $(this).data('check-delete');
-        let id = $(this).data('id');
-        $.ajax({
-            url: '/popup-private/deletePrivate',
-            type:'POST',
-            data: {
-                id: id,
-                check: check_delete,
-            }, success: function (response){
-                showSuccess(response.message);
-                var table = $('#popup_private_table').DataTable();
-                table.ajax.reload();
-            },
-            error: function (xhr) {
-                var errorString = '';
-                $.each(xhr.responseJSON.errors, function (key, value) {
-                    errorString = value;
-                    return false;
-                });
-                showError(errorString);
-                console.log(data);
-            }
-        });
     });
 }
 

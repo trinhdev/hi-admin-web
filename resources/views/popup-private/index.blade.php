@@ -49,9 +49,12 @@ END INDEX PAGE
 @endsection
 @push('scripts')
     <script>
-        showHide();
-        changeFileFtelPhone();
-        methodAjaxPopupPrivate();
+        $(document).ready(function() {
+            showHide();
+            changeFileFtelPhone();
+            methodAjaxPopupPrivate();
+            handlePushPopUpPrivate();
+        });
     </script>
 @endpush
 

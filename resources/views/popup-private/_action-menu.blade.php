@@ -12,11 +12,11 @@ END ACTION PAGE
 
 <div class="d-flex justify-content-center">
     @if($model->isActive == 1)
-        <a id="deletePopup" data-check-delete="{{ $model->isActive }}" data-id="{{ $model->id }}"
+        <a onclick="dialogConfirmWithAjax(deletePopUpPrivate, this)" id="deletePopup" data-check-delete="{{ $model->isActive }}" data-id="{{ $model->id }}"
            style="float: left; margin-right: 5px;"
            type="button" href="#" class="btn btn-sm bg-primary"><i class="fa fa-pause" aria-hidden="true"></i></a>
     @else
-        <a id="deletePopup" data-check-delete="{{ $model->isActive }}" data-id="{{ $model->id }}"
+        <a onclick="dialogConfirmWithAjax(deletePopUpPrivate, this)" id="deletePopup" data-check-delete="{{ $model->isActive }}" data-id="{{ $model->id }}"
            style="float: left; margin-right: 5px;"
            type="button" href="#" class="btn btn-sm bg-primary"><i class="fa fa-play" aria-hidden="true"></i></a>
     @endif

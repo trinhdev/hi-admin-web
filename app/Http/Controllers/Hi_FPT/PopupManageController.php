@@ -23,6 +23,8 @@ class PopupManageController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Popup Manage';
+        $this->limit = LIMIT_PHONE;
+        $this->email = EMAIL_FTEL_PHONE;
     }
 
     public function index(PopUpDataTable $dataTable, Request $request)
@@ -180,10 +182,35 @@ class PopupManageController extends MY_Controller
             'type'      => 'required',
             'iconUrl' => 'required',
             'timeline' => 'required',
-            'number_phone' => 'required',
             'dataAction' => 'required',
             'actionType' => 'required',
             'iconButtonUrl' => 'required_if:type,popup_custom_image_transparent,popup_full_screen',
+            'number_phone' => [
+                function ($attribute,$value, $fail){
+                    $arrPhone = explode(',',$value);
+                    $pattern = '/^(03|05|06|07|08|09)[0-9, ]*$/';
+                    if (is_array($arrPhone) || is_object($arrPhone))
+                    {
+                        if(count($arrPhone) > $this->limit) {
+                            return $fail("Quá giới hạn $this->limit số, nếu cần gấp vui lòng liên hệ kĩ thuật $this->email !");
+                        }
+                        foreach ($arrPhone as $arPhone) {
+                            $phone = trim($arPhone);
+                            if ((strlen($phone)==0)) {
+                                return $fail('Hãy chắc chắn không nhập dư dấu "," trong dãy số điện thoại!');
+                            }
+                            if ((strlen($phone)!==10)) {
+                                return $fail("Trường $phone phải đúng 10 kí tự");
+                            }
+                            if(!preg_match($pattern, $phone)) {
+                                return $fail("Trường $phone sai định dạng số điện thoại Việt Nam");
+                            }
+                        }
+                    } else {
+                        return $fail("Trường $attribute sai định dạng");
+                    }
+                }
+            ]
         ];
         $message = [
             'type.required'         => 'Loại popup không được bỏ trống!',
