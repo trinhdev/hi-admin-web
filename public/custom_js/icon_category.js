@@ -157,9 +157,9 @@ $('input:checkbox[name="is_new_show"]').change(() => {
 dragula([document.getElementById('all-product'), document.getElementById('selected-product')], {
     direction: 'horizontal',
     revertOnSpill: true,
-    // copy: function (el, source) {
-    //     return source === document.getElementById('all-product')
-    // },
+    copy: function (el, source) {
+        return source === document.getElementById('all-product')
+    },
     accepts: function (el, target, source, sibling) {
         var li_all = $(el).attr('id');
         if ($('#' + li_all + '-selected-product').length != 0) {

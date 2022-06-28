@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Hi_FPT;
 
 use App\DataTables\Hi_FPT\PopUpDataTable;
 use App\DataTables\Hi_FPT\PopupDetailDataTable;
+use App\DataTables\Hi_FPT\PopUpPrivateDataTable;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use App\Services\NewsEventService;
 use App\Services\PopupPrivateService;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use Matrix\Exception;
+use Illuminate\Support\Facades\Http;
+
 
 class PopupManageController extends MY_Controller
 {
@@ -19,6 +23,8 @@ class PopupManageController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Popup Manage';
+        $this->limit = LIMIT_PHONE;
+        $this->email = EMAIL_FTEL_PHONE;
     }
 
     public function index(PopUpDataTable $dataTable, Request $request)
@@ -33,33 +39,6 @@ class PopupManageController extends MY_Controller
             'order' => $request->order,
             'columns' => $request->columns
         ])->render('popup.index', compact('list_type_popup', 'list_route'));
-    }
-
-    public function edit()
-    {
-        $data = array();
-        $data['listTypePopup'] = config('platform_config.type_popup_service');
-        $data['listTargetRoute'] = [];
-        $newsEventService = new NewsEventService();
-        $id = request()->segment(3);
-        if (!empty($id)) {
-            $getDetailPopup_response = $newsEventService->getDetailPopup($id);
-            if (isset($getDetailPopup_response->statusCode)) {
-                $data['detailPopup'] = ($getDetailPopup_response->statusCode == 0) ? $getDetailPopup_response->data : [];
-//              clear buttonActionValue when deeplink define
-                if ( isset($data['detailPopup']->buttonActionType) && $data['detailPopup']->buttonActionType == 'function')
-                    $data['detailPopup']->buttonActionValue = '';
-            } else
-                $data['detailPopup'] = [];
-        } else {
-            $data['detailPopup'] = [];
-            $listTargetRoute = $newsEventService->getListTargetRoute();
-            if (isset($listTargetRoute->statusCode)) {
-                $data['listTargetRoute'] = ($listTargetRoute->statusCode == 0) ? $listTargetRoute->data : [];
-            }
-        }
-
-        return view('popup.edit')->with($data);
     }
 
     public function save(Request $request)
@@ -120,15 +99,15 @@ class PopupManageController extends MY_Controller
 
         return $dataTable->with([
             'data' => $dataResponse
-        ])->render('popup.view', compact('object_type', 'repeatTime','object', 'id'));
+        ])->render('popup.view', compact('object_type', 'repeatTime', 'object', 'id'));
     }
 
     public function detail($id)
     {
         $dataDetail = $this->get_api_data_detail($id);
         return request()->ajax() ?
-                response()->json($dataDetail,Response::HTTP_OK)
-                : redirect()->back()->withErrors('Error! System maintain!');
+            response()->json($dataDetail, Response::HTTP_OK)
+            : redirect()->back()->withErrors('Error! System maintain!');
     }
 
     public function pushPopupTemplate(Request $request)
@@ -166,5 +145,198 @@ class PopupManageController extends MY_Controller
         $newsEventService = new NewsEventService();
         $detail_PersonalMaps = $newsEventService->getDetailPersonalMap($personalID);
         return $detail_PersonalMaps;
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+    public function getPrivate(PopUpPrivateDataTable $dataTablePrivate, Request $request)
+    {
+        $newsEventService = new NewsEventService();
+        $list_type_popup = config('platform_config.type_popup_service');
+        $list_route = $newsEventService->getListTargetRoute()->data ?? null;
+        return $dataTablePrivate->with([
+            'type' => $request->type,
+            'start' => $request->start,
+            'length' => $request->length
+        ])->render('popup-private.index', compact('list_type_popup', 'list_route'));
+    }
+
+
+    public function getPaginatePrivate()
+    {
+        $popup_private = new PopupPrivateService();
+        try {
+            $data = $popup_private->getPaginate();
+        } catch (Exception $e) {
+            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
+        }
+        return response()->json(['status_code' => '0', 'message' => 'Delete Success', 'data' => $data]);
+    }
+
+    public function addPrivate(Request $request)
+    {
+        $rules = [
+            'type'      => 'required',
+            'iconUrl' => 'required',
+            'timeline' => 'required',
+            'dataAction' => 'required',
+            'actionType' => 'required',
+            'iconButtonUrl' => 'required_if:type,popup_custom_image_transparent,popup_full_screen',
+            'number_phone' => [
+                function ($attribute,$value, $fail){
+                    $arrPhone = explode(',',$value);
+                    $pattern = '/^(03|05|06|07|08|09)[0-9, ]*$/';
+                    if (is_array($arrPhone) || is_object($arrPhone))
+                    {
+                        if(count($arrPhone) > $this->limit) {
+                            return $fail("Quá giới hạn $this->limit số, nếu cần gấp vui lòng liên hệ kĩ thuật $this->email !");
+                        }
+                        foreach ($arrPhone as $arPhone) {
+                            $phone = trim($arPhone);
+                            if ((strlen($phone)==0)) {
+                                return $fail('Hãy chắc chắn không nhập dư dấu "," trong dãy số điện thoại!');
+                            }
+                            if ((strlen($phone)!==10)) {
+                                return $fail("Trường $phone phải đúng 10 kí tự");
+                            }
+                            if(!preg_match($pattern, $phone)) {
+                                return $fail("Trường $phone sai định dạng số điện thoại Việt Nam");
+                            }
+                        }
+                    } else {
+                        return $fail("Trường $attribute sai định dạng");
+                    }
+                }
+            ]
+        ];
+        $message = [
+            'type.required'         => 'Loại popup không được bỏ trống!',
+            'iconUrl.required'      => 'Ảnh popup không được bỏ trống!',
+            'timeline.required'     => 'Thời gian hiển thị không được bỏ trống!',
+            'number_phone.required' => 'Danh sách số điện thoại không được bỏ trống!',
+            'dataAction.required'   => 'URL điều hướng không được bỏ trống!',
+            'actionType.required'   => 'Nơi điều hướng không được bỏ trống!',
+            'iconButtonUrl.required_if' => 'Ảnh nút điều hướng không được bỏ trống!',
+        ];
+        $this->validate($request, $rules, $message);
+        $this->addToLog($request);
+        $timeline_array = explode(" - ", $request->timeline);
+        $paramsStatic = [
+            $request->type,
+            $request->actionType,
+            $request->dataAction,
+            $request->iconButtonUrl ?? '',
+            $request->iconUrl,
+            $timeline_array[0],
+            $timeline_array[1],
+            $request->number_phone,
+            $request->titleVi ?? '',
+            $request->titleEn ?? '',
+            $request->desVi ?? '',
+            $request->desEn ?? ''
+        ];
+
+        $popup_private = new PopupPrivateService();
+        try {
+            $response = $popup_private->add($paramsStatic);
+        } catch (Exception $e) {
+            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
+        }
+        return response()->json(['status_code' => '0', 'data' => $response]);
+
+    }
+
+    public function updatePrivate(Request $request)
+    {
+        $rules = [
+            'type' => 'required',
+            'actionType' => 'required',
+            'dataAction' => 'required',
+            'iconUrl' => 'required',
+            'timeline' => 'required',
+            'iconButtonUrl' => 'required_if:type,popup_custom_image_transparent,popup_full_screen',
+            'id' => 'required',
+            'popupGroupId' => 'required',
+            'temPerId' => 'required',
+        ];
+        $message = [
+            'type.required'         => 'Loại popup không được bỏ trống!',
+            'iconUrl.required'      => 'Ảnh popup không được bỏ trống!',
+            'timeline.required'     => 'Thời gian hiển thị không được bỏ trống!',
+            'dataAction.required'   => 'URL điều hướng không được bỏ trống!',
+            'actionType.required'   => 'Nơi điều hướng không được bỏ trống!',
+            'iconButtonUrl.required_if' => 'Ảnh nút điều hướng không được bỏ trống!',
+        ];
+        $this->validate($request, $rules, $message);
+        $this->addToLog($request);
+        $timeline_array = explode(" - ", $request->timeline);
+        $paramsStatic = [
+            $request->id,
+            $request->type,
+            $request->actionType,
+            $request->dataAction,
+            $request->iconButtonUrl ?? '',
+            $request->iconUrl,
+            $timeline_array[0],
+            $timeline_array[1],
+            $request->titleVi ?? '',
+            $request->titleEn ?? '',
+            $request->desVi ?? '',
+            $request->desEn ?? '',
+            $request->popupGroupId,
+            $request->temPerId
+        ];
+
+        $popup_private = new PopupPrivateService();
+        try {
+            $response = $popup_private->update($paramsStatic);
+            if($request->has('number_phone') && !empty($request->number_phone)) {
+                $popup_private->import([$request->id, $request->number_phone]);
+            }
+        } catch (Exception $e) {
+            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
+        }
+        return response()->json(['status_code' => '0', 'data' => $response]);
+    }
+
+    public function deletePrivate(Request $request)
+    {
+        if(request()->ajax()) {
+            $STOP = '0';
+            $ACTIVE = '1';
+            $request->validate(['id' => 'required']);
+            $this->addToLog($request);
+            $popup_private = new PopupPrivateService();
+            if($request->check == 1) {
+                $param = [$request->id,$STOP];
+            } else {
+                $param = [$request->id,$ACTIVE];
+            }
+            $response = $popup_private->delete($param);
+            $res = check_status_code_api($response);
+            if(empty($res)) {
+                return response()->json($res, 500);
+            }
+            return response()->json(['data' => $res], 200);
+        }
+    }
+
+    public function getByIdPrivate(Request $request)
+    {
+        if(request()->ajax()) {
+            $request->validate(['id' => 'required']);
+            $this->addToLog($request);
+            $popup_private = new PopupPrivateService();
+            $data = $popup_private->getById([$request->id]);
+            $response = check_status_code_api($data);
+            if(empty($response)) {
+                return redirect()->back()->withErrors('Error! System maintain!');
+            }
+            return response()->json(get_data_api($response), Response::HTTP_OK);
+        }
+
     }
 }

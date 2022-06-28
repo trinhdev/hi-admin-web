@@ -78,11 +78,7 @@ class PopUpDataTable extends DataTable
         $this->orderDirection = $this->order[0]['dir'];
         $this->templateType = $this->templateType ?? '';
         $model = $service->getListTemplatePopup($this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
-
-        if (isset($model->statusCode) && $model->statusCode == 0 && !empty($model->data)) {
-            return collect($model->data);
-        }
-        return $model = [];
+        return collect(get_data_api($model)) ?? [];
     }
 
     /**
@@ -107,31 +103,21 @@ class PopUpDataTable extends DataTable
                 'buttons' => [
                     [
                         'extend'=> 'collection',
-                        'text' =>'<i class="fa fa-plus"></i> Thêm mới pop-up',
+                        'text' =>'Add pop-up',
                         'autoClose'=> true,
-                        'buttons'=> [
-                            [
-                                'text'      =>'Pop-up Public',
-                                'action'    => 'function ( e, dt, node, config ) {}',
-                                'attr'      =>  [
-                                    'id'=>'push_popup_public'
-                                ]
-                            ],
-                            [
-                                'text' => 'Pop-up Private',
-                                'action'=> 'function ( e, dt, node, config ) {
-                                    alert("Xin lỗi! Chức năng đang bảo trì, vui lòng liên hệ trinhhdp@fpt.com.vn");
-                                 }',
-                                'attr'      =>  [
-                                    'id'    => 'push_popup_private'
-                                ]
-                            ]
+                        'action'    => 'function ( e, dt, node, config ) {}',
+                        'attr'      =>  [
+                            'id'=>'push_popup_public',
+                            'class' =>'btn btn-sm btn-primary'
                         ]
                     ],
                     [
                         'extend'=> 'collection',
-                        'text' =>'<i class="fa fa-filter"></i> Lọc hiển thị template',
+                        'text' =>'Lọc hiển thị',
                         'autoClose'=> true,
+                        'attr' => [
+                            'class' =>'btn btn-sm btn-primary'
+                        ],
                         'buttons'=> [
                             [
                                 'text'      =>'Center box có button',
@@ -183,8 +169,20 @@ class PopUpDataTable extends DataTable
                             ]
                         ]
                     ],
-                    'copyHtml5',
-                    'excel'
+                    [
+                        'text' => 'Copy',
+                        'extend' => 'copyHtml5',
+                        'attr' => [
+                            'class' =>'btn btn-sm btn-primary px-4'
+                        ]
+                    ],
+                    [
+                        'text' => 'Excel',
+                        'extend' => 'excel',
+                        'attr' => [
+                            'class' =>'btn btn-sm btn-primary px-4'
+                        ]
+                    ]
                 ]
             ])
             ->addTableClass('table table-hover text-center w-100')
@@ -194,7 +192,7 @@ class PopUpDataTable extends DataTable
             ->languageSearch('Tìm kiếm')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
             ->languageLengthMenu('Hiển thị _MENU_')
-            ->languageInfo('TỔNG DÒNG: _TOTAL_');
+            ->languageInfo('<div class="border border-black wrap-border col-2 p-auto text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
     }
 
     /**
@@ -213,10 +211,8 @@ class PopUpDataTable extends DataTable
             Column::make('image')->title('Hình ảnh')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template'),
-
             Column::make('viewCount')->title('Số lượt view'),
             Column::make('createdBy')->title('Người tạo'),
-
             Column::computed('popupType')
                 ->searching(false)
                 ->width(100)

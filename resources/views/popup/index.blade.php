@@ -8,12 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Popup</h1>
-{{--                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)--}}
-{{--                            <a href="{{ route('popupmanage.create') }}" class="btn btn-primary btn-sm">--}}
-{{--                                <i class="fas fa-plus"></i> Thêm Mới--}}
-{{--                            </a>--}}
-{{--                        @endif--}}
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Popup Công Khai</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -47,7 +42,7 @@
                 </div>
                 <div class="modal-body" id="modal-detail-popup">
                     <form id="formAction" action="{{route('popupmanage.save')}}" method="POST"
-                          onchange="checkEnableSavePopup(this)" onSubmit="validateDataPopup(event,this)">
+                          onchange="checkEnableSavePopup(this)" onsubmit="validateDataPopup(event,this)">
                         @csrf
                         <input type="hidden" name="id_popup">
                         <div class="card-body">
@@ -82,10 +77,12 @@
                                         <label>Điều hướng</label>
                                         <select class="form-control select2" name="directionId" id="directionId_popup"
                                                 style="width: 100%;">
-                                                <option value="" selected>-- Chọn nơi điều hướng --</option>
+                                                <option value="">-- Chọn nơi điều hướng --</option>
+                                            @if($list_route)
                                                 @foreach($list_route as $key => $value)
                                                     <option value="{{$value->id}}">{{$value->name}}</option>
                                                 @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -102,10 +99,8 @@
                                                onchange="handleUploadImagePopup(this,event)"/>
                                         <img id="buttonImage_popup"
                                              src=""
-                                             alt="your image" class="img-thumbnail img_viewable"
+                                             alt="Hình ảnh" class="img-thumbnail img_viewable"
                                              style="max-width: 150px;padding:10px;margin-top:10px"/>
-                                        <span class="warning-alert" id="path_2_required_alert" hidden>This field is
-                                                required!</span>
                                         <input name="buttonImage_popup_name" id="buttonImage_popup_name" hidden/>
                                     </div>
 
@@ -120,8 +115,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-
-                            <button type="submit" class="btn btn-info" id="submit_data" disabled >Lưu</button>
+                            <button type="submit" class="btn btn-info" id="submit_data" >Lưu</button>
                         </div>
                     </form>
                 </div>

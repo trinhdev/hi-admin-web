@@ -201,7 +201,14 @@ Route::group([
                 Route::get('/detail/{id?}',[PopupManageController::class, 'detail'])->name('popupmanage.detail');
                 Route::post('/pushPopupTemplate',[PopupManageController::class, 'pushPopupTemplate'])->name('popupmanage.pushPopupTemplate');
                 Route::post('/getDetailPersonalMaps',[PopupManageController::class, 'getDetailPersonalMaps'])->name('popupmanage.getDetailPersonalMaps');
+            });
+
+            Route::prefix('popup-private')->group(function () {
                 // Popup Private
+                Route::get('/getPrivate',[PopupManageController::class, 'getPrivate'])->name('popupmanage.getPrivate');
+                Route::get('/',[PopupManageController::class, 'getPrivate'])->name('popupmanage.getPrivate');
+                Route::get('/getPaginatePrivate',[PopupManageController::class, 'getPaginatePrivate'])->name('popupmanage.getPaginatePrivate');
+                Route::get('/getByIdPrivate',[PopupManageController::class, 'getByIdPrivate'])->name('popupmanage.getByIdPrivate');
                 Route::post('/addPrivate',[PopupManageController::class, 'addPrivate'])->name('popupmanage.addPrivate');
                 Route::post('/updatePrivate',[PopupManageController::class, 'updatePrivate'])->name('popupmanage.updatePrivate');
                 Route::post('/deletePrivate',[PopupManageController::class, 'deletePrivate'])->name('popupmanage.deletePrivate');
@@ -218,6 +225,15 @@ Route::group([
             });
             Route::prefix('payment')->group(function () {
                 Route::get('/', [PayMentController::class, 'index'])->name('payment.index');
+            });
+            Route::prefix('helper')->group(function () {
+                Route::get('/','HelperController@index')->name('helper.index');
+                Route::get('/create','HelperController@create')->name('helper.create');
+                Route::post('/store','HelperController@store')->name('helper.store');
+                Route::get('/edit/{id?}','HelperController@edit')->name('helper.edit');
+                Route::put('/update/{id?}','HelperController@update')->name('helper.update');
+                Route::delete('/destroy/{id?}','HelperController@destroy')->name('helper.destroy');
+
             });
         });
         Route::prefix('profile')->group(function () {

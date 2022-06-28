@@ -1,8 +1,31 @@
-"use strict";
+'use strict';
 
 function changeFileFtelPhone() {
-    $('#number_phone_import').change(function() {
-        $('#importExcel').submit();
+    $('#number_phone_import').change(function(e) {
+        let data = new FormData($('#importExcel')[0]);
+        $.ajax( {
+            url: '/ftel-phone/import',
+            type: 'POST',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log('success', response);
+                $('#number_phone').val(response.data);
+                showSuccess(response.message);
+            },
+            error: function (xhr) {
+                var errorString = '';
+                $.each(xhr.responseJSON.errors, function (key, value) {
+                    errorString = value;
+                    return false;
+                });
+                $('#importExcel').find('input:text, input:password, input:file, select, textarea').val('');
+                $('#number_phone').val('');
+                showError(errorString);
+            }
+        } );
+        e.preventDefault();
     });
 }
 

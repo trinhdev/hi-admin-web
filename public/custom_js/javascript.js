@@ -174,3 +174,12 @@ function findElementInArrayObjectByKeyValue(array ,key, value){
 function isEmpty(str) {
     return (!str || str.length === 0 );
 }
+
+function getDate() {
+    let d = new Date();
+    let month = d.getMonth()+1;
+    let day = d.getDate();
+    return d.getFullYear() + '-' +
+        (month<10 ? '0' : '') + month + '-' +
+        (day<10 ? '0' : '') + day;
+}

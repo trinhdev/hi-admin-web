@@ -150,7 +150,6 @@ class IconapprovedController extends MY_Controller
     }
 
     public function destroy(Request $request) {
-        // dd($request->all());
         $user = Auth::user();
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
@@ -208,18 +207,18 @@ class IconapprovedController extends MY_Controller
         $mailContent = view('icon_approved_email.request_approved_email')->with('data', $sendMailData)->render();
         // dd($mailContent);
 
-        $to = $user->email;
-        $to = 'oanhltn3@fpt.com.vn';
+        // $to = $user->email;
 
         $cc = [];
         if(!empty($ccBgd[0]['value'])) {
-            $cc = json_decode($ccBgd[0]['value'], true);
+            // $cc = json_decode($ccBgd[0]['value'], true);
+            $to = json_decode($ccBgd[0]['value'], true);
         }
 
         if(!empty($to)) {
             $mailInfo = [
                 'FromEmail'             => 'HiFPTsupport@fpt.com.vn',
-                'Recipients'            => $to,
+                'Recipients'            => implode(',', $to),
                 'CarbonCopys'           => implode(',', $cc),
                 'BlindCarbonCopys'      => '',
                 'Subject'               => '[ Hi FPT ] Yêu cầu cập nhật của bạn đã ' . $approvedStatus['dapheduyet'],
@@ -345,4 +344,6 @@ class IconapprovedController extends MY_Controller
         $result = $this->iconManagement->$function_name($params);
         return $result;
     }
+
+    
 }

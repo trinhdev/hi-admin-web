@@ -50,6 +50,9 @@ $methodPayment = [
 ];
 
 $methodPopUpPrivate = [
+    'GET' => 'hi-customer-local/tool/popup/get-all',
+    'GET_BY_ID' => 'hi-customer-local/tool/popup/get-by-id',
+    'GET_PAGINATE' => 'hi-customer-local/tool/popup/get-with-page',
     'ADD' => 'hi-customer-local/tool/popup/add',
     'UPDATE' => 'hi-customer-local/tool/popup/update',
     'DELETE' => 'hi-customer-local/tool/popup/delete',

@@ -143,7 +143,7 @@
                                 </div>
                                 <div class="card card-info">
                                     <div class="card-body">
-                                        <ul class="row" style="list-style: none; min-height: 100px" id="selected-product-config">
+                                        {{-- <ul class="row" style="list-style: none; min-height: 100px" id="selected-product-config">
                                             
                                             @php
                                                 $countIconPerRow = 0;
@@ -175,6 +175,17 @@
                                                 @endphp
                                             @endforeach
                                             </p>
+                                        </ul> --}}
+                                        <ul class="row" style="list-style: none; min-height: 100px" id="selected-product-config">
+                                            @foreach ($data['productListInConfig'] as $key => $value)
+                                                <li class="selected-li" id="{{ @$value['productId'] }}-selected-product-config" data-prodid="{{ @$value['productId'] }}">
+                                                    <img src="{{ $value['iconUrl'] }}" alt="{{ $value['productNameVi'] }}">
+                                                    <br>
+                                                    <button type="button" class="close-thik" onClick="removeFromSelectedProduct('{{ @$value['productId'] }}-selected-product-config')"><i class="fas fa-times-circle"></i></button>
+                                                    <h6><span class="badge badge-dark">{{ $value['productNameVi'] }}</span></h6>
+                                                    <h6><span class="badge badge-warning position">{{ $key + 1 }}</span></h6>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
@@ -273,9 +284,10 @@
                             @endif
                         </div>
                         <div class="card-footer">
-                            @if(auth()->user()->cannot('icon-check-data-permission') && auth()->user()->cannot('icon-approve-data-permission'))
+                            {{-- @if(auth()->user()->cannot('icon-check-data-permission') && auth()->user()->cannot('icon-approve-data-permission'))
                                 <button id="submit-button" type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
-                            @endif
+                            @endif --}}
+                            <button id="submit-button" type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconconfig.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
                                 @if(auth()->user()->can('icon-approve-data-permission'))
