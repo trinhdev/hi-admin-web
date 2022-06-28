@@ -229,6 +229,9 @@ Route::group([
                 Route::get('/','HelperController@index')->name('helper.index');
                 Route::get('/create','HelperController@create')->name('helper.create');
                 Route::post('/store','HelperController@store')->name('helper.store');
+                Route::get('/edit/{id?}','HelperController@edit')->name('helper.edit');
+                Route::put('/update/{id?}','HelperController@update')->name('helper.update');
+                Route::delete('/destroy/{id?}','HelperController@destroy')->name('helper.destroy');
 
             });
         });
