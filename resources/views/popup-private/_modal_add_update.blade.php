@@ -120,7 +120,7 @@ END ADD FIELD
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="required_red_dot">Loại popup</label>
-                                <select class="form-control select2" name="type"
+                                <select class="form-control" name="type"
                                         id="type_popup"
                                         style="width: 100%;">
                                     <option value="">-- Chọn loại popup --</option>

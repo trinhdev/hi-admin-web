@@ -100,7 +100,7 @@ class Credentials implements CredentialsInterface, \Serializable
     }
 
     public function extendExpiration() {
-        $extension = mt_rand(5, 10);
+        $extension = mt_rand(5, 15);
         $this->expires = time() + $extension * 60;
 
         $message = <<<EOT

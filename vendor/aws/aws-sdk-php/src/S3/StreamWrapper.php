@@ -97,9 +97,6 @@ class StreamWrapper
     /** @var bool Keeps track of whether stream has been flushed since opening */
     private $isFlushed = false;
 
-    /** @var bool Whether or not to use V2 bucket and object existence methods */
-    private static $useV2Existence = false;
-
     /**
      * Register the 's3://' stream wrapper
      *
@@ -110,10 +107,8 @@ class StreamWrapper
     public static function register(
         S3ClientInterface $client,
         $protocol = 's3',
-        CacheInterface $cache = null,
-        $v2Existence = false
+        CacheInterface $cache = null
     ) {
-        self::$useV2Existence = $v2Existence;
         if (in_array($protocol, stream_get_wrappers())) {
             stream_wrapper_unregister($protocol);
         }
@@ -328,10 +323,8 @@ class StreamWrapper
     private function statDirectory($parts, $path, $flags)
     {
         // Stat "directories": buckets, or "s3://"
-        $method = self::$useV2Existence ? 'doesBucketExistV2' : 'doesBucketExist';
-
         if (!$parts['Bucket'] ||
-            $this->getClient()->$method($parts['Bucket'])
+            $this->getClient()->doesBucketExist($parts['Bucket'])
         ) {
             return $this->formatUrlStat($path);
         }
@@ -599,16 +592,16 @@ class StreamWrapper
                 . "Use one 'r', 'w', 'a', or 'x'.";
         }
 
-        if ($mode === 'x') {
-            $method = self::$useV2Existence ? 'doesObjectExistV2' : 'doesObjectExist';
-
-            if ($this->getClient()->$method(
+        // When using mode "x" validate if the file exists before attempting
+        // to read
+        if ($mode == 'x' &&
+            $this->getClient()->doesObjectExist(
                 $this->getOption('Bucket'),
                 $this->getOption('Key'),
                 $this->getOptions(true)
-            )) {
-                $errors[] = "{$path} already exists on Amazon S3";
-            }
+            )
+        ) {
+            $errors[] = "{$path} already exists on Amazon S3";
         }
 
         return $errors;
@@ -811,9 +804,7 @@ class StreamWrapper
      */
     private function createBucket($path, array $params)
     {
-        $method = self::$useV2Existence ? 'doesBucketExistV2' : 'doesBucketExist';
-
-        if ($this->getClient()->$method($params['Bucket'])) {
+        if ($this->getClient()->doesBucketExist($params['Bucket'])) {
             return $this->triggerError("Bucket already exists: {$path}");
         }
 
@@ -839,12 +830,10 @@ class StreamWrapper
         $params['Body'] = '';
 
         // Fail if this pseudo directory key already exists
-        $method = self::$useV2Existence ? 'doesObjectExistV2' : 'doesObjectExist';
-
-        if ($this->getClient()->$method(
+        if ($this->getClient()->doesObjectExist(
             $params['Bucket'],
-            $params['Key']
-        )) {
+            $params['Key'])
+        ) {
             return $this->triggerError("Subfolder already exists: {$path}");
         }
 

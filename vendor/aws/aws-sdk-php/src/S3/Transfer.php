@@ -5,7 +5,6 @@ use Aws;
 use Aws\CommandInterface;
 use Aws\Exception\AwsException;
 use GuzzleHttp\Promise;
-use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Promise\PromisorInterface;
 use Iterator;
 
@@ -138,8 +137,6 @@ class Transfer implements PromisorInterface
 
     /**
      * Transfers the files.
-     *
-     * @return PromiseInterface
      */
     public function promise()
     {
