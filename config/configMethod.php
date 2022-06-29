@@ -58,6 +58,14 @@ $methodPopUpPrivate = [
     'DELETE' => 'hi-customer-local/tool/popup/delete',
     'IMPORT' => 'hi-customer-local/tool/popup/import-phone-list',
 ];
+
+$methodAirDirection = [
+    'GET'       => 'hi-customer-local/cms/dirrection',
+    'ITEM'      => 'hi-customer-local/cms/dirrection/item',
+    'ADD'       => 'hi-customer-local/cms/dirrection/add',
+    'DELETE'    => 'hi-customer-local/cms/dirrection/delete',
+    'EDIT'      => 'hi-customer-local/cms/dirrection/edit',
+];
 return [
     'DOMAIN_INSIDE'         => $methodInsideDomain,
     'DOMAIN_REPORT'         => $methodReportDomain,
@@ -67,4 +75,5 @@ return [
     'DOMAIN_AUTH'           => $methodAuth,
     'DOMAIN_PAYMENT'        => $methodPayment,
     'DOMAIN_POPUP_PRIVATE'  => $methodPopUpPrivate,
+    'DOMAIN_AIR_DIRECTION'  => $methodAirDirection,
 ];

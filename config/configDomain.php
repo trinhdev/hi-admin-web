@@ -46,20 +46,26 @@ $domainCustomerConfig = [
         'URL'           => 'http://hi-customer-stag.fpt.vn/',
         'CLIENT_KEY'    => 'hifpt_customer_local',
         'SUB_DOMAIN'    => ['hi-customer-local', 'swagger'],
-        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+        'SECRET_KEY'    => 'xxxxxxhifpt2018',
+        'CLIENT_KEY_AIR_DIRECTION'   => 'toolcmsbwrue784wr239ffkdkduq',
+        'SECRET_KEY_AIR_DIRECTION'    => 'toolcmsxxx2022',
     ],
     'staging'           => [
         'URL'           => 'http://hi-customer-stag.fpt.vn/',
         'CLIENT_KEY'    => 'hifpt_customer_local',
         'SUB_DOMAIN'    => ['hi-customer-local', 'swagger'],
-        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+        'SECRET_KEY'    => 'xxxxxxhifpt2018',
+        'CLIENT_KEY_AIR_DIRECTION'   => 'toolcmsbwrue784wr239ffkdkduq',
+        'SECRET_KEY_AIR_DIRECTION'    => 'toolcmsxxx2022',
     ],
     'production'        => [
         'URL'           => 'http://hi-customer.fpt.vn/',
         // 'URL'           => 'http://hi-customer-stag.fpt.vn/',
         'CLIENT_KEY'    => 'hifpt_customer_local',
         'SUB_DOMAIN'    => ['hi-customer-local', 'swagger'],
-        'SECRET_KEY'    => 'xxxxxxhifpt2018'
+        'SECRET_KEY'    => 'xxxxxxhifpt2018',
+        'CLIENT_KEY_AIR_DIRECTION'   => 'toolcmsbwrue784wr239ffkdkduq',
+        'SECRET_KEY_AIR_DIRECTION'    => 'toolcmsxxx2022',
     ],
 ];
 

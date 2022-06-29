@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Hi_FPT\AirDirectionController;
 use App\Http\Controllers\Hi_FPT\AppController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
 use Illuminate\Support\Facades\Auth;
@@ -214,6 +215,14 @@ Route::group([
                 Route::post('/updatePrivate',[PopupManageController::class, 'updatePrivate'])->name('popupmanage.updatePrivate');
                 Route::post('/deletePrivate',[PopupManageController::class, 'deletePrivate'])->name('popupmanage.deletePrivate');
                 Route::post('/importPrivate',[PopupManageController::class, 'importPrivate'])->name('popupmanage.importPrivate');
+            });
+
+            Route::prefix('air-direction')->group(function () {
+                Route::get('/',[AirDirectionController::class, 'index'])->name('air_direction.index');
+                Route::post('/getById',[AirDirectionController::class, 'getById'])->name('air_direction.getById');
+                Route::post('/add',[AirDirectionController::class, 'add'])->name('air_direction.add');
+                Route::post('/update',[AirDirectionController::class, 'update'])->name('air_direction.update');
+                Route::post('/delete',[AirDirectionController::class, 'delete'])->name('air_direction.delete');
             });
 
             Route::prefix('supportcode')->group(function () {
