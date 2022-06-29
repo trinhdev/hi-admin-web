@@ -235,6 +235,15 @@ Route::group([
                 Route::delete('/destroy/{id?}','HelperController@destroy')->name('helper.destroy');
 
             });
+            Route::prefix('supportsystem')->group(function () {
+                Route::get('/','SupportSystemController@index')->name('supportsystem.index');
+                Route::get('/create','SupportSystemController@create')->name('supportsystem.create');
+                Route::post('/store','SupportSystemController@store')->name('supportsystem.store');
+                Route::get('/edit/{id?}','SupportSystemController@edit')->name('supportsystem.edit');
+                Route::put('/update/{id?}','SupportSystemController@update')->name('supportsystem.update');
+                Route::delete('/destroy/{id?}','SupportSystemController@destroy')->name('supportsystem.destroy');
+
+            });
         });
         Route::prefix('profile')->group(function () {
             Route::post('/changePassword','ProfileController@changePassword')->name('profile.changePassword');
