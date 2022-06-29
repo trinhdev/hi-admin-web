@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Hi_FPT\FtelPhoneController;
 use App\Http\Controllers\Hi_FPT\PaymentController;
+use App\Http\Controllers\Hi_FPT\AirDirectionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -214,6 +215,14 @@ Route::group([
                 Route::post('/updatePrivate',[PopupManageController::class, 'updatePrivate'])->name('popupmanage.updatePrivate');
                 Route::post('/deletePrivate',[PopupManageController::class, 'deletePrivate'])->name('popupmanage.deletePrivate');
                 Route::post('/importPrivate',[PopupManageController::class, 'importPrivate'])->name('popupmanage.importPrivate');
+            });
+
+            Route::prefix('air-direction')->group(function () {
+                Route::get('/',[AirDirectionController::class, 'index'])->name('air_direction.index');
+                Route::post('/getById',[AirDirectionController::class, 'getById'])->name('air_direction.getById');
+                Route::post('/add',[AirDirectionController::class, 'add'])->name('air_direction.add');
+                Route::post('/update',[AirDirectionController::class, 'update'])->name('air_direction.update');
+                Route::post('/delete',[AirDirectionController::class, 'delete'])->name('air_direction.delete');
             });
 
             Route::prefix('supportcode')->group(function () {
