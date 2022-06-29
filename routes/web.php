@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Hi_FPT\AirDirectionController;
 use App\Http\Controllers\Hi_FPT\AppController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
 use Illuminate\Support\Facades\Auth;
@@ -188,7 +187,8 @@ Route::group([
                 Route::post('/save','IconapprovedController@save')->name('iconapproved.save');
                 Route::get('/detail/{id?}','IconapprovedController@detail')->name('iconapproved.detail');
                 Route::post('/upload','IconapprovedController@upload')->name('iconapproved.upload');
-                Route::post('/destroy','IconapprovedController@destroy')->name('iconapproved.destroy');
+                Route::post('/destroyByApprovedRole','IconapprovedController@destroyByApprovedRole')->name('iconapproved.destroyByApprovedRole');
+                Route::get('/destroy/{id?}','IconapprovedController@destroy')->name('iconapproved.destroy');
                 Route::get('/initDatatable','IconapprovedController@initDatatable')->name('iconapproved.initDatatable');
             });
 
@@ -208,21 +208,12 @@ Route::group([
                 // Popup Private
                 Route::get('/getPrivate',[PopupManageController::class, 'getPrivate'])->name('popupmanage.getPrivate');
                 Route::get('/',[PopupManageController::class, 'getPrivate'])->name('popupmanage.getPrivate');
-                Route::post('/check',[PopupManageController::class, 'checkPrivate'])->name('popupmanage.checkPrivate');
                 Route::get('/getPaginatePrivate',[PopupManageController::class, 'getPaginatePrivate'])->name('popupmanage.getPaginatePrivate');
                 Route::get('/getByIdPrivate',[PopupManageController::class, 'getByIdPrivate'])->name('popupmanage.getByIdPrivate');
                 Route::post('/addPrivate',[PopupManageController::class, 'addPrivate'])->name('popupmanage.addPrivate');
                 Route::post('/updatePrivate',[PopupManageController::class, 'updatePrivate'])->name('popupmanage.updatePrivate');
                 Route::post('/deletePrivate',[PopupManageController::class, 'deletePrivate'])->name('popupmanage.deletePrivate');
                 Route::post('/importPrivate',[PopupManageController::class, 'importPrivate'])->name('popupmanage.importPrivate');
-            });
-
-            Route::prefix('air-direction')->group(function () {
-                Route::get('/',[AirDirectionController::class, 'index'])->name('air_direction.index');
-                Route::post('/getById',[AirDirectionController::class, 'getById'])->name('air_direction.getById');
-                Route::post('/add',[AirDirectionController::class, 'add'])->name('air_direction.add');
-                Route::post('/update',[AirDirectionController::class, 'update'])->name('air_direction.update');
-                Route::post('/delete',[AirDirectionController::class, 'delete'])->name('air_direction.delete');
             });
 
             Route::prefix('supportcode')->group(function () {
