@@ -22,8 +22,15 @@ class AirDirectionDataTable extends DataTable
             ->editColumn('key',function($row) {
                 return config('platform_config.air_direction_key')[$row->key] ?? 'Trống';
             })
+            ->editColumn('is_deleted', function ($query) {
+                if ($query->is_deleted === 0) {
+                    return '<span style="color: rgb(0,86,13)" class="badge border border-blue" >Active <i class="fas fa-check-circle"></i></span>';
+                } else {
+                    return '<span style="color: #9f3535" class="badge border border-blue" >Stop <i class="fas fa-circle"></i></span>';
+                }
+            })
             ->addColumn('action', 'air-direction._action-menu')
-            ->rawColumns(['iconUrl', 'iconButtonUrl', 'action', 'isActive', 'type', 'popupType']);
+            ->rawColumns(['action','is_deleted']);
     }
 
     public function query()
@@ -53,7 +60,7 @@ class AirDirectionDataTable extends DataTable
                 'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-8"B><"col-1 mt-2 "><"col-2 mt-2"f>>irtp',
                 'buttons' => [
                     [
-                        'text' => 'Add điều hướng',
+                        'text' => 'Thêm điều hướng',
                         'attr' => [
                             'id' => 'push_air_direction_form',
                             'class' =>'btn btn-sm btn-primary'
@@ -82,7 +89,7 @@ class AirDirectionDataTable extends DataTable
             ->languageSearch('Tìm kiếm')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
             ->languageLengthMenu('Hiển thị _MENU_')
-            ->languageInfo('<div class="text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
+            ->languageInfo('<div class="text-bold">TỔNG SỐ ĐIỀU HƯỚNG: _TOTAL_</div>');
     }
 
     /**
@@ -93,16 +100,16 @@ class AirDirectionDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::make('id')->title('Mã điều hướng'),
-            Column::make('name')->title('Tên điều hướng'),
+            Column::make('id')->title('ID'),
+            Column::make('name')->title('Tên'),
             Column::make('decription')->title('Mô tả'),
             Column::make('key')->title('Khóa'),
             Column::make('value')->title('Giá trị'),
             Column::make('data')->title('Dữ liệu'),
+//            Column::make('product_id')->title('Mã sản phẩm'),
             Column::make('is_deleted')->title('Trạng thái'),
-            Column::make('product_id')->title('Mã sản phẩm'),
             Column::make('date_created')->title('Ngày tạo'),
-            Column::make('date_modified')->title('Ngày sửa đổi'),
+            Column::make('date_modified')->title('Ngày sửa'),
             Column::computed('action')
                 ->searching(false)
                 ->width(80)

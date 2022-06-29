@@ -30,7 +30,7 @@ class AirDirectionService
         $url = $this->baseUrl . $this->listMethod['ADD'];
         $param = [
             'name'              =>$params['0'],
-            'decription'       =>$params['1'],
+            'decription'        =>$params['1'],
             'value'             =>$params['2']
         ];
         return sendRequest($url, $param, $this->token,$headerArray=['clientKey'=>$this->clientKey]);

@@ -44,7 +44,7 @@ END ADD FIELD
 
                             <div class="form-group">
                                 <label for="decription_air_direction" class="required_red_dot">Mô tả điều hướng</label>
-                                <textarea name="decription" id="" cols="10" rows="5" class="form-control"
+                                <textarea name="decription" cols="10" rows="5" class="form-control"
                                           id="decription_air_direction">Example: Mô tả điều hướng</textarea>
                             </div>
                         </div>

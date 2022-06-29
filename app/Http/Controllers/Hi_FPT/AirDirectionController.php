@@ -7,7 +7,6 @@ use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use App\Services\AirDirectionService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Matrix\Exception;
 
 class AirDirectionController extends MY_Controller
@@ -29,12 +28,12 @@ class AirDirectionController extends MY_Controller
     {
         $rules = [
             'name'              =>'required',
-            'decription'       =>'required',
+            'decription'        =>'required',
             'value'             =>'required',
         ];
         $message = [
             'name.required'             => 'Tên điều hướng không được bỏ trống!',
-            'decription.required'      => 'Mô tả điều hướng không được bỏ trống!',
+            'decription.required'       => 'Mô tả điều hướng không được bỏ trống!',
             'value.required'            => 'Giá trị điều hướng không được bỏ trống!'
         ];
         $this->validate($request, $rules, $message);
@@ -59,21 +58,21 @@ class AirDirectionController extends MY_Controller
         $rules = [
             'id'                =>'required',
             'name'              =>'required',
-            'description'       =>'required',
+            'decription'        =>'required',
             'value'             =>'required',
         ];
         $message = [
-            'id.required'         => 'ID điều hướng không được bỏ trống!',
+            'id.required'           => 'ID điều hướng không được bỏ trống!',
             'name.required'         => 'Tên điều hướng không được bỏ trống!',
-            'description.required'      => 'Mô tả điều hướng không được bỏ trống!',
-            'value.required'     => 'Giá trị điều hướng không được bỏ trống!'
+            'decription.required'   => 'Mô tả điều hướng không được bỏ trống!',
+            'value.required'        => 'Giá trị điều hướng không được bỏ trống!'
         ];
         $this->validate($request, $rules, $message);
         $this->addToLog($request);
         $paramsStatic = [
             $request->id,
             $request->name,
-            $request->description,
+            $request->decription,
             $request->value
         ];
 
