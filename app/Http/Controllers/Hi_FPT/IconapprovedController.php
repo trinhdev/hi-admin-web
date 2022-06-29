@@ -25,6 +25,8 @@ use App\Services\MailService;
 
 use Illuminate\Support\Str;
 
+use Illuminate\Support\Facades\Gate;
+
 class IconapprovedController extends MY_Controller
 {
     use DataTrait;
@@ -149,7 +151,7 @@ class IconapprovedController extends MY_Controller
         echo json_encode(['status' => 1, 'message' => 'Success', 'data' => null]);
     }
 
-    public function destroy(Request $request) {
+    public function destroyByApprovedRole(Request $request) {
         $user = Auth::user();
         $result = $this->list1();
         $icon_approve = Settings::where('name', 'icon_approve')->get();
@@ -166,7 +168,7 @@ class IconapprovedController extends MY_Controller
                 $table = 'App\Models\Icon_Config';
                 break;
         }
-
+        // dd($request->all());
         $product = $table::create($request->all());
         $request->merge([
             'approved_type' => 'delete',
@@ -259,14 +261,23 @@ class IconapprovedController extends MY_Controller
     }
 
     public function initDatatable(Request $request){
+        $user = Auth::user();
         if($request->ajax()) {
             $icon_approve = Settings::where('name', 'icon_approve')->get();
             $icon_approve_list = array_column(json_decode($icon_approve[0]['value'], true), 'value', 'key');
-            $data_raw = $this->model::with(['user_requested_by', 'user_approved_by', 'user_checked_by', 'icon', 'icon_category', 'icon_config'])->get();
+            if(!Gate::allows('icon-check-data-permission', Auth::user()) && !Gate::allows('icon-approve-data-permission', Auth::user())) {
+                $data_raw = $this->model::where('requested_by', $user->id)->with(['user_requested_by', 'user_approved_by', 'user_checked_by', 'icon', 'icon_category', 'icon_config'])->get();
+            }
+            else {
+                $data_raw = $this->model::with(['user_requested_by', 'user_approved_by', 'user_checked_by', 'icon', 'icon_category', 'icon_config'])->get();
+            }
+            
             $data = $data_raw->toArray();
             foreach($data as $key => &$value) {
                 $value['approved_status_name'] = ($icon_approve_list[$value['approved_status']]) ? $icon_approve_list[$value['approved_status']] : $value['approved_status'];
+                $value['isAddRole'] = !Gate::allows('icon-check-data-permission', Auth::user()) && !Gate::allows('icon-approve-data-permission', Auth::user()) ? true : false;
             }
+            
             return DataTables::of($data)
             ->addIndexColumn()
             ->make(true);
@@ -345,5 +356,9 @@ class IconapprovedController extends MY_Controller
         return $result;
     }
 
-    
+    public function destroy($id) {
+        $this->deleteById($this->model, $id);
+        $this->addToLog(request());
+        return redirect()->route('iconapproved.index');
+    }
 }

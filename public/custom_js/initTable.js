@@ -995,7 +995,7 @@ function initIconmanagement() {
             data: 'productId',
             render: function (data, type, row) {
                 var productName = row['productNameVi'].replace(/(\\r\\n|\\n|\\r)/gm, "");
-                var url = (row['isApprovedRole']) ? '/iconapproved/destroy' : '/iconmanagement/destroy';
+                var url = (row['isApprovedRole']) ? '/iconapproved/destroyByApprovedRole' : '/iconmanagement/destroy';
                 return `<div>
                 <button style="margin-right: 5px" class="btn btn-primary btn-sm" onClick="openDetail('/iconmanagement/detail/${data}')" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"><i class="far fa-eye"></i></button>
                             <a style="margin-right: 5px" href="/iconmanagement/edit/${data}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>
@@ -1703,8 +1703,15 @@ function initIconapproved() {
             title: 'Action',
             data: 'productTitleId',
             render: function (data, type, row) {
-                return `<a style="margin-right: 5px" href="/iconapproved/edit/${row['id']}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>`;
-                        // <button type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></button>`;
+                var html = ``;
+                if(!row['isAddRole']) {
+                    html = `<a style="margin-right: 5px" href="/iconapproved/edit/${row['id']}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a>`;
+                }
+                html += `<a href="/iconapproved/destroy/${row['id']}" type="submit" class="btn btn-danger btn-sm delete-button" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fas fa-trash"></i></a>`;
+                return html;
+                // return '<a style="margin-right: 5px" href="/iconapproved/edit/${row['id']}" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa"><i class="far fa-edit"></i></a><form action="{{ route(\'project.destroy\',' . $row->id . ') }}" method="POST" onsubmit="handleSubmit(event,this)">@csrf@method(\'DELETE\')
+                //         <button type="submit" class="btn btn-sm fas fa-trash-alt btn-icon bg-red"></button></form>
+// ';
             },
             "sortable": false,
             className: 'text-center',

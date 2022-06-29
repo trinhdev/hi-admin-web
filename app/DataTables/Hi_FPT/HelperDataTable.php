@@ -40,8 +40,7 @@ class HelperDataTable extends DataTable
                             </form>
                         </div>';
             })
-            ->rawColumns(['is_active', 'action'])
-            ->skipPaging();
+            ->rawColumns(['is_active', 'action']);
     }
 
     /**
@@ -52,7 +51,7 @@ class HelperDataTable extends DataTable
      */
     public function query()
     {
-        $helper = Helper::select();
+        $helper = Helper::query();
         return $this->applyScopes($helper);
     }
 

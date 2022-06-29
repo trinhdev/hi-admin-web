@@ -124,7 +124,7 @@ class IconconfigController extends MY_Controller
         ]);
 
         if(auth()->user()->can('icon-approve-data-permission')) {
-            $this->iconManagement->saveByApprovedRole($approved->id);
+            $this->iconconfig->saveByApprovedRole($approved->id);
             $this->addToLog(request());
             $request->session()->flash('success', 'success');
             $request->session()->flash('html', 'Đã lưu thành công. .');

@@ -56,7 +56,8 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-3 col-form-label">Tên vị trí</label>
                                         <div class="col-sm-9">
-                                            <input type="name" class="form-control" id="vi-name" placeholder="Tên vị trí" name="titleVi" value="{{ @$data['titleVi'] }}">
+                                            <input type="name" class="form-control" id="vi-name" placeholder="Tên vị trí vi" name="titleVi" value="{{ @$data['titleVi'] }}">
+                                            <input type="name" class="form-control" id="en-name" placeholder="Tên vị trí en" name="titleEn" value="{{ @$data['titleEn'] }}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -291,9 +292,9 @@
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconconfig.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
                                 @if(auth()->user()->can('icon-approve-data-permission'))
-                                    <button type="button" onClick="deleteButton('icon_management', '#icon-form', '{{ @$data['productNameVi'] }}', '{{ route('iconapproved.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                                    <button type="button" onClick="deleteButton('icon_config', '#icon-config-form', '{{ @$data['titleVi'] }}', '{{ route('iconapproved.destroyByApprovedRole') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                                 @else
-                                    <button type="button" onClick="deleteButton('icon_management', '#icon-form', '{{ @$data['productNameVi'] }}', '{{ route('iconconfig.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                                    <button type="button" onClick="deleteButton('icon_config', '#icon-config-form', '{{ @$data['titleVi'] }}', '{{ route('iconconfig.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                                 @endif
                             @endif
                             @if (Session::get('approved_data'))

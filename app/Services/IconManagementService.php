@@ -100,12 +100,14 @@ class IconManagementService {
     public function getAllProductConfig() {
         $url                = $this->baseUrl . $this->subDomain . 'product-configs/get-all';
         $response           = sendRequest($url, [], $this->token);
+        
         return $response;
     }
 
     public function getProductConfigById($id) {
         $url                = $this->baseUrl . $this->subDomain . 'product-configs/get-by-id';
         $response           = sendRequest($url, ['productConfigId' => $id], $this->token);
+        // dd($response);
         return $response;
     }
 
@@ -155,7 +157,6 @@ class IconManagementService {
                 $table = 'App\Models\Icon_Config';
                 break;
         }
-
         $result = $this->pushApiApproved($approved_data[0]);
         // dd($result);
         if(!empty($result->message)) {
@@ -228,20 +229,27 @@ class IconManagementService {
                 $function_name .= 'ProductConfig';
                 $config = Icon_Config::where('uuid', $request->product_id)->first();
                 $params = [
-                    'productConfigId'       => (!empty($config->productConfigId)) ? $config->productConfigId : '',
+                    'productConfigId'       => '',
                     'titleVi'               => (!empty($config->titleVi)) ? $config->titleVi : '',
                     'titleEn'               => (!empty($config->titleEn)) ? $config->titleEn : '',
                     'name'                  => (!empty($config->name)) ? $config->name : '',
                     'type'                  => 'PRODUCT',
-                    'iconsPerRow'           => (!empty($config->iconsPerRow)) ? $config->iconsPerRow : '',
-                    'rowOnPage'             => (!empty($config->rowOnPage)) ? $config->rowOnPage : '',
+                    'iconsPerRow'           => (!empty($config->iconsPerRow)) ? intval($config->iconsPerRow) : '',
+                    'rowOnPage'             => (!empty($config->rowOnPage)) ? intval($config->rowOnPage) : '',
                     'arrayId'               => (!empty($config->arrayId)) ? $config->arrayId : '',
-                    'isDeleted'             => '0',
+                    'isDisplay'             => 1,
+                    'displayBeginDay'       => date('Y-m-d H:s:i', strtotime('now')),
+                    'displayEndDay'         => date('Y-m-d H:s:i', strtotime('+1 year')),
+                    'data'                  => ''
                 ];
+                if(!empty($config->productConfigId)) {
+                    $params['productConfigId'] = intval($config->productConfigId);
+                }
                 break;
         }
-        // dd($params);
+        print_r($params);
         $result = $this->$function_name($params);
+        dd($result);
         return $result;
     }
 
