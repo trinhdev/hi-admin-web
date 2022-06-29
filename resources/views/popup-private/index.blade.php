@@ -54,6 +54,7 @@ END INDEX PAGE
             changeFileFtelPhone();
             methodAjaxPopupPrivate();
             handlePushPopUpPrivate();
+            checkStatusPopUpPrivate();
         });
     </script>
 @endpush

@@ -4,8 +4,8 @@
 
 composer.lock
 
-#/storage
-#/vendor
+/storage
+/vendor
 # ignore env
 .env
 .env.backup

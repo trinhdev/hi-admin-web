@@ -207,6 +207,7 @@ Route::group([
                 // Popup Private
                 Route::get('/getPrivate',[PopupManageController::class, 'getPrivate'])->name('popupmanage.getPrivate');
                 Route::get('/',[PopupManageController::class, 'getPrivate'])->name('popupmanage.getPrivate');
+                Route::post('/check',[PopupManageController::class, 'checkPrivate'])->name('popupmanage.checkPrivate');
                 Route::get('/getPaginatePrivate',[PopupManageController::class, 'getPaginatePrivate'])->name('popupmanage.getPaginatePrivate');
                 Route::get('/getByIdPrivate',[PopupManageController::class, 'getByIdPrivate'])->name('popupmanage.getByIdPrivate');
                 Route::post('/addPrivate',[PopupManageController::class, 'addPrivate'])->name('popupmanage.addPrivate');

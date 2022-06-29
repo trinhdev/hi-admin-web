@@ -9,6 +9,7 @@ use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use App\Services\NewsEventService;
 use App\Services\PopupPrivateService;
+use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Matrix\Exception;
@@ -321,6 +322,21 @@ class PopupManageController extends MY_Controller
                 return response()->json($res, 500);
             }
             return response()->json(['data' => $res], 200);
+        }
+    }
+
+    public function checkPrivate(Request $request)
+    {
+        if(request()->ajax()) {
+            $STOP = '0';
+            $popup_private = new PopupPrivateService();
+            $data = $popup_private->get();
+            foreach($data->data as $key => $value) {
+                if($value->dateEnd < \Carbon\Carbon::now()) {
+                    $popup_private->delete([$value->id,$STOP]);
+                }
+            }
+            return response()->json(['message' => 'Check status done'], 200);
         }
     }
 

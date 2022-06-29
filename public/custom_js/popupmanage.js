@@ -359,7 +359,12 @@ function methodAjaxPopupPrivate() {
 
 function deletePopUpPrivate(data){
     let check_delete = $(data).data('check-delete');
+    let check_dateEnd = $(data).data('dateend');
     let id = $(data).data('id');
+    if(check_dateEnd < getDate()) {
+        showError('Popup hết hiệu lực, vui lòng cập nhật ngày hết hạn!')
+        return false;
+    }
     $.ajax({
         url: '/popup-private/deletePrivate',
         type:'POST',
@@ -379,6 +384,24 @@ function deletePopUpPrivate(data){
             });
             showError(errorString);
             console.log(data);
+        }
+    });
+}
+function checkStatusPopUpPrivate(){
+    $.ajax({
+        url: '/popup-private/check',
+        type:'POST',
+        success: function (){
+            var table = $('#popup_private_table').DataTable();
+            table.ajax.reload();
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            console.log(errorString);
         }
     });
 }

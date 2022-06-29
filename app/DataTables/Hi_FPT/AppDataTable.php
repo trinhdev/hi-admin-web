@@ -25,30 +25,43 @@ class AppDataTable extends DataTable
 
     public function query(AppLog $model)
     {
+//        $type = $this->type;
+//        $publicDateStart = $this->public_date_start ? Carbon::parse($this->public_date_start)->format('Y-m-d H:i:s'): null;
+//        $publicDateEnd = $this->public_date_end ? Carbon::parse($this->public_date_end)->format('Y-m-d H:i:s'): null;
+//        if(!empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
+//            $model = $model->where('type', $type)->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
+//        } else {
+//
+//        }
+//
+//        if(!empty($type) && empty($publicDateEnd) && empty($publicDateStart)) {
+//            $model = $model->where('type', $type);
+//        }
+//        if(empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
+//            $model = $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
+//        }
+//        $query = $model->when($this->filter_duplicate=='yes', function ($query){
+//                            \DB::statement("SET SQL_MODE=''");
+//                            return $query->groupBy(['phone','type']);
+//                        }, function ($query) {
+//                            return $query->orderByDesc('id');
+//                        });
+//        return $query;
+        $model = $model->newQuery();
         $type = $this->type;
-        $this->filter_duplicate ? $f_dup = true : $f_dup = false;
-
         $publicDateStart = $this->public_date_start ? Carbon::parse($this->public_date_start)->format('Y-m-d H:i:s'): null;
         $publicDateEnd = $this->public_date_end ? Carbon::parse($this->public_date_end)->format('Y-m-d H:i:s'): null;
-        if(!empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
-            $model = $model->where('type', $type)->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
-        } else {
-
+        if(!empty($type)) {
+            $model->where('type', $type);
         }
-
-        if(!empty($type) && empty($publicDateEnd) && empty($publicDateStart)) {
-            $model = $model->where('type', $type);
+        if(!empty($publicDateEnd) && !empty($publicDateStart)) {
+            $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
         }
-        if(empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
-            $model = $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
+        if($this->filter_duplicate=='yes') {
+            \DB::statement("SET SQL_MODE=''");
+            $model->groupBy(['phone','type']);
         }
-        $query = $model->when($f_dup, function ($query){
-                            \DB::statement("SET SQL_MODE=''");
-                            return $query->groupBy(['phone','type']);
-                        }, function ($query) {
-                            return $query->orderByDesc('id');
-                        });
-        return $query;
+        return $model;
     }
 
     public function html()
@@ -64,44 +77,40 @@ class AppDataTable extends DataTable
                 'scroll' => false,
                 'searching' => true,
                 'searchDelay' => 500,
-                'dom' => '<"row container mx-auto"<"col-md-4"B><"col-md-4 mt-2 "l><"col-md-2 mt-2"f>>irtp',
+                'dom' => '<"trinhdev"B><"trinhdev-2"il>frtp',
                 'buttons' => [
                     [
-                        'text' =>'<i class="fa fa-filter"></i> ' . 'Filter duplicate log',
-                        'className' => 'filter_duplicate'
+                        'text' => 'Copy',
+                        'extend' => 'copyHtml5',
+                        'attr' => [
+                            'class' =>'btn btn-sm btn-primary'
+                        ]
                     ],
-                    'copyHtml5',
-                    'excel'
+                    [
+                        'text' => 'Excel',
+                        'extend' => 'excel',
+                        'attr' => [
+                            'class' =>'btn btn-sm btn-primary'
+                        ]
+                    ]
                 ],
                 'initComplete' => "function () {
-                    var type = $('#show_at');
-                    var public_date_start = $('#show_from');
-                    var public_date_end = $('#show_to');
-                    var filter_duplicate = $('.filter_duplicate');
                     var table = $('#app_table').DataTable();
-                    $(type).on('change', function () {
+                    $('#submit').on('click', function () {
                         table.ajax.reload();
-                    });
-                    $(public_date_end).on('change', function () {
-                        table.ajax.reload();
-                    });
-                    $(filter_duplicate).on('click', function () {
-                            table.on('preXhr.dt', function(e, settings, data){
-                                data.filter_click = true;
-                            });
-                          table.ajax.reload();
                     });
                  }"
             ])
             ->addTableClass('table table-hover table-striped text-center w-100')
+            ->searchDelay(1000)
             ->languageEmptyTable('Không có dữ liệu')
             ->languageInfoEmpty('Không có dữ liệu')
             ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
             ->languageSearchPlaceholder('Nhập SDT cần tra cứu')
-            ->languageSearch('Tìm kiếm')
+            ->languageSearch('Search')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
-            ->languageLengthMenu('Hiển thị _MENU_')
-            ->languageInfo('<div class="border border-black wrap-border col-2 p-auto text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
+            ->languageLengthMenu('Show _MENU_')
+            ->languageInfo('<div class="p-auto text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
     }
 
     /**
