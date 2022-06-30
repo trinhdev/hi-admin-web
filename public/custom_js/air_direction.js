@@ -39,6 +39,7 @@ function handlePushAirDiretion() {
 function methodAjaxAirDirection() {
     $('body').on('click', '#push_air_direction_form', function (e) {
         e.preventDefault();
+        document.getElementById('formActionAirDiretion').reset();
         $('#push_air_direction').modal('toggle');
         window.urlMethod = '/air-direction/add';
     });

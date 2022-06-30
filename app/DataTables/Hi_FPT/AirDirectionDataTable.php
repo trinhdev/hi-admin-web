@@ -19,9 +19,6 @@ class AirDirectionDataTable extends DataTable
     {
         return datatables()
             ->collection($query)
-            ->editColumn('key',function($row) {
-                return config('platform_config.air_direction_key')[$row->key] ?? 'Trống';
-            })
             ->editColumn('is_deleted', function ($query) {
                 if ($query->is_deleted === 0) {
                     return '<span style="color: rgb(0,86,13)" class="badge border border-blue" >Active <i class="fas fa-check-circle"></i></span>';

@@ -29,12 +29,13 @@ class AirDirectionController extends MY_Controller
         $rules = [
             'name'              =>'required',
             'decription'        =>'required',
-            'value'             =>'required',
+            'value'             =>'required|url',
         ];
         $message = [
             'name.required'             => 'Tên điều hướng không được bỏ trống!',
             'decription.required'       => 'Mô tả điều hướng không được bỏ trống!',
-            'value.required'            => 'Giá trị điều hướng không được bỏ trống!'
+            'value.required'            => 'Giá trị điều hướng không được bỏ trống!',
+            'value.url'                 => 'Giá trị điều hướng phải là một đường link url!',
         ];
         $this->validate($request, $rules, $message);
         $paramsStatic = [
@@ -59,13 +60,14 @@ class AirDirectionController extends MY_Controller
             'id'                =>'required',
             'name'              =>'required',
             'decription'        =>'required',
-            'value'             =>'required',
+            'value'             =>'required|url',
         ];
         $message = [
             'id.required'           => 'ID điều hướng không được bỏ trống!',
             'name.required'         => 'Tên điều hướng không được bỏ trống!',
             'decription.required'   => 'Mô tả điều hướng không được bỏ trống!',
-            'value.required'        => 'Giá trị điều hướng không được bỏ trống!'
+            'value.required'        => 'Giá trị điều hướng không được bỏ trống!',
+            'value.url'             => 'Giá trị điều hướng phải là một đường link url! Ví dụ: https://fpt.workplace.com/',
         ];
         $this->validate($request, $rules, $message);
         $this->addToLog($request);

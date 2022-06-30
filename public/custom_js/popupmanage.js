@@ -311,6 +311,7 @@ function methodAjaxPopupPrivate() {
     $('body').on('click', '#push_popup_private_form', function (e) {
         e.preventDefault();
         $('#push_popup_private').modal('toggle');
+        document.getElementById('formActionPrivate').reset();
         document.getElementById('timeline').value = getDate() + " 00:00:00" + " - " + getDate() + " 23:59:59";
         document.getElementById('iconUrl_popup').attributes[1].value = '/images/image_holder.png';
         document.getElementById('iconButtonUrl_popup').attributes[1].value = '/images/image_holder.png';

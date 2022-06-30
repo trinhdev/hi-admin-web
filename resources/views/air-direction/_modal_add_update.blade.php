@@ -26,6 +26,7 @@ END ADD FIELD
                             <p>*** LƯU Ý ***<br>
                                 - Các trường có kí hiệu <span class="text-bold text-danger">(*)</span> là những
                                 trường bắt buộc phải nhập <br>
+                                - Field giá trị điều hướng bắt buộc là một URL <br>
                                 - Các trường hợp xảy ra lỗi ngoại lệ vui lòng liên hệ
                                 <a href="https://zalo.me/0354370175" target="_blank"><b> hỗ trợ</b></a>
                             </p> <br>
@@ -45,27 +46,15 @@ END ADD FIELD
                             <div class="form-group">
                                 <label for="decription_air_direction" class="required_red_dot">Mô tả điều hướng</label>
                                 <textarea name="decription" cols="10" rows="5" class="form-control"
-                                          id="decription_air_direction">Example: Mô tả điều hướng</textarea>
+                                          id="decription_air_direction"></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="key_air_direction" class="required_red_dot">Khóa điều hướng</label>
-                                <select class="form-control" name="key"
-                                        id="key_air_direction"
-                                        style="width: 100%;">
-                                    <option value="">-- Chọn khóa điều hướng --</option>
-                                    @foreach(config('platform_config.air_direction_key') as $key => $value)
-                                        <option value="{{$key}}">{{$value}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="form-group">
                                 <label for="value_air_direction" class="required_red_dot">Giá trị điều hướng</label>
                                 <textarea class="form-control" name="value"
                                           id="value_air_direction"
-                                          scols="10" rows="5" class="form-control">Example: FOX_PAY</textarea>
+                                          scols="10" rows="5" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
