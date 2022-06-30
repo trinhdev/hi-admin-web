@@ -247,9 +247,7 @@ class IconManagementService {
                 }
                 break;
         }
-        print_r($params);
         $result = $this->$function_name($params);
-        dd($result);
         return $result;
     }
 
