@@ -5,7 +5,7 @@
         .trinhdev {
             position: absolute;
             top: -75px;
-            left: 19%;
+            left: 25%;
         }
         .trinhdev-2 {
             margin-bottom: -40px;
@@ -84,6 +84,7 @@
                             </div>
                             <div class="filter-class">
                                 <button id="submit" class="btn btn-sm btn-primary mb-4">Filter</button>
+                                <button id="export" class="btn btn-sm btn-primary mb-4">Export</button>
                             </div>
                         </div>
                     </div>

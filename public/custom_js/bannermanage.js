@@ -26,6 +26,17 @@ function onchangeDirection() {
     }
 }
 
+function onchangeTargetRoute() {
+    console.log($('#target_route').val())
+    if ($('#target_route').val()==='1') {
+        console.log('ko');
+        $('#direction_url').attr('style', 'display: ');
+    } else {
+        console.log('ok');
+        $('#direction_url').attr('style', 'display: none !important');
+    }
+}
+
 $(".img_viewable").click(function () {
     $("#full-image").attr("src", $(this).attr("src"));
     $('#img_view_modal').modal('show');

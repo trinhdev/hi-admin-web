@@ -153,15 +153,11 @@ class BannerManageController extends MY_Controller
     {
         $rules = [
             'bannerType' =>'required',
-            // 'title_vi'  =>'required',
-            // 'title_en'  =>'required',
-            // 'img_path_1_name' =>'required',
             'object'    =>'required',
             'object_type'=>'required',
             'show_from' =>'date_format:Y-m-d\TH:i|nullable',
             'show_to'   =>'date_format:Y-m-d\TH:i|nullable',
             'direction_url' => 'required_if:directionId,url_open_in_app,url_open_out_app',
-            // 'img_path_2_name'   => 'required_if:bannerType,promotion',
         ];
         $request->validate($rules);
 
@@ -250,6 +246,7 @@ class BannerManageController extends MY_Controller
     }
 
     public function store(Request $request){
+        
         $rules = [
             'bannerType' =>'required',
             'title_vi'  =>'required',
@@ -260,12 +257,14 @@ class BannerManageController extends MY_Controller
             'object_type'=>'required',
             'show_from' =>'required|date_format:Y-m-d\TH:i',
             'show_to'   =>'required|date_format:Y-m-d\TH:i',
-            'direction_url' => 'required_if:directionId,url_open_in_app,url_open_out_app',
+            'direction_url' => 'required_if:direction_id,1',
             'img_path_2_name'   => 'required_if:bannerType,promotion',
         ];
-        
-        $request->validate($rules);
 
+       $message = [
+            'direction_url.required_if' => 'Không được bỏ trống URL',
+        ];
+        $this->validate($request, $rules, $message);
         $request->merge([
             'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s'),
             'show_to'   => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')

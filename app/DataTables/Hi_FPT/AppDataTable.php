@@ -17,37 +17,13 @@ class AppDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query->distinct())
-            ->editColumn('date_action',function($row){
-                return $row->date_action . ' ('.Carbon::parse($row->date_action)->diffForHumans().')';
-            })
             ;
     }
 
     public function query(AppLog $model)
     {
-//        $type = $this->type;
-//        $publicDateStart = $this->public_date_start ? Carbon::parse($this->public_date_start)->format('Y-m-d H:i:s'): null;
-//        $publicDateEnd = $this->public_date_end ? Carbon::parse($this->public_date_end)->format('Y-m-d H:i:s'): null;
-//        if(!empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
-//            $model = $model->where('type', $type)->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
-//        } else {
-//
-//        }
-//
-//        if(!empty($type) && empty($publicDateEnd) && empty($publicDateStart)) {
-//            $model = $model->where('type', $type);
-//        }
-//        if(empty($type) && !empty($publicDateEnd) && !empty($publicDateStart)) {
-//            $model = $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
-//        }
-//        $query = $model->when($this->filter_duplicate=='yes', function ($query){
-//                            \DB::statement("SET SQL_MODE=''");
-//                            return $query->groupBy(['phone','type']);
-//                        }, function ($query) {
-//                            return $query->orderByDesc('id');
-//                        });
-//        return $query;
         $model = $model->newQuery();
+        \DB::statement("SET SQL_MODE=''");
         $type = $this->type;
         $publicDateStart = $this->public_date_start ? Carbon::parse($this->public_date_start)->format('Y-m-d H:i:s'): null;
         $publicDateEnd = $this->public_date_end ? Carbon::parse($this->public_date_end)->format('Y-m-d H:i:s'): null;
@@ -58,7 +34,6 @@ class AppDataTable extends DataTable
             $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
         }
         if($this->filter_duplicate=='yes') {
-            \DB::statement("SET SQL_MODE=''");
             $model->groupBy(['phone','type']);
         }
         return $model;
@@ -77,27 +52,17 @@ class AppDataTable extends DataTable
                 'scroll' => false,
                 'searching' => true,
                 'searchDelay' => 500,
-                'dom' => '<"trinhdev"B><"trinhdev-2"il>frtp',
-                'buttons' => [
-                    [
-                        'text' => 'Copy',
-                        'extend' => 'copyHtml5',
-                        'attr' => [
-                            'class' =>'btn btn-sm btn-primary'
-                        ]
-                    ],
-                    [
-                        'text' => 'Excel',
-                        'extend' => 'excel',
-                        'attr' => [
-                            'class' =>'btn btn-sm btn-primary'
-                        ]
-                    ]
-                ],
+                'dom' => '<"trinhdev"><"trinhdev-2"il>frtp',
                 'initComplete' => "function () {
                     var table = $('#app_table').DataTable();
                     $('#submit').on('click', function () {
                         table.ajax.reload();
+                    });
+                    $('#export').on('click', function () {
+                        table.on('preXhr.dt', function(e, settings, data){
+                            data.export = 'true';
+                        });
+                        window.location.href = '/app';
                     });
                  }"
             ])
@@ -106,7 +71,7 @@ class AppDataTable extends DataTable
             ->languageEmptyTable('Không có dữ liệu')
             ->languageInfoEmpty('Không có dữ liệu')
             ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
-            ->languageSearchPlaceholder('Nhập SDT cần tra cứu')
+            ->languageSearchPlaceholder('Search dont support export')
             ->languageSearch('Search')
             ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
             ->languageLengthMenu('Show _MENU_')
