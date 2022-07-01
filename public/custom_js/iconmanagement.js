@@ -176,6 +176,13 @@ $('#icon-management tbody').on('click', '.delete-button', function () {
     deleteButton(JSON.stringify(data), data['productNameVi'], '/iconmanagement/destroy');
 });
 
-// $(function() {
-    
-// });
+$('#action').on('change', function() {
+    if($.inArray(this.value, ['open_url_in_app', 'open_url_out_app', 'open_url_in_app_with_access_token', 'open_url_in_browser'])) {
+        $("#dataActionProduction").prop("disabled", false);
+        $("#dataActionStaging").prop("disabled", false);
+    }
+    else {
+        $("#dataActionProduction").prop("disabled", true);
+        $("#dataActionStaging").prop("disabled", true);
+    }
+});
