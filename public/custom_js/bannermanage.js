@@ -150,7 +150,7 @@ function checkSubmit(formData) {
     var data_required = getDataRequired();
     if ($(has_target_route).is(':checked')) {
         data_required.direction_id = true;
-        if (formData.direction_id === 'url_open_in_app' || formData.direction_id === 'url_open_out_app') {
+        if (formData.direction_id === '1') {
             data_required.direction_url = true;
         }
     }
