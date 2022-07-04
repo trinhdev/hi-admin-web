@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AppDataTable extends DataTable
 {
-    protected $exportClass = UsersExport::class;
+    protected $exportClass = AppExport::class;
 
     public function dataTable($query)
     {
@@ -59,6 +59,7 @@ class AppDataTable extends DataTable
                         table.ajax.reload();
                     });
                     $('#export').on('click', function () {
+                        alert('Chức năng đang update, thử lại sau!')
                         table.on('preXhr.dt', function(e, settings, data){
                             data.export = 'true';
                         });
@@ -103,4 +104,5 @@ class AppDataTable extends DataTable
     {
         return 'App_' . date('YmdHis');
     }
+
 }

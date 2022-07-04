@@ -13,7 +13,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Yajra\DataTables\Exports\DataTablesCollectionExport;
 
-class AppExport implements FromQuery, WithHeadings,WithColumnWidths, ShouldAutoSize,WithStyles
+class AppExport extends DataTablesCollectionExport implements FromQuery, WithHeadings,WithColumnWidths, ShouldAutoSize,WithStyles
 {
     use Exportable;
     // public function __construct(int $type, $dateStart ,$dateEnd)

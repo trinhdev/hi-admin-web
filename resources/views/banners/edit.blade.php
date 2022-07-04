@@ -138,7 +138,7 @@
                                                     @endif
                                                 </select>
                                             </div>
-                                            <div class="form-group" id="direction_url">
+                                            <div class="form-group" id="direction_url" style="display: none !important;">
                                                 <label for="direction_url">URL</label>
                                                 <input type="text" id="direction_url" name="direction_url" class="form-control" value="{{ !empty($banner)? $banner->direction_url:''}}">
                                                 <span class="warning-alert" id="direction_url_required_alert" hidden>Dữ liệu này bắt buộc!</span>
