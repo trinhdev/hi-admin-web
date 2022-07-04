@@ -45,5 +45,11 @@ return [
         'all' => 'Tất cả KH cài Hi FPT (bao gồm guest)',
         'fpt_customer' => 'Tất cả KH có dùng dịch vụ (không bao gồm guest)',
         'guest' => 'Tất cả KH không dùng dịch vụ (guest)'
+    ],
+    'air_direction_key'    => [
+        'open_url_in_app_with_access_token' => 'Mở URL trong ứng dụng bằng mã thông báo truy cập',
+        'go_to_screen' => 'Đi tới màn hình chỉ định',
+        'open_url_in_app' => 'Mở URL trong webkit app',
+        'open_url_out_app' => 'Mở URL bằng trình duyệt của thiết bị'
     ]
 ];

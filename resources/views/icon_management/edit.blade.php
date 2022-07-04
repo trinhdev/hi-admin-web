@@ -197,7 +197,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-5 col-form-label">Link production <span class="required">*</span></label>
                                         <div class="col-sm-7">
-                                            <input type="textbox" name="dataActionProduction" class="form-control @error('dataActionProduction') is-invalid @enderror" value="{{ @$data['dataActionProduction'] }}" />
+                                            <input id="dataActionProduction" type="textbox" name="dataActionProduction" class="form-control @error('dataActionProduction') is-invalid @enderror" value="{{ @$data['dataActionProduction'] }}" />
                                             @error('dataActionProduction')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
@@ -210,7 +210,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-5 col-form-label">Link staging <span class="required">*</span></label>
                                         <div class="col-sm-7">
-                                            <input type="textbox" name="dataActionStaging" class="form-control @error('dataActionStaging') is-invalid @enderror" value="{{ @$data['dataActionStaging'] }}" />
+                                            <input id="dataActionStaging" type="textbox" name="dataActionStaging" class="form-control @error('dataActionStaging') is-invalid @enderror" value="{{ @$data['dataActionStaging'] }}" />
                                             @error('dataActionStaging')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
@@ -277,7 +277,7 @@
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconmanagement.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (isset($data['productId']))
                                 @if(auth()->user()->can('icon-approve-data-permission'))
-                                    <button type="button" onClick="deleteButton('icon_management', '#icon-form', '{{ @$data['productNameVi'] }}', '{{ route('iconapproved.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                                    <button type="button" onClick="deleteButton('icon_management', '#icon-form', '{{ @$data['productNameVi'] }}', '{{ route('iconapproved.destroyByApprovedRole') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                                 @else
                                     <button type="button" onClick="deleteButton('icon_management', '#icon-form', '{{ @$data['productNameVi'] }}', '{{ route('iconmanagement.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                                 @endif

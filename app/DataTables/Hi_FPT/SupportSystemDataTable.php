@@ -2,8 +2,7 @@
 
 namespace App\DataTables\Hi_FPT;
 
-use App\Models\Helper;
-use App\Services\NewsEventService;
+use App\Models\SupportSystem;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Yajra\DataTables\Html\Button;
@@ -13,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Html\Editor\Editor;
 use DataTables;
 
-class HelperDataTable extends DataTable
+class SupportSystemDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -33,7 +32,7 @@ class HelperDataTable extends DataTable
             ->editColumn('action',function($row) {
                 return '<div style="display:flex; justify-content:center" class="infoRow" data-id="' . $row->id . '">
                             <a style="margin-right: 5px" type="button" onclick="getDetail(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
-                            <form action="/helper/destroy/' . $row->id . '" method="POST" onsubmit="handleSubmit(event,this)">
+                            <form action="/supportsystem/destroy/' . $row->id . '" method="POST" onsubmit="handleSubmit(event,this)">
                                 '.csrf_field().'
                                 '.method_field("DELETE").'
                                 <button type="submit" class="btn btn-sm fas fa-trash-alt btn-icon bg-red"></button>
@@ -46,13 +45,13 @@ class HelperDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Hi_FPT/Banner $model
+     * @param \App\Models\Hi_FPT/SupportSystem $model
      * @return Builder
      */
     public function query()
     {
-        $helper = Helper::query();
-        return $this->applyScopes($helper);
+        $supportsystem = SupportSystem::query();
+        return $this->applyScopes($supportsystem);
     }
 
     /**
@@ -63,7 +62,7 @@ class HelperDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('helper')
+                    ->setTableId('support-system')
                     ->columns($this->getColumns())
                     ->responsive()
                     ->autoWidth(true)
@@ -97,10 +96,13 @@ class HelperDataTable extends DataTable
             Column::make('DT_RowIndex')
                     ->title('STT')
                     ->width(20)
-                    ->sortable(false),
-            Column::make('name')->title('Tiêu Đề'),
+                    ->sortable(false),  
             Column::make('description')->title('Mô Tả')->sortable(false)->searching(false),
-            Column::make('created_at')->title('Ngày Tạo')->searching(false),
+            Column::make('asked_by')->title('Người hỏi')->searching(false),
+            Column::make('asked_at')->title('Hỏi vào lúc')->searchable(false),
+            Column::make('group')->title('Hỏi vào lúc')->searching(false),
+            Column::make('status')->title('Trạng thái')->searching(false),
+            Column::make('created_at')->title('Tạo vào lúc')->searchable(false),
             Column::computed('action')->sortable(false)
                   ->searching(false)
                   ->width(80)
@@ -116,6 +118,6 @@ class HelperDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Banner_' . date('YmdHis');
+        return 'Support_System_' . date('YmdHis');
     }
 }

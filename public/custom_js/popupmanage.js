@@ -311,6 +311,7 @@ function methodAjaxPopupPrivate() {
     $('body').on('click', '#push_popup_private_form', function (e) {
         e.preventDefault();
         $('#push_popup_private').modal('toggle');
+        document.getElementById('formActionPrivate').reset();
         document.getElementById('timeline').value = getDate() + " 00:00:00" + " - " + getDate() + " 23:59:59";
         document.getElementById('iconUrl_popup').attributes[1].value = '/images/image_holder.png';
         document.getElementById('iconButtonUrl_popup').attributes[1].value = '/images/image_holder.png';
@@ -359,7 +360,12 @@ function methodAjaxPopupPrivate() {
 
 function deletePopUpPrivate(data){
     let check_delete = $(data).data('check-delete');
+    let check_dateEnd = $(data).data('dateend');
     let id = $(data).data('id');
+    if(check_dateEnd < getDate()) {
+        showError('Popup hết hiệu lực, vui lòng cập nhật ngày hết hạn!')
+        return false;
+    }
     $.ajax({
         url: '/popup-private/deletePrivate',
         type:'POST',
@@ -379,6 +385,24 @@ function deletePopUpPrivate(data){
             });
             showError(errorString);
             console.log(data);
+        }
+    });
+}
+function checkStatusPopUpPrivate(){
+    $.ajax({
+        url: '/popup-private/check',
+        type:'POST',
+        success: function (){
+            var table = $('#popup_private_table').DataTable();
+            table.ajax.reload();
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            console.log(errorString);
         }
     });
 }

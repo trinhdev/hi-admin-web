@@ -1,6 +1,16 @@
 @extends('layouts.default')
 
 @section('content')
+    <style>
+        .trinhdev {
+            position: absolute;
+            top: -75px;
+            left: 25%;
+        }
+        .trinhdev-2 {
+            margin-bottom: -40px;
+        }
+    </style>
     <!-- Content Wrapper. Contains page content -->
     <?php
     ?>
@@ -29,13 +39,13 @@
                 <div class="card card-body col-sm-12">
                     <div class="container">
                         <div class="card-body row form-inline">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="input-group input-group-sm mb-4">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text">Vị Trí Hiển Thị: </div>
+                                        <div class="input-group-text">Type </div>
                                     </div>
                                     <select class="form-control" name="position" id="show_at" placeholder="Show at">
-                                        <option value=''>Tất Cả</option>
+                                        <option value=''>All</option>
                                         @if(!empty($type))
                                             @foreach($type as $value)
                                                 <option value="{{$value['type']}}">{{$value['type']}}</option>
@@ -44,21 +54,37 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="input-group input-group-sm mb-4">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text">Từ: </div>
+                                        <div class="input-group-text">Duplicate filter</div>
+                                    </div>
+                                    <select class="form-control filter_duplicate" id="filter_duplicate" placeholder="Show at">
+                                        <option value=''>All</option>
+                                        <option value='yes'>Yes</option>
+                                        <option value='no'>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group input-group-sm mb-4">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">From</div>
                                     </div>
                                     <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" />
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="input-group input-group-sm mb-4">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text">Đến: </div>
+                                        <div class="input-group-text">To </div>
                                     </div>
                                     <input type="datetime-local" name="show_to" class="form-control" id="show_to" placeholder="Date To" />
                                 </div>
+                            </div>
+                            <div class="filter-class">
+                                <button id="submit" class="btn btn-sm btn-primary mb-4">Filter</button>
+                                <button id="export" class="btn btn-sm btn-primary mb-4">Export</button>
                             </div>
                         </div>
                     </div>
@@ -81,6 +107,7 @@
             data.type = $('#show_at').val();
             data.public_date_start = $('#show_from').val();
             data.public_date_end = $('#show_to').val();
+            data.filter_duplicate = $('#filter_duplicate').val();
         });
 
     </script>

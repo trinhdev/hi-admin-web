@@ -21,12 +21,12 @@ END INDEX PAGE
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Popup Định Danh</h1>
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản lý điều hướng</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                            <li class="breadcrumb-item active">Quản lý Popup Định Danh</li>
+                            <li class="breadcrumb-item active">Quản lý điều hướng</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -38,23 +38,20 @@ END INDEX PAGE
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
-                    @include('popup._table')
+                    @include('air-direction._table')
                 </div>
             </div>
         </section>
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    @include('popup-private._modal_add_update')
+    @include('air-direction._modal_add_update')
 @endsection
 @push('scripts')
     <script>
         $(document).ready(function() {
-            showHide();
-            changeFileFtelPhone();
-            methodAjaxPopupPrivate();
-            handlePushPopUpPrivate();
-            checkStatusPopUpPrivate();
+            handlePushAirDiretion();
+            methodAjaxAirDirection();
         });
     </script>
 @endpush

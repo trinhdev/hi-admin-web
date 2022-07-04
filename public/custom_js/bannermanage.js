@@ -26,6 +26,17 @@ function onchangeDirection() {
     }
 }
 
+function onchangeTargetRoute() {
+    console.log($('#target_route').val())
+    if ($('#target_route').val()==='1') {
+        console.log('ko');
+        $('#direction_url').attr('style', 'display: ');
+    } else {
+        console.log('ok');
+        $('#direction_url').attr('style', 'display: none !important');
+    }
+}
+
 $(".img_viewable").click(function () {
     $("#full-image").attr("src", $(this).attr("src"));
     $('#img_view_modal').modal('show');
@@ -139,7 +150,7 @@ function checkSubmit(formData) {
     var data_required = getDataRequired();
     if ($(has_target_route).is(':checked')) {
         data_required.direction_id = true;
-        if (formData.direction_id === 'url_open_in_app' || formData.direction_id === 'url_open_out_app') {
+        if (formData.direction_id === '1') {
             data_required.direction_url = true;
         }
     }

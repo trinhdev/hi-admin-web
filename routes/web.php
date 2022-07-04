@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Hi_FPT\FtelPhoneController;
 use App\Http\Controllers\Hi_FPT\PaymentController;
+use App\Http\Controllers\Hi_FPT\AirDirectionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -187,7 +188,8 @@ Route::group([
                 Route::post('/save','IconapprovedController@save')->name('iconapproved.save');
                 Route::get('/detail/{id?}','IconapprovedController@detail')->name('iconapproved.detail');
                 Route::post('/upload','IconapprovedController@upload')->name('iconapproved.upload');
-                Route::post('/destroy','IconapprovedController@destroy')->name('iconapproved.destroy');
+                Route::post('/destroyByApprovedRole','IconapprovedController@destroyByApprovedRole')->name('iconapproved.destroyByApprovedRole');
+                Route::get('/destroy/{id?}','IconapprovedController@destroy')->name('iconapproved.destroy');
                 Route::get('/initDatatable','IconapprovedController@initDatatable')->name('iconapproved.initDatatable');
             });
 
@@ -215,6 +217,14 @@ Route::group([
                 Route::post('/importPrivate',[PopupManageController::class, 'importPrivate'])->name('popupmanage.importPrivate');
             });
 
+            Route::prefix('air-direction')->group(function () {
+                Route::get('/',[AirDirectionController::class, 'index'])->name('air_direction.index');
+                Route::post('/getById',[AirDirectionController::class, 'getById'])->name('air_direction.getById');
+                Route::post('/add',[AirDirectionController::class, 'add'])->name('air_direction.add');
+                Route::post('/update',[AirDirectionController::class, 'update'])->name('air_direction.update');
+                Route::post('/delete',[AirDirectionController::class, 'delete'])->name('air_direction.delete');
+            });
+
             Route::prefix('supportcode')->group(function () {
                 Route::get('/','SupportCodeController@index')->name('supportcode.index');
                 Route::post('/open-support-code','SupportCodeController@openSupportCode')->name('supportcode.openSupportCode');
@@ -222,6 +232,7 @@ Route::group([
             });
             Route::prefix('app')->group(function () {
                 Route::get('/', [AppController::class, 'index'])->name('app.index');
+                Route::get('/export', [AppController::class, 'export'])->name('app.export');
             });
             Route::prefix('payment')->group(function () {
                 Route::get('/', [PayMentController::class, 'index'])->name('payment.index');
@@ -233,6 +244,15 @@ Route::group([
                 Route::get('/edit/{id?}','HelperController@edit')->name('helper.edit');
                 Route::put('/update/{id?}','HelperController@update')->name('helper.update');
                 Route::delete('/destroy/{id?}','HelperController@destroy')->name('helper.destroy');
+
+            });
+            Route::prefix('supportsystem')->group(function () {
+                Route::get('/','SupportSystemController@index')->name('supportsystem.index');
+                Route::get('/create','SupportSystemController@create')->name('supportsystem.create');
+                Route::post('/store','SupportSystemController@store')->name('supportsystem.store');
+                Route::get('/edit/{id?}','SupportSystemController@edit')->name('supportsystem.edit');
+                Route::put('/update/{id?}','SupportSystemController@update')->name('supportsystem.update');
+                Route::delete('/destroy/{id?}','SupportSystemController@destroy')->name('supportsystem.destroy');
 
             });
         });

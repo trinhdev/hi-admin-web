@@ -30,7 +30,7 @@
                     $isBannerHome = false;
                     $isBannerPromotion = false;
                     if(!empty($banner) && $banner->bannerType == 'promotion'){
-                        $isBannerPromotion = true;
+                    $isBannerPromotion = true;
                     }
                     @endphp
                     <form action="{{$action}}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)" onkeydown="checkEnableSave(this)">
@@ -62,21 +62,21 @@
                                             @endif
                                         </select>
                                         @if(!empty($banner))
-                                        <input name="bannerType" value ="{{ !empty($banner) ? $banner->bannerType : ''}}"hidden/>
+                                        <input name="bannerType" value="{{ !empty($banner) ? $banner->bannerType : ''}}" hidden />
                                         @endif
                                     </div>
                                     <div class="form-group" id="path_1">
                                         <label class="required_red_dot">Ảnh</label>
                                         <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this,event)" />
                                         <img id="img_path_1" src="{{ (!empty($banner)) ? $banner->image :asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
-                                        <input name="img_path_1_name" id="img_path_1_name" value="" hidden/>
+                                        <input name="img_path_1_name" id="img_path_1_name" value="" hidden />
                                     </div>
                                     <div class="form-group" id="path_2" {{ ($isBannerPromotion) ? '':'hidden' }}>
                                         <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this,event)" />
                                         <img id="img_path_2" src="{{ ($isBannerPromotion) ? $banner->thumb_image :asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
                                         <span><i>&nbsp; &nbsp;&nbsp;(* đây là ảnh hiển thị ở Home)</i></span>
                                         <span class="warning-alert" id="path_2_required_alert" hidden>Dữ liệu này bắt buộc!</span>
-                                        <input name="img_path_2_name" id="img_path_2_name" value="" hidden/>
+                                        <input name="img_path_2_name" id="img_path_2_name" value="" hidden />
                                     </div>
                                     <div class="modal fade" id="img_view_modal" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog modal-xl">
@@ -113,25 +113,24 @@
                                     <div class="form-row">
                                         <div class="col">
                                             <label for="show_from" class="required_red_dot">Ngày hiển thị </label>
-                                            <input type="datetime-local" name="show_from" max="{{ (!empty($banner) && !empty($banner->public_date_end))?$banner->public_date_end:''}}" value="{{ !empty($banner)?$banner->public_date_start:''}}" class="form-control" onchange="changePublicDateTime(this)"/>
+                                            <input type="datetime-local" name="show_from" max="{{ (!empty($banner) && !empty($banner->public_date_end))?$banner->public_date_end:''}}" value="{{ !empty($banner)?$banner->public_date_start:''}}" class="form-control" onchange="changePublicDateTime(this)" />
                                         </div>
                                         <div class="col">
                                             <label for="show_to" class="required_red_dot"> Ngày kết thúc </label>
-                                            <input type="datetime-local" name="show_to" min ="{{ (!empty($banner) && !empty($banner->public_date_start))?$banner->public_date_start:''}}" value="{{ !empty($banner)?$banner->public_date_end:''}}" class="form-control" onchange="changePublicDateTime(this)"/>
+                                            <input type="datetime-local" name="show_to" min="{{ (!empty($banner) && !empty($banner->public_date_start))?$banner->public_date_start:''}}" value="{{ !empty($banner)?$banner->public_date_end:''}}" class="form-control" onchange="changePublicDateTime(this)" />
                                         </div>
                                     </div>
                                     <div class="form-group" id="show_target_route">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()" {{ (!empty($banner) && (!empty($banner->direction_id) || !empty($banner->direction_url)) ) ? 'checked="true"' : ''}}/>
+                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()" {{ (!empty($banner) && (!empty($banner->direction_id) || !empty($banner->direction_url)) ) ? 'checked="true"' : ''}} />
                                             {{-- {{ (!empty($banner) && $banner->direction_id) ? --}}
-                                            <label for="has_target_route" >Điều hướng</label>
+                                            <label for="has_target_route">Điều hướng</label>
                                         </div>
                                         <div class="{{ (!empty($banner) && (!empty($banner->direction_id) || !empty($banner->direction_url) ) ) ? "border box-target" : ''}}" {{ (!empty($banner) && (!empty($banner->direction_id) || !empty($banner->direction_url))) ? '' : 'hidden'}} id="box_target">
                                             <label for="target_route">Điều hướng đến</label>
                                             <div id="collapseOne" tyle="transition: height 0.01s;">
                                                 {{-- <label for="target_route">Target Id</label> --}}
-                                                <select type="file" name="direction_id" class="form-control p" id="target_route" data-live-search="true" data-size="10">
-                                                    <option selected value>None</option>
+                                                <select type="file" name="direction_id" class="form-control p" id="target_route" onchange="onchangeTargetRoute()" data-live-search="true" data-size="10">
                                                     @if(!empty($list_target_route))
                                                     @foreach($list_target_route as $target)
                                                     <option value='{{$target->id}}' {{ (!empty($banner) && $banner->direction_id == $target->id ) ? 'selected' : ''}}>{{$target->name}}</option>
@@ -139,9 +138,9 @@
                                                     @endif
                                                 </select>
                                             </div>
-                                            <div class="form-group" id="direction_url" >
+                                            <div class="form-group" id="direction_url">
                                                 <label for="direction_url">URL</label>
-                                                <input type="text" name="direction_url" class="form-control" value="{{ !empty($banner)? $banner->direction_url:''}}">
+                                                <input type="text" id="direction_url" name="direction_url" class="form-control" value="{{ !empty($banner)? $banner->direction_url:''}}">
                                                 <span class="warning-alert" id="direction_url_required_alert" hidden>Dữ liệu này bắt buộc!</span>
                                             </div>
                                         </div>
@@ -153,9 +152,9 @@
                                         </div>
                                     </div>
                                     @if(!empty($banner))
-                                        <input name="cms_note" value="{{$banner->cms_note}}" hidden/>
+                                    <input name="cms_note" value="{{$banner->cms_note}}" hidden />
                                     @endif
-                                    
+
                                 </div>
                             </div>
                             <div class="card-footer" style="text-align: center">
