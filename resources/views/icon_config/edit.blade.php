@@ -290,13 +290,13 @@
                             @endif --}}
                             <button id="submit-button" type="submit" class="btn btn-info float-right" style="margin-left: 5px">Lưu</button>
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconconfig.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
-                            @if (!empty($id))
+                            {{-- @if (!empty($id))
                                 @if(auth()->user()->can('icon-approve-data-permission'))
                                     <button type="button" onClick="deleteButton('icon_config', '#icon-config-form', '{{ @$data['titleVi'] }}', '{{ route('iconapproved.destroyByApprovedRole') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                                 @else
                                     <button type="button" onClick="deleteButton('icon_config', '#icon-config-form', '{{ @$data['titleVi'] }}', '{{ route('iconconfig.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                                 @endif
-                            @endif
+                            @endif --}}
                             @if (Session::get('approved_data'))
                                 @can('icon-check-data-permission')
                                     <button type="button" style="margin-left: 5px" class="btn btn-warning float-right" {{ (!empty(Session::get('approved_data.approved_status')) && Session::get('approved_data.approved_status') != 'chokiemtra') ? 'disabled' : '' }} onClick="approve({'id': {{ (!empty(Session::get('approved_data.id')) ? Session::get('approved_data.id') : '' ) }}, 'approved_status': 'kiemtrathatbai'})">DỮ LIỆU KHÔNG HỢP LỆ</button>

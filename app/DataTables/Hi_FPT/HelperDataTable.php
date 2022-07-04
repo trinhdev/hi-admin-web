@@ -99,7 +99,7 @@ class HelperDataTable extends DataTable
                     ->width(20)
                     ->sortable(false),
             Column::make('name')->title('Tiêu Đề'),
-            Column::make('description')->title('Mô Tả')->sortable(false)->searching(false),
+            Column::make('solve_way')->title('Phương thức giải quyết')->sortable(false)->searching(false),
             Column::make('created_at')->title('Ngày Tạo')->searching(false),
             Column::computed('action')->sortable(false)
                   ->searching(false)

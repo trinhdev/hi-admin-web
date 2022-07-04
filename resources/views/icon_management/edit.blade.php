@@ -197,7 +197,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-5 col-form-label">Link production <span class="required">*</span></label>
                                         <div class="col-sm-7">
-                                            <input type="textbox" name="dataActionProduction" class="form-control @error('dataActionProduction') is-invalid @enderror" value="{{ @$data['dataActionProduction'] }}" />
+                                            <input id="dataActionProduction" type="textbox" name="dataActionProduction" class="form-control @error('dataActionProduction') is-invalid @enderror" value="{{ @$data['dataActionProduction'] }}" />
                                             @error('dataActionProduction')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
@@ -210,7 +210,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-5 col-form-label">Link staging <span class="required">*</span></label>
                                         <div class="col-sm-7">
-                                            <input type="textbox" name="dataActionStaging" class="form-control @error('dataActionStaging') is-invalid @enderror" value="{{ @$data['dataActionStaging'] }}" />
+                                            <input id="dataActionStaging" type="textbox" name="dataActionStaging" class="form-control @error('dataActionStaging') is-invalid @enderror" value="{{ @$data['dataActionStaging'] }}" />
                                             @error('dataActionStaging')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
