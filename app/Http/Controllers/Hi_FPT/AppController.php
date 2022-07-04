@@ -20,10 +20,8 @@ class AppController extends MY_Controller
     }
 
     public function index(AppDataTable $dataTable, Request $request){
-        if($request->has('export')) {
-            return (new AppExport)->forCondition($request->type, $request->public_date_start, $request->public_date_end, $request->filter_duplicate)->download('data'.date('Y-m-d').'.xlsx');
-        }
         $type = AppLog::select('type')->distinct()->get()->toArray();
+        $data_chart = [];
         return $dataTable
             ->with([
                 'filter_duplicate' => $request->filter_duplicate,
@@ -31,11 +29,15 @@ class AppController extends MY_Controller
                 'public_date_end' => $request->public_date_end,
                 'type' => $request->type
             ])
-            ->render('app.index', ['type' => $type, 'filter' => $dataTable->recordsFiltered]);
+            ->render('app.index', ['type' => $type, 'filter' => $dataTable->recordsFiltered, 'data_chart' => $data_chart]);
     }
 
-    public function export($type = null,$start = null,$end = null,$duplicate = 'yes') 
+    public function export(Request $request) 
     {
+        $type = $request->type ?? null;
+        $start = $request->start ?? null;
+        $end = $request->end ?? null;
+        $duplicate = $request->filter_duplicate ?? 'yes';
         return (new AppExport)->forCondition($type, $start, $end, $duplicate)->download('data'.date('Y-m-d').'.xlsx');
     }
 }

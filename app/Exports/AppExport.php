@@ -13,7 +13,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Yajra\DataTables\Exports\DataTablesCollectionExport;
 
-class AppExport extends DataTablesCollectionExport implements FromQuery, WithHeadings,WithColumnWidths, ShouldAutoSize,WithStyles
+class AppExport implements FromQuery, WithHeadings,WithColumnWidths, ShouldAutoSize,WithStyles
 {
     use Exportable;
     // public function __construct(int $type, $dateStart ,$dateEnd)
@@ -41,15 +41,13 @@ class AppExport extends DataTablesCollectionExport implements FromQuery, WithHea
         if(!empty($type)) {
             $model->where('type', $type);
         }
-        if(!empty($publicDateEnd) && !empty($publicDateStart)) {
-            $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
+        if(!empty($end) && !empty($start)) {
+            $model->whereBetween('date_action', [$start, $end]);
         }
         if($this->filter_duplicate=='yes') {
             $model->groupBy(['phone','type']);
         }
         return $model;
-        // return AppLog::where('type', $this->type)
-        //                 ->whereBetween('date_action', [$this->start, $this->end]);
     }
 
     public function headings(): array

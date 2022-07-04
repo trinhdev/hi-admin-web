@@ -1,6 +1,10 @@
 @extends('layouts.default')
-
+@push('header')
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="{{ asset('/custom_js/chartApp.js')}}"></script>
+@endpush
 @section('content')
+
     <style>
         .trinhdev {
             position: absolute;
@@ -12,8 +16,6 @@
         }
     </style>
     <!-- Content Wrapper. Contains page content -->
-    <?php
-    ?>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
@@ -39,6 +41,10 @@
                 <div class="card card-body col-sm-12">
                     <div class="container">
                         <div class="card-body row form-inline">
+                            <div class="col-md-12 row">
+                                <div class="col-md-6"><div id="columnchart_values"></div></div>
+                                <div class="col-md-6"><div id="columnchart_top"></div>  </div>
+                            </div>
                             <div class="col-md-3">
                                 <div class="input-group input-group-sm mb-4">
                                     <div class="input-group-prepend">
@@ -84,7 +90,7 @@
                             </div>
                             <div class="filter-class">
                                 <button id="submit" class="btn btn-sm btn-primary mb-4">Filter</button>
-                                <button id="export" class="btn btn-sm btn-primary mb-4">Export</button>
+                                <button onclick="dialogConfirmWithAjax(exportApp, this)" id="export" class="btn btn-sm btn-primary mb-4">Export</button>
                             </div>
                         </div>
                     </div>
@@ -109,6 +115,17 @@
             data.public_date_end = $('#show_to').val();
             data.filter_duplicate = $('#filter_duplicate').val();
         });
+        function exportApp() {
+            let type =$('#show_at').val();
+            let start =$('#show_from').val();
+            let end =$('#show_to').val();
+            let filter_duplicate =$('#filter_duplicate').val();
+            params =    "type="+ type + "&" +
+                        "start="+ start + "&" +
+                        "end="+ end + "&" +
+                        "filter_duplicate="+ filter_duplicate
+            window.location.href = "/app/export?"+params;
+        }
 
     </script>
 
