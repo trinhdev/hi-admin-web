@@ -34,7 +34,7 @@ google.charts.load("current", {packages:['corechart']});
       ["Login", 100300, "rgb(67, 116, 224)"],
       ["FPT Play", 11000, "rgb(67, 116, 224)"],
       ["Demo", 19, "rgb(67, 116, 224)"],
-      ["Demo 1", 21, "rgb(67, 116, 224)"]
+      ["Demo 1", 21.45, "rgb(67, 116, 224)"]
     ]);
 
     var view = new google.visualization.DataView(data);
