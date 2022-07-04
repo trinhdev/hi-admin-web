@@ -41,15 +41,13 @@ class AppExport implements FromQuery, WithHeadings,WithColumnWidths, ShouldAutoS
         if(!empty($type)) {
             $model->where('type', $type);
         }
-        if(!empty($publicDateEnd) && !empty($publicDateStart)) {
-            $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
+        if(!empty($end) && !empty($start)) {
+            $model->whereBetween('date_action', [$start, $end]);
         }
         if($this->filter_duplicate=='yes') {
             $model->groupBy(['phone','type']);
         }
         return $model;
-        // return AppLog::where('type', $this->type)
-        //                 ->whereBetween('date_action', [$this->start, $this->end]);
     }
 
     public function headings(): array

@@ -11,12 +11,13 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AppDataTable extends DataTable
 {
-    protected $exportClass = UsersExport::class;
+    protected $exportClass = AppExport::class;
 
     public function dataTable($query)
     {
         return datatables()
             ->eloquent($query->distinct())
+            ->only(['id','type','phone','url','date_action'])
             ;
     }
 
@@ -42,40 +43,30 @@ class AppDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('app_table')
-            ->columns($this->getColumns())
-            ->responsive()
-            ->autoWidth(true)
-            ->lengthMenu([10,25,50,100,200,500,2000,5000])
-            ->pageLength(10)
-            ->parameters([
-                'scroll' => false,
-                'searching' => true,
-                'searchDelay' => 500,
-                'dom' => '<"trinhdev"><"trinhdev-2"il>frtp',
-                'initComplete' => "function () {
-                    var table = $('#app_table').DataTable();
-                    $('#submit').on('click', function () {
-                        table.ajax.reload();
-                    });
-                    $('#export').on('click', function () {
-                        table.on('preXhr.dt', function(e, settings, data){
-                            data.export = 'true';
-                        });
-                        window.location.href = '/app';
-                    });
-                 }"
-            ])
-            ->addTableClass('table table-hover table-striped text-center w-100')
-            ->searchDelay(1000)
-            ->languageEmptyTable('Không có dữ liệu')
-            ->languageInfoEmpty('Không có dữ liệu')
-            ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
-            ->languageSearchPlaceholder('Search dont support export')
-            ->languageSearch('Search')
-            ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
-            ->languageLengthMenu('Show _MENU_')
-            ->languageInfo('<div class="p-auto text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
+                    ->setTableId('app_table')
+                    ->columns($this->getColumns())
+                    ->responsive()
+                    ->orderBy(0, 'desc')
+                    ->autoWidth(true)
+                    ->lengthMenu([[10, 25, 50, -1], [10, 25, 50, "All"]])
+                    ->pageLength(10)
+                    ->parameters([
+                        'scroll' => false,
+                        'searching' => true,
+                        'index_column' => 'id',
+                        'searchDelay' => 500,
+                        'dom' => '<"trinhdev"><"trinhdev-2"il>frtp',
+                        'initComplete' => "function () {
+                            var table = $('#app_table').DataTable();
+                            $('#submit').on('click', function () {
+                                table.ajax.reload();
+                            });
+                        }"
+                    ])
+                    ->addTableClass('table table-hover table-striped text-center w-100')
+                    ->searchDelay(1000)
+                    ->languageSearchPlaceholder('Search dont support export')
+                    ->languageInfo('<div class="p-auto text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
     }
 
     /**
@@ -86,11 +77,11 @@ class AppDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('id')->searching(false)->title('ID')->width('50px'),
-            Column::make('type')->title('Loại'),
-            Column::make('phone')->title('Số điện thoại'),
-            Column::make('url'),
-            Column::make('date_action')->title('Thời gian log')
+            'id'            => ['title'=> 'ID'],
+            'type'          => ['title'=> 'Loại'],
+            'phone'         => ['title'=> 'Số điện thoại'],
+            'url'           => ['title'=> 'URL'],
+            'date_action'   => ['title'=> 'Ngày log']
         ];
     }
 
@@ -103,4 +94,5 @@ class AppDataTable extends DataTable
     {
         return 'App_' . date('YmdHis');
     }
+
 }

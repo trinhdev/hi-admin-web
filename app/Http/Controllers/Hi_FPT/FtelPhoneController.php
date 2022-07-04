@@ -50,12 +50,12 @@ class FtelPhoneController extends MY_Controller
         if(empty($request->input('action'))) {
             return redirect()->back()->with('message', 'Error!');
         }
-        $data = [];
         $hrService = new HrService();
         $token = $hrService->loginHr()->authorization;
         $arrPhone = array_map('trim', explode(',', $request->number_phone)); // input
         switch ($request->input('action')) {
             case 'check':
+                $data = [];
                 $phone = [];
                 foreach(array_chunk($arrPhone, 50) as $value) {
                     $dataExport = $hrService->getListInfoEmployee($value, $token);
@@ -76,6 +76,7 @@ class FtelPhoneController extends MY_Controller
                 return redirect()->back()->with( ['data' => $data] );
                 break;
             case 'data':
+                $data = [];
                 $dataUpdateDB = [];
                 $dataDB = $this->model->whereIn('number_phone', $arrPhone)->get(); // data DB
                 $arrPhoneDB = $dataDB->pluck('number_phone')->toArray(); // data phone DB
@@ -118,6 +119,7 @@ class FtelPhoneController extends MY_Controller
                 return redirect()->back()->with( ['data' => json_decode(json_encode($data), true)] );
                 break;
             case 'db':
+                $data = [];
                 $employee = Employees::whereIn('phone', $arrPhone)->get()->toArray();
                 $employee = array_map(function($tag) {
                     return array(

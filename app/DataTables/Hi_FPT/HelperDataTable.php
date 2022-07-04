@@ -40,7 +40,11 @@ class HelperDataTable extends DataTable
                             </form>
                         </div>';
             })
-            ->rawColumns(['is_active', 'action']);
+            ->editColumn('solve_way', function ($row) {
+                return $row->solve_way;
+            })
+            ->escapeColumns([])
+            ->rawColumns(['is_active', 'action', 'solve_way']);
     }
 
     /**
