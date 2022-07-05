@@ -32,7 +32,7 @@ class AppController extends MY_Controller
             ->render('app.index', ['type' => $type, 'filter' => $dataTable->recordsFiltered, 'data_chart' => $data_chart]);
     }
 
-    public function export(Request $request) 
+    public function export(Request $request)
     {
         $type = $request->type ?? null;
         $start = $request->start ?? null;
