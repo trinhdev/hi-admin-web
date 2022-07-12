@@ -65,10 +65,9 @@ class AppController extends MY_Controller
             \DB::statement("SET SQL_MODE=''");
             $model->groupBy(['phone','type'])->distinct();
         }
-        $model->chunkById(10000, function ($items) {
-            foreach ($items->cursor() as $value) {
-                yield $value;
-            }
-        }, 'app_log.id', 'id');
+        foreach ($model->cursor() as $value) {
+            yield $value;
+        }
+
     }
 }
