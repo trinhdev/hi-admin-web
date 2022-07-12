@@ -74,9 +74,6 @@
         "psr/log": "Required for using the Log middleware"
     },
     "config": {
-        "allow-plugins": {
-            "bamarni/composer-bin-plugin": true
-        },
         "preferred-install": "dist",
         "sort-packages": true
     },

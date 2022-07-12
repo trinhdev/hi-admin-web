@@ -6,6 +6,7 @@ use App\Models\AppLog;
 use Carbon\Carbon;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class AppDataTable extends DataTable
 {
@@ -13,14 +14,13 @@ class AppDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->only(['id','type','phone','url','date_action'])
             ;
     }
 
     public function query(AppLog $model)
     {
-        $model = $model->newQuery();
-        $type = $this->type;
+        $model = $model->select(['id','type','phone','url','date_action']);
+        $type = $this->type ?? null;
         $publicDateStart = $this->public_date_start ? Carbon::parse($this->public_date_start)->format('Y-m-d H:i:s'): null;
         $publicDateEnd = $this->public_date_end ? Carbon::parse($this->public_date_end)->format('Y-m-d H:i:s'): null;
         if(!empty($type)) {

@@ -89,7 +89,7 @@ final class MultipartStream implements StreamInterface
 
         if (empty($element['filename'])) {
             $uri = $element['contents']->getMetadata('uri');
-            if ($uri && \is_string($uri) && \substr($uri, 0, 6) !== 'php://' && \substr($uri, 0, 7) !== 'data://') {
+            if (substr($uri, 0, 6) !== 'php://') {
                 $element['filename'] = $uri;
             }
         }

@@ -47,21 +47,19 @@ final class Header
      */
     public static function normalize($header): array
     {
+        if (!is_array($header)) {
+            return array_map('trim', explode(',', $header));
+        }
+
         $result = [];
-        foreach ((array) $header as $value) {
+        foreach ($header as $value) {
             foreach ((array) $value as $v) {
                 if (strpos($v, ',') === false) {
-                    $trimmed = trim($v);
-                    if ($trimmed !== '') {
-                        $result[] = $trimmed;
-                    }
+                    $result[] = $v;
                     continue;
                 }
-                foreach (preg_split('/,(?=([^"]*"([^"]|\\\\.)*")*[^"]*$)/', $v) as $vv) {
-                    $trimmed = trim($vv);
-                    if ($trimmed !== '') {
-                        $result[] = $trimmed;
-                    }
+                foreach (preg_split('/,(?=([^"]*"[^"]*")*[^"]*$)/', $v) as $vv) {
+                    $result[] = trim($vv);
                 }
             }
         }

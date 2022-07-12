@@ -10,9 +10,7 @@
 namespace SebastianBergmann\CodeCoverage\StaticAnalysis;
 
 use PhpParser\Node;
-use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayDimFetch;
-use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\BinaryOp;
 use PhpParser\Node\Expr\CallLike;
@@ -66,11 +64,6 @@ final class ExecutableLinesFindingVisitor extends NodeVisitorAbstract
      */
     private $propertyLines = [];
 
-    /**
-     * @psalm-var array<int, Return_>
-     */
-    private $returns = [];
-
     public function enterNode(Node $node): void
     {
         $this->savePropertyLines($node);
@@ -93,8 +86,6 @@ final class ExecutableLinesFindingVisitor extends NodeVisitorAbstract
      */
     public function executableLines(): array
     {
-        $this->computeReturns();
-
         sort($this->executableLines);
 
         return $this->executableLines;
@@ -108,25 +99,6 @@ final class ExecutableLinesFindingVisitor extends NodeVisitorAbstract
 
         foreach (range($node->getStartLine(), $node->getEndLine()) as $index) {
             $this->propertyLines[$index] = $index;
-        }
-    }
-
-    private function computeReturns(): void
-    {
-        foreach ($this->returns as $return) {
-            foreach (range($return->getStartLine(), $return->getEndLine()) as $loc) {
-                if (isset($this->executableLines[$loc])) {
-                    continue 2;
-                }
-            }
-
-            $line = $return->getEndLine();
-
-            if ($return->expr !== null) {
-                $line = $return->expr->getStartLine();
-            }
-
-            $this->executableLines[$line] = $line;
         }
     }
 
@@ -148,22 +120,6 @@ final class ExecutableLinesFindingVisitor extends NodeVisitorAbstract
             }
 
             return [$node->dim->getStartLine()];
-        }
-
-        if ($node instanceof Array_) {
-            $startLine = $node->getStartLine();
-
-            if (isset($this->executableLines[$startLine])) {
-                return [];
-            }
-
-            if ([] === $node->items) {
-                return [$node->getEndLine()];
-            }
-
-            if ($node->items[0] instanceof ArrayItem) {
-                return [$node->items[0]->getStartLine()];
-            }
         }
 
         if ($node instanceof ClassMethod) {
@@ -222,12 +178,6 @@ final class ExecutableLinesFindingVisitor extends NodeVisitorAbstract
             return [];
         }
 
-        if ($node instanceof Return_) {
-            $this->returns[] = $node;
-
-            return [];
-        }
-
         return [$node->getStartLine()];
     }
 
@@ -235,7 +185,6 @@ final class ExecutableLinesFindingVisitor extends NodeVisitorAbstract
     {
         return $node instanceof Assign ||
                $node instanceof ArrayDimFetch ||
-               $node instanceof Array_ ||
                $node instanceof BinaryOp ||
                $node instanceof Break_ ||
                $node instanceof CallLike ||

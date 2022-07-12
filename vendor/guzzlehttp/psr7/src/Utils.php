@@ -131,7 +131,7 @@ final class Utils
             hash_update($ctx, $stream->read(1048576));
         }
 
-        $out = hash_final($ctx, $rawOutput);
+        $out = hash_final($ctx, (bool) $rawOutput);
         $stream->seek($pos);
 
         return $out;
@@ -304,7 +304,7 @@ final class Utils
                 /** @var resource $resource */
                 if ((\stream_get_meta_data($resource)['uri'] ?? '') === 'php://input') {
                     $stream = self::tryFopen('php://temp', 'w+');
-                    stream_copy_to_stream($resource, $stream);
+                    fwrite($stream, stream_get_contents($resource));
                     fseek($stream, 0);
                     $resource = $stream;
                 }

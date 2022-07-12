@@ -54,7 +54,6 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use PHPUnit\Util\Color;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
@@ -326,18 +325,9 @@ final class TestRunner extends BaseTestRunner
             $this->printer->setShowProgressAnimation(!$arguments['noInteraction']);
         }
 
-        if ($arguments['colors'] !== DefaultResultPrinter::COLOR_NEVER) {
-            $this->write(
-                'PHPUnit ' .
-                Version::id() .
-                ' ' .
-                Color::colorize('bg-blue', '#StandWith') .
-                Color::colorize('bg-yellow', 'Ukraine') .
-                "\n"
-            );
-        } else {
-            $this->write(Version::getVersionString() . "\n");
-        }
+        $this->printer->write(
+            Version::getVersionString() . "\n"
+        );
 
         foreach ($arguments['listeners'] as $listener) {
             $result->addListener($listener);
@@ -624,7 +614,7 @@ final class TestRunner extends BaseTestRunner
             exit(self::SUCCESS_EXIT);
         }
 
-        $this->write("\n");
+        $this->printer->write("\n");
 
         if (isset($codeCoverage)) {
             $result->setCodeCoverage($codeCoverage);
@@ -1249,7 +1239,7 @@ final class TestRunner extends BaseTestRunner
 
     private function codeCoverageGenerationStart(string $format): void
     {
-        $this->write(
+        $this->printer->write(
             sprintf(
                 "\nGenerating code coverage report in %s format ... ",
                 $format
@@ -1261,7 +1251,7 @@ final class TestRunner extends BaseTestRunner
 
     private function codeCoverageGenerationSucceeded(): void
     {
-        $this->write(
+        $this->printer->write(
             sprintf(
                 "done [%s]\n",
                 $this->timer->stop()->asString()
@@ -1271,7 +1261,7 @@ final class TestRunner extends BaseTestRunner
 
     private function codeCoverageGenerationFailed(\Exception $e): void
     {
-        $this->write(
+        $this->printer->write(
             sprintf(
                 "failed [%s]\n%s\n",
                 $this->timer->stop()->asString(),
