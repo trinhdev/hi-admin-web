@@ -151,88 +151,36 @@ class BannerManageController extends MY_Controller
 
     public function update(Request $request, $id)
     {
-        $rules = [
+        $validated = $request->validate([
             'bannerType' =>'required',
-            'object'    =>'required',
-            'object_type'=>'required',
-            'show_from' =>'date_format:Y-m-d\TH:i|nullable',
-            'show_to'   =>'date_format:Y-m-d\TH:i|nullable',
-            'direction_url' => 'required_if:directionId,url_open_in_app,url_open_out_app',
-        ];
-        $request->validate($rules);
+            'objects'    =>'required',
+            'objectType'=>'required',
+            'show_from' =>'required|date_format:Y-m-d\TH:i',
+            'show_to'   =>'required|date_format:Y-m-d\TH:i',
+            'directionUrl' => 'required_if:directionId,1',
+            'thumbImageFileName' => 'required_if:bannerType,promotion',
+        ]);
+        // dd($request->all());
 
         $this->addToLog($request);
-        $newsEventService = new NewsEventService();
-        $updateParams = [
-            'bannerId'          => $id,
-            'bannerType'        => $request->bannerType,
-            'objects'            => $request->object,
-            'objectType'        => $request->object_type,
-        ];
-        if(!empty($request->title_vi)){
-            $updateParams['titleVi'] = $request->title_vi;
-        };
-        if(!empty($request->show_from)){
-            $request->merge([
-                'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s')
-            ]);
-            $updateParams['publicDateStart'] = $request->show_from;
-        };
-        if(!empty($request->show_to)){
-            $request->merge([
-                'show_to' => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
-            ]);
-            $updateParams['publicDateEnd'] = $request->show_to;
-        }
-        if(!empty($request->title_en)){
-            $updateParams['titleEn'] = $request->title_en;
-        }
-        if(!empty($request->img_path_1_name)){
-            $updateParams['imageFileName'] = $request->img_path_1_name;
-        };
-        if(!empty($request->has_target_route)){
-            if(!empty($request->direction_id)){
-                $updateParams['directionId'] = $request->direction_id;
-            }else{
-                $updateParams['directionId'] = '';
-            }
-            if(!empty($request->direction_url)){
-                $updateParams['directionUrl'] = $request->direction_url;
-            }else{
-                $updateParams['directionUrl'] = '';
-            }
-        }else{
-            $updateParams['directionId'] = '';
-            $updateParams['directionUrl'] = '';
-        };
 
-        if(!empty($request->bannerType) && $request->bannerType =='promotion' && !empty($request->img_path_2_name) ){
-           $updateParams['thumbImageFileName'] = $request->img_path_2_name;
-        };
-        if(!empty($request->isShowHome)){
-            $updateParams['isShowHome'] = 1;
-        }else{
-            $updateParams['isShowHome'] = 0;
-        };
-        if(!empty($request->cms_note)){
-            $cms_note = json_decode($request->cms_note);
-            $user_email = $this->user->email;
-            $cms_note->modified_by = substr($user_email, 0, strpos($user_email, '@'));
-        }else{
-            $cms_note = (object)[];
-            $cms_note->created_by = null;
-            $user_email = $this->user->email;
-            $cms_note->modified_by = substr($user_email, 0, strpos($user_email, '@'));
+        $params = collect($validated)->merge([
+            'bannerId'          => $id,
+            'show_from'         => Carbon::parse($request->show_from)->format('Y-m-d H:i:s'),
+            'show_to'           => Carbon::parse($request->show_to)->format('Y-m-d H:i:s'),
+            'titleVi'           => $request->title_vi ?? '',
+            'titleEn'           => $request->titleEn ?? '',
+            'imageFileName'     => $request->img_path_1_name ?? '',
+            'directionId'       => $request->directionId ?? '',
+            'directionId'       => $request->directionId ?? '',
+        ]);
+
+        $newsEventService = new NewsEventService();
+        $response = $newsEventService->updateBanner($params);
+        if($response->statusCode == 0){
+            return redirect('bannermanage')->withSuccess('');
         }
-        $updateParams['cms_note'] = json_encode($cms_note);
-        // my_debug(json$updateParams, false);
-        // dd($updateParams);
-        $update_banner_response = $newsEventService->updateBanner($updateParams);
-        if(isset($update_banner_response->statusCode) && $update_banner_response->statusCode == 0){
-            return redirect()->route('bannermanage.index')->withSuccess('Success!');
-        }
-        // dd($update_banner_response);
-        return  redirect()->route('bannermanage.index')->withErrors(isset($update_banner_response->description) ? $update_banner_response->description : $update_banner_response->message);
+        return  redirect('bannermanage')->withErrors($response->message ?? 'Staging system error!');
     }
 
     public function create(Request $request){
@@ -260,16 +208,17 @@ class BannerManageController extends MY_Controller
             'direction_url' => 'required_if:direction_id,1',
             'img_path_2_name'   => 'required_if:bannerType,promotion',
         ];
-
-       $message = [
+        $message = [
             'direction_url.required_if' => 'Không được bỏ trống URL',
         ];
         $this->validate($request, $rules, $message);
+
         $request->merge([
             'show_from' => Carbon::parse($request->show_from)->format('Y-m-d H:i:s'),
             'show_to'   => Carbon::parse($request->show_to)->format('Y-m-d H:i:s')
         ]);
         $this->addToLog($request);
+
         $newsEventService = new NewsEventService();
         $createParams = [
             'bannerType'        => $request->bannerType,
@@ -312,25 +261,6 @@ class BannerManageController extends MY_Controller
         return  redirect()->route('bannermanage.index')->withErrors(isset($create_banner_response->description) ? $create_banner_response->description : $create_banner_response->message);
     }
 
-
-    public function initDatatable(Request $request){
-            $newsEventService = new NewsEventService();
-            // $toDay = Carbon::parse( date('Y-m-d h:i:s'))->format('Y-m-d\TH:i');
-            $param = [
-                'bannerType' => empty($request->bannerType) ? null : $request->bannerType,
-                'publicDateStart' => empty($request->public_date_from) ? null : Carbon::parse($request->public_date_from)->format('Y-m-d H:i:s'),
-                'publicDateEnd' => empty($request->public_date_to) ? null : Carbon::parse($request->public_date_to)->format('Y-m-d H:i:s')
-            ];
-            $responseCallAPIGetListBanner = $newsEventService->getListbanner($param);
-            if(empty($responseCallAPIGetListBanner)){
-                $responseCallAPIGetListBanner = (object)[];
-            };
-            if($this->user->role_id == ADMIN){
-                $responseCallAPIGetListBanner->isAdmin = true;
-            }
-            $responseCallAPIGetListBanner->aclCurrentModule  = $this->aclCurrentModule;
-            return $responseCallAPIGetListBanner;
-    }
     public function updateOrder(Request $request){
         if(!$request->ajax()){
             return false;

@@ -17,22 +17,17 @@ function onchangeTypeBanner(_this) {
 function onchangeDirection() {
     if ($(has_target_route).is(':checked')) {
         box_target.hidden = false;
-        box_target.classList.add('border');
-        box_target.classList.add('box-target');
     } else {
-        box_target.classList.remove('box-target');
-        box_target.classList.remove('border');
         box_target.hidden = true;
+        document.querySelector("#target_route").value = '';
+        document.querySelector("input[name=direction_url]").value = '';
     }
 }
 
 function onchangeTargetRoute() {
-    console.log($('#target_route').val())
     if ($('#target_route').val()==='1') {
-        console.log('ko');
         $('#direction_url').attr('style', 'display: ');
     } else {
-        console.log('ok');
         $('#direction_url').attr('style', 'display: none !important');
     }
 }

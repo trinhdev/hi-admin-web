@@ -76,7 +76,7 @@
                                         <img id="img_path_2" src="{{ ($isBannerPromotion) ? $banner->thumb_image :asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
                                         <span><i>&nbsp; &nbsp;&nbsp;(* đây là ảnh hiển thị ở Home)</i></span>
                                         <span class="warning-alert" id="path_2_required_alert" hidden>Dữ liệu này bắt buộc!</span>
-                                        <input name="img_path_2_name" id="img_path_2_name" value="" hidden />
+                                        <input name="thumbImageFileName" id="img_path_2_name" value="" hidden />
                                     </div>
                                     <div class="modal fade" id="img_view_modal" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog modal-xl">
@@ -93,8 +93,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="object_type" class="required_red_dot">Loại Đối tượng</label>
-                                        <select type="text" name="object_type" class="form-control">
+                                        <label for="objectType" class="required_red_dot">Loại Đối tượng</label>
+                                        <select type="text" name="objectType" class="form-control">
                                             <option value="topic" selected>Nhóm được đăng ký sẵn</option>
                                             <option value="location">Vùng miền</option>
                                             <option value="contract_phone">Số điện thoại</option>
@@ -103,8 +103,8 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="object" class="required_red_dot">Đối tượng</label>
-                                        <select type="text" name="object" class="form-control">
+                                        <label for="objects" class="required_red_dot">Đối tượng</label>
+                                        <select type="text" name="objects" class="form-control">
                                             <option value="all" selected>Tất cả KH cài Hi FPT (bao gồm guest)</option>
                                             <option value="all_hifpt">Tất cả KH có dùng dịch vụ (không bao gồm guest)</option>
                                             <option value="guest">Tất cả KH không dùng dịch vụ (guest)</option>
@@ -140,7 +140,7 @@
                                             </div>
                                             <div class="form-group" id="direction_url" style="display: none !important;">
                                                 <label for="direction_url">URL</label>
-                                                <input type="text" id="direction_url" name="direction_url" class="form-control" value="{{ !empty($banner)? $banner->direction_url:''}}">
+                                                <input type="text" id="direction_url" name="directionUrl" class="form-control" value="{{ !empty($banner)? $banner->direction_url:''}}">
                                                 <span class="warning-alert" id="direction_url_required_alert" hidden>Dữ liệu này bắt buộc!</span>
                                             </div>
                                         </div>

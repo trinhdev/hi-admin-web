@@ -69,10 +69,10 @@ function showLoading(){
         $('form').find(':button').prop('disabled', false);
       },5000);
 }
-function dialogConfirmWithAjax(sureCallbackFunction, data) {
+function dialogConfirmWithAjax(sureCallbackFunction, data, text="Please Confirm This Action") {
     Swal.fire({
         title: 'Are you sure?',
-        text: "Please Confirm This Action",
+        text: text,
         icon: 'warning',
         showCancelButton: true,
         cancelButtonColor: '#d33',
