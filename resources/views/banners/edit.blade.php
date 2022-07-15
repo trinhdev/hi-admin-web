@@ -25,7 +25,7 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-6">
-                    <form action="{{ route('bannermanage.update', [$banner['event_id']]) }}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)" onkeydown="checkEnableSave(this)">
+                    <form action="{{ route('bannermanage.update', [$banner['event_id']]) }}" method="POST" onSubmit="validateData(event,this)">
                         @csrf
                         @method('PUT')
                         <div class="card card-info">
@@ -54,17 +54,19 @@
                                     </div>
                                     <div class="form-group" id="path_1">
                                         <label class="required_red_dot">Ảnh</label>
-                                        <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this,event)" />
+                                        <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this)" />
                                         <img id="img_path_1" src="{{ $banner['image'] ?? asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
-                                        <input name="imageFileName" id="img_path_1_name" value="" hidden />
+                                        <input name="imageFileName" id="img_path_1_name" value="{{ substr($banner['image'],45) }}" hidden />
                                     </div>
-                                    <div class="form-group" id="path_2">
-                                        <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this,event)" />
-                                        <img id="img_path_2" src="{{ $banner['thumb_image'] ?? asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
-                                        <span><i>&nbsp; &nbsp;&nbsp;(* đây là ảnh hiển thị ở Home)</i></span>
-                                        <span class="warning-alert" id="path_2_required_alert" hidden>Dữ liệu này bắt buộc!</span>
-                                        <input name="thumbImageFileName" id="img_path_2_name" value="" hidden />
-                                    </div>
+                                    @if($banner['event_type']=='promotion')
+                                        <div class="form-group" id="path_2">
+                                            <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this)" />
+                                            <img id="img_path_2" src="{{ $banner['thumb_image'] ?? asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
+                                            <span><i>&nbsp; &nbsp;&nbsp;(* đây là ảnh hiển thị ở Home)</i></span>
+                                            <span class="warning-alert" id="path_2_required_alert" hidden>Dữ liệu này bắt buộc!</span>
+                                            <input name="thumbImageFileName" id="img_path_2_name" value="{{ substr($banner['thumb_image'],45) }}" hidden />
+                                        </div>
+                                    @endif
                                     <div class="modal fade" id="img_view_modal" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog modal-xl">
                                             <div class="modal-content">
@@ -104,19 +106,19 @@
                                         </div>
                                         <div class="col">
                                             <label for="show_to" class="required_red_dot"> Ngày kết thúc </label>
-                                            <input type="datetime-local" name="show_to" min="{{ $banner['public_date_end'] }}" value="{{ $banner['public_date_end'] }}" class="form-control" onchange="changePublicDateTime(this)" />
+                                            <input type="datetime-local" name="show_to" min="{{ $banner['public_date_start'] }}" value="{{ $banner['public_date_end'] }}" class="form-control" onchange="changePublicDateTime(this)" />
                                         </div>
                                     </div>
                                     <div class="form-group" id="show_target_route">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()"
+                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()" value="checked"
                                                 {{$banner['direction_id'] || $banner['event_url'] ? 'checked' : ''}}/>
                                             {{-- {{ (!empty($banner) && $banner->direction_id) ? --}}
                                             <label for="has_target_route">Điều hướng</label>
                                         </div>
-                                        <div class="border box-target" {{ $banner['direction_id'] || $banner['event_url'] ? '': 'hidden'}} id="box_target">
+                                        <div class="border box-target" style="display: {{ $banner['direction_id'] || $banner['event_url'] ? 'block': 'none'}}" id="box_target">
                                             <label for="target_route">Điều hướng đến</label>
-                                            <div id="collapseOne" tyle="transition: height 0.01s;">
+                                            <div id="collapseOne" style="transition: height 0.01s;">
                                                 {{-- <label for="target_route">Target Id</label> --}}
                                                 <select type="file" name="direction_id" class="form-control p" id="target_route" onchange="onchangeTargetRoute()" data-live-search="true" data-size="10">
                                                     @forelse($list_target_route as $target)
@@ -128,7 +130,7 @@
                                             </div>
                                             <div class="form-group" id="direction_url">
                                                 <label for="direction_url">URL</label>
-                                                <input type="text" id="direction_url" name="directionUrl" class="form-control" value="{{ $banner['direction_url'] ?? ''}}">
+                                                <input type="text" id="direction_url" name="directionUrl" class="form-control" value="{{ $banner['event_url'] ?? ''}}">
                                                 <span class="warning-alert" id="direction_url_required_alert" hidden>Dữ liệu này bắt buộc!</span>
                                             </div>
                                         </div>
@@ -155,3 +157,6 @@
 </div>
 <!-- /.content-wrapper -->
 @endsection
+@push('scripts')
+    <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
+@endpush

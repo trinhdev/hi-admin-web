@@ -1,28 +1,17 @@
 'use strict';
 
 function onchangeTypeBanner(_this) {
-    if (_this.value == 'promotion') {
-        path_2.hidden = false;
+    if (_this.value === 'promotion') {
+        document.getElementById('path_2').style.display = 'block';
+        document.getElementById('isShowHomeGroup').style.display = 'block';
     } else {
-        path_2.hidden = true;
-    }
-
-    if(_this.value == 'promotion') {
-        $('#isShowHomeGroup').show();
-    }
-    else {
-        $('#isShowHomeGroup').hide();
+        document.getElementById('path_2').style.display = 'none';
+        document.getElementById('isShowHomeGroup').style.display = 'none';
     }
 }
 
 function onchangeDirection() {
-    if ($(has_target_route).is(':checked')) {
-        box_target.hidden = false;
-    } else {
-        box_target.hidden = true;
-        document.querySelector('#target_route').value = '';
-        document.querySelector('input[name=direction_url]').value = '';
-    }
+    document.getElementById('box_target').style.display = document.getElementById('has_target_route').checked ? 'block' : 'none';
 }
 
 function onchangeTargetRoute() {
@@ -37,55 +26,71 @@ $('.img_viewable').click(function () {
     $('#full-image').attr('src', $(this).attr('src'));
     $('#img_view_modal').modal('show');
 });
-async function handleUploadImage(_this, event) {
-    event.preventDefault();
-    var img_tag_name = 'img_' + _this.name;
-    if (img_tag_name === 'img_path_2') {
-        path_2_required_alert.hidden = true;
-    }
-    var img_tag = document.getElementById(img_tag_name);
-    if (_this.value === '') {
-        resetData(_this, img_tag);
-    }
-    const [file] = _this.files;
-    if (file) {
-        if (file.size > 2050000) { // handle file
-            resetData(_this, img_tag);
-            showError("File is too big! Allowed memory size of 2MB");
-            return false;
-        };
-        // var base64_img = await getBase64(file);
-        // var base64_img = base64_img.replace(/^data:image\/[a-z]+;base64,/, "");
-
-        var uploadParam = {
-            // 'imageFileName': file.name,
-            // 'encodedImage': base64_img,
-            file:file,
-            _token: $('meta[name="csrf-token"]').attr('content')
-        };
-        uploadFileExternal(file, successCallUploadImage, {
-            'img_tag': img_tag,
-            'input_tag': _this,
-            'file': file
-        });
-    }
-}
-
-function successCallUploadImage(response, passingdata) {
-    if (response.statusCode == 0 && response.data != null) {
-        passingdata.img_tag.src = URL.createObjectURL(passingdata.file);
-        document.getElementById(passingdata.img_tag.id + '_name').value = response.data.uploadedImageFileName;
-    } else {
-        resetData(passingdata.input_tag, passingdata.img_tag);
-        document.getElementById(passingdata.img_tag.id + '_name').value = "";
-        showError(response.message);
-    }
-}
 
 function resetData(input_tag, img_tag) {
     input_tag.value = null;
     img_tag.src = "/images/image_holder.png";
 }
+
+// function successCallUploadImage(response, passingdata) {
+//     if (response.statusCode === 0 && response.data !== null) {
+//         passingdata.img_tag.src = URL.createObjectURL(passingdata.file);
+//         document.getElementById(passingdata.img_tag.id + '_name').value = response.data.uploadedImageFileName;
+//     } else {
+//         resetData(passingdata.input_tag, passingdata.img_tag);
+//         document.getElementById(passingdata.img_tag.id + '_name').value = '';
+//         showError(response.message);
+//     }
+// }
+
+// function handleUploadImage(_this, event) {
+//     event.preventDefault();
+//     let img_tag_name = 'img_' + _this.name;
+//     if (img_tag_name === 'img_path_2') {
+//         path_2_required_alert.hidden = true;
+//     }
+//     let img_tag = document.getElementById(img_tag_name);
+//     if (_this.value === '') {
+//         resetData(_this, img_tag);
+//     }
+//     const [file] = _this.files;
+//     if (file) {
+//         if (file.size > 2050000) { // handle file
+//             resetData(_this, img_tag);
+//             showError('File is too big! Allowed memory size of 2MB');
+//             return false;
+//         };
+//         uploadFileExternal(file, successCallUploadImage, {
+//             'img_tag': img_tag,
+//             'input_tag': _this,
+//             'file': file
+//         });
+//     }
+// }
+
+function responseImageStatic(res, input) {
+    console.log(res);
+    if (res.statusCode === 0 && res.data !== null) {
+        const [file] = input.files;
+        const input_name = 'img_' + input.name;
+        document.getElementById(input_name).src = URL.createObjectURL(file);
+        console.table(input_name + '_name', res.data.uploadedImageFileName)
+        document.getElementById(input_name + '_name').value = res.data.uploadedImageFileName;
+    } else {
+        showError(res.message);
+    }
+}
+
+function handleUploadImage(input) {
+    const [file] = input.files;
+    if (file.size > 2050000) { // handle file
+        resetData(input, null);
+        showError('File is too big! Allowed memory size of 2MB');
+        return false;
+    };
+    uploadFileStatic(file, input, responseImageStatic);
+}
+
 const getBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -147,28 +152,23 @@ function changePublicDateTime(dateTimeInput){
     show_to.attr("min",show_from.val());
 }
 
-function viewBanner(_this){
-    let row = _this.closest('tr');
-    let infoRow = row.querySelector('.infoRow');
 
-    callAPIHelper("/bannermanage/view/" + infoRow.getAttribute('data-id'),null,'GET',successGetViewBanner);
-}
 
 function successGetViewBanner(response){
-    if(response.error != undefined){
+    if(response.error !== undefined){
         showError(response.error)
     }else{
-        // console.log(response);
+        console.log(response);
         var banner = response.banner;
         var listTargetRoute = response.list_target_route;
         var listTypeBanner = response.list_type_banner;
 
         BannerDetail_titleVi.value  = banner.title_vi != undefined ? banner.title_vi : '';
         BannerDetail_titleEn.value = banner.title_en != undefined ? banner.title_en : '';
-        var map_bannerType = findElementInArrayObjectByKeyValue(listTypeBanner, 'id', banner.bannerType);
+        var map_bannerType = findElementInArrayObjectByKeyValue(listTypeBanner, 'id', banner.event_type);
         var map_directionId = findElementInArrayObjectByKeyValue(listTargetRoute, 'id', banner.direction_id);
 
-        BannerDetail_bannerType.value = map_bannerType != undefined ? map_bannerType.name : banner.bannerType;
+        BannerDetail_bannerType.value = map_bannerType != undefined ? map_bannerType.name : banner.event_type;
 
         BannerDetail_image.src = banner.image != undefined ? banner.image : '';
         if(banner.bannerType == 'promotion'){
@@ -204,6 +204,14 @@ function successGetViewBanner(response){
         $('#showDetailBanner_Modal').modal('toggle');
     }
 }
+
+function viewBanner(_this){
+    let row = _this.closest('tr');
+    let infoRow = row.querySelector('.infoRow');
+
+    callAPIHelper("/bannermanage/view/" + infoRow.getAttribute('data-id'),null,'GET',successGetViewBanner);
+}
+
 function editBanner(button){
     var bannerId = button.getAttribute('data-id');
     var editBannerLink =  base_url+`/bannermanage/edit/` + bannerId;
