@@ -87,7 +87,7 @@ class BannerManageController extends MY_Controller
             'directionUrl'      => $request->input('has_target_route')=='checked' && $request->input('direction_id')==1 ? $request->input('directionUrl', '') : '',
         ]);
         $response = $this->service->updateBanner($params);
-        if($response->statusCode == 0){
+        if($response){
             return redirect('bannermanage')->withSuccess('');
         }
         return  redirect('bannermanage')->withErrors($response->message ?? 'Staging system error!');

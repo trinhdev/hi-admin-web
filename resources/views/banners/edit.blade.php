@@ -106,7 +106,7 @@
                                         </div>
                                         <div class="col">
                                             <label for="show_to" class="required_red_dot"> Ngày kết thúc </label>
-                                            <input type="datetime-local" name="show_to" min="{{ $banner['public_date_end'] }}" value="{{ $banner['public_date_end'] }}" class="form-control" onchange="changePublicDateTime(this)" />
+                                            <input type="datetime-local" name="show_to" min="{{ $banner['public_date_start'] }}" value="{{ $banner['public_date_end'] }}" class="form-control" onchange="changePublicDateTime(this)" />
                                         </div>
                                     </div>
                                     <div class="form-group" id="show_target_route">
@@ -130,7 +130,7 @@
                                             </div>
                                             <div class="form-group" id="direction_url">
                                                 <label for="direction_url">URL</label>
-                                                <input type="text" id="direction_url" name="directionUrl" class="form-control" value="{{ $banner['direction_url'] ?? ''}}">
+                                                <input type="text" id="direction_url" name="directionUrl" class="form-control" value="{{ $banner['event_url'] ?? ''}}">
                                                 <span class="warning-alert" id="direction_url_required_alert" hidden>Dữ liệu này bắt buộc!</span>
                                             </div>
                                         </div>
