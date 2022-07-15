@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">{{ (!empty($user)) ? 'CHỈNH SỬA' : 'TẠO MỚI' }} BANNER</h1>
+                    <h1 class="m-0">ADD NEW BANNER</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('bannermanage.index')}}">Banner</a></li>
-                        <li class="breadcrumb-item active">{{ (!empty($user)) ? 'chỉnh sửa' : 'Tạo mới' }}</li>
+                        <li class="breadcrumb-item active">Tạo mới</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -25,9 +25,9 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-6">
-                    <form action="{{ route('bannermanage.update', [$banner['event_id']]) }}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)" onkeydown="checkEnableSave(this)">
+                    <form action="{{ route('bannermanage.store') }}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)" onkeydown="checkEnableSave(this)">
                         @csrf
-                        @method('PUT')
+                        @method('POST')
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title uppercase">Thông tin Banner</h3>
@@ -36,17 +36,17 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="title" class="required_red_dot">Tiêu đề tiếng Việt</label>
-                                        <input type="text" name="title_vi" class="form-control" value="{{ $banner['title_vi'] }}">
+                                        <input type="text" name="titleVi" class="form-control" value="{{ old('titleVi') }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="title" class="required_red_dot">Tiêu đề tiếng Anh</label>
-                                        <input type="text" name="title_en" class="form-control" value="{{ $banner['title_en'] }}">
+                                        <input type="text" name="titleEn" class="form-control" value="{{ old('titleEn') }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="bannerType" class="required_red_dot">Vị trí hiển thị</label>
                                         <select type="text" name="bannerType" class="form-control" onchange="onchangeTypeBanner(this)">
                                             @forelse($list_type_banner as $type)
-                                                <option value="{{$type->id}}" {{$banner['event_type'] == $type->key ? 'selected' : 'disabled'}}>{{ $type->name }}</option>
+                                                <option value="{{$type->id}}">{{ $type->name }}</option>
                                             @empty
                                                 <option>Error data</option>
                                             @endforelse
@@ -55,7 +55,7 @@
                                     <div class="form-group" id="path_1">
                                         <label class="required_red_dot">Ảnh</label>
                                         <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this,event)" />
-                                        <img id="img_path_1" src="{{ $banner['image'] ?? asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
+                                        <img id="img_path_1" src="{{ asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
                                         <input name="imageFileName" id="img_path_1_name" value="" hidden />
                                     </div>
                                     <div class="form-group" id="path_2">
@@ -100,42 +100,40 @@
                                     <div class="form-row">
                                         <div class="col">
                                             <label for="show_from" class="required_red_dot">Ngày hiển thị </label>
-                                            <input type="datetime-local" name="show_from" max="{{ $banner['public_date_start'] }}" value="{{ $banner['public_date_start'] }}" class="form-control" onchange="changePublicDateTime(this)" />
+                                            <input type="datetime-local" name="show_from" value="{{ old('show_from') }}" class="form-control" onchange="changePublicDateTime(this)" />
                                         </div>
                                         <div class="col">
                                             <label for="show_to" class="required_red_dot"> Ngày kết thúc </label>
-                                            <input type="datetime-local" name="show_to" min="{{ $banner['public_date_end'] }}" value="{{ $banner['public_date_end'] }}" class="form-control" onchange="changePublicDateTime(this)" />
+                                            <input type="datetime-local" name="show_to" value="{{ old('show_to') }}" class="form-control" onchange="changePublicDateTime(this)" />
                                         </div>
                                     </div>
                                     <div class="form-group" id="show_target_route">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()"
-                                                {{$banner['direction_id'] || $banner['event_url'] ? 'checked' : ''}}/>
-                                            {{-- {{ (!empty($banner) && $banner->direction_id) ? --}}
+                                            <input type="checkbox" id="has_target_route" name="has_target_route" value="{{ old('has_target_route') }}" onchange="onchangeDirection()"/>
                                             <label for="has_target_route">Điều hướng</label>
                                         </div>
-                                        <div class="border box-target" {{ $banner['direction_id'] || $banner['event_url'] ? '': 'hidden'}} id="box_target">
+                                        <div class="border box-target" id="box_target" hidden>
                                             <label for="target_route">Điều hướng đến</label>
                                             <div id="collapseOne" tyle="transition: height 0.01s;">
                                                 {{-- <label for="target_route">Target Id</label> --}}
                                                 <select type="file" name="direction_id" class="form-control p" id="target_route" onchange="onchangeTargetRoute()" data-live-search="true" data-size="10">
                                                     @forelse($list_target_route as $target)
-                                                    <option value="{{$target->id}}" {{$banner['direction_id'] == $target->id ? 'selected' : ''}}>{{ $target->name }}</option>
+                                                    <option value="{{$target->id}}">{{ $target->name }}</option>
                                                     @empty
                                                         <option>Error data</option>
                                                     @endforelse
                                                 </select>
                                             </div>
-                                            <div class="form-group" id="direction_url">
+                                            <div class="form-group" id="direction_url" style="display: none !important;">
                                                 <label for="direction_url">URL</label>
-                                                <input type="text" id="direction_url" name="directionUrl" class="form-control" value="{{ $banner['direction_url'] ?? ''}}">
+                                                <input type="text" id="direction_url" name="directionUrl" value="{{ old('directionUrl') }}" class="form-control">
                                                 <span class="warning-alert" id="direction_url_required_alert" hidden>Dữ liệu này bắt buộc!</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="isShowHomeGroup" class="form-group" style="display: {{ $banner['event_type'] == 'promotion' ? 'block' : 'none' }}">
+                                    <div id="isShowHomeGroup" class="form-group">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" id="isShowHome" name="isShowHome" {{$banner['is_show_home'] == 1 ? 'checked' : ''}} />
+                                            <input type="checkbox" id="isShowHome" name="isShowHome" checked />
                                             <label for="isShowHome">Hiện ở Home</label>
                                         </div>
                                     </div>
