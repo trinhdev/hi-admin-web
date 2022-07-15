@@ -59,7 +59,6 @@
 <script src="{{ asset('/custom_js/updateprofile.js')}}"></script>
 <script src="{{ asset('/custom_js/smsworld.js')}}"></script>
 <script src="{{ asset('/custom_js/checkuserinfo.js')}}"></script>
-<script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 <script src="{{ asset('/custom_js/popupmanage.js')}}"></script>
 <script src="{{ asset('/custom_js/otp.js')}}"></script>
 <script src="{{ asset('/custom_js/ftel_phone.js')}}"></script>

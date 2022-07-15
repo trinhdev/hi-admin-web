@@ -134,6 +134,35 @@ function uploadFileExternal(file, callBack, passingData) {
     });
 }
 
+function uploadFileStatic(file,input, calllback) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    let formData = new FormData();
+    formData.append('file', file,file.name);
+    $.ajax({
+        type: 'POST',
+        url: '/file/uploadImageExternal',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: (data) => {
+            calllback(data, input);
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+        }
+    });
+}
+
 function showSuccess(message = null) {
     swal.fire({
         icon: 'success',

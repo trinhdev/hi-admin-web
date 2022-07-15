@@ -102,4 +102,5 @@
             data.public_date_end = $('#show_to').val();
         });
     </script>
+    <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 @endpush
