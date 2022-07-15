@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Hi_FPT\AppController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -26,6 +27,11 @@ Route::group([
     ],
     function (){
         Route::get('/', [HomeController::class, 'index'])->name('home');
+        Route::get('trinhdev/clear', function() {
+            Artisan::call('config:clear');
+            Artisan::call('config:cache');
+            Artisan::call('optimize');
+        });
         Route::prefix('home')->group(function () {
             Route::get('/', 'HomeController@index')->name('home');
             Route::get('/getDataChart', 'HomeController@getDataChart')->name('home.getDataChart');
@@ -141,7 +147,7 @@ Route::group([
             Route::prefix('bannermanage')->group(function () {
                 Route::get('/','BannerManageController@index')->name('bannermanage.index');
                 Route::get('/edit/{id}','BannerManageController@edit')->name('bannermanage.edit');
-                Route::get('/create','BannerManageController@create')->name('bannermanage.create');
+                Route::get('/create','BannerManageController@edit')->name('bannermanage.create');
                 Route::post('/store','BannerManageController@store')->name('bannermanage.store');
                 Route::put('/update/{id}','BannerManageController@update')->name('bannermanage.update');
                 Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
@@ -233,6 +239,9 @@ Route::group([
             Route::prefix('app')->group(function () {
                 Route::get('/', [AppController::class, 'index'])->name('app.index');
                 Route::get('/export', [AppController::class, 'export'])->name('app.export');
+                Route::get('download/{filename}', function($filename) {
+                    return response()->download(public_path('file/'.$filename), $filename);
+                });
             });
             Route::prefix('payment')->group(function () {
                 Route::get('/', [PayMentController::class, 'index'])->name('payment.index');

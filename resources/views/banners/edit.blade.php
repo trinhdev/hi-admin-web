@@ -25,19 +25,9 @@
         <div class="container-fluid">
             <div class="row justify-content-md-center">
                 <div class="col-sm-6">
-                    @php
-                    $action = (empty($banner)) ? route('bannermanage.store') : route('bannermanage.update', [$banner->bannerId, $banner->bannerType]);
-                    $isBannerHome = false;
-                    $isBannerPromotion = false;
-                    if(!empty($banner) && $banner->bannerType == 'promotion'){
-                    $isBannerPromotion = true;
-                    }
-                    @endphp
-                    <form action="{{$action}}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)" onkeydown="checkEnableSave(this)">
+                    <form action="{{ route('bannermanage.update', [$banner['event_id']]) }}" method="POST" onSubmit="validateData(event,this)" onchange="checkEnableSave(this)" onkeydown="checkEnableSave(this)">
                         @csrf
-                        @if(!empty($banner))
                         @method('PUT')
-                        @endif
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title uppercase">Thông tin Banner</h3>
@@ -46,37 +36,34 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="title" class="required_red_dot">Tiêu đề tiếng Việt</label>
-                                        <input type="text" name="title_vi" class="form-control" value="{{ !empty($banner)?$banner->title_vi : ''}}">
+                                        <input type="text" name="title_vi" class="form-control" value="{{ $banner['title_vi'] }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="title" class="required_red_dot">Tiêu đề tiếng Anh</label>
-                                        <input type="text" name="title_en" class="form-control" value="{{ !empty($banner)?$banner->title_en : ''}}">
+                                        <input type="text" name="title_en" class="form-control" value="{{ $banner['title_en'] }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="bannerType" class="required_red_dot">Vị trí hiển thị</label>
-                                        <select type="text" name="{{ !empty($banner) ? '' : 'bannerType'}}" class="form-control" onchange="onchangeTypeBanner(this)" {{ !empty($banner) ? 'disabled' : ''}}>
-                                            @if(!empty($list_type_banner))
-                                            @foreach($list_type_banner as $type)
-                                            <option value='{{$type->id}}' {{ ( !empty($banner) && $banner->bannerType == $type->id) ? 'selected' : ''}}>{{$type->name}}</option>
-                                            @endforeach
-                                            @endif
+                                        <select type="text" name="bannerType" class="form-control" onchange="onchangeTypeBanner(this)">
+                                            @forelse($list_type_banner as $type)
+                                                <option value="{{$type->id}}" {{$banner['event_type'] == $type->key ? 'selected' : 'disabled'}}>{{ $type->name }}</option>
+                                            @empty
+                                                <option>Error data</option>
+                                            @endforelse
                                         </select>
-                                        @if(!empty($banner))
-                                        <input name="bannerType" value="{{ !empty($banner) ? $banner->bannerType : ''}}" hidden />
-                                        @endif
                                     </div>
                                     <div class="form-group" id="path_1">
                                         <label class="required_red_dot">Ảnh</label>
                                         <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this,event)" />
-                                        <img id="img_path_1" src="{{ (!empty($banner)) ? $banner->image :asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
-                                        <input name="img_path_1_name" id="img_path_1_name" value="" hidden />
+                                        <img id="img_path_1" src="{{ $banner['image'] ?? asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
+                                        <input name="imageFileName" id="img_path_1_name" value="" hidden />
                                     </div>
-                                    <div class="form-group" id="path_2" {{ ($isBannerPromotion) ? '':'hidden' }}>
+                                    <div class="form-group" id="path_2">
                                         <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this,event)" />
-                                        <img id="img_path_2" src="{{ ($isBannerPromotion) ? $banner->thumb_image :asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
+                                        <img id="img_path_2" src="{{ $banner['thumb_image'] ?? asset('/images/image_holder.png') }}" alt="your image" class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px" />
                                         <span><i>&nbsp; &nbsp;&nbsp;(* đây là ảnh hiển thị ở Home)</i></span>
                                         <span class="warning-alert" id="path_2_required_alert" hidden>Dữ liệu này bắt buộc!</span>
-                                        <input name="img_path_2_name" id="img_path_2_name" value="" hidden />
+                                        <input name="thumbImageFileName" id="img_path_2_name" value="" hidden />
                                     </div>
                                     <div class="modal fade" id="img_view_modal" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog modal-xl">
@@ -93,8 +80,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="object_type" class="required_red_dot">Loại Đối tượng</label>
-                                        <select type="text" name="object_type" class="form-control">
+                                        <label for="objectType" class="required_red_dot">Loại Đối tượng</label>
+                                        <select type="text" name="objectType" class="form-control">
                                             <option value="topic" selected>Nhóm được đăng ký sẵn</option>
                                             <option value="location">Vùng miền</option>
                                             <option value="contract_phone">Số điện thoại</option>
@@ -103,8 +90,8 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="object" class="required_red_dot">Đối tượng</label>
-                                        <select type="text" name="object" class="form-control">
+                                        <label for="objects" class="required_red_dot">Đối tượng</label>
+                                        <select type="text" name="objects" class="form-control">
                                             <option value="all" selected>Tất cả KH cài Hi FPT (bao gồm guest)</option>
                                             <option value="all_hifpt">Tất cả KH có dùng dịch vụ (không bao gồm guest)</option>
                                             <option value="guest">Tất cả KH không dùng dịch vụ (guest)</option>
@@ -113,53 +100,50 @@
                                     <div class="form-row">
                                         <div class="col">
                                             <label for="show_from" class="required_red_dot">Ngày hiển thị </label>
-                                            <input type="datetime-local" name="show_from" max="{{ (!empty($banner) && !empty($banner->public_date_end))?$banner->public_date_end:''}}" value="{{ !empty($banner)?$banner->public_date_start:''}}" class="form-control" onchange="changePublicDateTime(this)" />
+                                            <input type="datetime-local" name="show_from" max="{{ $banner['public_date_start'] }}" value="{{ $banner['public_date_start'] }}" class="form-control" onchange="changePublicDateTime(this)" />
                                         </div>
                                         <div class="col">
                                             <label for="show_to" class="required_red_dot"> Ngày kết thúc </label>
-                                            <input type="datetime-local" name="show_to" min="{{ (!empty($banner) && !empty($banner->public_date_start))?$banner->public_date_start:''}}" value="{{ !empty($banner)?$banner->public_date_end:''}}" class="form-control" onchange="changePublicDateTime(this)" />
+                                            <input type="datetime-local" name="show_to" min="{{ $banner['public_date_end'] }}" value="{{ $banner['public_date_end'] }}" class="form-control" onchange="changePublicDateTime(this)" />
                                         </div>
                                     </div>
                                     <div class="form-group" id="show_target_route">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()" {{ (!empty($banner) && (!empty($banner->direction_id) || !empty($banner->direction_url)) ) ? 'checked="true"' : ''}} />
+                                            <input type="checkbox" id="has_target_route" name="has_target_route" onchange="onchangeDirection()"
+                                                {{$banner['direction_id'] || $banner['event_url'] ? 'checked' : ''}}/>
                                             {{-- {{ (!empty($banner) && $banner->direction_id) ? --}}
                                             <label for="has_target_route">Điều hướng</label>
                                         </div>
-                                        <div class="{{ (!empty($banner) && (!empty($banner->direction_id) || !empty($banner->direction_url) ) ) ? "border box-target" : ''}}" {{ (!empty($banner) && (!empty($banner->direction_id) || !empty($banner->direction_url))) ? '' : 'hidden'}} id="box_target">
+                                        <div class="border box-target" {{ $banner['direction_id'] || $banner['event_url'] ? '': 'hidden'}} id="box_target">
                                             <label for="target_route">Điều hướng đến</label>
                                             <div id="collapseOne" tyle="transition: height 0.01s;">
                                                 {{-- <label for="target_route">Target Id</label> --}}
                                                 <select type="file" name="direction_id" class="form-control p" id="target_route" onchange="onchangeTargetRoute()" data-live-search="true" data-size="10">
-                                                    @if(!empty($list_target_route))
-                                                    @foreach($list_target_route as $target)
-                                                    <option value='{{$target->id}}' {{ (!empty($banner) && $banner->direction_id == $target->id ) ? 'selected' : ''}}>{{$target->name}}</option>
-                                                    @endforeach
-                                                    @endif
+                                                    @forelse($list_target_route as $target)
+                                                    <option value="{{$target->id}}" {{$banner['direction_id'] == $target->id ? 'selected' : ''}}>{{ $target->name }}</option>
+                                                    @empty
+                                                        <option>Error data</option>
+                                                    @endforelse
                                                 </select>
                                             </div>
-                                            <div class="form-group" id="direction_url" style="display: none !important;">
+                                            <div class="form-group" id="direction_url">
                                                 <label for="direction_url">URL</label>
-                                                <input type="text" id="direction_url" name="direction_url" class="form-control" value="{{ !empty($banner)? $banner->direction_url:''}}">
+                                                <input type="text" id="direction_url" name="directionUrl" class="form-control" value="{{ $banner['direction_url'] ?? ''}}">
                                                 <span class="warning-alert" id="direction_url_required_alert" hidden>Dữ liệu này bắt buộc!</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="isShowHomeGroup" class="form-group" style="display: {{ (!empty($banner) && $banner->bannerType == 'promotion') ? 'block' : 'none' }}">
+                                    <div id="isShowHomeGroup" class="form-group" style="display: {{ $banner['event_type'] == 'promotion' ? 'block' : 'none' }}">
                                         <div class="icheck-carrot">
-                                            <input type="checkbox" id="isShowHome" name="isShowHome" {{ (!empty($banner) && $banner->is_show_home) ? 'checked' : ''}} />
+                                            <input type="checkbox" id="isShowHome" name="isShowHome" {{$banner['is_show_home'] == 1 ? 'checked' : ''}} />
                                             <label for="isShowHome">Hiện ở Home</label>
                                         </div>
                                     </div>
-                                    @if(!empty($banner))
-                                    <input name="cms_note" value="{{$banner->cms_note}}" hidden />
-                                    @endif
-
                                 </div>
                             </div>
                             <div class="card-footer" style="text-align: center">
                                 <a href="{{ route('bannermanage.index') }}" type="button" class="btn btn-default">Thoát</a>
-                                <button type="submit" class="btn btn-info" disabled>Lưu</button>
+                                <button type="submit" class="btn btn-info">Lưu</button>
                             </div>
                         </div>
                     </form>

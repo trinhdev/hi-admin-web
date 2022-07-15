@@ -37,6 +37,14 @@ if (!function_exists('check_status_code_api')) {
         }
     }
 }
+
+if (!function_exists('get_error_message_api')) {
+    function get_error_message_api( $response ) {
+        if (isset($response->statusCode) && $response->statusCode != 0) {
+            return $response->message;
+        }
+    }
+}
 if (!function_exists('write_log_file')) {
     function write_log_file($filename = 'error', $message = NULL, $level = 'error')
     {
