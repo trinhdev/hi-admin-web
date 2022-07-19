@@ -101,6 +101,9 @@
                                         <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Định danh sản phẩm</label>
                                         <div class="col-sm-9">
                                             <textarea class="form-control" rows="4" id="data" name="data" value={{ @$data['data'] }}></textarea>
+                                            @error('data')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>

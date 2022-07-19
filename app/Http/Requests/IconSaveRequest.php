@@ -45,6 +45,7 @@ class IconSaveRequest extends FormRequest
             'iconUrl.required'              => 'Xin vui lòng upload hình ảnh của sản phẩm',
             'dataActionStaging.required'    => 'Link Staging không được để trống',
             'dataActionProduction.required' => 'Link Production không được để trống',
+            'data.required'                 => 'Định danh sản phẩm không được để trống'
         ];
     }
 }
