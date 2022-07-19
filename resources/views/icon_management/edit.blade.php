@@ -86,6 +86,9 @@
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                             <input type="name" class="form-control" id="en-name" placeholder="Tên tiếng Anh" name="productNameEn" value="{{ (!empty($data['productNameEn'])) ? $data['productNameEn'] : '' }}">
+                                            @error('productNameEn')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row">
