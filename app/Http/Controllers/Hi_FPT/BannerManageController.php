@@ -112,8 +112,8 @@ class BannerManageController extends MY_Controller
             'show_from'   =>'required|date_format:Y-m-d\TH:i',
             'show_to'   =>'required|date_format:Y-m-d\TH:i',
             'imageFileName' =>'required',
+            'thumbImageFileName'=> 'required_if:bannerType,promotion',
         ]);
-
         $this->addToLog($request);
         $params = collect($validated)->merge([
             'publicDateStart'   => Carbon::parse($request->input('show_from'))->format('Y-m-d H:i:s'),
@@ -126,6 +126,9 @@ class BannerManageController extends MY_Controller
                 'modified_by' => null
             ])
         ]);
+        $params = $params->filter(function ($value, $key) {
+            return !empty($value);
+        });
         $response = $this->service->addNewBanner($params);
         if($response->statusCode == 0){
             return redirect('bannermanage')->withSuccess('');
