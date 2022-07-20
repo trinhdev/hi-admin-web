@@ -11,7 +11,7 @@ END ACTION PAGE
 --}}
 
 <div class="d-flex justify-content-center">
-    <a onclick="dialogConfirmWithAjax(deleteAirDirection, this)" data-check-delete="" data-id="{{ $model->id }}"
+    <a onclick="dialogConfirmWithAjax(deleteAirDirection, this)" data-key="{{ $model->key }}" data-id="{{ $model->id }}"
        style="float: left; margin-right: 5px;"
        type="button" href="#" class="btn btn-sm bg-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
     <a id="detailAirDirection" data-id="{{ $model->id }}"

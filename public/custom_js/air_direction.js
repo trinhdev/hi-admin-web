@@ -70,11 +70,12 @@ function methodAjaxAirDirection() {
 
 function deleteAirDirection(data){
     let id = $(data).data('id');
+    let key = $(data).data('key');
     $.ajax({
         url: '/air-direction/delete',
         type:'POST',
         data: {
-            id: id,
+            id: id, key: key
         }, success: function (response){
             showSuccess(response.message);
             var table = $('#air_direction_table').DataTable();
@@ -87,7 +88,7 @@ function deleteAirDirection(data){
                 return false;
             });
             showError(errorString);
-            console.log(data);
+            console.log(xhr);
         }
     });
 }
