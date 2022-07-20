@@ -86,6 +86,9 @@
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                             <input type="name" class="form-control" id="en-name" placeholder="Tên tiếng Anh" name="productNameEn" value="{{ (!empty($data['productNameEn'])) ? $data['productNameEn'] : '' }}">
+                                            @error('productNameEn')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -98,6 +101,9 @@
                                         <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Định danh sản phẩm</label>
                                         <div class="col-sm-9">
                                             <textarea class="form-control" rows="4" id="data" name="data" value={{ @$data['data'] }}></textarea>
+                                            @error('data')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
