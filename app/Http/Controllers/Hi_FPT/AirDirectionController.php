@@ -90,7 +90,14 @@ class AirDirectionController extends MY_Controller
     public function delete(Request $request) //  author: trinhhuynhdp@gmail.com
     {
         if(request()->ajax()) {
-            $request->validate(['id' => 'required']);
+            $request->validate(['id' => 'required', 'key' => 'required']);
+            if ($request->key == 'go_to_screen') {
+                $res = [
+                    'data'=> null,
+                    'errors'=> ['Không được xóa điều hướng này']
+                ];
+                return response()->json($res, 401);
+            }
             $this->addToLog($request);
             $air_direction = new AirDirectionService();
             $response = $air_direction->delete([$request->id]);

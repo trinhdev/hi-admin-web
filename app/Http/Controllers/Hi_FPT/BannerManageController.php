@@ -126,7 +126,7 @@ class BannerManageController extends MY_Controller
                 'modified_by' => null
             ])
         ]);
-        $params = $params->filter(function ($value, $key) {
+        $params = $params->filter(function ($value) {
             return !empty($value);
         });
         $response = $this->service->addNewBanner($params);
