@@ -54,8 +54,8 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Tên danh mục <span class="required">*</span></label>
-                                        <div class="col-sm-9">
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Tên danh mục <span class="required">*</span></label>
+                                        <div class="col-sm-10">
                                             <input type="name" style="margin-bottom: 15px" class="form-control" id="vi-name" placeholder="Tên tiếng Việt" name="productTitleNameVi" value="{{ @$data['productTitleNameVi'] }}">
                                             @error('productTitleNameVi')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -64,8 +64,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Mô tả danh mục</label>
-                                        <div class="col-sm-9">
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Mô tả danh mục</label>
+                                        <div class="col-sm-10">
                                             <textarea class="form-control" rows="4" id="comment" name="description"></textarea>
                                         </div>
                                     </div>
