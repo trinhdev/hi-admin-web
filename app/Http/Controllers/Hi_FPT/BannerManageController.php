@@ -41,12 +41,11 @@ class BannerManageController extends MY_Controller
             "event_id","event_type","public_date_start","public_date_end","title_vi",
             "title_en","direction_id","event_url","image","thumb_image","view_count",
             "date_created","created_by","cms_note","is_show_home"]);
-        $result = [
+        return [
             'list_target_route'=>$listTargetRoute,
             'list_type_banner' => $listTypeBanner,
             'banner'=>$dataResponse
         ];
-        return $result;
     }
 
     public function edit(Request $request, $bannerId=null){

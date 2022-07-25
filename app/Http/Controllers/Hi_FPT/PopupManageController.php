@@ -44,13 +44,14 @@ class PopupManageController extends MY_Controller
 
     public function save(Request $request)
     {
+        //dd($request->all());
         $rules = [
             'templateType' => 'required',
             'titleVi' => 'required',
             'titleEn' => 'required',
             'image_popup_name' => 'required',
             'directionId' => 'required_if:templateType,popup_custom_image_transparent,popup_full_screen',
-            'directionUrl' => 'required_if:directionId,url_open_out_app,url_open_in_app',
+            'directionUrl' => 'required_if:directionId,1',
             'buttonImage_popup_name' => 'required_if:templateType,popup_custom_image_transparent,popup_full_screen',
         ];
         $request->validate($rules);
@@ -66,10 +67,9 @@ class PopupManageController extends MY_Controller
             'buttonImage' => !empty($request->buttonImage_popup_name) ? $request->buttonImage_popup_name : "",
         ];
 
-        if ($request->directionId == 'url_open_out_app' || $request->directionId == 'url_open_in_app') {
+        if ($request->directionId == '1') {
             $createParams['directionUrl'] = $request->directionUrl;
         }
-
         if (!empty($request->id_popup)) {
             $createParams['templatePersonalId'] = $request->id_popup;
             $create_popup_response = $newsEventService->updatePopup($createParams);

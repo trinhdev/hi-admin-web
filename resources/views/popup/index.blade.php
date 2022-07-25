@@ -44,7 +44,7 @@
                     <form id="formAction" action="{{route('popupmanage.save')}}" method="POST"
                           onchange="checkEnableSavePopup(this)" onsubmit="validateDataPopup(event,this)">
                         @csrf
-                        <input type="hidden" name="id_popup">
+                        <input type="hidden" id="id_popup" name="id_popup" value="">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">

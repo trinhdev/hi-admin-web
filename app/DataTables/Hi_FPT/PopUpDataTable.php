@@ -32,17 +32,17 @@ class PopUpDataTable extends DataTable
         return datatables()
             ->collection($query)
             ->addIndexColumn()
-            ->editColumn('buttonActionValue', function ($query) use ($listRoute) {
-                $name = $query->buttonActionType == 'function'
-                    ? ($routeObject = $listRoute->where('id', $query->directionId)->first()) ? $routeObject->name : 'null'
-                    : $query->buttonActionValue;
-                return $name ? $name : 'null';
-            })
+//            ->editColumn('buttonActionValue', function ($query) use ($listRoute) {
+//                $name = $query->buttonActionType == 'function'
+//                    ? ($routeObject = $listRoute->where('id', $query->directionId)->first()) ? $routeObject->name : 'null'
+//                    : $query->buttonActionValue;
+//                return $name ? $name : 'null';
+//            })
             ->editColumn('templateType', function ($query) use ($list_template_popup) {
                 $name = $list_template_popup[$query->templateType]
                     ? $list_template_popup[$query->templateType]
                     : $query;
-                return $name ? $name : $query->templateType;
+                return $name ?? $query->templateType;
             })
             ->editColumn('image', function ($query) {
                 return '

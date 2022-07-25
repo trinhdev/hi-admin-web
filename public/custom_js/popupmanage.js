@@ -52,7 +52,8 @@ function showHide() {
 
     $('#actionType_popup').on('change', function () {
         let type_direction = $('#actionType_popup').val();
-        if (type_direction === 'url_open_out_app' || type_direction === 'url_open_in_app') {
+        console.log(type_direction);
+        if (type_direction === '1') {
             $('#dataAction_popup').prop('readonly', false);
             $('#dataAction_popup').val('https://example.com');
         } else {
@@ -63,7 +64,7 @@ function showHide() {
 
     $('#directionId_popup').on('change', function () {
         let type_direction = $('#directionId_popup').val();
-        if (type_direction === 'url_open_out_app' || type_direction === 'url_open_in_app') {
+        if (type_direction === '1') {
             $('#form_directionUrl').show();
         } else {
             $('#form_directionUrl').hide();
