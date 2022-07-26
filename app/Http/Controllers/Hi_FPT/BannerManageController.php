@@ -76,6 +76,7 @@ class BannerManageController extends MY_Controller
         $this->addToLog($request);
         $params = collect($validated)->merge([
             'bannerId'          => $id,
+            'isShowHome'       => $request->has('isShowHome') ? 1 : null,
             'imageFileName'     => $request->input('imageFileName'),
             'thumbImageFileName'=> $request->input('thumbImageFileName'),
             'publicDateStart'   => Carbon::parse($request->input('show_from'))->format('Y-m-d H:i:s'),
@@ -84,7 +85,9 @@ class BannerManageController extends MY_Controller
             'titleEn'           => $request->input('title_en', ''),
             'directionId'       => $request->input('has_target_route')=='checked' ? $request->input('direction_id', '') : '',
             'directionUrl'      => $request->input('has_target_route')=='checked' && $request->input('direction_id')==1 ? $request->input('directionUrl', '') : '',
-        ]);
+        ])->filter(function ($value) {
+            return !empty($value);
+        });
         $response = $this->service->updateBanner($params);
         if($response){
             return redirect('bannermanage')->withSuccess('');
@@ -101,7 +104,8 @@ class BannerManageController extends MY_Controller
         return view('banners.edit')->with(['list_target_route'=>$listTargetRoute, 'list_type_banner' => $listTypeBanner]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $validated = $request->validate([
             'titleVi'  =>'required',
             'titleEn'  =>'required',
@@ -119,13 +123,12 @@ class BannerManageController extends MY_Controller
             'publicDateEnd'     => Carbon::parse($request->input('show_to'))->format('Y-m-d H:i:s'),
             'directionId'       => $request->input('has_target_route')=='checked' ? $request->input('direction_id', '') : '',
             'directionUrl'      => $request->input('has_target_route')=='checked' && $request->input('direction_id')==1 ? $request->input('directionUrl', '') : '',
-            'isShowHome'        => $request->input('isShowHome') ? 1 : null,
+            'isShowHome'        => $request->has('isShowHome') ? 1 : null,
             'cms_note'          => json_encode([
                 'created_by' => substr($this->user->email, 0, strpos($this->user->email, '@')),
                 'modified_by' => null
             ])
-        ]);
-        $params = $params->filter(function ($value) {
+        ])->filter(function ($value) {
             return !empty($value);
         });
         $response = $this->service->addNewBanner($params);
