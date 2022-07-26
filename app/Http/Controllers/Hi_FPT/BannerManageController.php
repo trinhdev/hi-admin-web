@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Hi_FPT;
 use App\DataTables\Hi_FPT\BannerDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
+use App\Http\Requests\BannerManageRequest\StoreRequest;
+use App\Http\Requests\BannerManageRequest\UpdateRequest;
 use App\Http\Traits\DataTrait;
 use App\Services\NewsEventService;
 use Illuminate\Http\Request;
@@ -63,15 +65,9 @@ class BannerManageController extends MY_Controller
         return view('banners.edit')->with(['list_target_route'=>$listTargetRoute, 'list_type_banner' => $listTypeBanner, 'banner'=>$dataResponse]);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        $validated = $request->validate([
-            'bannerType' =>'required',
-            'objects'    =>'required',
-            'objectType'=>'required',
-            'show_from' =>'required|date_format:Y-m-d\TH:i',
-            'show_to'   =>'required|date_format:Y-m-d\TH:i',
-        ]);
+        $validated = $request->validated();
 
         $this->addToLog($request);
         $params = collect($validated)->merge([
@@ -104,19 +100,9 @@ class BannerManageController extends MY_Controller
         return view('banners.edit')->with(['list_target_route'=>$listTargetRoute, 'list_type_banner' => $listTypeBanner]);
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        $validated = $request->validate([
-            'titleVi'  =>'required',
-            'titleEn'  =>'required',
-            'bannerType' =>'required',
-            'objects'    =>'required',
-            'objectType'=>'required',
-            'show_from'   =>'required|date_format:Y-m-d\TH:i',
-            'show_to'   =>'required|date_format:Y-m-d\TH:i',
-            'imageFileName' =>'required',
-            'thumbImageFileName'=> 'required_if:bannerType,promotion',
-        ]);
+        $validated = $request->validated();
         $this->addToLog($request);
         $params = collect($validated)->merge([
             'publicDateStart'   => Carbon::parse($request->input('show_from'))->format('Y-m-d H:i:s'),

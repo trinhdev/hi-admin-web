@@ -27,7 +27,7 @@ class PopupPrivateRepository implements PopupPrivateInterface
             'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m"))
         ];
     }
-    public function all($dataTable, $request)
+    public function all($dataTable, $params)
     {
         $newsEventService = new NewsEventService();
         $list_route = $newsEventService->getListTargetRoute()->data ?? null;
@@ -38,9 +38,9 @@ class PopupPrivateRepository implements PopupPrivateInterface
         $res = check_status_code_api(json_decode($response->getBody()->getContents()));
         return $dataTable->with([
             'data'  =>$res,
-            'type'  => $request->type,
-            'start' => $request->start,
-            'length'=> $request->length
+            'type'  => $params->type,
+            'start' => $params->start,
+            'length'=> $params->length
         ])->render('popup-private.index', compact('list_type_popup', 'list_route'));
     }
     public function paginate(array $params)

@@ -82,8 +82,7 @@ class BannerDataTable extends DataTable
     public function query(NewsEventService $service)
     {
         $result = [
-            'result' => [],
-            'list_type_banner' => $this->list_type_banner
+            'result' => []
         ];
         $perPage = $this->request->length ?? 10;
         $currentPage = $this->request->start == 0 ? 1 : ($this->request->start / $perPage) + 1;
