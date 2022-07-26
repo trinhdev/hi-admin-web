@@ -45,6 +45,7 @@ if (!function_exists('get_error_message_api')) {
         }
     }
 }
+
 if (!function_exists('write_log_file')) {
     function write_log_file($filename = 'error', $message = NULL, $level = 'error')
     {

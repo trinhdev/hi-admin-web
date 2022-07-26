@@ -2,10 +2,7 @@
 
 namespace App\DataTables\Hi_FPT;
 
-use App\Services\NewsEventService;
-use App\Services\PaymentService;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 
 class PopupDetailDataTable extends DataTable
@@ -17,17 +14,14 @@ class PopupDetailDataTable extends DataTable
     {
         return datatables()
             ->collection($query)
-//            ->editColumn('action',function($row) {
-//                return '<a class="btn btn-sm fa fa-bell btn-icon bg-olive"></a>';
-//            })
             ->editColumn('showOnceTime',function($row) {
-                return config('platform_config.repeatTime')[$row['showOnceTime']];
+                return config('platform_config.repeatTime')[$row->showOnceTime];
             })
             ->editColumn('pushedObject',function($row) {
-                return config('platform_config.object')[$row['pushedObject']];
+                return config('platform_config.object')[$row->pushedObject];
             })
             ->editColumn('process_status',function($row) {
-                if($row['process_status'] == 'deleted') {
+                if($row->process_status == 'deleted') {
                     return '<span style="color: #006400" class="badge border border-blue">Hoạt động <i class="fas fa-check-circle"></i></span>';
                 }
                 else {
@@ -41,8 +35,7 @@ class PopupDetailDataTable extends DataTable
 
     public function query()
     {
-        $data = $this->data;
-        return empty($data) ? $response=null : $response=collect($data['templatePersonalMaps']);
+        return collect($this->data->data->templatePersonalMaps) ?? [];
     }
 
     public function html()
@@ -95,11 +88,7 @@ class PopupDetailDataTable extends DataTable
             Column::make('pushedObject')->title('Đối tượng')->addClass('text-left'),
             Column::make('dateStart')->title('Thời gian bắt đầu'),
             Column::make('dateEnd')->title('Thời gian kết thúc'),
-            Column::make('process_status')->title('Trạng thái'),
-//            Column::computed('action')
-//                ->searching(false)
-//                ->width(80)
-//                ->addClass('text-center')
+            Column::make('process_status')->title('Trạng thái')
         ];
     }
 
