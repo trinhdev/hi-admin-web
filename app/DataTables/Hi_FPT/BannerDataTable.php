@@ -29,8 +29,8 @@ class BannerDataTable extends DataTable
         return datatables()
             ->collection($query)
             ->editColumn('title_vi', function($row) {
-                $text = strlen($row->title_vi)>50 ? (substr($row->title_vi, 0,50).'<div class="title_show text-bold">...Xem thêm</div>') : $row->title_vi;
-                return '<div class="title_vi_none text-left">'.$row->title_vi.'</div><div class="title_vi_block">'.$text.'</div>';
+                $text = strlen($row->title_vi)>50 ? (substr($row->title_vi, 0,50).'<div class="text-bold" onclick="showHideTitle('.$row->event_id.')">...Xem thêm</div>') : $row->title_vi;
+                return '<div class="hide'.$row->event_id.' text-left" style="display: none;">'.$row->title_vi.'</div><div class="show'.$row->event_id.'">'.$text.'</div>';
             })
             ->editColumn('event_type', function($row) {
                 return '<span class="infoRow" data-id="'.$row->event_id.'">'.$row->event_type.'</span>';
@@ -130,16 +130,11 @@ class BannerDataTable extends DataTable
                             var public_date_start = $('#show_from');
                             var public_date_end = $('#show_to');
                             var table = $('#banner_manage').DataTable();
-                            $('.title_vi_none').toggle();
                             $(bannerType).on('change', function () {
                                 table.ajax.reload();
                             });
                             $(public_date_end).on('change', function () {
                                 table.ajax.reload();
-                            });
-                            $('.title_show').on('click', function () {
-                                $('.title_vi_none').toggle();
-                                $('.title_vi_block').toggle();
                             });
                          }"
                     ])
