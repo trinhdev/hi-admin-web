@@ -70,10 +70,11 @@ class Hdi_Orders extends Model
 
     public function reportByTime() {
         $mysql3 = config('database.connections.mysql3.database');
-        $data = DB::table('hihdi_db.hdi_orders as hdi')
-                ->join('hiadmin_stag_db.employees as employees', 'employees.phone', '=', 'hdi.referral_phone')
-                ->join('hiadmin_stag_db.list_organizations as organizations', 'employees.organizationCode', '=', 'organizations.code');
-        $output = DB::table($mysql3 . '.hdi_orders as hdi')
+        $connection = config('database.connections.mysql3.username') . '@' . config('database.connections.mysql3.host');
+        // $data = DB::table('hihdi_db.hdi_orders as hdi')->connection('mysql3')
+        //         ->join('hiadmin_stag_db.employees as employees', 'employees.phone', '=', 'hdi.referral_phone')
+        //         ->join('hiadmin_stag_db.list_organizations as organizations', 'employees.organizationCode', '=', 'organizations.code');
+        $output = DB::connection('mysql3')->table('hdi_orders as hdi')
                     ->selectRaw("organizations.zone_name AS 'zone', 
                                 organizations.branch_code AS 'branch_code', 
                                 organizations.branch_name_code AS 'branch_name_code', 
@@ -81,8 +82,8 @@ class Hdi_Orders extends Model
                                 SUM(IF(DATE(hdi.date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59', amount, 0)) AS 'amount_last_time',
                                 SUM(IF(DATE(hdi.date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', 1, 0)) AS 'count_this_time', 
                                 SUM(IF(DATE(hdi.date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', amount, 0)) AS 'amount_this_time'")
-                    ->join('hiadmin_stag_db.employees as employees', 'employees.phone', '=', 'hdi.referral_phone')
-                    ->join('hiadmin_stag_db.list_organizations as organizations', 'employees.organizationCode', '=', 'organizations.code')
+                    ->join(DB::connection('mysql')->getDatabaseName() . '.employees as employees', 'employees.phone', '=', 'hdi.referral_phone')
+                    ->join(DB::connection('mysql')->getDatabaseName() . '.list_organizations as organizations', 'employees.organizationCode', '=', 'organizations.code')
                     ->whereBetween('hdi.date_created', ['2022-05-01 00:00:00', '2022-06-30 23:59:59'])
                     ->groupBy('zone', 'branch_code', 'branch_name_code')
                     ->orderBy('zone', 'asc')
