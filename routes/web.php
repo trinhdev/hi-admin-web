@@ -286,6 +286,9 @@ Route::group([
                 Route::get('/initDatatableByMonth','AppinstallreportController@initDatatableByMonth')->name('appinstallreport.initDatatableByMonth');
                 Route::post('/export','AppinstallreportController@export')->name('appinstallreport.export');
             });
+            Route::prefix('reportsalebydate')->group(function () {
+                Route::get('/','SalereportbydateController@index')->name('reportsalebydate.index');
+            });
         });
     }
 );
