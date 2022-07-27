@@ -39,7 +39,7 @@ class PopUpDataTable extends DataTable
             ->skipPaging();
     }
 
-    public function query(NewsEventService $service, PopupManageInterface $PopupManageRepository)
+    public function query()
     {
         return collect($this->data->data) ?? [];
     }

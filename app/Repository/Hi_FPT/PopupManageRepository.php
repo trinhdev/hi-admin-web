@@ -8,6 +8,7 @@ use App\Services\NewsEventService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PopupManageRepository implements PopupManageInterface
 {
@@ -73,7 +74,7 @@ class PopupManageRepository implements PopupManageInterface
             return $dataTable->with([
                 'data' => json_decode($response)
             ])->render('popup.view', compact('object_type', 'repeatTime', 'object', 'id'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -101,7 +102,7 @@ class PopupManageRepository implements PopupManageInterface
                 return redirect()->route('popupmanage.index')->withSuccess(json_decode($response)->message);
             }
             return redirect()->route('popupmanage.index')->withErrors(json_decode($response)->message);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -123,7 +124,7 @@ class PopupManageRepository implements PopupManageInterface
                 'form_params' => $form_params
             ])->getBody()->getContents();
             return response()->json(['data' => json_decode($response)]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -141,7 +142,7 @@ class PopupManageRepository implements PopupManageInterface
                 return redirect()->back()->withErrors(json_decode($response)->message ?? 'Error API!');
             }
             return response()->json(json_decode($response)->data, Response::HTTP_OK);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -158,8 +159,8 @@ class PopupManageRepository implements PopupManageInterface
             if (!check_status_code_api(json_decode($response))) {
                 return redirect()->back()->withErrors(json_decode($response)->message ?? 'Error API!');
             }
-            return response()->json(json_decode($response), Response::HTTP_OK);
-        } catch (Exception $e) {
+            return response()->json(json_decode($response), ResponseAlias::HTTP_OK);
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }

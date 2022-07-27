@@ -19,7 +19,8 @@
         "openzipkin/zipkin": "^3.0",
         "predis/predis": "^1.1",
         "rap2hpoutre/fast-excel": "^3.2",
-        "yajra/laravel-datatables": "^1.5"
+        "yajra/laravel-datatables": "^1.5",
+        "ext-json": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -12,7 +12,7 @@ use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Html\Editor\Editor;
 
-class BannerDataTable extends DataTable
+class BannerManageDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -23,15 +23,11 @@ class BannerDataTable extends DataTable
 
     public function dataTable($query)
     {
-        $paginate = $query['result']['pagination'];
+        $paginate = $query['pagination'];
         $totalRecords = $paginate->totalPage * $paginate->perPage;
-        $query = $query['result']['data'];
+        $query = $query['data'];
         return datatables()
             ->collection($query)
-            ->editColumn('title_vi', function($row) {
-                $text = strlen($row->title_vi)>50 ? (substr($row->title_vi, 0,50).'<div class="title_show text-bold">...Xem thêm</div>') : $row->title_vi;
-                return '<div class="title_vi_none text-left">'.$row->title_vi.'</div><div class="title_vi_block">'.$text.'</div>';
-            })
             ->editColumn('event_type', function($row) {
                 return '<span class="infoRow" data-id="'.$row->event_id.'">'.$row->event_type.'</span>';
             })
@@ -72,7 +68,7 @@ class BannerDataTable extends DataTable
                     <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
                    <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>';
             })
-            ->rawColumns(['title_vi','image','status','action','ordering_on_home','event_type', 'is_show_home'])
+            ->rawColumns(['image','status','action','ordering_on_home','event_type', 'is_show_home'])
             ->setTotalRecords($totalRecords)
             ->skipPaging();
     }
@@ -81,31 +77,11 @@ class BannerDataTable extends DataTable
      * Get query source of dataTable.
      *
      * @param \App\Models\Hi_FPT/Banner $model
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function query(NewsEventService $service)
+    public function query()
     {
-        $result = [
-            'result' => []
-        ];
-        $perPage = $this->request->length ?? 10;
-        $currentPage = $this->request->start == 0 ? 1 : ($this->request->start / $perPage) + 1;
-        $param = [
-            'banner_type' => $this->request->bannerType,
-            'public_date_start' => $this->request->public_date_start,
-            'public_date_end' => $this->request->public_date_end,
-            'order_by' => $this->request->columns[$this->request->order[0]['column']]['data'],
-            'per_page' => $perPage,
-            'current_page' => $currentPage,
-            'order_direction' => $this->orderBy ?? $this->request->order[0]['dir']
-        ];
-        $model = get_data_api($service->getListbanner($param));
-        if (!empty($model)) {
-            $result['result'] = collect($model);
-            return $result;
-        }
-        session()->flash('error');
-        return $result;
+        return collect($this->data->data) ?? [];
     }
 
     /**
@@ -130,16 +106,11 @@ class BannerDataTable extends DataTable
                             var public_date_start = $('#show_from');
                             var public_date_end = $('#show_to');
                             var table = $('#banner_manage').DataTable();
-                            $('.title_vi_none').toggle();
                             $(bannerType).on('change', function () {
                                 table.ajax.reload();
                             });
                             $(public_date_end).on('change', function () {
                                 table.ajax.reload();
-                            });
-                            $('.title_show').on('click', function () {
-                                $('.title_vi_none').toggle();
-                                $('.title_vi_block').toggle();
                             });
                          }"
                     ])

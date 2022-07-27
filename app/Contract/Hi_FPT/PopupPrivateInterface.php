@@ -7,7 +7,7 @@ interface PopupPrivateInterface
     public const STOP = 0;
     public const ACTIVE = 1;
 
-    public function all($dataTable, $request);
+    public function all($dataTable, $params);
 
     public function paginate(array $params);
 

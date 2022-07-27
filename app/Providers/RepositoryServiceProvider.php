@@ -6,7 +6,8 @@ use App\Contract\Hi_FPT\PopupPrivateInterface;
 use App\Repository\Hi_FPT\PopupPrivateRepository;
 use App\Contract\Hi_FPT\PopupManageInterface;
 use App\Repository\Hi_FPT\PopupManageRepository;
-
+use App\Contract\Hi_FPT\BannerManageInterface;
+use App\Repository\Hi_FPT\BannerManageRepository;
 
 use Illuminate\Support\ServiceProvider;
 // Auto Generate
@@ -27,6 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
         //Bind Provider
         $this->app->bind(PopupPrivateInterface::class, PopupPrivateRepository::class);
         $this->app->bind(PopupManageInterface::class, PopupManageRepository::class);
+        $this->app->bind(BannerManageInterface::class, BannerManageRepository::class);
     }
 
 }
