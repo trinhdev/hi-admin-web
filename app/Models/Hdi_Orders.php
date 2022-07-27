@@ -74,32 +74,44 @@ class Hdi_Orders extends Model
         // $data = DB::table('hihdi_db.hdi_orders as hdi')->connection('mysql3')
         //         ->join('hiadmin_stag_db.employees as employees', 'employees.phone', '=', 'hdi.referral_phone')
         //         ->join('hiadmin_stag_db.list_organizations as organizations', 'employees.organizationCode', '=', 'organizations.code');
-        $output = DB::connection('mysql3')->table('hdi_orders as hdi')
-                    ->selectRaw("organizations.zone_name AS 'zone', 
-                                organizations.branch_code AS 'branch_code', 
-                                organizations.branch_name_code AS 'branch_name_code', 
-                                SUM(IF(DATE(hdi.date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59', 1, 0)) AS 'count_last_time', 
-                                SUM(IF(DATE(hdi.date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59', amount, 0)) AS 'amount_last_time',
-                                SUM(IF(DATE(hdi.date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', 1, 0)) AS 'count_this_time', 
-                                SUM(IF(DATE(hdi.date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', amount, 0)) AS 'amount_this_time'")
-                    ->join(DB::connection('mysql')->getDatabaseName() . '.employees as employees', 'employees.phone', '=', 'hdi.referral_phone')
-                    ->join(DB::connection('mysql')->getDatabaseName() . '.list_organizations as organizations', 'employees.organizationCode', '=', 'organizations.code')
+        $employees = Employees::select('phone', 'organizationCode');
+        $output = DB::connection('mysql3')->table('hdi_orders AS hdi')
+                    // ->join(DB::connection('mysql')->raw("(SELECT `phone`, `organizationCode` FROM " . config('database.connections.mysql.database') . "employees) AS employees"), function($join) {
+                    //     $join->on('hdi.referral_phone', '=', 'employees.phone');
+                    // })
+                    ->joinSub($employees, 'emp', function($join) {
+                        $join->on('hdi.referral_phone', '=', 'emp.phone');
+                    })
+                    // ->join(DB::connection('mysql')->table('list_organizations as "organizations"')->get(), function($join2) {
+                    //     $join2->on('employees.organizationCode', '=', 'organizations.code');
+                    // })
+                    // ->selectRaw("organizations.zone_name AS 'zone_name', 
+                    //             organizations.branch_code AS 'branch_code', 
+                    //             organizations.branch_name_code AS 'branch_name_code', 
+                    //             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59', 1, 0)) AS 'count_last_time', 
+                    //             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59', amount, 0)) AS 'amount_last_time',
+                    //             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', 1, 0)) AS 'count_this_time', 
+                    //             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', amount, 0)) AS 'amount_this_time'")
                     ->whereBetween('hdi.date_created', ['2022-05-01 00:00:00', '2022-06-30 23:59:59'])
-                    ->groupBy('zone', 'branch_code', 'branch_name_code')
-                    ->orderBy('zone', 'asc')
-                    ->orderBy('branch_code', 'asc')
-                    ->orderBy('branch_name_code', 'asc')
+                    // ->groupBy('zone_name', 'branch_code', 'branch_name_code')
+                    // ->orderBy('zone_name', 'asc')
+                    // ->orderBy('branch_code', 'asc')
+                    // ->orderBy('branch_name_code', 'asc')
                     ->get();
         dd($output->toArray());
         return $output;
     }
 
     public function testCrossData() {
-        // $data = DB::select('select hihdi_db.hdi_orders.customer_phone, hihdi_db.hdi_orders.customer_name, hiadmin_stag_db.employees.phone, hihdi_db.hdi_orders.referral_phone
-        //                     where hihdi_db.hdi_orders.date_created between "2022-05-01 00:00:00" AND "2022-06-30 23:59:59"');
-        $data = DB::table('hihdi_db.hdi_orders as dt1')->leftjoin('hiadmin_stag_db.employees as dt2', 'dt2.phone', '=', 'dt1.referral_phone');        
-        $output = $data->select(['dt1.*','dt2.*'])->whereBetween('dt1.date_created', ["2022-05-01 00:00:00", "2022-06-30 23:59:59"])->get();
-        return $output;
+        // // $data = DB::select('select hihdi_db.hdi_orders.customer_phone, hihdi_db.hdi_orders.customer_name, hiadmin_stag_db.employees.phone, hihdi_db.hdi_orders.referral_phone
+        // //                     where hihdi_db.hdi_orders.date_created between "2022-05-01 00:00:00" AND "2022-06-30 23:59:59"');
+        // $data = DB::table('hihdi_db.hdi_orders as dt1')->leftjoin('hiadmin_stag_db.employees as dt2', 'dt2.phone', '=', 'dt1.referral_phone');        
+        // $output = $data->select(['dt1.*','dt2.*'])->whereBetween('dt1.date_created', ["2022-05-01 00:00:00", "2022-06-30 23:59:59"])->get();
+        // return $output;
+
+        $databaseName1 = (new Model1())->getConnection()->getDatabaseName();
+        $tableName1 = (new Model1())->getTable();
+        $tableName2 = (new Model2())->getTable();
     }
     
     public function countReportData($branch, $from, $to) {

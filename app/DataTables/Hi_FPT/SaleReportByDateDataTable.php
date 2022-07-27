@@ -11,6 +11,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Html\Editor\Editor;
+use Illuminate\Support\Facades\DB;
 use DataTables;
 
 use App\Models\Hdi_Orders;
@@ -92,6 +93,19 @@ class SaleReportByDateDataTable extends DataTable
         //                                 SUM(IF(DATE(date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', amount, 0)) AS 'amount_this_time'")
         //                     ->get();
                             // ->groupBy('zone_name', 'branch_code', 'branch_name_code')->toArray();
+        
+        // $test_db = 
+        // $databaseName1 = (new Hdi_Orders())->getConnection()->getDatabaseName();
+        // $tableName1 = (new Hdi_Orders())->getTable();
+        // $tableName2 = (new Employees())->getTable();
+        // $databaseName2 = (new Employees())->getConnection()->getDatabaseName();
+        // $test_db = DB::join($databaseName1 . '.hdi_orders', function($join) use ($databaseName1, $tableName1, $databaseName2, $tableName2) {
+        //     $join->on($databaseName1 . '.hdi_orders.referral_phone', $databaseName2 . '.employees.phone');
+        // })->whereBetWeen($databaseName1 . '.hdi_orders.date_created', ['2022-06-01 00:00:00', '2022-06-30 23:59:59']);
+        // print('<pre>');
+        // print_r($test_db->toArray());
+        // print('</pre>');
+        // dd('test');
         $result = Hdi_Orders::reportByTime();
         dd($result->toArray());
         session()->flash('error');
