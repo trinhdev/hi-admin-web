@@ -69,10 +69,11 @@ class Hdi_Orders extends Model
     }
 
     public function reportByTime() {
+        $mysql3 = config('database.connections.mysql3.database');
         $data = DB::table('hihdi_db.hdi_orders as hdi')
                 ->join('hiadmin_stag_db.employees as employees', 'employees.phone', '=', 'hdi.referral_phone')
                 ->join('hiadmin_stag_db.list_organizations as organizations', 'employees.organizationCode', '=', 'organizations.code');
-        $output = DB::table('hihdi_stag_db.hdi_orders as hdi')
+        $output = DB::table($mysql3 . '.hdi_orders as hdi')
                     ->selectRaw("organizations.zone_name AS 'zone', 
                                 organizations.branch_code AS 'branch_code', 
                                 organizations.branch_name_code AS 'branch_name_code', 
