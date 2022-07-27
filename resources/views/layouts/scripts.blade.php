@@ -52,6 +52,7 @@
 <script src="{{ asset('js/dataTablebutton.min.js') }}"></script>
 <script src="{{ asset('js/buttonHtml5.js') }}"></script>
 <script src="{{ asset('js/jszip.min.js') }}"></script>
+<script src="{{ asset('js/axios.js') }}"></script>
 <script src="{{ asset('custom_js/javascript.js')}}"></script>
 <script src="{{ asset('custom_js/initTable.js')}}"></script>
 <script src="{{ asset('/custom_js/rolemanage.js')}}"></script>

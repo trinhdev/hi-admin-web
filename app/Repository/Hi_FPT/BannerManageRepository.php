@@ -7,8 +7,6 @@ use App\Http\Traits\DataTrait;
 use App\Services\NewsEventService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
@@ -20,7 +18,7 @@ class BannerManageRepository implements BannerManageInterface
     private $headers;
     public function __construct()
     {
-        $api_config         = config('configDomain.DOMAIN_CUSTOMER.' . env('APP_ENV'));
+        $api_config         = config('configDomain.DOMAIN_NEWS_EVENT.' . env('APP_ENV'));
         $this->listMethod   = config('configMethod.DOMAIN_NEWS_EVENT');
         $this->client       = new Client(['base_uri' => $api_config['URL']]);
         $this->headers      = [
@@ -37,15 +35,15 @@ class BannerManageRepository implements BannerManageInterface
         $perPage = $params->length ?? 10;
         $currentPage = $params->start == 0 ? 1 : ($params->start / $perPage) + 1;
         $form_params = [
-            'banner_type' => $params->bannerType,
-            'public_date_start' => $params->public_date_start,
-            'public_date_end' => $params->public_date_end,
-            'order_by' => $params->columns[$params->order[0]['column']]['data'],
-            'per_page' => $perPage,
-            'current_page' => $currentPage,
-            'order_direction' => $this->orderBy ?? $params->order[0]['dir']
+            'banner_type' => $params->bannerType?? null,
+            'public_date_start' => $params->public_date_start ?? null,
+            'public_date_end' => $params->public_date_end ?? null,
+            'order_by' => null,
+            'per_page' => $perPage ?? null,
+            'current_page' => $currentPage ?? null,
+            'order_direction' => 'DESC'
         ];
-        $response = $this->client->request('POST', $this->listMethod['GET_LIST_BANNER'], [
+        $response = $this->client->request('GET', $this->listMethod['GET_LIST_BANNER'], [
             'headers' => $this->headers,
             'form_params' => $form_params
         ]);
@@ -64,13 +62,13 @@ class BannerManageRepository implements BannerManageInterface
     {
         try {
             $service = new NewsEventService();
-            $response = $this->client->request('POST', $this->listMethod['GET_DETAIL_BANNER'], [
+            $response = $this->client->request('GET', "provider/tool/banner/get-detail-banner", [
                 'headers' => $this->headers,
-                'form_params' => ['id' => $id]
+                'form_params' => ['bannerId' => $id]
             ]);
             $data = [
                 'list_target_route' => get_data_api($service->getListTargetRoute()),
-                'list_type_banner'  => $this->client->request('POST', $this->listMethod['GET_LIST_TYPE_BANNER'], [
+                'list_type_banner'  => $this->client->request('GET', $this->listMethod['GET_LIST_TYPE_BANNER'], [
                     'headers' => $this->headers
                 ])
             ];
@@ -79,6 +77,30 @@ class BannerManageRepository implements BannerManageInterface
                 return view('banners.create')->with($data);
             }
             $data['data'] = collect($res);
+            return $data;
+        } catch (GuzzleException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function view($id)
+    {
+        try {
+            $service = new NewsEventService();
+            $response = get_data_api($service->getDetailBanner($id));
+            $data = [
+                'list_target_route' => get_data_api($service->getListTypeBanner()),
+                'list_type_banner'  => json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TYPE_BANNER'], [
+                    'headers' => $this->headers
+                ])->getBody()->getContents())
+            ];
+            if(empty($response)) {
+                return response()->json(['status_code' => '500', 'message' => 'System maintain!']);
+            }
+            $data['banner'] = collect($response)->only([
+                "event_id","event_type","public_date_start","public_date_end","title_vi",
+                "title_en","direction_id","event_url","image","thumb_image","view_count",
+                "date_created","created_by","cms_note","is_show_home"]);
             return $data;
         } catch (GuzzleException $e) {
             return $e->getMessage();

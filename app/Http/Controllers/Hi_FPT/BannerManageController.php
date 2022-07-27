@@ -8,6 +8,7 @@ use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\BannerManageRequest\StoreRequest;
 use App\Http\Requests\BannerManageRequest\UpdateRequest;
 use App\Http\Traits\DataTrait;
+use App\Models\AppLog;
 use App\Services\NewsEventService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -24,6 +25,7 @@ class BannerManageController extends MY_Controller
         $this->model = $this->getModel('Banner');
         $this->service = new NewsEventService();
     }
+
     public function index(BannerDataTable $dataTable, Request $request){
         $listTypeBanner = get_data_api($this->service->getListTypeBanner());
         $input = $request->only(['bannerType', 'public_date_start','public_date_end','start','length','order','columns']);

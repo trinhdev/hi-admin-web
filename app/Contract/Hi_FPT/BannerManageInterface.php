@@ -8,6 +8,8 @@ interface BannerManageInterface
 
     public function show($id);
 
+    public function view($id);
+
     public function store($params);
 
     public function update($params, $id);

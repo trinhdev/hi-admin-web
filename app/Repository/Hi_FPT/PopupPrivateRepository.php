@@ -69,11 +69,8 @@ class PopupPrivateRepository implements PopupPrivateInterface
                 'headers' => $this->headers,
                 'form_params' => $form_params
             ]);
-            $res = check_status_code_api(json_decode($response->getBody()->getContents()));
-            if(empty($res)) {
-                return redirect()->back()->withErrors('Error! System maintain!');
-            }
-            return response()->json(get_data_api($res), 200);
+            $data = json_decode($response->getBody()->getContents())->data;
+            return response()->json($data);
         } catch (GuzzleException $e) {
             return $e->getMessage();
         }
@@ -101,13 +98,10 @@ class PopupPrivateRepository implements PopupPrivateInterface
                 'headers' => $this->headers,
                 'form_params' => array_filter($form_params)
             ]);
-            $res = check_status_code_api(json_decode($response->getBody()->getContents()));
-            if(empty($res)) {
-                return response()->json(['status_code' => '500', 'message' => 'System maintain!']);
-            }
-            return response()->json(['status_code' => '0', 'data' => $res]);
+            $data = json_decode($response->getBody()->getContents());
+            return response()->json(['data' => $data]);
         } catch (GuzzleException $e) {
-            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
+            return response()->json(['data'=>['status_code' => '500', 'message' => $e->getMessage()]]);
         }
     }
 
@@ -123,7 +117,7 @@ class PopupPrivateRepository implements PopupPrivateInterface
                 'type'          =>$params['type'],
                 'actionType'    =>$params['actionType'],
                 'dataAction'    =>$params['dataAction'],
-                'iconButtonUrl' =>$params['iconButtonUrl'] ?? null,
+                'iconButtonUrl' =>$params['type']=='popup_image_transparent'||$params['type']=='popup_image_full_screen' ? "avatar.png" : $params['iconButtonUrl'],
                 'iconUrl'       =>$params['iconUrl'],
                 'dateBegin'     =>$timeline_array[0],
                 'dateEnd'       =>$timeline_array[1],
@@ -138,13 +132,10 @@ class PopupPrivateRepository implements PopupPrivateInterface
                 'headers' => $this->headers,
                 'form_params' => array_filter($form_params)
             ]);
-            $res = check_status_code_api(json_decode($response->getBody()->getContents()));
-            if(empty($res)) {
-                return response()->json(['status_code' => '500', 'message' => 'System maintain!']);
-            }
-            return response()->json(['status_code' => '0', 'data' => $res]);
+            $data = json_decode($response->getBody()->getContents());
+            return response()->json(['data' => $data]);
         } catch (GuzzleException $e) {
-            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
+            return response()->json(['data'=>['status_code' => '500', 'message' => $e->getMessage()]]);
         }
     }
 
@@ -159,11 +150,8 @@ class PopupPrivateRepository implements PopupPrivateInterface
                 'headers' => $this->headers,
                 'form_params' => $form_params
             ]);
-            $res = check_status_code_api(json_decode($response->getBody()->getContents()));
-            if(empty($res)) {
-                return redirect()->back()->withErrors('Error! System maintain!');
-            }
-            return response()->json(get_data_api($res), 200);
+            $data = json_decode($response->getBody()->getContents());
+            return response()->json(['data'=>$data]);
         } catch (GuzzleException $e) {
             return $e->getMessage();
         }
