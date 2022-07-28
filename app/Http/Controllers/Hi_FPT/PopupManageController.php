@@ -29,12 +29,12 @@ class PopupManageController extends MY_Controller
 
     public function store(StoreRequest $request)
     {
-        return $this->PopupManageRepository->store($request->validated());
+        return $this->PopupManageRepository->store($request->all());
     }
 
     public function push(PushRequest $request)
     {
-        return $this->PopupManageRepository->push($request->validated());
+        return $this->PopupManageRepository->push($request->all());
     }
 
     public function show(PopupDetailDataTable $dataTable, $id)
