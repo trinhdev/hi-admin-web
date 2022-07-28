@@ -106,7 +106,7 @@
 
                                     <div class="form-group" style="display: none" id="form_directionUrl">
                                         <label for="exampleInputEmail1">URL điều hướng</label>
-                                        <input type="input" class="form-control" id="buttonActionValue_popup" name="directionUrl"
+                                        <input type="input" class="form-control" id="dataAction_popup" name="directionUrl"
                                                placeholder="URL điều hướng">
                                     </div>
                                 </div>

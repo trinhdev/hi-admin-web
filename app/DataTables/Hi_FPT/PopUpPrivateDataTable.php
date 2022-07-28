@@ -52,25 +52,7 @@ class PopUpPrivateDataTable extends DataTable
 
     public function query()
     {
-//        $this->perPage = $this->length ?? 10;
-//        if (!isset($this->currentPage) || $this->start == 0) {
-//            $this->currentPage = 1;
-//        }
-//        if ($this->start != 0) {
-//            $this->currentPage = ($this->start / $this->perPage) + 1;
-//        };
-//
-//
-//        $param = [
-//            $this->perPage,
-//            $this->currentPage
-//        ];
-//
-//        $popup_private = $service_private->getPaginate($param);
-        $service_private = new PopupPrivateService();
-        $popup_private = $service_private->get();
-        return collect(get_data_api($popup_private)) ?? $data = [];
-
+        return collect($this->data->data) ?? [];
     }
 
     /**

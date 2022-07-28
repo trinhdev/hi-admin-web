@@ -1,5 +1,6 @@
 .content-wrapper>.content {
     padding: 1px 0.5rem;
+    font-size: 10pt;
 }
 [class*=sidebar-dark-] .sidebar a {
     color: white;

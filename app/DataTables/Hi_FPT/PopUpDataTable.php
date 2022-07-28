@@ -2,7 +2,7 @@
 
 namespace App\DataTables\Hi_FPT;
 
-use Carbon\Carbon;
+use App\Contract\Hi_FPT\PopupManageInterface;
 use Yajra\DataTables\Html\Column;
 use App\Services\NewsEventService;
 use Yajra\DataTables\Services\DataTable;
@@ -15,70 +15,33 @@ class PopUpDataTable extends DataTable
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
-    private $perPage;
-    private $orderBy = 'date_created';
-    private $orderDirection = 'DESC';
-    private $currentPage = 1;
 
     public function dataTable($query)
     {
-        $NewsEventService = new NewsEventService();
-        $listRoute = collect($NewsEventService->getListTargetRoute()->data);
         $list_template_popup = config('platform_config.type_popup_service');
-        $tmp = $query;
-        $query = $query['data'];
-        $paginate = $tmp['pagination'];
-        $totalRecords = $paginate->totalPage * $paginate->perPage;
+        $data           = $query['data'];
+        $totalRecords   = $query['pagination']->totalPage * $query['pagination']->perPage;
         return datatables()
-            ->collection($query)
+            ->collection($data)
             ->addIndexColumn()
-//            ->editColumn('buttonActionValue', function ($query) use ($listRoute) {
-//                $name = $query->buttonActionType == 'function'
-//                    ? ($routeObject = $listRoute->where('id', $query->directionId)->first()) ? $routeObject->name : 'null'
-//                    : $query->buttonActionValue;
-//                return $name ? $name : 'null';
-//            })
             ->editColumn('templateType', function ($query) use ($list_template_popup) {
-                $name = $list_template_popup[$query->templateType]
-                    ? $list_template_popup[$query->templateType]
-                    : $query;
-                return $name ?? $query->templateType;
+                return $list_template_popup[$query->templateType] ?? $query;
             })
             ->editColumn('image', function ($query) {
-                return '
-                        <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->image . '" alt="" onclick ="window.open("' . $query->image . '").focus()" width="100" height="100"/>
-                ';
-            })
-            ->editColumn('popupType', function () {
-                if(true) {
-                    return '<span style="color: #006400" class="badge border border-blue">Public <i class="fas fa-check-circle"></i></span>';
-                }
-                else {
-                    return '<span style="color: #111111" class="badge border border-blue" >Private <i class="fas fa-check-circle"></i></span>';
-                }
+                return '<img src="'.env('URL_STATIC').'/upload/images/event/'.$query->image.'"
+                            onclick ="window.open("'.$query->image.'").focus()"
+                            width="100" height="100"
+                        />';
             })
             ->addColumn('action', 'popup._action-menu')
-            ->rawColumns(['buttonActionValue', 'image', 'action','buttonImage', 'popupType'])
+            ->rawColumns(['buttonActionValue', 'image', 'action','buttonImage'])
             ->setTotalRecords($totalRecords)
             ->skipPaging();
     }
 
-    public function query(NewsEventService $service)
+    public function query()
     {
-        $this->perPage = $this->length ?? 10;
-        if (!isset($this->currentPage) || $this->start == 0) {
-            $this->currentPage = 1;
-        }
-        if ($this->start != 0) {
-            $this->currentPage = ($this->start / $this->perPage) + 1;
-        };
-        //$this->start == 0 ? $this->currentPage = 1 : $this->currentPage =  ($this->start / $this->perPage) + 1;
-        $orderColumn = $this->order[0]['column'];
-        $this->orderBy = $this->columns[$orderColumn]['data'];
-        $this->orderDirection = $this->order[0]['dir'];
-        $this->templateType = $this->templateType ?? '';
-        $model = $service->getListTemplatePopup($this->templateType, $this->perPage, $this->currentPage, $this->orderBy, $this->orderDirection);
-        return collect(get_data_api($model)) ?? [];
+        return collect($this->data->data) ?? [];
     }
 
     /**
@@ -213,11 +176,6 @@ class PopUpDataTable extends DataTable
             Column::make('templateType')->title('Loại template'),
             Column::make('viewCount')->title('Số lượt view'),
             Column::make('createdBy')->title('Người tạo'),
-            Column::computed('popupType')
-                ->searching(false)
-                ->width(100)
-                ->addClass('text-center')
-                ->title('Loại popup'),
             Column::make('dateCreated')->title('Ngày tạo'),
             Column::computed('action')
                 ->searching(false)

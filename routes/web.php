@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Hi_FPT\AppController;
+use App\Http\Controllers\Hi_FPT\PopupPrivateController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -201,26 +202,27 @@ Route::group([
 
             Route::prefix('popupmanage')->group(function () {
                 // Popup public
-                Route::get('/', [PopupManageController::class, 'index'])->name('popupmanage.index');
+                Route::get('/', [PopupManageController::class, 'all'])->name('popupmanage.index');
 //                Route::get('/edit/{id?}',[PopupManageController::class, 'edit'])->name('popupmanage.edit');
 //                Route::get('/create',[PopupManageController::class, 'edit'])->name('popupmanage.create');
-                Route::post('/save',[PopupManageController::class, 'save'])->name('popupmanage.save');
-                Route::get('/view/{id?}',[PopupManageController::class, 'view'])->name('popupmanage.view');
+                //Route::post('/save',[PopupManageController::class, 'save'])->name('popupmanage.save');
+                Route::post('/save',[PopupManageController::class, 'store'])->name('popupmanage.save');
+                Route::get('/view/{id?}',[PopupManageController::class, 'show'])->name('popupmanage.view');
                 Route::get('/detail/{id?}',[PopupManageController::class, 'detail'])->name('popupmanage.detail');
-                Route::post('/pushPopupTemplate',[PopupManageController::class, 'pushPopupTemplate'])->name('popupmanage.pushPopupTemplate');
+                Route::post('/pushPopupTemplate',[PopupManageController::class, 'push'])->name('popupmanage.pushPopupTemplate');
                 Route::post('/getDetailPersonalMaps',[PopupManageController::class, 'getDetailPersonalMaps'])->name('popupmanage.getDetailPersonalMaps');
             });
 
             Route::prefix('popup-private')->group(function () {
                 // Popup Private
-                Route::get('/getPrivate',[PopupManageController::class, 'getPrivate'])->name('popupmanage.getPrivate');
-                Route::get('/',[PopupManageController::class, 'getPrivate'])->name('popupmanage.getPrivate');
-                Route::get('/getPaginatePrivate',[PopupManageController::class, 'getPaginatePrivate'])->name('popupmanage.getPaginatePrivate');
-                Route::get('/getByIdPrivate',[PopupManageController::class, 'getByIdPrivate'])->name('popupmanage.getByIdPrivate');
-                Route::post('/addPrivate',[PopupManageController::class, 'addPrivate'])->name('popupmanage.addPrivate');
-                Route::post('/updatePrivate',[PopupManageController::class, 'updatePrivate'])->name('popupmanage.updatePrivate');
-                Route::post('/deletePrivate',[PopupManageController::class, 'deletePrivate'])->name('popupmanage.deletePrivate');
-                Route::post('/importPrivate',[PopupManageController::class, 'importPrivate'])->name('popupmanage.importPrivate');
+                Route::get('/',[PopupPrivateController::class, 'all'])->name('popupmanage.getPrivate');
+                Route::get('/getPaginatePrivate',[PopupPrivateController::class, 'paginate'])->name('popupmanage.getPaginatePrivate');
+                Route::get('/getByIdPrivate',[PopupPrivateController::class, 'show'])->name('popupmanage.getByIdPrivate');
+                Route::post('/addPrivate',[PopupPrivateController::class, 'store'])->name('popupmanage.addPrivate');
+                Route::post('/updatePrivate',[PopupPrivateController::class, 'update'])->name('popupmanage.updatePrivate');
+                Route::post('/deletePrivate',[PopupPrivateController::class, 'destroy'])->name('popupmanage.deletePrivate');
+                Route::post('/importPrivate',[PopupPrivateController::class, 'import'])->name('popupmanage.importPrivate');
+                Route::post('/checkPrivate',[PopupPrivateController::class, 'check'])->name('popupmanage.importPrivate');
             });
 
             Route::prefix('air-direction')->group(function () {
@@ -283,6 +285,9 @@ Route::group([
                 Route::get('/initDatatableByWeek','AppinstallreportController@initDatatableByWeek')->name('appinstallreport.initDatatableByWeek');
                 Route::get('/initDatatableByMonth','AppinstallreportController@initDatatableByMonth')->name('appinstallreport.initDatatableByMonth');
                 Route::post('/export','AppinstallreportController@export')->name('appinstallreport.export');
+            });
+            Route::prefix('reportsalebydate')->group(function () {
+                Route::get('/','SalereportbydateController@index')->name('reportsalebydate.index');
             });
         });
     }

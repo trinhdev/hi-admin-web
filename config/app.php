@@ -171,13 +171,14 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
         Igaster\LaravelTheme\themeServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class, 
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\MinIOServiceProvider::class,
 
     ],

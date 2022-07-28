@@ -101,6 +101,11 @@
             data.public_date_start = $('#show_from').val();
             data.public_date_end = $('#show_to').val();
         });
+
+        function showHideTitle(_this) {
+            $('.hide'+_this).show();
+            $('.show'+_this).hide();
+        }
     </script>
     <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 @endpush
