@@ -16,6 +16,8 @@ use DataTables;
 
 use App\Models\Hdi_Orders;
 use App\Models\Employees;
+use App\Models\List_Organizations;
+use App\Models\Laptop_Orders;
 
 class SaleReportByDateDataTable extends DataTable
 {
@@ -60,7 +62,7 @@ class SaleReportByDateDataTable extends DataTable
     public function query()
     {
         // var_dump($this->supportCode);
-        $result = [];
+        $result = null;
         $this->perPage = $this->length ?? 10;
         if(!isset($this->currentPage) || $this->start == 0){
             $this->currentPage = 1;
@@ -106,11 +108,51 @@ class SaleReportByDateDataTable extends DataTable
         // print_r($test_db->toArray());
         // print('</pre>');
         // dd('test');
-        $result = Hdi_Orders::reportByTime();
-        dd($result->toArray());
-        session()->flash('error');
+        $result = Hdi_Orders::testReadHdi();
+        // $result = Hdi_Orders::with([
+        //                         'employees.list_organizations' => function($query) {
+        //                             $query->select('zone_name', 'branch_code', 'branch_name_code', 'code');
+        //                             // $query->groupBy('zone_name');
+        //                             return $query;
+        //                         }
+        //                     ])
+        //                     // ->select(DB::raw('zone_name, count(*) as total'))
+        //                     ->whereNotNull('referral_phone')
+        //                     ->where('referral_phone', '!=', '')
+        //                     ->whereBetween('date_created', ['2022-05-01 00:00:00', '2022-06-30 23:59:59'])
+        //                     // ->select('customer_phone', 'customer_name', 'referral_phone', 'amount')
+        //                     ->groupBy(['list_organizations.zone_name'])
+        //                     ->get()->toArray();
+        // dd($result->toArray());
+        // $result = List_Organizations::whereNotNull('zone_name')->where('zone_name', '!=', '')
+                                    // ->with(['hdi_orders' => function($employees) {$employees->withCount('date_created');}])->get();
+        print('<pre>');
+        print_r($result->toArray());
+        print_r($result);
+        print('/<pre>');
+        dd('test');
+        // session()->flash('error');
         // return $this->applyScopes($result);
-        return $result;
+        // switch($this->service) {
+        //     case 'ict':
+        //         $result = Laptop_Orders::selectRaw("organizations.zone_name AS 'zone_name', 
+        //                                             organizations.branch_code AS 'branch_code', 
+        //                                             organizations.branch_name_code AS 'branch_name_code', 
+        //                                             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59', 1, 0)) AS 'count_last_time', 
+        //                                             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59', amount, 0)) AS 'amount_last_time',
+        //                                             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', 1, 0)) AS 'count_this_time', 
+        //                                             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', amount, 0)) AS 'amount_this_time'")
+        //                                 ->whereBetween('t_deliver', ['2022-05-01 00:00:00', '2022-06-30 23:59:59'])
+        //                                 ->groupBy('zone_name', 'branch_code', 'branch_name_code')
+        //                                 ->orderBy('zone_name', 'asc')
+        //                                 ->orderBy('branch_code', 'asc')
+        //                                 ->orderBy('branch_name_code', 'asc')
+        //                                 ->get();
+        //         break;
+        // }
+        // dd($result->toArray());
+        session()->flash('error');
+        return $this->applyScopes($result);
     }
 
     /**
