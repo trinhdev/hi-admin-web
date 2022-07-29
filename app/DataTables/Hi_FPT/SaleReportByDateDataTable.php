@@ -31,7 +31,7 @@ class SaleReportByDateDataTable extends DataTable
     private $orderBy = null;
     private $orderDirection  = null;
     private $currentPage = 1;
-    private $service;
+    // private $service;
     public function dataTable($query)
     {
         return datatables()
@@ -47,10 +47,7 @@ class SaleReportByDateDataTable extends DataTable
                 return '<span>' . number_format($row->amount_this_time) . '</span>';
             })
             ->rawColumns(['zone', 'amount_last_time', 'amount_this_time'])
-            // ->setTotalRecords($totalRecords)
-            ->skipPaging()
-            // ->with('total', $datas->sum('amount'))
-            ->make(true);
+            ->skipPaging();
     }
 
     /**
@@ -62,7 +59,7 @@ class SaleReportByDateDataTable extends DataTable
     public function query()
     {
         // var_dump($this->supportCode);
-        $result = null;
+        $result = [];
         $this->perPage = $this->length ?? 10;
         if(!isset($this->currentPage) || $this->start == 0){
             $this->currentPage = 1;
@@ -108,7 +105,7 @@ class SaleReportByDateDataTable extends DataTable
         // print_r($test_db->toArray());
         // print('</pre>');
         // dd('test');
-        $result = Hdi_Orders::testReadHdi();
+        // $result = Hdi_Orders::testReadHdi();
         // $result = Hdi_Orders::with([
         //                         'employees.list_organizations' => function($query) {
         //                             $query->select('zone_name', 'branch_code', 'branch_name_code', 'code');
@@ -126,33 +123,35 @@ class SaleReportByDateDataTable extends DataTable
         // dd($result->toArray());
         // $result = List_Organizations::whereNotNull('zone_name')->where('zone_name', '!=', '')
                                     // ->with(['hdi_orders' => function($employees) {$employees->withCount('date_created');}])->get();
-        print('<pre>');
-        print_r($result->toArray());
-        print_r($result);
-        print('/<pre>');
-        dd('test');
+        // print('<pre>');
+        // print_r($result->toArray());
+        // print_r($result);
+        // print('/<pre>');
+        // dd('test');
         // session()->flash('error');
         // return $this->applyScopes($result);
-        // switch($this->service) {
-        //     case 'ict':
-        //         $result = Laptop_Orders::selectRaw("organizations.zone_name AS 'zone_name', 
-        //                                             organizations.branch_code AS 'branch_code', 
-        //                                             organizations.branch_name_code AS 'branch_name_code', 
-        //                                             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59', 1, 0)) AS 'count_last_time', 
-        //                                             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59', amount, 0)) AS 'amount_last_time',
-        //                                             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', 1, 0)) AS 'count_this_time', 
-        //                                             SUM(IF(DATE(hdi.date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', amount, 0)) AS 'amount_this_time'")
-        //                                 ->whereBetween('t_deliver', ['2022-05-01 00:00:00', '2022-06-30 23:59:59'])
-        //                                 ->groupBy('zone_name', 'branch_code', 'branch_name_code')
-        //                                 ->orderBy('zone_name', 'asc')
-        //                                 ->orderBy('branch_code', 'asc')
-        //                                 ->orderBy('branch_name_code', 'asc')
-        //                                 ->get();
-        //         break;
-        // }
-        // dd($result->toArray());
-        session()->flash('error');
-        return $this->applyScopes($result);
+        switch($this->service) {
+            case 'ict':
+                $query = collect(Laptop_Orders::selectRaw("organizations.zone_name AS 'zone_name', 
+                                                    organizations.branch_code AS 'branch_code', 
+                                                    organizations.branch_name_code AS 'branch_name_code', 
+                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from1 . "' AND '" . $this->to1 . "', 1, 0)) AS 'count_last_time', 
+                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from1 . "' AND '" . $this->to1 . "', amount, 0)) AS 'amount_last_time',
+                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from2 . "' AND '" . $this->to2 . "', 1, 0)) AS 'count_this_time', 
+                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from2 . "' AND '" . $this->to2 . "', amount, 0)) AS 'amount_this_time'")
+                                        ->join('employees as emp', 'emp.phone', '=', 'referral_code')
+                                        ->join('list_organizations as organizations', 'emp.organizationCode', '=', 'organizations.code')
+                                        ->whereBetween('t_deliver', [$this->from1, $this->to2])
+                                        ->groupBy('zone_name', 'branch_code', 'branch_name_code')
+                                        ->orderBy('zone_name', 'asc')
+                                        ->orderBy('branch_code', 'asc')
+                                        ->orderBy('branch_name_code', 'asc')
+                                        ->get());
+            break;
+        }
+        // session()->flash('error');
+        // return DataTables::of($query)->toJson();
+        return $query;
     }
 
     /**
@@ -171,9 +170,7 @@ class SaleReportByDateDataTable extends DataTable
                         'scroll' => false,
                         'searchDelay' => 500,
                         'searching' => false,
-                        'initComplete' => "function () {
-                            
-                         }"
+                        'initComplete' => "function () {}"
                     ])
                     ->addTableClass('table table-hover table-striped text-center w-100')
                     ->languageEmptyTable('Không có dữ liệu')
