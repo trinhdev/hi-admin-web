@@ -26,66 +26,69 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>ICT<h3>
-                    </div>
-                    {{-- <h4 class="card-title">HDI</h4> --}}
-                    <div class="card-body row">
-                        {{-- {{ $ict->table([], true) }} --}}
-                        <div class="col-sm-8">
-                            <table style="width: 100%">
-                                <tr>
-                                    <th rowspan="2">Vùng</th>
-                                    <th rowspan="2">+/-</th>
-                                    <th colspan="3">01/05/2022 - 31/05/2022</th>
-                                    <th colspan="3">01/06/2022 - 30/06/2022</th>
-                                </tr>
-                                <tr>
-                                    <th>Doanh thu</th>
-                                    <th>Đơn hàng</th>
-                                    <th>%</th>
-                                    <th>Doanh thu</th>
-                                    <th>Đơn hàng</th>
-                                    <th>%</th>
-                                </tr>
-                                @foreach ($ict as $key => $value)
-                                    <tr>
-                                        <td>{{ !empty($value['branch_name_code']) ? $value['branch_name_code'] : ((!empty($value['branch_code'])) ? $value['branch_code'] : $value['zone_name']) }}</td>
-                                        <td>{{ !empty($value['amount_last_time']) ? (round(($value['amount_this_time'] - $value['amount_last_time']) / $value['amount_last_time'], 4) * 100 . '%') : '100%' }}</td>
-                                        <td>{{ number_format($value['amount_last_time']) }}</td>
-                                        <td>{{ $value['count_last_time'] }}</td>
-                                        <td>0%</td>
-                                        <td>{{ number_format($value['amount_this_time']) }}</td>
-                                        <td>{{ $value['count_this_time'] }}</td>
-                                        <td>0%</td>
-                                    </tr>
-                                @endforeach
-                            </table>
+            @foreach ($services as $service)
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>{{ $service }}<h3>
                         </div>
-                        <div class="col-sm-4">
-                            <table style="width: 100%">
-                                <tr>
-                                    <th colspan="3">01/06/2022 - 30/06/2022</th>
-                                </tr>
-                                <tr>
-                                    <th>Loại sản phẩm</th>
-                                    <th>Doanh thu</th>
-                                    <th>Đơn hàng</th>
-                                </tr>
-                            </table>
-                            <table style="width: 100%; margin-top: 50px">
-                                <tr>
-                                    <th></th>
-                                    <th>Doanh thu</th>
-                                    <th>Đơn hàng</th>
-                                </tr>
-                            </table>
+                        {{-- <h4 class="card-title">HDI</h4> --}}
+                        <div class="card-body row">
+                            {{-- {{ $ict->table([], true) }} --}}
+                            <div class="col-sm-8">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <th rowspan="2">Vùng</th>
+                                        <th rowspan="2">+/-</th>
+                                        <th colspan="3">01/05/2022 - 31/05/2022</th>
+                                        <th colspan="3">01/06/2022 - 30/06/2022</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Doanh thu</th>
+                                        <th>Đơn hàng</th>
+                                        <th>%</th>
+                                        <th>Doanh thu</th>
+                                        <th>Đơn hàng</th>
+                                        <th>%</th>
+                                    </tr>
+                                    @foreach ($data[$service] as $key => $value)
+                                        <tr>
+                                            <td>{{ !empty($value['branch_name_code']) ? $value['branch_name_code'] : ((!empty($value['organization_branch_code'])) ? $value['organization_branch_code'] : $value['organization_zone_name']) }}</td>
+                                            <td>{{ (!isset($value['organization_branch_code']) && !isset($value['branch_name_code']) || $value['organization_branch_code'] == null && $value['branch_name_code'] == null) ? '' : (!empty($value['amount_last_time'])) ? (round(($value['amount_this_time'] - $value['amount_last_time']) / $value['amount_last_time'], 4) * 100 . '%') : '100%' }}</td>
+                                            <td>{{ number_format($value['amount_last_time']) }}</td>
+                                            <td>{{ $value['count_last_time'] }}</td>
+                                            <td>0%</td>
+                                            <td>{{ number_format($value['amount_this_time']) }}</td>
+                                            <td>{{ $value['count_this_time'] }}</td>
+                                            <td>0%</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                            <div class="col-sm-4">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <th colspan="3">01/06/2022 - 30/06/2022</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Loại sản phẩm</th>
+                                        <th>Doanh thu</th>
+                                        <th>Đơn hàng</th>
+                                    </tr>
+                                </table>
+                                <table style="width: 100%; margin-top: 50px">
+                                    <tr>
+                                        <th></th>
+                                        <th>Doanh thu</th>
+                                        <th>Đơn hàng</th>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
+            
         </div>
     </section>
     <!-- /.content -->
