@@ -24,11 +24,13 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'titleVi'  =>'required',
+            'titleEn'  =>'required',
             'bannerType' =>'required',
             'objects'    =>'required',
             'objectType'=>'required',
             'show_from' =>'required|date_format:Y-m-d\TH:i',
-            'show_to'   =>'required|date_format:Y-m-d\TH:i',
+            'show_to'   =>'required|date_format:Y-m-d\TH:i'
         ];
     }
 }

@@ -15,7 +15,7 @@ function onchangeDirection() {
 }
 
 function onchangeTargetRoute() {
-    if ($('#target_route').val()==='1') {
+    if ($('#direction_id').val()==='1') {
         $('#direction_url').attr('style', 'display: ');
     } else {
         $('#direction_url').attr('style', 'display: none !important');
@@ -31,42 +31,6 @@ function resetData(input_tag, img_tag) {
     input_tag.value = null;
     img_tag.src = "/images/image_holder.png";
 }
-
-// function successCallUploadImage(response, passingdata) {
-//     if (response.statusCode === 0 && response.data !== null) {
-//         passingdata.img_tag.src = URL.createObjectURL(passingdata.file);
-//         document.getElementById(passingdata.img_tag.id + '_name').value = response.data.uploadedImageFileName;
-//     } else {
-//         resetData(passingdata.input_tag, passingdata.img_tag);
-//         document.getElementById(passingdata.img_tag.id + '_name').value = '';
-//         showError(response.message);
-//     }
-// }
-
-// function handleUploadImage(_this, event) {
-//     event.preventDefault();
-//     let img_tag_name = 'img_' + _this.name;
-//     if (img_tag_name === 'img_path_2') {
-//         path_2_required_alert.hidden = true;
-//     }
-//     let img_tag = document.getElementById(img_tag_name);
-//     if (_this.value === '') {
-//         resetData(_this, img_tag);
-//     }
-//     const [file] = _this.files;
-//     if (file) {
-//         if (file.size > 2050000) { // handle file
-//             resetData(_this, img_tag);
-//             showError('File is too big! Allowed memory size of 2MB');
-//             return false;
-//         };
-//         uploadFileExternal(file, successCallUploadImage, {
-//             'img_tag': img_tag,
-//             'input_tag': _this,
-//             'file': file
-//         });
-//     }
-// }
 
 function responseImageStatic(res, input) {
     console.log(res);
@@ -103,25 +67,14 @@ function getDetailBanner(_this) {
     let infoRow = row.querySelector('.infoRow');
     window.location.href = `/bannermanage/edit/` + infoRow.getAttribute('data-id');
 }
-function changeFormatDateTimeLocal(dateInput) {
-    var date = new Date(dateInput);
-    var str = "";
-    if (date != null && date != undefined && date != "Invalid Date") {
-        var day = date.getDate();
-        if (day < 10) {
-            day = "0" + day;
-        }
-        var month = date.getMonth() + 1;
-        if (month < 10) {
-            month = "0" + month;
-        }
-        var year = date.getFullYear();
-        str = year + "-" + month + "-" + day;
-    };
-    str += ` ${date.getHours().toString().padStart(2, '0')}:${
-        date.getMinutes().toString().padStart(2, '0')}:${
-            date.getSeconds().toString().padStart(2, '0')}`;
-    return str;
+
+function callApiUpdateOderSuccess(response){
+    console.log(response);
+    if(response.statusCode != 0){
+        showError(response.message);
+    }else{
+        showSuccess('Updated!');
+    }
 }
 
 function updateOrdering(_thisInputTag){
@@ -135,14 +88,6 @@ function updateOrdering(_thisInputTag){
     callAPIHelper("/bannermanage/updateordering", updateParams, 'POST', callApiUpdateOderSuccess);
 }
 
-function callApiUpdateOderSuccess(response){
-    console.log(response);
-    if(response.statusCode != 0){
-        showError(response.message);
-    }else{
-        showSuccess('Updated!');
-    }
-}
 function changePublicDateTime(dateTimeInput){
     var form = $(dateTimeInput).closest('form');
     var show_from = $(form).find('input[name="show_from"]');
@@ -152,68 +97,97 @@ function changePublicDateTime(dateTimeInput){
     show_to.attr("min",show_from.val());
 }
 
-
-
-function successGetViewBanner(response){
-    if(response.error !== undefined){
-        showError(response.error)
-    }else{
-        console.log(response);
-        var banner = response.banner;
-        var listTargetRoute = response.list_target_route;
-        var listTypeBanner = response.list_type_banner;
-
-        BannerDetail_titleVi.value  = banner.title_vi != undefined ? banner.title_vi : '';
-        BannerDetail_titleEn.value = banner.title_en != undefined ? banner.title_en : '';
-        var map_bannerType = findElementInArrayObjectByKeyValue(listTypeBanner, 'id', banner.event_type);
-        var map_directionId = findElementInArrayObjectByKeyValue(listTargetRoute, 'id', banner.direction_id);
-
-        BannerDetail_bannerType.value = map_bannerType != undefined ? map_bannerType.name : banner.event_type;
-
-        BannerDetail_image.src = banner.image != undefined ? banner.image : '';
-        if(banner.bannerType == 'promotion'){
-            path_2.hidden = false;
-            BannerDetail_thump_image.src = banner.thumb_image != undefined ? banner.thumb_image : '';
-        }else{
-            path_2.hidden = true;
-        }
-
-        BannerDetail_public_date_start.value = banner.public_date_start != undefined ? banner.public_date_start : '';
-        BannerDetail_public_date_end.value = banner.public_date_end != undefined ? banner.public_date_end : '';
-
-        //target route
-        if(banner.direction_id || banner.direction_url ){
-            has_target_route.checked = true;
-            box_target.hidden = false;
-            BannerDetail_directionId.value = (map_directionId != undefined) ?  map_directionId.name : '';
-            BannerDetail_directionURL.value = (banner.direction_url != undefined) ? banner.direction_url : '';
-        }else{
-            box_target.hidden = true;
-            has_target_route.checked = false;
-        }
-
-        if(banner.is_show_home == 1){
-            isShowHome.checked = true;
-        }else{
-            isShowHome.checked = false;
-        }
-
-        BannerDetail_link_to_edit.setAttribute('data-type', banner.bannerType);
-        BannerDetail_link_to_edit.setAttribute('data-id', banner.bannerId);
-        //end
+function methodAjaxBanner() {
+    $('body').on('click', '#addBanner', function (e) {
+        e.preventDefault();
         $('#showDetailBanner_Modal').modal('toggle');
-    }
-}
+        document.getElementById('formBanner').reset();
+        $('#event_type option').attr('disabled', false);
+        $('#direction_id').val('1').change();
+        $('#event_type').val('highlight').change();
+        $('#img_path_2').attr('src', '/images/image_holder.png');
+        $('#img_path_1').attr('src', '/images/image_holder.png');
+        window.urlMethod = '/bannermanage/store';
+    });
 
-function viewBanner(_this){
-    let row = _this.closest('tr');
-    let infoRow = row.querySelector('.infoRow');
+    $('body').on('click', '#detailBanner', function (event) {
+        event.preventDefault();
+        let id = $(this).data('id');
+        let url = '/bannermanage/show/'+id;
+        $.ajax({
+            url: url,
+            type:'GET',
+            success: function (response){
+                console.log(response);
+                for (const [key, value] of Object.entries(response.banner)) {
+                    $('#' + key).val(value);
+                    if(key==='image') {
+                        $('#img_path_1_name').val(value);
+                        $('#img_path_1').attr('src', value);
+                    }
+                    if(key==='thumb_image') {
+                        $('#img_path_2_name').val(value);
+                        $('#img_path_2').attr('src', value);
+                    }
+                    if(key==='event_type' || key==='direction_id') {
+                        $('#event_type option').attr('disabled', false);
+                        $('#'+key).trigger('change');
+                        $('#event_type option:not(:selected)').attr('disabled', true);
+                        if(key==='direction_id' && value === '') {
+                            $('#has_target_route').prop('checked', false);
+                        }else {
+                            $('#has_target_route').prop('checked', true);
+                            onchangeTargetRoute();
+                        }
+                        onchangeDirection();
+                    }
+                }
+                $('#showDetailBanner_Modal').modal('toggle');
+                window.urlMethod = '/bannermanage/update/'+id;
+            },
+            error: function (xhr) {
+                var errorString = '';
+                $.each(xhr.responseJSON.errors, function (key, value) {
+                    errorString = value;
+                    return false;
+                });
+                showError(errorString);
+                console.log(data);
+            }
+        });
+    });
 
-    callAPIHelper("/bannermanage/view/" + infoRow.getAttribute('data-id'),null,'GET',successGetViewBanner);
-}
-
-function editBanner(button){
-    var bannerId = button.getAttribute('data-id');
-    var editBannerLink =  base_url+`/bannermanage/edit/` + bannerId;
-    window.location.href = editBannerLink;
+    $('body').on('click', '#submitAjax', function (e){
+        $(this).attr('disabled','disabled');
+        e.preventDefault();
+        let data = $('#formBanner').serialize();
+        $.ajax({
+            url: urlMethod,
+            type: 'POST',
+            dataType: 'json',
+            data: data,
+            cache: false,
+            success: (data) => {
+                if(data.data.statusCode === 0){
+                    $('#showDetailBanner_Modal').modal('toggle');
+                    showSuccess(data.data.message);
+                    $('#submitAjax').prop('disabled', false);
+                    var table = $('#banner_manage').DataTable();
+                    table.ajax.reload();
+                }else{
+                    showError(data.data.message);
+                    $('#submitAjax').prop('disabled', false);
+                }
+            },
+            error: function (xhr) {
+                var errorString = '';
+                $('#submitAjax').prop('disabled', false);
+                $.each(xhr.responseJSON.errors, function (key, value) {
+                    errorString = value;
+                    return false;
+                });
+                showError(errorString);
+            }
+        });
+    });
 }

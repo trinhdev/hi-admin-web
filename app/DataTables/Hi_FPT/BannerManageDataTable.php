@@ -28,6 +28,15 @@ class BannerManageDataTable extends DataTable
         $query = $query['data'];
         return datatables()
             ->collection($query)
+            ->editColumn('title_vi', function($row) {
+                if (strlen($row->title_vi)>50) {
+                    $text = mb_substr($row->title_vi, 0, 50, "UTF-8").'<div class="text-bold" onclick="showHideTitle('.$row->event_id.')">...Xem thêm</div>';
+                } else {
+                    $text = $row->title_vi;
+                }
+                return '<div class="hide'.$row->event_id.' text-left" style="display: none;">'.$row->title_vi.'</div>
+                        <div class="show'.$row->event_id.'">'.$text.'</div>';
+            })
             ->editColumn('event_type', function($row) {
                 return '<span class="infoRow" data-id="'.$row->event_id.'">'.$row->event_type.'</span>';
             })
@@ -65,10 +74,10 @@ class BannerManageDataTable extends DataTable
             })
             ->editColumn('action',function($row){
                 return '<div style="display:flex; justify-content:center">
-                    <a style="float: left; margin-right: 5px" type="button" onclick="viewBanner(this)" class="btn btn-sm fas fa-eye btn-icon bg-primary"></a>
-                   <a style="" type="button" onclick="getDetailBanner(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>';
+                   <a type="button" id="detailBanner" data-id="'.$row->event_id.'" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
+                   <a type="button" id="deleteBanner" data-id="'.$row->event_id.'" class="btn btn-sm fas fa-trash-alt btn-icon bg-danger"></a></div>';
             })
-            ->rawColumns(['image','status','action','ordering_on_home','event_type', 'is_show_home'])
+            ->rawColumns(['title_vi','image','status','action','ordering_on_home','event_type', 'is_show_home'])
             ->setTotalRecords($totalRecords)
             ->skipPaging();
     }
