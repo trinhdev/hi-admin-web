@@ -46,13 +46,13 @@ class BannerManageRepository implements BannerManageInterface
         $perPage = $params->length ?? null;
         $currentPage = $params->start == 0 ? 1 : ($params->start / $perPage) + 1;
         $form_params = [
-            'banner_type' => $params->bannerType?? null,
+            'banner_type' => $params->bannerType ?? null,
             'public_date_start' => $params->public_date_start ?? null,
             'public_date_end' => $params->public_date_end ?? null,
-            'order_by' => $params->order[0]['column'] ?? 'event_id',
-            'per_page' => $perPage ?? null,
-            'current_page' => $currentPage ?? null,
-            'order_direction' => 'desc'
+            'order_by' => $params->columns[$params->order[0]['column']??0]['data'] ?? 'event_id',
+            'per_page' => $perPage,
+            'current_page' => $currentPage,
+            'order_direction' => $params->order[0]['dir'] ?? 'desc'
         ];
         $response = $this->client->request('GET', $this->listMethod['GET_LIST_BANNER'], [
             'headers' => $this->headers,

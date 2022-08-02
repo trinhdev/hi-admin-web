@@ -3,9 +3,11 @@
 namespace App\DataTables\Hi_FPT;
 
 use App\Models\Banner;
+use App\Models\Hi_FPT;
 use App\Services\NewsEventService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -85,8 +87,8 @@ class BannerManageDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Hi_FPT/Banner $model
-     * @return \Illuminate\Support\Collection
+     * @param Hi_FPT/Banner $model
+     * @return Collection
      */
     public function query()
     {
@@ -112,13 +114,12 @@ class BannerManageDataTable extends DataTable
                         'searchDelay' => 500,
                         'initComplete' => "function () {
                             var bannerType = $('#show_at');
-                            var public_date_start = $('#show_from');
-                            var public_date_end = $('#show_to');
+                            var filter_condition = $('#filter_condition');
                             var table = $('#banner_manage').DataTable();
                             $(bannerType).on('change', function () {
                                 table.ajax.reload();
                             });
-                            $(public_date_end).on('change', function () {
+                            $(filter_condition).on('click', function () {
                                 table.ajax.reload();
                             });
                          }"

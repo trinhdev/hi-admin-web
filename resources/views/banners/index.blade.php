@@ -34,22 +34,22 @@
             <div class="card card-body col-sm-12">
                 <div class="container">
                     <div class="card-body row form-inline">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="input-group input-group-sm mb-4">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Vị Trí Hiển Thị: </div>
                                 </div>
                                 <select class="form-control" name="position" id="show_at" placeholder="Show at">
                                     <option value=''>Tất Cả</option>
-                                    @if(!empty($list_type_banner))
-                                    @foreach($list_type_banner as $type)
-                                         <option value="{{$type->key}}">&#8920; {{ $type->key}} &#x22D9;: {{$type->name}}</option>
-                                    @endforeach
-                                    @endif
+                                    @forelse($list_type_banner as $type)
+                                        <option value="{{$type->key}}">&#8920; {{ $type->key}} &#x22D9;: {{$type->name}}</option>
+                                    @empty
+                                        <option>API Error</option>
+                                    @endforelse
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="input-group input-group-sm mb-4">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Từ: </div>
@@ -57,12 +57,17 @@
                                 <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" />
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="input-group input-group-sm mb-4">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Đến: </div>
                                 </div>
                                 <input type="datetime-local" name="show_to" class="form-control" id="show_to" placeholder="Date To" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group input-group-sm mb-4">
+                                <button id="filter_condition" class="btn btn-sm btn-primary">Time filter</button>
                             </div>
                         </div>
                     </div>
