@@ -146,14 +146,11 @@ Route::group([
             });
 
             Route::prefix('bannermanage')->group(function () {
-                Route::get('/','BannerManageController@index')->name('bannermanage.index');
-                Route::get('/edit/{id}','BannerManageController@edit')->name('bannermanage.edit');
-                Route::get('/create','BannerManageController@edit')->name('bannermanage.create');
-                Route::post('/store','BannerManageController@store')->name('bannermanage.store');
-                Route::put('/update/{id}','BannerManageController@update')->name('bannermanage.update');
-                Route::get('/initDatatable','BannerManageController@initDatatable')->name('bannermanage.initDatatable');
-                Route::post('/updateordering','BannerManageController@updateOrder')->name('bannermanage.updateOrder');
-                Route::get('/view/{id}','BannerManageController@view')->name('bannermanage.view');
+                Route::get('/','BannerController@all')->name('bannermanage.index');
+                Route::post('/store','BannerController@store')->name('bannermanage.store');
+                Route::post('/update/{id}','BannerController@update')->name('bannermanage.update');
+                Route::post('/updateordering','BannerController@update_order')->name('bannermanage.updateOrder');
+                Route::get('/show/{id}','BannerController@show')->name('bannermanage.view');
             });
 
             Route::prefix('iconmanagement')->group(function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\Contract\Hi_FPT\BannerManageInterface;
+use App\DataTables\Hi_FPT\BannerDataTable;
 use App\DataTables\Hi_FPT\BannerManageDataTable;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\BannerManageRequest\StoreRequest;
@@ -27,7 +28,7 @@ class BannerController extends MY_Controller
 
     public function store(StoreRequest $request)
     {
-        return $this->BannerManageRepository->store($request->validated());
+        return $this->BannerManageRepository->store($request);
     }
 
     public function update(UpdateRequest $request, $id)
@@ -40,8 +41,8 @@ class BannerController extends MY_Controller
         return $this->BannerManageRepository->show($id);
     }
 
-    public function view($id)
+    public function update_order(Request $request)
     {
-        return $this->BannerManageRepository->view($id);
+        return $this->BannerManageRepository->update_order($request);
     }
 }

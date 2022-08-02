@@ -8,7 +8,6 @@ use App\Services\NewsEventService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Carbon;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class BannerManageRepository implements BannerManageInterface
 {
@@ -16,6 +15,12 @@ class BannerManageRepository implements BannerManageInterface
     private $listMethod;
     private $client;
     private $headers;
+    private $listTypeBanner;
+    private $listTargetRoute;
+
+    /**
+     * @throws GuzzleException
+     */
     public function __construct()
     {
         $api_config         = config('configDomain.DOMAIN_NEWS_EVENT.' . env('APP_ENV'));
@@ -25,6 +30,12 @@ class BannerManageRepository implements BannerManageInterface
             'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m")),
             'clientKey' => $api_config['CLIENT_KEY']
         ];
+        $this->listTypeBanner  = json_decode($this->client->request('GET',$this->listMethod['GET_LIST_TYPE_BANNER'], [
+            'headers' => $this->headers
+        ])->getBody()->getContents())->data;
+        $this->listTargetRoute = json_decode($this->client->request('GET',$this->listMethod['GET_LIST_TARGET_ROUTE'], [
+            'headers' => $this->headers
+        ])->getBody()->getContents())->data;
     }
 
     /**
@@ -32,71 +43,41 @@ class BannerManageRepository implements BannerManageInterface
      */
     public function all($dataTable, $params)
     {
-        $perPage = $params->length ?? 10;
+        $perPage = $params->length ?? null;
         $currentPage = $params->start == 0 ? 1 : ($params->start / $perPage) + 1;
         $form_params = [
             'banner_type' => $params->bannerType?? null,
             'public_date_start' => $params->public_date_start ?? null,
             'public_date_end' => $params->public_date_end ?? null,
-            'order_by' => null,
+            'order_by' => $params->order[0]['column'] ?? 'event_id',
             'per_page' => $perPage ?? null,
             'current_page' => $currentPage ?? null,
-            'order_direction' => 'DESC'
+            'order_direction' => 'desc'
         ];
         $response = $this->client->request('GET', $this->listMethod['GET_LIST_BANNER'], [
             'headers' => $this->headers,
-            'form_params' => $form_params
-        ]);
-        $res = check_status_code_api(json_decode($response->getBody()->getContents()));
-        $service = new NewsEventService();
-        $listTypeBanner = get_data_api($service->getListTypeBanner());
-        if(empty($res)) {
-            return redirect()->back()->withErrors('Error! System maintain!');
-        }
+            'query' => $form_params
+        ])->getBody()->getContents();
         return $dataTable->with([
-            'data'=>$res
-        ])->render('banners.index', ['list_type_banner' => $listTypeBanner]);
+            'data'=>json_decode($response)
+        ])->render('banners.index', ['list_type_banner' => $this->listTypeBanner, 'list_target_route'=>$this->listTargetRoute]);
     }
 
     public function show($id)
     {
         try {
-            $service = new NewsEventService();
-            $response = $this->client->request('GET', "provider/tool/banner/get-detail-banner", [
+            $response = json_decode($this->client->request('GET', $this->listMethod['GET_DETAIL_BANNER'], [
                 'headers' => $this->headers,
-                'form_params' => ['bannerId' => $id]
-            ]);
+                'query' => ['bannerId' => $id]
+            ])->getBody()->getContents())->data;
             $data = [
-                'list_target_route' => get_data_api($service->getListTargetRoute()),
-                'list_type_banner'  => $this->client->request('GET', $this->listMethod['GET_LIST_TYPE_BANNER'], [
-                    'headers' => $this->headers
-                ])
-            ];
-            $res = check_status_code_api(json_decode($response->getBody()->getContents()));
-            if(empty($res)) {
-                return view('banners.create')->with($data);
-            }
-            $data['data'] = collect($res);
-            return $data;
-        } catch (GuzzleException $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public function view($id)
-    {
-        try {
-            $service = new NewsEventService();
-            $response = get_data_api($service->getDetailBanner($id));
-            $data = [
-                'list_target_route' => get_data_api($service->getListTypeBanner()),
-                'list_type_banner'  => json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TYPE_BANNER'], [
-                    'headers' => $this->headers
-                ])->getBody()->getContents())
+                'list_target_route' => $this->listTargetRoute,
+                'list_type_banner'  => $this->listTypeBanner
             ];
             if(empty($response)) {
                 return response()->json(['status_code' => '500', 'message' => 'System maintain!']);
             }
+
             $data['banner'] = collect($response)->only([
                 "event_id","event_type","public_date_start","public_date_end","title_vi",
                 "title_en","direction_id","event_url","image","thumb_image","view_count",
@@ -107,7 +88,7 @@ class BannerManageRepository implements BannerManageInterface
         }
     }
 
-    public function store($params)
+    public function store($params): \Illuminate\Http\JsonResponse
     {
         try {
             $form_params = collect($params->validated())->merge([
@@ -117,25 +98,29 @@ class BannerManageRepository implements BannerManageInterface
                 'directionUrl'      => $params->input('has_target_route')=='checked' && $params->input('direction_id')==1 ? $params->input('directionUrl', '') : '',
                 'isShowHome'        => $params->has('isShowHome') ? 1 : null,
                 'cms_note'          => json_encode([
-                    'created_by' => substr($this->user->email, 0, strpos($this->user->email, '@')),
+                    'created_by' => substr(auth()->user()->email, 0, strpos(auth()->user()->email, '@')),
                     'modified_by' => null
                 ])
             ])->toArray();
-            $response = $this->client->request('POST', $this->listMethod['ADD'], [
+            foreach ($form_params as $key => $item) {
+                if ($key == 'bannerType' && $item =='highlight') {
+                    $form_params[$key] = 'bannerHome';
+                }
+                if ($key == 'imageFileName' || $key =='thumbImageFileName') {
+                    $form_params[$key] = strstr($form_params[$key], 'event_');
+                }
+            }
+            $response = $this->client->request('POST', $this->listMethod['CREATE_BANNER'], [
                 'headers' => $this->headers,
                 'form_params' => array_filter($form_params)
-            ]);
-            $res = check_status_code_api(json_decode($response->getBody()->getContents()));
-            if(empty($res)) {
-                return response()->json(['status_code' => '500', 'message' => 'System maintain!']);
-            }
-            return response()->json(['status_code' => '0', 'data' => $res]);
+            ])->getBody()->getContents();
+            return response()->json(['data' => json_decode($response)]);
         } catch (GuzzleException $e) {
             return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
         }
     }
 
-    public function update($params, $id)
+    public function update($params, $id): \Illuminate\Http\JsonResponse
     {
         try {
             $form_params = collect($params->validated())->merge([
@@ -145,45 +130,42 @@ class BannerManageRepository implements BannerManageInterface
                 'thumbImageFileName'=> $params->input('thumbImageFileName'),
                 'publicDateStart'   => Carbon::parse($params->input('show_from'))->format('Y-m-d H:i:s'),
                 'publicDateEnd'     => Carbon::parse($params->input('show_to'))->format('Y-m-d H:i:s'),
-                'titleVi'           => $params->input('title_vi', ''),
-                'titleEn'           => $params->input('title_en', ''),
+                'titleVi'           => $params->input('titleVi', ''),
+                'titleEn'           => $params->input('titleEn', ''),
                 'directionId'       => $params->input('has_target_route')=='checked' ? $params->input('direction_id', '') : '',
                 'directionUrl'      => $params->input('has_target_route')=='checked' && $params->input('direction_id')==1 ? $params->input('directionUrl', '') : '',
             ])->toArray();
-            $response = $this->client->request('POST', $this->listMethod['UPDATE'], [
+            foreach ($form_params as $key => $item) {
+                if ($key == 'bannerType' && $item =='highlight') {
+                    $form_params[$key] = 'bannerHome';
+                }
+                if ($key == 'imageFileName' || $key =='thumbImageFileName') {
+                    $form_params[$key] = strstr($form_params[$key], 'event_');
+                }
+            }
+            $response = $this->client->request('POST', $this->listMethod['UPDATE_BANNER'], [
                 'headers' => $this->headers,
                 'form_params' => array_filter($form_params)
-            ]);
-            $res = check_status_code_api(json_decode($response->getBody()->getContents()));
-            if(empty($res)) {
-                return response()->json(['status_code' => '500', 'message' => 'System maintain!']);
-            }
-            return response()->json(['status_code' => '0', 'data' => $res]);
+            ])->getBody()->getContents();
+            return response()->json(['data' => json_decode($response)]);
         } catch (GuzzleException $e) {
             return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
         }
     }
 
-    public function updateOrder($params)
+    public function update_order($params): \Illuminate\Http\JsonResponse
     {
         try {
             $form_params =[
                 'orderings'     => [
-                    [
-                        'eventId'  => $params->eventId,
-                        'ordering'  => $params->ordering
-                    ]
+                    ['eventId'  => $params->eventId,'ordering'  => $params->ordering]
                 ]
             ];
             $response = $this->client->request('POST', $this->listMethod['UPDATE_ORDERING'], [
                 'headers' => $this->headers,
                 'form_params' => array_filter($form_params)
-            ]);
-            $res = check_status_code_api(json_decode($response->getBody()->getContents()));
-            if(empty($res)) {
-                return response()->json(['status_code' => '500', 'message' => 'System maintain!']);
-            }
-            return response()->json(['status_code' => '0', 'data' => $res]);
+            ])->getBody()->getContents();
+            return response()->json(json_decode($response));
         } catch (GuzzleException $e) {
             return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
         }
