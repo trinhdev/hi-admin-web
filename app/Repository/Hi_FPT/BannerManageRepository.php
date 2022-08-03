@@ -102,14 +102,7 @@ class BannerManageRepository implements BannerManageInterface
                     'modified_by' => null
                 ])
             ])->toArray();
-            foreach ($form_params as $key => $item) {
-                if ($key == 'bannerType' && $item =='highlight') {
-                    $form_params[$key] = 'bannerHome';
-                }
-                if ($key == 'imageFileName' || $key =='thumbImageFileName') {
-                    $form_params[$key] = strstr($form_params[$key], 'event_');
-                }
-            }
+            $form_params = $this->getArr($form_params);
             $response = $this->client->request('POST', $this->listMethod['CREATE_BANNER'], [
                 'headers' => $this->headers,
                 'form_params' => array_filter($form_params)
@@ -135,14 +128,7 @@ class BannerManageRepository implements BannerManageInterface
                 'directionId'       => $params->input('has_target_route')=='checked' ? $params->input('direction_id', '') : '',
                 'directionUrl'      => $params->input('has_target_route')=='checked' && $params->input('direction_id')==1 ? $params->input('directionUrl', '') : '',
             ])->toArray();
-            foreach ($form_params as $key => $item) {
-                if ($key == 'bannerType' && $item =='highlight') {
-                    $form_params[$key] = 'bannerHome';
-                }
-                if ($key == 'imageFileName' || $key =='thumbImageFileName') {
-                    $form_params[$key] = strstr($form_params[$key], 'event_');
-                }
-            }
+            $form_params = $this->getArr($form_params);
             $response = $this->client->request('POST', $this->listMethod['UPDATE_BANNER'], [
                 'headers' => $this->headers,
                 'form_params' => array_filter($form_params)
@@ -169,5 +155,28 @@ class BannerManageRepository implements BannerManageInterface
         } catch (GuzzleException $e) {
             return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
         }
+    }
+
+    /**
+     * @param array $form_params
+     * @return array
+     */
+    public function getArr(array $form_params): array
+    {
+        foreach ($form_params as $key => $item) {
+            if ($key == 'bannerType') {
+                if ($item == 'highlight') {
+                    $form_params[$key] = 'bannerHome';
+                } else if ($item == 'bill') {
+                    $form_params[$key] = 'billListScreen';
+                } else if ($item == 'contract') {
+                    $form_params[$key] = 'tvInternet';
+                }
+            }
+            if ($key == 'imageFileName' || $key == 'thumbImageFileName') {
+                $form_params[$key] = strstr($form_params[$key], 'event_');
+            }
+        }
+        return $form_params;
     }
 }
