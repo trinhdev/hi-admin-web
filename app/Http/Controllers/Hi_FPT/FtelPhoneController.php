@@ -130,6 +130,7 @@ class FtelPhoneController extends MY_Controller
                         'emailAddress' => $tag['emailAddress'],
                         'location_id' => $tag['location_id'],
                         'branch_code' => $tag['branch_code'],
+                        'branch_name' => $tag['branch_name'],
                         'area_code' => $tag['code'],
                         'organizationCode' => $tag['organizationCode'],
                         'organizationCodePath' => $tag['organizationCodePath'],
