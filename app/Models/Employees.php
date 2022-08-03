@@ -13,9 +13,9 @@ use stdClass;
 class Employees extends Model
 {
     protected $connection = 'mysql';
-    protected $table = 'employees_final';
+    protected $table = 'employees';
     protected $primaryKey = 'id';
-    protected $fillable = ['id','name','full_name','phone','location_id','branch_code', 'description', 'organizationCode', 'code', 'emailAddress', 'organizationCode', 'organizationCodePath', 'checkUpdate', 'location', 'employee_code', 'organizationNamePath', 'isActive', 'dept_id', 'dept_name_1', 'dept_name_2', 'updated_from'];
+    protected $fillable = ['id','name','full_name','phone','location_id','branch_code', 'description', 'organizationCode', 'code', 'emailAddress', 'organizationCode', 'organizationCodePath', 'checkUpdate', 'location', 'employee_code', 'organizationNamePath', 'isActive', 'dept_id', 'dept_name_1', 'dept_name_2', 'updated_from', 'branch_name'];
 
     public function customer_locations() {
         return $this->hasOne(Customer_Locations::class, 'customer_location_id', 'location_id');
