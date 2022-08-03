@@ -13,6 +13,7 @@
                             <th>Đơn vị đầy đủ</th>
                             <th>Đơn vị</th>
                             <th>Đơn vị(theo data)</th>
+                            <th>Phòng ban</th>
                             <th>ID vị trí</th>
                             <th>Mã chi nhánh</th>
                             <th>Mã vùng</th>
@@ -43,6 +44,7 @@
                         <td>{{ $value['organizationCodePath'] ?? null }}</td>
                         <td>{{ $codePath[0] ?? null }}</td>
                         <td>{{ $codePath[1] ?? null }}</td>
+                        <td>{{ $codePath[count($codePath)-2] ?? null }}</td>
                         <td>{{ $value['location_id'] ?? null }}</td>
                         <td>{{ $value['branch_code'] ?? null }}</td>
                         <td>{{ $value['area_code'] ?? null }}</td>

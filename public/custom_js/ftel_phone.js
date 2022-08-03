@@ -57,17 +57,17 @@ function datatableFtelPhoneExport(){
                     {
                         extend: 'colvisGroup',
                         text: 'Show all',
-                        show: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+                        show: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
                     },
                     {
                         extend: 'colvisGroup',
                         text: 'Hide all',
-                        hide: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+                        hide: [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
                     },
                     {
                         extend: 'colvisGroup',
                         text: 'Show default (After hide all)',
-                        show: [1,2,3,4,5]
+                        show: [1,2,3,4,5,6,7,8]
                     }
                 ],
                 dropup: true
