@@ -290,6 +290,7 @@ Route::group([
             Route::prefix('errorpaymentchart')->group(function () {
                 Route::get('/','ErrorpaymentchartController@index')->name('errorpaymentchart.index');
                 Route::post('/getPaymentErrorUserSystem','ErrorpaymentchartController@getPaymentErrorUserSystem')->name('errorpaymentchart.getPaymentErrorUserSystem');
+                Route::post('/getPaymentErrorDetail','ErrorpaymentchartController@getPaymentErrorDetail')->name('errorpaymentchart.getPaymentErrorDetail');
             });
         });
     }

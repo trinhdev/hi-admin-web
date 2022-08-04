@@ -115,4 +115,63 @@ class ErrorpaymentchartController extends MY_Controller
         
         return ['labels' => [date('d/m/Y', strtotime($from_before)) . ' - ' . date('d/m/Y', strtotime($to_before)), date('d/m/Y', strtotime($from)) . ' - ' . date('d/m/Y', strtotime($to))], 'datasets' => $result];
     }
+
+    public function getPaymentErrorDetail(Request $request) {
+        $result = [
+            'labels'                => [],
+            'datasets'              => [[
+                'data'              => [],
+                'backgroundColor'   => []
+            ]]
+        ];
+        $from = $request->from;
+        $to = $request->to;
+        $type = $request->type;
+
+        if(empty($from)) {
+            $from = date('Y-m-01 00:00:00', strtotime('yesterday midnight'));
+        }
+        else {
+            $from = date('Y-m-d 00:00:00', strtotime($from));
+        }
+        if(empty($to)) {
+            $to = date('Y-m-d 23:59:59', strtotime('today midnight'));
+        }
+        else {
+            $to = date('Y-m-d 23:59:59', strtotime($to));
+        }
+
+        $data = Payment_Orders::selectRaw('err_code.description_error AS description_error, COUNT(payment_provider_status) AS count')
+                              ->join('payment_error_code AS err_code', DB::raw('BINARY payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
+                              ->join('payment_product', DB::raw('BINARY payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
+                              ->where('payment_type', '!=', 'TOKEN')
+                              ->where('payment_provider_status', '!=', 'SUCCESS')
+                              ->where('payment_product.type', $type)
+                              ->whereBetween('date_created', [$from, $to])
+                              ->groupBy('err_code.code_error')
+                              ->orderBy('err_code.code_error')
+                              ->get()->toArray();
+        
+        $datana = Payment_Orders::selectRaw('COUNT(payment_provider_status) AS count')
+                               ->leftJoin('payment_error_code AS err_code', DB::raw('BINARY payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
+                               ->join('payment_product', DB::raw('BINARY payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
+                               ->where('payment_type', '!=', 'TOKEN')
+                               ->where('payment_provider_status', '!=', 'SUCCESS')
+                               ->where('payment_product.type', $type)
+                               ->whereNull('err_code.code_error')
+                               ->whereBetween('date_created', [$from, $to])
+                               ->get()->toArray();
+
+        foreach($data as $key => $value) {
+            $result['labels'][] = $value['description_error'];
+            $result['datasets'][0]['data'][] = $value['count'];
+            $result['datasets'][0]['backgroundColor'][] = rand_color();
+        }
+
+        $result['labels'][] = '#N/A';
+        $result['datasets'][0]['data'][] = (!empty($datana[0]['count'])) ? $datana[0]['count'] : 0;
+        $result['datasets'][0]['backgroundColor'][] = rand_color();
+
+        return $result;
+    }
 }

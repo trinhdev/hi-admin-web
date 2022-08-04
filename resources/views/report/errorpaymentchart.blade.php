@@ -92,34 +92,82 @@
 @push('scripts')
     {{-- <script src="{{ asset('/custom_js/payment_error_chart.js')}}" type="text/javascript" charset="utf-8"></script> --}}
     <script>
-        console.log('test');
-        var ctx = document.getElementById("payment-error-detail-ecom");
-        var myDoughnutChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['OK', 'WARNING', 'CRITICAL', 'UNKNOWN'],
-                datasets: [{
-                    label: '# of Tomatoes',
-                    data: [12, 19, 3, 5],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.5)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: false,
+        
+        var from = $('#show_from').val();
+        var to = $('#show_to').val();
+        var detailChart = [];
 
-            }
-        });
+        drawPaymentErrorDetailEcom();
+        drawPaymentErrorDetailFtel();
+
+        function drawPaymentErrorDetailEcom(from = null, to = null) {
+            $.ajax({
+                url: '/errorpaymentchart/getPaymentErrorDetail',
+                type:'POST',
+                data: {
+                    from: from,
+                    to: to,
+                    type: 'ecom'
+                },
+                success: function (response){
+                    drawPaymentErrorDetailChart('ecom', response);
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    showError(errorString);
+                    console.log(data);
+                }
+            });
+        }
+
+        function drawPaymentErrorDetailFtel(from = null, to = null) {
+            $.ajax({
+                url: '/errorpaymentchart/getPaymentErrorDetail',
+                type:'POST',
+                data: {
+                    from: from,
+                    to: to,
+                    type: 'ftel'
+                },
+                success: function (response){
+                    drawPaymentErrorDetailChart('ftel', response);
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    showError(errorString);
+                    console.log(data);
+                }
+            });
+        }
+
+        function drawPaymentErrorDetailChart(type, data) {
+            detailChart[type] = new Chart(document.getElementById("payment-error-detail-" + type), {
+                type: 'doughnut',
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Báo cáo lỗi thanh toán chi tiết cho ' + type,
+                        align: 'center',
+                        position: 'bottom'
+                    },
+                    scales: {
+                        yAxes: {
+                            beginAtZero: true
+                        }
+                    }
+                },
+                data: data,
+            });
+        }
+
+        
     </script>
 @endpush
