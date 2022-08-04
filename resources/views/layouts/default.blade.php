@@ -3,6 +3,7 @@
 <head>
     @include('layouts.header')
     @stack('header')
+    {{ vite_assets('css') }}
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -40,6 +41,7 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
+    {{ vite_assets('scripts') }}
     @include('layouts.scripts')
     @stack('scripts')
     <!-- jQuery -->
