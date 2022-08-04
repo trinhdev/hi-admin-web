@@ -36,6 +36,7 @@ Route::group([
         Route::prefix('home')->group(function () {
             Route::get('/', 'HomeController@index')->name('home');
             Route::get('/getDataChart', 'HomeController@getDataChart')->name('home.getDataChart');
+            Route::get('/getPaymentErrorTableData', 'HomeController@getPaymentErrorTableData')->name('home.getPaymentErrorTableData');
         });
         Route::prefix('file')->group(function () {
             Route::any('/uploadImageExternal', 'FileController@uploadImageExternal')->name('uploadImageExternalB');
@@ -285,6 +286,10 @@ Route::group([
             });
             Route::prefix('reportsalebydate')->group(function () {
                 Route::get('/','SalereportbydateController@index')->name('reportsalebydate.index');
+            });
+            Route::prefix('errorpaymentchart')->group(function () {
+                Route::get('/','ErrorpaymentchartController@index')->name('errorpaymentchart.index');
+                Route::post('/getPaymentErrorUserSystem','ErrorpaymentchartController@getPaymentErrorUserSystem')->name('errorpaymentchart.getPaymentErrorUserSystem');
             });
         });
     }

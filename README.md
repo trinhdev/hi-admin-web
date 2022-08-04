@@ -54,6 +54,7 @@ Docker config, cd to folder project
 To use VITE JS hot reload blade
 - npm i
 - npm run dev
+- npm run build
 
 ## License
 
