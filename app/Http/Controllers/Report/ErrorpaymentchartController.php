@@ -101,13 +101,13 @@ class ErrorpaymentchartController extends MY_Controller
         $result = [
             [
                 'label'             => 'Lỗi người dùng',
-                'data'              => [$data_last[0]['count'], $data_now[0]['count']],
+                'data'              => [(isset($data_last[0]['count'])) ? $data_last[0]['count'] : 0, (isset($data_now[0]['count'])) ? $data_now[0]['count']  : 0],
                 'borderColor'       => $user_error_color,
                 'backgroundColor'   => $user_error_color,
             ],
             [
                 'label'             => 'Lỗi hệ thống',
-                'data'              => [$data_last[1]['count'], $data_now[1]['count']],
+                'data'              => [(isset($data_last[1]['count'])) ? $data_last[1]['count'] : 0, (isset($data_now[1]['count'])) ? $data_now[1]['count'] : 0],
                 'borderColor'       => $system_error_color,
                 'backgroundColor'   => $system_error_color,
             ]
