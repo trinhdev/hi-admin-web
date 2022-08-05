@@ -77,14 +77,14 @@ class HomeController extends MY_Controller
         $to = date('Y-m-d 23:59:59', strtotime('today midnight'));
 
         $data = Payment_Orders::selectRaw('payment_provider_status AS error_code, err_code.description_error AS error_name, COUNT(payment_provider_status) AS count')
-                              ->join('payment_error_code AS err_code', DB::raw('BINARY payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
+                              ->join('payment_error_code AS err_code', DB::raw('BINARY view_payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
                               ->where('payment_provider_status', '!=', 'SUCCESS')
                               ->where('payment_type', '!=', 'TOKEN')
                               ->whereBetween('date_created', [$from, $to])
                               ->groupBy('payment_provider_status')
                               ->get()->toArray();
         $dataNa = Payment_Orders::selectRaw('COUNT(payment_provider_status) AS count')
-                                ->leftJoin('payment_error_code AS err_code', DB::raw('BINARY payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
+                                ->leftJoin('payment_error_code AS err_code', DB::raw('BINARY view_payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
                                 ->where('payment_provider_status', '!=', 'SUCCESS')
                                 ->where('payment_type', '!=', 'TOKEN')
                                 ->whereNull('err_code.code_error')
