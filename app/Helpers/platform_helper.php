@@ -261,3 +261,10 @@ if (!function_exists('isJson')) {
         return json_last_error() === JSON_ERROR_NONE;
     }
 }
+
+if (!function_exists('rand_color')) {
+    function rand_color() {
+        return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+    }
+}
+

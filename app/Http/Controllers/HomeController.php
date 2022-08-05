@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Services\ChartService;
 use Illuminate\Support\Facades\Redis;
 
+use App\Models\Payment_Orders;
+use App\Models\Payment_Error_Code;
+
+use Yajra\DataTables\DataTables;
+
 use function PHPSTORM_META\map;
 
 class HomeController extends MY_Controller
@@ -63,5 +68,31 @@ class HomeController extends MY_Controller
             Redis::setex($keyName,86400, serialize($result));
         }
         return $result;
+    }
+
+    public function getPaymentErrorTableData() {
+        $from = date('Y-m-01 00:00:00', strtotime('yesterday midnight'));
+        $to = date('Y-m-d 23:59:59', strtotime('today midnight'));
+
+        $data = Payment_Orders::selectRaw('payment_provider_status AS error_code, err_code.description_error AS error_name, COUNT(payment_provider_status) AS count')
+                              ->join('payment_error_code AS err_code', 'view_payment_orders.payment_provider_status', '=', 'err_code.code_error')
+                              ->where('payment_provider_status', '!=', 'SUCCESS')
+                              ->where('payment_type', '!=', 'TOKEN')
+                              ->whereBetween('date_created', [$from, $to])
+                              ->groupBy('payment_provider_status')
+                              ->get()->toArray();
+        $dataNa = Payment_Orders::selectRaw('COUNT(payment_provider_status) AS count')
+                                ->leftJoin('payment_error_code AS err_code', 'view_payment_orders.payment_provider_status', '=', 'err_code.code_error')
+                                ->where('payment_provider_status', '!=', 'SUCCESS')
+                                ->where('payment_type', '!=', 'TOKEN')
+                                ->whereNull('err_code.code_error')
+                                ->whereBetween('date_created', [$from, $to])
+                                ->get()->toArray();
+        array_push($data, ['error_code' => '#N/A', 'error_name' => '#N/A', 'count' => (isset($dataNa[0]['count'])) ? $dataNa[0]['count'] : 0]);
+        $totals = array_column($data, 'count');
+        array_push($data, ['error_code' => 'total', 'error_name' => 'Total', 'count' => array_sum($totals)]);
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
     }
 }
