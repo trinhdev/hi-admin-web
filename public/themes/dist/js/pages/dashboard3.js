@@ -196,4 +196,205 @@ function formatDate(date) {
         return day + "-" + month + "-" + year; 
     }
 }
+
+function drawPaymentErrorTable() {
+    let _token = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        url: "/home/getPaymentErrorTableData",
+        type: 'GET',
+        data: {
+            _token: _token
+        },
+        success: function (data) {
+            drawchart1(data);
+            drawchart2();
+        },
+        error: function (err) {}
+    });
+}
+
+function drawPaymentErrorTable() {
+    $('#error-payment-table').DataTable({
+        "pageLength": 4,
+        "searching": false,
+        "lengthChange": false,
+        "order": [],
+        "processing": true,
+        "serverSide": true,
+        "select": true,
+        "dataSrc": "tableData",
+        "bDestroy": true,
+        "scrollX": true,
+        retrieve: true,
+        "ajax": {
+            url: "/home/getPaymentErrorTableData"
+        },
+        "columns": [{
+            title: 'No.',
+            render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+            },
+        },
+        {
+            data: 'error_name',
+            name: "error_name",
+            title: "Lỗi"
+        },
+        {
+            data: "count",
+            name: "count",
+            title: "Số lượng"
+        },
+        ],
+        "language": {
+            "emptyTable": "No Record..."
+        },
+        "initComplete": function (setting, json) {
+            $('#error-payment-table').show();
+        },
+        error: function (xhr, error, code) {
+            
+        },
+        searchDelay: 500
+    });
+}
 // lgtm [js/unused-local-variable]
+// drawUserSystemEcom();
+// drawUserSystemFtel();
+// drawPaymentErrorDetailEcom();
+// drawPaymentErrorDetailFtel();
+
+function drawUserSystemEcom(from_last, to_last, from, to) {
+    $.ajax({
+        url: "/errorpaymentchart/getPaymentErrorUserSystem",
+        type: 'POST',
+        data: {
+            from_last: from_last,
+            to_last: to_last,
+            from: from,
+            to: to,
+            type: 'ecom'
+        },
+        success: function (data) {
+            drawChartUserSystem('ecom', data);
+        },
+        error: function (err) {}
+    });
+}
+
+function drawUserSystemFtel(from_last, to_last, from, to) {
+    $.ajax({
+        url: "/errorpaymentchart/getPaymentErrorUserSystem",
+        type: 'POST',
+        data: {
+            from_last: from_last,
+            to_last: to_last,
+            from: from,
+            to: to,
+            type: 'ftel'
+        },
+        success: function (data) {
+            drawChartUserSystem('ftel', data);
+            $("#spinner").removeClass("show");
+        },
+        error: function (err) {}
+    });
+}
+
+function drawChartUserSystem(type, data) {
+    new Chart(document.getElementById('payment-error-user-system-' + type).getContext('2d'), {
+        type: 'bar',
+        data: data,
+        options: {
+            title: {
+                display: true,
+                text: 'Báo cáo lỗi thanh toán do người dùng / lỗi hệ thống ' + type,
+                align: 'center',
+                position: 'bottom'
+            },
+            scales: {
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        beginAtZero: true,
+                        min: 0
+                    },
+                    stacked: true
+                }],
+                xAxes: [{
+                    stacked: true,
+                    barPercentage: 0.4
+                }]
+            },
+            responsive: true,
+        },
+    });
+}
+
+function drawPaymentErrorDetailEcom(from = null, to = null) {
+    $.ajax({
+        url: '/errorpaymentchart/getPaymentErrorDetail',
+        type:'POST',
+        data: {
+            from: from,
+            to: to,
+            type: 'ecom'
+        },
+        success: function (response){
+            drawPaymentErrorDetailChart('ecom', response);
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+            console.log(data);
+        }
+    });
+}
+
+function drawPaymentErrorDetailFtel(from = null, to = null) {
+    $.ajax({
+        url: '/errorpaymentchart/getPaymentErrorDetail',
+        type:'POST',
+        data: {
+            from: from,
+            to: to,
+            type: 'ftel'
+        },
+        success: function (response){
+            drawPaymentErrorDetailChart('ftel', response);
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+            console.log(data);
+        }
+    });
+}
+
+function drawPaymentErrorDetailChart(type, data) {
+    new Chart(document.getElementById("payment-error-detail-" + type), {
+        type: 'doughnut',
+        options: {
+            title: {
+                display: true,
+                text: 'Báo cáo lỗi thanh toán chi tiết cho ' + type,
+                align: 'center',
+                position: 'bottom'
+            },
+            scales: {
+                yAxes: {
+                    beginAtZero: true
+                }
+            }
+        },
+        data: data,
+    });
+}

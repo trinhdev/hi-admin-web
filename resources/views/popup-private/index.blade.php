@@ -1,14 +1,8 @@
-{{--
+<!--
 Create by: trinhdev
 Update at: 2022/06/22
 Contact: trinhhuynhdp@gmail.com
-
-INDEX PAGE
-    * import TABLE, import modal_add_update
-    * show, filter and search data form api (done)
-END INDEX PAGE
-
---}}
+-->
 
 @extends('layouts.default')
 

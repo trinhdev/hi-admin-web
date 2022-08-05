@@ -1,3 +1,8 @@
+/*
+    Create by: trinhdev
+    Update at: 2022/08/04
+    Contact: trinhhuynhdp@gmail.com
+*/
 'use strict';
 function showHide() {
     $('.select2').select2();
@@ -376,7 +381,7 @@ function deletePopUpPrivate(data){
         }, success: function (response){
             showSuccess(response.message);
             var table = $('#popup_private_table').DataTable();
-            table.ajax.reload();
+            table.ajax.reload(null, false);
         },
         error: function (xhr) {
             var errorString = '';
@@ -389,6 +394,7 @@ function deletePopUpPrivate(data){
         }
     });
 }
+
 function checkStatusPopUpPrivate(){
     $.ajax({
         url: '/popup-private/check',

@@ -51,6 +51,11 @@ Docker config, cd to folder project
 - Edit .env file: DB_PASSWORD=trinhdev
 - php artisan serve
 
+To use VITE JS hot reload blade
+- npm i
+- npm run dev
+- npm run build
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

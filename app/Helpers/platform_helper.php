@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\HtmlString;
 /**
  * File: platformm_helper.php
  * @package Helper
@@ -22,6 +22,46 @@ if (!function_exists('backend_path')) {
         return __DIR__ . '/../' . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
+
+
+if (!function_exists('vite_assets')) {
+    /**
+     * @return HtmlString
+     * @throws Exception
+     */
+    function vite_assets($option): HtmlString
+    {
+        $devServerIsRunning = false;
+
+        if (app()->environment('local')) {
+            try {
+                $devServerIsRunning = file_get_contents(public_path('hot')) == 'http://127.0.0.1:5173';
+            } catch (Exception $e) {}
+        }
+
+        if ($devServerIsRunning) {
+            $base_url = env('APP_URL', 'localhost');
+            return new HtmlString(<<<HTML
+            <script type="module" src="{$base_url}:5173/resources/js/app.js"></script>
+        HTML);
+        }
+        $manifest = json_decode(file_get_contents(
+            public_path('build/manifest.json')
+        ), true);
+        if ($option=='css') {
+            $data = <<<HTML
+                        <link rel="stylesheet" href="/build/{$manifest['resources/js/app.js']['css'][0]}">
+                    HTML;
+        } else if ($option=='scripts'){
+            $data = <<<HTML
+                        <script type="module" src="/build/{$manifest['resources/js/app.js']['file']}"></script>
+                    HTML;
+        }
+        return new HtmlString($data);
+    }
+}
+
+
 if (!function_exists('get_data_api')) {
     function get_data_api( $response ) {
         if (isset($response->statusCode) && $response->statusCode == 0 && !empty($response->data)) {
@@ -221,3 +261,10 @@ if (!function_exists('isJson')) {
         return json_last_error() === JSON_ERROR_NONE;
     }
 }
+
+if (!function_exists('rand_color')) {
+    function rand_color() {
+        return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+    }
+}
+
