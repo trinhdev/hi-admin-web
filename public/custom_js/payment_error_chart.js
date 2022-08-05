@@ -5,6 +5,7 @@ var show_from_last = $('#show_from_last').val();
 var show_to_last = $('#show_to_last').val();
 var show_from = $('#show_from').val();
 var show_to = $('#show_to').val();
+
 // console.log(show_from);
 drawUserSystemEcom();
 drawUserSystemFtel();
@@ -169,6 +170,11 @@ function drawPaymentErrorDetailChart(type, data) {
                 yAxes: {
                     beginAtZero: true
                 }
+            },
+            responsive: true,
+            legend: {
+                position: 'right',
+                maxWidth: 100,
             }
         },
         data: data,
