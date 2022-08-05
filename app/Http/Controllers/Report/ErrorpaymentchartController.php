@@ -77,8 +77,8 @@ class ErrorpaymentchartController extends MY_Controller
         }
 
         $data_now = Payment_Orders::selectRaw('err_code.is_system AS error_type, COUNT(payment_provider_status) AS count')
-                                  ->join('payment_error_code AS err_code', DB::raw('BINARY payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
-                                  ->join('payment_product', DB::raw('BINARY payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
+                                  ->join('payment_error_code AS err_code', DB::raw('BINARY view_payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
+                                  ->join('payment_product', DB::raw('BINARY view_payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
                                   ->where('payment_type', '!=', 'TOKEN')
                                   ->where('payment_provider_status', '!=', 'SUCCESS')
                                   ->where('payment_product.type', $type)
@@ -88,8 +88,8 @@ class ErrorpaymentchartController extends MY_Controller
                                   ->get()->toArray();
                                 
         $data_last = Payment_Orders::selectRaw('err_code.is_system AS error_type, COUNT(payment_provider_status) AS count')
-                                  ->join('payment_product', DB::raw('BINARY payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
-                                  ->join('payment_error_code AS err_code', DB::raw('BINARY payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
+                                  ->join('payment_product', DB::raw('BINARY view_payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
+                                  ->join('payment_error_code AS err_code', DB::raw('BINARY view_payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
                                   ->where('payment_type', '!=', 'TOKEN')
                                   ->where('payment_provider_status', '!=', 'SUCCESS')
                                   ->where('payment_product.type', $type)
@@ -142,8 +142,8 @@ class ErrorpaymentchartController extends MY_Controller
         }
 
         $data = Payment_Orders::selectRaw('err_code.description_error AS description_error, COUNT(payment_provider_status) AS count')
-                              ->join('payment_error_code AS err_code', DB::raw('BINARY payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
-                              ->join('payment_product', DB::raw('BINARY payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
+                              ->join('payment_error_code AS err_code', DB::raw('BINARY view_payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
+                              ->join('payment_product', DB::raw('BINARY view_payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
                               ->where('payment_type', '!=', 'TOKEN')
                               ->where('payment_provider_status', '!=', 'SUCCESS')
                               ->where('payment_product.type', $type)
@@ -153,8 +153,8 @@ class ErrorpaymentchartController extends MY_Controller
                               ->get()->toArray();
         
         $datana = Payment_Orders::selectRaw('COUNT(payment_provider_status) AS count')
-                               ->leftJoin('payment_error_code AS err_code', DB::raw('BINARY payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
-                               ->join('payment_product', DB::raw('BINARY payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
+                               ->leftJoin('payment_error_code AS err_code', DB::raw('BINARY view_payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
+                               ->join('payment_product', DB::raw('BINARY view_payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
                                ->where('payment_type', '!=', 'TOKEN')
                                ->where('payment_provider_status', '!=', 'SUCCESS')
                                ->where('payment_product.type', $type)

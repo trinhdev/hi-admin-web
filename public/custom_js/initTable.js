@@ -70,6 +70,11 @@ $(document).ready(function () {
         case '':
         case 'home':
             drawChart();
+            drawPaymentErrorTable();
+            drawUserSystemEcom();
+            drawUserSystemFtel();
+            drawPaymentErrorDetailEcom();
+            drawPaymentErrorDetailFtel();
             break;
     }
 
