@@ -15,7 +15,7 @@
       <!-- /.d-flex -->
 
       <div class="position-relative mb-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-        <canvas id="payment-error-detail-ftel" height="200" width="461" style="display: block; width: 461px; height: 200px;" class="chartjs-render-monitor"></canvas>
+        <canvas id="payment-error-detail-ftel" height="300" width="461" style="display: block; width: 461px; height: 200px;" class="chartjs-render-monitor"></canvas>
       </div>
 
       {{-- <div class="d-flex flex-row justify-content-end">
