@@ -49,10 +49,10 @@
 
             @include('chart.paymentErrorUserSystemFtelChart')
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-12">
             @include('chart.paymentErrorDetailEcomChart')
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-12">
             @include('chart.paymentErrorDetailFtelChart')
           </div>
           <!-- /.col-md-6 -->
