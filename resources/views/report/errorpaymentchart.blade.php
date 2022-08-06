@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 {{--Start table--}}
-                <div class="row">
+                <div class="row" style="margin-bottom: 100px">
                     <div class="col-sm-6">
                         <canvas id="payment-error-user-system-ecom" width="100%"></canvas>
                     </div>
@@ -74,13 +74,17 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="col-sm-8"><canvas id="payment-error-detail-ecom"></canvas></div>
+                    <div class="col-sm-6">
+                        <div class="col-sm-8">
+                            <canvas id="payment-error-detail-ecom"></canvas>
+                            <div id="legend-container-ecom"></div>
+                        </div>
                         
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <div class="col-sm-8">
                             <canvas id="payment-error-detail-ftel"></canvas>
+                            <div id="legend-container-ftel"></div>
                         </div>
                         
                     </div>

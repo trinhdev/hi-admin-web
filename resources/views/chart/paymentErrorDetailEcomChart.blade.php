@@ -16,6 +16,15 @@
 
       <div class="position-relative mb-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
         <canvas id="payment-error-detail-ecom" height="200" width="461" style="display: block; width: 461px; height: 200px;" class="chartjs-render-monitor"></canvas>
+        <div id="legend-container-ecom"></div>
+        {{-- <div id="legend-container">
+          <ul style="display: flex; flex-direction: row; margin 0px; padding: 0px">
+            <li style="align-items: center; cursor: pointer; display: flex; flex-direction: row; margin-left: 10px">
+              <span style="background: rgba(255, 99, 132, 0.5) none repeat scroll 0% 0%; border-color: rgb(255, 99, 132); border-width: 3px; display: inline-block; height: 20px; margin-right: 10px; width: 20px;"></span>
+              <p style="color: rgb(102, 102, 102); margin: 0px; padding: 0px;">Dataset: 1</p>
+            </li>
+          </ul>
+        </div> --}}
       </div>
 
       {{-- <div class="d-flex flex-row justify-content-end">
