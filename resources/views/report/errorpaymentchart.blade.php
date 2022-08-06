@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 {{--Start table--}}
-                <div class="row">
+                <div class="row" style="margin-bottom: 100px">
                     <div class="col-sm-6">
                         <canvas id="payment-error-user-system-ecom" width="100%"></canvas>
                     </div>
@@ -74,11 +74,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6" style="height: 600px">
-                        <canvas id="payment-error-detail-ecom" width="100%" height="60%"></canvas>
+                    <div class="col-sm-6">
+                        <div class="col-sm-8">
+                            <canvas id="payment-error-detail-ecom"></canvas>
+                            <div id="legend-container-ecom"></div>
+                        </div>
+                        
                     </div>
-                    <div class="col-sm-6" style="height: 600px">
-                        <canvas id="payment-error-detail-ftel" width="100%" height="70%"></canvas>
+                    <div class="col-sm-6">
+                        <div class="col-sm-8">
+                            <canvas id="payment-error-detail-ftel"></canvas>
+                            <div id="legend-container-ftel"></div>
+                        </div>
+                        
                     </div>
                 </div>
                 {{--End table--}}
@@ -87,6 +95,32 @@
     </section>
     <!-- /.content -->
 </div>
+
+<style>
+    .chart-legend li span{
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 5px;
+    }
+
+    .chart-legend{
+    height:250px;
+    overflow:auto;
+    }
+
+    .chart-legend li{
+    cursor:pointer;
+    }
+
+    .strike{
+        text-decoration: line-through !important;
+    }
+
+    .float-left{
+        float:left;
+    }
+</style>
 @endsection
 
 @push('scripts')

@@ -5,6 +5,7 @@ var show_from_last = $('#show_from_last').val();
 var show_to_last = $('#show_to_last').val();
 var show_from = $('#show_from').val();
 var show_to = $('#show_to').val();
+
 // console.log(show_from);
 drawUserSystemEcom();
 drawUserSystemFtel();
@@ -169,10 +170,33 @@ function drawPaymentErrorDetailChart(type, data) {
                 yAxes: {
                     beginAtZero: true
                 }
-            }
+            },
+            responsive: true,
+            legend: {
+                display: false
+            },
+            tooltip: {
+                display: true
+            },
+            legendCallback: function (chart) {             
+                // Return the HTML string here.
+                var text = [];
+                text.push('<ul style="display: flex; flex-direction: row; margin: 0px; padding: 0px; flex-wrap: wrap;" class="' + chart.id + '-legend">');
+                for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
+                    text.push('<li style="align-items: center; cursor: pointer; display: flex; flex-direction: row; margin-left: 10px; margin-bottom: 10px"><span id="legend-' + i + '-item" style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '; border-width: 3px; display: inline-block; height: 20px; margin-right: 10px; width: 20px;" onclick="updateDataset(event, ' + '\'' + i + '\'' + ')"></span><p style="color: rgb(102, 102, 102); margin: 0px; padding: 0px;">');
+                    if (chart.data.labels[i]) {
+                        text.push(chart.data.labels[i]);
+                        text.push(' (' + chart.data.datasets[0]['data'][i] + ')');
+                    }
+                    text.push('</p></li>');
+                }
+                text.push('</ul>');
+                $('#legend-container-' + type).html(text.join(""));
+            },
         },
         data: data,
     });
+    detailChart[type].generateLegend();
 }
 
 function showLoadingIcon() {
