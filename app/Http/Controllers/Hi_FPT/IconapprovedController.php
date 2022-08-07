@@ -351,7 +351,6 @@ class IconapprovedController extends MY_Controller
                 ];
                 break;
         }
-        // dd($params);
         $result = $this->iconManagement->$function_name($params);
         return $result;
     }
