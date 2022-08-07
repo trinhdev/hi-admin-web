@@ -68,7 +68,6 @@
                                             <p class="font-italic text-center" style="margin-bottom: 0">Các kiểu định dạng file được chấp nhận</p>
                                             <p class="font-italic text-center"><b>jpeg, png, jpg, gif, svg</b></p>
                                             <p class="font-italic text-center">Dung lượng upload tối đa: <b>2048</b></p>
-                                            <p style="font-weight: bold" class="font-italic text-center required">Xin vui lòng upload hình ảnh sản phẩm</p>
                                             @error('iconUrl')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
