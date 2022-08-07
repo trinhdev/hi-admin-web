@@ -227,9 +227,9 @@
                             <button type="button" onClick="cancelButton('{{ (!empty(Session::get('approved_data'))) ? route('iconapproved.index') : route('iconcategory.index') }}')" class="btn btn-default float-right" style="margin-left: 5px">Đóng</button>
                             @if (!empty($id))
                                 @if(auth()->user()->can('icon-approve-data-permission'))
-                                    <button type="button" onClick="deleteButton('icon_category', '#icon-category-form', '{{ @$data['productTitleNameVi'] }}', '{{ route('iconapproved.destroyByApprovedRole') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                                    <button type="button" onClick="deleteButton('icon_category', '#icon-category-form', '{{ @$data['productTitleNameVi'] }}', '{{ route('iconapproved.destroyByApprovedRole') }}', 'selected-product')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                                 @else
-                                    <button type="button" onClick="deleteButton('icon_category', '#icon-category-form', '{{ @$data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
+                                    <button type="button" onClick="deleteButton('icon_category', '#icon-category-form', '{{ @$data['productTitleNameVi'] }}', '{{ route('iconcategory.destroy') }}', 'selected-product')" class="btn btn-secondary float-right" style="margin-left: 5px">Xóa</button>
                                 @endif
                             @endif
                             @if (Session::get('approved_data'))
