@@ -41,7 +41,7 @@
     </tr>
     <tr>
         <td class="title" style="padding-bottom: 30px">Ngày kết thúc</td>
-        <td style="padding-bottom: 30px">{{ (!empty($data['displayEndDay']) && $data['displayEndDay'] == "2") ? $data['displayEndDay'] : '' }}</td>
+        <td style="padding-bottom: 30px">{{ (!empty($data['displayEndDay']) && $data['isDisplay'] == "2") ? $data['displayEndDay'] : '' }}</td>
     </tr>
     
     <tr>
