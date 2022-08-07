@@ -14,7 +14,7 @@
     </tr>
     <tr>
         <td class="title" style="padding-bottom: 30px">Thông tin bổ sung</td>
-        <td style="padding-bottom: 30px">{{ @$data['content'] }}</td>
+        <td style="padding-bottom: 30px">{{ @$data['data'] }}</td>
     </tr>
 
     <tr>
