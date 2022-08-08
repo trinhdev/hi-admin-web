@@ -1064,12 +1064,6 @@ function initIconmanagement() {
         ],
         buttons: [
             {
-                text: 'Tất cả',
-                action: function (e, dt, node, config) {
-                    icon_management_table.column(5).search('', true, false).draw();
-                }
-            },
-            {
                 text: '<i class="fas fa-filter"></i> Lọc',
                 action: function (e, dt, node, config) {
                     $('#filter-status').modal();
@@ -1341,12 +1335,6 @@ function initIconcategory() {
             null
         ],
         buttons: [
-            {
-                text: 'Tất cả',
-                action: function (e, dt, node, config) {
-                    icon_category.column(4).search('', true, false).draw();
-                }
-            },
             {
                 text: '<i class="fas fa-filter"></i> Lọc',
                 action: function (e, dt, node, config) {
