@@ -26,7 +26,7 @@ class IconSaveRequest extends FormRequest
     public function rules() {
         return [
             'productNameVi'         => 'required|max:50',
-            'productNameEn'         => 'required|max:50|regex:/^[a-zA-Z0-9]+$/u',
+            'productNameEn'         => 'required|max:50|regex:/^[a-zA-Z0-9 ]+$/u',
             'data'                  => 'required',
             'decriptionVi'          => 'max:120',
             'iconUrl'               => 'required',
