@@ -40,32 +40,18 @@
     </section>
     <!-- /.content -->
 </div>
-<div id="showDetailBanner_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">X</span>
-                </button>
-            </div>
-            <div class="modal-body" id="showDetailBanner_Modal_body">
-                @include('banners.detail')
-            </div>
-        </div>
-    </div>
-</div>
 <!-- /.content-wrapper -->
 @endsection
 <!--end::Table-->
 @push('scripts')
     <script src="{{ asset('/custom_js/helper.js')}}" type="text/javascript" charset="utf-8"></script>
     {{ $dataTable->scripts() }}
-    <script>
-        const table = $('#banner_manage');
+    {{-- <script>
+        const table = $('#helper');
         table.on('preXhr.dt', function(e, settings, data){
             data.bannerType = $('#show_at').val();
             data.public_date_start = $('#show_from').val();
             data.public_date_end = $('#show_to').val();
         });
-    </script>
+    </script> --}}
 @endpush
