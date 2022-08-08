@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header border-0">
       <div class="d-flex justify-content-between">
-        <h3 class="card-title">LỖI THANH TOÁN DO NGƯỜI DÙNG HAY DO HỆ THỐNG ECOM</h3>
+        <h3 class="card-title">LỖI THANH TOÁN DỊCH VỤ ECOM</h3>
         <a href="javascript:void(0);">View Report</a>
       </div>
     </div>

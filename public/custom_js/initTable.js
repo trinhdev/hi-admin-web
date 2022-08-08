@@ -75,6 +75,8 @@ $(document).ready(function () {
             drawUserSystemFtel();
             drawPaymentErrorDetailEcom();
             drawPaymentErrorDetailFtel();
+            drawPaymentErrorDetailSystemEcom();
+            drawPaymentErrorDetailSystemFtel();
             break;
     }
 
