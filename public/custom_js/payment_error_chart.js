@@ -1,5 +1,6 @@
 var chart_name = [];
 var detailChart = [];
+var detailSystemChart = [];
 var myChart = null;
 var show_from_last = $('#show_from_last').val();
 var show_to_last = $('#show_to_last').val();
@@ -11,6 +12,8 @@ drawUserSystemEcom();
 drawUserSystemFtel();
 drawPaymentErrorDetailEcom();
 drawPaymentErrorDetailFtel();
+drawPaymentErrorDetailSystemEcom();
+drawPaymentErrorDetailSystemFtel();
 $("#filter_condition").click(function() {
     var show_from_last = $('#show_from_last').val();
     var show_to_last = $('#show_to_last').val();
@@ -23,6 +26,8 @@ $("#filter_condition").click(function() {
         drawUserSystemFtel(show_from_last, show_to_last, show_from, show_to);
         drawPaymentErrorDetailEcom(show_from, show_to);
         drawPaymentErrorDetailFtel(show_from, show_to);
+        drawPaymentErrorDetailSystemEcom(show_from, show_to);
+        drawPaymentErrorDetailSystemFtel(show_from, show_to);
     }
     else {
         swal.fire({
@@ -64,7 +69,6 @@ function drawUserSystemFtel(from_last, to_last, from, to) {
         },
         success: function (data) {
             drawChartUserSystem('ftel', data);
-            $("#spinner").removeClass("show");
         },
         error: function (err) {}
     });
@@ -82,7 +86,7 @@ function drawChartUserSystem(type, data) {
         options: {
             title: {
                 display: true,
-                text: 'Báo cáo lỗi thanh toán do người dùng / lỗi hệ thống ' + type,
+                text: 'Báo cáo lỗi thanh toán dịch vụ ' + type.toUpperCase(),
                 align: 'center',
                 position: 'bottom'
             },
@@ -162,7 +166,7 @@ function drawPaymentErrorDetailChart(type, data) {
         options: {
             title: {
                 display: true,
-                text: 'Báo cáo lỗi thanh toán chi tiết cho ' + type,
+                text: 'Báo cáo lỗi thanh toán chi tiết cho dịch vụ ' + type.toUpperCase(),
                 align: 'center',
                 position: 'bottom'
             },
@@ -199,9 +203,107 @@ function drawPaymentErrorDetailChart(type, data) {
     detailChart[type].generateLegend();
 }
 
+function drawPaymentErrorDetailSystemEcom(from = null, to = null) {
+    $.ajax({
+        url: '/errorpaymentchart/getPaymentErrorDetail',
+        type:'POST',
+        data: {
+            from: from,
+            to: to,
+            type: 'ecom',
+            is_system: 1
+        },
+        success: function (response){
+            drawPaymentErrorDetailSystemChart('ecom', response);
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+            console.log(data);
+        }
+    });
+}
+
+function drawPaymentErrorDetailSystemFtel(from = null, to = null) {
+    $.ajax({
+        url: '/errorpaymentchart/getPaymentErrorDetail',
+        type:'POST',
+        data: {
+            from: from,
+            to: to,
+            type: 'ftel',
+            is_system: 1
+        },
+        success: function (response){
+            drawPaymentErrorDetailSystemChart('ftel', response);
+            $("#spinner").removeClass("show");
+        },
+        error: function (xhr) {
+            var errorString = '';
+            $.each(xhr.responseJSON.errors, function (key, value) {
+                errorString = value;
+                return false;
+            });
+            showError(errorString);
+            console.log(data);
+        }
+    });
+}
+
+function drawPaymentErrorDetailSystemChart(type, data) {
+    if(detailSystemChart[type]) {
+        detailSystemChart[type].destroy();
+    }
+    detailSystemChart[type] = new Chart(document.getElementById("payment-error-detail-system-" + type), {
+        type: 'doughnut',
+        options: {
+            title: {
+                display: true,
+                text: 'Báo cáo lỗi thanh toán chi tiết lỗi hệ thống cho ' + type.toUpperCase(),
+                align: 'center',
+                position: 'bottom'
+            },
+            scales: {
+                yAxes: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            legend: {
+                display: false
+            },
+            tooltip: {
+                display: true
+            },
+            legendCallback: function (chart) {             
+                // Return the HTML string here.
+                var text = [];
+                text.push('<ul style="display: flex; flex-direction: row; margin: 0px; padding: 0px; flex-wrap: wrap;" class="' + chart.id + '-legend">');
+                for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
+                    text.push('<li style="align-items: center; cursor: pointer; display: flex; flex-direction: row; margin-left: 10px; margin-bottom: 10px"><span id="legend-' + i + '-item" style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '; border-width: 3px; display: inline-block; height: 20px; margin-right: 10px; width: 20px;" onclick="updateDataset(event, ' + '\'' + i + '\'' + ')"></span><p style="color: rgb(102, 102, 102); margin: 0px; padding: 0px;">');
+                    if (chart.data.labels[i]) {
+                        text.push(chart.data.labels[i]);
+                        text.push(' (' + chart.data.datasets[0]['data'][i] + ')');
+                    }
+                    text.push('</p></li>');
+                }
+                text.push('</ul>');
+                console.log(text);
+                $('#legend-container-system-' + type).html(text.join(""));
+            },
+        },
+        data: data,
+    });
+    detailSystemChart[type].generateLegend();
+}
+
 function showLoadingIcon() {
     $("#spinner").addClass("show");
-    setTimeout(function () {
-        $("#spinner").removeClass("show");
-    }, 50000);
+    // setTimeout(function () {
+    //     $("#spinner").removeClass("show");
+    // }, 50000);
 }

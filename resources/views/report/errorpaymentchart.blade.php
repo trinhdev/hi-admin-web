@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 style="float: left; margin-right: 20px" class="uppercase">Báo cáo data sale theo ngày</h1>
+                    <h1 style="float: left; margin-right: 20px" class="uppercase">Báo cáo thanh toán lỗi</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Báo cáo data sale theo ngày</li>
+                        <li class="breadcrumb-item active">Báo cáo thanh toán lỗi</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -73,7 +73,7 @@
                         <canvas id="payment-error-user-system-ftel" width="100%"></canvas>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-bottom: 100px">
                     <div class="col-sm-6">
                         <div class="col-sm-8">
                             <canvas id="payment-error-detail-ecom"></canvas>
@@ -85,6 +85,22 @@
                         <div class="col-sm-8">
                             <canvas id="payment-error-detail-ftel"></canvas>
                             <div id="legend-container-ftel"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="col-sm-8">
+                            <canvas id="payment-error-detail-system-ecom"></canvas>
+                            <div id="legend-container-system-ecom"></div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="col-sm-8">
+                            <canvas id="payment-error-detail-system-ftel"></canvas>
+                            <div id="legend-container-system-ftel"></div>
                         </div>
                         
                     </div>
@@ -125,14 +141,4 @@
 
 @push('scripts')
     <script src="{{ asset('/custom_js/payment_error_chart.js')}}" type="text/javascript" charset="utf-8"></script>
-    <script>
-        
-        var from = $('#show_from').val();
-        var to = $('#show_to').val();
-        var detailChart = [];
-
-        
-
-        
-    </script>
 @endpush

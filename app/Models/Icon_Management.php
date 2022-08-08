@@ -24,7 +24,7 @@ class Icon_Management extends MY_Model
     protected $keyType = 'string';
     protected $table = 'icon_management';
     
-    protected $fillable = ['uuid', 'productId', 'iconUrl', 'productNameEn', 'productNameVi', 'category', 'descriptionVi', 'descriptionEn', 'platform', 'dataActionStaging', 'dataActionProduction', 'is_filterable', 'show_position', 'deleted_at', 'updated_by', 'created_by'];
+    protected $fillable = ['uuid', 'productId', 'iconUrl', 'productNameEn', 'productNameVi', 'category', 'descriptionVi', 'descriptionEn', 'platform', 'dataActionStaging', 'dataActionProduction', 'is_filterable', 'show_position', 'deleted_at', 'updated_by', 'created_by', 'data'];
     
     protected static function boot() {
         parent::boot();

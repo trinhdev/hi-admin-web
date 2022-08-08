@@ -55,6 +55,12 @@
           <div class="col-lg-6">
             @include('chart.paymentErrorDetailFtelChart')
           </div>
+          <div class="col-lg-6">
+            @include('chart.paymentErrorDetailSystemEcomChart')
+          </div>
+          <div class="col-lg-6">
+            @include('chart.paymentErrorDetailSystemFtelChart')
+          </div>
           <!-- /.col-md-6 -->
         </div>
         <!-- /.row -->

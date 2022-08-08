@@ -127,6 +127,7 @@ class ErrorpaymentchartController extends MY_Controller
         $from = $request->from;
         $to = $request->to;
         $type = $request->type;
+        $is_system = $request->is_system;
 
         if(empty($from)) {
             $from = date('Y-m-01 00:00:00', strtotime('yesterday midnight'));
@@ -148,6 +149,9 @@ class ErrorpaymentchartController extends MY_Controller
                                ->where('payment_provider_status', '!=', 'SUCCESS')
                                ->where('payment_product.type', $type)
                                ->whereNull('err_code.code_error')
+                               ->when(!empty($is_system), function ($query, $is_system) {
+                                    $query->where('err_code.is_system', $is_system);
+                               })
                                ->whereBetween('date_created', [$from, $to]);
 
         $data = Payment_Orders::selectRaw('err_code.description_error AS description_error, COUNT(payment_provider_status) AS count')
@@ -156,6 +160,9 @@ class ErrorpaymentchartController extends MY_Controller
                               ->where('payment_type', '!=', 'TOKEN')
                               ->where('payment_provider_status', '!=', 'SUCCESS')
                               ->where('payment_product.type', $type)
+                              ->when(!empty($is_system), function ($query, $is_system) {
+                                    $query->where('err_code.is_system', $is_system);
+                              })
                               ->whereBetween('date_created', [$from, $to])
                               ->groupBy('err_code.code_error')
                               ->union($datana)

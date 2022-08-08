@@ -14,7 +14,12 @@
     </tr>
     <tr>
         <td class="title">Trạng thái hiển thị</td>
-        <td>{{ @$data['status'] }}</td>
+        @if(isset($data['isDeleted']))
+            <td>{{ ($data['isDeleted'] == 1) ? 'Ẩn' : 'Hiện' }}</td>
+        @else
+            <td>Ẩn</td>
+        @endif
+        
     </tr>
     <tr>
         <td class="title">Ngày bắt đầu</td>

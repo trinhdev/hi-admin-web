@@ -59,20 +59,19 @@
                                         <div class="input-group mb-3 px-2 py-2 rounded-pill bg-gray shadow-sm">
                                             <input id="iconUrl" name="iconUrl" type="hidden" value="{{ @$data['iconUrl'] }}" />
                                             <input id="upload" type="file" onchange="readURL(this, '{{ route('iconmanagement.upload') }}');" class="form-control border-0">
-                                            <label id="upload-label" for="upload" style="color: white; font-weight: bold">Upload image</label>
+                                            {{-- <label id="upload-label" for="upload" style="color: white; font-weight: bold">Upload image</label> --}}
                                             <div class="input-group-append">
                                                 <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
                                             </div>
                                         </div>
-                                        <div style="color: #ffaf8d">
+                                        {{-- <div style="color: #ffaf8d">
                                             <p class="font-italic text-center" style="margin-bottom: 0">Các kiểu định dạng file được chấp nhận</p>
                                             <p class="font-italic text-center"><b>jpeg, png, jpg, gif, svg</b></p>
                                             <p class="font-italic text-center">Dung lượng upload tối đa: <b>2048</b></p>
-                                            <p style="font-weight: bold" class="font-italic text-center required">Xin vui lòng upload hình ảnh sản phẩm</p>
                                             @error('iconUrl')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
-                                        </div>
+                                        </div> --}}
                                         
                                         <div class="image-area mt-4"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"></div>
                                     </div>
@@ -100,7 +99,7 @@
                                     <div class="form-group row">
                                         <label for="inputEmail3" class="col-sm-3 col-form-label text-right">Định danh sản phẩm</label>
                                         <div class="col-sm-9">
-                                            <textarea class="form-control" rows="4" id="data" name="data" value={{ @$data['data'] }}></textarea>
+                                            <textarea class="form-control" rows="4" id="data" name="data">{{ @$data['data'] }}</textarea>
                                             @error('data')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
