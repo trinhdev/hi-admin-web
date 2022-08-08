@@ -26,8 +26,8 @@ class IconCategorySaveRequest extends FormRequest
     public function rules() {
         return [
             'productTitleNameVi'    => 'required|max:50',
-            'productTitleNameEn'    => 'max:50',
-            'description'           => 'max:120'
+            'productTitleNameEn'    => 'max:50|regex:/^[a-zA-Z0-9]',
+            'description'           => 'max:120',
         ];
     }
 
@@ -36,6 +36,7 @@ class IconCategorySaveRequest extends FormRequest
             'productTitleNameVi.required'   => 'Tên danh mục không được để trống',
             'productTitleNameVi.max'        => 'Tên danh mục chỉ giới hạn trong 50 ký tự',
             'productTitleNameEn.max'        => 'Tên danh mục chỉ giới hạn trong 50 ký tự',
+            'productTitleNameEn.regex'      => 'Tên tiếng Anh không được nhập ký tự tiếng Việt',
             'description'                   => 'Mô tả chỉ giới hạn trong 120 ký tự'
         ];
     }

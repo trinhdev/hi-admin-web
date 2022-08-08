@@ -26,7 +26,7 @@ class IconSaveRequest extends FormRequest
     public function rules() {
         return [
             'productNameVi'         => 'required|max:50',
-            'productNameEn'         => 'required|max:50',
+            'productNameEn'         => 'required|max:50|regex:/^[a-zA-Z0-9]',
             'data'                  => 'required',
             'decriptionVi'          => 'max:120',
             'iconUrl'               => 'required',
@@ -41,7 +41,8 @@ class IconSaveRequest extends FormRequest
             'productNameEn.required'        => 'Tên sản phẩm không được để trống',
             'productNameVi.max'             => 'Tên sản phẩm không được quá 50 ký tự',
             'productNameEn.max'             => 'Tên sản phẩm không được quá 50 ký tự',
-            'decriptionVi.max'             => 'Mô tả phẩm không được quá 50 ký tự',
+            'productNameEn.regex'           => 'Tên tiếng Anh không được nhập ký tự tiếng Việt',
+            'decriptionVi.max'              => 'Mô tả phẩm không được quá 50 ký tự',
             'iconUrl.required'              => 'Xin vui lòng upload hình ảnh của sản phẩm',
             'dataActionStaging.required'    => 'Link Staging không được để trống',
             'dataActionProduction.required' => 'Link Production không được để trống',
