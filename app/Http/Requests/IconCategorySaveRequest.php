@@ -26,7 +26,7 @@ class IconCategorySaveRequest extends FormRequest
     public function rules() {
         return [
             'productTitleNameVi'    => 'required|max:50',
-            'productTitleNameEn'    => 'max:50|regex:/^[a-zA-Z0-9]',
+            'productTitleNameEn'    => 'max:50|regex:/^[a-zA-Z0-9]+$/u',
             'description'           => 'max:120',
         ];
     }
