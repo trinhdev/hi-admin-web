@@ -25,8 +25,9 @@ class IconConfigSaveRequest extends FormRequest
      */
     public function rules() {
         return [
-            'titleVi'       => 'max:100',
-            'name'          => 'required|max:100|alpha_underscore',
+            'titleVi'       => 'required|max:50',
+            'titleEn'       => 'required|max:50',
+            'name'          => 'required|max:50|alpha_underscore',
             'iconsPerRow'   => 'required|numeric|min:0|between:1,4',
             'rowOnPage'     => 'required|numeric|min:0|not_in:0',
             'arrayId'       => 'limit_icon_in_array'
@@ -35,7 +36,10 @@ class IconConfigSaveRequest extends FormRequest
 
     public function messages() {
         return [
-            'titleVi.max'                   => 'Tên vị trí giới hạn trong 100 ký tự',
+            'titleVi.max'                   => 'Tên tiếng Việt không được quá 50 ký tự',
+            'titleVi.required'              => 'Tên tiếng Việt không được để trống',
+            'titleEn.max'                   => 'Tên tiếng Anh không được quá 50 ký tự',
+            'titleEn.required'              => 'Tên tiếng Anh không được để trống',
             'name.alpha_underscore'         => 'Tên vị trí - code chỉ được chứa ký tự và dấu gạch nối (_)',
             'name.required'                 => 'Tên vị trí  - code không được để trống',
             'iconsPerRow.required'          => 'Số icon trên 1 dòng không được để trống',
