@@ -66,6 +66,10 @@ $methodAirDirection = [
     'DELETE'    => 'hi-customer-local/cms/dirrection/delete',
     'EDIT'      => 'hi-customer-local/cms/dirrection/edit',
 ];
+
+$methodResetPasswordWrong = [
+    'ADD'       => 'provider/cms/customers/reset-wrong-password'
+];
 return [
     'DOMAIN_INSIDE'         => $methodInsideDomain,
     'DOMAIN_REPORT'         => $methodReportDomain,
@@ -76,4 +80,5 @@ return [
     'DOMAIN_PAYMENT'        => $methodPayment,
     'DOMAIN_POPUP_PRIVATE'  => $methodPopUpPrivate,
     'DOMAIN_AIR_DIRECTION'  => $methodAirDirection,
+    'DOMAIN_RESET_PASSWORD_WRONG'  => $methodResetPasswordWrong,
 ];

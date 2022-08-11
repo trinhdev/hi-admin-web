@@ -49,4 +49,9 @@ class PopupPrivateController extends MY_Controller
     {
         return $this->PopupPrivateRepository->destroy($request->only(['id', 'check']));
     }
+
+    public function importFile(Request $request)
+    {
+        return $this->PopupPrivateRepository->importFile($request);
+    }
 }

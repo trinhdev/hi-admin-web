@@ -19,6 +19,6 @@ interface PopupPrivateInterface
 
     public function destroy(array $params);
 
-    public function check();
+    public function importFile($params);
 
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Hi_FPT\AppController;
 use App\Http\Controllers\Hi_FPT\PopupPrivateController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
+use App\Http\Controllers\Hi_FPT\ResetPasswordWrongController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -220,6 +221,7 @@ Route::group([
                 Route::post('/updatePrivate',[PopupPrivateController::class, 'update'])->name('popupmanage.updatePrivate');
                 Route::post('/deletePrivate',[PopupPrivateController::class, 'destroy'])->name('popupmanage.deletePrivate');
                 Route::post('/importPrivate',[PopupPrivateController::class, 'import'])->name('popupmanage.importPrivate');
+                Route::post('/importFilePrivate',[PopupPrivateController::class, 'importFile'])->name('popupmanage.importFilePrivate');
                 Route::post('/checkPrivate',[PopupPrivateController::class, 'check'])->name('popupmanage.importPrivate');
             });
 
@@ -229,6 +231,11 @@ Route::group([
                 Route::post('/add',[AirDirectionController::class, 'add'])->name('air_direction.add');
                 Route::post('/update',[AirDirectionController::class, 'update'])->name('air_direction.update');
                 Route::post('/delete',[AirDirectionController::class, 'delete'])->name('air_direction.delete');
+            });
+
+            Route::prefix('reset-password-wrong')->group(function () {
+                Route::get('/',[ResetPasswordWrongController::class, 'index'])->name('reset_password_wrong.index');
+                Route::post('/store',[ResetPasswordWrongController::class, 'store'])->name('reset_password_wrong.store');
             });
 
             Route::prefix('supportcode')->group(function () {

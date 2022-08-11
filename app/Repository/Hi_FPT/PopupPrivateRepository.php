@@ -4,12 +4,15 @@ namespace App\Repository\Hi_FPT;
 
 use App\Contract\Hi_FPT\PopupPrivateInterface;
 use App\Http\Traits\DataTrait;
+use App\Imports\FtelPhoneImport;
+use App\Rules\NumberPhoneRule;
 use App\Services\NewsEventService;
 use App\Services\PopupPrivateService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PopupPrivateRepository implements PopupPrivateInterface
@@ -157,22 +160,6 @@ class PopupPrivateRepository implements PopupPrivateInterface
         }
     }
 
-    public function check()
-    {
-        try {
-            $popup_private = new PopupPrivateService();
-            $data = $popup_private->get();
-            foreach($data->data as $key => $value) {
-                if($value->dateEnd < \Carbon\Carbon::now()) {
-                    $popup_private->delete([$value->id,$STOP]);
-                }
-            }
-            return response()->json(['message' => 'Check status done'], 200);
-        } catch (GuzzleException $e) {
-            return $e->getMessage();
-        }
-    }
-
     public function import(array $params)
     {
         try {
@@ -191,5 +178,18 @@ class PopupPrivateRepository implements PopupPrivateInterface
         } catch (GuzzleException $e) {
             return $e->getMessage();
         }
+    }
+
+    public function importFile($params)
+    {
+        define("App\Repository\Hi_FPT\LIMITNUMBER", 30000);
+        $params->validate(['excel.*' => 'mimes:xlsx'],['excel.*.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx']);
+        $data = [];
+        foreach ($params->file('excel') as $key => $item){
+            $data['data'][] = fastexcel()->import($item)->flatten()->toArray();
+            if (count($data['data'][$key]) > LIMITNUMBER)
+                return response()->json(['errors' => ['error'=>'Data in files '.($key+1).' too big <= '.LIMITNUMBER.'K']], 401);
+        }
+        return $data;
     }
 }

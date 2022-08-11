@@ -45,7 +45,7 @@ Contact: trinhhuynhdp@gmail.com
     <script>
         $(document).ready(function() {
             showHide();
-            changeFileFtelPhone();
+            changeFileNumberPhone();
             methodAjaxPopupPrivate();
             handlePushPopUpPrivate();
             checkStatusPopUpPrivate();

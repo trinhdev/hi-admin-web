@@ -57,7 +57,6 @@ function showHide() {
 
     $('#actionType_popup').on('change', function () {
         let type_direction = $('#actionType_popup').val();
-        console.log(type_direction);
         if (type_direction === '1') {
             $('#dataAction_popup').prop('readonly', false);
             $('#dataAction_popup').val('https://example.com');
@@ -294,7 +293,7 @@ function handlePushPopUpPrivate() {
                     showSuccess(data.data.message);
                     $('#submit').prop('disabled', false);
                     var table = $('#popup_private_table').DataTable();
-                    table.ajax.reload();
+                    table.ajax.reload(null, false);
                 }else{
                     showError(data.data.message);
                     $('#submit').prop('disabled', false);
@@ -334,6 +333,7 @@ function methodAjaxPopupPrivate() {
                 id: id
             }, success: function (response){
                 $('#number_phone').val('');
+                $('#importExcel').find('input:text, input:password, input:file, select, textarea').val('');
                 for (const [key, value] of Object.entries(response[0])) {
                     if(key==='dateBegin') {
                         $('#timeline').val(value);
@@ -411,6 +411,49 @@ function checkStatusPopUpPrivate(){
             });
             console.log(errorString);
         }
+    });
+}
+
+
+function changeFileNumberPhone() {
+    $('#number_phone_import').change(function(e) {
+        let data = new FormData($('#importExcel')[0]);
+        $.ajax( {
+            url: '/popup-private/importFilePrivate',
+            type: 'POST',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                let res = [];
+                let err = [];
+                let pattern = /^(03|05|07|08|09)[\d, ]*$/;
+                console.log(response);
+                response.data.forEach((data) => {
+                    data.forEach((item) => {
+                        if(pattern.test(item) && item.length === 10) {
+                            res.push(item);
+                        }else {
+                            err.push(item);
+                        }
+                    });
+                });
+                console.log(res.length);
+                $('#number_phone').val(res.join(','));
+                showSuccess('Nhập thành công! Các số sai định dạng bị bỏ qua gồm: [' + err.join(',') + ']');
+            },
+            error: function (xhr) {
+                var errorString = '';
+                $.each(xhr.responseJSON.errors, function (key, value) {
+                    errorString = value;
+                    return false;
+                });
+                $('#importExcel').find('input:text, input:password, input:file, select, textarea').val('');
+                $('#number_phone').val('');
+                showError(errorString);
+            }
+        } );
+        e.preventDefault();
     });
 }
 

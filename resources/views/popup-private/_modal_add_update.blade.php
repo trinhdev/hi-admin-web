@@ -49,13 +49,13 @@ END ADD FIELD
                     </ol>
                 </nav>
                 <div class="col-12">
-                    <form id="importExcel">
+                    <form id="importExcel" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="number_phone"><span
                                     class="required_red_dot">Nhập vào danh sách số điện thoại</span> <br>
                                 <p class="fa-xs">hoặc tải file excel lên tại đây
-                                    <input onchange="uploadFile();" type="file" id="number_phone_import" name="excel"
-                                           accept=".xlsx, .csv"></p>
+                                    <input type="file" id="number_phone_import" name="excel[]"
+                                           accept=".xlsx, .csv" multiple></p>
                             </label>
 
                         </div>
