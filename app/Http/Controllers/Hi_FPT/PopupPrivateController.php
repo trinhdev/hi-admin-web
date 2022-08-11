@@ -16,6 +16,7 @@ class PopupPrivateController extends MY_Controller
 
     public function __construct(PopupPrivateInterface $PopupPrivateRepository)
     {
+        parent::__construct();
         $this->title = 'Popup Private';
         $this->PopupPrivateRepository = $PopupPrivateRepository;
     }
