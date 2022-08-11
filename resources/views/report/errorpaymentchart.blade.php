@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 style="float: left; margin-right: 20px" class="uppercase">Báo cáo data sale theo ngày</h1>
+                    <h1 style="float: left; margin-right: 20px" class="uppercase">Báo cáo thanh toán lỗi</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Báo cáo data sale theo ngày</li>
+                        <li class="breadcrumb-item active">Báo cáo thanh toán lỗi</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -65,20 +65,44 @@
                     </div>
                 </div>
                 {{--Start table--}}
-                <div class="row">
+                <div class="row" style="margin-bottom: 100px">
                     <div class="col-sm-6">
-                        <canvas id="payment-error-user-system-ecom" width="100%" ></canvas>
+                        <canvas id="payment-error-user-system-ecom" width="100%"></canvas>
                     </div>
                     <div class="col-sm-6">
-                        <canvas id="payment-error-user-system-ftel" width="100%" ></canvas>
+                        <canvas id="payment-error-user-system-ftel" width="100%"></canvas>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 100px">
+                    <div class="col-sm-6">
+                        <div class="col-sm-8">
+                            <canvas id="payment-error-detail-ecom"></canvas>
+                            <div id="legend-container-ecom"></div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="col-sm-8">
+                            <canvas id="payment-error-detail-ftel"></canvas>
+                            <div id="legend-container-ftel"></div>
+                        </div>
+                        
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
-                        <canvas id="payment-error-detail-ecom" width="100%" ></canvas>
+                        <div class="col-sm-8">
+                            <canvas id="payment-error-detail-system-ecom"></canvas>
+                            <div id="legend-container-system-ecom"></div>
+                        </div>
+                        
                     </div>
                     <div class="col-sm-6">
-                        <canvas id="payment-error-detail-ftel" width="100%" ></canvas>
+                        <div class="col-sm-8">
+                            <canvas id="payment-error-detail-system-ftel"></canvas>
+                            <div id="legend-container-system-ftel"></div>
+                        </div>
+                        
                     </div>
                 </div>
                 {{--End table--}}
@@ -87,87 +111,34 @@
     </section>
     <!-- /.content -->
 </div>
+
+<style>
+    .chart-legend li span{
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 5px;
+    }
+
+    .chart-legend{
+    height:250px;
+    overflow:auto;
+    }
+
+    .chart-legend li{
+    cursor:pointer;
+    }
+
+    .strike{
+        text-decoration: line-through !important;
+    }
+
+    .float-left{
+        float:left;
+    }
+</style>
 @endsection
 
 @push('scripts')
-    {{-- <script src="{{ asset('/custom_js/payment_error_chart.js')}}" type="text/javascript" charset="utf-8"></script> --}}
-    <script>
-        
-        var from = $('#show_from').val();
-        var to = $('#show_to').val();
-        var detailChart = [];
-
-        drawPaymentErrorDetailEcom();
-        drawPaymentErrorDetailFtel();
-
-        function drawPaymentErrorDetailEcom(from = null, to = null) {
-            $.ajax({
-                url: '/errorpaymentchart/getPaymentErrorDetail',
-                type:'POST',
-                data: {
-                    from: from,
-                    to: to,
-                    type: 'ecom'
-                },
-                success: function (response){
-                    drawPaymentErrorDetailChart('ecom', response);
-                },
-                error: function (xhr) {
-                    var errorString = '';
-                    $.each(xhr.responseJSON.errors, function (key, value) {
-                        errorString = value;
-                        return false;
-                    });
-                    showError(errorString);
-                    console.log(data);
-                }
-            });
-        }
-
-        function drawPaymentErrorDetailFtel(from = null, to = null) {
-            $.ajax({
-                url: '/errorpaymentchart/getPaymentErrorDetail',
-                type:'POST',
-                data: {
-                    from: from,
-                    to: to,
-                    type: 'ftel'
-                },
-                success: function (response){
-                    drawPaymentErrorDetailChart('ftel', response);
-                },
-                error: function (xhr) {
-                    var errorString = '';
-                    $.each(xhr.responseJSON.errors, function (key, value) {
-                        errorString = value;
-                        return false;
-                    });
-                    showError(errorString);
-                    console.log(data);
-                }
-            });
-        }
-
-        function drawPaymentErrorDetailChart(type, data) {
-            detailChart[type] = new Chart(document.getElementById("payment-error-detail-" + type), {
-                type: 'doughnut',
-                options: {
-                    title: {
-                        display: true,
-                        text: 'Báo cáo lỗi thanh toán chi tiết cho ' + type,
-                        align: 'center',
-                        position: 'bottom'
-                    },
-                    scales: {
-                        yAxes: {
-                            beginAtZero: true
-                        }
-                    }
-                },
-                data: data,
-            });
-        }
-
-        
-    </script>
+    <script src="{{ asset('/custom_js/payment_error_chart.js')}}" type="text/javascript" charset="utf-8"></script>
 @endpush

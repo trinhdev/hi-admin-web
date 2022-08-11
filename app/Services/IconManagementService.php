@@ -137,7 +137,7 @@ class IconManagementService {
 
     public function saveByApprovedRole($id) {
         $model = new Icon_approve();
-        $approved_data = $model::where('id', $id)->with(['user_requested_by'])->get();
+        $approved_data = $model::where('id', $id)->with(['user_requested_by'])->get()->toArray();
 
         $update_data = [
             "id"                => $id,
@@ -176,7 +176,7 @@ class IconManagementService {
 
     public function pushApiApproved($request) {
         $function_name = '';
-        switch($request->approved_type) {
+        switch($request['approved_type']) {
             case 'create':
                 $function_name = 'add';
                 break;
@@ -188,10 +188,10 @@ class IconManagementService {
                 break;
         }
 
-        switch($request->product_type) {
+        switch($request['product_type']) {
             case 'icon_management':
                 $function_name .= 'Product';
-                $icon_info = Icon::where('uuid', $request->product_id)->first();
+                $icon_info = Icon::where('uuid', $request['product_id'])->first();
                 $params = [
                     'productId'             => (!empty($icon_info->productId)) ? $icon_info->productId : '',
                     'productNameVi'         => (!empty($icon_info->productNameVi)) ? $icon_info->productNameVi : '',
@@ -215,7 +215,7 @@ class IconManagementService {
                 break;
             case 'icon_category':
                 $function_name .= 'ProductTitle';
-                $category = Icon_Category::where('uuid', $request->product_id)->first();
+                $category = Icon_Category::where('uuid', $request['product_id'])->first();
                 
                 $params = [
                     'productTitleId'        => (!empty($category->productTitleId)) ? $category->productTitleId : '',
@@ -227,20 +227,17 @@ class IconManagementService {
                 break;
             case 'icon_config':
                 $function_name .= 'ProductConfig';
-                $config = Icon_Config::where('uuid', $request->product_id)->first();
+                $config = Icon_Config::where('uuid', $request['product_id'])->first();
                 $params = [
                     'productConfigId'       => '',
                     'titleVi'               => (!empty($config->titleVi)) ? $config->titleVi : '',
                     'titleEn'               => (!empty($config->titleEn)) ? $config->titleEn : '',
-                    'name'                  => (!empty($config->name)) ? $config->name : '',
-                    'type'                  => 'PRODUCT',
                     'iconsPerRow'           => (!empty($config->iconsPerRow)) ? intval($config->iconsPerRow) : '',
                     'rowOnPage'             => (!empty($config->rowOnPage)) ? intval($config->rowOnPage) : '',
                     'arrayId'               => (!empty($config->arrayId)) ? $config->arrayId : '',
                     'isDisplay'             => 1,
-                    'displayBeginDay'       => date('Y-m-d H:s:i', strtotime('now')),
-                    'displayEndDay'         => date('Y-m-d H:s:i', strtotime('+1 year')),
-                    'data'                  => ''
+                    'displayBeginDay'       => !empty($config->displayBeginDay) ? $config->displayBeginDay : date("Y-m-d"),
+                    'displayEndDay'         => !empty($config->displayEndDay) ? $config->displayEndDay : date("Y-m-d")
                 ];
                 if(!empty($config->productConfigId)) {
                     $params['productConfigId'] = intval($config->productConfigId);

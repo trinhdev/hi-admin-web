@@ -37,6 +37,13 @@
                         <div class="col-sm-12"><b>Trạng thái</b></div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-form-label col-sm-6">Tất cả</label>
+                        <div class="col-sm-6 icheck-primary" style="width: auto">
+                            <input type="radio" id="all-status" name="status" value="" />
+                            <label class="float-right" for="all-status"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-form-label col-sm-6">Trạng thái hiện</label>
                         <div class="col-sm-6 icheck-primary" style="width: auto">
                             <input type="radio" id="status-show" name="status" value="1" />

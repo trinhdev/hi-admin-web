@@ -41,13 +41,17 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         // Check id Icon check data
+        Settings::where('name', 'icon_management_check_role')->get();
         Gate::define('icon-check-data-permission', function($user) {
+            $icon_check_roles = Settings::where('name', 'icon_management_check_role')->get();
             $role = Auth::user()->role_id;
-            return $role === 8;
+            return in_array(Auth::user()->id, json_decode(@$icon_check_roles[0]['value']));
         });
         Gate::define('icon-approve-data-permission', function($user) {
+            $icon_approved_roles = Settings::where('name', 'icon_management_approved_role')->get();
             $role = Auth::user()->role_id;
-            return $role === 7;
+            // return $role === 7;
+            return in_array(Auth::user()->id, json_decode(@$icon_approved_roles[0]['value']));
         });
     }
 }

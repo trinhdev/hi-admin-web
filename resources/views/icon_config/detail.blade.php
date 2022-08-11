@@ -25,10 +25,6 @@
         <td>{{ @$data['rowOnPage'] }}</td>
     </tr>
     <tr>
-        <td class="title">Trạng thái hiển thị</td>
-        <td>{{ @$data['status'] }}</td>
-    </tr>
-    <tr>
         <td class="title">Danh sách sản phẩm</td>
         <td class="row">
             <ul id="list-prod-in-title">

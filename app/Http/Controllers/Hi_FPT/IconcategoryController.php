@@ -16,6 +16,7 @@ use App\Models\Icon_approve;
 use App\Models\Icon_approve_logs;
 use App\Models\Roles;
 use App\Http\Requests\IconCategorySaveRequest;
+use App\Http\Requests\IconCategoryDeleteRequest;
 
 use App\Services\IconManagementService;
 use App\Services\MailService;
@@ -185,10 +186,10 @@ class IconcategoryController extends MY_Controller
     }
 
     public function destroy(Request $request) {
+        // dd($resquest->all());
         $request->validate([
             'arrayId' => [
                 function ($attribute, $value, $fail) {
-                    // dd($value);
                     if(strlen($value) > 0) {
                         $fail('Xin vui lòng xoá hết sản phẩm trong danh mục sản phẩm được chọn trước khi xoá danh mục');
                     }

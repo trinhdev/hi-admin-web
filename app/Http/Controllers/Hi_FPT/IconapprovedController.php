@@ -342,17 +342,18 @@ class IconapprovedController extends MY_Controller
                     'productConfigId'       => (!empty($config->productConfigId)) ? $config->productConfigId : '',
                     'titleVi'               => (!empty($config->titleVi)) ? $config->titleVi : '',
                     'titleEn'               => (!empty($config->titleEn)) ? $config->titleEn : '',
-                    'name'                  => (!empty($config->name)) ? $config->name : '',
-                    'type'                  => 'PRODUCT',
                     'iconsPerRow'           => (!empty($config->iconsPerRow)) ? $config->iconsPerRow : '',
                     'rowOnPage'             => (!empty($config->rowOnPage)) ? $config->rowOnPage : '',
                     'arrayId'               => (!empty($config->arrayId)) ? $config->arrayId : '',
-                    'isDeleted'             => '0',
+                    'isDisplay'             => 1,
+                    'displayBeginDay'       => !empty($config->displayBeginDay) ? $config->displayBeginDay : date("Y-m-d"),
+                    'displayEndDay'         => !empty($config->displayEndDay) ? $config->displayEndDay : date("Y-m-d")
                 ];
                 break;
         }
-        // dd($params);
+        var_dump($params);
         $result = $this->iconManagement->$function_name($params);
+        dd($result);
         return $result;
     }
 

@@ -59,3 +59,9 @@ To use VITE JS hot reload blade
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+ERROR 500
+php artisan key:generate
+php artisan cache:clear
+php artisan config:clear
+composer dump-autoload
