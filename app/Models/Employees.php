@@ -17,6 +17,10 @@ class Employees extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id','name','full_name','phone','location_id','branch_code', 'description', 'organizationCode', 'code', 'emailAddress', 'organizationCode', 'organizationCodePath', 'checkUpdate', 'location', 'employee_code', 'organizationNamePath', 'isActive', 'dept_id', 'dept_name_1', 'dept_name_2', 'updated_from', 'branch_name'];
 
+    public function hdi_orders() {
+        return $this->hasMany(Hdi_Orders::class, 'referral_phone', 'phone');
+    }
+
     public function customer_locations() {
         return $this->hasOne(Customer_Locations::class, 'customer_location_id', 'location_id');
     }

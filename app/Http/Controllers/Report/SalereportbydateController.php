@@ -15,6 +15,10 @@ use App\Models\Settings;
 use App\Models\Hdi_Orders;
 use App\Models\Laptop_Orders;
 use App\Models\Employees;
+use App\Models\Sale_Report_By_Range;
+use App\Models\Vietlott_Orders;
+
+use DateTime;
 
 class SalereportbydateController extends MY_Controller
 {
@@ -28,116 +32,125 @@ class SalereportbydateController extends MY_Controller
         $this->title = 'Báo cáo kinh doanh';
         // $this->model = $this->getModel('SupportSystem');
     }
-    public function index(Request $request, SaleReportByDateDataTable $dataTable) {
-        // $services = ['ict', 'hdi', 'elmich', 'vuanem'];
-        $services = ['ict', 'houseware', 'vuanem'];
-        $tables = [];
-        $this->from1 = '2022-05-01 00:00:00';
-        $this->to1 = '2022-05-31 23:59:59';
-        $this->from2 = '2022-06-01 00:00:00';
-        $this->to2 = '2022-06-30 23:59:59';
-        foreach($services as $service) {
-            // $dataTable->with([
-            //     'start'     => $request->start,
-            //     'length'    => $request->length,
-            //     'order'     => $request->order,
-            //     'columns'   => $request->columns,
-            //     'service'   => $service,
-            //     'from1'     => '2022-05-01 00:00:00',
-            //     'to1'       => '2022-05-31 23:59:59',
-            //     'from2'     => '2022-06-01 00:00:00',
-            //     'to2'       => '2022-06-30 23:59:59'
-            // ])->render('report.reportbysaledatedatatable');
-            // $tables[$service] = $dataTable->html();
-            $merchant_id = '';
-            switch($service) {
-                case 'ict':
-                    $merchant_id = 'XIAOMI';
-                    break;
-                case 'houseware':
-                    $merchant_id = 'HOUSE_HOLD';
-                    break;
-                case 'vuanem':
-                    $merchant_id = 'VUANEM';
-                    break;
-            }
+    public function index(Request $request) {
+        $services = (['ict', 'hdi', 'houseware', 'vuanem', 'gas', 'vietlott']);
+        $services_filter = (!empty($request->services)) ? $request->services : $services;
+        $from2 = $request->from;
+        $to2 = $request->to;
 
-            $query1 = Laptop_Orders::selectRaw("emp.organization_zone_name AS 'organization_zone_name', 
-                                                NULL,
-                                                NULL,
-                                                SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from1 . "' AND '" . $this->to1 . "', 1, 0)) AS 'count_last_time', 
-                                                SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from1 . "' AND '" . $this->to1 . "', total_amount_finish, 0)) AS 'amount_last_time',
-                                                SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from2 . "' AND '" . $this->to2 . "', 1, 0)) AS 'count_this_time', 
-                                                SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from2 . "' AND '" . $this->to2 . "', total_amount_finish, 0)) AS 'amount_this_time'")
-                                    ->join('employees_final as emp', 'emp.phone', '=', 'referral_code')
-                                    // ->join('list_organizations as organizations', 'emp.organizationCode', '=', 'organizations.code')
-                                    ->where('emp.phone', '!=', '')
-                                    ->where('merchant_id', $merchant_id)
-                                    ->whereBetween('t_deliver', [$this->from1, $this->to2])
-                                    ->groupBy('organization_zone_name');
-
-            $query2 = Laptop_Orders::selectRaw("emp.organization_zone_name AS 'organization_zone_name', 
-                                                emp.organization_branch_code AS 'organization_branch_code',
-                                                emp.branch_name as 'branch_name_code',
-                                                SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from1 . "' AND '" . $this->to1 . "', 1, 0)) AS 'count_last_time', 
-                                                SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from1 . "' AND '" . $this->to1 . "', total_amount_finish, 0)) AS 'amount_last_time',
-                                                SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from2 . "' AND '" . $this->to2 . "', 1, 0)) AS 'count_this_time', 
-                                                SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from2 . "' AND '" . $this->to2 . "', total_amount_finish, 0)) AS 'amount_this_time'")
-                                        ->join('employees_final as emp', 'emp.phone', '=', 'referral_code')
-                                        // ->join('list_organizations as organizations', 'emp.organizationCode', '=', 'organizations.code')
-                                        // ->join('customer_locations as cl', 'cl.customer_location_id', '=', 'emp.location_id')
-                                        // ->join('ftel_branch as fb1', 'fb1.location_id', '=', 'emp.location_id')
-                                        // ->join('ftel_branch as fb2', 'fb2.branch_code', '=', 'emp.branch_code')
-                                        ->where('emp.phone', '!=', '')
-                                        ->where('merchant_id', $merchant_id)
-                                        ->whereBetween('t_deliver', [$this->from1, $this->to2])
-                                        ->groupBy('organization_zone_name', 'organization_branch_code', 'branch_name_code')
-                                        ->union($query1)
-                                        ->orderBy('organization_zone_name', 'asc')
-                                        ->orderBy('organization_branch_code', 'asc')
-                                        ->orderBy('branch_name_code', 'asc')
-                                        ->get()
-                                        ->toArray();
-            // dd($query2);
-                                
-            $queryAppUser = Laptop_Orders::selectRaw("'App users' AS 'organization_zone_name',
-                                                    NULL, 
-                                                    NULL, 
-                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from1 . "' AND '" . $this->to1 . "', 1, 0)) AS 'count_last_time',
-                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from1 . "' AND '" . $this->to1 . "', total_amount_finish, 0)) AS 'amount_last_time',
-                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from2 . "' AND '" . $this->to2 . "', 1, 0)) AS 'count_this_time', 
-                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from2 . "' AND '" . $this->to2 . "', total_amount_finish, 0)) AS 'amount_this_time'")
-                                        ->where(function($subQuery) {
-                                            $subQuery->whereIn('referral_code', ['', null])
-                                                    ->orWhereNotIn('referral_code', Employees::selectRaw('Replace(coalesce(`phone`, ""), " ", "") as `phone`')->whereNotNull('phone')->where('phone', '!=', '')->get());
-                                        })
-                                        ->where('merchant_id', $merchant_id)
-                                        ->whereBetween('t_deliver', [$this->from1, $this->to2])
-                                        ->get()
-                                        ->toArray();
-                                        
-            $queryTotal = Laptop_Orders::selectRaw("'Total' AS 'organization_zone_name', 
-                                                    NULL, 
-                                                    NULL, 
-                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from1 . "' AND '" . $this->to1 . "', 1, 0)) AS 'count_last_time', 
-                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from1 . "' AND '" . $this->to1 . "', total_amount_finish, 0)) AS 'amount_last_time',
-                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from2 . "' AND '" . $this->to2 . "', 1, 0)) AS 'count_this_time', 
-                                                    SUM(IF(DATE(t_deliver) BETWEEN '" . $this->from2 . "' AND '" . $this->to2 . "', total_amount_finish, 0)) AS 'amount_this_time'")
-                                        ->where('merchant_id', $merchant_id)
-                                        ->whereBetween('t_deliver', [$this->from1, $this->to2])
-                                        ->get()
-                                        ->toArray();
-            
-            if(!empty($queryAppUser)) {
-                array_push($query2, $queryAppUser[0]);
-            }
-
-            if(!empty($queryTotal)) {
-                array_push($query2, $queryTotal[0]);
-            }
-
-            $tables[$service] = $query2;
+        if(empty($from2)) {
+            $from2 = date('Y-m-01 00:00:00', strtotime('yesterday midnight'));
         }
-        return view('report.reportsalebydate', ['data' => $tables, 'services' => $services]);
+        else {
+            $from2 = date('Y-m-d 00:00:00', strtotime($from2));
+        }
+        if(empty($to2)) {
+            $to2 = date('Y-m-d 23:59:59', strtotime('today midnight'));
+        }
+        else {
+            $to2 = date('Y-m-d 23:59:59', strtotime($to2));
+        }
+        $fromDate = new DateTime($from2);
+        $toDate = new DateTime($to2);
+        $difference = $toDate->diff($fromDate);
+        $difference_number = $difference->d + 1;
+
+        if($difference_number >= 28) {
+            $from1 = date('Y-m-01 00:00:00', strtotime('-1 month', strtotime($from2)));
+            $to1 = date('Y-m-t 23:59:59', strtotime('-1 month', strtotime($to2)));
+        }
+        else {
+            $from1 = date('Y-m-d 00:00:00', strtotime('-' . $difference_number . 'days', strtotime($from2)));
+            $to1 = date('Y-m-d 23:59:59', strtotime('-' . $difference_number . 'days', strtotime($to2)));
+        }
+
+        $query1 = Sale_Report_By_Range::selectRaw("service,
+                                                zone,
+                                                NULL AS branch_name,
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time'")
+                                        ->whereNotIn('zone', ['FTELHO', 'PNCHO', 'TINHO', 'App Users'])
+                                        ->whereIn('service', $services_filter)
+                                        ->whereBetween('date_created', [$from1, $to2])
+                                        ->groupBy(['service', 'zone']);
+
+        $data = Sale_Report_By_Range::selectRaw("service,
+                                                zone,
+                                                branch_name,
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time'")
+                                    ->whereIn('service', $services_filter)
+                                    ->whereBetween('date_created', [$from1, $to2])
+                                    ->groupBy(['service', 'zone', 'branch_name'])
+                                    ->union($query1)
+                                    ->orderBy('service')
+                                    ->orderBy('zone')
+                                    ->orderBy('branch_name')
+                                    ->get()
+                                    ->groupBy(['service'])
+                                    ->toArray();    
+        // dd($data);
+        $total = Sale_Report_By_Range::selectRaw("service,
+                                                'Total' AS zone,
+                                                NULL AS branch_name,
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time'")
+                                        ->whereIn('service', $services_filter)
+                                        ->whereBetween('date_created', [$from1, $to2])
+                                        ->groupBy(['service'])
+                                        ->get()
+                                        ->groupBy(['service'])
+                                        ->toArray();
+        foreach($data as $key => &$value) {
+            array_push($value, $total[$key][0]);
+        }
+
+        // count by product type
+        $data_product = Sale_Report_By_Range::selectRaw("service, product_type,
+                                                    SUM(count) AS 'count_this_time', 
+                                                    SUM(amount) AS 'amount_this_time'")
+                                            ->whereIn('service', $services_filter)
+                                            ->whereBetween('date_created', [$from2, $to2])
+                                            ->groupBy(['service', 'product_type'])
+                                            ->get()
+                                            ->groupBy(['service'])
+                                            ->toArray();
+            
+        if(in_array('vietlott', $services_filter)) {
+            $data_vietlott_total = Vietlott_Orders::selectRaw("'Total' AS product_name,
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', quantity, 0)) AS 'count_last_time', 
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', product_price * quantity - discount_price, 0)) AS 'amount_last_time',
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time', 
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', product_price * quantity - discount_price, 0)) AS 'amount_this_time'")
+                ->whereBetween('t_create', [$from2, $to2]);
+
+            $data_vietlott = Vietlott_Orders::selectRaw("product_name,
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', quantity, 0)) AS 'count_last_time', 
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', product_price * quantity - discount_price, 0)) AS 'amount_last_time',
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time', 
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', product_price * quantity - discount_price, 0)) AS 'amount_this_time'")
+            ->whereBetween('t_create', [$from2, $to2])
+            ->groupBy(['product_name'])
+            ->union($data_vietlott_total)
+            ->get()
+            ->toArray();
+        }
+        else {
+            $data_vietlott = null;
+        }
+
+        if(!empty($request->is_ajax)) {
+            return view('report.reportsalebydatetable', ['data' => $data, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott])->render();
+        }
+        else {
+            return view('report.reportsalebydate', ['data' => $data, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
+        }
+        
     }
 }
