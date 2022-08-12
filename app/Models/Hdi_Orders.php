@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 class Hdi_Orders extends Model
 {
     use HasFactory;
-    protected $connection = 'mysql3';
+    protected $connection = 'mysql2';
     protected $table = 'hdi_orders';
     protected $primaryKey = 'transaction_id';
     protected $fillable = ['transaction_id','customer_id','customer_phone','customer_name','payment_type','order_status','is_created_insur','is_duplicated','amount','payment_id','link_payment','date_created','date_modified','engine_no','chassis_no','number_plate','effective_date','expiration_date','insur_request_data','is_sent_duplicated','referral_phone','promotion_value','promotion_code','is_sent_promotion_result'];
@@ -22,7 +22,7 @@ class Hdi_Orders extends Model
         return DB::connection('mysql3')->select("SELECT * FROM z_bk_autopay");
     }
 
-    public function employees() {
+    public function employees_table() {
         return $this->hasOne(Employees::class, 'phone', 'referral_phone');
     }
 
