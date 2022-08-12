@@ -1,4 +1,5 @@
-@foreach ($data as $service)
+@if (!empty($service[0]['service']))
+    @foreach ($data as $service)
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
@@ -80,7 +81,9 @@
             </div>
         </div>
     </div>
-@endforeach
+    @endforeach
+@endif
+
 
 @if (!empty($data_vietlott))
 <div class="col-sm-12">
@@ -104,7 +107,7 @@
                             <td>{{ @$value['product_name'] }}</td>
                             <td>{{ number_format(@$value['amount_this_time']) }}</td>
                             <td>{{ @$value['count_this_time'] }}</td>
-                            <td>{{ (!empty($data_vietlott[count($data_vietlott) - 1]['amount_this_time'])) ? round(($value['amount_this_time'] / $service[count($service) - 1]['amount_this_time']), 4) * 100 : 0 }}%</td>
+                            <td>{{ (!empty($data_vietlott[count($data_vietlott) - 1]['amount_this_time'])) ? round(($value['amount_this_time'] / $data_vietlott[count($data_vietlott) - 1]['amount_this_time']), 4) * 100 : 0 }}%</td>
                         </tr>
                     @endforeach
                     
