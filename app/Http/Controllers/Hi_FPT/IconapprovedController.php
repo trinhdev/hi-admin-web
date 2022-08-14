@@ -303,7 +303,6 @@ class IconapprovedController extends MY_Controller
                 $function_name .= 'Product';
                 $icon_info = Icon::where('uuid', $request->product_id)->first();
                 $params = [
-                    'productId'             => (!empty($icon_info->productId)) ? $icon_info->productId : '',
                     'productNameVi'         => (!empty($icon_info->productNameVi)) ? $icon_info->productNameVi : '',
                     'productNameEn'         => (!empty($icon_info->productNameEn)) ? $icon_info->productNameEn : '',
                     'iconUrl'               => (!empty($icon_info->iconUrl)) ? $icon_info->iconUrl : '',
@@ -322,6 +321,9 @@ class IconapprovedController extends MY_Controller
                     'decriptionEn'          => (!empty($icon_info->decriptionEn)) ? $icon_info->decriptionEn : '',
                     'keywords'              => (!empty($icon_info->keywords)) ? $icon_info->keywords : ''
                 ];
+                if(!empty($config->productId)) {
+                    $params['productId'] = intval($config->productId);
+                }
                 break;
             case 'icon_category':
                 $function_name .= 'ProductTitle';
@@ -351,9 +353,9 @@ class IconapprovedController extends MY_Controller
                 ];
                 break;
         }
-        var_dump($params);
+        // var_dump($params);
         $result = $this->iconManagement->$function_name($params);
-        dd($result);
+        // dd($result);
         return $result;
     }
 

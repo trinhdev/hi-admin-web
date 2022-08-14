@@ -193,7 +193,6 @@ class IconManagementService {
                 $function_name .= 'Product';
                 $icon_info = Icon::where('uuid', $request['product_id'])->first();
                 $params = [
-                    'productId'             => (!empty($icon_info->productId)) ? $icon_info->productId : '',
                     'productNameVi'         => (!empty($icon_info->productNameVi)) ? $icon_info->productNameVi : '',
                     'productNameEn'         => (!empty($icon_info->productNameEn)) ? $icon_info->productNameEn : '',
                     'iconUrl'               => (!empty($icon_info->iconUrl)) ? $icon_info->iconUrl : '',
@@ -212,6 +211,10 @@ class IconManagementService {
                     'decriptionEn'          => (!empty($icon_info->decriptionEn)) ? $icon_info->decriptionEn : '',
                     'keywords'              => (!empty($icon_info->keywords)) ? $icon_info->keywords : ''
                 ];
+                if(!empty($icon_info->productId)) {
+                    $params['productId'] = intval($icon_info->productId);
+                }
+                // dd($params);
                 break;
             case 'icon_category':
                 $function_name .= 'ProductTitle';
@@ -244,6 +247,7 @@ class IconManagementService {
                 }
                 break;
         }
+        // dd($params);
         $result = $this->$function_name($params);
         return $result;
     }
