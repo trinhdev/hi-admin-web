@@ -1,4 +1,4 @@
-@if (!empty($service[0]['service']))
+@if (!empty($data))
     @foreach ($data as $service)
     <div class="col-sm-12">
         <div class="card">
