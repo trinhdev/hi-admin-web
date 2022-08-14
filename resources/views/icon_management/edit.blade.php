@@ -159,7 +159,7 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-sm-2">Hiển thị icon "Mới"</label>
                                 <div class="icheck-primary" style="width: auto">
-                                    <input type="checkbox" id="is-new-show" name="isNew" value="1" {{ (isset($data['isNew'])) && ($data['isNew'] == "1" || $data['isNew'] == "2") ? "checked" : "" }} />
+                                    <input type="checkbox" id="is-new-show" name="isNew" value="1" {{ (isset($data['isNew'])) && ($data['isNew'] == "1") ? "checked" : "" }} />
                                     <label for="is-new-show"></label>
                                 </div>
                             </div>

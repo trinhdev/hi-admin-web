@@ -55,20 +55,20 @@
                 @case("1")
                     <td>Hiện</td>
                     @break
-                @case("2")
+                {{-- @case("2")
                     <td>Hẹn giờ hiện</td>
                     @break
-                @default
+                @default --}}
             @endswitch
         @endif
     </tr>
     <tr>
         <td class="title">Ngày bắt đầu</td>
-        <td>{{ (!empty($data['newBeginDay']) && $data['newBeginDay'] == "2") ? $data['newBeginDay'] : '' }}</td>
+        <td>{{ (!empty($data['newBeginDay']) && $data['isNew'] == "1") ? $data['newBeginDay'] : '' }}</td>
     </tr>
     <tr>
         <td class="title" style="padding-bottom: 30px">Ngày kết thúc</td>
-        <td style="padding-bottom: 30px">{{ (!empty($data['newEndDay']) && $data['newEndDay'] == "2") ? $data['newEndDay'] : '' }}</td>
+        <td style="padding-bottom: 30px">{{ (!empty($data['newEndDay']) && $data['isNew'] == "1") ? $data['newEndDay'] : '' }}</td>
     </tr>
     
     <tr>
