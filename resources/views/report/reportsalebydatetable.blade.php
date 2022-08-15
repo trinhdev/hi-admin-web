@@ -24,17 +24,34 @@
                             <th>Đơn hàng</th>
                             <th>%</th>
                         </tr>
+                        @php
+                            $list_find_max = array_filter($service, function($k) {
+                                return $k['zone'] != 'Total' && (str_starts_with($k['zone'], 'Vung') && $k['branch_name'] == null);
+                            });
+                            $max = collect($list_find_max)->max('amount_this_time');
+                        @endphp
+                        
                         @foreach ($service as $key => $value)
-                            <tr>
-                                <td>{{ !empty($value['branch_name']) ? $value['branch_name'] : $value['zone'] }}</td>
-                                <td>{{ (!empty($value['branch_name'])) ? '' : (!empty($value['amount_last_time'])) ? (round(($value['amount_this_time'] - $value['amount_last_time']) / $value['amount_last_time'], 4) * 100 . '%') : '100%' }}</td>
-                                <td>{{ number_format($value['amount_last_time']) }}</td>
-                                <td>{{ $value['count_last_time'] }}</td>
-                                <td>{{ (!empty($service[count($service) - 1]['amount_last_time'])) ? round(($value['amount_last_time'] / $service[count($service) - 1]['amount_last_time']), 4) * 100 : 0}}%</td>
-                                <td>{{ number_format($value['amount_this_time']) }}</td>
-                                <td>{{ $value['count_this_time'] }}</td>
-                                <td>{{ (!empty($service[count($service) - 1]['amount_this_time'])) ? round(($value['amount_this_time'] / $service[count($service) - 1]['amount_this_time']), 4) * 100 : 0}}%</td>
-                            </tr>
+                            @if (in_array($value['zone'], ['FTELHO', 'PNCHO', 'TINHO', 'App Users']) || (str_starts_with($value['zone'], 'Vung') && $value['branch_name'] == null))
+                                @if ($value['amount_this_time'] != $max)
+                                    <tr style="background-color: #AFE1DC; font-weight: bold">
+                                @else
+                                    <tr style="background-color: #2cd134; font-weight: bold">
+                                @endif
+                            @elseif($value['zone'] == 'Total')
+                                <tr style="background-color: #FDCD99; font-weight: bold">
+                            @else
+                                <tr>
+                            @endif
+                                    <td>{{ !empty($value['branch_name']) ? $value['branch_name'] : $value['zone'] }}</td>
+                                    <td>{{ (!empty($value['branch_name'])) ? '' : (!empty($value['amount_last_time'])) ? (round(($value['amount_this_time'] - $value['amount_last_time']) / $value['amount_last_time'], 4) * 100 . '%') : '100%' }}</td>
+                                    <td>{{ number_format($value['amount_last_time']) }}</td>
+                                    <td>{{ $value['count_last_time'] }}</td>
+                                    <td>{{ (!empty($service[count($service) - 1]['amount_last_time'])) ? round(($value['amount_last_time'] / $service[count($service) - 1]['amount_last_time']), 4) * 100 : 0}}%</td>
+                                    <td>{{ number_format($value['amount_this_time']) }}</td>
+                                    <td>{{ $value['count_this_time'] }}</td>
+                                    <td>{{ (!empty($service[count($service) - 1]['amount_this_time'])) ? round(($value['amount_this_time'] / $service[count($service) - 1]['amount_this_time']), 4) * 100 : 0}}%</td>
+                                </tr>
                         @endforeach
                         
                     </table>
