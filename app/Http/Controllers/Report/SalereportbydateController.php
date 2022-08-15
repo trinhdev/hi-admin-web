@@ -93,7 +93,7 @@ class SalereportbydateController extends MY_Controller
                                     ->get()
                                     ->groupBy(['service'])
                                     ->toArray();    
-        // dd($data);
+
         $total = Sale_Report_By_Range::selectRaw("service,
                                                 'Total' AS zone,
                                                 NULL AS branch_name,
@@ -122,6 +122,8 @@ class SalereportbydateController extends MY_Controller
                                             ->groupBy(['service'])
                                             ->toArray();
             
+        
+
         if(in_array('vietlott', $services_filter)) {
             $data_vietlott_total = Vietlott_Orders::selectRaw("'Total' AS product_name,
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', quantity, 0)) AS 'count_last_time', 
