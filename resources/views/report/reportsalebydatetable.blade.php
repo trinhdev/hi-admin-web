@@ -44,7 +44,7 @@
                                 <tr>
                             @endif
                                     <td>{{ !empty($value['branch_name']) ? $value['branch_name'] : $value['zone'] }}</td>
-                                    <td>{{ (!empty($value['branch_name'])) ? '' : (!empty($value['amount_last_time'])) ? (round(($value['amount_this_time'] - $value['amount_last_time']) / $value['amount_last_time'], 4) * 100 . '%') : '100%' }}</td>
+                                    <td>{{ (!empty($value['amount_last_time'])) ? (round(($value['amount_this_time'] - $value['amount_last_time']) / $value['amount_last_time'], 4) * 100 . '%') : '100%' }}</td>
                                     <td>{{ number_format($value['amount_last_time']) }}</td>
                                     <td>{{ $value['count_last_time'] }}</td>
                                     <td>{{ (!empty($service[count($service) - 1]['amount_last_time'])) ? round(($value['amount_last_time'] / $service[count($service) - 1]['amount_last_time']), 4) * 100 : 0}}%</td>

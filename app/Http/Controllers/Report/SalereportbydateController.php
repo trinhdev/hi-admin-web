@@ -33,7 +33,7 @@ class SalereportbydateController extends MY_Controller
         // $this->model = $this->getModel('SupportSystem');
     }
     public function index(Request $request) {
-        $services = (['ict', 'hdi', 'houseware', 'vuanem', 'gas', 'vietlott']);
+        $services = (['ict', 'hdi', 'household', 'vuanem', 'gas', 'vietlott']);
         $services_filter = (!empty($request->services)) ? $request->services : $services;
         $from2 = $request->from;
         $to2 = $request->to;
@@ -45,7 +45,7 @@ class SalereportbydateController extends MY_Controller
             $from2 = date('Y-m-d 00:00:00', strtotime($from2));
         }
         if(empty($to2)) {
-            $to2 = date('Y-m-d 23:59:59', strtotime('today midnight'));
+            $to2 = date('Y-m-d 23:59:59', strtotime('yesterday midnight'));
         }
         else {
             $to2 = date('Y-m-d 23:59:59', strtotime($to2));
