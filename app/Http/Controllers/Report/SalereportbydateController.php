@@ -45,7 +45,7 @@ class SalereportbydateController extends MY_Controller
             $from2 = date('Y-m-d 00:00:00', strtotime($from2));
         }
         if(empty($to2)) {
-            $to2 = date('Y-m-d 23:59:59', strtotime('today midnight'));
+            $to2 = date('Y-m-d 23:59:59', strtotime('yesterday midnight'));
         }
         else {
             $to2 = date('Y-m-d 23:59:59', strtotime($to2));
