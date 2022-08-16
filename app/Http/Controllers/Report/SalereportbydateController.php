@@ -33,7 +33,7 @@ class SalereportbydateController extends MY_Controller
         // $this->model = $this->getModel('SupportSystem');
     }
     public function index(Request $request) {
-        $services = (['ict', 'hdi', 'houseware', 'vuanem', 'gas', 'vietlott']);
+        $services = (['ict', 'hdi', 'household', 'vuanem', 'gas', 'vietlott']);
         $services_filter = (!empty($request->services)) ? $request->services : $services;
         $from2 = $request->from;
         $to2 = $request->to;
