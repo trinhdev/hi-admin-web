@@ -16,6 +16,7 @@ use App\Models\Hdi_Orders;
 use App\Models\Laptop_Orders;
 use App\Models\Employees;
 use App\Models\Sale_Report_By_Range;
+use App\Models\Sale_Report_By_Range_Product;
 use App\Models\Vietlott_Orders;
 
 use DateTime;
@@ -112,12 +113,12 @@ class SalereportbydateController extends MY_Controller
         }
 
         // count by product type
-        $data_product = Sale_Report_By_Range::selectRaw("service, product_type,
+        $data_product = Sale_Report_By_Range::selectRaw("service,
                                                     SUM(count) AS 'count_this_time', 
                                                     SUM(amount) AS 'amount_this_time'")
                                             ->whereIn('service', $services_filter)
                                             ->whereBetween('date_created', [$from2, $to2])
-                                            ->groupBy(['service', 'product_type'])
+                                            ->groupBy(['service'])
                                             ->get()
                                             ->groupBy(['service'])
                                             ->toArray();
@@ -146,12 +147,20 @@ class SalereportbydateController extends MY_Controller
         else {
             $data_vietlott = [];
         }
-        // dd($data_vietlott);
+        
+        $productByService = Sale_Report_By_Range_Product::selectRaw('product_type, SUM(count) AS count, SUM(amount) AS amount, service')
+                                                        ->whereIn('service', $services_filter)
+                                                        ->whereBetween('created_at', [$from2, $to2])
+                                                        ->groupBy(['service', 'product_type'])
+                                                        ->get()
+                                                        ->groupBy(['service'])
+                                                        ->toArray();
+        
         if(!empty($request->is_ajax)) {
             return view('report.reportsalebydatetable', ['data' => $data, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott])->render();
         }
         else {
-            return view('report.reportsalebydate', ['data' => $data, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
+            return view('report.reportsalebydate', ['data' => $data, 'productByService' => $productByService, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
         }
         
     }
