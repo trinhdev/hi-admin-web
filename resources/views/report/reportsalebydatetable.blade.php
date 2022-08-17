@@ -70,7 +70,7 @@
                             @if (!empty($productByService[$service[0]['service']]))
                                 @foreach (@$productByService[$service[0]['service']] as $product)
                                     <tr>
-                                        <td>{{ @$product['product_type'] }}</td>
+                                        <td>{{ (!empty($product['product_type'])) ? strtoupper($product['product_type']) : 'KHÁC' }}</td>
                                         <td>{{ number_format($product['amount']) }}</td>
                                         <td>{{ $product['count'] }}</td>
                                     </tr>
@@ -129,7 +129,7 @@
                             <tr>
                         @endif
                         
-                            <td>{{ @$value['product_name'] }}</td>
+                            <td>{{ (!empty($value['product_name'])) ? strtoupper($value['product_name']) : 'KHÁC' }}</td>
                             <td>{{ number_format(@$value['amount_this_time']) }}</td>
                             <td>{{ @$value['count_this_time'] }}</td>
                             <td>{{ (!empty($data_vietlott[count($data_vietlott) - 1]['amount_this_time'])) ? round(($value['amount_this_time'] / $data_vietlott[count($data_vietlott) - 1]['amount_this_time']), 4) * 100 : 0 }}%</td>
