@@ -131,14 +131,14 @@ class SalereportbydateController extends MY_Controller
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', product_price * quantity - discount_price, 0)) AS 'amount_last_time',
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time', 
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', product_price * quantity - discount_price, 0)) AS 'amount_this_time'")
-                ->whereBetween('t_create', [$from2, $to2]);
+                ->whereBetween('t_create', [$from1, $to2]);
 
             $data_vietlott = Vietlott_Orders::selectRaw("product_name,
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', quantity, 0)) AS 'count_last_time', 
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', product_price * quantity - discount_price, 0)) AS 'amount_last_time',
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time', 
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', product_price * quantity - discount_price, 0)) AS 'amount_this_time'")
-            ->whereBetween('t_create', [$from2, $to2])
+            ->whereBetween('t_create', [$from1, $to2])
             ->groupBy(['product_name'])
             ->union($data_vietlott_total)
             ->get()
@@ -147,6 +147,7 @@ class SalereportbydateController extends MY_Controller
         else {
             $data_vietlott = [];
         }
+        // dd();
         
         $productByService = Sale_Report_By_Range_Product::selectRaw('product_type, SUM(count) AS count, SUM(amount) AS amount, service')
                                                         ->whereIn('service', $services_filter)
