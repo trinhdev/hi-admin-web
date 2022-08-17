@@ -67,13 +67,16 @@
                                 <th>Doanh thu</th>
                                 <th>Đơn hàng</th>
                             </tr>
-                            @foreach ($data_product[$service[0]['service']] as $product)
-                                <tr>
-                                    <td>{{ $product['product_type'] }}</td>
-                                    <td>{{ number_format($product['amount_this_time']) }}</td>
-                                    <td>{{ $product['count_this_time'] }}</td>
-                                </tr>
-                            @endforeach
+                            @if (!empty($productByService[$service[0]['service']]))
+                                @foreach (@$productByService[$service[0]['service']] as $product)
+                                    <tr>
+                                        <td>{{ @$product['product_type'] }}</td>
+                                        <td>{{ number_format($product['amount']) }}</td>
+                                        <td>{{ $product['count'] }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            
                         </table>
                     @endif
                     
@@ -120,7 +123,12 @@
                         <th>% Theo doanh thu</th>
                     </tr>
                     @foreach ($data_vietlott as $key => $value)
-                        <tr>
+                        @if ($value['product_name'] == 'Total')
+                            <tr style="background-color: #FDCD99; font-weight: bold">
+                        @else
+                            <tr>
+                        @endif
+                        
                             <td>{{ @$value['product_name'] }}</td>
                             <td>{{ number_format(@$value['amount_this_time']) }}</td>
                             <td>{{ @$value['count_this_time'] }}</td>
