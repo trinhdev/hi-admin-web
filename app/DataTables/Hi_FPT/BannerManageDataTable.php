@@ -31,7 +31,7 @@ class BannerManageDataTable extends DataTable
         return datatables()
             ->collection($query)
             ->editColumn('title_vi', function($row) {
-                if (strlen($row->title_vi)>50) {
+                if (strlen($row->title_vi)>60) {
                     $text = mb_substr($row->title_vi, 0, 50, "UTF-8").'<div class="text-bold" onclick="showHideTitle('.$row->event_id.')">...Xem thêm</div>';
                 } else {
                     $text = $row->title_vi;

@@ -2,35 +2,25 @@
 
 namespace App\DataTables\Hi_FPT;
 
-use App\Models\FtelPhone;
+use App\Models\AppLog;
+use App\Models\Laptop_Orders;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
-use Yajra\DataTables\Html\Editor\Fields;
 
-class FtelPhoneDatatable extends DataTable
+class LaptopOrdersDatatables extends DataTable
 {
-    /**
-     * Build DataTable class.
-     *
-     * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
-     */
     public function dataTable($query)
     {
         return datatables()
-            ->eloquent($query);
+            ->eloquent($query)
+            ;
     }
-
-    /**
-     * Get query source of dataTable.
-     *
-     * @param \App\Models/FtelPhoneDatatable $model
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function query(FtelPhone $model)
+    public function query(Laptop_Orders $model)
     {
-        return $model->where('code', '!=' , 'null');
+        return $model->newModelQuery();
     }
 
     /**
@@ -41,25 +31,21 @@ class FtelPhoneDatatable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('ftelphone_table')
+                    ->setTableId('log_support_code_table')
                     ->columns($this->getColumns())
-                    ->responsive()
-                    ->autoWidth(true)
                     ->lengthMenu([10,25,50,100,200,500,100000000])
                     ->pageLength(25)
                     ->parameters([
                         'scroll' => false,
-                        'scrollX' => false,
+                        'scrollX' => true,
                         'searching' => true,
-                        'searchDelay' => 500,
-                        'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-8"B><"col-md-2 mt-2 "l><"col-md-1 mt-2"f>>irtp',
-                        'buttons' => [ 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdf' ]
+                        'searchDelay' => 500
                     ])
                     ->addTableClass('table table-hover table-striped text-center w-100')
                     ->languageEmptyTable('Không có dữ liệu')
                     ->languageInfoEmpty('Không có dữ liệu')
                     ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
-                    ->languageSearchPlaceholder('Nhập SDT cần tra cứu')
+                    ->languageSearchPlaceholder('Nhập thông tin cần tra cứu')
                     ->languageSearch('Tìm kiếm')
                     ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
                     ->languageLengthMenu('Hiển thị _MENU_')
@@ -75,15 +61,33 @@ class FtelPhoneDatatable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('id'),
-            Column::make('number_phone'),
-            Column::make('code'),
-            Column::make('emailAddress'),
-            Column::make('fullName'),
-            Column::make('organizationNamePath'),
-            Column::make('organizationCodePath'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('trans_id'),
+            Column::make('merchant_id'),
+            Column::make('order_id'),
+            Column::make('customer_id'),
+            Column::make('customer_phone'),
+            Column::make('address_id'),
+            Column::make('fullname'),
+            Column::make('phone_nb'),
+            Column::make('address'),
+            Column::make('city'),
+            Column::make('district'),
+            Column::make('ward'),
+            Column::make('lat_long'),
+            Column::make('amount'),
+            Column::make('promotion_code'),
+            Column::make('referral_code'),
+            Column::make('amount_voucher'),
+            Column::make('total_amount_finish'),
+            Column::make('appointment_date'),
+            Column::make('timezone'),
+            Column::make('note'),
+            Column::make('payment_method'),
+            Column::make('isTokenization'),
+            Column::make('order_id_payment'),
+            Column::make('payment_status'),
+            Column::make('t_create'),
+            Column::make('histories_order_id_payment'),
         ];
     }
 
@@ -94,6 +98,6 @@ class FtelPhoneDatatable extends DataTable
      */
     protected function filename()
     {
-        return 'FtelPhone_' . date('YmdHis');
+        return 'LogSupportCode_' . date('YmdHis');
     }
 }

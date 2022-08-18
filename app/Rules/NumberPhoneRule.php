@@ -22,7 +22,7 @@ class NumberPhoneRule implements Rule
      */
     public function __construct()
     {
-        $this->limit = LIMIT_PHONE;
+        $this->limit = 1000000;
         $this->email = EMAIL_FTEL_PHONE;
     }
 
@@ -57,6 +57,6 @@ class NumberPhoneRule implements Rule
      */
     public function message()
     {
-        return 'The :attribute sai định dạng số điện thoại.';
+        return 'The :attribute sai định dạng số điện thoại hoặc quá '. $this->limit .' số';
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Hi_FPT;
 
+use App\DataTables\Hi_FPT\LogSupportCodeDatatable;
 use App\DataTables\Hi_FPT\SuportCodeDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
@@ -32,7 +33,11 @@ class SupportCodeController extends MY_Controller
             'columns'       => $request->columns,
             ])->render('support_code.index');
     }
-    
+
+    public function log(LogSupportCodeDatatable $dataTable) {
+        return $dataTable->render('support_code.log');
+    }
+
     public function openSupportCode(Request $request) {
         $log_data = [];
         $hdiCustomer = new HdiCustomer();

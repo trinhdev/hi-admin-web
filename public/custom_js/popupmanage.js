@@ -359,8 +359,59 @@ function methodAjaxPopupPrivate() {
                 window.urlMethod = '/popup-private/updatePrivate';
             }
         });
+    });
 
-
+    $('body').on('click', '#updatePhoneNumber', function (event) {
+        event.preventDefault();
+        $('#importExcel').find('input:text, input:password, input:file, select, textarea').val('');
+        $('#number_phone').val('');
+        var id = $(this).data('id');
+        console.log(id);
+        $('#id_popup_phone').val(id);
+        $('#push_phone_number_private').modal('toggle');
+        $('#submitPhone').on('click', function (event){
+            $(this).attr('disabled','disabled');
+            event.preventDefault();
+            let data = $('#importExcel').serialize();
+            $.ajax({
+                url: '/popup-private/importPrivate',
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                cache: false,
+                beforeSend: function(){
+                    $("#spinner").addClass("show");
+                },
+                success: (data) => {
+                    $("#spinner").removeClass("show");
+                    $('#push_phone_number_private').modal('toggle');
+                    $('#submitPhone').prop('disabled', false);
+                    var message = '';
+                    var count =0;
+                    $.each(data.data, function (key, value) {
+                        message += (key+1) + '. ' + value.message + '<br>';
+                        if(value.statusCode !== 0){
+                            count++;
+                        }
+                    });
+                    if(count>0) {
+                        showError(message);
+                    } else {
+                        showSuccess(message);
+                    }
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $("#spinner").removeClass("show");
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    showError(errorString);
+                    $('#submitPhone').prop('disabled', false);
+                }
+            });
+        });
     });
 }
 
@@ -369,7 +420,7 @@ function deletePopUpPrivate(data){
     let check_dateEnd = $(data).data('dateend');
     let id = $(data).data('id');
     if(check_dateEnd < getDate()) {
-        showError('Popup hết hiệu lực, vui lòng cập nhật ngày hết hạn!')
+        showError('Popup hết hiệu lực, vui lòng cập nhật ngày hết hạn!');
         return false;
     }
     $.ajax({
@@ -424,11 +475,14 @@ function changeFileNumberPhone() {
             data: data,
             processData: false,
             contentType: false,
+            beforeSend: function(){
+                $("#spinner").addClass("show");
+            },
             success: function(response) {
+                $("#spinner").removeClass("show");
                 let res = [];
                 let err = [];
                 let pattern = /^(03|05|07|08|09)[\d, ]*$/;
-                console.log(response);
                 response.data.forEach((data) => {
                     data.forEach((item) => {
                         if(pattern.test(item) && item.length === 10) {
@@ -440,19 +494,28 @@ function changeFileNumberPhone() {
                 });
                 console.log(res.length);
                 $('#number_phone').val(res.join(','));
-                showSuccess('Nhập thành công! Các số sai định dạng bị bỏ qua gồm: [' + err.join(',') + ']');
+                if (err.length > 0) {
+                    showSuccess('Thành công! Các số sai định dạng bị bỏ qua gồm: <br>' + err.join('<br>'));
+                    return true;
+                }
+                showSuccess('Nhập thành công!');
             },
             error: function (xhr) {
                 var errorString = '';
+                $("#spinner").removeClass("show");
                 $.each(xhr.responseJSON.errors, function (key, value) {
                     errorString = value;
                     return false;
                 });
                 $('#importExcel').find('input:text, input:password, input:file, select, textarea').val('');
                 $('#number_phone').val('');
-                showError(errorString);
+                if (errorString.length !== 0) {
+                    showError(errorString);
+                } else {
+                    showError('File quá lớn hoặc sai định dạng! Vui lòng kiểm tra lại. ');
+                }
             }
-        } );
+        });
         e.preventDefault();
     });
 }
