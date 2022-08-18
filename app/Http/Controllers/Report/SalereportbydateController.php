@@ -36,6 +36,8 @@ class SalereportbydateController extends MY_Controller
     public function index(Request $request) {
         $services = (['ict', 'hdi', 'household', 'vuanem', 'gas', 'vietlott']);
         $services_filter = (!empty($request->services)) ? $request->services : $services;
+        $from1 = $request->from1;
+        $to1 = $request->to1;
         $from2 = $request->from;
         $to2 = $request->to;
 
@@ -51,18 +53,23 @@ class SalereportbydateController extends MY_Controller
         else {
             $to2 = date('Y-m-d 23:59:59', strtotime($to2));
         }
+
         $fromDate = new DateTime($from2);
         $toDate = new DateTime($to2);
         $difference = $toDate->diff($fromDate);
         $difference_number = $difference->d + 1;
 
-        if($difference_number >= 28) {
-            $from1 = date('Y-m-01 00:00:00', strtotime('-1 month', strtotime($from2)));
-            $to1 = date('Y-m-t 23:59:59', strtotime('-1 month', strtotime($to2)));
+        if(empty($from1)) {
+            $from1 = date('Y-m-d 00:00:00', strtotime('-' . $difference_number . 'days', strtotime($from2)));
         }
         else {
-            $from1 = date('Y-m-d 00:00:00', strtotime('-' . $difference_number . 'days', strtotime($from2)));
+            $from1 = date('Y-m-d 00:00:00', strtotime($from1));
+        }
+        if(empty($to1)) {
             $to1 = date('Y-m-d 23:59:59', strtotime('-' . $difference_number . 'days', strtotime($to2)));
+        }
+        else {
+            $to1 = date('Y-m-d 23:59:59', strtotime($to1));
         }
 
         $query1 = Sale_Report_By_Range::selectRaw("service,
