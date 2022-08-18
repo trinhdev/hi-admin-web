@@ -16,6 +16,7 @@ use App\Models\Hdi_Orders;
 use App\Models\Laptop_Orders;
 use App\Models\Employees;
 use App\Models\Sale_Report_By_Range;
+use App\Models\Sale_Report_By_Range_Product;
 use App\Models\Vietlott_Orders;
 
 use DateTime;
@@ -33,7 +34,7 @@ class SalereportbydateController extends MY_Controller
         // $this->model = $this->getModel('SupportSystem');
     }
     public function index(Request $request) {
-        $services = (['ict', 'hdi', 'houseware', 'vuanem', 'gas', 'vietlott']);
+        $services = (['ict', 'hdi', 'household', 'vuanem', 'gas', 'vietlott']);
         $services_filter = (!empty($request->services)) ? $request->services : $services;
         $from2 = $request->from;
         $to2 = $request->to;
@@ -45,7 +46,7 @@ class SalereportbydateController extends MY_Controller
             $from2 = date('Y-m-d 00:00:00', strtotime($from2));
         }
         if(empty($to2)) {
-            $to2 = date('Y-m-d 23:59:59', strtotime('today midnight'));
+            $to2 = date('Y-m-d 23:59:59', strtotime('yesterday midnight'));
         }
         else {
             $to2 = date('Y-m-d 23:59:59', strtotime($to2));
@@ -112,12 +113,12 @@ class SalereportbydateController extends MY_Controller
         }
 
         // count by product type
-        $data_product = Sale_Report_By_Range::selectRaw("service, product_type,
+        $data_product = Sale_Report_By_Range::selectRaw("service,
                                                     SUM(count) AS 'count_this_time', 
                                                     SUM(amount) AS 'amount_this_time'")
                                             ->whereIn('service', $services_filter)
                                             ->whereBetween('date_created', [$from2, $to2])
-                                            ->groupBy(['service', 'product_type'])
+                                            ->groupBy(['service'])
                                             ->get()
                                             ->groupBy(['service'])
                                             ->toArray();
@@ -130,14 +131,14 @@ class SalereportbydateController extends MY_Controller
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', product_price * quantity - discount_price, 0)) AS 'amount_last_time',
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time', 
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', product_price * quantity - discount_price, 0)) AS 'amount_this_time'")
-                ->whereBetween('t_create', [$from2, $to2]);
+                ->whereBetween('t_create', [$from1, $to2]);
 
             $data_vietlott = Vietlott_Orders::selectRaw("product_name,
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', quantity, 0)) AS 'count_last_time', 
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', product_price * quantity - discount_price, 0)) AS 'amount_last_time',
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time', 
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', product_price * quantity - discount_price, 0)) AS 'amount_this_time'")
-            ->whereBetween('t_create', [$from2, $to2])
+            ->whereBetween('t_create', [$from1, $to2])
             ->groupBy(['product_name'])
             ->union($data_vietlott_total)
             ->get()
@@ -146,12 +147,21 @@ class SalereportbydateController extends MY_Controller
         else {
             $data_vietlott = [];
         }
-        // dd($data_vietlott);
+        // dd();
+        
+        $productByService = Sale_Report_By_Range_Product::selectRaw('product_type, SUM(count) AS count, SUM(amount) AS amount, service')
+                                                        ->whereIn('service', $services_filter)
+                                                        ->whereBetween('created_at', [$from2, $to2])
+                                                        ->groupBy(['service', 'product_type'])
+                                                        ->get()
+                                                        ->groupBy(['service'])
+                                                        ->toArray();
+        
         if(!empty($request->is_ajax)) {
-            return view('report.reportsalebydatetable', ['data' => $data, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott])->render();
+            return view('report.reportsalebydatetable', ['data' => $data, 'productByService' => $productByService, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott])->render();
         }
         else {
-            return view('report.reportsalebydate', ['data' => $data, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
+            return view('report.reportsalebydate', ['data' => $data, 'productByService' => $productByService, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
         }
         
     }

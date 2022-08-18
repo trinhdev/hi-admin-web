@@ -44,7 +44,7 @@
                                 <tr>
                             @endif
                                     <td>{{ !empty($value['branch_name']) ? $value['branch_name'] : $value['zone'] }}</td>
-                                    <td>{{ (!empty($value['branch_name'])) ? '' : (!empty($value['amount_last_time'])) ? (round(($value['amount_this_time'] - $value['amount_last_time']) / $value['amount_last_time'], 4) * 100 . '%') : '100%' }}</td>
+                                    <td>{{ (!empty($value['amount_last_time'])) ? (round(($value['amount_this_time'] - $value['amount_last_time']) / $value['amount_last_time'], 4) * 100 . '%') : '100%' }}</td>
                                     <td>{{ number_format($value['amount_last_time']) }}</td>
                                     <td>{{ $value['count_last_time'] }}</td>
                                     <td>{{ (!empty($service[count($service) - 1]['amount_last_time'])) ? round(($value['amount_last_time'] / $service[count($service) - 1]['amount_last_time']), 4) * 100 : 0}}%</td>
@@ -67,13 +67,16 @@
                                 <th>Doanh thu</th>
                                 <th>Đơn hàng</th>
                             </tr>
-                            @foreach ($data_product[$service[0]['service']] as $product)
-                                <tr>
-                                    <td>{{ $product['product_type'] }}</td>
-                                    <td>{{ number_format($product['amount_this_time']) }}</td>
-                                    <td>{{ $product['count_this_time'] }}</td>
-                                </tr>
-                            @endforeach
+                            @if (!empty($productByService[$service[0]['service']]))
+                                @foreach (@$productByService[$service[0]['service']] as $product)
+                                    <tr>
+                                        <td>{{ (!empty($product['product_type'])) ? strtoupper($product['product_type']) : 'KHÁC' }}</td>
+                                        <td>{{ number_format($product['amount']) }}</td>
+                                        <td>{{ $product['count'] }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            
                         </table>
                     @endif
                     
@@ -120,8 +123,13 @@
                         <th>% Theo doanh thu</th>
                     </tr>
                     @foreach ($data_vietlott as $key => $value)
-                        <tr>
-                            <td>{{ @$value['product_name'] }}</td>
+                        @if ($value['product_name'] == 'Total')
+                            <tr style="background-color: #FDCD99; font-weight: bold">
+                        @else
+                            <tr>
+                        @endif
+                        
+                            <td>{{ (!empty($value['product_name'])) ? strtoupper($value['product_name']) : 'KHÁC' }}</td>
                             <td>{{ number_format(@$value['amount_this_time']) }}</td>
                             <td>{{ @$value['count_this_time'] }}</td>
                             <td>{{ (!empty($data_vietlott[count($data_vietlott) - 1]['amount_this_time'])) ? round(($value['amount_this_time'] / $data_vietlott[count($data_vietlott) - 1]['amount_this_time']), 4) * 100 : 0 }}%</td>
