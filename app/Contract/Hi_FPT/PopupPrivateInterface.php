@@ -21,4 +21,6 @@ interface PopupPrivateInterface
 
     public function importFile($params);
 
+    public function import(array $params);
+
 }

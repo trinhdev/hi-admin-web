@@ -241,8 +241,11 @@ Route::group([
             Route::prefix('supportcode')->group(function () {
                 Route::get('/','SupportCodeController@index')->name('supportcode.index');
                 Route::post('/open-support-code','SupportCodeController@openSupportCode')->name('supportcode.openSupportCode');
+                Route::get('/log','SupportCodeController@log')->name('supportcode.log');
 
             });
+            Route::get('/laptop-orders','LaptopOrdersController@index')->name('laptop-orders.index');
+            Route::post('/laptop-orders','LaptopOrdersController@index')->name('laptop-orders.index');
             Route::prefix('app')->group(function () {
                 Route::get('/', [AppController::class, 'index'])->name('app.index');
                 Route::get('/export', [AppController::class, 'export'])->name('app.export');

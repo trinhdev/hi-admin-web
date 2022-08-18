@@ -45,10 +45,10 @@ class StoreRequest extends FormRequest
             'dataAction' => 'required',
             'actionType' => 'required',
             'iconButtonUrl' => 'required_if:type,popup_custom_image_transparent,popup_full_screen',
-            'number_phone' => [
-                'required',
-                new NumberPhoneRule()
-            ]
+//            'number_phone' => [
+//                'required',
+//                new NumberPhoneRule()
+//            ]
         ];
     }
 
@@ -56,7 +56,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'type.required'         => 'Loại popup không được bỏ trống!',
-            'number_phone.required' => 'List SDT không được bỏ trống!',
+//            'number_phone.required' => 'List SDT không được bỏ trống!',
             'iconUrl.required'      => 'Ảnh popup không được bỏ trống!',
             'timeline.required'     => 'Thời gian hiển thị không được bỏ trống!',
             'dataAction.required'   => 'URL điều hướng không được bỏ trống!',

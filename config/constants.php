@@ -1,6 +1,6 @@
 <?php
 define('ADMIN',1);
-const LIMIT_PHONE = 30000;
+const LIMIT_PHONE = 100000;
 const EMAIL_FTEL_PHONE = 'trinhhdp@fpt.com.vn';
 $listRedisKey = [
     'MODULE_BY_ROLE_ID' => 'acl_role_module', // acl_role_moduleX , X là role_id

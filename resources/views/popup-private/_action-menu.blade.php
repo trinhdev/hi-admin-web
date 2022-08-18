@@ -22,6 +22,9 @@ END ACTION PAGE
            type="button" href="#" class="btn btn-sm bg-primary"><i class="fa fa-play" aria-hidden="true"></i></a>
     @endif
     <a id="detailPopup" data-id="{{ $model->id }}"
-       style="float: left; margin-right: 5px; background: #007bff" type="button" href="#"
-       class="btn btn-sm fas fa-edit btn-icon bg-primary"></a>
+       style="float: left; margin-right: 5px; background: #007bff"
+       class="btn btn-sm fas fa-edit bg-primary"></a>
+    <a id="updatePhoneNumber" data-id="{{ $model->id }}"
+       style="float: left; margin-right: 5px; background: #007bff"
+       class="btn btn-sm fas fa-clipboard btn-icon bg-primary"></a>
 </div>
