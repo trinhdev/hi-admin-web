@@ -75,61 +75,6 @@ class SaleReportByDateDataTable extends DataTable
             'service'   => $this->service,
             'page'      => $this->currentPage,
         ];
-        // $model = $service->findLikeCode($params);
-        // if(isset($model['statusCode']) && $model['statusCode'] == 0) {
-        //     $result = !empty($model['data']['items']) ? collect($model['data']['items']) : [];
-        //     return $result;
-        // }
-        // $result = Hdi_Orders::reportByTime($this->service, '2022-06-01 00:00:00', '2022-06-30 23:59:59');
-        // $result = Hdi_Orders::whereBetween('date_created', ['2022-05-01 00:00:00', '2022-06-30 23:59:59'])
-        //                     ->with(['employees', 'employees.list_organizations' => function($query) {
-        //                         // $query->select('zone_name, branch_code, branch_name_code');
-        //                         $query->groupBy('zone_name', 'branch_code', 'branch_name_code');
-        //                     }])
-        //                     ->selectRaw("SUM(DATE(date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59') AS 'count_last_time', 
-        //                                 SUM(IF(DATE(date_created) BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:59:59', amount, 0)) AS 'amount_last_time',
-        //                                 SUM(DATE(date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59') AS 'count_this_time', 
-        //                                 SUM(IF(DATE(date_created) BETWEEN '2022-06-01 00:00:00' AND '2022-06-30 23:59:59', amount, 0)) AS 'amount_this_time'")
-        //                     ->get();
-                            // ->groupBy('zone_name', 'branch_code', 'branch_name_code')->toArray();
-        
-        // $test_db = 
-        // $databaseName1 = (new Hdi_Orders())->getConnection()->getDatabaseName();
-        // $tableName1 = (new Hdi_Orders())->getTable();
-        // $tableName2 = (new Employees())->getTable();
-        // $databaseName2 = (new Employees())->getConnection()->getDatabaseName();
-        // $test_db = DB::join($databaseName1 . '.hdi_orders', function($join) use ($databaseName1, $tableName1, $databaseName2, $tableName2) {
-        //     $join->on($databaseName1 . '.hdi_orders.referral_phone', $databaseName2 . '.employees.phone');
-        // })->whereBetWeen($databaseName1 . '.hdi_orders.date_created', ['2022-06-01 00:00:00', '2022-06-30 23:59:59']);
-        // print('<pre>');
-        // print_r($test_db->toArray());
-        // print('</pre>');
-        // dd('test');
-        // $result = Hdi_Orders::testReadHdi();
-        // $result = Hdi_Orders::with([
-        //                         'employees.list_organizations' => function($query) {
-        //                             $query->select('zone_name', 'branch_code', 'branch_name_code', 'code');
-        //                             // $query->groupBy('zone_name');
-        //                             return $query;
-        //                         }
-        //                     ])
-        //                     // ->select(DB::raw('zone_name, count(*) as total'))
-        //                     ->whereNotNull('referral_phone')
-        //                     ->where('referral_phone', '!=', '')
-        //                     ->whereBetween('date_created', ['2022-05-01 00:00:00', '2022-06-30 23:59:59'])
-        //                     // ->select('customer_phone', 'customer_name', 'referral_phone', 'amount')
-        //                     ->groupBy(['list_organizations.zone_name'])
-        //                     ->get()->toArray();
-        // dd($result->toArray());
-        // $result = List_Organizations::whereNotNull('zone_name')->where('zone_name', '!=', '')
-                                    // ->with(['hdi_orders' => function($employees) {$employees->withCount('date_created');}])->get();
-        // print('<pre>');
-        // print_r($result->toArray());
-        // print_r($result);
-        // print('/<pre>');
-        // dd('test');
-        // session()->flash('error');
-        // return $this->applyScopes($result);
         switch($this->service) {
             case 'ict':
                 $query = collect(Laptop_Orders::selectRaw("organizations.zone_name AS 'zone_name', 
