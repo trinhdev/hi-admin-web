@@ -147,6 +147,11 @@ Route::group([
                 Route::get('/initDatatable','ModeminfoController@initDatatable')->name('modeminfo.initDatatable');
             });
 
+            Route::prefix('IpMacOnline')->group(function () {
+                Route::get('/','ModeminfoController@search')->name('IpMacOnline.index');
+                Route::get('/searchByObjId','ModeminfoController@searchByObjId')->name('IpMacOnline.searchByObjId');
+            });
+
             Route::prefix('bannermanage')->group(function () {
                 Route::get('/','BannerController@all')->name('bannermanage.index');
                 Route::post('/store','BannerController@store')->name('bannermanage.store');
