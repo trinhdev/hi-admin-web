@@ -1,22 +1,19 @@
 @extends('layouts.default')
 
 @section('content')
-    @php
-        $data = session()->get( 'data' );
-    @endphp
-        <!-- Content Wrapper. Contains page content -->
+    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Check Phone FPT Telecom</h1>
+                        <h1 class="m-0">Update information employees FPT Telecom</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Phone</li>
+                            <li class="breadcrumb-item active">Update</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -34,53 +31,118 @@
                                 <h3 class="card-title uppercase">Form Phone Number </h3>
                             </div>
                             <div class="card-body">
-                                {!! Form::open(array('url' => route('ftel_phone.import'),'id' => 'importExcel', 'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
-                                @csrf
-                                <div class="form-group">
-                                    <label class="" for="number_phone_import"><i>Upload with file exel</i></label>
-                                    <input onchange="uploadFile()" type="file" id="number_phone_import" name="excel"
-                                           class="form-control @error('exel') is-invalid @enderror" accept=".xlsx">
-                                </div>
-                                {!! Form::close() !!}
-
-                                {!! Form::open(array('url' => route('ftel_phone.store'),'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
-                                @csrf
-                                <div class="form-group">
-                                    <label for="number_phone">Phone</label>
-                                    <textarea type="text" id="number_phone" name="number_phone" class="form-control"
-                                              placeholder="Có thể thêm nhiều số điện thoại cách nhau bằng dấu phẩy ','"></textarea>
-                                    <br>
+                                <form action="{{ route('ftel_phone.update', [$data->id]) }}" method="post"
+                                      onSubmit="handleSubmit(event,this)">
+                                    @csrf
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="phone">Số điện thoại</label>
+                                        <input class="col-md-8 form-control" type="text" name="phone"
+                                               value="{{ $data->phone }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="name">Tên</label>
+                                        <input class="col-md-8 form-control" type="text" name="name"
+                                               value="{{ $data->name }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="full_name">Tên đầy đủ</label>
+                                        <input class="col-md-8 form-control" type="text" name="full_name"
+                                               value="{{ $data->full_name }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="emailAddress">Email</label>
+                                        <input class="col-md-8 form-control" type="text" name="emailAddress"
+                                               value="{{ $data->emailAddress }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="location_id">ID vị trí</label>
+                                        <input class="col-md-8 form-control" type="text" name="location_id"
+                                               value="{{ $data->location_id }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="branch_code">Mã chi nhánh</label>
+                                        <input class="col-md-8 form-control" type="text" name="branch_code"
+                                               value="{{ $data->branch_code }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="description">Mô tả</label>
+                                        <input class="col-md-8 form-control" type="text" name="description"
+                                               value="{{ $data->description }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="code">code</label>
+                                        <input class="col-md-8 form-control" type="text" name="code"
+                                               value="{{ $data->code }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="organizationCode">organizationCode</label>
+                                        <input class="col-md-8 form-control" type="text" name="organizationCode"
+                                               value="{{ $data->organizationCode }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="organizationCodePath">organizationCodePath</label>
+                                        <input class="col-md-8 form-control" type="text" name="organizationCodePath"
+                                               value="{{ $data->organizationCodePath }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="location">Vị trí</label>
+                                        <input class="col-md-8 form-control" type="text" name="location"
+                                               value="{{ $data->location }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="employee_code">Mã nhân viên</label>
+                                        <input class="col-md-8 form-control" type="text" name="employee_code"
+                                               value="{{ $data->employee_code }}" readonly>
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="organizationNamePath">organizationNamePath</label>
+                                        <input class="col-md-8 form-control" type="text" name="organizationNamePath"
+                                               value="{{ $data->organizationNamePath }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="dept_id">dept_id</label>
+                                        <input class="col-md-8 form-control" type="text" name="dept_id"
+                                               value="{{ $data->dept_id }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2" for="branch_name">Tên chi nhánh</label>
+                                        <input class="col-md-8 form-control" type="text" name="branch_name"
+                                               value="{{ $data->branch_name }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2"
+                                               for="organization_zone_name">organization_zone_name</label>
+                                        <input class="col-md-8 form-control" type="text" name="organization_zone_name"
+                                               value="{{ $data->organization_zone_name }}">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label class="col-md-2"
+                                               for="organization_branch_code">organization_branch_code</label>
+                                        <input class="col-md-8 form-control" type="text" name="organization_branch_code"
+                                               value="{{ $data->organization_branch_code }}">
+                                    </div>
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <ul>
-                                                <b>Note</b>: Nhập bé hơn {{ LIMIT_PHONE }} số cách nhau bằng dấu phẩy
-                                                (nếu như tải lên file exel, lưu số điện thoại theo 1 cột duy nhất
-                                                theo hàng dọc, tải file mẫu <a
-                                                    href="https://docs.google.com/spreadsheets/d/1ifAR0UwfdV03Sidcshjvwl1pn1YmYBD9/edit?usp=sharing&ouid=113322866597815571901&rtpof=true&sd=true"
-                                                    target="_blank"> <b> tại đây</b><a/>)
+                                                <b>Note</b>: Thông tin nhân viên cần độ chính xác cao, vui lòng xem kĩ trước khi update dữ liệu, mọi yêu cầu hỗ trợ khi gặp sự cố vui lòng liên hệ <a
+                                                    href="https://zalo.me/0354370175"
+                                                    target="_blank"> <b> zalo</b><a/>)
                                             </ul>
                                         </ol>
                                     </nav>
-                                </div>
-                                <div class="card-footer" style="text-align: center">
-                                    <button name="action" type="submit" value="check" class="btn btn-info">Check nhân
-                                        viên
-                                    </button>
-                                    <button name="action" type="submit" value="data" class="btn btn-info">GET DATA API
-                                    </button>
-                                    <button name="action" type="submit" value="db" class="btn btn-info">GET DATA
-                                        SYSTEM
-                                    </button>
-                                    <a href="/ftel-phone" type="button" class="btn btn-default">Cancel</a>
-                                </div>
-                                {!! Form::close() !!}
+                                    <div class="card-footer" style="text-align: center">
+                                        <button name="button" type="submit" class="btn btn-info">Update
+                                        </button>
+                                        <a href="{{ route('ftel_phone.index') }}" type="button"
+                                           class="btn btn-default">Cancel</a>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
         </section>
         <!-- /.content -->
-        @include('ftel-phone.export')
     </div>
     <!-- /.content-wrapper -->
     <style>
@@ -88,16 +150,4 @@
             font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
         }
     </style>
-    @push('scripts')
-        <script>
-            $(document).ready(function () {
-                changeFileFtelPhone();
-                datatableFtelPhoneExport();
-            });
-            $(document).on('pjax:complete', function () {
-                changeFileFtelPhone();
-                datatableFtelPhoneExport();
-            });
-        </script>
-    @endpush
 @endsection

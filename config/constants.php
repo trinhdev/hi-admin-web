@@ -1,5 +1,6 @@
 <?php
 define('ADMIN',1);
+define('DOISOAT',11);
 const LIMIT_PHONE = 100000;
 const EMAIL_FTEL_PHONE = 'trinhhdp@fpt.com.vn';
 $listRedisKey = [

@@ -9,6 +9,7 @@ use App\Services\HrService;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use App\Imports\FtelPhoneImport;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\MY_Controller;
@@ -30,7 +31,19 @@ class FtelPhoneController extends MY_Controller
 
     public function create()
     {
-        return view('ftel-phone.edit');
+        return view('ftel-phone.create');
+    }
+
+    public function edit($id)
+    {
+        $data = DB::table('employees')->find($id);
+        return view('ftel-phone.edit', compact('data'));
+    }
+
+    public function update(Request $request,$id) {
+        $this->addToLog($request);
+        $model = Employees::find($id)->update($request->except(['_token']));
+        return back()->with(['success'=>'Update thành công', 'html'=>'Update thành công']);
     }
 
     public function pushExport($info, $phone, $data): array
@@ -123,6 +136,7 @@ class FtelPhoneController extends MY_Controller
                 $employee = Employees::whereIn('phone', $arrPhone)->get()->toArray();
                 $employee = array_map(function($tag) {
                     return array(
+                        'id' => $tag['id'],
                         'code' => $tag['employee_code'],
                         'name' => $tag['name'],
                         'fullName' => $tag['full_name'],
