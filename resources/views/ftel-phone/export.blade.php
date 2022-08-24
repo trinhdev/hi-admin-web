@@ -79,7 +79,7 @@
                                     null
                                 @endif
                             </td>
-                            @if( Auth::user()->role_id == ADMIN)
+                            @if( Auth::user()->role_id == ADMIN || Auth::user()->role_id == DOISOAT)
                                 <td>
                                     <a href="{{ route('ftel_phone.edit', [$value['id']]) }}" class="btn btn-primary btn-sm">
                                         <i class="fas fa-edit"></i> Edit
