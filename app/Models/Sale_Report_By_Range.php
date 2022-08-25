@@ -15,6 +15,6 @@ class Sale_Report_By_Range extends Model
     public $timestamps = false;
     protected $table = 'sale_report_by_range';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'service','service_name','zone','branch_name','product_type','count','amount','date_created','date_string'];
+    protected $fillable = ['id', 'service','service_name','zone','branch_name','product_type','count','amount','date_created','date_string', 'list_emp_phone'];
 
 }
