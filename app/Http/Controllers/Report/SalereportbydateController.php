@@ -78,7 +78,9 @@ class SalereportbydateController extends MY_Controller
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
-                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time'")
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time',
+                                                GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', list_emp_phone, null)) AS 'count_employees_last_time',
+                                                GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', list_emp_phone, null)) AS 'count_employees_this_time'")
                                         ->whereNotIn('zone', ['FTELHO', 'PNCHO', 'TINHO', 'App Users'])
                                         ->whereIn('service', $services_filter)
                                         ->whereBetween('date_created', [$from1, $to2])
@@ -90,7 +92,9 @@ class SalereportbydateController extends MY_Controller
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
-                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time'")
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time',
+                                                GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', list_emp_phone, null)) AS 'count_employees_last_time',
+                                                GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', list_emp_phone, null)) AS 'count_employees_this_time'")
                                     ->whereIn('service', $services_filter)
                                     ->whereBetween('date_created', [$from1, $to2])
                                     ->groupBy(['service', 'zone', 'branch_name'])
@@ -101,14 +105,22 @@ class SalereportbydateController extends MY_Controller
                                     ->get()
                                     ->groupBy(['service'])
                                     ->toArray();    
-
+        // dd($data);
+        // print('<pre>');
+        // print_r($data);
+        // print('</pre>');
+        // var_dump($data['household'][1]['count_employees_this_time']);
+        // dd(array_unique(explode(',', $data['household'][1]['count_employees_this_time'])));
+        // dd('test');
         $total = Sale_Report_By_Range::selectRaw("service,
                                                 'Total' AS zone,
                                                 NULL AS branch_name,
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
-                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time'")
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time',
+                                                GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', list_emp_phone, null)) AS 'count_employees_last_time',
+                                                GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', list_emp_phone, null)) AS 'count_employees_this_time'")
                                         ->whereIn('service', $services_filter)
                                         ->whereBetween('date_created', [$from1, $to2])
                                         ->groupBy(['service'])

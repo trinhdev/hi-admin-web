@@ -13,15 +13,17 @@
                         <tr>
                             <th rowspan="2">Vùng</th>
                             <th rowspan="2">+/-</th>
-                            <th colspan="3">{{ $last_time }}</th>
-                            <th colspan="3">{{ $this_time }}</th>
+                            <th colspan="4">{{ $last_time }}</th>
+                            <th colspan="4">{{ $this_time }}</th>
                         </tr>
                         <tr>
-                            <th>Doanh thu</th>
+                            <th>Doanh số</th>
                             <th>Đơn hàng</th>
+                            <th>Nhân viên bán hàng</th>
                             <th>%</th>
-                            <th>Doanh thu</th>
+                            <th>Doanh số</th>
                             <th>Đơn hàng</th>
+                            <th>Nhân viên bán hàng</th>
                             <th>%</th>
                         </tr>
                         @php
@@ -47,9 +49,11 @@
                                     <td>{{ (!empty($value['amount_last_time'])) ? (round(($value['amount_this_time'] - $value['amount_last_time']) / $value['amount_last_time'], 4) * 100 . '%') : '100%' }}</td>
                                     <td>{{ number_format($value['amount_last_time']) }}</td>
                                     <td>{{ $value['count_last_time'] }}</td>
+                                    <td>{{ (!empty($value['count_employees_last_time'])) ? count(array_unique(explode(',', $value['count_employees_last_time']))) : 0 }}</td>
                                     <td>{{ (!empty($service[count($service) - 1]['amount_last_time'])) ? round(($value['amount_last_time'] / $service[count($service) - 1]['amount_last_time']), 4) * 100 : 0}}%</td>
                                     <td>{{ number_format($value['amount_this_time']) }}</td>
                                     <td>{{ $value['count_this_time'] }}</td>
+                                    <td>{{ (!empty($value['count_employees_this_time'])) ? count(array_unique(explode(',', $value['count_employees_this_time']))) : 0 }}</td>
                                     <td>{{ (!empty($service[count($service) - 1]['amount_this_time'])) ? round(($value['amount_this_time'] / $service[count($service) - 1]['amount_this_time']), 4) * 100 : 0}}%</td>
                                 </tr>
                         @endforeach
@@ -64,7 +68,7 @@
                             </tr>
                             <tr>
                                 <th>Loại sản phẩm</th>
-                                <th>Doanh thu</th>
+                                <th>Doanh số</th>
                                 <th>Đơn hàng</th>
                             </tr>
                             @if (!empty($productByService[$service[0]['service']]))
@@ -83,7 +87,7 @@
                     <table style="width: 100%; margin-top: 50px">
                         <tr>
                             <th></th>
-                            <th>Doanh thu</th>
+                            <th>Doanh số</th>
                             <th>Đơn hàng</th>
                         </tr>
                         <tr>
@@ -118,9 +122,9 @@
                 <table style="width: 100%">
                     <tr>
                         <th>Nhóm sản phẩm</th>
-                        <th>Doanh thu</th>
+                        <th>Doanh số</th>
                         <th>Đơn hàng</th>
-                        <th>% Theo doanh thu</th>
+                        <th>% Theo Doanh số</th>
                     </tr>
                     @foreach ($data_vietlott as $key => $value)
                         @if ($value['product_name'] == 'Total')
@@ -142,7 +146,7 @@
                 <table style="width: 100%; margin-top: 50px">
                     <tr>
                         <th></th>
-                        <th>Doanh thu</th>
+                        <th>Doanh số</th>
                         <th>Đơn hàng</th>
                     </tr>
                     <tr>
