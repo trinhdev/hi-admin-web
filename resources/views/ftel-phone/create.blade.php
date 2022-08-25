@@ -63,14 +63,13 @@
                                     </nav>
                                 </div>
                                 <div class="card-footer" style="text-align: center">
-                                    <button name="action" type="submit" value="check" class="btn btn-info">Check nhân
+                                    <button name="action" type="submit" value="data" class="btn btn-info">Lấy thông tin từ API
+                                    </button>
+                                    <button name="action" type="submit" value="db" class="btn btn-info">Lấy thông tin từ Database
+                                    </button>
+                                    {{--<button name="action" type="submit" value="check" class="btn btn-info">Check nhân
                                         viên
-                                    </button>
-                                    <button name="action" type="submit" value="data" class="btn btn-info">GET DATA API
-                                    </button>
-                                    <button name="action" type="submit" value="db" class="btn btn-info">GET DATA
-                                        SYSTEM
-                                    </button>
+                                    </button>--}}
                                     <a href="/ftel-phone" type="button" class="btn btn-default">Cancel</a>
                                 </div>
                                 {!! Form::close() !!}

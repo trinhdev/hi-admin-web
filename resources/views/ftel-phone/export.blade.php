@@ -32,15 +32,16 @@
                     <th>Ngày tạo</th>
                     <th>Ngày cập nhật</th>
                     <th>Cập nhật từ</th>
-                    <th>Nhân viên FPT</th>
+{{--                    <th>Nhân viên FPT</th>--}}
                     <th>Action</th>
                 </tr>
                 </thead>
                 @if(isset($data))
                     <tbody>
-                    @foreach($data as $key => $value)
+                    @foreach($data as $value)
                         @php
                             $codePath = explode('/', $value['organizationCodePath'] ?? null);
+                            $key = 0;
                         @endphp
                         <tr>
                             <td>{{ $key + 1 }}</td>
@@ -66,7 +67,7 @@
                             <td>{{ $value['created_at'] ?? null }}</td>
                             <td>{{ $value['updated_at'] ?? null }}</td>
                             <td>{{ $value['updated_from'] ?? null }}</td>
-                            <td>
+                            {{--<td>
                                 @if(!empty($value['check']))
                                     @if($value['check']==='TRUE')
                                         <div class="text-success text-bold">TRUE</div>
@@ -78,15 +79,15 @@
                                 @else
                                     null
                                 @endif
-                            </td>
-                            @if( Auth::user()->role_id == ADMIN || Auth::user()->role_id == DOISOAT)
+                            </td>--}}
+                            @if(isset($value['id']) && Auth::user()->role_id == ADMIN || Auth::user()->role_id == DOISOAT)
                                 <td>
                                     <a href="{{ route('ftel_phone.edit', [$value['id']]) }}" class="btn btn-primary btn-sm">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
                                 </td>
                             @else
-                                <td><button class=" btn btn-sm btn-primary">Edit</button></td>
+                                <td><button class=" btn btn-sm btn-primary" onclick="alert('Chức năng không hỗ trợ! Vui lòng lấy thông tin từ Database')">Edit</button></td>
                             @endif
                         </tr>
                     @endforeach
