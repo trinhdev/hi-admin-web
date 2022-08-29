@@ -80,8 +80,29 @@
                                     </tr>
                                 @endforeach
                             @endif
-                            
                         </table>
+
+                        @if(!in_array($service[0]['service'], ['hdi', 'gas']))
+                            <table style="width: 100%; margin-top: 50px">
+                                <tr>
+                                    <th colspan="3">{{ $this_time }}</th>
+                                </tr>
+                                <tr>
+                                    <th>Danh mục</th>
+                                    <th>Doanh số</th>
+                                    <th>Đơn hàng</th>
+                                </tr>
+                                @if (!empty($productByCategory[$service[0]['service']]))
+                                    @foreach (@$productByCategory[$service[0]['service']] as $product)
+                                        <tr>
+                                            <td>{{ (!empty($product['product_category'])) ? strtoupper($product['product_category']) : 'KHÁC' }}</td>
+                                            <td>{{ number_format($product['amount']) }}</td>
+                                            <td>{{ $product['count'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </table>
+                        @endif
                     @endif
                     
                     <table style="width: 100%; margin-top: 50px">
