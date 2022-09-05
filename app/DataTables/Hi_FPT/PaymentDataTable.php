@@ -31,11 +31,11 @@ class PaymentDataTable extends DataTable
             return [];
         }
         try {
-            $data = $model->get_transaction_by_phone($phone, $from, $to);
+            $data = $model->get_transaction_by_phone($phone, $from, $to)->data;
         } catch (\Exception $e) {
             return [];
         }
-        return collect($data->data);
+        return collect($data);
     }
 
     public function html()
