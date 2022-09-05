@@ -17,6 +17,7 @@ use App\Models\Laptop_Orders;
 use App\Models\Employees;
 use App\Models\Sale_Report_By_Range;
 use App\Models\Sale_Report_By_Range_Product;
+use App\Models\Sale_Report_By_Range_Product_Category;
 use App\Models\Vietlott_Orders;
 
 use DateTime;
@@ -172,15 +173,30 @@ class SalereportbydateController extends MY_Controller
                                                         ->whereIn('service', $services_filter)
                                                         ->whereBetween('created_at', [$from2, $to2])
                                                         ->groupBy(['service', 'product_type'])
+                                                        ->orderBy('amount', 'desc')
+                                                        // ->sortBy('count')
                                                         ->get()
+                                                        ->groupBy(['service'])
+                                                        
+                                                        ->toArray();
+                                        
+        $productByCategory = Sale_Report_By_Range_Product_Category::selectRaw('product_category, SUM(count) AS count, SUM(amount) AS amount, service')
+                                                        ->whereIn('service', $services_filter)
+                                                        ->whereBetween('created_at', [$from2, $to2])
+                                                        ->groupBy(['service', 'product_category'])
+                                                        ->orderBy('amount', 'desc')
+                                                        // ->sortBy('count')
+                                                        ->get()
+                                                        // ->sortBy('amount', 'desc')
+                                                        // ->sortBy('count')
                                                         ->groupBy(['service'])
                                                         ->toArray();
         
         if(!empty($request->is_ajax)) {
-            return view('report.reportsalebydatetable', ['data' => $data, 'productByService' => $productByService, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott])->render();
+            return view('report.reportsalebydatetable', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott])->render();
         }
         else {
-            return view('report.reportsalebydate', ['data' => $data, 'productByService' => $productByService, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
+            return view('report.reportsalebydate', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
         }
         
     }
