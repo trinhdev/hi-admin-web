@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\Contract\Hi_FPT\BannerManageInterface;
-use App\DataTables\Hi_FPT\BannerDataTable;
 use App\DataTables\Hi_FPT\BannerManageDataTable;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\BannerManageRequest\StoreRequest;

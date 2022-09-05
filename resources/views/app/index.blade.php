@@ -1,6 +1,7 @@
 @extends('layouts.default')
 @push('header')
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/chart.js/Chart.js"></script>
 @endpush
 @section('content')
 
@@ -39,16 +40,17 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
+                    <div class="col-md-12 container">
+                        <div class="col-md-12">
+                            <p class="text-center text-bold-500">BIỂU ĐỒ THỂ HIỆN SỐ LƯỢNG LOG</p>
+                            <canvas id="myChart" width="400" height="100"></canvas>
+                        </div>
+                        <div class="col-md-12">
+                            <div id="columnchart_top"></div>
+                        </div>
+                    </div>
                     <div class="container">
                         <div class="card-body row form-inline">
-                            <div class="col-md-12 row">
-                                <div class="col-md-6">
-                                    <div id="columnchart_values"></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div id="columnchart_top"></div>
-                                </div>
-                            </div>
                             <div class="col-md-3">
                                 <div class="input-group input-group-sm mb-4">
                                     <div class="input-group-prepend">
@@ -96,7 +98,8 @@
                                 </div>
                             </div>
                             <div class="filter-class">
-                                <button id="submit" class="btn btn-sm btn-primary mb-4">Filter</button>
+                                <button id="submit" class="btn btn-sm btn-primary mb-4">Filter table</button>
+                                <button id="filter_chart" class="btn btn-sm btn-primary mb-4">Filter chart</button>
                                 <button
                                     onclick='dialogConfirmWithAjax(exportApp, this, "Cảnh báo: Để hạn chế mất dữ liệu, hãy export tối đa 150.000 dòng, khuyến khích export theo dữ liệu ngày! Nếu cần xuất data lớn vui lòng liên hệ trinhhdp@fpt.com.vn")'
                                     id="export" class="btn btn-sm btn-primary mb-4">Export
@@ -138,70 +141,58 @@
             window.location.href = "/app/export?" + params;
         }
 
-        //chart
-        google.charts.load("current", {packages: ['corechart']});
-        google.charts.setOnLoadCallback(drawChartTop);
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ["Element", "Density", {role: "style"}],
-                    @forelse($data_day as $value)
-                ["{{$value->type}}", {{$value->count}}, "rgb(67, 116, 224)"],
-                    @empty
-                ["No data", 0, "rgb(67, 116, 224)"],
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const d = new Date();
+        let dateArr =[];
+        for (let i=6;i>=0;i--) {
+            let date = new Date(new Date().setDate(new Date().getDate()-i))
+            dateArr.push(date.toLocaleDateString().split('/',3).join('/'))
+        }
+        //example
+        const data = {
+            labels: dateArr,
+            datasets: [
+                @forelse($data_day['data'] as $value)
+                {
+                    {{--label: ['{!! date('m/d/Y', strtotime($value->date_action)) !!}'],--}}
+                    label: ['{!! $value->type !!}'],
+                    data: ["{!! $data_day['count'] !!}"],
+                    fill: false,
+                    borderColor: [
+                        'rgb(255,99,132)'
+                    ]
+                },
+                @empty
+                {
+                    label: ['# No result'],
+                    data: [12, 19, 3, 5, 2, 3],
+                    fill: false,
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)'
+                    ]
+                },
                 @endforelse
-            ]);
 
-            var view = new google.visualization.DataView(data);
-            view.setColumns([0, 1,
+            ]
+        };
+        let myChart = new Chart(ctx, {
+            type: 'line',
+            data: data
+        });
+
+        $('#submit').on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: "{!! route('app.chart') !!}",
+                dataType: "json",
+                success: function (result, textStatus, jqXHR)
                 {
-                    calc: "stringify",
-                    sourceColumn: 1,
-                    type: "string",
-                    role: "annotation"
-                },
-                2]);
-
-            var options = {
-                title: "Biểu đồ thể hiện số lượng log trong hôm nay",
-                width: 600,
-                height: 300,
-                bar: {groupWidth: "95%"},
-                legend: {position: "none"},
-            };
-            var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
-            chart.draw(view, options);
-        }
-
-        function drawChartTop() {
-            var data = google.visualization.arrayToDataTable([
-                ["Element", "Density", {role: "style"}],
-                    @foreach($data_month as $value)
-                ["{{$value->type}}", {{$value->count}}, "rgb(67, 116, 224)"],
-                @endforeach
-            ]);
-
-            var view = new google.visualization.DataView(data);
-            view.setColumns([0, 1,
-                {
-                    calc: "stringify",
-                    sourceColumn: 1,
-                    type: "string",
-                    role: "annotation"
-                },
-                2]);
-
-            var options = {
-                title: "Biểu đồ thể hiện lưu lượng log trong vòng một tháng",
-                width: 600,
-                height: 300,
-                bar: {groupWidth: "95%"},
-                legend: {position: "none"},
-            };
-            var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_top"));
-            chart.draw(view, options);
-        }
+                    console.log(result);
+                    myChart.data = result;
+                    myChart.update();
+                }
+            });
+        });
 
     </script>
 

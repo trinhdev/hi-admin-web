@@ -5,8 +5,6 @@ namespace App\DataTables\Hi_FPT;
 use App\Models\AppLog;
 use Carbon\Carbon;
 use Yajra\DataTables\Services\DataTable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class AppDataTable extends DataTable
 {
@@ -14,26 +12,30 @@ class AppDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->filter(function ($query) {
+                if (request()->has('public_date_start') && request()->has('public_date_end')) {
+                    $publicDateStart = request('public_date_start') ? Carbon::parse(request('public_date_start'))->format('Y-m-d H:i:s'): null;
+                    $publicDateEnd = request('public_date_end') ? Carbon::parse(request('public_date_end'))->format('Y-m-d H:i:s'): null;
+                    $query->whereBetween('date_action', [$publicDateStart,$publicDateEnd]);
+                }  $query->groupBy(['phone','type'])->distinct();
+            }, true)
+            ->filter(function ($query) {
+                if (request()->has('type')) {
+                    $query->where('type', request('type'));
+                }
+            }, true)
+//            ->filter(function ($query) {
+//                if (request()->filter_duplicate =='yes') {
+//                    \DB::statement("SET SQL_MODE=''");
+//                    $query->groupBy(['phone','type'])->distinct();
+//                }
+//            }, true)
             ;
     }
 
     public function query(AppLog $model)
     {
-        $model = $model->select(['id','type','phone','url','date_action']);
-        $type = $this->type ?? null;
-        $publicDateStart = $this->public_date_start ? Carbon::parse($this->public_date_start)->format('Y-m-d H:i:s'): null;
-        $publicDateEnd = $this->public_date_end ? Carbon::parse($this->public_date_end)->format('Y-m-d H:i:s'): null;
-        if(!empty($type)) {
-            $model->where('type', $type);
-        }
-        if(!empty($publicDateEnd) && !empty($publicDateStart)) {
-            $model->whereBetween('date_action', [$publicDateStart, $publicDateEnd]);
-        }
-        if($this->filter_duplicate=='yes') {
-            \DB::statement("SET SQL_MODE=''");
-            $model->groupBy(['phone','type'])->distinct();
-        }
-        return $model;
+        return $model->newQuery();
     }
 
     public function html()

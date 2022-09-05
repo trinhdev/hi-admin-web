@@ -18,19 +18,19 @@ class PaymentDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables()
-            ->collection($query)
-            ->addIndexColumn();
+            ->collection($query);
     }
 
     public function query(PaymentService $model)
     {
         $phone = $this->phone ?? null;
-        $from = $this->from ? Carbon::parse($this->from)->format('Y-m-d H:i:s'): null;;
-        $to = $this->to ? Carbon::parse($this->to)->format('Y-m-d H:i:s'): null;;
-        if(empty($phone && $from && $to)) {
+        $from = $this->from ? Carbon::parse($this->from)->format('Y-m-d H:i:s'): null;
+        $to = $this->to ? Carbon::parse($this->to)->format('Y-m-d H:i:s'): null;
+        $data = $model->get_transaction_by_phone($phone, $from, $to);
+        if(empty($phone && $from && $to && $data)) {
             return [];
         }
-        return collect($model->get_transaction_by_phone($phone, $from, $to)->data);
+        return collect($data->data);
     }
 
     public function html()

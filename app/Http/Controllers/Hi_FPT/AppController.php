@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\Models\AppLog;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use App\DataTables\Hi_FPT\AppDataTable;
@@ -22,11 +23,22 @@ class AppController extends MY_Controller
     }
 
     public function index(AppDataTable $dataTable, Request $request){
-        $type = AppLog::select('type')->distinct()->get()->toArray();
-        $data_db = DB::table('app_log')
-                            ->select('type', DB::raw('COUNT(id) as count'));
-        $data_month = $data_db->groupBy('type')->get()->toArray();
-        $data_day = $data_db->where('date_action', '>', now()->startOfDay())->groupBy('type')->get()->toArray();
+        $data = [];
+        $type = AppLog::select('type')
+            ->distinct()
+            ->get()
+            ->toArray();
+        $data_day = DB::table('app_log')
+            ->select('type','action_name','date_action', DB::raw('COUNT(id) as count'))
+            ->whereBetween('date_action', [now()->subDay(7), now()])
+            ->groupBy('type')
+            ->get()
+            ->toArray();
+        foreach ($data_day as $value) {
+            $data['count'][] = $value->count;
+        }
+        $data['count'] = implode('","', $data['count']);
+        $data['data'] = $data_day;
         return $dataTable
             ->with([
                 'filter_duplicate' => $request->filter_duplicate,
@@ -34,7 +46,28 @@ class AppController extends MY_Controller
                 'public_date_end' => $request->public_date_end,
                 'type' => $request->type
             ])
-            ->render('app.index', ['type' => $type, 'filter' => $dataTable->recordsFiltered, 'data_month' => $data_month, 'data_day'=>$data_day]);
+            ->render('app.index', ['type' => $type, 'filter' => $dataTable->recordsFiltered, 'data_day'=>$data ]);
+    }
+
+    public function chart(Request $request){
+        $type = AppLog::select('type')
+            ->distinct()
+            ->get()
+            ->toArray();
+        if ($request->has('public_date_start') && $request->has('public_date_end')) {
+            $data_day = DB::table('app_log')
+                ->select('type','action_name','date_action', DB::raw('COUNT(id) as count'))
+                ->whereBetween('date_action', [$request->public_date_start ?? now()->subDay(1),$request->public_date_end??now()])
+                ->groupBy(DB::raw('Date(date_action)'))
+                ->get()
+                ->toArray();
+        }
+        foreach ($data_day as $value) {
+            $data['count'][] = $value->count;
+        }
+        $data['count'] = implode('","', $data['count']);
+        $data['data'] = $data_day;
+        return response()->json(['type' => $type, 'data_day'=>$data_day]);
     }
 
     public function export(Request $request)

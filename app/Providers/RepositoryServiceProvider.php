@@ -17,6 +17,9 @@ use App\Repository\Hi_FPT\ResetPasswordWrongRepository;
 use App\Contract\Hi_FPT\FtelPhoneInterface;
 use App\Repository\Hi_FPT\FtelPhoneRepository;
 
+use App\Contract\Hi_FPT\SectionLogInterface;
+use App\Repository\Hi_FPT\SectionLogRepository;
+
 use Illuminate\Support\ServiceProvider;
 // Auto Generate
 
@@ -39,6 +42,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(BannerManageInterface::class, BannerManageRepository::class);
         $this->app->bind(ResetPasswordWrongInterface::class, ResetPasswordWrongRepository::class);
         $this->app->bind(FtelPhoneInterface::class, FtelPhoneRepository::class);
+        $this->app->bind(SectionLogInterface::class, SectionLogRepository::class);
     }
 
 }
