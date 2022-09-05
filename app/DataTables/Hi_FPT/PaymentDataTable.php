@@ -26,8 +26,13 @@ class PaymentDataTable extends DataTable
         $phone = $this->phone ?? null;
         $from = $this->from ? Carbon::parse($this->from)->format('Y-m-d H:i:s'): null;
         $to = $this->to ? Carbon::parse($this->to)->format('Y-m-d H:i:s'): null;
-        $data = $model->get_transaction_by_phone($phone, $from, $to);
-        if(empty($phone && $from && $to && $data)) {
+
+        if(empty($phone && $from && $to)) {
+            return [];
+        }
+        try {
+            $data = $model->get_transaction_by_phone($phone, $from, $to);
+        } catch (\Exception $e) {
             return [];
         }
         return collect($data->data);
