@@ -50,11 +50,12 @@
                                 <div id="columnchart_day"></div>
                             </div>
                             <div class="col-md-6">
-                                <div id="columnchart_month_current"></div>
-                            </div>
-                            <div class="col-md-6">
                                 <div id="columnchart_month"></div>
                             </div>
+                            <div class="col-md-6">
+                                <div id="columnchart_month_current"></div>
+                            </div>
+
                             <div class="col-md-6">
                                 <div id="columnchart_total"></div>
                             </div>
@@ -181,7 +182,7 @@
                 2]);
 
             var options = {
-                title: "Biểu đồ thể hiện số lượng log trong hôm nay ngày {{date("d/m/Y")}}",
+                title: "Biểu đồ thể hiện số lượt truy cập các màn hình trong ngày {{date("d/m/Y")}}",
                 width: 800,
                 height: 300,
                 bar: {groupWidth: "95%"},
@@ -195,7 +196,7 @@
             var data = google.visualization.arrayToDataTable([
                 ["Element", "Density", {role: "style"}],
                     @foreach($data_month as $value)
-                ["{{$value->type}}", {{$value->count}}, "rgb(67, 216, 224)"],
+                ["{{$value->type}}", {{$value->count}}, "rgb(67, 116, 224)"],
                 @endforeach
             ]);
 
@@ -210,7 +211,7 @@
                 2]);
 
             var options = {
-                title: "Biểu đồ thể hiện lưu lượng log trong một tháng gần nhất",
+                title: "Biểu đồ thể hiện lưu lượng log trong 30 ngày gần nhất",
                 width: 800,
                 height: 300,
                 bar: {groupWidth: "95%"},
@@ -239,7 +240,7 @@
                 2]);
 
             var options = {
-                title: "Biểu đồ thể hiện tổng tất cả lưu lượng log hiện có",
+                title: "Biểu đồ thể hiện số lượng user truy cập app trong 30 ngày gần nhất ",
                 width: 800,
                 height: 300,
                 bar: {groupWidth: "95%"},
@@ -253,7 +254,7 @@
             var data = google.visualization.arrayToDataTable([
                 ["Element", "Density", {role: "style"}],
                     @foreach($data_month_current as $value)
-                ["{{$value->type}}", {{$value->count}}, "rgb(67, 116, 224)"],
+                ["{{$value->type}}", {{$value->count}}, "rgb(67, 216, 224)"],
                 @endforeach
             ]);
 
@@ -268,7 +269,7 @@
                 2]);
 
             var options = {
-                title: "Biểu đồ thể hiện lưu lượng log trong tháng {{date("m/Y")}}",
+                title: "Biểu đồ thể hiện số lượng user truy cập vào app trong ngày {{date("d/m/Y")}}",
                 width: 800,
                 height: 300,
                 bar: {groupWidth: "95%"},

@@ -28,10 +28,14 @@ class AppController extends MY_Controller
             ->distinct()
             ->get()
             ->toArray();
-        $data_total = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))->groupBy('type')->get()->toArray();
-        $data_day = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))->whereBetween('date_action', [now()->subDay(1),now()])->groupBy('type')->get()->toArray();
-        $data_month = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))->whereBetween('date_action', [now()->subDay(30),now()])->groupBy('type')->get()->toArray();
-        $data_month_current = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))->whereBetween('date_action', [now()->firstOfMonth(),now()])->groupBy('type')->get()->toArray();
+        $data_day = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))
+            ->whereBetween('date_action', [now()->subDay(1),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
+        $data_month = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))
+            ->whereBetween('date_action', [now()->subDay(30),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
+        $data_month_user = DB::table('app_log')->select('type', DB::raw('COUNT(DISTINCT phone) as count'))
+            ->whereBetween('date_action', [now()->subDay(30),now()])->groupBy('type')->distinct()->orderByDesc('count')->get()->toArray();
+        $data_day_user = DB::table('app_log')->select('type', DB::raw('COUNT(DISTINCT phone) as count'))
+            ->whereBetween('date_action', [now()->subDay(1),now()])->groupBy('type')->distinct()->orderByDesc('count')->get()->toArray();
         return $dataTable
             ->with([
                 'filter_duplicate' => $request->filter_duplicate,
@@ -44,8 +48,8 @@ class AppController extends MY_Controller
                 'filter'        => $dataTable->recordsFiltered,
                 'data_day'      =>$data_day,
                 'data_month'    => $data_month,
-                'data_total'    => $data_total,
-                'data_month_current'=>$data_month_current
+                'data_total'    => $data_month_user,
+                'data_month_current'=>$data_day_user
             ]);
     }
 
