@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use App\DataTables\Hi_FPT\AppDataTable;
 use App\Http\Controllers\MY_Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Rap2hpoutre\FastExcel\SheetCollection;
 use Rap2hpoutre\FastExcel\FastExcel;
@@ -27,12 +28,10 @@ class AppController extends MY_Controller
             ->distinct()
             ->get()
             ->toArray();
-        $data_db = DB::table('app_log')
-            ->select('type', DB::raw('COUNT(id) as count'));
-        $data_total = $data_db->groupBy('type')->get()->toArray();
-        $data_day = $data_db->where('date_action', '>=', now()->startOfDay())->groupBy('type')->get()->toArray();
-        $data_month = $data_db->where('date_action', '>=', now()->subDay(30))->groupBy('type')->get()->toArray();
-        $data_month_current = $data_db->where('date_action', '>=', now()->firstOfMonth())->groupBy('type')->get()->toArray();
+        $data_total = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))->groupBy('type')->get()->toArray();
+        $data_day = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))->whereBetween('date_action', [now()->subDay(1),now()])->groupBy('type')->get()->toArray();
+        $data_month = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))->whereBetween('date_action', [now()->subDay(30),now()])->groupBy('type')->get()->toArray();
+        $data_month_current = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))->whereBetween('date_action', [now()->firstOfMonth(),now()])->groupBy('type')->get()->toArray();
         return $dataTable
             ->with([
                 'filter_duplicate' => $request->filter_duplicate,
