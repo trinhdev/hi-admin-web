@@ -23,22 +23,16 @@ class AppController extends MY_Controller
     }
 
     public function index(AppDataTable $dataTable, Request $request){
-        $data = [];
         $type = AppLog::select('type')
             ->distinct()
             ->get()
             ->toArray();
-        $data_day = DB::table('app_log')
-            ->select('type','action_name','date_action', DB::raw('COUNT(id) as count'))
-            ->whereBetween('date_action', [now()->subDay(7), now()])
-            ->groupBy('type')
-            ->get()
-            ->toArray();
-        foreach ($data_day as $value) {
-            $data['count'][] = $value->count;
-        }
-        $data['count'] = implode('","', $data['count']);
-        $data['data'] = $data_day;
+        $data_db = DB::table('app_log')
+            ->select('type', DB::raw('COUNT(id) as count'));
+        $data_total = $data_db->groupBy('type')->get()->toArray();
+        $data_day = $data_db->where('date_action', '>=', now()->startOfDay())->groupBy('type')->get()->toArray();
+        $data_month = $data_db->where('date_action', '>=', now()->subDay(30))->groupBy('type')->get()->toArray();
+        $data_month_current = $data_db->where('date_action', '>=', now()->firstOfMonth())->groupBy('type')->get()->toArray();
         return $dataTable
             ->with([
                 'filter_duplicate' => $request->filter_duplicate,
@@ -46,7 +40,14 @@ class AppController extends MY_Controller
                 'public_date_end' => $request->public_date_end,
                 'type' => $request->type
             ])
-            ->render('app.index', ['type' => $type, 'filter' => $dataTable->recordsFiltered, 'data_day'=>$data ]);
+            ->render('app.index', [
+                'type'          => $type,
+                'filter'        => $dataTable->recordsFiltered,
+                'data_day'      =>$data_day,
+                'data_month'    => $data_month,
+                'data_total'    => $data_total,
+                'data_month_current'=>$data_month_current
+            ]);
     }
 
     public function chart(Request $request){
