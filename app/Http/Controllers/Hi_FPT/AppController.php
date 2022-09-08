@@ -29,7 +29,7 @@ class AppController extends MY_Controller
             ->get()
             ->toArray();
         $data_day = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))
-            ->whereBetween('date_action', [now()->subDay(1),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
+            ->whereBetween('date_action', [now()->startOfDay(),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
         $data_month = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))
             ->whereBetween('date_action', [now()->subDay(30),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
         $data_month_user = DB::table('app_log')->select('type', DB::raw('COUNT(DISTINCT phone) as count'))
