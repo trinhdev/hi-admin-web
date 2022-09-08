@@ -35,7 +35,7 @@ class AppController extends MY_Controller
         $data_month_user = DB::table('app_log')->select('type', DB::raw('COUNT(DISTINCT phone) as count'))
             ->whereBetween('date_action', [now()->subDay(30),now()])->groupBy('type')->distinct()->orderByDesc('count')->get()->toArray();
         $data_day_user = DB::table('app_log')->select('type', DB::raw('COUNT(DISTINCT phone) as count'))
-            ->whereBetween('date_action', [now()->subDay(1),now()])->groupBy('type')->distinct()->orderByDesc('count')->get()->toArray();
+            ->whereBetween('date_action', [now()->startOfDay(),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
         return $dataTable
             ->with([
                 'filter_duplicate' => $request->filter_duplicate,
