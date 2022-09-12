@@ -53,25 +53,38 @@ class AppController extends MY_Controller
             ]);
     }
 
+    public function datatables(AppDataTable $dataTable, Request $request){
+        return $dataTable
+            ->with([
+                'filter_duplicate' => $request->filter_duplicate,
+                'public_date_start' => $request->public_date_start,
+                'public_date_end' => $request->public_date_end,
+                'type' => $request->type
+            ])
+            ->render('app.index');
+    }
+
     public function chart(Request $request){
         $type = AppLog::select('type')
             ->distinct()
             ->get()
             ->toArray();
-        if ($request->has('public_date_start') && $request->has('public_date_end')) {
-            $data_day = DB::table('app_log')
-                ->select('type','action_name','date_action', DB::raw('COUNT(id) as count'))
-                ->whereBetween('date_action', [$request->public_date_start ?? now()->subDay(1),$request->public_date_end??now()])
-                ->groupBy(DB::raw('Date(date_action)'))
-                ->get()
-                ->toArray();
-        }
-        foreach ($data_day as $value) {
-            $data['count'][] = $value->count;
-        }
-        $data['count'] = implode('","', $data['count']);
-        $data['data'] = $data_day;
-        return response()->json(['type' => $type, 'data_day'=>$data_day]);
+        $data_day = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))
+            ->whereBetween('date_action', [now()->startOfDay(),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
+        $data_month = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))
+            ->whereBetween('date_action', [now()->subDay(30),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
+        $data_month_user = DB::table('app_log')->select('type', DB::raw('COUNT(DISTINCT phone) as count'))
+            ->whereBetween('date_action', [now()->subDay(30),now()])->groupBy('type')->distinct()->orderByDesc('count')->get()->toArray();
+        $data_day_user = DB::table('app_log')->select('type', DB::raw('COUNT(DISTINCT phone) as count'))
+            ->whereBetween('date_action', [now()->startOfDay(),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
+        return view('app.chart',[
+            'type'          => $type,
+            'data_day'      =>$data_day,
+            'data_month'    => $data_month,
+            'data_total'    => $data_month_user,
+            'data_month_current'=>$data_day_user
+        ]);
+
     }
 
     public function export(Request $request)
