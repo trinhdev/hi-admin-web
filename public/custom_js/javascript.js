@@ -212,3 +212,148 @@ function getDate() {
         (month<10 ? '0' : '') + month + '-' +
         (day<10 ? '0' : '') + day;
 }
+
+/**
+ * Source: http://stackoverflow.com/a/33841999/1402846
+ *
+ * This function is (almost) equivalent to array_column() in PHP (http://php.net/manual/function.array-column.php).
+ *
+ * Differences between this function and PHP's array_column():
+ * <ul>
+ *     <li>If <code>indexKey</code> is not found in an element of the input array, the behaviour of this function is undefined.
+ *     In PHP's array_column(), the element will be put into the end of the array. It is possible in PHP because PHP does not
+ *     distinguish between arrays and dictionaries, but it is not possible in JavaScript because Arrays and Objects are different.
+ *
+ *     <li>Associative arrays (dictionaries) in PHP are ordered, JavaScript objects are not (http://stackoverflow.com/a/5525820/14028460.
+ *     Do not make assumptions on the ordering of the keys in JavaScript objects.
+ *
+ *     <li>If the value of an element at <code>inputKey</code> is not a string, the result of this function and the PHP function
+ *     doesn't make much sense. For example, in PHP,
+ *     <code>
+ *          $records = array(
+ *              array('id' => true, 'last_name' => 'Doe')
+ *          );
+ *          array_column($records, 'last_name', 'id');
+ *     </code>
+ *     gives <code>Array([1] => Doe)</code>, or maybe <code>Array([0] => Doe)</code> due to a bug ({@link https://bugs.php.net/bug.php?id=68553}). But, in JavaScript,
+ *     <code>
+ *          var records = [
+ *              {id: true, last_name: 'Doe'},
+ *          ];
+ *          arrayColumn(records, 'last_name', 'id');
+ *     </code>
+ *     gives <code>{true: "Doe"}</code>. Therefore, it is strongly advised to make sure that the value at <code>indexKey</code> of
+ *     each input element is a string.
+ * </ul>
+ *
+ * @param {Array|Object} inputArray             The input array, it must either contain objects only or arrays only.
+ *                                              If it is an object instead of an array, it would be converted to an array first.
+ * @param {int|string|null} columnKey           If the input array contains objects, this parameter is the key in each object.
+ *                                              If the input array contains arrays, this parameter is the index in each array.
+ *                                              If the key or index is not valid, this element is skipped.
+ *                                              This parameter may also be <code>null</code>.
+ * @param {int|string|null} [indexKey=null]     If the input array contains objects, this parameter must be a valid key in each object.
+ *                                              If the input array contains arrays, this parameter must be a valid index in each array.
+ *                                              If it is not a valid key or index, the behaviour is undefined.
+ *                                              This parameter may also be <code>null</code>.
+ * @returns {Array|Object}                      If <code>indexKey</code> is <code>null</code>, this function returns an array which is parallel
+ *                                              to the input array. For each element <code>elem</code> in the input array, the element in the
+ *                                              output array would be <code>elem[columnKey]</code>, or just <code>elem</code> if <code>columnKey</code>
+ *                                              is <code>null</code>.
+ *                                              If <code>indexKey</code> is <b>not</b> <code>null</code>, this function returns an object.
+ *                                              For each element <code>elem</code> in the input array, the output object would contain an
+ *                                              element <code>elem[columnKey]</code>, or just <code>elem</code> if <code>columnKey</code>
+ *                                              is <code>null</code>, at the key <code>elem[indexKey]</code>. If the value of <code>elem[indexKey]</code>
+ *                                              of some elements in the input array are duplicated, the element in the return object would
+ *                                              correspond to the element nearest to the end of the input array.
+ * @example
+ * var records = [
+ *      {id: 2135, first_name: 'John',  last_name: 'Doe'},
+ *      {id: 3245, first_name: 'Sally', last_name: 'Smith'},
+ *      {id: 5342, first_name: 'Jane',  last_name: 'Jones'},
+ *      {id: 5623, first_name: 'Peter', last_name: 'Doe'}
+ * ];
+ * var first_names = arrayColumn(records, 'first_name');
+ * >> ["John", "Sally", "Jane", "Peter"]
+ * var last_names = arrayColumn(records, 'last_name', 'id');
+ * >> {2135: "Doe", 3245: "Smith", 5342: "Jones", 5623: "Doe"}
+ * var persons = arrayColumn(records, null, 'id');
+ * >> {
+ *      2135: {id: 2135, first_name: 'John',  last_name: 'Doe'},
+ *      3245: {id: 3245, first_name: 'Sally', last_name: 'Smith'},
+ *      5342: {id: 5342, first_name: 'Jane',  last_name: 'Jones'},
+ *      5623: {id: 5623, first_name: 'Peter', last_name: 'Doe'}
+ *    }
+ */
+ function arrayColumn(inputArray, columnKey, indexKey)
+ {
+     function isArray(inputValue)
+     {
+         return Object.prototype.toString.call(inputValue) === '[object Array]';
+     }
+ 
+     // If input array is an object instead of an array,
+     // convert it to an array.
+     if(!isArray(inputArray))
+     {
+         var newArray = [];
+         for(var key in inputArray)
+         {
+             if(!inputArray.hasOwnProperty(key))
+             {
+                 continue;
+             }
+             newArray.push(inputArray[key]);
+         }
+         inputArray = newArray;
+     }
+ 
+     // Process the input array.
+     var isReturnArray = (typeof indexKey === 'undefined' || indexKey === null);
+     var outputArray = [];
+     var outputObject = {};
+     for(var inputIndex = 0; inputIndex < inputArray.length; inputIndex++)
+     {
+         var inputElement = inputArray[inputIndex];
+ 
+         var outputElement;
+         if(columnKey === null)
+         {
+             outputElement = inputElement;
+         }
+         else
+         {
+             if(isArray(inputElement))
+             {
+                 if(columnKey < 0 || columnKey >= inputElement.length)
+                 {
+                     continue;
+                 }
+             }
+             else
+             {
+                 if(!inputElement.hasOwnProperty(columnKey))
+                 {
+                     continue;
+                 }
+             }
+ 
+             outputElement = inputElement[columnKey];
+         }
+ 
+         if(isReturnArray)
+         {
+             outputArray.push(outputElement);
+         }
+         else
+         {
+             outputObject[inputElement[indexKey]] = outputElement;
+         }
+     }
+ 
+     return (isReturnArray ? outputArray : outputObject);
+ }
+
+function randomColor() {
+    return Math.floor(Math.random()*16777215).toString(16);
+}

@@ -7,8 +7,21 @@
             </div>
             {{-- <h4 class="card-title">HDI</h4> --}}
             <div class="card-body row">
+                @if (!empty($productByService[$service[0]['service']]))
+                <div class="col-sm-6" id="wrap-sale-report-by-product-{{ $service[0]['service'] }}">
+                    <canvas id="sale-report-by-product-{{ $service[0]['service'] }}"></canvas>
+                    <div style="text-align: center" id="legend-container-{{ $service[0]['service'] }}"></div>
+                </div>
+                @endif
+                @if(!empty($productByCategory[$service[0]['service']]))
+                <div class="col-sm-6" id="wrap-sale-report-by-category-{{ $service[0]['service'] }}">
+                    <canvas id="sale-report-by-category-{{ $service[0]['service'] }}"></canvas>
+                    <div style="text-align: center" id="legend-container-category-{{ $service[0]['service'] }}"></div>
+                </div>
+                @endif
+                
                 {{-- {{ $ict->table([], true) }} --}}
-                <div class="col-sm-8">
+                <div class="col-sm-8">  
                     <table style="width: 100%">
                         <tr>
                             <th rowspan="2">Vùng</th>

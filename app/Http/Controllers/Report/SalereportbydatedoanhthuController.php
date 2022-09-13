@@ -15,14 +15,14 @@ use App\Models\Settings;
 use App\Models\Hdi_Orders;
 use App\Models\Laptop_Orders;
 use App\Models\Employees;
-use App\Models\Sale_Report_By_Range;
-use App\Models\Sale_Report_By_Range_Product;
-use App\Models\Sale_Report_By_Range_Product_Category;
+use App\Models\Sale_Report_By_Range_Doanh_Thu;
+use App\Models\Sale_Report_By_Range_Product_Doanh_Thu;
+use App\Models\Sale_Report_By_Range_Product_Category_Doanh_Thu;
 use App\Models\Vietlott_Orders;
 
 use DateTime;
 
-class SalereportbydateController extends MY_Controller
+class SalereportbydatedoanhthuController extends MY_Controller
 {
     //
     use DataTrait;
@@ -74,7 +74,7 @@ class SalereportbydateController extends MY_Controller
             $to1 = date('Y-m-d 23:59:59', strtotime($to1));
         }
 
-        $query1 = Sale_Report_By_Range::selectRaw("service,
+        $query1 = Sale_Report_By_Range_Doanh_Thu::selectRaw("service,
                                                 zone,
                                                 NULL AS branch_name,
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
@@ -88,7 +88,7 @@ class SalereportbydateController extends MY_Controller
                                         ->whereBetween('date_created', [$from1, $to2])
                                         ->groupBy(['service', 'zone']);
 
-        $data = Sale_Report_By_Range::selectRaw("service,
+        $data = Sale_Report_By_Range_Doanh_Thu::selectRaw("service,
                                                 zone,
                                                 branch_name,
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
@@ -114,7 +114,7 @@ class SalereportbydateController extends MY_Controller
         // var_dump($data['household'][1]['count_employees_this_time']);
         // dd(array_unique(explode(',', $data['household'][1]['count_employees_this_time'])));
         // dd('test');
-        $total = Sale_Report_By_Range::selectRaw("service,
+        $total = Sale_Report_By_Range_Doanh_Thu::selectRaw("service,
                                                 'Total' AS zone,
                                                 NULL AS branch_name,
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
@@ -134,7 +134,7 @@ class SalereportbydateController extends MY_Controller
         }
 
         // count by product type
-        $data_product = Sale_Report_By_Range::selectRaw("service,
+        $data_product = Sale_Report_By_Range_Doanh_Thu::selectRaw("service,
                                                     SUM(count) AS 'count_this_time', 
                                                     SUM(amount) AS 'amount_this_time'")
                                             ->whereIn('service', $services_filter)
@@ -170,7 +170,7 @@ class SalereportbydateController extends MY_Controller
         }
         // dd();
         
-        $productByService = Sale_Report_By_Range_Product::selectRaw('product_type, SUM(count) AS count, SUM(amount) AS amount, service')
+        $productByService = Sale_Report_By_Range_Product_Doanh_Thu::selectRaw('product_type, SUM(count) AS count, SUM(amount) AS amount, service')
                                                         ->whereIn('service', $services_filter)
                                                         ->whereBetween('created_at', [$from2, $to2])
                                                         ->groupBy(['service', 'product_type'])
@@ -181,7 +181,7 @@ class SalereportbydateController extends MY_Controller
                                                         
                                                         ->toArray();
                                         
-        $productByCategory = Sale_Report_By_Range_Product_Category::selectRaw('product_category, SUM(count) AS count, SUM(amount) AS amount, service')
+        $productByCategory = Sale_Report_By_Range_Product_Category_Doanh_Thu::selectRaw('product_category, SUM(count) AS count, SUM(amount) AS amount, service')
                                                         ->whereIn('service', $services_filter)
                                                         ->whereBetween('created_at', [$from2, $to2])
                                                         ->groupBy(['service', 'product_category'])
@@ -201,6 +201,6 @@ class SalereportbydateController extends MY_Controller
         // else {
         //     return view('report.reportsalebydate', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
         // }
-        return view('report.reportsalebydate', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
+        return view('report.reportsalebydatedoanhthu', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
     }
 }
