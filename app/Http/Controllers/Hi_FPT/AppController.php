@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use App\DataTables\Hi_FPT\AppDataTable;
 use App\Http\Controllers\MY_Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Rap2hpoutre\FastExcel\SheetCollection;
@@ -69,19 +70,31 @@ class AppController extends MY_Controller
             ->distinct()
             ->get()
             ->toArray();
+        $data_month_user = [];
         $data_day = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))
             ->whereBetween('date_action', [now()->startOfDay(),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
         $data_month = DB::table('app_log')->select('type', DB::raw('COUNT(*) as count'))
             ->whereBetween('date_action', [now()->subDay(30),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
-        $data_month_user = DB::table('app_log')->select('type', DB::raw('COUNT(DISTINCT phone) as count'))
-            ->whereBetween('date_action', [now()->subDay(30),now()])->groupBy('type')->distinct()->orderByDesc('count')->get()->toArray();
+        $data_month_user_current = DB::table('app_log')
+            ->select(DB::raw('COUNT(DISTINCT phone) as count'))
+            ->whereBetween('date_action', [now()->subDay(30),now()])
+            ->where('type','=', '1_home' )
+            ->get()->toArray();
+        $data_month_user_before = DB::table('app_log')
+            ->select(DB::raw('COUNT(DISTINCT phone) as count'))
+            ->whereBetween('date_action', [now()->subDay(60),now()->subDay(30)])
+            ->where('type','=', '1_home' )
+            ->get()->toArray();
+        $data_month_user_current[0]->type = 'MAU 30 ngày gần nhất';
+        $data_month_user_before[0]->type = 'MAU từ '.now()->subDay(60)->toDateString().' đến '.now()->subDay(30)->toDateString();
+        $data_month_user_current[]= $data_month_user_before;
         $data_day_user = DB::table('app_log')->select('type', DB::raw('COUNT(DISTINCT phone) as count'))
             ->whereBetween('date_action', [now()->startOfDay(),now()])->groupBy('type')->orderByDesc('count')->get()->toArray();
         return view('app.chart',[
             'type'          => $type,
             'data_day'      =>$data_day,
             'data_month'    => $data_month,
-            'data_total'    => $data_month_user,
+            'data_total'    => Arr::flatten($data_month_user_current),
             'data_month_current'=>$data_day_user
         ]);
 
