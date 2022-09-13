@@ -26,8 +26,8 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <div class="card-body row form-inline filter-section justify-content-md-center">
-                <form action="{{ route('reportsalebydate.index') }}" method="GET">
+            <div class="card-body filter-section justify-content-md-center">
+                <form class="row form-inline" action="{{ route('reportsalebydatedoanhthu.index') }}" method="GET">
                     @csrf
                     <div class="col-md-3">
                         <div class="input-group input-group-sm mb-4">

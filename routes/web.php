@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Hi_FPT\FtelPhoneController;
 use App\Http\Controllers\Hi_FPT\PaymentController;
 use App\Http\Controllers\Hi_FPT\AirDirectionController;
+use App\Http\Controllers\Hi_FPT\UpdateEmployeesFromExcelFileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -266,7 +267,7 @@ Route::group([
 
             Route::prefix('app')->group(function () {
                 Route::get('/', [AppController::class, 'index'])->name('app.index');
-                Route::get('/chart', [AppController::class, 'chart'])->name('app.chart');
+                Route::post('/chart', [AppController::class, 'chart'])->name('app.chart');
                 Route::get('/export', [AppController::class, 'export'])->name('app.export');
                 Route::get('download/{filename}', function ($filename) {
                     return response()->download(public_path('file/' . $filename), $filename);
@@ -287,6 +288,17 @@ Route::group([
                 Route::post('/check', [FtelPhoneController::class, 'check'])->name('ftel_phone.check');
                 Route::post('/import', [FtelPhoneController::class, 'import'])->name('ftel_phone.import');
                 Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');
+            });
+
+            Route::prefix('employees-updates')->group(function () {
+                Route::get('/', [UpdateEmployeesFromExcelFileController::class, 'index'])->name('employees_updates.index');
+                Route::get('/create', [UpdateEmployeesFromExcelFileController::class, 'create'])->name('employees_updates.create');
+                Route::post('/store', [UpdateEmployeesFromExcelFileController::class, 'stores'])->name('employees_updates.store');
+                Route::get('/edit/{id}', [UpdateEmployeesFromExcelFileController::class, 'edit'])->name('employees_updates.edit');
+                Route::post('/update/{id}', [UpdateEmployeesFromExcelFileController::class, 'update'])->name('employees_updates.update');
+                Route::post('/check', [UpdateEmployeesFromExcelFileController::class, 'check'])->name('employees_updates.check');
+                Route::post('/import', [UpdateEmployeesFromExcelFileController::class, 'import'])->name('employees_updates.import');
+                Route::get('/initDatatable', [UpdateEmployeesFromExcelFileController::class, 'initDatatable'])->name('employees_updates.initDatatable');
             });
         });
         Route::prefix('profile')->group(function () {
@@ -310,6 +322,9 @@ Route::group([
             });
             Route::prefix('reportsalebydate')->group(function () {
                 Route::get('/', 'SalereportbydateController@index')->name('reportsalebydate.index');
+            });
+            Route::prefix('reportsalebydatedoanhthu')->group(function () {
+                Route::get('/', 'SalereportbydatedoanhthuController@index')->name('reportsalebydatedoanhthu.index');
             });
             Route::prefix('errorpaymentchart')->group(function () {
                 Route::get('/', 'ErrorpaymentchartController@index')->name('errorpaymentchart.index');
