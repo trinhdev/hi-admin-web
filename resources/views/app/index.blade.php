@@ -23,7 +23,10 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">App Log</h1>
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">
+                            <span>App Log</span>
+                            <a href="{{route('app.chart')}}" class="btn btn-sm btn-primary">View Chart</a>
+                        </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -90,7 +93,7 @@
                             </div>
                             <div class="filter-class">
                                 <button id="submit" class="btn btn-sm btn-primary mb-4">Filter table</button>
-{{--                                <button id="filter_chart" class="btn btn-sm btn-primary mb-4">Filter chart</button>--}}
+                                <button id="filter_chart" class="btn btn-sm btn-primary mb-4">Filter chart</button>
                                 <button
                                     onclick='dialogConfirmWithAjax(exportApp, this, "Cảnh báo: Để hạn chế mất dữ liệu, hãy export tối đa 150.000 dòng, khuyến khích export theo dữ liệu ngày! Nếu cần xuất data lớn vui lòng liên hệ trinhhdp@fpt.com.vn")'
                                     id="export" class="btn btn-sm btn-primary mb-4">Export

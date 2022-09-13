@@ -23,7 +23,10 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">App Log</h1>
+                        <h1 style="float: left; margin-right: 20px" class="uppercase">
+                            <span>App Log</span>
+                            <a href="{{route('app.index')}}" class="btn btn-sm btn-primary">View Data</a>
+                        </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
