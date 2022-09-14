@@ -5,7 +5,9 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8.0",
+        "ext-json": "*",
+        "barryvdh/laravel-debugbar": "^3.7",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.4",
         "igaster/laravel-theme": "^2.0",
@@ -19,8 +21,7 @@
         "openzipkin/zipkin": "^3.0",
         "predis/predis": "^1.1",
         "rap2hpoutre/fast-excel": "^3.2",
-        "yajra/laravel-datatables": "^1.5",
-        "ext-json": "*"
+        "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -180,6 +180,8 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\MinIOServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+
 
     ],
 
@@ -236,7 +238,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Theme' => Igaster\LaravelTheme\Facades\Theme::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-        'Excel' => Maatwebsite\Excel\Facades\Excel::class
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Debugbar' => 'Barryvdh\Debugbar\Facade',
     ],
 
 ];

@@ -25,7 +25,6 @@
                     <div class="col-sm-6">
                         <h1 style="float: left; margin-right: 20px" class="uppercase">
                             <span>App Log</span>
-                            <a href="{{route('app.chart')}}" class="btn btn-sm btn-primary">View Chart</a>
                         </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
@@ -43,6 +42,23 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
+                    <div class="col-md-12 container">
+                        <div class="col-md-12 row">
+                            <div class="col-md-6">
+                                <div id="columnchart_day"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="columnchart_month"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="columnchart_month_current"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div id="columnchart_total"></div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="container">
                         <div class="card-body row form-inline">
                             <div class="col-md-3">
@@ -134,7 +150,69 @@
                 "filter_duplicate=" + filter_duplicate
             window.location.href = "/app/export?" + params;
         }
+        //chart
+        google.charts.load("current", {packages: ['corechart']});
+        $(window).on('load', function(e) {
+            $.ajax( {
+                url: '{!! route('app.post.chart') !!}',
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                beforeSend: function(){
+                    $("#spinner").addClass("show");
+                },
+                success: function(response) {
+                    $("#spinner").removeClass("show");
+                    google.charts.setOnLoadCallback(drawChartDataDay(response.data_month,"Biểu đồ thể hiện lưu lượng log trong 30 ngày gần nhất","columnchart_month"));
+                    google.charts.setOnLoadCallback(drawChartDataDay(response.data_day, "Biểu đồ thể hiện số lượt truy cập các màn hình trong ngày {{date("d/m/Y")}}","columnchart_day"));
+                    google.charts.setOnLoadCallback(drawChartDataDay(response.data_total,"Biểu đồ thể hiện số lượng user truy cập app trong 30 ngày gần nhất","columnchart_total"));
+                    google.charts.setOnLoadCallback(drawChartDataDay(response.data_month_current,"Biểu đồ thể hiện số lượng user truy cập vào app trong ngày {{date("d/m/Y")}}","columnchart_month_current"));
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    showError(errorString);
+                }
+            } );
+            e.preventDefault();
+        });
 
+
+        function drawChartDataDay(response, title, id) {
+            var dataChart=[["Element", "Density", {role: "style"}]];
+            console.log(title)
+            console.log(id)
+            if(!response) {
+                dataChart.push(["No data", 0, "rgb(67, 116, 224)"])
+            } else {
+                response.forEach((item, index) => {
+                    dataChart.push([item.type, parseInt(item.count), "rgb(67, 116, 224)"],)
+                })
+            }
+            var data = google.visualization.arrayToDataTable(dataChart);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0, 1,
+                {
+                    calc: "stringify",
+                    sourceColumn: 1,
+                    type: "string",
+                    role: "annotation"
+                },
+                2]);
+
+            var options = {
+                title: title,
+                width: 800,
+                height: 300,
+                bar: {groupWidth: "95%"},
+                legend: {position: "none"},
+            };
+            var chart = new google.visualization.ColumnChart(document.getElementById(id));
+            chart.draw(view, options);
+        }
     </script>
 
 @endpush

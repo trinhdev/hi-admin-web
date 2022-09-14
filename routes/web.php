@@ -267,7 +267,7 @@ Route::group([
 
             Route::prefix('app')->group(function () {
                 Route::get('/', [AppController::class, 'index'])->name('app.index');
-                Route::get('/chart', [AppController::class, 'chart'])->name('app.chart');
+                Route::post('/chart', [AppController::class, 'postChart'])->name('app.post.chart');
                 Route::get('/export', [AppController::class, 'export'])->name('app.export');
                 Route::get('download/{filename}', function ($filename) {
                     return response()->download(public_path('file/' . $filename), $filename);
