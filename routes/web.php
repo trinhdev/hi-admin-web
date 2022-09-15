@@ -299,7 +299,6 @@ Route::group([
                 Route::post('/update/{id}', [ScreenController::class, 'update'])->name('screen.update');
                 Route::get('/delete/{id}', [ScreenController::class, 'delete'])->name('screen.delete');
             });
-
             Route::prefix('employees-updates')->group(function () {
                 Route::get('/', [UpdateEmployeesFromExcelFileController::class, 'index'])->name('employees_updates.index');
                 Route::get('/create', [UpdateEmployeesFromExcelFileController::class, 'create'])->name('employees_updates.create');
@@ -309,6 +308,11 @@ Route::group([
                 Route::post('/check', [UpdateEmployeesFromExcelFileController::class, 'check'])->name('employees_updates.check');
                 Route::post('/import', [UpdateEmployeesFromExcelFileController::class, 'import'])->name('employees_updates.import');
                 Route::get('/initDatatable', [UpdateEmployeesFromExcelFileController::class, 'initDatatable'])->name('employees_updates.initDatatable');
+            });
+
+            Route::prefix('unlockdeleteuser')->group(function () {
+                Route::get('/', 'UnlockDeleteUserLogsController@index')->name('unlockdeleteuser.index');
+                Route::get('/handle/{phone?}', 'UnlockDeleteUserLogsController@handle')->name('unlockdeleteuser.handle');
             });
         });
         Route::prefix('profile')->group(function () {
