@@ -26,6 +26,10 @@ class ScreenDataTable extends DataTable
             ->editColumn('created_by',function($row){
                 return !empty($row->created_by) ? $row->createdBy->email : '';
             })
+            ->editColumn('status',function($row){
+                $data = $row->status == 0 ? ['Inactive', 'badge badge-danger'] : ['Active', 'badge badge-success'];
+                return '<h4 class="'.$data[1].'">'.$data[0].'</h4>';
+            })
             ->editColumn('action',function($row){
                 return '<div style="display:flex; justify-content:center">
                            <a href="'.route('screen.edit', [$row->id]).'" id="detail" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
@@ -34,7 +38,8 @@ class ScreenDataTable extends DataTable
                            </form>
                        </div>
                 ';
-            });
+            })
+            ->rawColumns(['status','action']);
     }
 
     /**
@@ -100,9 +105,9 @@ class ScreenDataTable extends DataTable
             Column::make('api_url')->title('URL'),
             Column::make('image')->title('Hình ảnh'),
             Column::make('example_code')->title('Code example'),
-            Column::make('status')->title('Trạng thái'),
             Column::make('created_at')->title('Ngày Tạo'),
             Column::make('created_by')->title('Người Tạo'),
+            Column::make('status')->title('Trạng thái'),
             Column::computed('action')->sortable(false)
                   ->searching(false)
                   ->width(80)

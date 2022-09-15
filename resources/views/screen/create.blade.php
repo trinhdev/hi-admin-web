@@ -61,11 +61,11 @@
                                                placeholder="URL" />
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="image">Hình ảnh</label>
-                                        <input type="file" id="image" name="image" class="form-control"
-                                             placeholder="Hình ảnh" />
-                                    </div>
+{{--                                    <div class="form-group">--}}
+{{--                                        <label for="image">Hình ảnh</label>--}}
+{{--                                        <input type="file" id="image" name="image" class="form-control"--}}
+{{--                                             placeholder="Hình ảnh" />--}}
+{{--                                    </div>--}}
 
                                     <div class="form-group">
                                         <label for="example_code">Code mẫu</label>
@@ -75,7 +75,7 @@
 
                                     <div class="form-group">
                                         <div class="form-check">
-                                            <input id="status" name="status" class="form-check-input" type="checkbox" value="1" checked>
+                                            <input id="status" name="status" class="form-check-input" type="checkbox" checked>
                                             <label>Status</label>
                                         </div>
                                     </div>

@@ -35,6 +35,7 @@ class ScreenRepository implements ScreenInterface
     public function store($params)
     {
         try {
+            $params->has('status') == 'on' ? $params->merge(['status'=> 1]) : $params->merge(['status'=> 0]);
             $params->merge(['created_by' => auth()->user()->id]);
             DB::table('screen')->insert($params->only(['screenId','screenName','typeLog','api_url','image','example_code','status','created_by']));
             switch ($params->input('action')) {
@@ -50,6 +51,7 @@ class ScreenRepository implements ScreenInterface
 
     public function update($params, $id)
     {
+        $params->has('status') == 'on' ? $params->merge(['status'=> 1]) : $params->merge(['status'=> 0]);
         Screen::find($id)->update($params->only(['screenId','screenName','typeLog','api_url','image','example_code','status']));
         switch ($params->input('action')) {
             case 'back':

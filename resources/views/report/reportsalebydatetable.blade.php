@@ -21,8 +21,9 @@
                 @endif
                 
                 {{-- {{ $ict->table([], true) }} --}}
-                <div class="col-sm-8">  
-                    <table style="width: 100%">
+                <div class="col-sm-8">
+                    <button class="btn btn-sm btn-secondary" onClick="html_table_to_excel('table-{{ $service[0]['service'] }}', 'xlsx')">Xuất excel</button>
+                    <table style="width: 100%" id="table-{{ $service[0]['service'] }}">
                         <tr>
                             <th rowspan="2">Vùng</th>
                             <th rowspan="2">+/-</th>
@@ -153,7 +154,8 @@
         <div class="card-body row">
             {{-- {{ $ict->table([], true) }} --}}
             <div class="col-sm-8">
-                <table style="width: 100%">
+                <button class="btn btn-sm btn-secondary" onClick="html_table_to_excel('table-vietlott', 'xlsx')">Xuất excel</button>
+                <table style="width: 100%" id="table-vietlott">
                     <tr>
                         <th>Nhóm sản phẩm</th>
                         <th>Doanh số</th>
@@ -199,3 +201,7 @@
     </div>
 </div>
 @endif
+
+@push('scripts')
+    <script src="{{ asset('/custom_js/reportsalebydate.js')}}" type="text/javascript" charset="utf-8"></script>
+@endpush
