@@ -13,16 +13,17 @@ class AppDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->filter(function ($query) {
-                if (request()->has('public_date_start') && request()->has('public_date_end')) {
+                if (request()->has('type')) {
+                    $query->where('type', request('type'));
+                }
+                if (!empty(request('phone'))) {
+                    $query->where('phone', request('phone'));
+                }
+                if (!empty(request('public_date_start')) && !empty(request('public_date_end'))) {
                     $publicDateStart = request('public_date_start') ? Carbon::parse(request('public_date_start'))->format('Y-m-d H:i:s'): null;
                     $publicDateEnd = request('public_date_end') ? Carbon::parse(request('public_date_end'))->format('Y-m-d H:i:s'): null;
                     $query->whereBetween('date_action', [$publicDateStart,$publicDateEnd]);
                 }  $query->groupBy(['phone','type'])->distinct();
-            }, true)
-            ->filter(function ($query) {
-                if (request()->has('type')) {
-                    $query->where('type', request('type'));
-                }
             }, true)
 //            ->filter(function ($query) {
 //                if (request()->filter_duplicate =='yes') {

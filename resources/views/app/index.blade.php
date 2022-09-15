@@ -61,13 +61,13 @@
                     </div>
                     <div class="container">
                         <div class="card-body row form-inline">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="input-group input-group-sm mb-4">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Type</div>
                                     </div>
                                     <select class="form-control" name="position" id="show_at" placeholder="Show at">
-                                        <option value=''>All</option>
+                                        <option value="">-- Select --</option>
                                         @if(!empty($type))
                                             @foreach($type as $value)
                                                 <option value="{{$value['type']}}">{{$value['type']}}</option>
@@ -76,20 +76,28 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="input-group input-group-sm mb-4">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text">Duplicate filter</div>
+                                        <div class="input-group-text">Phone</div>
+                                    </div>
+                                    <input class="form-control" id="phone_filter" placeholder="Phone Filter" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="input-group input-group-sm mb-4">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Duplicate</div>
                                     </div>
                                     <select class="form-control filter_duplicate" id="filter_duplicate"
                                             placeholder="Show at">
-                                        <option value=''>All</option>
+                                        <option value=''>-- Select --</option>
                                         <option value='yes'>Yes</option>
                                         <option value='no'>No</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="input-group input-group-sm mb-4">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">From</div>
@@ -98,7 +106,7 @@
                                            placeholder="Date From"/>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="input-group input-group-sm mb-4">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">To</div>
@@ -134,6 +142,7 @@
         const table = $('#app_table');
         table.on('preXhr.dt', function (e, settings, data) {
             data.type = $('#show_at').val();
+            data.phone = $('#phone_filter').val();
             data.public_date_start = $('#show_from').val();
             data.public_date_end = $('#show_to').val();
             data.filter_duplicate = $('#filter_duplicate').val();
@@ -141,12 +150,14 @@
 
         function exportApp() {
             let type = $('#show_at').val();
+            let phone = $('#phone_filter').val();
             let start = $('#show_from').val();
             let end = $('#show_to').val();
             let filter_duplicate = $('#filter_duplicate').val();
             params = "type=" + type + "&" +
                 "start=" + start + "&" +
                 "end=" + end + "&" +
+                "phone=" + phone + "&" +
                 "filter_duplicate=" + filter_duplicate
             window.location.href = "/app/export?" + params;
         }
