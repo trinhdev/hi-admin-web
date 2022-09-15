@@ -166,9 +166,10 @@
                     google.charts.setOnLoadCallback(drawChartDataDay(response.data_month,"Biểu đồ thể hiện lưu lượng log trong 30 ngày gần nhất","columnchart_month"));
                     google.charts.setOnLoadCallback(drawChartDataDay(response.data_day, "Biểu đồ thể hiện số lượt truy cập các màn hình trong ngày {{date("d/m/Y")}}","columnchart_day"));
                     google.charts.setOnLoadCallback(drawChartDataDay(response.data_total,"Biểu đồ thể hiện số lượng user truy cập app trong 30 ngày gần nhất","columnchart_total"));
-                    google.charts.setOnLoadCallback(drawChartDataDay(response.data_month_current,"Biểu đồ thể hiện số lượng user truy cập vào app trong ngày {{date("d/m/Y")}}","columnchart_month_current"));
+                    google.charts.setOnLoadCallback(drawChartDataDay(response.data_month_current,"Biểu đồ thể hiện số lượng user truy cập vào app trong 1 tuần gần nhất","columnchart_month_current"));
                 },
                 error: function (xhr) {
+                    $("#spinner").removeClass("show");
                     var errorString = '';
                     $.each(xhr.responseJSON.errors, function (key, value) {
                         errorString = value;
@@ -189,7 +190,7 @@
                 dataChart.push(["No data", 0, "rgb(67, 116, 224)"])
             } else {
                 response.forEach((item, index) => {
-                    dataChart.push([item.type, parseInt(item.count), "rgb(67, 116, 224)"],)
+                    dataChart.push([item.data, parseInt(item.count), "rgb(67, 116, 224)"],)
                 })
             }
             var data = google.visualization.arrayToDataTable(dataChart);

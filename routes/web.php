@@ -4,6 +4,7 @@ use App\Http\Controllers\Hi_FPT\AppController;
 use App\Http\Controllers\Hi_FPT\PopupPrivateController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
 use App\Http\Controllers\Hi_FPT\ResetPasswordWrongController;
+use App\Http\Controllers\Hi_FPT\ScreenController;
 use App\Http\Controllers\Hi_FPT\SectionLogController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -288,6 +289,15 @@ Route::group([
                 Route::post('/check', [FtelPhoneController::class, 'check'])->name('ftel_phone.check');
                 Route::post('/import', [FtelPhoneController::class, 'import'])->name('ftel_phone.import');
                 Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');
+            });
+
+            Route::prefix('screen')->group(function () {
+                Route::get('/', [ScreenController::class, 'index'])->name('screen.index');
+                Route::get('/create', [ScreenController::class, 'create'])->name('screen.create');
+                Route::post('/store', [ScreenController::class, 'store'])->name('screen.store');
+                Route::get('/edit/{id}', [ScreenController::class, 'show'])->name('screen.edit');
+                Route::post('/update/{id}', [ScreenController::class, 'update'])->name('screen.update');
+                Route::get('/delete/{id}', [ScreenController::class, 'delete'])->name('screen.delete');
             });
 
             Route::prefix('employees-updates')->group(function () {

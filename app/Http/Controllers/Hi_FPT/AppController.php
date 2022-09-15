@@ -45,31 +45,31 @@ class AppController extends MY_Controller
     public function postChart(Request $request){
         $data_day = DB::table('app_log')
             ->where('date_action', '>=',now()->startOfDay())
-            ->groupBy('type')
+            ->groupBy('data')
             ->orderByDesc('count')
             ->get([
-                'type',
+                'type as data',
                 DB::raw('COUNT(*) as count')
             ]);
 
         $data_month = DB::table('app_log')
             ->where('date_action', '>=',now()->subMonth())
-            ->groupBy('type')
+            ->groupBy('data')
             ->orderByDesc('count')
             ->get([
-                'type',
+                'type as data',
                 DB::raw('COUNT(*) as count')
             ]);
         $data_month_user_current = [
             [
-                'type' => 'MAU 30 ngày gần nhất',
+                'data' => 'MAU 30 ngày gần nhất',
                 'count'=> DB::table('app_log')
                     ->whereBetween('date_action', [now()->subMonth(),now()])
                     ->where('type','=', '1_home' )
                     ->distinct()->count('phone')
             ],
             [
-                'type' => 'MAU từ '.now()->subMonth(1)->toDateString().' đến '.now()->subMonth(0)->toDateString(),
+                'data' => 'MAU từ '.now()->subMonth(1)->toDateString().' đến '.now()->subMonth(0)->toDateString(),
                 'count'=> DB::table('app_log')
                     ->whereBetween('date_action', [now()->subMonth(2),now()->subMonth()])
                     ->where('type','=', '1_home' )
@@ -77,12 +77,13 @@ class AppController extends MY_Controller
             ]
         ];
         $data_day_user = DB::table('app_log')
-            ->where('date_action', '>=',now()->startOfDay())
-            ->groupBy('type')
-            ->orderByDesc('count')
+            ->where('date_action', '>', now()->subWeek())
+            ->where('type','=', '1_home' )
+            ->groupBy('data')
+            ->orderBy('date_action', 'DESC')
             ->get([
-                'type',
-                DB::raw('COUNT(DISTINCT phone) as count')
+                DB::raw('Date(date_action) as data'),
+                DB::raw('COUNT(distinct phone) as count')
             ]);
 
         return [
