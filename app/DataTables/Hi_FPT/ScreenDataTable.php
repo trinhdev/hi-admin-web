@@ -65,7 +65,7 @@ class ScreenDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->responsive()
                     ->autoWidth(true)
-                    ->orderBy(0)
+                    ->orderBy(0, 'DESC')
                     ->parameters([
                         'scroll' => false,
                         'searching' => false,

@@ -24,7 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'screenId'      =>'required',
+            'screenId'      =>'required|unique:screen',
             'screenName'    =>'required',
             'typeLog'       =>'nullable',
             'api_url'       =>'nullable',
