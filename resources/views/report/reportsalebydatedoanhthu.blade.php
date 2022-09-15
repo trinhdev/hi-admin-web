@@ -81,6 +81,7 @@
                     <div class="col-md-12" style="text-align: center">
                         {{-- <button id="filter_condition" class="btn btn-sm btn-primary" onclick="filter()">Tìm kiếm</button> --}}
                         <input type="submit" class="btn btn-sm btn-primary" name="filter" value="Tìm kiếm" />
+                        <button class="btn btn-sm btn-secondary" onClick="exportMultiTable(event)">Xuất hết</button>
                     </div>
                 </form>
                 
@@ -97,12 +98,15 @@
 <!--end::Table-->
 @push('scripts')
     <script src="{{ asset('/custom_js/reportsalebydate.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/themes/plugins/xlsx/xlsx.full.min.js')}}" type="text/javascript" charset="utf-8"></script>
     <script>
         var reportdatabyproduct = {!! str_replace("'", "\'", json_encode($productByService)) !!};
         dataChartProduct(reportdatabyproduct);
 
         var reportdatabycategory = {!! str_replace("'", "\'", json_encode($productByCategory)) !!};
         dataChartCategory(reportdatabycategory);
+
+        
     </script>
 @endpush
 

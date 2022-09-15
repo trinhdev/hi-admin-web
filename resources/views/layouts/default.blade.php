@@ -11,6 +11,7 @@
         <div id="spinner">
             <div class="loader">
                 <img style="width: 100px" src="/images/Ellipsis-1.3s-200px.svg" alt="loading">
+                <div class="text-center text-white">Đang tải dữ liệu...</div>
             </div>
         </div>
         {{-- snining --}}

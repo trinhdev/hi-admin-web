@@ -2,7 +2,7 @@ $(document).ready(function() {
     $('.js-example-basic-multiple').select2({
         // theme: "classic",
         closeOnSelect: false
-    }); 
+    });
 });
 
 function drawPaymentErrorDetailChart(service, data, chartId, legendId, type) {
@@ -102,5 +102,32 @@ function dataChartCategory(reportdatabycategory) {
         }
         drawPaymentErrorDetailChart(key, dataChart, 'sale-report-by-category-' + key, 'legend-container-category-' + key, 'category');
     });
+}
+
+function html_table_to_excel(tableId, type) {
+    var data = document.getElementById(tableId);
+    var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+    XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
+    XLSX.writeFile(file, 'Bao_cao_so_lieu_sale.' + type);
+}
+
+function exportMultiTable(e) {
+    e.preventDefault();
+    var count = 1;
+    const workbook = XLSX.utils.book_new();
+    $("table").each(function(){
+        var curTable = $(this);
+        var id = curTable.attr('id');
+        if(id) {
+            // html_table_to_excel(id, 'xlsx');
+            workbook.SheetNames.push(id);
+            var data = document.getElementById(id);
+            var sheet = XLSX.utils.table_to_sheet(data);
+            workbook.Sheets[id] = sheet;
+            // XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
+        }
+        count++;
+    });
+    XLSX.writeFile(workbook, 'Bao_cao_so_lieu_sale.xlsx');
 }
 
