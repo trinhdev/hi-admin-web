@@ -195,9 +195,7 @@
 
         function drawChartDataDay(response, title, id) {
             var dataChart=[["Element", "Density", {role: "style"}]];
-            console.log(title)
-            console.log(id)
-            if(!response) {
+            if(!$.trim(response)) {
                 dataChart.push(["No data", 0, "rgb(67, 116, 224)"])
             } else {
                 response.forEach((item, index) => {

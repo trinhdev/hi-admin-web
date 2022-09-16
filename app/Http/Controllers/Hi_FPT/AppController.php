@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\Models\AppLog;
+use App\Models\Screen;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
@@ -46,19 +47,22 @@ class AppController extends MY_Controller
     public function postChart(Request $request){
         $data_day = DB::table('app_log')
             ->where('date_action', '>=',now()->startOfDay())
+            ->leftJoin('screen', 'app_log.type', '=', 'screen.screenId')
             ->groupBy('data')
             ->orderByDesc('count')
             ->get([
-                'type as data',
+                'screenName as data',
                 DB::raw('COUNT(*) as count')
             ]);
 
+
         $data_month = DB::table('app_log')
             ->where('date_action', '>=',now()->subMonth())
+            ->leftJoin('screen', 'app_log.type', '=', 'screen.screenId')
             ->groupBy('data')
             ->orderByDesc('count')
             ->get([
-                'type as data',
+                'screenName as data',
                 DB::raw('COUNT(*) as count')
             ]);
         $data_month_user_current = [
@@ -81,7 +85,6 @@ class AppController extends MY_Controller
             ->where('date_action', '>', now()->subWeek())
             ->where('type','=', '1_home' )
             ->groupBy('data')
-            ->orderBy('date_action', 'DESC')
             ->get([
                 DB::raw('Date(date_action) as data'),
                 DB::raw('COUNT(distinct phone) as count')
@@ -99,7 +102,20 @@ class AppController extends MY_Controller
     public function export(Request $request)
     {
         $fileName = 'data-'.now().'.csv';
-        return (new FastExcel($this->helper_fast_excel($request)))->download('file/'.$fileName, function ($log) {
+        $start = $request->start ? \Carbon\Carbon::parse($request->start)->format('Y-m-d H:i:s'): null;
+        $end = $request->end ? \Carbon\Carbon::parse($request->end)->format('Y-m-d H:i:s'): null;
+        $model = DB::table('app_log')->select('id','type','phone','url','date_action');
+        if (!empty($request->type)) {
+            $model->where('type', $request->input('type'));
+        }
+        if (!empty($request->phone)) {
+            $model->where('phone', $request->input('phone'));
+        }
+        if (!empty($end) && !empty($start)) {
+            $model->whereBetween('date_action', [$start, $end]);
+        }
+        if ($model->count() > 150000) return back()->with(['error' => 'error', 'html'=>'Thông báo! Quá số lượng cho phép 150K, vui lòng liên hệ trinhhdp@fpt.com.vn']);
+        return (new FastExcel($this->helper_fast_excel($model)))->download('file/'.$fileName, function ($log) {
             return [
                 'ID' => $log->id,
                 'TYPE' => $log->type,
@@ -110,20 +126,7 @@ class AppController extends MY_Controller
         });
     }
 
-    function helper_fast_excel($request) {
-        $start = $request->start ? \Carbon\Carbon::parse($request->start)->format('Y-m-d H:i:s'): null;
-        $end = $request->end ? \Carbon\Carbon::parse($request->end)->format('Y-m-d H:i:s'): null;
-        $model = DB::table('app_log')->select('id','type','phone','url','date_action');
-        if ($request->has('type')) {
-            $model->where('type', $request->input('type'));
-        }
-        if (!empty($end) && !empty($start)) {
-            $model->whereBetween('date_action', [$start, $end]);
-        }
-        if ($request->has('filter_duplicate') && $request->has('filter_duplicate')=='yes') {
-            \DB::statement("SET SQL_MODE=''");
-            $model->groupBy(['phone','type'])->distinct();
-        }
+    function helper_fast_excel($model) {
         foreach ($model->cursor() as $value) {
             yield $value;
         }

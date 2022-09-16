@@ -11,4 +11,7 @@ class AppLog extends Model
     protected $table = 'app_log';
     protected $primaryKey = 'id';
 
+    public function screen(){
+        return $this->hasOne(Screen::class,'screenId','type');
+    }
 }
