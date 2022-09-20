@@ -27,7 +27,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="card-body row form-inline filter-section justify-content-md-center">
-                <form action="{{ route('reportsalebydate.index') }}" method="GET">
+                <form class="form-inline" action="{{ route('reportsalebydate.index') }}" method="GET">
                     @csrf
                     <div class="col-md-3">
                         <div class="input-group input-group-sm mb-4">
@@ -66,7 +66,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Loại dịch vụ: </div>
                             </div>
-                            <select class="js-example-basic-multiple " name="services[]" id="services" multiple="multiple" style="width: 70%">
+                            <select style="form-control" name="services[]" id="services" multiple="multiple">
                                 @foreach ($services as $service)
                                     <option value="{{ $service }}">{{ $service }}</option>
                                 @endforeach
