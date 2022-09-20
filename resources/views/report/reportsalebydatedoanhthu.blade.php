@@ -66,7 +66,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Loại dịch vụ: </div>
                             </div>
-                            <select class="js-example-basic-multiple " name="services[]" id="services" multiple="multiple" style="width: 70%">
+                            <select class="form-control" name="services[]" id="services" multiple="multiple" style="width: 70%">
                                 @foreach ($services as $service)
                                     <option value="{{ $service }}">{{ $service }}</option>
                                 @endforeach
