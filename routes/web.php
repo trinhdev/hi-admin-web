@@ -315,8 +315,8 @@ Route::group([
                 Route::get('/handle/{phone?}', 'UnlockDeleteUserLogsController@handle')->name('unlockdeleteuser.handle');
             });
 
-            Route::prefix('applog')->group(function () {
-                Route::get('/', 'AppLogController@index')->name('applog.index');
+            Route::prefix('applogfilter')->group(function () {
+                Route::get('/', 'AppLogController@index')->name('applogfilter.index');
             });
         });
         Route::prefix('profile')->group(function () {
