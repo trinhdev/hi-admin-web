@@ -1,0 +1,133 @@
+<?php
+
+namespace App\DataTables\Hi_FPT;
+
+use App\Models\AppLog;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Yajra\DataTables\Html\Button;
+use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Services\DataTable;
+use Yajra\DataTables\Html\Editor\Fields;
+use Yajra\DataTables\Html\Editor\Editor;
+use DataTables;
+
+class AppLogDataTable extends DataTable
+{
+    /**
+     * Build DataTable class.
+     *
+     * @param mixed $query Results from query() method.
+     * @return \Yajra\DataTables\DataTableAbstract
+     */
+    private $perPage = 10;
+    private $orderBy = null;
+    private $orderDirection  = null;
+    private $currentPage = 1;
+    public function dataTable($query)
+    {
+        return datatables()
+            ->eloquent($query)
+            ->escapeColumns([]);
+    }
+
+    /**
+     * Get query source of dataTable.
+     *
+     * @param \App\Models\Hi_FPT/Banner $model
+     * @return Builder
+     */
+    public function query(AppLog $model)
+    {
+        $date_action_start = $this->date_action_start;
+        $date_action_end = $this->date_action_end;
+        $type = $this->type;
+        $phone = $this->phone;
+        $applog = $model->query();
+
+        if(empty($date_action_start)) {
+            $date_action_start = date('Y-m-d H:i:s', strtotime('yesterday midnight'));
+            $date_action_end = date('Y-m-d H:i:s', strtotime('today midnight'));
+        }
+        $applog->whereBetween('date_action', [$date_action_start, $date_action_end]);
+
+        if(!empty($type)) {
+            $applog->where('type', $type);
+        }
+
+        if(!empty($phone)) {
+            $applog->where('phone', $phone);
+        }
+
+        $applog->orderBy('date_action','desc');
+
+        return $applog->newQuery();
+    }
+
+    /**
+     * Optional method if you want to use html builder.
+     *
+     * @return \Yajra\DataTables\Html\Builder
+     */
+    public function html()
+    {
+        return $this->builder()
+                    ->setTableId('app-log-table')
+                    ->columns($this->getColumns())
+                    ->responsive()
+                    ->autoWidth(true)
+                    ->lengthMenu([[10, 25, 50, -1], [10, 25, 50]])
+                    ->pageLength(10)
+                    ->parameters([
+                        'scroll' => false,
+                        'searchDelay' => 500,
+                        'initComplete' => "function () {
+                            
+                        }"
+                    ])
+                    ->addTableClass('table table-hover table-striped text-center w-100')
+                    ->languageEmptyTable('Không có dữ liệu')
+                    ->languageInfoEmpty('Không có dữ liệu')
+                    ->languageProcessing('Đang tải')
+                    ->languageSearch('Tìm kiếm')
+                    ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
+                    ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
+                    ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang
+                    ')
+                    ;
+    }
+
+    /**
+     * Get columns.
+     *
+     * @return array
+     */
+    protected function getColumns()
+    {
+        return [
+            // Column::make('DT_RowIndex')
+            //         ->title('STT')
+            //         ->width(20)
+            //         ->sortable(false),
+            Column::make('type')->title('Type')->sortable(false)->searching(true),
+            Column::make('phone')->title('Phone')->sortable(false)->searching(true),
+            Column::make('action_name')->title('Action name')->sortable(false)->searching(true),
+            Column::make('date_action')->title('Date action')->sortable(false)->searching(false),
+            Column::make('created_at')->title('Ngày Tạo')->searching(false)
+                  ->searching(false)
+                  ->width(80)
+                  ->addClass('text-center')
+
+        ];
+    }
+
+    /**
+     * Get filename for export.
+     *
+     * @return string
+     */
+    protected function filename()
+    {
+        return 'Banner_' . date('YmdHis');
+    }
+}
