@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Hi_FPT\FtelPhoneController;
+use App\Http\Controllers\Hi_FPT\EmployeesController;
 use App\Http\Controllers\Hi_FPT\PaymentController;
 use App\Http\Controllers\Hi_FPT\AirDirectionController;
 use App\Http\Controllers\Hi_FPT\UpdateEmployeesFromExcelFileController;
@@ -317,6 +318,14 @@ Route::group([
 
             Route::prefix('applogfilter')->group(function () {
                 Route::get('/', 'AppLogController@index')->name('applogfilter.index');
+            });
+
+            Route::prefix('employees')->group(function () {
+                Route::get('/', [EmployeesController::class, 'index'])->name('employees.index');
+                Route::get('/create', [EmployeesController::class, 'create'])->name('employees.create');
+                Route::post('/store', [EmployeesController::class, 'store'])->name('employees.store');
+                Route::get('/edit/{id}', [EmployeesController::class, 'edit'])->name('employees.edit');
+                Route::put('/update/{id}', [EmployeesController::class, 'update'])->name('employees.update');
             });
         });
         Route::prefix('profile')->group(function () {

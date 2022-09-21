@@ -15,7 +15,7 @@ class Employees extends Model
     protected $connection = 'mysql';
     protected $table = 'employees';
     protected $primaryKey = 'id';
-    protected $fillable = ['id','name','full_name','phone','location_id','branch_code', 'description', 'organizationCode', 'code', 'emailAddress', 'organizationCode', 'organizationCodePath', 'checkUpdate', 'location', 'employee_code', 'organizationNamePath', 'isActive', 'dept_id', 'dept_name_1', 'dept_name_2', 'updated_from', 'branch_name'];
+    protected $fillable = ['id','name','full_name','phone','location_id','branch_code', 'description', 'organizationCode', 'code', 'emailAddress', 'organizationCode', 'organizationCodePath', 'checkUpdate', 'location', 'employee_code', 'organizationNamePath', 'isActive', 'dept_id', 'dept_name_1', 'dept_name_2', 'updated_from', 'branch_name', 'updated_by'];
 
     public function hdi_orders() {
         return $this->hasMany(Hdi_Orders::class, 'referral_phone', 'phone');
