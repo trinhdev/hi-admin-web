@@ -1117,7 +1117,7 @@ function initCloseHelpReqest() {
     {
         title: 'Action',
         render: function (data, type, row, meta) {
-            return ` <a onclick="dialogConfirmWithAjax(closeRequest,this)" data-id="` + row.reportId + `" type="button"class="btn btn-danger">Close</a>`;
+            return ` <a onclick="dialogConfirmWithAjax(closeRequest,this)" data-id="` + row.reportId + `" data-contractNo="` + dataCloseHelpRequest.contract + `" type="button"class="btn btn-danger">Close</a>`;
         }
     }
     ]
