@@ -1,10 +1,12 @@
 function closeRequest(_this) {
     let _token = $('meta[name="csrf-token"]').attr('content');
     let _report_id = _this.getAttribute('data-id');
+    let _contract_no = _this.getAttribute('data-contractNo');
     let trTag = $(_this).parents('tr');
     param = {
         _token: $('meta[name="csrf-token"]').attr('content'),
-        report_id: _report_id
+        report_id: _report_id,
+        contract_no: _contract_no
     };
     callAPIHelper("/closehelprequest/closeRequest", param, 'POST', successCloseRequest,trTag);
 }

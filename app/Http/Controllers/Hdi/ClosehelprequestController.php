@@ -6,7 +6,9 @@ use App\Http\Controllers\MY_Controller;
 use App\Services\ContractService;
 use App\Services\HelpRequestService;
 use GrahamCampbell\ResultType\Result;
-use Illuminate\Http\Request;;
+use Illuminate\Http\Request;
+
+use App\Models\Close_Helper_Request_Log;
 
 class ClosehelprequestController extends MY_Controller
 {
@@ -62,8 +64,14 @@ class ClosehelprequestController extends MY_Controller
         $request->validate([
             'report_id' =>'required'
         ]);
+
         $helpReqeustService = new HelpRequestService();
         $response = $helpReqeustService->closeRequestByListReportId([$request->report_id]);
+        Close_Helper_Request_Log::create([
+            'contract_no'   => $request['contract_no'],
+            'report_id'     => $request['report_id'],
+            'response'      => json_encode($response)
+        ]);
         $this->addToLog($request);
         return true;
     }
