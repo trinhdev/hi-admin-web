@@ -358,6 +358,9 @@ Route::group([
                 Route::post('/getPaymentErrorUserSystem', 'ErrorpaymentchartController@getPaymentErrorUserSystem')->name('errorpaymentchart.getPaymentErrorUserSystem');
                 Route::post('/getPaymentErrorDetail', 'ErrorpaymentchartController@getPaymentErrorDetail')->name('errorpaymentchart.getPaymentErrorDetail');
             });
+            Route::prefix('salereportdatamultiservice')->group(function () {
+                Route::get('/', 'SaleReportDataMultiServiceController@index')->name('salereportdatamultiservice.index');
+            });
         });
     }
 );
