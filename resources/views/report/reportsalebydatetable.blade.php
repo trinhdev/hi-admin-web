@@ -31,11 +31,11 @@
                             <th colspan="4">{{ $this_time }}</th>
                         </tr>
                         <tr>
-                            <th>Doanh số</th>
+                            <th>Số tiền</th>
                             <th>Đơn hàng</th>
                             <th>Nhân viên bán hàng</th>
                             <th>%</th>
-                            <th>Doanh số</th>
+                            <th>Số tiền</th>
                             <th>Đơn hàng</th>
                             <th>Nhân viên bán hàng</th>
                             <th>%</th>
@@ -82,7 +82,7 @@
                             </tr>
                             <tr>
                                 <th>Loại sản phẩm</th>
-                                <th>Doanh số</th>
+                                <th>Số tiền</th>
                                 <th>Đơn hàng</th>
                             </tr>
                             @if (!empty($productByService[$service[0]['service']]))
@@ -103,7 +103,7 @@
                                 </tr>
                                 <tr>
                                     <th>Danh mục</th>
-                                    <th>Doanh số</th>
+                                    <th>Số tiền</th>
                                     <th>Đơn hàng</th>
                                 </tr>
                                 @if (!empty($productByCategory[$service[0]['service']]))
@@ -122,7 +122,7 @@
                     <table style="width: 100%; margin-top: 50px">
                         <tr>
                             <th></th>
-                            <th>Doanh số</th>
+                            <th>Số tiền</th>
                             <th>Đơn hàng</th>
                         </tr>
                         <tr>
@@ -158,9 +158,9 @@
                 <table style="width: 100%" id="table-vietlott">
                     <tr>
                         <th>Nhóm sản phẩm</th>
-                        <th>Doanh số</th>
+                        <th>Số tiền</th>
                         <th>Đơn hàng</th>
-                        <th>% Theo Doanh số</th>
+                        <th>% Theo Số tiền</th>
                     </tr>
                     @foreach ($data_vietlott as $key => $value)
                         @if ($value['product_name'] == 'Total')
@@ -182,7 +182,7 @@
                 <table style="width: 100%; margin-top: 50px">
                     <tr>
                         <th></th>
-                        <th>Doanh số</th>
+                        <th>Số tiền</th>
                         <th>Đơn hàng</th>
                     </tr>
                     <tr>
