@@ -101,10 +101,10 @@
     <script src="{{ asset('/themes/plugins/xlsx/xlsx.full.min.js')}}" type="text/javascript" charset="utf-8"></script>
     <script>
         var reportdatabyproduct = {!! str_replace("'", "\'", json_encode($productByService)) !!};
-        dataChartProduct(reportdatabyproduct);
+        dataChartProduct(reportdatabyproduct, 'doanh thu', 'hãng sản xuất');
 
         var reportdatabycategory = {!! str_replace("'", "\'", json_encode($productByCategory)) !!};
-        dataChartCategory(reportdatabycategory);
+        dataChartCategory(reportdatabycategory, 'doanh thu', 'loại sản phẩm');
 
         
     </script>

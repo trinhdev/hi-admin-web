@@ -5,7 +5,7 @@ $(document).ready(function() {
     });
 });
 
-function drawPaymentErrorDetailChart(service, data, chartId, legendId, type) {
+function drawPaymentErrorDetailChart(service, data, chartId, legendId, type, typereport, namechart) {
     if(detailChart[service + type]) {
         detailChart[service + type].destroy();
     }
@@ -14,7 +14,7 @@ function drawPaymentErrorDetailChart(service, data, chartId, legendId, type) {
         options: {
             title: {
                 display: true,
-                text: 'Báo cáo doanh số sản phẩm ' + service.toUpperCase() + ' theo hãng sản xuất',
+                text: 'Báo cáo ' + typereport + ' sản phẩm ' + service.toUpperCase() + ' theo ' + namechart,
                 align: 'center',
                 position: 'bottom'
             },
@@ -62,7 +62,7 @@ function drawPaymentErrorDetailChart(service, data, chartId, legendId, type) {
     detailChart[service + type].generateLegend();
 }
 
-function dataChartProduct(reportdatabyproduct) {
+function dataChartProduct(reportdatabyproduct, typereport, namechart) {
     $.each( reportdatabyproduct, function( key, value ) {
         var dataChart = {
             'labels'                    : [],
@@ -79,11 +79,11 @@ function dataChartProduct(reportdatabyproduct) {
             dataChart['datasets'][0]['data'].push(parseInt(value[i]['amount']));
             dataChart['datasets'][0]['backgroundColor'].push('#' + randomColor());
         }
-        drawPaymentErrorDetailChart(key, dataChart, 'sale-report-by-product-' + key, 'legend-container-' + key, 'product');
+        drawPaymentErrorDetailChart(key, dataChart, 'sale-report-by-product-' + key, 'legend-container-' + key, 'product', typereport, namechart);
     });
 }
 
-function dataChartCategory(reportdatabycategory) {
+function dataChartCategory(reportdatabycategory, typereport, namechart) {
     $.each( reportdatabycategory, function( key, value ) {
         var dataChart = {
             'labels'                    : [],
@@ -100,11 +100,12 @@ function dataChartCategory(reportdatabycategory) {
             dataChart['datasets'][0]['data'].push(parseInt(value[i]['amount']));
             dataChart['datasets'][0]['backgroundColor'].push('#' + randomColor());
         }
-        drawPaymentErrorDetailChart(key, dataChart, 'sale-report-by-category-' + key, 'legend-container-category-' + key, 'category');
+        drawPaymentErrorDetailChart(key, dataChart, 'sale-report-by-category-' + key, 'legend-container-category-' + key, 'category', typereport, namechart);
     });
 }
 
 function html_table_to_excel(tableId, type) {
+    // sheetjs
     var data = document.getElementById(tableId);
     var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
     XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
