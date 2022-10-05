@@ -15,6 +15,7 @@ use App\Http\Controllers\Hi_FPT\EmployeesController;
 use App\Http\Controllers\Hi_FPT\PaymentController;
 use App\Http\Controllers\Hi_FPT\AirDirectionController;
 use App\Http\Controllers\Hi_FPT\UpdateEmployeesFromExcelFileController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -359,7 +360,20 @@ Route::group([
                 Route::post('/getPaymentErrorDetail', 'ErrorpaymentchartController@getPaymentErrorDetail')->name('errorpaymentchart.getPaymentErrorDetail');
             });
             Route::prefix('salereportdatamultiservice')->group(function () {
-                Route::get('/', 'SaleReportDataMultiServiceController@index')->name('salereportdatamultiservice.index');
+                $request = $_GET;
+                switch(@$request['submitbutton']) {
+                    case 'Search':
+                        Route::get('/', 'SaleReportDataMultiServiceController@index')->name('salereportdatamultiservice.index');
+                        break;
+                    case 'Phone export':
+                        Route::get('/', 'SaleReportDataMultiServiceController@exportPhoneOnly')->name('salereportdatamultiservice.exportphoneonly');
+                        break;
+                    case 'All export':
+                        Route::get('/', 'SaleReportDataMultiServiceController@exportAll')->name('salereportdatamultiservice.exportall');
+                        break;
+                    default:
+                        Route::get('/', 'SaleReportDataMultiServiceController@index')->name('salereportdatamultiservice.index');
+                }
             });
         });
     }
