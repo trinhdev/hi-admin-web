@@ -142,7 +142,7 @@ class ErrorpaymentchartController extends MY_Controller
             $to = date('Y-m-d 23:59:59', strtotime($to));
         }
 
-        $datana = Payment_Orders::selectRaw('"#N/A" AS "description_error", COUNT(payment_provider_status) AS count')
+        $datana = Payment_Orders::selectRaw('"#N/A" AS "description_error", COUNT(payment_provider_status) AS count, err_code.color AS color')
                                ->leftJoin('payment_error_code AS err_code', DB::raw('BINARY view_payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
                                ->join('payment_product', DB::raw('BINARY view_payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
                                ->where('payment_type', '!=', 'TOKEN')
@@ -154,9 +154,9 @@ class ErrorpaymentchartController extends MY_Controller
                                })
                                ->whereBetween('date_created', [$from, $to]);
 
-        $data = Payment_Orders::selectRaw('err_code.description_error AS description_error, COUNT(payment_provider_status) AS count')
-                              ->join('payment_error_code AS err_code', DB::raw('BINARY view_payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
-                              ->join('payment_product', DB::raw('BINARY view_payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
+        $data = Payment_Orders::selectRaw('err_code.description_error AS description_error, payment_provider_status AS payment_provider_status, COUNT(payment_provider_status) AS count, err_code.color AS color')
+                              ->leftJoin('payment_error_code AS err_code', DB::raw('BINARY view_payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
+                              ->leftJoin('payment_product', DB::raw('BINARY view_payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
                               ->where('payment_type', '!=', 'TOKEN')
                               ->where('payment_provider_status', '!=', 'SUCCESS')
                               ->where('payment_product.type', $type)
@@ -164,15 +164,15 @@ class ErrorpaymentchartController extends MY_Controller
                                     $query->where('err_code.is_system', $is_system);
                               })
                               ->whereBetween('date_created', [$from, $to])
-                              ->groupBy('err_code.code_error')
-                              ->union($datana)
+                              ->groupBy('payment_provider_status')
+                            //   ->union($datana)
                               ->orderBy('count', 'desc')
                               ->get()->toArray();
-        
+        // dd($data);
         foreach($data as $key => $value) {
-            $result['labels'][] = $value['description_error'];
+            $result['labels'][] = (!empty($value['description_error'])) ? $value['description_error'] : $value['payment_provider_status'];
             $result['datasets'][0]['data'][] = $value['count'];
-            $result['datasets'][0]['backgroundColor'][] = rand_color();
+            $result['datasets'][0]['backgroundColor'][] = (!empty($value['color'])) ? '#' . $value['color'] : '#ad8806';
         }
 
         return $result;
