@@ -15,10 +15,10 @@ drawPaymentErrorDetailFtel();
 drawPaymentErrorDetailSystemEcom();
 drawPaymentErrorDetailSystemFtel();
 $("#filter_condition").click(function() {
-    var show_from_last = $('#show_from_last').val();
-    var show_to_last = $('#show_to_last').val();
-    var show_from = $('#show_from').val();
-    var show_to = $('#show_to').val();
+    show_from_last = $('#show_from_last').val();
+    show_to_last = $('#show_to_last').val();
+    show_from = $('#show_from').val();
+    show_to = $('#show_to').val();
     // console.log(show_from);
     if(show_from && show_to && show_from_last && show_to_last) {
         showLoadingIcon();
@@ -86,7 +86,7 @@ function drawChartUserSystem(type, data) {
         options: {
             title: {
                 display: true,
-                text: 'Báo cáo lỗi thanh toán dịch vụ ' + type.toUpperCase(),
+                text: 'Báo cáo lỗi thanh toán dịch vụ ' + type.toUpperCase() + ' từ ' + show_from_last + ' đến ' + show_to,
                 align: 'center',
                 position: 'bottom'
             },
@@ -166,7 +166,7 @@ function drawPaymentErrorDetailChart(type, data) {
         options: {
             title: {
                 display: true,
-                text: 'Báo cáo lỗi thanh toán chi tiết cho dịch vụ ' + type.toUpperCase(),
+                text: 'Báo cáo lỗi thanh toán chi tiết cho dịch vụ ' + type.toUpperCase() + ' từ ' + show_from + ' đến ' + show_to,
                 align: 'center',
                 position: 'bottom'
             },
@@ -179,8 +179,20 @@ function drawPaymentErrorDetailChart(type, data) {
             legend: {
                 display: false
             },
-            tooltip: {
-                display: true
+            tooltips: {
+                // display: true,
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                            return parseInt(previousValue) + parseInt(currentValue);
+                        });
+                        var currentValue = dataset.data[tooltipItem.index];
+                        var precentage = (((currentValue/total) * 100) + 0.5).toFixed(2);
+                        // console.log(total);
+                        return precentage + "%";
+                    }
+                }
             },
             legendCallback: function (chart) {             
                 // Return the HTML string here.
@@ -263,7 +275,7 @@ function drawPaymentErrorDetailSystemChart(type, data) {
         options: {
             title: {
                 display: true,
-                text: 'Báo cáo lỗi thanh toán chi tiết lỗi hệ thống cho ' + type.toUpperCase(),
+                text: 'Báo cáo lỗi thanh toán chi tiết lỗi hệ thống cho ' + type.toUpperCase() + ' từ ' + show_from + ' đến ' + show_to,
                 align: 'center',
                 position: 'bottom'
             },
@@ -276,8 +288,20 @@ function drawPaymentErrorDetailSystemChart(type, data) {
             legend: {
                 display: false
             },
-            tooltip: {
-                display: true
+            tooltips: {
+                // display: true,
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                            return parseInt(previousValue) + parseInt(currentValue);
+                        });
+                        var currentValue = dataset.data[tooltipItem.index];
+                        var precentage = (((currentValue/total) * 100) + 0.5).toFixed(2);
+                        // console.log(total);
+                        return precentage + "%";
+                    }
+                }
             },
             legendCallback: function (chart) {             
                 // Return the HTML string here.
