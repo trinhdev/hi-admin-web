@@ -179,7 +179,11 @@ class SaleReportDataMultiServiceController extends MY_Controller
         $reportData->whereBetween('t_deliver', [$from, $to]);
 
         if(!empty($isAndServiceType)) {
+            // $result = DB::query()->fromSub($reportData, 'a')->selectRaw('distinct customer_phone')->get()->toArray();
             $result = DB::query()->fromSub($reportData, 'a')->selectRaw('distinct customer_phone')->get()->toArray();
+        }
+        else {
+            $result = $reportData->get()->toArray();
         }
 
         return Excel::download(new ExportArray(['Số điện thoại khách hàng'], $result), 'ReportMultiService_' . date('YmdHis') . '.xlsx');
