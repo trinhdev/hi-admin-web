@@ -143,6 +143,13 @@
                                 </select>  
                             </div>
                         </div>
+                        <div class="col-sm-4 form-group">
+                            <label class="control-label col-md-6" >Query and service type:</label>
+                            <div class="col-md-6">
+                                <input class="form-check-input" type="checkbox" id="is-and-service-type" name="isAndServiceType" {{ !empty($filter['isAndServiceType']) ? 'checked' : '' }}>
+                                {{-- <label class="form-check-label">Option 1</label>   --}}
+                            </div>
+                        </div>
                         <div class="col-md-12" style="text-align: center">
                             <input type="submit" class="btn btn-sm btn-primary" name="submitbutton" value="Search" />
                             <input type="submit" class="btn btn-sm btn-success" name="submitbutton" value="Phone export" />

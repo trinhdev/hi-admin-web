@@ -3,6 +3,7 @@
 namespace App\DataTables\Hi_FPT;
 
 use App\Models\Sale_Report_Data_Multi_Service;
+use App\Models\Settings;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Yajra\DataTables\Html\Button;
@@ -64,8 +65,15 @@ class SaleReportDataMultiServiceDataTable extends DataTable
         $zone = $this->zone;
         $branch_code = $this->branch_code;
         $ftel_branch = $this->ftel_branch;
+        $isAndServiceType = $this->isAndServiceType;
 
-        $reportData = Sale_Report_Data_Multi_Service::select()->leftJoin('employees', 'sale_report_data_multi_service.referral_code', '=', 'employees.phone');
+        if(!empty($isAndServiceType)) {
+            $reportData = Sale_Report_Data_Multi_Service::selectRaw('customer_phone, customer_name, group_concat(service_type) AS combine_service');
+        }
+        else {
+            $reportData = Sale_Report_Data_Multi_Service::select()->leftJoin('employees', 'sale_report_data_multi_service.referral_code', '=', 'employees.phone');
+        }
+
         if(!empty($from)) {
             $from = date('Y-m-d 00:00:00', strtotime($from));
         }
@@ -114,6 +122,17 @@ class SaleReportDataMultiServiceDataTable extends DataTable
             $reportData->whereIn('employees.branch_name', $ftel_branch);
         }
 
+        if(!empty($isAndServiceType)) {
+            $reportData->groupBy('customer_phone');
+            if(empty($service_type)) {
+                $services = Settings::where('name', 'multi_service_service_settings')->get();
+                $service_type = (!empty($services[0]['value'])) ? array_column(json_decode($services[0]['value'], true), 'key') : [];
+            }
+            foreach($service_type as $keyService => $valueService) {
+                $reportData->havingRaw('Find_In_Set("' . $valueService . '", combine_service) > 0');
+            }
+        }
+
         return $this->applyScopes($reportData);
     }
 
@@ -151,20 +170,6 @@ class SaleReportDataMultiServiceDataTable extends DataTable
                     ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang');
     }
 
-    public function customExport() {
-        $customer_phone = $this->customer_phone ?? null;
-        $from = $this->from;
-        $to = $this->to;
-        $service_type = $this->service_type;
-        $order_state = $this->order_state;
-        $payment_method = $this->payment_method;
-        $payment_status = $this->payment_status;
-        $zone = $this->zone;
-        $branch_code = $this->branch_code;
-        $ftel_branch = $this->ftel_branch;
-        dd($customer_phone);
-    }
-
     /**
      * Get columns.
      *
@@ -177,24 +182,24 @@ class SaleReportDataMultiServiceDataTable extends DataTable
                     ->title('STT')
                     ->width(20)
                     ->sortable(false),
-            Column::make('service_type_name')->title('Type')->searching(false),
-            Column::make('order_id')->title('Order id')->sortable(false)->searching(false),
-            Column::make('product_name')->title('Product name')->sortable(false)->searching(false),
+            Column::make('service_type_name')->title('Type')->searching(false)->defaultContent(''),
+            Column::make('order_id')->title('Order id')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('product_name')->title('Product name')->sortable(false)->searching(false)->defaultContent(''),
             Column::make('customer_phone')->title('Customer phone')->sortable(false)->searching(false),
             Column::make('customer_name')->title('Customer name')->sortable(false)->searching(false),
-            Column::make('address')->title('Address')->sortable(false)->searching(false),
-            Column::make('total_amount_finish')->title('Total amount finish')->sortable(false)->searching(false),
-            Column::make('referral_code')->title('Referral code')->sortable(false)->searching(false),
-            Column::make('name')->title('IBB Account')->sortable(false)->searching(false),
-            Column::make('full_name')->title('Referral name')->sortable(false)->searching(false),
-            Column::make('order_state')->title('Order state')->sortable(false)->searching(false),
-            Column::make('payment_method')->title('Payment method')->sortable(false)->searching(false),
-            Column::make('payment_status')->title('Payment status')->sortable(false)->searching(false),
-            Column::make('t_create')->title('Order create time')->sortable(false)->searching(false),
-            Column::make('t_deliver')->title('Order deliver time')->sortable(false)->searching(false),
-            Column::make('organization_zone_name')->title('Zone')->sortable(false)->searching(false),
-            Column::make('organization_branch_code')->title('Branch code')->sortable(false)->searching(false),
-            Column::make('branch_name')->title('Branch name')->sortable(false)->searching(false),
+            Column::make('address')->title('Address')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('total_amount_finish')->title('Total amount finish')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('referral_code')->title('Referral code')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('name')->title('IBB Account')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('full_name')->title('Referral name')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('order_state')->title('Order state')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('payment_method')->title('Payment method')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('payment_status')->title('Payment status')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('t_create')->title('Order create time')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('t_deliver')->title('Order deliver time')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('organization_zone_name')->title('Zone')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('organization_branch_code')->title('Branch code')->sortable(false)->searching(false)->defaultContent(''),
+            Column::make('branch_name')->title('Branch name')->sortable(false)->searching(false)->defaultContent(''),
         ];
     }
 
