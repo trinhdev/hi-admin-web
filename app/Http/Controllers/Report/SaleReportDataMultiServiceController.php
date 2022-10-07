@@ -15,6 +15,7 @@ use App\Models\Settings;
 use App\Models\Customer_Locations;
 use App\Models\Ftel_Branch;
 use App\Models\Sale_Report_Data_Multi_Service;
+use Illuminate\Support\Facades\DB;
 
 use App\Exports\ExportArray;
 use Maatwebsite\Excel\Facades\Excel;
@@ -107,30 +108,34 @@ class SaleReportDataMultiServiceController extends MY_Controller
         $zone = $request->zone;
         $branch_code = $request->branch_code;
         $ftel_branch = $request->ftel_branch;
+        $isAndServiceType = $request->isAndServiceType;
 
-        $reportData = Sale_Report_Data_Multi_Service::selectRaw('distinct customer_phone')->leftJoin('employees', 'sale_report_data_multi_service.referral_code', '=', 'employees.phone');
-        if(!empty($from)) {
-            $from = date('Y-m-d 00:00:00', strtotime($from));
+        if(!empty($isAndServiceType)) {
+            $reportData = Sale_Report_Data_Multi_Service::selectRaw('customer_phone, customer_name, group_concat(service_type) AS combine_service');
         }
         else {
-            $from = date('Y-m-d 00:00:00', strtotime('yesterday midnight'));
+            $reportData = Sale_Report_Data_Multi_Service::selectRaw('distinct customer_phone')->leftJoin('employees', 'sale_report_data_multi_service.referral_code', '=', 'employees.phone');
         }
-
-        if(!empty($to)) {
-            $to = date('Y-m-d 00:00:00', strtotime($to));
-        }
-        else {
-            $to = date('Y-m-d 23:59:59', strtotime('yesterday midnight'));
-        }
-
-        $reportData->whereBetween('t_deliver', [$from, $to]);
 
         if(!empty($customer_phone)) {
             $reportData->where('customer_phone', $customer_phone);
         }
 
         if(!empty($service_type)) {
-            $reportData->whereIn('service_type', $service_type);
+            if(!empty($isAndServiceType)) {
+                $reportData->groupBy('customer_phone');
+                if(empty($service_type)) {
+                    $services = Settings::where('name', 'multi_service_service_settings')->get();
+                    $service_type = (!empty($services[0]['value'])) ? array_column(json_decode($services[0]['value'], true), 'key') : [];
+                    // dd($result);
+                }
+                foreach($service_type as $keyService => $valueService) {
+                    $reportData->havingRaw('Find_In_Set("' . $valueService . '", combine_service) > 0');
+                }
+            }
+            else {
+                $reportData->whereIn('service_type', $service_type);
+            }
         }
 
         if(!empty($order_state)) {
@@ -157,7 +162,26 @@ class SaleReportDataMultiServiceController extends MY_Controller
             $reportData->whereIn('employees.branch_name', $ftel_branch);
         }
 
-        $result = $reportData->get()->toArray();
+        if(!empty($from)) {
+            $from = date('Y-m-d 00:00:00', strtotime($from));
+        }
+        else {
+            $from = date('Y-m-d 00:00:00', strtotime('yesterday midnight'));
+        }
+
+        if(!empty($to)) {
+            $to = date('Y-m-d 00:00:00', strtotime($to));
+        }
+        else {
+            $to = date('Y-m-d 23:59:59', strtotime('yesterday midnight'));
+        }
+
+        $reportData->whereBetween('t_deliver', [$from, $to]);
+
+        if(!empty($isAndServiceType)) {
+            $result = DB::query()->fromSub($reportData, 'a')->selectRaw('distinct customer_phone')->get()->toArray();
+        }
+
         return Excel::download(new ExportArray(['Số điện thoại khách hàng'], $result), 'ReportMultiService_' . date('YmdHis') . '.xlsx');
     }
 

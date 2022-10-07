@@ -95,7 +95,20 @@ class SaleReportDataMultiServiceDataTable extends DataTable
         }
 
         if(!empty($service_type)) {
-            $reportData->whereIn('service_type', $service_type);
+            if(!empty($isAndServiceType)) {
+                $reportData->groupBy('customer_phone');
+                if(empty($service_type)) {
+                    $services = Settings::where('name', 'multi_service_service_settings')->get();
+                    $service_type = (!empty($services[0]['value'])) ? array_column(json_decode($services[0]['value'], true), 'key') : [];
+                    // dd($result);
+                }
+                foreach($service_type as $keyService => $valueService) {
+                    $reportData->havingRaw('Find_In_Set("' . $valueService . '", combine_service) > 0');
+                }
+            }
+            else {
+                $reportData->whereIn('service_type', $service_type);
+            }
         }
 
         if(!empty($order_state)) {
@@ -120,17 +133,6 @@ class SaleReportDataMultiServiceDataTable extends DataTable
 
         if(!empty($ftel_branch)) {
             $reportData->whereIn('employees.branch_name', $ftel_branch);
-        }
-
-        if(!empty($isAndServiceType)) {
-            $reportData->groupBy('customer_phone');
-            if(empty($service_type)) {
-                $services = Settings::where('name', 'multi_service_service_settings')->get();
-                $service_type = (!empty($services[0]['value'])) ? array_column(json_decode($services[0]['value'], true), 'key') : [];
-            }
-            foreach($service_type as $keyService => $valueService) {
-                $reportData->havingRaw('Find_In_Set("' . $valueService . '", combine_service) > 0');
-            }
         }
 
         return $this->applyScopes($reportData);
