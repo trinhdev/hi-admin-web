@@ -68,3 +68,12 @@ function exportPhoneOnly(e) {
     var filter_data = $('#filter-form').serializeArray();
     console.log(filter_data);
 }
+
+$('#is-and-service-type').change(function() {
+    if(this.checked) {
+        $('#all-export').hide();
+    }
+    else {
+        $('#all-export').show();
+    }       
+});
