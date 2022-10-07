@@ -35,22 +35,23 @@ class SaleReportDataMultiServiceController extends MY_Controller
         $order_states = Settings::where('name', 'laptop_orders_order_state')->get();
         $payment_status = Settings::where('name', 'laptop_orders_payment_status')->get();
         $payment_methods = Settings::where('name', 'laptop_orders_payment_method')->get();
+        $services = Settings::where('name', 'multi_service_service_settings')->get();
 
         $zone = Customer_Locations::select(['location_zone'])->groupBy('location_zone')->orderBy('location_zone')->get()->toArray();
         $branch_code = Customer_Locations::select(['customer_location_id', 'location_name_vi', 'location_zone', 'location_code'])->orderBy('customer_location_id')->get()->toArray();
         $ftel_branch = Ftel_Branch::orderBy('location_id')->get()->toArray();
 
-        $services = [
-            ['key' => 'hdi', 'value' => 'Bảo hiểm HDI'],
-            ['key' => 'air_condition', 'value' => 'Vệ sinh máy lạnh'],
-            ['key' => 'it_service', 'value' => 'Dịch vụ FConnect'],
-            ['key' => 'laptop', 'value' => 'ICT'],
-            ['key' => 'houseware', 'value' => 'Gia dụng'],
-            ['key' => 'vuanem', 'value' => 'Vua nệm'],
-            ['key' => 'gas', 'value' => 'Gas/Nước'],
-            ['key' => 'ultrafast', 'value' => 'Ultra Fast'],
-            ['key' => 'vietlott', 'value' => 'Vietlott'],
-        ];
+        // $services = [
+        //     ['key' => 'hdi', 'value' => 'Bảo hiểm HDI'],
+        //     ['key' => 'air_condition', 'value' => 'Vệ sinh máy lạnh'],
+        //     ['key' => 'it_service', 'value' => 'Dịch vụ FConnect'],
+        //     ['key' => 'laptop', 'value' => 'ICT'],
+        //     ['key' => 'houseware', 'value' => 'Gia dụng'],
+        //     ['key' => 'vuanem', 'value' => 'Vua nệm'],
+        //     ['key' => 'gas', 'value' => 'Gas/Nước'],
+        //     ['key' => 'ultrafast', 'value' => 'Ultra Fast'],
+        //     ['key' => 'vietlott', 'value' => 'Vietlott'],
+        // ];
 
         return $dataTable->with([
             'start'                             => $request->start,
@@ -65,6 +66,7 @@ class SaleReportDataMultiServiceController extends MY_Controller
             'zone'                              => $request->zone,
             'branch_code'                       => $request->branch_code,
             'ftel_branch'                       => $request->ftel_branch,
+            'isAndServiceType'                  => $request->isAndServiceType,
             'columns'                           => $request->columns,
             ])->render('sale_report_data_multi_service.index', [
                 'filter'                        => [
@@ -80,12 +82,14 @@ class SaleReportDataMultiServiceController extends MY_Controller
                     'payment_method_selected'   => (!empty($request->payment_method)) ? $request->payment_method : [],
                     'order_state_selected'      => (!empty($request->order_state)) ? $request->order_state : [],
                     'payment_status_selected'   => (!empty($request->payment_status)) ? $request->payment_status : [],
+                    'service_type_selected'     => (!empty($request->service_type)) ? $request->service_type : [],
+                    'isAndServiceType'          => $request->isAndServiceType
                 ],
                 'order_state'                   => (!empty($order_states[0]['value'])) ? json_decode($order_states[0]['value'], true) : [],
                 'zones'                         => @$zone,
                 'branch_codes'                  => @$branch_code,
                 'ftel_branchs'                  => @$ftel_branch,
-                'service_types'                 => $services,
+                'service_types'                 => (!empty($services[0]['value'])) ? json_decode($services[0]['value'], true) : [],
                 'payment_methods'               => (!empty($payment_methods[0]['value'])) ? json_decode($payment_methods[0]['value'], true) : [],
                 'order_states'                  => (!empty($order_states[0]['value'])) ? json_decode($order_states[0]['value'], true) : [],
                 'payment_statuses'              => (!empty($payment_status[0]['value'])) ? json_decode($payment_status[0]['value'], true) : [],
@@ -104,7 +108,7 @@ class SaleReportDataMultiServiceController extends MY_Controller
         $branch_code = $request->branch_code;
         $ftel_branch = $request->ftel_branch;
 
-        $reportData = Sale_Report_Data_Multi_Service::select('customer_phone')->leftJoin('employees', 'sale_report_data_multi_service.referral_code', '=', 'employees.phone');
+        $reportData = Sale_Report_Data_Multi_Service::selectRaw('distinct customer_phone')->leftJoin('employees', 'sale_report_data_multi_service.referral_code', '=', 'employees.phone');
         if(!empty($from)) {
             $from = date('Y-m-d 00:00:00', strtotime($from));
         }
