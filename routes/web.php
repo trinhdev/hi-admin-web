@@ -14,6 +14,7 @@ use App\Http\Controllers\Hi_FPT\FtelPhoneController;
 use App\Http\Controllers\Hi_FPT\EmployeesController;
 use App\Http\Controllers\Hi_FPT\PaymentController;
 use App\Http\Controllers\Hi_FPT\AirDirectionController;
+use App\Http\Controllers\Hi_FPT\BehaviorController;
 use App\Http\Controllers\Hi_FPT\UpdateEmployeesFromExcelFileController;
 use Illuminate\Http\Request;
 
@@ -301,6 +302,12 @@ Route::group([
                 Route::post('/update/{id}', [ScreenController::class, 'update'])->name('screen.update');
                 Route::get('/delete/{id}', [ScreenController::class, 'delete'])->name('screen.delete');
             });
+
+            Route::prefix('behavior')->group(function () {
+                Route::get('/', [BehaviorController::class, 'index'])->name('behavior.index');
+                Route::post('/store', [BehaviorController::class, 'store'])->name('behavior.store');
+            });
+
             Route::prefix('employees-updates')->group(function () {
                 Route::get('/', [UpdateEmployeesFromExcelFileController::class, 'index'])->name('employees_updates.index');
                 Route::get('/create', [UpdateEmployeesFromExcelFileController::class, 'create'])->name('employees_updates.create');
