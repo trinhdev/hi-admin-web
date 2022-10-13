@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Contract\Hi_FPT\PopupPrivateInterface;
-use App\Models\Screen;
 use App\Repository\Hi_FPT\PopupPrivateRepository;
 
 use App\Contract\Hi_FPT\PopupManageInterface;
@@ -23,6 +22,9 @@ use App\Repository\Hi_FPT\SectionLogRepository;
 
 use App\Contract\Hi_FPT\ScreenInterface;
 use App\Repository\Hi_FPT\ScreenRepository;
+
+use App\Contract\Hi_FPT\BehaviorInterface;
+use App\Repository\Hi_FPT\BehaviorRepository;
 
 use Illuminate\Support\ServiceProvider;
 // Auto Generate
@@ -48,6 +50,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(FtelPhoneInterface::class, FtelPhoneRepository::class);
         $this->app->bind(SectionLogInterface::class, SectionLogRepository::class);
         $this->app->bind(ScreenInterface::class, ScreenRepository::class);
+        $this->app->bind(BehaviorInterface::class, BehaviorRepository::class);
     }
 
 }
