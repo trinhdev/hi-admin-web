@@ -1,3 +1,15 @@
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header">
+            <h3>BIỂU ĐỒ TỔNG HỢP</h3>
+        </div>
+        <div class="card-body row">
+            <canvas id="stacked-bar-chart" width="700"></canvas>
+            <canvas id="product-category-chart" width="700"></canvas>
+            <canvas id="product-zone-chart" width="700"></canvas>
+        </div>
+    </div>
+</div>
 @if (!empty($data))
     @foreach ($data as $service)
     <div class="col-sm-12">
@@ -42,6 +54,7 @@
                         </tr>
                         @php
                             $list_find_max = array_filter($service, function($k) {
+                                // print_r($k);
                                 return $k['zone'] != 'Total' && (str_starts_with($k['zone'], 'Vung') && $k['branch_name'] == null);
                             });
                             $max = collect($list_find_max)->max('amount_this_time');
@@ -204,4 +217,194 @@
 
 @push('scripts')
     <script src="{{ asset('/custom_js/reportsalebydate.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/themes/plugins/chart.js/chartjs-plugin-datalabels.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+        var labels = [];
+        for(var i = 1; i < date.getDate(); i++) {
+            labels[i - 1] = 'Ngày ' + i;
+        }
+
+        var productByDateChart = {!! str_replace("'", "\'", json_encode($productByDateChart)) !!};
+        var productByDateChartLabel = {!! str_replace("'", "\'", json_encode($productByDateChartLabel)) !!};
+        
+        var chart = new Chart('stacked-bar-chart', {
+            type: 'bar',
+            data: {
+                labels: productByDateChartLabel,
+                datasets: productByDateChart
+            },
+            options: {
+                title: {
+                    display: true,
+                    position: 'bottom',
+                    fontSize: 20,
+                    text: 'Báo cáo doanh thu và đơn hàng tổng'
+                },
+                scales: {
+                    yAxes: [{
+                        id: 'money',
+                        type: 'linear',
+                        position: 'left',
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value, index, values) {
+                                return value.toLocaleString("vi-VI");
+                            }
+                        }
+                    }, {
+                        id: 'quantity',
+                        beginAtZero: true,
+                        type: 'linear',
+                        position: 'right',
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value, index, values) {
+                                return value.toLocaleString("vi-VI");
+                            }
+                        }
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var currentValue = dataset.data[tooltipItem.index];
+                            return currentValue.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                        }
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: function(value, context) {
+                            return value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+
+        var productByProductTypeChart = {!! str_replace("'", "\'", json_encode($productByProductTypeChart)) !!};
+        var productByProductTypeChartLabel = {!! str_replace("'", "\'", json_encode($productByProductTypeChartLabel)) !!};
+
+        var chartCategory = new Chart('product-category-chart', {
+            type: 'bar',
+            data: {
+                labels: productByProductTypeChartLabel,
+                datasets: productByProductTypeChart
+            },
+            options: {
+                title: {
+                    display: true,
+                    position: 'bottom',
+                    fontSize: 20,
+                    text: 'Báo cáo doanh thu và đơn hàng theo ngành hàng'
+                },
+                scales: {
+                    yAxes: [{
+                        id: 'money',
+                        type: 'linear',
+                        position: 'left',
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value, index, values) {
+                                return value.toLocaleString("vi-VI");
+                            }
+                        }
+                    }, {
+                        id: 'quantity',
+                        beginAtZero: true,
+                        type: 'linear',
+                        position: 'right',
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value, index, values) {
+                                return value.toLocaleString("vi-VI");
+                            }
+                        }
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var currentValue = dataset.data[tooltipItem.index];
+                            return currentValue.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                        }
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: function(value, context) {
+                            return value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+
+        var productByBranchChart = {!! str_replace("'", "\'", json_encode($productByBranchChart)) !!};
+        var productByBranchChartLabel = {!! str_replace("'", "\'", json_encode($productByBranchChartLabel)) !!};
+
+        var chartCategory = new Chart('product-zone-chart', {
+            type: 'bar',
+            data: {
+                labels: productByBranchChartLabel,
+                datasets: productByBranchChart
+            },
+            options: {
+                title: {
+                    display: true,
+                    position: 'bottom',
+                    fontSize: 20,
+                    text: 'Báo cáo doanh thu và đơn hàng theo vùng'
+                },
+                scales: {
+                    yAxes: [{
+                        id: 'money',
+                        type: 'linear',
+                        position: 'left',
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value, index, values) {
+                                return value.toLocaleString("vi-VI");
+                            }
+                        }
+                    }, {
+                        id: 'quantity',
+                        beginAtZero: true,
+                        type: 'linear',
+                        position: 'right',
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value, index, values) {
+                                return value.toLocaleString("vi-VI");
+                            }
+                        }
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var currentValue = dataset.data[tooltipItem.index];
+                            return currentValue.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                        }
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: function(value, context) {
+                            return value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+    </script>
 @endpush
