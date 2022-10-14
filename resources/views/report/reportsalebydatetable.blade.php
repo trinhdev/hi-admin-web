@@ -4,9 +4,9 @@
             <h3>BIỂU ĐỒ TỔNG HỢP</h3>
         </div>
         <div class="card-body row">
-            <canvas id="stacked-bar-chart" width="700"></canvas>
-            <canvas id="product-category-chart" width="700"></canvas>
-            <canvas id="product-zone-chart" width="700"></canvas>
+            <canvas id="stacked-bar-chart" style="margin-bottom: 50px"></canvas>
+            <canvas id="product-category-chart" class="col-sm-6"></canvas>
+            <canvas id="product-zone-chart" class="col-sm-6"></canvas>
         </div>
     </div>
 </div>
@@ -300,7 +300,7 @@
                 title: {
                     display: true,
                     position: 'bottom',
-                    fontSize: 20,
+                    fontSize: 15,
                     text: 'Báo cáo doanh thu và đơn hàng theo ngành hàng'
                 },
                 scales: {
@@ -360,7 +360,7 @@
                 title: {
                     display: true,
                     position: 'bottom',
-                    fontSize: 20,
+                    fontSize: 15,
                     text: 'Báo cáo doanh thu và đơn hàng theo vùng'
                 },
                 scales: {
