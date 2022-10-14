@@ -21,6 +21,8 @@ use App\Models\Sale_Report_By_Range_Product_Category;
 use App\Models\Vietlott_Orders;
 
 use DateTime;
+use DatePeriod;
+use DateInterval;
 
 class SalereportbydateController extends MY_Controller
 {
@@ -107,13 +109,7 @@ class SalereportbydateController extends MY_Controller
                                     ->get()
                                     ->groupBy(['service'])
                                     ->toArray();    
-        // dd($data);
-        // print('<pre>');
-        // print_r($data);
-        // print('</pre>');
-        // var_dump($data['household'][1]['count_employees_this_time']);
-        // dd(array_unique(explode(',', $data['household'][1]['count_employees_this_time'])));
-        // dd('test');
+
         $total = Sale_Report_By_Range::selectRaw("service,
                                                 'Total' AS zone,
                                                 NULL AS branch_name,
@@ -168,7 +164,6 @@ class SalereportbydateController extends MY_Controller
         else {
             $data_vietlott = [];
         }
-        // dd();
         
         $productByService = Sale_Report_By_Range_Product::selectRaw('product_type, SUM(count) AS count, SUM(amount) AS amount, service')
                                                         ->whereIn('service', $services_filter)
@@ -201,6 +196,170 @@ class SalereportbydateController extends MY_Controller
         // else {
         //     return view('report.reportsalebydate', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
         // }
-        return view('report.reportsalebydate', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
+
+        $chartStartFrom = date('Y-m-d 00:00:00', strtotime('yesterday midnight -30 days'));
+        $chartStartTo = date('Y-m-d 23:59:59', strtotime('yesterday midnight'));
+        $productByDateRaw = Sale_Report_By_Range::selectRaw('SUM(count) AS count, SUM(amount) AS amount, DATE_FORMAT(date_created, "%Y-%m-%d") AS date_created')
+                                                                ->whereBetween('date_created', [$chartStartFrom, $chartStartTo])
+                                                                ->orderBy('date_created')
+                                                                ->groupBy(['date_created'])
+                                                                ->get()
+                                                                ->toArray();
+        $productByDateRaw = array_column($productByDateRaw, null, 'date_created');
+        // dd($productByDateRaw);
+        
+        $vietlottByDateRaw = Vietlott_Orders::selectRaw('COUNT(trans_id) AS count, SUM(product_price * quantity - discount_price) AS amount, DATE_FORMAT(t_create, "%Y-%m-%d") AS created_at')
+                                                                ->where('order_status', 'SUCCESS')
+                                                                ->whereBetween('t_create', [$chartStartFrom, $chartStartTo])
+                                                                ->orderBy('created_at')
+                                                                ->groupBy(['created_at'])
+                                                                ->get()
+                                                                ->toArray();
+        $vietlottByDateRaw = array_column($vietlottByDateRaw, null, 'created_at');
+        // dd($vietlottByDateRaw);
+        $productByDateChart = [
+            [
+                'label'             => 'Số tiền',
+                'data'              => [],
+                'backgroundColor'   => 'rgba(54, 162, 235, 0.5)',
+                'borderColor'       => 'rgba(54, 162, 235, 1)',
+                'yAxisID'           => 'money',
+                'order'             => 2,
+                'datalabels'        => [
+                    'color'         => 'black',
+                    'anchor'        => 'end',
+                    'align'         => 'top',
+                    'offset'        => 5,
+                ]
+            ],
+            [
+                'type'              => 'line',
+                'label'             => 'Số lượng đơn hàng',
+                'data'              => [],
+                'borderColor'       => 'rgba(0, 0, 0, 1)',
+                'yAxisID'           => 'quantity',
+                'order'             => 1,
+                'pointBorderWidth'  => 5,
+                'pointStyle'        => 'circle'
+            ]
+        ];
+
+        $productByDateChartLabel = [];
+        $thisMonthYear = date('Y-m', strtotime('yesterday midnight'));
+        $interval = new DateInterval('P1D');
+        $realEnd = new DateTime($chartStartTo);
+        // $realEnd->add($interval);
+        $period = new DatePeriod(new DateTime($chartStartFrom), $interval, $realEnd);
+
+        // for($i = intval(date('d', strtotime('yesterday midnight -30 days'))); $i <= intval(date('d', strtotime('yesterday midnight'))); $i++) {
+        //     $productByDateChartLabel[] = date('Y-m-d', strtotime($thisMonthYear . '-' . $i));
+        //     $productByDateChart[0]['data'][] = strval((!empty($productByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['amount']) ? $productByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['amount'] : 0) + (!empty($vietlottByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['amount']) ? $vietlottByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['amount'] : 0));
+        //     $productByDateChart[1]['data'][] = strval((!empty($productByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['count']) ? $productByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['count'] : 0) + (!empty($vietlottByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['count']) ? $vietlottByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['count'] : 0));
+        // }
+        foreach ($period as $periodKey => $periodValue) {
+            // $value->format('Y-m-d');
+            $productByDateChartLabel[] = strval($periodValue->format('Y-m-d'));
+            $productByDateChart[0]['data'][] = strval((!empty($productByDateRaw[strval($periodValue->format('Y-m-d'))]['amount']) ? $productByDateRaw[strval($periodValue->format('Y-m-d'))]['amount'] : 0) + (!empty($vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['amount']) ? $vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['amount'] : 0));
+            $productByDateChart[1]['data'][] = strval((!empty($productByDateRaw[strval($periodValue->format('Y-m-d'))]['count']) ? $productByDateRaw[strval($periodValue->format('Y-m-d'))]['count'] : 0) + (!empty($vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['count']) ? $vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['count'] : 0));
+            // var_dump($value->format('Y-m-d'));       
+        }
+
+        $productByProductTypeChartLabel = [];
+        $productByProductTypeChart = [
+            [
+                'label'             => 'Số tiền',
+                'data'              => [],
+                'backgroundColor'   => 'rgba(78, 181, 18, 0.5)',
+                'borderColor'       => 'rgba(78, 181, 18, 1)',
+                'yAxisID'           => 'money',
+                'order'             => 2,
+                'datalabels'        => [
+                    'color'         => 'black',
+                    'anchor'        => 'end',
+                    'align'         => 'top',
+                    'offset'        => 5,
+                ]
+            ],
+            [
+                'type'              => 'line',
+                'label'             => 'Số lượng đơn hàng',
+                'data'              => [],
+                'borderColor'       => 'rgba(0, 0, 0, 1)',
+                'yAxisID'           => 'quantity',
+                'order'             => 1,
+                'pointBorderWidth'  => 5,
+                'pointStyle'        => 'circle'
+            ]
+        ];
+
+        $totalThisMonth = Sale_Report_By_Range::selectRaw("service,
+                                                'Total' AS zone,
+                                                NULL AS branch_name,
+                                                SUM(count) AS 'count_this_time', 
+                                                SUM(amount) AS 'amount_this_time'")
+                                        ->whereBetween('date_created', [$chartStartFrom, $chartStartTo])
+                                        ->groupBy(['service'])
+                                        ->get()
+                                        ->groupBy(['service'])
+                                        ->toArray();
+
+        $data_vietlott_total_this_month = Vietlott_Orders::selectRaw("'Total' AS product_name,
+                                        SUM(quantity) AS 'count_this_time', 
+                                        SUM(product_price * quantity - discount_price) AS 'amount_this_time'")
+                                ->where('order_status', 'SUCCESS')
+                                ->whereBetween('t_create', [$chartStartFrom, $chartStartTo])
+                                ->get()
+                                ->toArray();
+
+        foreach($totalThisMonth as $totalThisMonthKey => $totalThisMonthValue) {
+            $productByProductTypeChartLabel[] = strtoupper($totalThisMonthKey);
+            $productByProductTypeChart[0]['data'][] = $totalThisMonthValue[0]['amount_this_time'];
+            $productByProductTypeChart[1]['data'][] = $totalThisMonthValue[0]['count_this_time'];
+        }
+        $productByProductTypeChartLabel[] = 'VIETLOTT';
+        $productByProductTypeChart[0]['data'][] = (!empty($data_vietlott_total_this_month[0]['amount_this_time'])) ? $data_vietlott_total_this_month[0]['amount_this_time'] : 0;
+        $productByProductTypeChart[1]['data'][] = (!empty($data_vietlott_total_this_month[0]['count_this_time'])) ? $data_vietlott_total_this_month[0]['count_this_time'] : 0;
+
+        $productByBranchChartRaw = Sale_Report_By_Range::selectRaw("zone, SUM(count) AS 'count_this_time', SUM(amount) AS 'amount_this_time'")
+                                                                ->whereBetween('date_created', [$chartStartFrom, $chartStartTo])
+                                                                ->orderBy('zone')
+                                                                ->groupBy(['zone'])
+                                                                ->get()
+                                                                ->groupBy(['zone'])
+                                                                ->toArray();
+        $productByBranchChartLabel = [];
+        $productByBranchChart = [
+            [
+                'label'             => 'Số tiền',
+                'data'              => [],
+                'backgroundColor'   => 'rgba(74, 30, 131, 0.5)',
+                'borderColor'       => 'rgba(74, 30, 131, 1)',
+                'yAxisID'           => 'money',
+                'order'             => 2,
+                'datalabels'        => [
+                    'color'         => 'black',
+                    'anchor'        => 'end',
+                    'align'         => 'top',
+                    'offset'        => 5,
+                ]
+            ],
+            [
+                'type'              => 'line',
+                'label'             => 'Số lượng đơn hàng',
+                'data'              => [],
+                'borderColor'       => 'rgba(0, 0, 0, 1)',
+                'yAxisID'           => 'quantity',
+                'order'             => 1,
+                'pointBorderWidth'  => 5,
+                'pointStyle'        => 'circle'
+            ]
+        ];
+        foreach($productByBranchChartRaw as $productByBranchChartRawKey => $productByBranchChartRawValue) {
+            $productByBranchChartLabel[] = $productByBranchChartRawKey;
+            $productByBranchChart[0]['data'][] = $productByBranchChartRawValue[0]['amount_this_time'];
+            $productByBranchChart[1]['data'][] = $productByBranchChartRawValue[0]['count_this_time'];
+        }
+
+        return view('report.reportsalebydate', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => $productByBranchChart, 'productByBranchChartLabel' => $productByBranchChartLabel]);
     }
 }
