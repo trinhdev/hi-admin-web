@@ -243,6 +243,10 @@
                     fontSize: 20,
                     text: 'Báo cáo doanh thu và đơn hàng tổng'
                 },
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                },
                 scales: {
                     yAxes: [{
                         id: 'money',
@@ -303,6 +307,10 @@
                     fontSize: 15,
                     text: 'Báo cáo doanh thu và đơn hàng theo ngành hàng'
                 },
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                },
                 scales: {
                     yAxes: [{
                         id: 'money',
@@ -362,6 +370,10 @@
                     position: 'bottom',
                     fontSize: 15,
                     text: 'Báo cáo doanh thu và đơn hàng theo vùng'
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom'
                 },
                 scales: {
                     yAxes: [{
