@@ -89,7 +89,7 @@
                 </div>
                 <div class="col-sm-4">
                     @if (!empty($data_product[$service[0]['service']]))
-                        <table style="width: 100%">
+                        <table style="width: 100%; margin-top: 31px">
                             <tr>
                                 <th colspan="3">{{ $this_time }}</th>
                             </tr>
@@ -192,7 +192,7 @@
                 </table>
             </div>
             <div class="col-sm-4">
-                <table style="width: 100%; margin-top: 50px">
+                <table style="width: 100%; margin-top: 31px">
                     <tr>
                         <th></th>
                         <th>Số tiền</th>
