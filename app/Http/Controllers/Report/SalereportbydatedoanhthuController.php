@@ -224,11 +224,17 @@ class SalereportbydatedoanhthuController extends MY_Controller
                 'type'              => 'line',
                 'label'             => 'Số lượng đơn hàng',
                 'data'              => [],
-                'borderColor'       => 'rgba(0, 0, 0, 1)',
+                'borderColor'       => 'rgba(0, 0, 0, 0.5)',
                 'yAxisID'           => 'quantity',
                 'order'             => 1,
-                'pointBorderWidth'  => 5,
-                'pointStyle'        => 'circle'
+                'pointBorderWidth'  => 3,
+                'pointStyle'        => 'circle',
+                'datalabels'        => [
+                    'color'         => 'red',
+                    'anchor'        => 'end',
+                    'align'         => 'top',
+                    'offset'        => 5,
+                ]
             ]
         ];
 
@@ -272,11 +278,17 @@ class SalereportbydatedoanhthuController extends MY_Controller
                 'type'              => 'line',
                 'label'             => 'Số lượng đơn hàng',
                 'data'              => [],
-                'borderColor'       => 'rgba(0, 0, 0, 1)',
+                'borderColor'       => 'rgba(0, 0, 0, 0.5)',
                 'yAxisID'           => 'quantity',
                 'order'             => 1,
-                'pointBorderWidth'  => 5,
-                'pointStyle'        => 'circle'
+                'pointBorderWidth'  => 3,
+                'pointStyle'        => 'circle',
+                'datalabels'        => [
+                    'color'         => 'red',
+                    'anchor'        => 'end',
+                    'align'         => 'top',
+                    'offset'        => 5,
+                ]
             ]
         ];
 
@@ -335,11 +347,17 @@ class SalereportbydatedoanhthuController extends MY_Controller
                 'type'              => 'line',
                 'label'             => 'Số lượng đơn hàng',
                 'data'              => [],
-                'borderColor'       => 'rgba(0, 0, 0, 1)',
+                'borderColor'       => 'rgba(0, 0, 0, 0.5)',
                 'yAxisID'           => 'quantity',
                 'order'             => 1,
-                'pointBorderWidth'  => 5,
-                'pointStyle'        => 'circle'
+                'pointBorderWidth'  => 3,
+                'pointStyle'        => 'circle',
+                'datalabels'        => [
+                    'color'         => 'red',
+                    'anchor'        => 'end',
+                    'align'         => 'top',
+                    'offset'        => 5,
+                ]
             ]
         ];
         foreach($productByBranchChartRaw as $productByBranchChartRawKey => $productByBranchChartRawValue) {
