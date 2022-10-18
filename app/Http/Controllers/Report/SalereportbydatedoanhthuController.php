@@ -46,6 +46,9 @@ class SalereportbydatedoanhthuController extends MY_Controller
         $from2 = $request->show_from;
         $to2 = $request->show_to;
 
+        $zones = Settings::where('name', 'active_zones')->get()->toArray();
+        $zones_filter = json_decode($zones[0]['value'], true);
+
         if(empty($from2)) {
             $from2 = date('Y-m-01 00:00:00', strtotime('yesterday midnight'));
         }
@@ -245,17 +248,10 @@ class SalereportbydatedoanhthuController extends MY_Controller
         // $realEnd->add($interval);
         $period = new DatePeriod(new DateTime($chartStartFrom), $interval, $realEnd);
 
-        // for($i = intval(date('d', strtotime('yesterday midnight -30 days'))); $i <= intval(date('d', strtotime('yesterday midnight'))); $i++) {
-        //     $productByDateChartLabel[] = date('Y-m-d', strtotime($thisMonthYear . '-' . $i));
-        //     $productByDateChart[0]['data'][] = strval((!empty($productByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['amount']) ? $productByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['amount'] : 0) + (!empty($vietlottByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['amount']) ? $vietlottByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['amount'] : 0));
-        //     $productByDateChart[1]['data'][] = strval((!empty($productByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['count']) ? $productByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['count'] : 0) + (!empty($vietlottByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['count']) ? $vietlottByDateRaw[date('Y-m-d', strtotime($thisMonthYear . '-' . $i))]['count'] : 0));
-        // }
         foreach ($period as $periodKey => $periodValue) {
-            // $value->format('Y-m-d');
             $productByDateChartLabel[] = strval($periodValue->format('Y-m-d'));
             $productByDateChart[0]['data'][] = strval((!empty($productByDateRaw[strval($periodValue->format('Y-m-d'))]['amount']) ? $productByDateRaw[strval($periodValue->format('Y-m-d'))]['amount'] : 0) + (!empty($vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['amount']) ? $vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['amount'] : 0));
-            $productByDateChart[1]['data'][] = strval((!empty($productByDateRaw[strval($periodValue->format('Y-m-d'))]['count']) ? $productByDateRaw[strval($periodValue->format('Y-m-d'))]['count'] : 0) + (!empty($vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['count']) ? $vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['count'] : 0));
-            // var_dump($value->format('Y-m-d'));       
+            $productByDateChart[1]['data'][] = strval((!empty($productByDateRaw[strval($periodValue->format('Y-m-d'))]['count']) ? $productByDateRaw[strval($periodValue->format('Y-m-d'))]['count'] : 0) + (!empty($vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['count']) ? $vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['count'] : 0));  
         }
 
         $productByProductTypeChartLabel = [];
@@ -271,7 +267,7 @@ class SalereportbydatedoanhthuController extends MY_Controller
                     'color'         => 'black',
                     'anchor'        => 'end',
                     'align'         => 'top',
-                    'offset'        => 5,
+                    'offset'        => 5
                 ]
             ],
             [
@@ -320,30 +316,18 @@ class SalereportbydatedoanhthuController extends MY_Controller
         $productByProductTypeChart[0]['data'][] = (!empty($data_vietlott_total_this_month[0]['amount_this_time'])) ? $data_vietlott_total_this_month[0]['amount_this_time'] : 0;
         $productByProductTypeChart[1]['data'][] = (!empty($data_vietlott_total_this_month[0]['count_this_time'])) ? $data_vietlott_total_this_month[0]['count_this_time'] : 0;
 
-        $productByBranchChartRaw = Sale_Report_By_Range_Doanh_Thu::selectRaw("zone, SUM(count) AS 'count_this_time', SUM(amount) AS 'amount_this_time'")
+        $serviceColor = ['rgba(138, 96, 232, 0.5)', 'rgba(62, 224, 205, 0.5)', 'rgba(31, 101, 89, 0.5)', 'rgba(44, 160, 58, 0.5)', 'rgba(210, 94, 32, 0.5)', 'rgba(28, 163, 43, 0.5)'];
+        $productByBranchChartRaw = Sale_Report_By_Range_Doanh_Thu::selectRaw("zone, service, SUM(count) AS 'count_this_time', SUM(amount) AS 'amount_this_time'")
                                                                 ->whereBetween('date_created', [$chartStartFrom, $chartStartTo])
                                                                 ->orderBy('zone')
-                                                                ->groupBy(['zone'])
+                                                                ->orderBy('service')
+                                                                ->groupBy(['zone', 'service'])
                                                                 ->get()
-                                                                ->groupBy(['zone'])
                                                                 ->toArray();
+
         $productByBranchChartLabel = [];
         $productByBranchChart = [
-            [
-                'label'             => 'Số tiền',
-                'data'              => [],
-                'backgroundColor'   => 'rgba(74, 30, 131, 0.5)',
-                'borderColor'       => 'rgba(74, 30, 131, 1)',
-                'yAxisID'           => 'money',
-                'order'             => 2,
-                'datalabels'        => [
-                    'color'         => 'black',
-                    'anchor'        => 'end',
-                    'align'         => 'top',
-                    'offset'        => 5,
-                ]
-            ],
-            [
+            'line'                  => [
                 'type'              => 'line',
                 'label'             => 'Số lượng đơn hàng',
                 'data'              => [],
@@ -354,18 +338,48 @@ class SalereportbydatedoanhthuController extends MY_Controller
                 'pointStyle'        => 'circle',
                 'datalabels'        => [
                     'color'         => 'red',
-                    'anchor'        => 'end',
-                    'align'         => 'top',
                     'offset'        => 5,
                 ]
             ]
         ];
-        foreach($productByBranchChartRaw as $productByBranchChartRawKey => $productByBranchChartRawValue) {
-            $productByBranchChartLabel[] = $productByBranchChartRawKey;
-            $productByBranchChart[0]['data'][] = $productByBranchChartRawValue[0]['amount_this_time'];
-            $productByBranchChart[1]['data'][] = $productByBranchChartRawValue[0]['count_this_time'];
+
+        $productByBranchChartRawCount = collect($productByBranchChartRaw)->groupBy('zone');
+        $productByBranchChart['line']['data'] = array_values($productByBranchChartRawCount->map(function($rowProductByBranchChartLineData) {
+            return strval($rowProductByBranchChartLineData->sum('count_this_time'));
+        })->toArray());
+
+        $productByBranchChartRawAmount = collect($productByBranchChartRaw)->groupBy('service')->toArray();
+        foreach($services as $serviceKey => $serviceValue) {
+            if(empty($productByBranchChart[$serviceValue])) {
+                $productByBranchChart[$serviceValue] = [
+                    'type'              => 'bar',
+                    'label'             => strtoupper($serviceValue),
+                    'data'              => [],
+                    'backgroundColor'   => rand_color(),
+                    'backgroundColor'   => $serviceColor[$serviceKey],
+                    'borderColor'       => 'rgba(0, 0, 0, 1)',
+                    'yAxisID'           => 'money',
+                    'order'             => 2,
+                    'stacked'           => true,
+                    'datalabels'        => [
+                        'color'         => 'black',
+                        'offset'        => 5,
+                    ]
+                ];
+            }
+            if(!empty($productByBranchChartRawAmount[$serviceValue])) {
+                $dataAmount = array_column($productByBranchChartRawAmount[$serviceValue], 'amount_this_time', 'zone');
+                foreach($zones_filter as $zoneKey => $zoneValue) {
+                    $productByBranchChart[$serviceValue]['data'][] = (!empty($dataAmount[$zoneValue['key']])) ? $dataAmount[$zoneValue['key']] : "0";
+                }
+            }
+            else {
+                foreach($zones_filter as $zoneKey => $zoneValue) {
+                    $productByBranchChartLabel[] = $zoneValue['value'];
+                    $productByBranchChart[$serviceValue]['data'][] = "0";
+                }
+            }
         }
-        // dd($vietlottByDateRaw);
-        return view('report.reportsalebydatedoanhthu', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => $productByBranchChart, 'productByBranchChartLabel' => $productByBranchChartLabel]);
+        return view('report.reportsalebydatedoanhthu', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => array_values($productByBranchChart), 'productByBranchChartLabel' => array_unique($productByBranchChartLabel)]);
     }
 }

@@ -237,6 +237,14 @@
                 datasets: productByDateChart
             },
             options: {
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 50,
+                        bottom: 10
+                    }
+                },
                 title: {
                     display: true,
                     position: 'bottom',
@@ -301,6 +309,14 @@
                 datasets: productByProductTypeChart
             },
             options: {
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 50,
+                        bottom: 10
+                    }
+                },
                 title: {
                     display: true,
                     position: 'bottom',
@@ -365,6 +381,14 @@
                 datasets: productByBranchChart
             },
             options: {
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 50,
+                        bottom: 10
+                    }
+                },
                 title: {
                     display: true,
                     position: 'bottom',
@@ -376,28 +400,38 @@
                     position: 'bottom'
                 },
                 scales: {
-                    yAxes: [{
-                        id: 'money',
-                        type: 'linear',
-                        position: 'left',
-                        ticks: {
+                    xAxes: [{
+                        stacked: true,
+                        beginAtZero: true
+                    }],
+                    yAxes: [
+                        {
+                            id: 'money',
                             beginAtZero: true,
-                            callback: function(value, index, values) {
-                                return value.toLocaleString("vi-VI");
+                            type: 'linear',
+                            position: 'left',
+                            stacked: true,
+                            ticks: {
+                                // beginAtZero: true,
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString("vi-VI");
+                                }
+                            }
+                        }, 
+                        {
+                            id: 'quantity',
+                            beginAtZero: true,
+                            type: 'linear',
+                            position: 'right',
+                            stacked: false,
+                            ticks: {
+                                // beginAtZero: true,
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString("vi-VI");
+                                }
                             }
                         }
-                    }, {
-                        id: 'quantity',
-                        beginAtZero: true,
-                        type: 'linear',
-                        position: 'right',
-                        ticks: {
-                            beginAtZero: true,
-                            callback: function(value, index, values) {
-                                return value.toLocaleString("vi-VI");
-                            }
-                        }
-                    }]
+                    ]
                 },
                 tooltips: {
                     callbacks: {
@@ -410,8 +444,28 @@
                 },
                 plugins: {
                     datalabels: {
+                        anchor: 'center',
+                        align: 'top',
                         formatter: function(value, context) {
-                            return value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                            const datasetArray = [];
+                            context.chart.data.datasets.forEach((dataset) => {
+                                if(dataset.data[context.dataIndex]) {
+                                    datasetArray.push(dataset.data[context.dataIndex]);
+                                }
+                            });
+
+                            let sum = datasetArray.reduce(totalSum, 0);
+
+                            if(context.dataset.type == 'bar' && context.datasetIndex === datasetArray.length - 1) {
+                                return String(sum).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                            }
+                            else if(context.dataset.type == 'bar' && context.datasetIndex !== datasetArray.length - 1) {
+                                return '';
+                            }
+
+                            function totalSum(total, datapoint) {
+                                return parseInt(total) + parseInt(datapoint);
+                            }
                         }
                     }
                 }
