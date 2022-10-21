@@ -3,9 +3,6 @@
 @section('content')
 @php
 $data = session()->get( 'data' );
-if(!empty($data)){
-    dd($data);
-}
 @endphp
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -37,12 +34,12 @@ if(!empty($data)){
                                 <h3 class="card-title uppercase">Form File</h3>
                             </div>
                             <div class="card-body">
-                                {!! Form::open(array('url' => route('behavior.store'),'id' => 'importExcel', 'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
+                                {!! Form::open(array('url' => route('behavior.post'),'id' => 'importExcel', 'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
                                 @csrf
                                 <div class="form-group">
                                     <label class="" for="number_phone_import"><i>Upload with file exel</i></label>
                                     <input onchange="uploadFile()" type="file" id="number_phone_import" name="excel"
-                                           class="form-control @error('exel') is-invalid @enderror" accept=".xlsx">
+                                           class="form-control @error('exel') is-invalid @enderror" accept=".xlsx,.csv">
                                 </div>
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
@@ -73,7 +70,7 @@ if(!empty($data)){
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
 
-                    {!! $dataTable->table() !!}
+                    @include('behavior.export')
                 </div>
             </div>
         </section>
@@ -83,5 +80,27 @@ if(!empty($data)){
 
 @endsection
 @push('scripts')
-    {{ $dataTable->scripts() }}
+    <script>
+        $('#behaviorExport').DataTable({
+        processing: true,
+        lengthChange: false,
+        responsive: true,
+        autoWidth: true,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: [ 0, ':visible' ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            }
+        ]
+    });
+    </script>
 @endpush
