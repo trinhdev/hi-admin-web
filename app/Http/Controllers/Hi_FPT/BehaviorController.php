@@ -26,8 +26,8 @@ class BehaviorController extends MY_Controller
         return $this->BehaviorRepository->index($dataTable, $request);
     }
 
-    public function store(StoreRequest $request)
-    {
-        return $this->BehaviorRepository->store($request);
-    }
+    // public function store(StoreRequest $request)
+    // {
+    //     return $this->BehaviorRepository->store($request);
+    // }
 }

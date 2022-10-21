@@ -305,7 +305,7 @@ Route::group([
 
             Route::prefix('behavior')->group(function () {
                 Route::get('/', [BehaviorController::class, 'index'])->name('behavior.index');
-                Route::post('/store', [BehaviorController::class, 'store'])->name('behavior.store');
+                Route::post('/', [BehaviorController::class, 'index'])->name('behavior.post');
             });
 
             Route::prefix('employees-updates')->group(function () {

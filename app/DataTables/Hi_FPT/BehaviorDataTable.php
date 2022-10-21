@@ -27,6 +27,8 @@ class BehaviorDataTable extends DataTable
      */
     public function query()
     {
+
+        dd($this);
         return collect($this->data) ?? [];
     }
 
