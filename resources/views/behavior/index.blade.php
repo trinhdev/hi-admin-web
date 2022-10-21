@@ -45,7 +45,7 @@ $data = session()->get( 'data' );
                                         <ol class="breadcrumb">
                                             <ul>
                                                 <b>Note</b>: Yêu cầu tải lên file đúng định dạng, tải file mẫu <a
-                                                    href="https://docs.google.com/spreadsheets/d/1ifAR0UwfdV03Sidcshjvwl1pn1YmYBD9/edit?usp=sharing&ouid=113322866597815571901&rtpof=true&sd=true"
+                                                    href="https://docs.google.com/spreadsheets/d/1SRdXHP-QdOcPkGpGspGxxBLSNAmcH3TBWwA98w-Q9fY/edit#gid=0"
                                                     target="_blank"> <b> tại đây</b><a/>)
                                             </ul>
                                         </ol>
