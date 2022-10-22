@@ -1271,15 +1271,14 @@ function initIconcategory() {
             }
         },
         {
-            data: "isDeleted",
-            name: "isDeleted",
+            data: "isDisplay",
+            name: "isDisplay",
             title: "Trạng thái",
             render: function (data, type, row) {
                 var html = '';
-                if (typeof row['isDeleted'] != 'undefined') {
-                    console.log(row['isDeleted']);
-                    switch (row['isDeleted']) {
-                        case 1:
+                if (typeof row['isDisplay'] != 'undefined') {
+                    switch (row['isDisplay']) {
+                        case "0":
                             html = `<div class="df-switch">
                                     <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off" disabled>
                                         <div class="inner-handle"></div>
@@ -1287,7 +1286,7 @@ function initIconcategory() {
                                     </button>
                                 </div>`;
                             break;
-                        case 0:
+                        case "1":
                             html = `<div class="df-switch">
                                     <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
                                         <div class="inner-handle"></div>
@@ -1295,8 +1294,15 @@ function initIconcategory() {
                                     </button>
                                 </div>`;
                             break;
-                        case 2:
-                            html = (row['displayBeginDay']) ? `Hẹn ngày bật <span class="badge badge-warning">${row['displayBeginDay']}</span>` : '';
+                        case "2":
+                            html = `<div class="df-switch">
+                                        <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off" disabled>
+                                            <div class="inner-handle"></div>
+                                            <div class="handle"></div>
+                                        </button>
+                                    </div>`;
+                            html += (row['displayBeginDay']) ? `Hẹn ngày bật <span class="badge badge-warning">${row['displayBeginDay']}</span><br>` : '';
+                            html += (row['displayEndDay']) ? `Hẹn ngày tắt <span class="badge badge-warning">${row['displayEndDay']}</span>` : '';
                             break;
                         default:
                     }

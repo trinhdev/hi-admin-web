@@ -334,7 +334,9 @@ class IconapprovedController extends MY_Controller
                     'productTitleNameVi'    => (!empty($category->productTitleNameVi)) ? $category->productTitleNameVi : '',
                     'productTitleNameEn'    => (!empty($category->productTitleNameEn)) ? $category->productTitleNameEn : '',
                     'arrayId'               => (!empty($category->arrayId)) ? $category->arrayId : '',
-                    'isDeleted'             => '0'
+                    'isDisplay'             => (isset($category->isDisplay)) ? $category->isDisplay : '0',
+                    'displayBeginDay'       => (isset($category->displayBeginDay)) ? $category->displayBeginDay : date('Y-m-d 00:00:00', strtotime('now')),
+                    'displayEndDay'         => (isset($category->displayEndDay)) ? $category->displayEndDay : date('Y-m-d 23:59:59', strtotime('now'))
                 ];
                 break;
             case 'icon_config':
