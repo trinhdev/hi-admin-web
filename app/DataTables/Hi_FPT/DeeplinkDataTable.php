@@ -61,7 +61,7 @@ class DeeplinkDataTable extends DataTable
                     ->orderBy(0, 'DESC')
                     ->parameters([
                         'scroll' => false,
-                        'searching' => false,
+                        'searching' => true,
                         'searchDelay' => 500,
                         'initComplete' => "function () {
                             var filter_condition = $('#filter_condition');
