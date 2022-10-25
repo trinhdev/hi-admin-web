@@ -397,7 +397,8 @@
                 },
                 legend: {
                     display: true,
-                    position: 'bottom'
+                    position: 'bottom',
+                    onClick: (e) => e.stopPropagation()
                 },
                 scales: {
                     xAxes: [{
@@ -412,7 +413,7 @@
                             position: 'left',
                             stacked: true,
                             ticks: {
-                                // beginAtZero: true,
+                                beginAtZero: true,
                                 callback: function(value, index, values) {
                                     return value.toLocaleString("vi-VI");
                                 }
@@ -425,7 +426,7 @@
                             position: 'right',
                             stacked: false,
                             ticks: {
-                                // beginAtZero: true,
+                                beginAtZero: true,
                                 callback: function(value, index, values) {
                                     return value.toLocaleString("vi-VI");
                                 }

@@ -44,6 +44,7 @@ class SalereportbydateController extends MY_Controller
         $to1 = $request->show_to1;
         $from2 = $request->show_from;
         $to2 = $request->show_to;
+        $zone = $request->zone;
 
         $zones = Settings::where('name', 'active_zones')->get()->toArray();
         $zones_filter = json_decode($zones[0]['value'], true);
@@ -59,6 +60,9 @@ class SalereportbydateController extends MY_Controller
         }
         else {
             $to2 = date('Y-m-d 23:59:59', strtotime($to2));
+        }
+        if(empty($zone)) {
+            $zone = array_column($zones_filter, 'key');
         }
 
         $fromDate = new DateTime($from2);
@@ -90,6 +94,7 @@ class SalereportbydateController extends MY_Controller
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', list_emp_phone, null)) AS 'count_employees_this_time'")
                                         ->whereNotIn('zone', ['FTELHO', 'PNCHO', 'TINHO', 'App Users'])
                                         ->whereIn('service', $services_filter)
+                                        ->whereIn('zone', $zone)
                                         ->whereBetween('date_created', [$from1, $to2])
                                         ->groupBy(['service', 'zone']);
 
@@ -103,6 +108,7 @@ class SalereportbydateController extends MY_Controller
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', list_emp_phone, null)) AS 'count_employees_last_time',
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', list_emp_phone, null)) AS 'count_employees_this_time'")
                                     ->whereIn('service', $services_filter)
+                                    ->whereIn('zone', $zone)
                                     ->whereBetween('date_created', [$from1, $to2])
                                     ->groupBy(['service', 'zone', 'branch_name'])
                                     ->union($query1)
@@ -123,6 +129,7 @@ class SalereportbydateController extends MY_Controller
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', list_emp_phone, null)) AS 'count_employees_last_time',
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', list_emp_phone, null)) AS 'count_employees_this_time'")
                                         ->whereIn('service', $services_filter)
+                                        ->whereIn('zone', $zone)
                                         ->whereBetween('date_created', [$from1, $to2])
                                         ->groupBy(['service'])
                                         ->get()
@@ -137,6 +144,7 @@ class SalereportbydateController extends MY_Controller
                                                     SUM(count) AS 'count_this_time', 
                                                     SUM(amount) AS 'amount_this_time'")
                                             ->whereIn('service', $services_filter)
+                                            ->whereIn('zone', $zone)
                                             ->whereBetween('date_created', [$from2, $to2])
                                             ->groupBy(['service'])
                                             ->get()
@@ -170,6 +178,7 @@ class SalereportbydateController extends MY_Controller
         
         $productByService = Sale_Report_By_Range_Product::selectRaw('product_type, SUM(count) AS count, SUM(amount) AS amount, service')
                                                         ->whereIn('service', $services_filter)
+                                                        ->whereIn('zone', $zone)
                                                         ->whereBetween('created_at', [$from2, $to2])
                                                         ->groupBy(['service', 'product_type'])
                                                         ->orderBy('amount', 'desc')
@@ -181,6 +190,7 @@ class SalereportbydateController extends MY_Controller
                                         
         $productByCategory = Sale_Report_By_Range_Product_Category::selectRaw('product_category, SUM(count) AS count, SUM(amount) AS amount, service')
                                                         ->whereIn('service', $services_filter)
+                                                        ->whereIn('zone', $zone)
                                                         ->whereBetween('created_at', [$from2, $to2])
                                                         ->groupBy(['service', 'product_category'])
                                                         ->orderBy('amount', 'desc')
@@ -203,7 +213,9 @@ class SalereportbydateController extends MY_Controller
         $chartStartFrom = date('Y-m-d 00:00:00', strtotime('yesterday midnight -30 days'));
         $chartStartTo = date('Y-m-d 23:59:59', strtotime('yesterday midnight'));
         $productByDateRaw = Sale_Report_By_Range::selectRaw('SUM(count) AS count, SUM(amount) AS amount, DATE_FORMAT(date_created, "%Y-%m-%d") AS date_created')
-                                                                ->whereBetween('date_created', [$chartStartFrom, $chartStartTo])
+                                                                ->whereBetween('date_created', [$from2, $to2])
+                                                                ->whereIn('service', $services_filter)
+                                                                ->whereIn('zone', $zone)
                                                                 ->orderBy('date_created')
                                                                 ->groupBy(['date_created'])
                                                                 ->get()
@@ -213,7 +225,7 @@ class SalereportbydateController extends MY_Controller
         
         $vietlottByDateRaw = Vietlott_Orders::selectRaw('COUNT(trans_id) AS count, SUM(product_price * quantity - discount_price) AS amount, DATE_FORMAT(t_create, "%Y-%m-%d") AS created_at')
                                                                 ->where('order_status', 'SUCCESS')
-                                                                ->whereBetween('t_create', [$chartStartFrom, $chartStartTo])
+                                                                ->whereBetween('t_create', [$from2, $to2])
                                                                 ->orderBy('created_at')
                                                                 ->groupBy(['created_at'])
                                                                 ->get()
@@ -256,9 +268,9 @@ class SalereportbydateController extends MY_Controller
         $productByDateChartLabel = [];
         $thisMonthYear = date('Y-m', strtotime('yesterday midnight'));
         $interval = new DateInterval('P1D');
-        $realEnd = new DateTime($chartStartTo);
+        $realEnd = new DateTime($to2);
         // $realEnd->add($interval);
-        $period = new DatePeriod(new DateTime($chartStartFrom), $interval, $realEnd);
+        $period = new DatePeriod(new DateTime($from2), $interval, $realEnd);
 
         // for($i = intval(date('d', strtotime('yesterday midnight -30 days'))); $i <= intval(date('d', strtotime('yesterday midnight'))); $i++) {
         //     $productByDateChartLabel[] = date('Y-m-d', strtotime($thisMonthYear . '-' . $i));
@@ -312,32 +324,38 @@ class SalereportbydateController extends MY_Controller
                                                 NULL AS branch_name,
                                                 SUM(count) AS 'count_this_time', 
                                                 SUM(amount) AS 'amount_this_time'")
-                                        ->whereBetween('date_created', [$chartStartFrom, $chartStartTo])
+                                        ->whereBetween('date_created', [$from2, $to2])
+                                        ->whereIn('service', $services_filter)
+                                        ->whereIn('zone', $zone)
                                         ->groupBy(['service'])
                                         ->get()
                                         ->groupBy(['service'])
                                         ->toArray();
-
-        $data_vietlott_total_this_month = Vietlott_Orders::selectRaw("'Total' AS product_name,
-                                        SUM(quantity) AS 'count_this_time', 
-                                        SUM(product_price * quantity - discount_price) AS 'amount_this_time'")
-                                ->where('order_status', 'SUCCESS')
-                                ->whereBetween('t_create', [$chartStartFrom, $chartStartTo])
-                                ->get()
-                                ->toArray();
 
         foreach($totalThisMonth as $totalThisMonthKey => $totalThisMonthValue) {
             $productByProductTypeChartLabel[] = strtoupper($totalThisMonthKey);
             $productByProductTypeChart[0]['data'][] = $totalThisMonthValue[0]['amount_this_time'];
             $productByProductTypeChart[1]['data'][] = $totalThisMonthValue[0]['count_this_time'];
         }
-        $productByProductTypeChartLabel[] = 'VIETLOTT';
-        $productByProductTypeChart[0]['data'][] = (!empty($data_vietlott_total_this_month[0]['amount_this_time'])) ? $data_vietlott_total_this_month[0]['amount_this_time'] : 0;
-        $productByProductTypeChart[1]['data'][] = (!empty($data_vietlott_total_this_month[0]['count_this_time'])) ? $data_vietlott_total_this_month[0]['count_this_time'] : 0;
 
-        $serviceColor = ['rgba(138, 96, 232, 0.5)', 'rgba(62, 224, 205, 0.5)', 'rgba(31, 101, 89, 0.5)', 'rgba(44, 160, 58, 0.5)', 'rgba(210, 94, 32, 0.5)', 'rgba(28, 163, 43, 0.5)'];
+        if(in_array('vietlott', $services_filter)) {
+            $data_vietlott_total_this_month = Vietlott_Orders::selectRaw("'Total' AS product_name,
+                                                                        SUM(quantity) AS 'count_this_time', 
+                                                                        SUM(product_price * quantity - discount_price) AS 'amount_this_time'")
+                                                                ->where('order_status', 'SUCCESS')
+                                                                ->whereBetween('t_create', [$from2, $to2])
+                                                                ->get()
+                                                                ->toArray();
+            $productByProductTypeChartLabel[] = 'VIETLOTT';
+            $productByProductTypeChart[0]['data'][] = (!empty($data_vietlott_total_this_month[0]['amount_this_time'])) ? $data_vietlott_total_this_month[0]['amount_this_time'] : 0;
+            $productByProductTypeChart[1]['data'][] = (!empty($data_vietlott_total_this_month[0]['count_this_time'])) ? $data_vietlott_total_this_month[0]['count_this_time'] : 0;
+        }
+
+        $serviceColor = ['ict' => 'rgba(138, 96, 232, 0.5)', 'hdi' => 'rgba(62, 224, 205, 0.5)', 'household' => 'rgba(31, 101, 89, 0.5)', 'vuanem' => 'rgba(158, 190, 27, 0.5)', 'gas' => 'rgba(210, 94, 32, 0.5)', 'vietlott' => 'rgba(253, 45, 131, 0.5)'];
         $productByBranchChartRaw = Sale_Report_By_Range::selectRaw("zone, service, SUM(count) AS 'count_this_time', SUM(amount) AS 'amount_this_time'")
-                                                                ->whereBetween('date_created', [$chartStartFrom, $chartStartTo])
+                                                                ->whereBetween('date_created', [$from2, $to2])
+                                                                ->whereIn('service', $services_filter)
+                                                                ->whereIn('zone', $zone)
                                                                 ->orderBy('zone')
                                                                 ->orderBy('service')
                                                                 ->groupBy(['zone', 'service'])
@@ -362,44 +380,35 @@ class SalereportbydateController extends MY_Controller
             ]
         ];
 
-        $productByBranchChartRawCount = collect($productByBranchChartRaw)->groupBy('zone');
-        $productByBranchChart['line']['data'] = array_values($productByBranchChartRawCount->map(function($rowProductByBranchChartLineData) {
-            return strval($rowProductByBranchChartLineData->sum('count_this_time'));
-        })->toArray());
-
-        $productByBranchChartRawAmount = collect($productByBranchChartRaw)->groupBy('service')->toArray();
-        foreach($services as $serviceKey => $serviceValue) {
-            if(empty($productByBranchChart[$serviceValue])) {
-                $productByBranchChart[$serviceValue] = [
-                    'type'              => 'bar',
-                    'label'             => strtoupper($serviceValue),
-                    'data'              => [],
-                    'backgroundColor'   => rand_color(),
-                    'backgroundColor'   => $serviceColor[$serviceKey],
-                    'borderColor'       => 'rgba(0, 0, 0, 1)',
-                    'yAxisID'           => 'money',
-                    'order'             => 2,
-                    'stacked'           => true,
-                    'datalabels'        => [
-                        'color'         => 'black',
-                        'offset'        => 5,
-                    ]
-                ];
-            }
-            if(!empty($productByBranchChartRawAmount[$serviceValue])) {
-                $dataAmount = array_column($productByBranchChartRawAmount[$serviceValue], 'amount_this_time', 'zone');
-                foreach($zones_filter as $zoneKey => $zoneValue) {
-                    $productByBranchChart[$serviceValue]['data'][] = (!empty($dataAmount[$zoneValue['key']])) ? $dataAmount[$zoneValue['key']] : "0";
+        foreach(collect($productByBranchChartRaw)->groupBy('zone')->toArray() as $productByBranchChartKey => $productByBranchChartValue) {
+            $productByBranchChartLabel[] = $productByBranchChartKey;
+            $productByBranchChart['line']['data'][] = strval(array_sum(array_map(function($serviceRow) {
+                return intval($serviceRow['count_this_time']);
+            }, $productByBranchChartValue)));
+            $amount_chart_data = array_column($productByBranchChartValue, 'amount_this_time', 'service');
+            foreach($services_filter as $serviceFilterKey => $serviceFilterValue) {
+                if(empty($productByBranchChart[$serviceFilterValue])) {
+                    $productByBranchChart[$serviceFilterValue] = [
+                        'type'              => 'bar',
+                        'label'             => strtoupper($serviceFilterValue),
+                        'data'              => [(!empty($amount_chart_data[$serviceFilterValue])) ? $amount_chart_data[$serviceFilterValue] : '0'],
+                        'borderColor'       => 'rgba(0, 0, 0, 0.5)',
+                        'backgroundColor'   => $serviceColor[$serviceFilterValue],
+                        'yAxisID'           => 'money',
+                        'order'             => 2,
+                        'pointStyle'        => 'circle',
+                        'datalabels'        => [
+                            'color'         => 'black',
+                            'offset'        => 5,
+                        ]
+                    ];
                 }
-            }
-            else {
-                foreach($zones_filter as $zoneKey => $zoneValue) {
-                    $productByBranchChartLabel[] = $zoneValue['value'];
-                    $productByBranchChart[$serviceValue]['data'][] = "0";
+                else {
+                    $productByBranchChart[$serviceFilterValue]['data'][] = (!empty($amount_chart_data[$serviceFilterValue])) ? $amount_chart_data[$serviceFilterValue] : '0';
                 }
             }
         }
 
-        return view('report.reportsalebydate', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => array_values($productByBranchChart), 'productByBranchChartLabel' => array_unique($productByBranchChartLabel)]);
+        return view('report.reportsalebydatedoanhthu', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'zones' => $zones_filter, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => array_values($productByBranchChart), 'productByBranchChartLabel' => array_unique($productByBranchChartLabel)]);
     }
 }

@@ -15,6 +15,6 @@ class Sale_Report_By_Range_Product_Doanh_Thu extends Model
     public $timestamps = false;
     protected $table = 'report_sale_by_range_product_doanh_thu';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'service', 'product_type','count','amount','created_at','day','month','year'];
+    protected $fillable = ['id', 'service', 'product_type','count','amount','created_at','day','month','year','zone','branch_name'];
 
 }
