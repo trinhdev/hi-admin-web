@@ -61,22 +61,29 @@
                             <input type="date" name="show_to" class="form-control" id="show_to" placeholder="Date To" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="input-group input-group-sm mb-4">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Loại dịch vụ: </div>
                             </div>
-                            <select class="form-control" name="services[]" id="services" multiple="multiple" style="width: 70%">
+                            <select style="form-control" name="services[]" id="services" multiple="multiple">
                                 @foreach ($services as $service)
                                     <option value="{{ $service }}">{{ $service }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        {{-- <select class="js-example-basic-multiple form-control" name="service[]" multiple="multiple">
-                            @foreach ($services as $service)
-                                <option value="{{ $service }}">{{ $service }}</option>
-                            @endforeach
-                        </select> --}}
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group input-group-sm mb-4">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Vùng: </div>
+                            </div>
+                            <select style="form-control" name="zone[]" id="zones" multiple="multiple">
+                                @foreach ($zones as $zone)
+                                    <option value="{{ $zone['key'] }}">{{ $zone['value'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="col-md-12" style="text-align: center">
                         {{-- <button id="filter_condition" class="btn btn-sm btn-primary" onclick="filter()">Tìm kiếm</button> --}}

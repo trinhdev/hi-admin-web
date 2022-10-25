@@ -15,6 +15,6 @@ class Sale_Report_By_Range_Product_Category extends Model
     public $timestamps = false;
     protected $table = 'report_sale_by_range_product_category';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'service', 'product_category','count','amount','created_at','day','month','year'];
+    protected $fillable = ['id', 'service', 'product_category','count','amount','created_at','day','month','year','zone','branch_name'];
 
 }
