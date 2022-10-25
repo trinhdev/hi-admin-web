@@ -20,7 +20,7 @@ class Icon_Category extends MY_Model
     protected $primaryKey = 'uuid';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['uuid', 'productTitleId', 'productTitleNameVi', 'productTitleNameEn', 'arrayId', 'isDeleted', 'created_by', 'deleted_at'];
+    protected $fillable = ['uuid', 'productTitleId', 'productTitleNameVi', 'productTitleNameEn', 'arrayId', 'isDisplay', 'created_by', 'deleted_at', 'displayBeginDay', 'displayEndDay'];
 
     protected static function boot() {
         parent::boot();

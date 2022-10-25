@@ -20,6 +20,9 @@ use App\Repository\Hi_FPT\FtelPhoneRepository;
 use App\Contract\Hi_FPT\SectionLogInterface;
 use App\Repository\Hi_FPT\SectionLogRepository;
 
+use App\Contract\Hi_FPT\DeeplinkInterface;
+use App\Repository\Hi_FPT\DeeplinkRepository;
+
 use App\Contract\Hi_FPT\ScreenInterface;
 use App\Repository\Hi_FPT\ScreenRepository;
 
@@ -49,6 +52,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ResetPasswordWrongInterface::class, ResetPasswordWrongRepository::class);
         $this->app->bind(FtelPhoneInterface::class, FtelPhoneRepository::class);
         $this->app->bind(SectionLogInterface::class, SectionLogRepository::class);
+        $this->app->bind(DeeplinkInterface::class, DeeplinkRepository::class);
         $this->app->bind(ScreenInterface::class, ScreenRepository::class);
         $this->app->bind(BehaviorInterface::class, BehaviorRepository::class);
     }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Hi_FPT\PopupPrivateController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
 use App\Http\Controllers\Hi_FPT\ResetPasswordWrongController;
 use App\Http\Controllers\Hi_FPT\ScreenController;
+use App\Http\Controllers\Hi_FPT\DeeplinkController;
 use App\Http\Controllers\Hi_FPT\SectionLogController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -301,6 +302,15 @@ Route::group([
                 Route::get('/edit/{id}', [ScreenController::class, 'show'])->name('screen.edit');
                 Route::post('/update/{id}', [ScreenController::class, 'update'])->name('screen.update');
                 Route::get('/delete/{id}', [ScreenController::class, 'delete'])->name('screen.delete');
+            });
+
+            Route::prefix('deeplink')->group(function () {
+                Route::get('/', [DeeplinkController::class, 'index'])->name('deeplink.index');
+                Route::get('/create', [DeeplinkController::class, 'create'])->name('deeplink.create');
+                Route::post('/store', [DeeplinkController::class, 'store'])->name('deeplink.store');
+                Route::get('/edit/{id}', [DeeplinkController::class, 'show'])->name('deeplink.edit');
+                Route::post('/update/{id}', [DeeplinkController::class, 'update'])->name('deeplink.update');
+                Route::get('/delete/{id}', [DeeplinkController::class, 'delete'])->name('deeplink.delete');
             });
 
             Route::prefix('behavior')->group(function () {

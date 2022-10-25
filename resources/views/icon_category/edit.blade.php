@@ -76,22 +76,22 @@
                                 <div class="row">
                                     <div class="col-sm-2 offset-sm-1">
                                         <div class="icheck-sunflower">
-                                            <input type="radio" id="status-show" name="isDeleted" value="hide" checked />
+                                            <input type="radio" id="status-show" name="isDisplay" value="1" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '1') ? 'checked' : ''}} />
                                             <label for="status-show">Bật</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="icheck-sunflower">
-                                            <input type="radio" id="status-hide" name="isDeleted" value="show" />
+                                            <input type="radio" id="status-hide" name="isDisplay" value="0" {{ (!isset($data['isDisplay']) || (isset($data['isDisplay']) && $data['isDisplay'] == '0')) ? 'checked' : '' }} />
                                             <label for="status-hide">Tắt</label>
                                         </div>
                                     </div>
                                 </div>
-                                {{-- <div class="row">
+                                <div class="row">
                                     <div class="col-sm-11 offset-sm-1">
                                         <div class="form-group">
                                             <div class="icheck-sunflower">
-                                                <input type="radio" id="status-clock" name="status" value="clock" />
+                                                <input type="radio" id="status-clock" name="isDisplay" value="2" {{ (isset($data['isDisplay']) && $data['isDisplay'] == '2') ? 'checked' : '' }} />
                                                 <label for="status-clock">Hẹn giờ bật hiển thị</label>
                                             </div>
                                         </div>
@@ -103,7 +103,7 @@
                                             <div class="form-group row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày bắt đầu</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" name="show_from" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" />
+                                                    <input type="text" name="displayBeginDay" class="form-control" id="show_from" placeholder="Date From" onchange="filterData()" value="{{ (!empty($data['displayBeginDay'])) ? date('Y-m-d H:i:s', strtotime($data['displayBeginDay'])) : date('Y-m-d H:i:s', strtotime('today midnight')) }}" />
                                                 </div>
                                             </div>
                                         </div>
@@ -113,12 +113,12 @@
                                             <div class="form-group row">
                                                 <label for="inputEmail3" class="col-sm-5 col-form-label">Ngày kết thúc</label>
                                                 <div class="col-sm-7">
-                                                    <input type="text" name="show_to" class="form-control" id="show_to" placeholder="Date From" onchange="filterData()" />
+                                                    <input type="text" name="displayEndDay" class="form-control" id="show_to" placeholder="Date From" onchange="filterData()" value="{{ !empty($data['displayEndDay']) ? date('Y-m-d H:i:s', strtotime($data['displayEndDay'])) : date('Y-m-d H:i:s', strtotime('tomorrow midnight')) }}" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Danh sách sản phẩm</label> <span class="required">*</span>

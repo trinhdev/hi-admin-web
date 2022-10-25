@@ -96,7 +96,7 @@ class IconcategoryController extends MY_Controller
             ]);
             $approved_status = 'create';
         }
-
+        // dd($request->all());
         $icon_category = $this->createSingleRecord($this->model, $request->all());
 
         $approved = Icon_approve::create([

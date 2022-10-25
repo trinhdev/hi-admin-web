@@ -14,7 +14,7 @@ class BehaviorRepository implements BehaviorInterface
 {
     use DataTrait;
 
-    public function index($dataTable, $params)
+    public function index($params)
     {
 
         try {
@@ -38,12 +38,36 @@ class BehaviorRepository implements BehaviorInterface
         $danhsachSDT = [];
         $phone = [];
         foreach($collection as $value) {
-            $phone[]=$value['phone'];
+            $phoneQr[]=$value['phone'];
             $danhsachSDT[$value['phone']] = $value['date_action'];
         }
+        $rules_phone = [
+            'phone.*' => [
+                function ($attribute,$value, $fail){
+                    $pattern = '/^(03|05|07|08|09)[0-9, ]*$/';
+                    if($value == null) {
+                        return $fail("Số có giá trị trống, thử xóa hết form và nhập lại đúng định dạng");
+                    }
+                    if ((strlen($value)!==10)) {
+                        return $fail("Số $value phải đúng 10 kí tự");
+                    }
+                    if(!preg_match($pattern, $value)) {
+                        return $fail("Số $value sai định dạng số điện thoại Việt Nam");
+                    }
+
+                }
+            ]
+        ];
+        $validator = Validator::make(array('phone' => $phoneQr), $rules_phone);
+
+        // if ($errors) {
+        //     dd($errors->first('phone.*'));
+        // }
+     
+         // Retrieve errors message bag
         $dataSql = DB::table('app_log')
                     ->select('phone','date_action')
-                    ->whereIn('phone', $phone)
+                    ->whereIn('phone', $phoneQr)
                     ->get();
 
 
@@ -53,7 +77,6 @@ class BehaviorRepository implements BehaviorInterface
         //     '0947182882' => '2022-09-18 06:21:22'
         // ];
         
-
         $dulieulaytuSQL = [
             0 => ['phone' => '0123456789', 'date_action' => '2022-09-17 01:00:29'],
             1 => ['phone' => '0123456789', 'date_action' => '2022-09-17 13:00:29'],
@@ -195,25 +218,6 @@ class BehaviorRepository implements BehaviorInterface
             case  4 : $total['6_7']['3_4'] ++; break;
             default : $total['6_7']['5_']  ++; break;
         }
-
-        // $rule = [
-        //     'phone' => [
-        //         function ($attribute,$value, $fail){
-        //             $pattern = '/^(03|05|07|08|09)[0-9, ]*$/';
-        //             $pattern_2 = '/^(3|5|7|8|9)[0-9, ]*$/';
-        //             if($value == null) {
-        //                 return $fail("Số có giá trị trống, thử ctrl+F5 và thử lại");
-        //             }
-        //             if ((strlen($value)!==10) || (strlen($value)!==9) ) {
-        //                 return $fail("Số $value phải sai số lượng (ex: 971380398 or 0971380398)");
-        //             }
-        //             if(!preg_match($pattern, $value) || !preg_match($pattern_2, $value)) {
-        //                 return $fail("Số $value sai định dạng số điện thoại Việt Nam (ex: 0971380398)");
-        //             }
-
-        //         }
-        //     ],
-        // ];
         return $total;
     }
 }
