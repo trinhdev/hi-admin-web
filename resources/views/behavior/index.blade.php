@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-$data = session()->get( 'data' );
+    $data = session()->get('data');
 @endphp
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
