@@ -384,7 +384,7 @@ class SalereportbydateController extends MY_Controller
             $productByBranchChartLabel[] = $productByBranchChartKey;
             $productByBranchChart['line']['data'][] = strval(array_sum(array_map(function($serviceRow) {
                 return intval($serviceRow['count_this_time']);
-            }, $productByBranchChartValue)));
+            }, $productByBranchChartValue)) + (($productByBranchChartKey == 'App Users' && !empty($data_vietlott[count($data_vietlott) - 1]['count_this_time'])) ? $data_vietlott[count($data_vietlott) - 1]['count_this_time'] : 0));
             $amount_chart_data = array_column($productByBranchChartValue, 'amount_this_time', 'service');
             foreach($services_filter as $serviceFilterKey => $serviceFilterValue) {
                 if(empty($productByBranchChart[$serviceFilterValue])) {
@@ -408,6 +408,21 @@ class SalereportbydateController extends MY_Controller
                 }
             }
         }
+
+        $productByBranchChart['vietlott'] = [
+            'type' => 'bar',
+            'label'             => strtoupper($serviceFilterValue),
+            'data'              => [strval($data_vietlott[count($data_vietlott) - 1]['amount_this_time'])],
+            'borderColor'       => 'rgba(0, 0, 0, 0.5)',
+            'backgroundColor'   => $serviceColor[$serviceFilterValue],
+            'yAxisID'           => 'money',
+            'order'             => 2,
+            'pointStyle'        => 'circle',
+            'datalabels'        => [
+                'color'         => 'black',
+                'offset'        => 5,
+            ]
+        ];
 
         return view('report.reportsalebydatedoanhthu', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'zones' => $zones_filter, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => array_values($productByBranchChart), 'productByBranchChartLabel' => array_unique($productByBranchChartLabel)]);
     }
