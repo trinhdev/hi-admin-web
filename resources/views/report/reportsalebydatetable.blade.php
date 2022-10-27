@@ -4,6 +4,16 @@
             <h3>BIỂU ĐỒ TỔNG HỢP</h3>
         </div>
         <div class="card-body row">
+            <div class="col-sm-12 row">
+                <div class="col-sm-2">
+                    <span style="text-transform: uppercase; font-weight: bold">tổng đơn hàng</span>
+                    <span class="badge bg-info text-dark" style="font-size: 25px">{{ number_format($total_service['count']) }}</span>
+                </div>
+                <div class="col-sm-3">
+                    <span style="text-transform: uppercase; font-weight: bold">tổng tiền</span>
+                    <span class="badge bg-success" style="font-size: 25px">{{ number_format($total_service['amount']) }}</span>
+                </div>
+            </div>
             <canvas id="stacked-bar-chart" style="margin-bottom: 50px"></canvas>
             <canvas id="product-category-chart" class="col-sm-6"></canvas>
             <canvas id="product-zone-chart" class="col-sm-6"></canvas>
