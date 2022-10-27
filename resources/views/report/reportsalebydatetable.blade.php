@@ -408,7 +408,7 @@
                 legend: {
                     display: true,
                     position: 'bottom',
-                    onClick: (e) => e.stopPropagation()
+                    // onClick: (e) => e.stopPropagation()
                 },
                 scales: {
                     xAxes: [{
