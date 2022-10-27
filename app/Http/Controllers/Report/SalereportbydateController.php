@@ -135,7 +135,14 @@ class SalereportbydateController extends MY_Controller
                                         ->get()
                                         ->groupBy(['service'])
                                         ->toArray();
+
+        $total_service = [
+            'count'     => 0,
+            'amount'    => 0
+        ];
         foreach($data as $key => &$value) {
+            $total_service['count'] += intval($total[$key][0]['count_this_time']);
+            $total_service['amount'] += intval($total[$key][0]['amount_this_time']);
             array_push($value, $total[$key][0]);
         }
 
@@ -159,6 +166,7 @@ class SalereportbydateController extends MY_Controller
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', product_price * quantity - discount_price, 0)) AS 'amount_last_time',
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time', 
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', product_price * quantity - discount_price, 0)) AS 'amount_this_time'")
+                ->where('order_status', 'SUCCESS')
                 ->whereBetween('t_create', [$from1, $to2]);
 
             $data_vietlott = Vietlott_Orders::selectRaw("product_name,
@@ -166,6 +174,7 @@ class SalereportbydateController extends MY_Controller
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', product_price * quantity - discount_price, 0)) AS 'amount_last_time',
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time', 
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', product_price * quantity - discount_price, 0)) AS 'amount_this_time'")
+            ->where('order_status', 'SUCCESS')
             ->whereBetween('t_create', [$from1, $to2])
             ->groupBy(['product_name'])
             ->union($data_vietlott_total)
@@ -424,8 +433,10 @@ class SalereportbydateController extends MY_Controller
                     'offset'        => 5,
                 ]
             ];
+            $total_service['count'] += $data_vietlott[count($data_vietlott) - 1]['count_this_time'];
+            $total_service['amount'] += $data_vietlott[count($data_vietlott) - 1]['amount_this_time'];
         }
 
-        return view('report.reportsalebydatedoanhthu', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'zones' => $zones_filter, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => array_values($productByBranchChart), 'productByBranchChartLabel' => array_unique($productByBranchChartLabel)]);
+        return view('report.reportsalebydatedoanhthu', ['total_service' => $total_service, 'data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'zones' => $zones_filter, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => array_values($productByBranchChart), 'productByBranchChartLabel' => array_unique($productByBranchChartLabel)]);
     }
 }
