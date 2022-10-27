@@ -34,7 +34,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Từ: </div>
                             </div>
-                            <input type="date" name="show_from1" class="form-control" id="show_from1" placeholder="Date From" />
+                            <input type="date" name="show_from1" class="form-control" id="show_from1" placeholder="Date From" value="{{ @$from1 }}" />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -42,7 +42,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Đến: </div>
                             </div>
-                            <input type="date" name="show_to1" class="form-control" id="show_to1" placeholder="Date To" />
+                            <input type="date" name="show_to1" class="form-control" id="show_to1" placeholder="Date To" value="{{ @$to1 }}" />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -50,7 +50,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Từ: </div>
                             </div>
-                            <input type="date" name="show_from" class="form-control" id="show_from" placeholder="Date From" />
+                            <input type="date" name="show_from" class="form-control" id="show_from" placeholder="Date From" value="{{ @$from2 }}" />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -58,7 +58,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Đến: </div>
                             </div>
-                            <input type="date" name="show_to" class="form-control" id="show_to" placeholder="Date To" />
+                            <input type="date" name="show_to" class="form-control" id="show_to" placeholder="Date To" value="{{ @$to2 }}" />
                         </div>
                     </div>
                     <div class="col-md-6">
