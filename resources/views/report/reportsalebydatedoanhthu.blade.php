@@ -68,7 +68,12 @@
                             </div>
                             <select style="form-control" name="services[]" id="services" multiple="multiple">
                                 @foreach ($services as $service)
+                                    @if(in_array($service, $services_filter))
+                                    <option value="{{ $service }}" selected>{{ $service }}</option>
+                                    @else
                                     <option value="{{ $service }}">{{ $service }}</option>
+                                    @endif
+                                    
                                 @endforeach
                             </select>
                         </div>
@@ -80,7 +85,11 @@
                             </div>
                             <select style="form-control" name="zone[]" id="zones" multiple="multiple">
                                 @foreach ($zones as $zone)
+                                    @if (in_array($zone['key'], $zone_filter))
+                                    <option value="{{ $zone['key'] }}" selected>{{ $zone['value'] }}</option>
+                                    @else
                                     <option value="{{ $zone['key'] }}">{{ $zone['value'] }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
