@@ -15,6 +15,7 @@
                 </div>
             </div>
             <canvas id="stacked-bar-chart" style="margin-bottom: 50px"></canvas>
+            <canvas id="product-zone-chart-between-date" style="margin-bottom: 50px"></canvas>
             <canvas id="product-category-chart" class="col-sm-6"></canvas>
             <canvas id="product-zone-chart" class="col-sm-6"></canvas>
         </div>
@@ -477,6 +478,89 @@
                             function totalSum(total, datapoint) {
                                 return parseInt(total) + parseInt(datapoint);
                             }
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+
+        var data_between_to_time_chart = {!! str_replace("'", "\'", json_encode($data_between_to_time_chart)) !!};
+        var data_between_to_time_chart_label = {!! str_replace("'", "\'", json_encode($data_between_to_time_chart_label)) !!};
+
+        var chartCategory = new Chart('product-zone-chart-between-date', {
+            type: 'bar',
+            data: {
+                labels: data_between_to_time_chart_label,
+                datasets: data_between_to_time_chart
+            },
+            options: {
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 50,
+                        bottom: 10
+                    }
+                },
+                title: {
+                    display: true,
+                    position: 'bottom',
+                    fontSize: 15,
+                    text: 'Báo cáo doanh thu và đơn hàng theo vùng giữa các thời điểm'
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    // onClick: (e) => e.stopPropagation()
+                },
+                scales: {
+                    xAxes: [{
+                        stacked: false,
+                        beginAtZero: true
+                    }],
+                    yAxes: [
+                        {
+                            id: 'money',
+                            beginAtZero: true,
+                            type: 'linear',
+                            position: 'left',
+                            stacked: false,
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString("vi-VI");
+                                }
+                            }
+                        }, 
+                        {
+                            id: 'quantity',
+                            beginAtZero: true,
+                            type: 'linear',
+                            position: 'right',
+                            stacked: false,
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString("vi-VI");
+                                }
+                            }
+                        }
+                    ]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var currentValue = dataset.data[tooltipItem.index];
+                            return currentValue.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                        }
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: function(value, context) {
+                            return value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
                         }
                     }
                 }

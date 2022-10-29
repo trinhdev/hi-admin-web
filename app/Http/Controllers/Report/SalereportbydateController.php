@@ -437,6 +437,99 @@ class SalereportbydateController extends MY_Controller
             $total_service['amount'] += $data_vietlott[count($data_vietlott) - 1]['amount_this_time'];
         }
 
-        return view('report.reportsalebydatedoanhthu', ['total_service' => $total_service, 'data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'zones' => $zones_filter, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => array_values($productByBranchChart), 'productByBranchChartLabel' => array_unique($productByBranchChartLabel), 'from1' => date('Y-m-d', strtotime($from1)), 'to1' => date('Y-m-d', strtotime($to1)), 'from2' => date('Y-m-d', strtotime($from2)), 'to2' => date('Y-m-d', strtotime($to2)), 'services_filter' => $services_filter, 'zone_filter' => $zone]);
+        $data_between_to_time = Sale_Report_By_Range::selectRaw("zone,
+                    SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                    SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
+                    SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                    SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time'")
+            ->whereIn('zone', $zone)
+            ->whereIn('service', $services_filter)
+            ->whereBetween('date_created', [$from1, $to2])
+            ->orderBy('zone')
+            ->groupBy(['zone'])
+            ->get()
+            ->toArray();
+
+        $data_between_to_time_chart_label = [];
+        $data_between_to_time_chart = [
+            'count_last_time'       => [
+                'type'              => 'line',
+                'label'             => 'Số lượng đơn hàng từ ' . date('d/m/Y', strtotime($from1)) . ' đến ' . date('d/m/Y', strtotime($to1)),
+                'data'              => [],
+                'borderColor'       => 'rgba(0, 0, 0, 0.5)',
+                'yAxisID'           => 'quantity',
+                'order'             => 1,
+                'pointBorderWidth'  => 3,
+                'pointStyle'        => 'circle',
+                'datalabels'        => [
+                    'color'         => 'rgba(0, 0, 0, 1)',
+                    'anchor'        => 'end',
+                    'align'         => 'top',
+                    'offset'        => 5,
+                ]
+            ],
+            'count_this_time'       => [
+                'type'              => 'line',
+                'label'             => 'Số lượng đơn hàng từ ' . date('d/m/Y', strtotime($from2)) . ' đến ' . date('d/m/Y', strtotime($to2)),
+                'data'              => [],
+                'borderColor'       => 'rgba(34, 133, 118, 0.5)',
+                'yAxisID'           => 'quantity',
+                'order'             => 1,
+                'pointBorderWidth'  => 3,
+                'pointStyle'        => 'circle',
+                'datalabels'        => [
+                    'color'         => 'rgba(34, 133, 118, 1)',
+                    'anchor'        => 'end',
+                    'align'         => 'top',
+                    'offset'        => 5,
+                ]
+            ],
+            'amount_last_time'      => [
+                'type'              => 'bar',
+                'label'             => 'Số tiền từ ' . date('d/m/Y', strtotime($from1)) . ' đến ' . date('d/m/Y', strtotime($to1)),
+                'data'              => [],
+                'borderColor'       => 'rgba(104, 132, 104, 1)',
+                'backgroundColor'   => 'rgba(104, 132, 104, 0.5)',
+                'yAxisID'           => 'money',
+                'order'             => 2,
+                'datalabels'        => [
+                    'color'         => 'rgba(104, 132, 104, 1)',
+                    'anchor'        => 'end',
+                    'align'         => 'top',
+                    'offset'        => 5,
+                ]
+            ],
+            'amount_this_time'      => [
+                'type'              => 'bar',
+                'label'             => 'Số tiền từ ' . date('d/m/Y', strtotime($from2)) . ' đến ' . date('d/m/Y', strtotime($to2)),
+                'data'              => [],
+                'borderColor'       => 'rgba(248, 156, 47, 1)',
+                'backgroundColor'   => 'rgba(248, 156, 47, 0.5)',
+                'yAxisID'           => 'money',
+                'order'             => 2,
+                'datalabels'        => [
+                    'color'         => 'rgba(248, 156, 47, 1)',
+                    'anchor'        => 'end',
+                    'align'         => 'top',
+                    'offset'        => 5,
+                ]
+            ],
+        ];
+
+        foreach($data_between_to_time as &$data_between_to_time_row) {
+            $data_between_to_time_chart_label[] = $data_between_to_time_row['zone'];
+            if($data_between_to_time_row['zone'] == 'App Users' && in_array('vietlott', $services_filter)) {
+                $data_between_to_time_row['count_last_time'] += $data_vietlott[count($data_vietlott) - 1]['count_last_time'];
+                $data_between_to_time_row['count_this_time'] += $data_vietlott[count($data_vietlott) - 1]['count_this_time'];
+                $data_between_to_time_row['amount_last_time'] += $data_vietlott[count($data_vietlott) - 1]['count_this_time'];
+                $data_between_to_time_row['amount_this_time'] += $data_vietlott[count($data_vietlott) - 1]['amount_this_time'];
+            }
+            $data_between_to_time_chart['count_last_time']['data'][] = strval($data_between_to_time_row['count_last_time']);
+            $data_between_to_time_chart['count_this_time']['data'][] = strval($data_between_to_time_row['count_this_time']);
+            $data_between_to_time_chart['amount_last_time']['data'][] = strval($data_between_to_time_row['amount_last_time']);
+            $data_between_to_time_chart['amount_this_time']['data'][] = strval($data_between_to_time_row['amount_this_time']);
+        }
+
+        return view('report.reportsalebydatedoanhthu', ['total_service' => $total_service, 'data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'zones' => $zones_filter, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => array_values($productByBranchChart), 'productByBranchChartLabel' => array_unique($productByBranchChartLabel), 'from1' => date('Y-m-d', strtotime($from1)), 'to1' => date('Y-m-d', strtotime($to1)), 'from2' => date('Y-m-d', strtotime($from2)), 'to2' => date('Y-m-d', strtotime($to2)), 'services_filter' => $services_filter, 'zone_filter' => $zone, 'data_between_to_time_chart_label' => $data_between_to_time_chart_label, 'data_between_to_time_chart' => array_values($data_between_to_time_chart)]);
     }
 }
