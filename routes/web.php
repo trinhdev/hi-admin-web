@@ -378,6 +378,7 @@ Route::group([
             });
             Route::prefix('laptopordersbyproduct')->group(function () {
                 Route::get('/', 'ReportLaptopOrdersByProductController@index')->name('laptopordersbyproduct.index');
+                Route::get('/productsData', 'ReportLaptopOrdersByProductController@productsData')->name('laptopordersbyproduct.productsData');
             });
             Route::prefix('salereportdatamultiservice')->group(function () {
                 $request = $_GET;
