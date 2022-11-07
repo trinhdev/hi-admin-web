@@ -102,10 +102,14 @@
                     @if (!empty($data_product[$service[0]['service']]))
                         <table style="width: 100%; margin-top: 31px">
                             <tr>
-                                <th colspan="3">{{ $this_time }}</th>
+                                <th></th>
+                                <th colspan="2">{{ $last_time }}</th>
+                                <th colspan="2">{{ $this_time }}</th>
                             </tr>
                             <tr>
                                 <th>Loại sản phẩm</th>
+                                <th>Số tiền</th>
+                                <th>Đơn hàng</th>
                                 <th>Số tiền</th>
                                 <th>Đơn hàng</th>
                             </tr>
@@ -113,8 +117,10 @@
                                 @foreach (@$productByService[$service[0]['service']] as $product)
                                     <tr>
                                         <td>{{ (!empty($product['product_type'])) ? strtoupper($product['product_type']) : 'KHÁC' }}</td>
-                                        <td>{{ number_format($product['amount']) }}</td>
-                                        <td>{{ $product['count'] }}</td>
+                                        <td>{{ number_format($product['amount_last_time']) }}</td>
+                                        <td>{{ $product['count_last_time'] }}</td>
+                                        <td>{{ number_format($product['amount_this_time']) }}</td>
+                                        <td>{{ $product['count_this_time'] }}</td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -123,10 +129,14 @@
                         @if(!in_array($service[0]['service'], ['hdi', 'gas']))
                             <table style="width: 100%; margin-top: 50px">
                                 <tr>
-                                    <th colspan="3">{{ $this_time }}</th>
+                                    <th></th>
+                                    <th colspan="2">{{ $last_time }}</th>
+                                    <th colspan="2">{{ $this_time }}</th>
                                 </tr>
                                 <tr>
                                     <th>Danh mục</th>
+                                    <th>Số tiền</th>
+                                    <th>Đơn hàng</th>
                                     <th>Số tiền</th>
                                     <th>Đơn hàng</th>
                                 </tr>
@@ -134,8 +144,10 @@
                                     @foreach (@$productByCategory[$service[0]['service']] as $product)
                                         <tr>
                                             <td>{{ (!empty($product['product_category'])) ? strtoupper($product['product_category']) : 'KHÁC' }}</td>
-                                            <td>{{ number_format($product['amount']) }}</td>
-                                            <td>{{ $product['count'] }}</td>
+                                            <td>{{ number_format($product['amount_last_time']) }}</td>
+                                            <td>{{ $product['count_last_time'] }}</td>
+                                            <td>{{ number_format($product['amount_this_time']) }}</td>
+                                            <td>{{ $product['count_this_time'] }}</td>
                                         </tr>
                                     @endforeach
                                 @endif

@@ -185,10 +185,15 @@ class SalereportbydateController extends MY_Controller
             $data_vietlott = [];
         }
         
-        $productByService = Sale_Report_By_Range_Product::selectRaw('product_type, SUM(count) AS count, SUM(amount) AS amount, service')
+        $productByService = Sale_Report_By_Range_Product::selectRaw("product_type, 
+                                                                    SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                                                                    SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
+                                                                    SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                                    SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time', 
+                                                                    service")
                                                         ->whereIn('service', $services_filter)
                                                         ->whereIn('zone', $zone)
-                                                        ->whereBetween('created_at', [$from2, $to2])
+                                                        ->whereBetween('created_at', [$from1, $to2])
                                                         ->groupBy(['service', 'product_type'])
                                                         ->orderBy('amount', 'desc')
                                                         // ->sortBy('count')
@@ -197,10 +202,15 @@ class SalereportbydateController extends MY_Controller
                                                         
                                                         ->toArray();
                                         
-        $productByCategory = Sale_Report_By_Range_Product_Category::selectRaw('product_category, SUM(count) AS count, SUM(amount) AS amount, service')
+        $productByCategory = Sale_Report_By_Range_Product_Category::selectRaw("product_category, 
+                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
+                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time',
+                                                                                service")
                                                         ->whereIn('service', $services_filter)
                                                         ->whereIn('zone', $zone)
-                                                        ->whereBetween('created_at', [$from2, $to2])
+                                                        ->whereBetween('created_at', [$from1, $to2])
                                                         ->groupBy(['service', 'product_category'])
                                                         ->orderBy('amount', 'desc')
                                                         // ->sortBy('count')

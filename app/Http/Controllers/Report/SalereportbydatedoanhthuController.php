@@ -183,20 +183,30 @@ class SalereportbydatedoanhthuController extends MY_Controller
             $data_vietlott = [];
         }
         
-        $productByService = Sale_Report_By_Range_Product_Doanh_Thu::selectRaw('product_type, SUM(count) AS count, SUM(amount) AS amount, service')
+        $productByService = Sale_Report_By_Range_Product_Doanh_Thu::selectRaw("product_type, 
+                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
+                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time', 
+                                                                                service")
                                                         ->whereIn('service', $services_filter)
                                                         ->whereIn('zone', $zone)
-                                                        ->whereBetween('created_at', [$from2, $to2])
+                                                        ->whereBetween('created_at', [$from1, $to2])
                                                         ->groupBy(['service', 'product_type'])
                                                         ->orderBy('amount', 'desc')
                                                         ->get()
                                                         ->groupBy(['service'])
                                                         ->toArray();
         // dd($productByService);
-        $productByCategory = Sale_Report_By_Range_Product_Category_Doanh_Thu::selectRaw('product_category, SUM(count) AS count, SUM(amount) AS amount, service')
+        $productByCategory = Sale_Report_By_Range_Product_Category_Doanh_Thu::selectRaw("product_category, 
+                                                                                        SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                                                                                        SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
+                                                                                        SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                                                        SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time',
+                                                                                        service")
                                                         ->whereIn('service', $services_filter)
                                                         ->whereIn('zone', $zone)
-                                                        ->whereBetween('created_at', [$from2, $to2])
+                                                        ->whereBetween('created_at', [$from1, $to2])
                                                         ->groupBy(['service', 'product_category'])
                                                         ->orderBy('amount', 'desc')
                                                         ->get()
@@ -517,7 +527,7 @@ class SalereportbydatedoanhthuController extends MY_Controller
             $data_between_to_time_chart['amount_last_time']['data'][] = strval($data_between_to_time_row['amount_last_time']);
             $data_between_to_time_chart['amount_this_time']['data'][] = strval($data_between_to_time_row['amount_this_time']);
         }
-        // dd($data_between_to_time_chart);
+        // dd($productByCategory);
         return view('report.reportsalebydatedoanhthu', ['total_service' => $total_service, 'data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'zones' => $zones_filter, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott, 'productByDateChart' => $productByDateChart, 'productByDateChartLabel' => array_unique($productByDateChartLabel), 'productByProductTypeChart' => $productByProductTypeChart, 'productByProductTypeChartLabel' => $productByProductTypeChartLabel, 'productByBranchChart' => array_values($productByBranchChart), 'productByBranchChartLabel' => array_unique($productByBranchChartLabel), 'from1' => date('Y-m-d', strtotime($from1)), 'to1' => date('Y-m-d', strtotime($to1)), 'from2' => date('Y-m-d', strtotime($from2)), 'to2' => date('Y-m-d', strtotime($to2)), 'services_filter' => $services_filter, 'zone_filter' => $zone, 'data_between_to_time_chart_label' => $data_between_to_time_chart_label, 'data_between_to_time_chart' => array_values($data_between_to_time_chart)]);
     }
 }

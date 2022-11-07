@@ -376,6 +376,10 @@ Route::group([
                 Route::post('/getPaymentErrorUserSystem', 'ErrorpaymentchartController@getPaymentErrorUserSystem')->name('errorpaymentchart.getPaymentErrorUserSystem');
                 Route::post('/getPaymentErrorDetail', 'ErrorpaymentchartController@getPaymentErrorDetail')->name('errorpaymentchart.getPaymentErrorDetail');
             });
+            Route::prefix('laptopordersbyproduct')->group(function () {
+                Route::get('/', 'ReportLaptopOrdersByProductController@index')->name('laptopordersbyproduct.index');
+                Route::get('/productsData', 'ReportLaptopOrdersByProductController@productsData')->name('laptopordersbyproduct.productsData');
+            });
             Route::prefix('salereportdatamultiservice')->group(function () {
                 $request = $_GET;
                 switch(@$request['submitbutton']) {
