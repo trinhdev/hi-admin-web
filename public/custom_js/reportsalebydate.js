@@ -30,7 +30,6 @@ function drawPaymentErrorDetailChart(service, data, chartId, legendId, type, typ
             tooltips: {
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        console.log(data);
                         var label = data.labels[tooltipItem.index].toUpperCase() || '';
 
                         if (label) {
@@ -76,7 +75,7 @@ function dataChartProduct(reportdatabyproduct, typereport, namechart) {
 
         dataChart['labels'] = arrayColumn(value, 'product_type');
         for(var i = 0; i < value.length; i++) {
-            dataChart['datasets'][0]['data'].push(parseInt(value[i]['amount']));
+            dataChart['datasets'][0]['data'].push(parseInt(value[i]['amount_this_time']));
             dataChart['datasets'][0]['backgroundColor'].push('#' + randomColor());
         }
         drawPaymentErrorDetailChart(key, dataChart, 'sale-report-by-product-' + key, 'legend-container-' + key, 'product', typereport, namechart);
@@ -97,9 +96,10 @@ function dataChartCategory(reportdatabycategory, typereport, namechart) {
 
         dataChart['labels'] = arrayColumn(value, 'product_category');
         for(var i = 0; i < value.length; i++) {
-            dataChart['datasets'][0]['data'].push(parseInt(value[i]['amount']));
+            dataChart['datasets'][0]['data'].push(parseInt(value[i]['amount_this_time']));
             dataChart['datasets'][0]['backgroundColor'].push('#' + randomColor());
         }
+        console.log(dataChart);
         drawPaymentErrorDetailChart(key, dataChart, 'sale-report-by-category-' + key, 'legend-container-category-' + key, 'category', typereport, namechart);
     });
 }
