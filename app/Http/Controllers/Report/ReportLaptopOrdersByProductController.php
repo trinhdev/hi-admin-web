@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Report;
 
 use App\DataTables\Hi_FPT\ReportLaptopOrdersByProductDataTable;
+use App\DataTables\Hi_FPT\ReportLaptopOrdersByProductNCCDataTable;
+use App\DataTables\Hi_FPT\ReportLaptopOrdersByProductMerchantDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
@@ -30,8 +32,9 @@ class ReportLaptopOrdersByProductController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Báo cáo theo nhà cung cấp và ngành hàng';
+        $this->request = null;
     }
-    public function index(ReportLaptopOrdersByProductDataTable $dataTable, Request $request) {
+    public function index(ReportLaptopOrdersByProductNCCDataTable $nccDataTable, ReportLaptopOrdersByProductDataTable $dataTable, ReportLaptopOrdersByProductMerchantDataTable $merchantDataTable, Request $request) {
         // dd($request);
         $merchants = Settings::where('name', 'sale_laptop_order_merchat_id')->get();
         $merchants_default = (!empty($merchants[0]['value'])) ? json_decode($merchants[0]['value'], true) : [];
@@ -41,22 +44,9 @@ class ReportLaptopOrdersByProductController extends MY_Controller
         $agents = Laptop_Orders_Agent::select(['agent_id', 'merchant_id', 'agent_name'])->whereIn('merchant_id', $merchants_default_key)->get()->toArray();
 
         $products = Shopping_Product::select(['product_id', 'product_name', 'sku'])->whereIn('merchant_id', $merchants_default_key)->get()->toArray();
-        // echo '<pre>';
-        // print_r($products);
-        // echo '</pre>';
-        // dd('test');
+        $this->request = $request;
 
-        return $dataTable->with([
-            'start'                             => $request->start,
-            'length'                            => $request->length,
-            'customer_phone'                    => $request->customer_phone,
-            'from'                              => $request->show_from,
-            'to'                                => $request->show_to,
-            'merchant_id'                       => $request->merchant_id,
-            'agent_id'                          => $request->agent_id,
-            'product_id'                        => $request->product_id,
-            'columns'                           => $request->columns,
-        ])->render('report.laptopordersbyproduct', [
+        return view('report.laptop_orders_product.main')->with([
             'filter'                        => [
                 'customer_phone'            => @$request->customer_phone, 
                 'show_from'                 => @$request->show_from, 
@@ -67,8 +57,56 @@ class ReportLaptopOrdersByProductController extends MY_Controller
             ],
             'merchants'                     => $merchants_default,
             'agents'                        => $agents,
-            'products'                      => array_filter($products)
+            'products'                      => array_filter($products),
+            'nccDataTable'                  => $nccDataTable->html(),
+            'dataTable'                     => $dataTable->html(),
+            'merchantDataTable'             => $merchantDataTable->html(),
         ]);
+    }
+
+    public function renderNccTable(ReportLaptopOrdersByProductNCCDataTable $nccDataTable, Request $request) {
+        // dd($request->all());
+        return $nccDataTable->with([
+            'start'                             => $request->start,
+            'length'                            => $request->length,
+            'customer_phone'                    => $request->customer_phone,
+            'from'                              => $request->show_from,
+            'to'                                => $request->show_to,
+            'merchant_id'                       => $request->merchant_id,
+            'agent_id'                          => $request->agent_id,
+            'product_id'                        => $request->product_id,
+            'columns'                           => $request->columns,
+        ])->render('view');
+    }
+
+    public function renderProductTable(ReportLaptopOrdersByProductDataTable $dataTable, Request $request) {
+        // dd($request->all());
+        return $dataTable->with([
+            'start'                             => $request->start,
+            'length'                            => $request->length,
+            'customer_phone'                    => $request->customer_phone,
+            'from'                              => $request->show_from,
+            'to'                                => $request->show_to,
+            'merchant_id'                       => $request->merchant_id,
+            'agent_id'                          => $request->agent_id,
+            'product_id'                        => $request->product_id,
+            'columns'                           => $request->columns,
+        ])->render('view');
+    }
+
+    public function renderMerchantTable(ReportLaptopOrdersByProductMerchantDataTable $merchantDataTable, Request $request) {
+        // dd($request->all());
+        return $merchantDataTable->with([
+            'start'                             => $request->start,
+            'length'                            => $request->length,
+            'customer_phone'                    => $request->customer_phone,
+            'from'                              => $request->show_from,
+            'to'                                => $request->show_to,
+            'merchant_id'                       => $request->merchant_id,
+            'agent_id'                          => $request->agent_id,
+            'product_id'                        => $request->product_id,
+            'columns'                           => $request->columns,
+        ])->render('view');
     }
 
     public function exportPhoneOnly(Request $request) {
@@ -228,9 +266,5 @@ class ReportLaptopOrdersByProductController extends MY_Controller
 
         $result = $reportData->get()->toArray();
         return Excel::download(new ExportArray(['Type', 'Order id', 'Product name', 'Customer phone', 'Customer name', 'Address', 'Total amount finish', 'Referral code', 'IBB Account', 'Referral name', 'Order state', 'Payment method', 'Payment status', 'Order create time', 'Order deliver time', 'Zone', 'Branch code', 'Branch name'], $result), 'ReportMultiService_' . date('YmdHis') . '.xlsx');
-    }
-
-    public function productsData() {
-        
     }
 }

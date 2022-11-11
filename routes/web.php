@@ -17,6 +17,7 @@ use App\Http\Controllers\Hi_FPT\PaymentController;
 use App\Http\Controllers\Hi_FPT\AirDirectionController;
 use App\Http\Controllers\Hi_FPT\BehaviorController;
 use App\Http\Controllers\Hi_FPT\UpdateEmployeesFromExcelFileController;
+use App\DataTables\Hi_FPT\ReportLaptopOrdersByProductNCCDataTable;
 use Illuminate\Http\Request;
 
 /*
@@ -377,8 +378,11 @@ Route::group([
                 Route::post('/getPaymentErrorDetail', 'ErrorpaymentchartController@getPaymentErrorDetail')->name('errorpaymentchart.getPaymentErrorDetail');
             });
             Route::prefix('laptopordersbyproduct')->group(function () {
+                $request = $_GET;
                 Route::get('/', 'ReportLaptopOrdersByProductController@index')->name('laptopordersbyproduct.index');
-                Route::get('/productsData', 'ReportLaptopOrdersByProductController@productsData')->name('laptopordersbyproduct.productsData');
+                Route::get('/renderncctable', 'ReportLaptopOrdersByProductController@renderNccTable')->name('laptopordersbyproduct.renderNccTable');
+                Route::get('/renderProductTable', 'ReportLaptopOrdersByProductController@renderProductTable')->name('laptopordersbyproduct.renderProductTable');
+                Route::get('/renderMerchantTable', 'ReportLaptopOrdersByProductController@renderMerchantTable')->name('laptopordersbyproduct.renderMerchantTable');
             });
             Route::prefix('salereportdatamultiservice')->group(function () {
                 $request = $_GET;
