@@ -41,7 +41,7 @@ class ReportLaptopOrdersByProductController extends MY_Controller
         $merchants_default_key = array_column($merchants_default, 'key');
         // dd($merchants_default_key);
 
-        $agents = Laptop_Orders_Agent::select(['agent_id', 'merchant_id', 'agent_name'])->whereIn('merchant_id', $merchants_default_key)->get()->toArray();
+        $agents = Laptop_Orders_Agent::select(['agent_id', 'merchant_id', 'agent_name'])->whereIn('merchant_id', $merchants_default_key)->orderBy('agent_name')->get()->toArray();
 
         $products = Shopping_Product::select(['product_id', 'product_name', 'sku'])->whereIn('merchant_id', $merchants_default_key)->get()->toArray();
         $this->request = $request;
