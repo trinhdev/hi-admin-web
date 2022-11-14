@@ -153,12 +153,12 @@ class ReportLaptopOrdersByProductMerchantDataTable extends DataTable
                         'scrollX' => true,
                         'searching' => false,
                         'searchDelay' => 500,
-                        'serverSide'    => true
+                        'serverSide' => false
                     ])
-                    // ->dom('Bfrtip')
-                    // ->buttons(
-                    //     Button::
-                    // )
+                    ->dom('Bfrtip')
+                    ->buttons(
+                        Button::make('excel'),
+                    )
                     ->addTableClass('table table-hover table-striped text-center w-100')
                     ->languageEmptyTable('Không có dữ liệu')
                     ->languageInfoEmpty('Không có dữ liệu')
