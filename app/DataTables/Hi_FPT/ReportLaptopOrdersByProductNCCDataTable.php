@@ -14,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\ExportServiceProvider;
 use DataTables;
 
-class ReportLaptopOrdersByProductDataTable extends DataTable
+class ReportLaptopOrdersByProductNCCDataTable extends DataTable
 {
     // use WithExportQueue;
     /**
@@ -28,6 +28,8 @@ class ReportLaptopOrdersByProductDataTable extends DataTable
     private $orderBy = null;
     private $orderDirection  = null;
     private $currentPage = 1;
+
+    protected $exportClass = ReportLaptopOrdersNccExport::class;
     public function dataTable($query)
     {
         return datatables()
@@ -94,40 +96,38 @@ class ReportLaptopOrdersByProductDataTable extends DataTable
             $to = date('Y-m-t 23:59:59', strtotime('yesterday midnight'));
         }
 
-        $reportData = Report_Laptop_Orders_By_Product::selectRaw('view_shopping_product_tb.sku AS sku, 
-                                                                view_shopping_product_tb.product_name AS product_name, 
-                                                                report_laptop_orders_by_product.product_id, 
+        $reportData = Report_Laptop_Orders_By_Product::selectRaw('agent_id AS agent_id,
                                                                 SUM(report_laptop_orders_by_product.count_delivered) AS count_delivered, 
                                                                 SUM(report_laptop_orders_by_product.amount_delivered) AS amount_delivered, 
                                                                 SUM(report_laptop_orders_by_product.page_view) AS page_view,
                                                                 SUM(report_laptop_orders_by_product.emp_count) AS emp_count,
                                                                 SUM(report_laptop_orders_by_product.app_users_count) AS app_users_count, 
                                                                 GROUP_CONCAT(page_view_user, ",") AS page_view_user')
-                                                    ->whereBetween('created_at', [$from, $to])
-                                                    ->join('view_shopping_product_tb', 'report_laptop_orders_by_product.product_id', '=', 'view_shopping_product_tb.product_id');
+                                                    ->whereBetween('created_at', [$from, $to]);
+                                                    // ->join('view_shopping_product_tb', 'report_laptop_orders_by_product.product_id', '=', 'view_shopping_product_tb.product_id');
 
         if(!empty($merchant_id)) {
-            $reportData->whereIn('view_shopping_product_tb.merchant_id', $merchant_id);
+            $reportData->whereIn('merchant_id', $merchant_id);
         }
         else {
-            $reportData->whereIn('view_shopping_product_tb.merchant_id', $merchants_default);
+            $reportData->whereIn('merchant_id', $merchants_default);
         }
 
         if(!empty($agent_id)) {
-            $reportData->whereIn('view_shopping_product_tb.agent_id', $agent_id);
+            $reportData->whereIn('agent_id', $agent_id);
         }
         else {
-            $reportData->whereIn('view_shopping_product_tb.merchant_id', $merchants_default);
+            $reportData->whereIn('merchant_id', $merchants_default);
         }
 
         if(!empty($product_id)) {
             $reportData->whereIn('report_laptop_orders_by_product.product_id', $product_id);
         }
         else {
-            $reportData->whereIn('view_shopping_product_tb.merchant_id', $merchants_default);
+            $reportData->whereIn('merchant_id', $merchants_default);
         }
 
-        $reportData->orderBy('amount_delivered', 'desc')->groupBy(['product_id']);
+        $reportData->orderBy('amount_delivered', 'desc')->groupBy(['agent_id']);
         // dd($reportData->get()->toArray());
         return $this->applyScopes($reportData);
     }
@@ -140,9 +140,9 @@ class ReportLaptopOrdersByProductDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    // ->minifiedAjax( route('laptopordersbyproduct.renderProductTable') )
+                    // ->minifiedAjax(route('laptopordersbyproduct.renderNccTable'), null, $_GET)
                     ->ajax([
-                        'url' => route('laptopordersbyproduct.renderProductTable'),
+                        'url' => route('laptopordersbyproduct.renderNccTable'),
                         'type' => 'GET',
                         'data' => 'function(d) { 
                             d.show_from = $("#show_from").val();
@@ -152,21 +152,23 @@ class ReportLaptopOrdersByProductDataTable extends DataTable
                             d.product_id = $("#product_id").val();
                         }',
                     ])
-                    ->setTableId('report-data')
+                    ->setTableId('report-data-ncc')
                     ->columns($this->getColumns())
                     ->lengthMenu([5, 10, 25, 50, 100, 200, 500])
                     ->pageLength(5)
                     ->parameters([
-                        'scroll' => false,
-                        'scrollX' => true,
-                        'searching' => false,
-                        'searchDelay' => 500,
+                        'scroll'        => false,
+                        'scrollX'       => true,
+                        'searching'     => false,
+                        'searchDelay'   => 500,
                         'serverSide'    => true
                     ])
-                    // ->dom('Bfrtip')
-                    // ->buttons(
-                    //     Button::
-                    // )
+                    ->dom('Bfrtip')
+                    ->buttons(
+                        Button::make('excel'),
+                        // Button::
+                    )
+                    
                     ->addTableClass('table table-hover table-striped text-center w-100')
                     ->languageEmptyTable('Không có dữ liệu')
                     ->languageInfoEmpty('Không có dữ liệu')
@@ -190,8 +192,7 @@ class ReportLaptopOrdersByProductDataTable extends DataTable
                     ->title('STT')
                     ->width(20)
                     ->sortable(false),
-            Column::make('sku')->title('SKU')->searching(false)->defaultContent(''),
-            Column::make('product_name')->title('Tên sản phẩm')->searching(false)->defaultContent(''),
+            Column::make('agent_id')->title('Nhà cung cấp')->searching(false)->defaultContent(''),
             Column::make('amount_delivered')->title('Doanh số')->searching(false)->defaultContent(''),
             Column::make('count_delivered')->title('Đơn hàng')->sortable(false)->searching(false)->defaultContent(''),
             Column::make('avo')->title('AVO')->sortable(false)->searching(false)->defaultContent(''),
@@ -226,6 +227,6 @@ class ReportLaptopOrdersByProductDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Banner_' . date('YmdHis');
+        return 'BaoCaoNCC_' . date('YmdHis');
     }
 }

@@ -14,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\ExportServiceProvider;
 use DataTables;
 
-class ReportLaptopOrdersByProductDataTable extends DataTable
+class ReportLaptopOrdersByProductMerchantDataTable extends DataTable
 {
     // use WithExportQueue;
     /**
@@ -94,41 +94,33 @@ class ReportLaptopOrdersByProductDataTable extends DataTable
             $to = date('Y-m-t 23:59:59', strtotime('yesterday midnight'));
         }
 
-        $reportData = Report_Laptop_Orders_By_Product::selectRaw('view_shopping_product_tb.sku AS sku, 
-                                                                view_shopping_product_tb.product_name AS product_name, 
-                                                                report_laptop_orders_by_product.product_id, 
+        $reportData = Report_Laptop_Orders_By_Product::selectRaw('merchant_id AS merchant_id,
                                                                 SUM(report_laptop_orders_by_product.count_delivered) AS count_delivered, 
                                                                 SUM(report_laptop_orders_by_product.amount_delivered) AS amount_delivered, 
                                                                 SUM(report_laptop_orders_by_product.page_view) AS page_view,
                                                                 SUM(report_laptop_orders_by_product.emp_count) AS emp_count,
                                                                 SUM(report_laptop_orders_by_product.app_users_count) AS app_users_count, 
                                                                 GROUP_CONCAT(page_view_user, ",") AS page_view_user')
-                                                    ->whereBetween('created_at', [$from, $to])
-                                                    ->join('view_shopping_product_tb', 'report_laptop_orders_by_product.product_id', '=', 'view_shopping_product_tb.product_id');
+                                                    ->whereBetween('created_at', [$from, $to]);
+                                                    // ->join('view_shopping_product_tb', 'report_laptop_orders_by_product.product_id', '=', 'view_shopping_product_tb.product_id');
 
         if(!empty($merchant_id)) {
-            $reportData->whereIn('view_shopping_product_tb.merchant_id', $merchant_id);
+            $reportData->whereIn('merchant_id', $merchant_id);
         }
         else {
-            $reportData->whereIn('view_shopping_product_tb.merchant_id', $merchants_default);
+            $reportData->whereIn('merchant_id', $merchants_default);
         }
 
         if(!empty($agent_id)) {
-            $reportData->whereIn('view_shopping_product_tb.agent_id', $agent_id);
-        }
-        else {
-            $reportData->whereIn('view_shopping_product_tb.merchant_id', $merchants_default);
+            $reportData->whereIn('agent_id', $agent_id);
         }
 
         if(!empty($product_id)) {
             $reportData->whereIn('report_laptop_orders_by_product.product_id', $product_id);
         }
-        else {
-            $reportData->whereIn('view_shopping_product_tb.merchant_id', $merchants_default);
-        }
 
-        $reportData->orderBy('amount_delivered', 'desc')->groupBy(['product_id']);
-        // dd($reportData->get()->toArray());
+        $reportData->orderBy('amount_delivered', 'desc')->groupBy(['merchant_id']);
+        // dd($reportData->toSql());
         return $this->applyScopes($reportData);
     }
 
@@ -140,9 +132,9 @@ class ReportLaptopOrdersByProductDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    // ->minifiedAjax( route('laptopordersbyproduct.renderProductTable') )
+                    // ->minifiedAjax( route('laptopordersbyproduct.renderMerchantTable') )
                     ->ajax([
-                        'url' => route('laptopordersbyproduct.renderProductTable'),
+                        'url' => route('laptopordersbyproduct.renderMerchantTable'),
                         'type' => 'GET',
                         'data' => 'function(d) { 
                             d.show_from = $("#show_from").val();
@@ -152,7 +144,7 @@ class ReportLaptopOrdersByProductDataTable extends DataTable
                             d.product_id = $("#product_id").val();
                         }',
                     ])
-                    ->setTableId('report-data')
+                    ->setTableId('report-data-merchant')
                     ->columns($this->getColumns())
                     ->lengthMenu([5, 10, 25, 50, 100, 200, 500])
                     ->pageLength(5)
@@ -190,8 +182,7 @@ class ReportLaptopOrdersByProductDataTable extends DataTable
                     ->title('STT')
                     ->width(20)
                     ->sortable(false),
-            Column::make('sku')->title('SKU')->searching(false)->defaultContent(''),
-            Column::make('product_name')->title('Tên sản phẩm')->searching(false)->defaultContent(''),
+            Column::make('merchant_id')->title('Ngành hàng')->searching(false)->defaultContent(''),
             Column::make('amount_delivered')->title('Doanh số')->searching(false)->defaultContent(''),
             Column::make('count_delivered')->title('Đơn hàng')->sortable(false)->searching(false)->defaultContent(''),
             Column::make('avo')->title('AVO')->sortable(false)->searching(false)->defaultContent(''),
