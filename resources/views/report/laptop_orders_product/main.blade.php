@@ -83,7 +83,7 @@
                         </div>
                         <div class="col-md-12" style="text-align: center">
                             <input type="submit" id="search" class="btn btn-sm btn-primary" name="submitbutton" value="Search" />
-                            <input type="submit" id="all-export" class="btn btn-sm btn-warning" name="submitbutton" value="All export" />
+                            {{-- <input type="submit" id="all-export" class="btn btn-sm btn-warning" name="submitbutton" value="All export" /> --}}
                         </div>
                     </form>
                 </div>
