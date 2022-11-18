@@ -58,8 +58,8 @@ function checkSubmitLogReport(formData) {
 
 function getDataRequiredLogReport() {
     var data = {
-        'description': true,
-        'asked_by': true,
+        'title': true,
+        // 'asked_by': true,
         // 'solve_way': true
     };
     return data;
