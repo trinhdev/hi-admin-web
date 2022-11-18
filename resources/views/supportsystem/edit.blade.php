@@ -24,7 +24,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-md-center">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     @php
                         $action = (empty($data)) ? route('supportsystem.store') : route('supportsystem.update', [$data->id]);
                     @endphp
@@ -40,18 +40,30 @@
                             </div>
                             <div class="card-body" style="overflow-y: scroll">
                                 <div class="form-group">
+                                    <label for="name" class="required_red_dot">Tên vấn đề</label>
+                                    <input type="text" id="title" class="form-control" name="title" value="{{ @$data['title'] }}" />
+                                </div>
+                                <div class="form-group">
                                     <label for="description" class="required_red_dot">Mô tả</label>
                                     <textarea name="description" id="description" class="form-control">
                                         {{ @$data->description }}
                                     </textarea>
                                 </div>
+                                @if (!empty($data['upload_url']))
+                                    <ul style="list-style-type: decimal;">
+                                        @foreach (explode(';', $data['upload_url']) as $upload_url)
+                                            <li><a href="{{ $upload_url }}" target="_blank">{{ $upload_url }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                @endif
                                 <div class="form-group">
-                                    <label for="asked_by" class="required_red_dot">Hỏi bởi</label>
-                                    <input type="text" name="asked_by" class="form-control" value="{{ !empty($data)?$data->asked_by : ''}}">
+                                    <label for="description">Tài liệu đính kèm</label>
+                                    <input id="upload_url" name="upload_url" type="hidden" value="{{ @$data['upload_url'] }}" />
+                                    <input id="upload" type="file" onchange="readURL(this, '{{ route('supportsystem.upload') }}');" class="form-control border-0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="asked_at">Hỏi lúc</label>
-                                    <input type="datetime-local" name="asked_at" class="form-control" id="asked_at" placeholder="Hỏi lúc" value="{{ !empty($data)?$data->asked_at : '' }}" />
+                                    <label for="asked_by" class="required_red_dot">Người gửi lỗi</label>
+                                    <input type="text" name="asked_by" class="form-control" value="{{ !empty($data)?$data->asked_by : ''}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="group">Kênh tiếp nhận</label>
@@ -71,17 +83,13 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="way_to_solve">Phương thức giải quyết</label>
-                                    <textarea class="form-control" name="way_to_solve">{{ @$data->way_to_solve }}</textarea>
+                                    <label for="way_to_solve">Quá trình sửa lỗi</label>
+                                    <textarea id="solve_progress" class="form-control" name="solve_progress">{{ @$data->solve_progress }}</textarea>
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label for="solved_by">Người sửa lỗi</label>
                                     <textarea class="form-control" name="solved_by">{{ @$data->solved_by }}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="solved_at" class="required_red_dot">Sửa lúc lúc</label>
-                                    <input type="datetime-local" name="solved_at" class="form-control" id="solved_at" placeholder="Hỏi lúc" value="{{ !empty($data)?$data->solved_at : '' }}" />
-                                </div>
+                                </div> --}}
                                 <div class="form-group">
                                     <label for="error_type">Phân loại lỗi</label>
                                     <select id="error_type" name="error_type" class="form-control">
@@ -91,12 +99,32 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="caused">Nguyên nhân lỗi</label>
-                                    <textarea class="form-control" name="caused">{{ @$data->caused }}</textarea>
+                                    <label for="result">Kết quả</label>
+                                    <textarea class="form-control" name="result">{{ @$data->result }}</textarea>
+                                </div>
+                                @if (!empty($data['upload_result_url']))
+                                    <ul style="list-style-type: decimal;">
+                                        @foreach (explode(';', $data['upload_result_url']) as $upload_result_url)
+                                            <li><a href="{{ $upload_result_url }}" target="_blank">{{ $upload_result_url }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                                <div class="form-group">
+                                    <label for="description">Tài liệu đính kèm kết quả</label>
+                                    <input id="upload_result_url" name="upload_result_url" type="hidden" value="{{ @$data['upload_result_url'] }}" />
+                                    <input id="upload_result" type="file" onchange="readURL(this, '{{ route('supportsystem.upload') }}');" class="form-control border-0">
                                 </div>
                                 <div class="form-group">
                                     <label for="note">Ghi chú</label>
                                     <textarea class="form-control" name="note">{{ @$data->note }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="start_time">Thời gian bắt đầu</label>
+                                    <input type="datetime-local" name="start_time" class="form-control" id="start_time" placeholder="Thời gian bắt đầu" value="{{ !empty($data) ? $data->start_time : '' }}" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="end_time">Thời gian kết thúc</label>
+                                    <input type="datetime-local" name="end_time" class="form-control" id="end_time" placeholder="Thời gian kết thúc" value="{{ !empty($data)?$data->end_time : '' }}" />
                                 </div>
                             </div>
                             <div class="card-footer" style="text-align: center">
@@ -124,6 +152,55 @@
             .catch( error => {
                 console.error( error );
             } );
+
+        ClassicEditor
+            .create( document.querySelector( '#solve_progress' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+
+            function readURL(value, url) {
+                $("#spinner").addClass("show");
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                var files = $(value)[0].files[0];
+                var formData = new FormData();
+                formData.append("file", files, files.name);
+                $.ajax({
+                    type: 'POST',
+                    // datatype: 'JSON',
+                    url: url,
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: (data) => {
+                        if (data.url) {
+                            // $("#img_icon").attr('src', data.url);
+                            if($("#upload_url").val()) {
+                                $("#upload_url").val($("#upload_url").val() + ';' + data.url);
+                            }
+                            else {
+                                $("#upload_url").val(data.url);
+                            }
+                            $("#spinner").removeClass("show");
+                            console.log($("#upload_url").val().split(";"));
+                        }
+                    },
+                    error: function (xhr) {
+                        $("#spinner").removeClass("show");
+                        var errorString = '';
+                        $.each(xhr.responseJSON.errors, function (key, value) {
+                            errorString = value;
+                            return false;
+                        });
+                        showError(errorString);
+                    }
+                });
+            }
     </script>
 @endpush
 

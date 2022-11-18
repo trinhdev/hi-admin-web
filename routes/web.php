@@ -219,6 +219,7 @@ Route::group([
                 Route::put('/update/{id?}', 'SupportSystemController@update')->name('supportsystem.update');
                 Route::delete('/destroy/{id?}', 'SupportSystemController@destroy')->name('supportsystem.destroy');
                 Route::post('/upload', 'SupportSystemController@upload')->name('supportsystem.upload');
+                Route::post('/upload', 'SupportSystemController@upload')->name('supportsystem.upload');
 
             });
 
