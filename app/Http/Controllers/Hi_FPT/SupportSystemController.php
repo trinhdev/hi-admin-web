@@ -41,6 +41,8 @@ class SupportSystemController extends MY_Controller
         $support_code_group = Settings::where('name', 'support_system_group')->get()->toArray();
         $support_code_status = Settings::where('name', 'support_system_status')->get()->toArray();
         $support_system_error_type = Settings::where('name', 'support_system_error_type')->get()->toArray();
+        // dd($data['data']->error_type);
+        $data['data']->error_type = explode(',', $data['data']->error_type);
         $data['support_system_group'] = (!empty($support_code_group[0]['value'])) ? json_decode($support_code_group[0]['value'], true) : [];
         $data['support_code_status'] = (!empty($support_code_status[0]['value'])) ? json_decode($support_code_status[0]['value'], true) : [];
         $data['support_system_error_type'] = (!empty($support_system_error_type[0]['value'])) ? json_decode($support_system_error_type[0]['value'], true) : [];
@@ -49,7 +51,10 @@ class SupportSystemController extends MY_Controller
 
     public function update(Request $request, $id)
     {
+        // $request->error_type = implode(',', $request->error_type);
+        // dd($request->error_type);
         $request->merge([
+            'error_type' => implode(',', $request->error_type),
             'updated_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);
         $this->updateById($this->model, $id, $request->all());
@@ -69,6 +74,8 @@ class SupportSystemController extends MY_Controller
     }
 
     public function store(Request $request) {
+        $request->error_type = implode(',', $request->error_type);
+        dd($request->error_type);
         $request->merge([
             'created_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);

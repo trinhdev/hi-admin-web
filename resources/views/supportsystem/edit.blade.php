@@ -92,7 +92,7 @@
                                 </div> --}}
                                 <div class="form-group">
                                     <label for="error_type">Phân loại lỗi</label>
-                                    <select id="error_type" name="error_type" class="form-control">
+                                    <select id="error_type" name="error_type[]" class="form-control" multiple>
                                         @foreach ($support_system_error_type as $error_type)
                                             <option value="{{ $error_type }}" {{ @$data->error_type == $error_type ? 'selected' : '' }}>{{ $error_type }}</option>
                                         @endforeach
