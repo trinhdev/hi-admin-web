@@ -55,7 +55,7 @@ class SupportSystemDataTable extends DataTable
     public function query()
     {
         $supportsystem = SupportSystem::query();
-        return $this->applyScopes($supportsystem);
+        return $this->applyScopes($supportsystem->orderBy('start_time'));
     }
 
     /**
