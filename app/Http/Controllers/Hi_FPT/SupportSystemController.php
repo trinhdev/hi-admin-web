@@ -6,7 +6,7 @@ use App\DataTables\Hi_FPT\SupportSystemDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
-use App\Services\NewsEventService;
+use App\Services\Minio;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Carbon;
@@ -37,6 +37,7 @@ class SupportSystemController extends MY_Controller
 
     public function edit($id) {
         $data = parent::edit1();
+        // dd($data);
         $support_code_group = Settings::where('name', 'support_system_group')->get()->toArray();
         $support_code_status = Settings::where('name', 'support_system_status')->get()->toArray();
         $support_system_error_type = Settings::where('name', 'support_system_error_type')->get()->toArray();
@@ -71,6 +72,7 @@ class SupportSystemController extends MY_Controller
         $request->merge([
             'created_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);
+        // dd($request->all());
         $this->createSingleRecord($this->model, $request->all());
         $this->addToLog(request());
         return redirect()->route('supportsystem.index');
@@ -82,5 +84,27 @@ class SupportSystemController extends MY_Controller
         $this->deleteById($this->model, $id);
         $this->addToLog(request());
         return redirect()->route('supportsystem.index');
+    }
+
+    public function show($id) {
+        
+    }
+
+    public function upload(Request $request) {
+        if ($request->file('file')) {
+            $minioUrl = 'https://hi-static.fpt.vn/sys';
+            $filePath = $request->file('file');
+            $fileName = pathinfo($filePath->getClientOriginalName(), PATHINFO_FILENAME) . '.' . pathinfo($filePath->getClientOriginalName(), PATHINFO_EXTENSION);
+            $data = file_get_contents($filePath);
+            $uploadUrl = '/hifpt/report/support-system/' . $fileName;
+            try {
+                $uploadResult = Minio::uploadMinio($uploadUrl, $data);
+            }
+            catch(Exception $e) {
+                return ['error' => 'Upload file thất bại. Xin thử lại lúc sau.', 'url' => ''];
+            }
+
+            return ['success' => 'You have successfully upload image.', 'url' => $minioUrl . $uploadUrl];
+        }
     }
 }

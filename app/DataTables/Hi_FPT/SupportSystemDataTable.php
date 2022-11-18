@@ -29,6 +29,9 @@ class SupportSystemDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
+            ->editColumn('grid_title_show',function($row){
+                return !empty($row->title) ? $row->title : $row->description;
+            })
             ->editColumn('action',function($row) {
                 return '<div style="display:flex; justify-content:center" class="infoRow" data-id="' . $row->id . '">
                             <a style="margin-right: 5px" type="button" onclick="getDetail(this)" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
@@ -39,7 +42,8 @@ class SupportSystemDataTable extends DataTable
                             </form>
                         </div>';
             })
-            ->rawColumns(['is_active', 'action']);
+            ->escapeColumns([])
+            ->rawColumns(['grid_title_show', 'is_active', 'action']);
     }
 
     /**
@@ -97,12 +101,16 @@ class SupportSystemDataTable extends DataTable
                     ->title('STT')
                     ->width(20)
                     ->sortable(false),  
-            Column::make('description')->title('Mô Tả')->sortable(false)->searching(false),
-            Column::make('asked_by')->title('Người hỏi')->searching(false),
-            Column::make('asked_at')->title('Hỏi vào lúc')->searchable(false),
-            Column::make('group')->title('Hỏi vào lúc')->searching(false),
+            Column::make('title')->title('Tên lỗi')->sortable(false)->searching(true),
+            Column::make('description')->title('Tên mô tả')->sortable(false)->searching(true),
+            // Column::make('description')->title('Mô Tả')->sortable(false)->searching(false),
+            Column::make('asked_by')->title('Người gửi lỗi')->searching(false),
+            
+            // Column::make('group')->title('Hỏi vào lúc')->searching(false),
             Column::make('status')->title('Trạng thái')->searching(false),
-            Column::make('created_at')->title('Tạo vào lúc')->searchable(false),
+            Column::make('start_time')->title('Ngày bắt đầu')->searchable(false),
+            Column::make('end_time')->title('Ngày kết thúc')->searchable(false),
+            // Column::make('created_at')->title('Tạo vào lúc')->searchable(false),
             Column::computed('action')->sortable(false)
                   ->searching(false)
                   ->width(80)
