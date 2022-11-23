@@ -94,7 +94,7 @@
                                     <label for="error_type">Phân loại lỗi</label>
                                     <select id="error_type" name="error_type[]" class="form-control" multiple="multiple">
                                         @foreach ($support_system_error_type as $error_type_row)
-                                            @if(in_array($error_type_row, @$data->error_type))
+                                            @if(in_array($error_type_row, (!empty($data->error_type)) ? $data->error_type : []))
                                             <option value="{{ $error_type_row }}" selected>{{ $error_type_row }}</option>
                                             @else
                                             <option value="{{ $error_type_row }}">{{ $error_type_row }}</option>
