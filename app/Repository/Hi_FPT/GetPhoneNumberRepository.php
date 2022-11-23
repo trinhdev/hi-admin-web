@@ -19,7 +19,6 @@ class GetPhoneNumberRepository implements GetPhoneNumberInterface
         try {
             if ($params->has('excel')) {
                 $data = $this->store($params);
-                dd($data);
                 return back()->with(['data' => $data ?? [], 'success'=>'Thành công', 'html'=>'Thành công']);
             }
             return view('get-phone-number.index');

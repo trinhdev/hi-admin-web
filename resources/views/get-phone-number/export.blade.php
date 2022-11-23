@@ -12,11 +12,11 @@
                 </thead>
                 @if(!empty($data))
                 <tbody>
-                    @forelse($data as $value)
+                    @forelse($data as $key => $value)
                     <tr>
-                        <td>{!! $value['stt'] !!}</td>
+                        <td>{!! $key !!}</td>
                         <td>{{ $value['customer_id'] ?? null }}</td>
-                        <td>{{ $value['phone_number'] ?? null }}</td>
+                        <td>{{ $value['phone'] ?? null }}</td>
                     </tr>
                     @empty
                     <tr>No data</tr>
