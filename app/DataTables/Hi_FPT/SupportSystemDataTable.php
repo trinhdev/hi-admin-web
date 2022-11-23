@@ -55,7 +55,7 @@ class SupportSystemDataTable extends DataTable
     public function query()
     {
         $supportsystem = SupportSystem::query();
-        return $this->applyScopes($supportsystem->orderBy('start_time', 'desc'));
+        return $this->applyScopes($supportsystem->orderBy('status', 'desc')->orderBy('start_time', 'desc'));
     }
 
     /**
@@ -102,7 +102,7 @@ class SupportSystemDataTable extends DataTable
                     ->width(20)
                     ->sortable(false),  
             Column::make('title')->title('Tên lỗi')->sortable(false)->searching(true),
-            Column::make('description')->title('Tên mô tả')->sortable(false)->searching(true),
+            // Column::make('description')->title('Tên mô tả')->sortable(false)->searching(true),
             // Column::make('description')->title('Mô Tả')->sortable(false)->searching(false),
             Column::make('asked_by')->title('Người gửi lỗi')->searching(false),
             
