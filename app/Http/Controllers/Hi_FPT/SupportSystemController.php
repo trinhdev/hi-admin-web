@@ -75,7 +75,6 @@ class SupportSystemController extends MY_Controller
 
     public function store(Request $request) {
         $request->error_type = implode(',', $request->error_type);
-        dd($request->error_type);
         $request->merge([
             'created_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);

@@ -59,7 +59,7 @@
                                 <div class="form-group">
                                     <label for="description">Tài liệu đính kèm</label>
                                     <input id="upload_url" name="upload_url" type="hidden" value="{{ @$data['upload_url'] }}" />
-                                    <input id="upload" type="file" onchange="readURL(this, '{{ route('supportsystem.upload') }}');" class="form-control border-0">
+                                    <input id="upload" type="file" onchange="readURL(this, '{{ route('supportsystem.upload') }}', 'upload_url');" class="form-control border-0">
                                 </div>
                                 <div class="form-group">
                                     <label for="asked_by" class="required_red_dot">Người gửi lỗi</label>
@@ -112,7 +112,7 @@
                                 <div class="form-group">
                                     <label for="description">Tài liệu đính kèm kết quả</label>
                                     <input id="upload_result_url" name="upload_result_url" type="hidden" value="{{ @$data['upload_result_url'] }}" />
-                                    <input id="upload_result" type="file" onchange="readURL(this, '{{ route('supportsystem.upload') }}');" class="form-control border-0">
+                                    <input id="upload_result" type="file" onchange="readURL(this, '{{ route('supportsystem.upload') }}', 'upload_result_url');" class="form-control border-0">
                                 </div>
                                 <div class="form-group">
                                     <label for="note">Ghi chú</label>
@@ -159,7 +159,7 @@
                 console.error( error );
             } );
 
-            function readURL(value, url) {
+            function readURL(value, url, id) {
                 $("#spinner").addClass("show");
                 $.ajaxSetup({
                     headers: {
@@ -179,15 +179,13 @@
                     processData: false,
                     success: (data) => {
                         if (data.url) {
-                            // $("#img_icon").attr('src', data.url);
-                            if($("#upload_url").val()) {
-                                $("#upload_url").val($("#upload_url").val() + ';' + data.url);
+                            if($("#" + id).val()) {
+                                $("#" + id).val($("#" + id).val() + ';' + data.url);
                             }
                             else {
-                                $("#upload_url").val(data.url);
+                                $("#" + id).val(data.url);
                             }
                             $("#spinner").removeClass("show");
-                            console.log($("#upload_url").val().split(";"));
                         }
                     },
                     error: function (xhr) {
