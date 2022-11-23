@@ -100,16 +100,16 @@ class SupportSystemDataTable extends DataTable
             Column::make('DT_RowIndex')
                     ->title('STT')
                     ->width(20)
-                    ->sortable(false),  
+                    ->sortable(false)->searching(false)->searchable(false), 
             Column::make('title')->title('Tên lỗi')->sortable(false)->searching(true),
             // Column::make('description')->title('Tên mô tả')->sortable(false)->searching(true),
             // Column::make('description')->title('Mô Tả')->sortable(false)->searching(false),
-            Column::make('asked_by')->title('Người gửi lỗi')->searching(false),
+            Column::make('asked_by')->title('Người gửi lỗi')->searching(false), 
             
             // Column::make('group')->title('Hỏi vào lúc')->searching(false),
-            Column::make('status')->title('Trạng thái')->searching(false),
-            Column::make('start_time')->title('Ngày bắt đầu')->searchable(false),
-            Column::make('end_time')->title('Ngày kết thúc')->searchable(false),
+            Column::make('status')->title('Trạng thái')->searching(false), 
+            Column::make('start_time')->title('Ngày bắt đầu')->searchable(false)->searchable(false), 
+            Column::make('end_time')->title('Ngày kết thúc')->searchable(false)->searchable(false), 
             // Column::make('created_at')->title('Tạo vào lúc')->searchable(false),
             Column::computed('action')->sortable(false)
                   ->searching(false)
