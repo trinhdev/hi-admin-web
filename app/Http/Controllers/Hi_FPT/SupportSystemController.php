@@ -67,6 +67,7 @@ class SupportSystemController extends MY_Controller
         $support_code_group = Settings::where('name', 'support_system_group')->get()->toArray();
         $support_code_status = Settings::where('name', 'support_system_status')->get()->toArray();
         $support_system_error_type = Settings::where('name', 'support_system_error_type')->get()->toArray();
+        $data['data']->error_type = [];
         $data['support_system_group'] = (!empty($support_code_group[0]['value'])) ? json_decode($support_code_group[0]['value'], true) : [];
         $data['support_code_status'] = (!empty($support_code_status[0]['value'])) ? json_decode($support_code_status[0]['value'], true) : [];
         $data['support_system_error_type'] = (!empty($support_system_error_type[0]['value'])) ? json_decode($support_system_error_type[0]['value'], true) : [];
