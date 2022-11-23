@@ -16,6 +16,7 @@ use App\Http\Controllers\Hi_FPT\EmployeesController;
 use App\Http\Controllers\Hi_FPT\PaymentController;
 use App\Http\Controllers\Hi_FPT\AirDirectionController;
 use App\Http\Controllers\Hi_FPT\BehaviorController;
+use App\Http\Controllers\Hi_FPT\GetPhoneNumberController;
 use App\Http\Controllers\Hi_FPT\UpdateEmployeesFromExcelFileController;
 use App\DataTables\Hi_FPT\ReportLaptopOrdersByProductNCCDataTable;
 use Illuminate\Http\Request;
@@ -319,6 +320,11 @@ Route::group([
             Route::prefix('behavior')->group(function () {
                 Route::get('/', [BehaviorController::class, 'index'])->name('behavior.index');
                 Route::post('/', [BehaviorController::class, 'index'])->name('behavior.post');
+            });
+
+            Route::prefix('get-phone-number')->group(function () {
+                Route::get('/', [GetPhoneNumberController::class, 'index'])->name('getPhoneNumber.index');
+                Route::post('/', [GetPhoneNumberController::class, 'index'])->name('getPhoneNumber.post');
             });
 
             Route::prefix('employees-updates')->group(function () {
