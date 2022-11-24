@@ -16,18 +16,14 @@ class GetPhoneNumberRepository implements GetPhoneNumberInterface
 
     public function index($params)
     {
-        try {
-            if ($params->has('excel')) {
-                $data = $this->store($params);
-                if(count($data) == 0) {
-                    return back()->with(['success'=>'warning', 'html'=>'Không có dữ liệu']);
-                }
-                return back()->with(['data' => $data ?? [], 'success'=>'Thành công', 'html'=>'Thành công']);
+        if ($params->has('excel')) {
+            $data = $this->store($params);
+            if(count($data) == 0) {
+                return back()->with(['success'=>'warning', 'html'=>'Không có dữ liệu']);
             }
-            return view('get-phone-number.index');
-        } catch (\Exception $e) {
-            return back()->with(['error'=>'Lỗi hệ thống', 'html'=>$e->getMessage()]);
+            return back()->with(['data' => $data ?? [], 'success'=>'Thành công', 'html'=>'Thành công']);
         }
+        return view('get-phone-number.index');
     }
 
     public function store($params)
