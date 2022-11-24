@@ -104,6 +104,25 @@ return [
             ]) : [],
         ],
 
+        'mysql4' => [
+            'driver' => 'mysql',
+            'host' => env('DB_4TH_HOST', 'localhost'),
+            'port' => env('DB_4TH_PORT', '3306'),
+            'database' => env('DB_4TH_DATABASE', 'hi-customers'),
+            'username' => env('DB_4TH_USERNAME', 'root'),
+            'password' => env('DB_4TH_PASSWORD', 'trinhdev'),
+            'unix_socket' => env('DB_THIRD_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
