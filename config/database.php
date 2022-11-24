@@ -106,12 +106,12 @@ return [
 
         'mysql4' => [
             'driver' => 'mysql',
-            'url' => env('DB_4TH_CONNECTION'),
+//            'url' => env('DB_4TH_CONNECTION'),
             'host' => env('DB_4TH_HOST', '127.0.0.1'),
             'port' => env('DB_4TH_PORT', '3306'),
-            'database' => env('DB_4TH_DATABASE', 'customers'),
+            'database' => "hi-customers",
             'username' => env('DB_4TH_USERNAME', 'root'),
-            'password' => env('DB_4TH_PASSWORD', ''),
+            'password' => env('DB_4TH_PASSWORD', 'trinhdev'),
             'unix_socket' => env('DB_THIRD_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

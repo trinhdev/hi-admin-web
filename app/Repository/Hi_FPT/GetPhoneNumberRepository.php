@@ -19,6 +19,9 @@ class GetPhoneNumberRepository implements GetPhoneNumberInterface
         try {
             if ($params->has('excel')) {
                 $data = $this->store($params);
+                if(count($data) == 0) {
+                    return back()->with(['success'=>'warning', 'html'=>'Không có dữ liệu']);
+                }
                 return back()->with(['data' => $data ?? [], 'success'=>'Thành công', 'html'=>'Thành công']);
             }
             return view('get-phone-number.index');
@@ -40,10 +43,11 @@ class GetPhoneNumberRepository implements GetPhoneNumberInterface
                 $list_customer_id[]=$value['customer_id'];
             }
         }
-         // Retrieve errors message bag
-        return DB::connection('mysql4')->table('customers')
-                    ->select('customer_id','phone')
-                    ->whereIn('customer_id', $list_customer_id)
-                    ->get()->toArray();
+        $data = DB::connection('mysql4')->table('customers')
+            ->select('customer_id','phone')
+            ->whereIn('customer_id', $list_customer_id)
+            ->get();
+
+        return $data;
     }
 }

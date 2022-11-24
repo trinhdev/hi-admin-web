@@ -6,8 +6,8 @@
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>CUSTOMER ID</th>
-                        <th>PHONE NUMBER</th>
+                        <th>Customer ID</th>
+                        <th>Phone Number</th>
                     </tr>
                 </thead>
                 @if(!empty($data))
@@ -15,13 +15,13 @@
                     @forelse($data as $key => $value)
                     <tr>
                         <td>{!! $key !!}</td>
-                        <td>{{ $value['customer_id'] ?? null }}</td>
-                        <td>{{ $value['phone'] ?? null }}</td>
+                        <td>{{ $value->customer_id ?? null }}</td>
+                        <td>{{ $value->phone ?? null }}</td>
                     </tr>
                     @empty
-                    <tr>No data</tr>
+
                     @endforelse
-                    @endif
+                @endif
                 </tbody>
             </table>
         </div>
