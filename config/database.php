@@ -109,7 +109,7 @@ return [
 //            'url' => env('DB_4TH_CONNECTION'),
             'host' => env('DB_4TH_HOST', '127.0.0.1'),
             'port' => env('DB_4TH_PORT', '3306'),
-            'database' => "hi-customers",
+            'database' => env('DB_4TH_DATABASE', 'hi-customers'),
             'username' => env('DB_4TH_USERNAME', 'root'),
             'password' => env('DB_4TH_PASSWORD', 'trinhdev'),
             'unix_socket' => env('DB_THIRD_SOCKET', ''),
