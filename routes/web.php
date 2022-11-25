@@ -17,6 +17,7 @@ use App\Http\Controllers\Hi_FPT\PaymentController;
 use App\Http\Controllers\Hi_FPT\AirDirectionController;
 use App\Http\Controllers\Hi_FPT\BehaviorController;
 use App\Http\Controllers\Hi_FPT\GetPhoneNumberController;
+use App\Http\Controllers\Hi_FPT\RenderDeeplinkController;
 use App\Http\Controllers\Hi_FPT\UpdateEmployeesFromExcelFileController;
 use App\DataTables\Hi_FPT\ReportLaptopOrdersByProductNCCDataTable;
 use Illuminate\Http\Request;
@@ -336,6 +337,11 @@ Route::group([
             Route::prefix('get-phone-number')->group(function () {
                 Route::get('/', [GetPhoneNumberController::class, 'index'])->name('getPhoneNumber.index');
                 Route::post('/', [GetPhoneNumberController::class, 'index'])->name('getPhoneNumber.post');
+            });
+
+            Route::prefix('render-deeplink')->group(function () {
+                Route::get('/', [RenderDeeplinkController::class, 'index'])->name('renderDeeplink.index');
+                Route::post('/', [RenderDeeplinkController::class, 'store'])->name('renderDeeplink.post');
             });
 
             Route::prefix('employees-updates')->group(function () {
