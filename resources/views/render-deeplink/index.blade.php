@@ -39,26 +39,26 @@
                                     @method('POST')
                                     @csrf
                                     <div class="form-group">
-                                        <label for="DeeplinkName">ID</label>
-                                        <input type="text" id="id" name="id" class="form-control"
+                                        <label for="id">ID</label>
+                                        <input value="{{old('id')}}" type="text" id="id" name="id" class="form-control"
                                                placeholder="ID (định dạng số nguyên integer)" />
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="typeLog">Title</label>
-                                        <input type="text" id="title" name="title" class="form-control"
+                                        <label for="title">Title</label>
+                                        <input value="{{old('title')}}" type="text" id="title" name="title" class="form-control"
                                                placeholder="Title (Định dạng chuỗi string)" />
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="typeLog">dataAction</label>
-                                        <input type="text" id="dataAction" name="dataAction" class="form-control"
+                                        <label for="dataAction">dataAction</label>
+                                        <input value="{{old('dataAction')}}" type="text" id="dataAction" name="dataAction" class="form-control"
                                                placeholder="iconUrl (định dạng chuỗi string)" />
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="typeLog">iconUrl</label>
-                                        <input type="text" id="iconUrl" name="iconUrl" class="form-control"
+                                        <label for="iconUrl">iconUrl</label>
+                                        <input value="{{old('iconUrl')}}" type="text" id="iconUrl" name="iconUrl" class="form-control"
                                                placeholder="dataAction (định dạng chuỗi string)" />
                                     </div>
 
