@@ -17,5 +17,5 @@ class Customer_Locations extends Model
     public $incrementing = false;
     protected $keyType = 'string';
     protected $table = 'customer_locations';
-    protected $fillable = ['customer_location_id', 'location_code','location_name', 'location_zone', 'date_created', 'date_modified', 'is_deleted'];
+    protected $fillable = ['customer_location_id', 'location_code','location_name', 'location_zone', 'date_created', 'date_modified', 'is_deleted', ''];
 }
