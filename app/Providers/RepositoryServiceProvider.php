@@ -32,6 +32,9 @@ use App\Repository\Hi_FPT\BehaviorRepository;
 use App\Contract\Hi_FPT\GetPhoneNumberInterface;
 use App\Repository\Hi_FPT\GetPhoneNumberRepository;
 
+use App\Contract\Hi_FPT\RenderDeeplinkInterface;
+use App\Repository\Hi_FPT\RenderDeeplinkRepository;
+
 use Illuminate\Support\ServiceProvider;
 // Auto Generate
 
@@ -59,6 +62,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ScreenInterface::class, ScreenRepository::class);
         $this->app->bind(BehaviorInterface::class, BehaviorRepository::class);
         $this->app->bind(GetPhoneNumberInterface::class, GetPhoneNumberRepository::class);
+        $this->app->bind(RenderDeeplinkInterface::class, RenderDeeplinkRepository::class);
     }
 
 }
