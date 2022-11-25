@@ -236,6 +236,16 @@ Route::group([
 
             });
 
+            Route::prefix('ftel_branch')->group(function () {
+                Route::get('/', 'FtelBranchController@index')->name('ftel_branch.index');
+                Route::get('/create', 'FtelBranchController@create')->name('ftel_branch.create');
+                Route::post('/store', 'FtelBranchController@store')->name('ftel_branch.store');
+                Route::get('/edit/{customer_location_id?}', 'FtelBranchController@edit')->name('ftel_branch.edit');
+                Route::put('/update/{customer_location_id?}', 'FtelBranchController@update')->name('ftel_branch.update');
+                Route::delete('/destroy/{customer_location_id?}', 'FtelBranchController@destroy')->name('ftel_branch.destroy');
+
+            });
+
             /*
              * Route Public
              * Create by trinhhdp
