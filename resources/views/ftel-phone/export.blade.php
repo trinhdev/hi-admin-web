@@ -11,11 +11,13 @@
                 <tr>
                     <th>STT</th>
                     <th>Mã nhân viên</th>
-                    <th>Tên</th>
+                    {{-- <th>Tên</th> --}}
                     <th>Số điện thoại</th>
                     <th>Email</th>
                     <th>Tên đầy đủ</th>
+                    <th>Đơn vị(làm việc)</th>
                     <th>Đơn vị đầy đủ</th>
+                    <th>Tên đơn vị đầy đủ</th>
                     <th>Đơn vị</th>
                     <th>Đơn vị(theo data)</th>
                     <th>Phòng ban</th>
@@ -23,7 +25,7 @@
                     <th>Code</th>
                     <th>Branch Code</th>
                     <th>Branch Name</th>
-                    <th>Đơn vị(làm việc)</th>
+                    
                     <th>Đang hoạt động</th>
                     <th>Cập nhật</th>
                     <th>dept_id</th>
@@ -46,11 +48,13 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $value['code'] ?? null }}</td>
-                            <td>{{ $value['name'] ?? null }}</td>
+                            {{-- <td>{{ $value['name'] ?? null }}</td> --}}
                             <td>{{ $value['phoneNumber'] ?? null }}</td>
                             <td>{{ $value['emailAddress'] ?? null }}</td>
                             <td>{{ $value['fullName'] ?? null }}</td>
+                            <td>{{ $value['organizationCode'] ?? null }}</td>
                             <td>{{ $value['organizationCodePath'] ?? null }}</td>
+                            <td>{{ $value['organizationNamePath'] ?? null }}</td>
                             <td>{{ $codePath[0] ?? null }}</td>
                             <td>{{ $codePath[1] ?? null }}</td>
                             <td>{{ $codePath[count($codePath)-2] ?? null }}</td>
@@ -58,7 +62,7 @@
                             <td>{{ $value['branch_code'] ?? null }}</td>
                             <td>{{ $value['branch_name'] ?? null }}</td>
                             <td>{{ $value['area_code'] ?? null }}</td>
-                            <td>{{ $value['organizationCode'] ?? null }}</td>
+                            
                             <td>{{ $value['isActive'] ?? null }}</td>
                             <td>{{ $value['checkUpdate'] ?? null }}</td>
                             <td>{{ $value['dept_id'] ?? null }}</td>
