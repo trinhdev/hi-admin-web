@@ -51,15 +51,15 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="dataAction">dataAction</label>
+                                        <label for="dataAction">Data Action</label>
                                         <input value="{{old('dataAction')}}" type="text" id="dataAction" name="dataAction" class="form-control"
-                                               placeholder="iconUrl (định dạng chuỗi string)" />
+                                               placeholder="dataAction (định dạng chuỗi string)" />
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="iconUrl">iconUrl</label>
+                                        <label for="iconUrl">Icon Url</label>
                                         <input value="{{old('iconUrl')}}" type="text" id="iconUrl" name="iconUrl" class="form-control"
-                                               placeholder="dataAction (định dạng chuỗi string)" />
+                                               placeholder="iconUrl (định dạng chuỗi string)" />
                                     </div>
 
                                     <div class="card-footer" style="text-align: center">
