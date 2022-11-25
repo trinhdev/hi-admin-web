@@ -230,9 +230,9 @@ Route::group([
                 Route::get('/', 'CustomerLocationsController@index')->name('customer_locations.index');
                 Route::get('/create', 'CustomerLocationsController@create')->name('customer_locations.create');
                 Route::post('/store', 'CustomerLocationsController@store')->name('customer_locations.store');
-                Route::get('/edit/{id?}', 'CustomerLocationsController@edit')->name('customer_locations.edit');
-                Route::put('/update/{id?}', 'CustomerLocationsController@update')->name('customer_locations.update');
-                Route::delete('/destroy/{id?}', 'CustomerLocationsController@destroy')->name('customer_locations.destroy');
+                Route::get('/edit/{customer_location_id?}', 'CustomerLocationsController@edit')->name('customer_locations.edit');
+                Route::put('/update/{customer_location_id?}', 'CustomerLocationsController@update')->name('customer_locations.update');
+                Route::delete('/destroy/{customer_location_id?}', 'CustomerLocationsController@destroy')->name('customer_locations.destroy');
 
             });
 
