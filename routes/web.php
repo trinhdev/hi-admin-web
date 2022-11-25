@@ -212,6 +212,7 @@ Route::group([
                 Route::delete('/destroy/{id?}', 'HelperController@destroy')->name('helper.destroy');
 
             });
+
             Route::prefix('supportsystem')->group(function () {
                 Route::get('/', 'SupportSystemController@index')->name('supportsystem.index');
                 Route::get('/create', 'SupportSystemController@create')->name('supportsystem.create');
@@ -221,6 +222,16 @@ Route::group([
                 Route::delete('/destroy/{id?}', 'SupportSystemController@destroy')->name('supportsystem.destroy');
                 Route::post('/upload', 'SupportSystemController@upload')->name('supportsystem.upload');
                 // Route::post('/upload', 'SupportSystemController@upload')->name('supportsystem.upload');
+
+            });
+
+            Route::prefix('customer_locations')->group(function () {
+                Route::get('/', 'CustomerLocationsController@index')->name('customer_locations.index');
+                Route::get('/create', 'CustomerLocationsController@create')->name('customer_locations.create');
+                Route::post('/store', 'CustomerLocationsController@store')->name('customer_locations.store');
+                Route::get('/edit/{id?}', 'CustomerLocationsController@edit')->name('customer_locations.edit');
+                Route::put('/update/{id?}', 'CustomerLocationsController@update')->name('customer_locations.update');
+                Route::delete('/destroy/{id?}', 'CustomerLocationsController@destroy')->name('customer_locations.destroy');
 
             });
 
