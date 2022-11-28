@@ -21,13 +21,13 @@ class BehaviorController extends MY_Controller
         $this->BehaviorRepository = $BehaviorRepository;
     }
 
-    public function index(StoreRequest $request)
+    public function index()
     {
-        return $this->BehaviorRepository->index($request);
+        return $this->BehaviorRepository->index();
     }
 
-    // public function store(StoreRequest $request)
-    // {
-    //     return $this->BehaviorRepository->store($request);
-    // }
+     public function store(StoreRequest $request)
+     {
+         return $this->BehaviorRepository->store($request);
+     }
 }

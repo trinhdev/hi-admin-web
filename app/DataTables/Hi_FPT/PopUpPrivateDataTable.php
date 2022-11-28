@@ -37,7 +37,7 @@ class PopUpPrivateDataTable extends DataTable
                 }else {
                     $image = '/images/image_holder.png';
                 }
-                return '<img src="'.$image.'" width="100" height="100"/>';
+                return '<img src="'.$image.'" window.open(`'.$image.'`) width="100" height="100"/>';
             })
             ->editColumn('isActive', function ($query) {
                 if ($query->isActive === 1) {

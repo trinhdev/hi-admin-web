@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\BehaviorRequest;
 
+use App\Rules\ExcelRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -24,8 +25,10 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'excel' => 'mimes:xlsx,csv',
-            'excel.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx hoặc csv'
+            'excel' => [
+                'required',
+                new ExcelRule()
+            ]
         ];
     }
 }
