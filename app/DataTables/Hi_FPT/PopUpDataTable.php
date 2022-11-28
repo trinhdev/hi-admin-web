@@ -28,8 +28,9 @@ class PopUpDataTable extends DataTable
                 return $list_template_popup[$query->templateType] ?? $query;
             })
             ->editColumn('image', function ($query) {
-                return '<img src="'.env('URL_STATIC').'/upload/images/event/'.$query->image.'"
-                            onclick ="window.open("'.$query->image.'").focus()"
+                $url = env('URL_STATIC').'/upload/images/event/'.$query->image;
+                return '<img src="'.$url.'"
+                            onclick ="window.open(`'.$url.'`)"
                             width="100" height="100"
                         />';
             })
