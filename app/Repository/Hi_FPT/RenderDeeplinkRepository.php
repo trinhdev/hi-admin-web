@@ -22,10 +22,10 @@ class RenderDeeplinkRepository implements RenderDeeplinkInterface
         $data = 'https://hi.fpt.vn/deeplink?data=';
         $data_encode = '{
   "id": '.$params->id.',
-  "title": '.$params->title.',
+  "title": "'.$params->title.'",
   "actionType": "open_url_in_app_with_access_token",
-  "dataAction": '.$params->dataAction.',
-  "iconUrl": '.$params->iconUrl.',
+  "dataAction": "'.$params->dataAction.'",
+  "iconUrl": "'.$params->iconUrl.'",
   "isNew": 0,
   "data": null
 }
