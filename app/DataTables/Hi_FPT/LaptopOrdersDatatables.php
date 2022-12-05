@@ -16,6 +16,13 @@ class LaptopOrdersDatatables extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->editColumn('action',function($row){
+                return '<div style="display:flex; justify-content:center">
+                           <a href="'.route('laptop-orders.edit', [$row->trans_id]).'" id="detail" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
+                       </div>
+                ';
+            })
+            ->rawColumns(['action']);
             ;
     }
     public function query(Laptop_Orders $model)
@@ -104,6 +111,10 @@ class LaptopOrdersDatatables extends DataTable
             Column::make('t_deliver'),
             Column::make('agent_id'),
             Column::make('txt_list_item'),
+            Column::computed('action')->sortable(false)
+                ->searching(false)
+                ->width(80)
+                ->addClass('text-center')
         ];
     }
 

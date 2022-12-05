@@ -24,8 +24,9 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'excel' => 'mimes:xlsx,csv',
-            'excel.mimes' => 'Sai định dạng file, chỉ chấp nhận file có đuôi .xlsx hoặc csv'
+            'excel' => 'nullable|mimes:xlsx,csv',
+            'show_from' => 'nullable',
+            'show_to' => 'nullable'
         ];
     }
 }
