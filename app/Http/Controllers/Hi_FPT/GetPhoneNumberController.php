@@ -22,6 +22,11 @@ class GetPhoneNumberController extends MY_Controller
 
     public function index(StoreRequest $request)
     {
-        return $this->GetPhoneNumberRepository->index($request);
+        return $this->GetPhoneNumberRepository->index();
+    }
+
+    public function store(StoreRequest $request)
+    {
+        return $this->GetPhoneNumberRepository->store($request);
     }
 }

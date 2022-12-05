@@ -201,8 +201,12 @@ Route::group([
                 Route::get('/log', 'SupportCodeController@log')->name('supportcode.log');
 
             });
-            Route::get('/laptop-orders', 'LaptopOrdersController@index')->name('laptop-orders.index');
-            Route::post('/laptop-orders', 'LaptopOrdersController@index')->name('laptop-orders.index');
+            Route::prefix('laptop-orders')->group(function () {
+                Route::get('/', 'LaptopOrdersController@index')->name('laptop-orders.index');
+                Route::post('/', 'LaptopOrdersController@index')->name('laptop-orders.index');
+                Route::get('/edit/{id?}', 'LaptopOrdersController@edit')->name('laptop-orders.edit');
+                Route::post('/update/{id?}', 'LaptopOrdersController@update')->name('laptop-orders.update');
+            });
 
             Route::prefix('helper')->group(function () {
                 Route::get('/', 'HelperController@index')->name('helper.index');
@@ -346,7 +350,9 @@ Route::group([
 
             Route::prefix('get-phone-number')->group(function () {
                 Route::get('/', [GetPhoneNumberController::class, 'index'])->name('getPhoneNumber.index');
-                Route::post('/', [GetPhoneNumberController::class, 'index'])->name('getPhoneNumber.post');
+                Route::post('/', [GetPhoneNumberController::class, 'index'])->name('getPhoneNumber.index');
+                Route::get('/edit', [GetPhoneNumberController::class, 'edit'])->name('getPhoneNumber.edit');
+                Route::post('/edit', [GetPhoneNumberController::class, 'update'])->name('getPhoneNumber.update');
             });
 
             Route::prefix('render-deeplink')->group(function () {
