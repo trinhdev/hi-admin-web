@@ -268,3 +268,10 @@ if (!function_exists('rand_color')) {
     }
 }
 
+if (!function_exists('changeFormatDateLocal')) {
+    function changeFormatDateLocal($value) {
+        return \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
+    }
+}
+
+

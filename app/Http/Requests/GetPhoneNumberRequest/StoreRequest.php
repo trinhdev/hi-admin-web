@@ -24,7 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'excel' => 'nullable|mimes:xlsx,csv',
+            'excel' => 'required_without:show_from,show_to|mimes:xlsx,csv',
             'show_from' => 'nullable',
             'show_to' => 'nullable'
         ];

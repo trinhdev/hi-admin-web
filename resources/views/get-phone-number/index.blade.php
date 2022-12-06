@@ -35,7 +35,7 @@
                                 <h3 class="card-title uppercase">Form File</h3>
                             </div>
                             <div class="card-body">
-                                {!! Form::open(array('url' => route('getPhoneNumber.post'),'id' => 'importExcel', 'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
+                                {!! Form::open(array('url' => route('getPhoneNumber.store'),'id' => 'importExcel', 'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
                                 @csrf
                                 <div class="row justify-content-center mt-2 mb-2">
                                     <div class="col-md-4">
@@ -55,7 +55,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <nav aria-label="breadcrumb">
                                     <ol class="col-md-8 m-auto mt-2 breadcrumb">
                                         <ul class="m-auto">
@@ -67,7 +67,7 @@
                                         </ul>
                                     </ol>
                                 </nav>
-                                
+
                                 <div class="mt-4 card-footer" style="text-align: center">
                                     <button type="submit" value="data" class="btn btn-info">Submit
                                     </button>

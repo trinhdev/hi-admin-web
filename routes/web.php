@@ -350,9 +350,7 @@ Route::group([
 
             Route::prefix('get-phone-number')->group(function () {
                 Route::get('/', [GetPhoneNumberController::class, 'index'])->name('getPhoneNumber.index');
-                Route::post('/', [GetPhoneNumberController::class, 'index'])->name('getPhoneNumber.index');
-                Route::get('/edit', [GetPhoneNumberController::class, 'edit'])->name('getPhoneNumber.edit');
-                Route::post('/edit', [GetPhoneNumberController::class, 'update'])->name('getPhoneNumber.update');
+                Route::post('/store', [GetPhoneNumberController::class, 'store'])->name('getPhoneNumber.store');
             });
 
             Route::prefix('render-deeplink')->group(function () {

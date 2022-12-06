@@ -4,5 +4,6 @@ namespace App\Contract\Hi_FPT;
 
 interface GetPhoneNumberInterface
 {
-    public function index($params);
+    public function index();
+    public function store($params);
 }
