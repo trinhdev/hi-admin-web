@@ -14,46 +14,36 @@ class GetPhoneNumberRepository implements GetPhoneNumberInterface
 {
     use DataTrait;
 
-    public function index($params)
+    public function index()
     {
-        if ($params->has('excel')) {
-            $data = $this->store($params);
-            if(count($data) == 0) {
-                return back()->with(['success'=>'warning', 'html'=>'Không có dữ liệu']);
-            }
-            return back()->with(['data' => $data ?? [], 'success'=>'Thành công', 'html'=>'Thành công']);
-        }
         return view('get-phone-number.index');
     }
 
     public function store($params)
     {
-        try {
-            if($params->file('excel')) {
-                $filePath = $params->file('excel')->path();
-                $newFilePath =  $filePath . '.' . $params->file('excel')->getClientOriginalExtension();
-                move_uploaded_file($filePath, $newFilePath);
-                $collection = (new FastExcel)->import($newFilePath);
-                $list_customer_id = [];
-                foreach($collection as $value) {
-                    if (!empty($value['customer_id'])) {
-                        $list_customer_id[]=$value['customer_id'];
-                    }
+        $from = changeFormatDateLocal($params->input('show_from'));
+        $to = changeFormatDateLocal($params->input('show_to'));
+        if(!empty($from) && !empty($to)) {
+            $data = DB::connection('mysql4')->table('customers')
+                ->select('customer_id','phone')
+                ->whereBetween('date_created', [$from,$to])
+                ->get();
+        } else {
+            $filePath = $params->file('excel')->path();
+            $newFilePath =  $filePath . '.' . $params->file('excel')->getClientOriginalExtension();
+            move_uploaded_file($filePath, $newFilePath);
+            $collection = (new FastExcel)->import($newFilePath);
+            $list_customer_id = [];
+            foreach($collection as $value) {
+                if (!empty($value['customer_id'])) {
+                    $list_customer_id[]=$value['customer_id'];
                 }
-                $data = DB::connection('mysql4')->table('customers')
-                    ->select('customer_id','phone')
-                    ->whereIn('customer_id', $list_customer_id)
-                    ->get();
-            } else {
-                $from = $params->input('show_from');
-                $to = $params->input('show_to');
-                dd($from);
             }
-
-
-            return $data;
-        } catch (\Exception $e) {
-            return back()->with(['error'=>'Lỗi hệ thống', 'html'=>$e->getMessage()]);
+            $data = DB::connection('mysql4')->table('customers')
+                ->select('customer_id','phone')
+                ->whereIn('customer_id', $list_customer_id)
+                ->get();
         }
+        return back()->with(['data' => $data ?? [], 'success'=>'Thành công', 'html'=>'Thành công']);
     }
 }
