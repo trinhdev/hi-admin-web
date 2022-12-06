@@ -23,7 +23,7 @@ class GetPhoneNumberRepository implements GetPhoneNumberInterface
     {
         $from = changeFormatDateLocal($params->input('show_from'));
         $to = changeFormatDateLocal($params->input('show_to'));
-        if(!empty($from) && !empty($to)) {
+        if(!empty($params->input('show_to')) && !empty($params->input('show_from'))) {
             $data = DB::connection('mysql4')->table('customers')
                 ->select('customer_id','phone')
                 ->whereBetween('date_created', [$from,$to])
@@ -43,8 +43,6 @@ class GetPhoneNumberRepository implements GetPhoneNumberInterface
                 ->select('customer_id','phone')
                 ->whereIn('customer_id', $list_customer_id)
                 ->get();
-
-            dd($data);
         }
         return back()->with(['data' => $data ?? [], 'success'=>'Thành công', 'html'=>'Thành công']);
     }
