@@ -43,6 +43,8 @@ class GetPhoneNumberRepository implements GetPhoneNumberInterface
                 ->select('customer_id','phone')
                 ->whereIn('customer_id', $list_customer_id)
                 ->get();
+
+            dd($data);
         }
         return back()->with(['data' => $data ?? [], 'success'=>'Thành công', 'html'=>'Thành công']);
     }
