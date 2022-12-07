@@ -22,8 +22,10 @@ class BehaviorRepository implements BehaviorInterface
         $danhsachSDT = [];
         $phoneQr = [];
         $date_created = [];
-
         foreach ($this->data($params) as $value) {
+            if (!is_array($value)) {
+                $value = (array) $value;
+            }
             if (empty($value['phone']) || empty($value['date_created'])) {
                 return back()->withErrors('Sai tiêu đề cột, vui lòng kiểm tra lại (phone & date_created)');
             }
