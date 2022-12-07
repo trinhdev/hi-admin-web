@@ -65,66 +65,35 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
     }
 
     public function getDataActiveMonthly() {
-        $zones = ['Vung 1', 'Vung 2', 'Vung 3', 'Vung 4', 'Vung 5', 'Vung 6', 'Vung 7'];
-        $results = [];
         // $from2 = $request->show_from;
         // $to2 = $request->show_to;
 
-        // $from2 = date('Y-m-01 00:00:00', strtotime('now'));
         $from2 = '2022-10-01 00:00:00';
-        // $to2 = date('Y-m-t 23:59:59', strtotime('now'));
         $to2 = '2022-10-31 23:59:59';
-
-        // if(empty($from2)) {
-        //     // $from2 = date('Y-m-01 00:00:00', strtotime('now'));
-        //     $from2 = '2022-11-01 00:00:00';
-        // }
-
-        // if(empty($to2)) {
-        //     // $to2 = date('Y-m-t 23:59:59', strtotime('now'));
-        //     $to2 = '2022-11-30 23:59:59';
-        // }
 
         $from1 = date('Y-m-01 00:00:00', strtotime($from2 . ' last month'));
         $to1 = date('Y-m-t 23:59:59', strtotime($to2 . ' last day last month'));
-        // foreach($zones as $zone) {
-        //     $data = Contracts::selectRaw("SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', 1, 0)) AS count_last_month,
-        //                                 SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', 1, 0)) AS count_this_month")
-        //                      ->whereBetween('date_created', [$from1, $to2])
-        //                      ->where('location_zone', $zone)
-        //                      ->get()
-        //                      ->toArray();
-        //     dd($data);
-        //     array_push($results, ['location_zone' => $zone, 'count_last_month' => (isset($data[0]['count_last_month'])) ? $data[0]['count_last_month'] : 0, 'count_this_month' => (isset($data[0]['count_this_month'])) ? $data[0]['count_this_month'] : 0]);
-        // }
 
         $data = Contracts::selectRaw("location_zone,
                                      SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', 1, 0)) AS count_last_month,
                                      SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', 1, 0)) AS count_this_month")
                         ->whereBetween('date_created', [$from1, $to2])
                         ->groupBy('location_zone')
+                        ->orderBy('location_zone')
                         ->get()->toArray();
-        // dd('test');
-        // $data = DB::connection('mysql4')->select('
-        //     SELECT location_zone, SUM(IF(DATE(date_created) BETWEEN "' . $from1 . '" AND "' . $to1 . '", 1, 0)) AS "count_last_time", SUM(IF(DATE(date_created) BETWEEN "' . $from2 . '" AND "' . $to2 . '", 1, 0)) AS "count_this_time"
-        //     FROM contracts
-        //     WHERE date_created BETWEEN "' . $from1 . '" AND "' . $to2 . '"
-        //     GROUP BY location_zone
-        // ');
-        // dd($data);
-        // $dataNoContract = Customers::with(['customer_contract' => fn($query) => $query->whereNull('contract_id')])
-        //                         //    ->selectRaw("SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', 1, 0)) AS count_last_month,
-        //                         //                 SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', 1, 0)) AS count_this_month")
-        //                            ->whereBetween('date_created', [$from1, $to1])
-        //                            ->count();
-        // dd($dataNoContract);
-        // array_push($data, [
-        //     'location_zone'     => 'Không có hợp đồng', 
-        //     'count_last_month'  => (isset($dataNoContract[0]['count_last_month']) ? $dataNoContract[0]['count_last_month'] : 0), 
-        //     'count_this_month'  => (isset($dataNoContract[0]['count_this_month']) ? $dataNoContract[0]['count_this_month'] : 0), 
-        // ]);
+
+        $data_no_contract = json_decode(json_encode(Customers::count_no_contract($from1, $to1, $from2, $to2)), true);
+        array_push($data, [
+            "location_zone"     => "Tài khoản không hợp đồng", 
+            "count_last_month"  => (isset($data_no_contract[0]['count_last_month']) ? $data_no_contract[0]['count_last_month'] : 0),
+            "count_this_month"  => (isset($data_no_contract[0]['count_this_month']) ? $data_no_contract[0]['count_this_month'] : 0),
+        ]);
         
-        return ["data" => json_decode(json_encode($data), true), "time" => ["from" => 'T' . date('m-Y', strtotime($from1)), "to" => 'T' . date('m-Y', strtotime($to2))]];
+        return ["data" => $data, "data_no_contract" => $data_no_contract, "time" => ["from" => 'T' . date('m-Y', strtotime($from1)), "to" => 'T' . date('m-Y', strtotime($to2))]];
+    }
+
+    public function getDataActivePttbMonthly() {
+
     }
 
     public function log(LogSupportCodeDatatable $dataTable) {

@@ -25,4 +25,14 @@ class Customers extends Model
     public function customer_contract() {
         return $this->hasMany(Customer_Contract::class, 'customer_id', 'customer_id');
     }
+
+    public function count_no_contract($from1, $to1, $from2, $to2) {
+        return DB::connection('mysql4')->select("
+            SELECT SUM(IF(DATE(customers.date_created) BETWEEN '$from1' AND '$to1', 1, 0)) AS 'count_last_month', SUM(IF(DATE(customers.date_created) BETWEEN '$from2' AND '$to2', 1, 0)) AS 'count_this_month'
+            FROM customers
+            LEFT JOIN customer_contract
+                ON customers.customer_id = customer_contract.customer_id
+            WHERE customer_contract.contract_id IS NULL AND customers.date_created BETWEEN '$from1' AND '$to2'
+        ");
+    }
 }
