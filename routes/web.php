@@ -439,6 +439,10 @@ Route::group([
                         Route::get('/', 'SaleReportDataMultiServiceController@index')->name('salereportdatamultiservice.index');
                 }
             });
+            Route::prefix('reporttrackingcusbehaviormonthly')->group(function () {
+                Route::get('/', 'ReportTrackingCusBehaviorMonthlyController@index')->name('reporttrackingcusbehaviormonthly.index');
+                Route::get('/getDataActiveMonthly', 'ReportTrackingCusBehaviorMonthlyController@getDataActiveMonthly')->name('reporttrackingcusbehaviormonthly.getDataActiveMonthly');
+            });
         });
     }
 );
