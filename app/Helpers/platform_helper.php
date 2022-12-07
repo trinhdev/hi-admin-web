@@ -1,5 +1,7 @@
 <?php
 use Illuminate\Support\HtmlString;
+use Rap2hpoutre\FastExcel\FastExcel;
+
 /**
  * File: platformm_helper.php
  * @package Helper
@@ -273,5 +275,22 @@ if (!function_exists('changeFormatDateLocal')) {
         return \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 }
+
+if (!function_exists('excel_import')) {
+    /**
+     * @throws \Box\Spout\Common\Exception\UnsupportedTypeException
+     * @throws \Box\Spout\Reader\Exception\ReaderNotOpenedException
+     * @throws \Box\Spout\Common\Exception\IOException
+     */
+    function excel_import($params): \Illuminate\Support\Collection
+    {
+        $filePath = $params->file('excel')->path();
+        $newFilePath =  $filePath . '.' . $params->file('excel')->getClientOriginalExtension();
+        move_uploaded_file($filePath, $newFilePath);
+        return fastexcel()->import($newFilePath);
+    }
+}
+
+
 
 

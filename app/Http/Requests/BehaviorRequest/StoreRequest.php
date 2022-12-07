@@ -26,9 +26,11 @@ class StoreRequest extends FormRequest
     {
         return [
             'excel' => [
-                'required',
+                'required_without:show_from,show_to',
                 new ExcelRule()
-            ]
+            ],
+            'show_from' => 'nullable',
+            'show_to' => 'nullable'
         ];
     }
 }

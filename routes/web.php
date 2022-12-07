@@ -345,7 +345,7 @@ Route::group([
 
             Route::prefix('behavior')->group(function () {
                 Route::get('/', [BehaviorController::class, 'index'])->name('behavior.index');
-                Route::post('/', [BehaviorController::class, 'store'])->name('behavior.post');
+                Route::post('/store', [BehaviorController::class, 'store'])->name('behavior.post');
             });
 
             Route::prefix('get-phone-number')->group(function () {
@@ -438,6 +438,10 @@ Route::group([
                     default:
                         Route::get('/', 'SaleReportDataMultiServiceController@index')->name('salereportdatamultiservice.index');
                 }
+            });
+            Route::prefix('reporttrackingcusbehaviormonthly')->group(function () {
+                Route::get('/', 'ReportTrackingCusBehaviorMonthlyController@index')->name('reporttrackingcusbehaviormonthly.index');
+                Route::get('/getDataActiveMonthly', 'ReportTrackingCusBehaviorMonthlyController@getDataActiveMonthly')->name('reporttrackingcusbehaviormonthly.getDataActiveMonthly');
             });
         });
     }
