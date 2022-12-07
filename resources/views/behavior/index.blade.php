@@ -36,27 +36,39 @@
                             <div class="card-body">
                                 {!! Form::open(array('url' => route('behavior.post'),'id' => 'importExcel', 'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
                                 @csrf
-                                <div class="form-group">
-                                    <label class="" for="number_phone_import"><i>Upload with file exel</i></label>
-                                    <input onchange="uploadFile()" type="file" id="number_phone_import" name="excel"
-                                           class="form-control @error('exel') is-invalid @enderror" accept=".xlsx,.csv">
+                                <div class="row justify-content-center mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <div class="input-group input-group-sm mb-4">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Lọc từ ngày: </div>
+                                            </div>
+                                            <input type="datetime-local" name="show_from" class="form-control" id="show_from" placeholder="Date From" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group input-group-sm mb-4">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Đến ngày: </div>
+                                            </div>
+                                            <input type="datetime-local" name="show_to" class="form-control" id="show_to" placeholder="Date To" />
+                                        </div>
+                                    </div>
                                 </div>
-                                    <nav aria-label="breadcrumb">
-                                        <ol class="breadcrumb">
-                                            <ul>
-                                                <b>Note</b>: Yêu cầu tải lên file đúng định dạng, tải file mẫu <a
-                                                    href="https://docs.google.com/spreadsheets/d/1SRdXHP-QdOcPkGpGspGxxBLSNAmcH3TBWwA98w-Q9fY/edit#gid=0"
-                                                    target="_blank"> <b> tại đây</b><a/>)
-                                            </ul>
-                                        </ol>
-                                    </nav>
-                                <div class="card-footer" style="text-align: center">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="col-md-8 m-auto mt-2 breadcrumb">
+                                        <ul class="m-auto">
+                                            <b>Hoặc </b> lấy dữ liệu bằng excel, tải file mẫu
+                                            <a href="https://docs.google.com/spreadsheets/d/1SRdXHP-QdOcPkGpGspGxxBLSNAmcH3TBWwA98w-Q9fY/edit#gid=0"
+                                               target="_blank"> <b> tại đây </b></a>
+                                            <input onchange="uploadFile()" type="file" id="number_phone_import" name="excel"
+                                                   class= "text-center ml-5 @error('exel') is-invalid @enderror" accept=".xlsx,.csv">
+                                        </ul>
+                                    </ol>
+                                </nav>
+                                <div class="card-footer mt-4" style="text-align: center">
                                     <button type="submit" value="data" class="btn btn-info">Submit
                                     </button>
-                                    {{--<button name="action" type="submit" value="check" class="btn btn-info">Check nhân
-                                        viên
-                                    </button>--}}
-                                    <a href="/ftel-phone" type="button" class="btn btn-default">Cancel</a>
+                                    <a href="/behavior" type="button" class="btn btn-default">Cancel</a>
                                 </div>
                                 {!! Form::close() !!}
                             </div>
