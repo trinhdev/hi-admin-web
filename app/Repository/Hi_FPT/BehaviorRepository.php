@@ -44,6 +44,9 @@ class BehaviorRepository implements BehaviorInterface
             ->select('phone', 'date_action')
             ->whereIn('phone', $phoneQr)
             ->get();
+        if ($dataSql === null) {
+            return back()->withErrors(['Không có dữ liệu']);
+        }
         $countDataSQl = $dataSql->count();
         $total = [
             '0_2' => [
