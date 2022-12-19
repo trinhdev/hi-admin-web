@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Hi_FPT\AppController;
+use App\Http\Controllers\Hi_FPT\PaymentSupportController;
 use App\Http\Controllers\Hi_FPT\PopupPrivateController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
 use App\Http\Controllers\Hi_FPT\ResetPasswordWrongController;
@@ -59,6 +60,12 @@ Route::group([
                 Route::delete('/destroy/{id}', 'SettingsController@destroy')->name('settings.destroy');
                 Route::get('/initDatatable', 'SettingsController@initDatatable')->name('settings.initDatatable');
             });
+
+            Route::prefix('general-settings')->group(function () {
+                Route::get('/', 'GeneralSettingsController@index')->name('general_settings.index');
+                Route::post('/edit', 'GeneralSettingsController@postEdit')->name('general_settings.edit');
+            });
+
             Route::prefix('user')->group(function () {
                 Route::get('/', 'UserController@index')->name('user.index');
                 Route::get('/edit/{id}', 'UserController@edit')->name('user.edit');
@@ -351,6 +358,12 @@ Route::group([
             Route::prefix('get-phone-number')->group(function () {
                 Route::get('/', [GetPhoneNumberController::class, 'index'])->name('getPhoneNumber.index');
                 Route::post('/store', [GetPhoneNumberController::class, 'store'])->name('getPhoneNumber.store');
+            });
+
+            Route::prefix('payment-support')->group(function () {
+                Route::get('/', [PaymentSupportController::class, 'index'])->name('paymentSupport.index');
+                Route::get('/', [PaymentSupportController::class, 'index'])->name('paymentSupport.index');
+                Route::post('/update/{id}', [PaymentSupportController::class, 'update'])->name('paymentSupport.update');
             });
 
             Route::prefix('render-deeplink')->group(function () {

@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Contract\Hi_FPT\PopupPrivateInterface;
+use App\Contract\Hi_FPT\SettingInterface;
+use App\Models\Settings;
 use App\Repository\Hi_FPT\PopupPrivateRepository;
 
 use App\Contract\Hi_FPT\PopupManageInterface;
@@ -35,6 +37,12 @@ use App\Repository\Hi_FPT\GetPhoneNumberRepository;
 use App\Contract\Hi_FPT\RenderDeeplinkInterface;
 use App\Repository\Hi_FPT\RenderDeeplinkRepository;
 
+use App\Contract\Hi_FPT\PaymentSupportInterface;
+use App\Repository\Hi_FPT\PaymentSupportRepository;
+
+use App\Repository\Hi_FPT\SettingRepository;
+use App\Repository\RepositoryAbstract;
+use App\Repository\RepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 // Auto Generate
 
@@ -52,6 +60,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         //Bind Provider
+        $this->app->bind(RepositoryInterface::class, RepositoryAbstract::class);
         $this->app->bind(PopupPrivateInterface::class, PopupPrivateRepository::class);
         $this->app->bind(PopupManageInterface::class, PopupManageRepository::class);
         $this->app->bind(BannerManageInterface::class, BannerManageRepository::class);
@@ -63,6 +72,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(BehaviorInterface::class, BehaviorRepository::class);
         $this->app->bind(GetPhoneNumberInterface::class, GetPhoneNumberRepository::class);
         $this->app->bind(RenderDeeplinkInterface::class, RenderDeeplinkRepository::class);
+        $this->app->bind(PaymentSupportInterface::class, PaymentSupportRepository::class);
+        $this->app->bind(SettingInterface::class, SettingRepository::class);
+        $this->app->bind(SettingInterface::class, function () {
+            return new SettingRepository(new Settings());
+        });
     }
 
 }

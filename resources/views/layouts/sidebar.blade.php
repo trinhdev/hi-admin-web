@@ -1,4 +1,4 @@
-   <aside class="main-sidebar sidebar-dark-primary elevation-4">
+   <div class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="/" class="brand-link">
             <img src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/images/logo-hifpt1.png" alt="AdminLTE Logo" class="brand-image elevation-2">
@@ -64,7 +64,7 @@
                     @endif
                 </ul>
             </nav>
-            
+
             <!-- /.sidebar-menu -->
         </div>
-    </aside>
+    </div>

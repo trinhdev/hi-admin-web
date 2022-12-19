@@ -1,6 +1,10 @@
 <?php
+
+use App\Facades\SettingFacade;
 use Illuminate\Support\HtmlString;
 use Rap2hpoutre\FastExcel\FastExcel;
+
+use App\Contract\Hi_FPT\SettingInterface;
 
 /**
  * File: platformm_helper.php
@@ -49,12 +53,12 @@ if (!function_exists('vite_assets')) {
         }
         $manifest = json_decode(file_get_contents(
             public_path('build/manifest.json')
-        ), true);
-        if ($option=='css') {
+        ), true, 512, JSON_THROW_ON_ERROR);
+        if ($option === 'css') {
             $data = <<<HTML
                         <link rel="stylesheet" href="/build/{$manifest['resources/js/app.js']['css'][0]}">
                     HTML;
-        } else if ($option=='scripts'){
+        } else if ($option === 'scripts'){
             $data = <<<HTML
                         <script type="module" src="/build/{$manifest['resources/js/app.js']['file']}"></script>
                     HTML;
@@ -288,6 +292,26 @@ if (!function_exists('excel_import')) {
         $newFilePath =  $filePath . '.' . $params->file('excel')->getClientOriginalExtension();
         move_uploaded_file($filePath, $newFilePath);
         return fastexcel()->import($newFilePath);
+    }
+}
+
+if (!function_exists('setting')) {
+    /**
+     * Get the setting instance.
+     *
+     * @param string|null $key
+     * @param mixed $default
+     */
+    function setting(?string $key = null, $default = null)
+    {
+        if (!empty($key)) {
+            try {
+                return app(SettingInterface::class)->get($key, $default);
+            } catch (Exception $exception) {
+                return $default;
+            }
+        }
+        return SettingFacade::getFacadeRoot();
     }
 }
 
