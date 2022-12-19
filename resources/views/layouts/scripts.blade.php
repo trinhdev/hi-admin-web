@@ -42,6 +42,7 @@
 
 <!-- jquery-tmpl -->
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/jquery-tmpl/jquery-tmpl.min.js"></script>
+<script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/toastr/toastr.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 
 <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/dragula-master/dist/dragula.min.js"></script>
@@ -64,32 +65,27 @@
 <script src="{{ asset('/custom_js/otp.js')}}"></script>
 <script src="{{ asset('/custom_js/ftel_phone.js')}}"></script>
 <script src="{{ asset('/custom_js/air_direction.js')}}"></script>
+<script src="{{ asset('/base/libraries/pace/pace.min.js')}}"></script>
 <script>
 @if($errors->any())
     showError('{{$errors->first()}}');
 @endif
 @if (session()->has('success'))
-   swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        html: `{{ (session()->has('html')) ? session()->get('html') : '' }}`
-    });
+    showMessage('success', `{{ (session()->has('html')) ? session()->get('html') : '' }}`)
 @endif
+
 @if (session()->has('error'))
-   swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        html: `{{ (session()->has('html')) ? session()->get('html') : '' }}`
-    });
+    showMessage('error', `{{ (session()->has('html')) ? session()->get('html') : '' }}`)
 @endif
+
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
 
-{{ session()->forget('error'); }}
-{{ session()->forget('success'); }}
-{{ session()->forget('html'); }}
+{{ session()->forget('error') }}
+{{ session()->forget('success') }}
+{{ session()->forget('html') }}
 
 </script>

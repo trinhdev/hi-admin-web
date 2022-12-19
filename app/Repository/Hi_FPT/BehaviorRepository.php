@@ -22,6 +22,8 @@ class BehaviorRepository implements BehaviorInterface
         $danhsachSDT = [];
         $phoneQr = [];
         $date_created = [];
+        // Lấy data từ hàm data theo input excel hoặc filter day
+        //
         foreach ($this->data($params) as $value) {
             if (!is_array($value)) {
                 $value = (array) $value;
@@ -44,10 +46,12 @@ class BehaviorRepository implements BehaviorInterface
             ->select('phone', 'date_action')
             ->whereIn('phone', $phoneQr)
             ->get();
-        if ($dataSql === null) {
+
+        $countDataSQl = $dataSql->count();
+        if ($countDataSQl === 0) {
             return back()->withErrors(['Không có dữ liệu']);
         }
-        $countDataSQl = $dataSql->count();
+
         $total = [
             '0_2' => [
                 'name' => '0-2 ngày',

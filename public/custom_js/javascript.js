@@ -291,7 +291,7 @@ function getDate() {
      {
          return Object.prototype.toString.call(inputValue) === '[object Array]';
      }
- 
+
      // If input array is an object instead of an array,
      // convert it to an array.
      if(!isArray(inputArray))
@@ -307,7 +307,7 @@ function getDate() {
          }
          inputArray = newArray;
      }
- 
+
      // Process the input array.
      var isReturnArray = (typeof indexKey === 'undefined' || indexKey === null);
      var outputArray = [];
@@ -315,7 +315,7 @@ function getDate() {
      for(var inputIndex = 0; inputIndex < inputArray.length; inputIndex++)
      {
          var inputElement = inputArray[inputIndex];
- 
+
          var outputElement;
          if(columnKey === null)
          {
@@ -337,10 +337,10 @@ function getDate() {
                      continue;
                  }
              }
- 
+
              outputElement = inputElement[columnKey];
          }
- 
+
          if(isReturnArray)
          {
              outputArray.push(outputElement);
@@ -350,10 +350,38 @@ function getDate() {
              outputObject[inputElement[indexKey]] = outputElement;
          }
      }
- 
+
      return (isReturnArray ? outputArray : outputObject);
  }
 
 function randomColor() {
     return Math.floor(Math.random()*16777215).toString(16);
+}
+function showMessage(type, message) {
+    toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-bottom-right',
+        onclick: null,
+        showDuration: 1000,
+        hideDuration: 1000,
+        timeOut: 3000,
+        extendedTimeOut: 1000,
+        showEasing: 'swing',
+        hideEasing: 'linear',
+        showMethod: 'fadeIn',
+        hideMethod: 'fadeOut',
+    };
+
+    let messageHeader = '';
+
+    switch (type) {
+        case 'error':
+            messageHeader = 'Đã xảy ra lỗi !!!';
+            break;
+        case 'success':
+            messageHeader = 'Thành công!';
+            break;
+    }
+    toastr[type](message, messageHeader);
 }
