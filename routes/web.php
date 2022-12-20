@@ -61,9 +61,12 @@ Route::group([
                 Route::get('/initDatatable', 'SettingsController@initDatatable')->name('settings.initDatatable');
             });
 
-            Route::prefix('general-settings')->group(function () {
+            Route::prefix('cron-job')->group(function () {
                 Route::get('/', 'GeneralSettingsController@index')->name('general_settings.index');
                 Route::post('/edit', 'GeneralSettingsController@postEdit')->name('general_settings.edit');
+                Route::get('/docs', function () {
+                    return view('settings.example');
+                });
             });
 
             Route::prefix('user')->group(function () {

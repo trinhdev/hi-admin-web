@@ -1,11 +1,11 @@
 {
-  "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.eot": {
-    "file": "assets/fa-brands-400.407a9723.eot",
-    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.eot"
-  },
   "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.eot": {
     "file": "assets/fa-regular-400.cf83ffb8.eot",
     "src": "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.eot"
+  },
+  "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.eot": {
+    "file": "assets/fa-brands-400.407a9723.eot",
+    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.eot"
   },
   "public/themes/plugins/summernote/font/summernote.eot": {
     "file": "assets/summernote.e0e54acd.eot",
@@ -15,29 +15,21 @@
     "file": "assets/fa-solid-900.75a76115.eot",
     "src": "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.eot"
   },
-  "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.woff2": {
-    "file": "assets/fa-solid-900.d0b4256a.woff2",
-    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.woff2"
-  },
-  "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.woff2": {
-    "file": "assets/fa-brands-400.43c072c1.woff2",
-    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.woff2"
+  "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400.8afc6e5e.woff2",
+    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.woff2"
   },
   "public/themes/plugins/summernote/font/summernote.woff2": {
     "file": "assets/summernote.6ae62bbe.woff2",
     "src": "public/themes/plugins/summernote/font/summernote.woff2"
   },
-  "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.woff2": {
-    "file": "assets/fa-regular-400.8afc6e5e.woff2",
-    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.woff2"
+  "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400.43c072c1.woff2",
+    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.woff2"
   },
-  "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.woff": {
-    "file": "assets/fa-solid-900.74edc18b.woff",
-    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.woff"
-  },
-  "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.woff": {
-    "file": "assets/fa-brands-400.aff76e5c.woff",
-    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.woff"
+  "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900.d0b4256a.woff2",
+    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
   "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.woff": {
     "file": "assets/fa-regular-400.14c9db4f.woff",
@@ -47,32 +39,40 @@
     "file": "assets/summernote.ad20bd13.woff",
     "src": "public/themes/plugins/summernote/font/summernote.woff"
   },
-  "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.ttf": {
-    "file": "assets/fa-solid-900.3d06af1f.ttf",
-    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.ttf"
+  "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.woff": {
+    "file": "assets/fa-brands-400.aff76e5c.woff",
+    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.woff"
   },
-  "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.ttf": {
-    "file": "assets/fa-brands-400.06f4d009.ttf",
-    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.ttf"
-  },
-  "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.ttf": {
-    "file": "assets/fa-regular-400.c651b8a6.ttf",
-    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.ttf"
+  "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.woff": {
+    "file": "assets/fa-solid-900.74edc18b.woff",
+    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.woff"
   },
   "public/themes/plugins/summernote/font/summernote.ttf": {
     "file": "assets/summernote.bc06998a.ttf",
     "src": "public/themes/plugins/summernote/font/summernote.ttf"
   },
+  "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400.c651b8a6.ttf",
+    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.ttf"
+  },
+  "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400.06f4d009.ttf",
+    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.ttf"
+  },
+  "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.ttf": {
+    "file": "assets/fa-solid-900.3d06af1f.ttf",
+    "src": "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.ttf"
+  },
   "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.svg": {
-    "file": "assets/fa-regular-400.2326849b.svg",
+    "file": "assets/fa-regular-400.5ef21f8a.svg",
     "src": "public/themes/plugins/fontawesome-free/webfonts/fa-regular-400.svg"
   },
   "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.svg": {
-    "file": "assets/fa-brands-400.679b5a52.svg",
+    "file": "assets/fa-brands-400.191240f6.svg",
     "src": "public/themes/plugins/fontawesome-free/webfonts/fa-brands-400.svg"
   },
   "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.svg": {
-    "file": "assets/fa-solid-900.fa498fb2.svg",
+    "file": "assets/fa-solid-900.e3bd1a4f.svg",
     "src": "public/themes/plugins/fontawesome-free/webfonts/fa-solid-900.svg"
   },
   "resources/js/app.js": {
@@ -80,24 +80,24 @@
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app.11fc8b5e.css"
+      "assets/app.5e3fa80b.css"
     ],
     "assets": [
       "assets/fa-brands-400.407a9723.eot",
       "assets/fa-brands-400.43c072c1.woff2",
       "assets/fa-brands-400.aff76e5c.woff",
       "assets/fa-brands-400.06f4d009.ttf",
-      "assets/fa-brands-400.679b5a52.svg",
+      "assets/fa-brands-400.191240f6.svg",
       "assets/fa-regular-400.cf83ffb8.eot",
       "assets/fa-regular-400.8afc6e5e.woff2",
       "assets/fa-regular-400.14c9db4f.woff",
       "assets/fa-regular-400.c651b8a6.ttf",
-      "assets/fa-regular-400.2326849b.svg",
+      "assets/fa-regular-400.5ef21f8a.svg",
       "assets/fa-solid-900.75a76115.eot",
       "assets/fa-solid-900.d0b4256a.woff2",
       "assets/fa-solid-900.74edc18b.woff",
       "assets/fa-solid-900.3d06af1f.ttf",
-      "assets/fa-solid-900.fa498fb2.svg",
+      "assets/fa-solid-900.e3bd1a4f.svg",
       "assets/summernote.e0e54acd.eot",
       "assets/summernote.6ae62bbe.woff2",
       "assets/summernote.ad20bd13.woff",
@@ -105,7 +105,7 @@
     ]
   },
   "resources/js/app.css": {
-    "file": "assets/app.11fc8b5e.css",
+    "file": "assets/app.5e3fa80b.css",
     "src": "resources/js/app.css"
   }
 }
