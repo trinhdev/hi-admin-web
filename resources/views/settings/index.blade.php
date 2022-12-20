@@ -53,8 +53,7 @@
                                    for="hi_admin_cron_service_check_payment_unpaid_list_email">Email người nhận</label>
                             <textarea data-counter="120" type="text" class="next-input mt-2"
                                       name="hi_admin_cron_service_check_payment_unpaid_list_email"
-                                      id="hi_admin_cron_service_check_payment_unpaid_list_email">{{ setting('hi_admin_cron_service_check_payment_unpaid_list_email') }}
-                            </textarea>
+                                      id="hi_admin_cron_service_check_payment_unpaid_list_email">{{ setting('hi_admin_cron_service_check_payment_unpaid_list_email') }}</textarea>
                         </div>
                     </div>
                 </div>
