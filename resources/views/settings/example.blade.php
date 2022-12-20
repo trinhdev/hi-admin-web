@@ -1,7 +1,6 @@
 @extends('layouts.default')
 @push('header')
     <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
-
 @endpush
 @section('content')
     <div class="content-wrapper">
@@ -12,7 +11,7 @@
                     <div class="col-sm-12">
                         <ol class="breadcrumb float-sm-left">
                             <li class="breadcrumb-item"><a href="{{route('home')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a href="{{url()->current()}}">General Settings</a></li>
+                            <li class="breadcrumb-item active"><a href="{{url()->current()}}">Docs Settings</a></li>
                             </li>
                         </ol>
                     </div><!-- /.col -->
@@ -26,45 +25,15 @@
             <div class="flexbox-annotated-section">
                 <div class="flexbox-annotated-section-annotation">
                     <div class="annotated-section-title pd-all-20">
-                        <h2 style="font-weight: 500; font-size: 20px !important;">Config Service Payment Unpaid</h2>
+                        <h2 style="font-weight: 500; font-size: 20px !important;">Cú pháp lịch trình cron</h2>
                     </div>
                     <div class="annotated-section-description pd-all-20 p-none-t">
-                        <p class="color-note">Settings email, enabled, time ...</p>
+                        <p class="color-note"></p>
                     </div>
                 </div>
 
                 <div class="flexbox-annotated-section-content">
-                    <div class="wrapper-content pd-all-20">
-                        <div class="form-group mb-3">
-
-                            <label class="text-title-field form-check-label"
-                                   for="admin_locale_direction">Bật service payment unpaid
-                            </label>
-                            <label class="me-2 form-check-label mt-2">
-                                <input type="radio" name="hi_admin_cron_service_check_payment_unpaid_enable" value="1"
-                                       @if (setting('hi_admin_cron_service_check_payment_unpaid_enable', '0') === '1') checked @endif>{{ __('Bật') }}
-                            </label>
-                            <label class=" form-check-label mt-2">
-                                <input type="radio" name="hi_admin_cron_service_check_payment_unpaid_enable" value="0"
-                                       @if (setting('hi_admin_cron_service_check_payment_unpaid_enable', '0') === '0') checked @endif>{{ __('Tắt') }}
-                            </label>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-title-field form-check-label"
-                                   for="hi_admin_cron_service_check_payment_unpaid_list_email">Email người nhận</label>
-                            <textarea data-counter="120" type="text" class="next-input mt-2"
-                                      name="hi_admin_cron_service_check_payment_unpaid_list_email"
-                                      id="hi_admin_cron_service_check_payment_unpaid_list_email">{{ setting('hi_admin_cron_service_check_payment_unpaid_list_email') }}</textarea>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-title-field form-check-label"
-                                   for="hi_admin_cron_service_check_payment_unpaid_time">{{ __('Cron Job Time') }}</label>
-                            <input type="text" class="next-input mt-2 col-md-6"
-                                   name="hi_admin_cron_service_check_payment_unpaid_time"
-                                   id="hi_admin_cron_service_check_payment_unpaid_time"
-                                    placeholder="Set time cron jobs, example below!"
-                            value="{{ setting('hi_admin_cron_service_check_payment_unpaid_time') }}"/>
-                        </div>
+                    <div class="wrapper-content pd-all-20 ">
                         <pre tabindex="0"><code class="border-none"># ┌───────────── minute (0 - 59)
 # │ ┌───────────── hour (0 - 23)
 # │ │ ┌───────────── day of the month (1 - 31)
@@ -73,13 +42,14 @@
 # │ │ │ │ │                                   7 is also Sunday on some systems)
 # │ │ │ │ │                                   OR sun, mon, tue, wed, thu, fri, sat
 # │ │ │ │ │
-# * * * * *     >>>     input = * * * * * (run every a minutes)
+# * * * * *
 </code></pre>
 
                         <table class="table">
                             <thead>
                             <tr>
-                                <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Miêu tả</font></font></th>
+                                <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sự
+                                            miêu tả</font></font></th>
                                 <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Tương
                                             đương với</font></font></th>
                             </tr>
@@ -117,11 +87,6 @@
                             </tr>
                             </tbody>
                         </table>
-                        <div class="help-ts">
-                            <i class="fa fa-info-circle"></i>
-                            <span>Kiểm tra biểu thức cronjob <a class="text-primary" target="_blank" href="https://crontab.guru/#*_*_*_*_*">ở đây</a></span>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -143,8 +108,7 @@
                                    for="hi_admin_cron_service_check_payment_unpaid_list_email">{{ __('Key') }}</label>
                             <input data-counter="120" type="text" class="next-input mt-2"
                                    name="hi_admin_cron_add_key"
-                                   id="hi_admin_cron_add_key"
-                            placeholder="Add key cron jobs ..."/>
+                                   id="hi_admin_cron_add_key"/>
                         </div>
                     </div>
                 </div>

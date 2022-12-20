@@ -36,7 +36,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5>Thông tin pop up</h5>
+                    <h5 class="modal-title">Thông tin pop up</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">X</span></button>
                 </div>
@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="required_red_dot">Loại popup</label>
-                                        <select class="form-control select2" name="templateType" id="templateType_popup"
+                                        <select class="form-control" name="templateType" id="templateType_popup"
                                                 style="width: 100%;">
                                                 <option value="">-- Chọn loại popup --</option>
                                                 @foreach($list_type_popup as $key => $value)
@@ -75,7 +75,7 @@
                                     </div>
                                     <div class="form-group" id="dieuhuong">
                                         <label>Điều hướng</label>
-                                        <select class="form-control select2" name="directionId" id="directionId_popup"
+                                        <select class="form-control" name="directionId" id="directionId_popup"
                                                 style="width: 100%;">
                                                 <option value="">-- Chọn nơi điều hướng --</option>
                                             @if($list_route)

@@ -8,10 +8,10 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+            <p href="#" class="dropdown-toggle nav-link m-0 pt-2" data-toggle="dropdown" aria-expanded="false">
                 <img src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/dist/img/avatar5.png" class="user-image" alt="User Image">
                 <span class="hidden-xs">{{ Auth::user()->name }}</span>
-            </a>
+            </p>
             <ul class="dropdown-menu" style="transform: translate(-25%, 0px);">
                 <!-- User image -->
                 <li class="user-header">
