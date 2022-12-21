@@ -458,6 +458,8 @@ Route::group([
             Route::prefix('reporttrackingcusbehaviormonthly')->group(function () {
                 Route::get('/', 'ReportTrackingCusBehaviorMonthlyController@index')->name('reporttrackingcusbehaviormonthly.index');
                 Route::get('/getDataActiveMonthly', 'ReportTrackingCusBehaviorMonthlyController@getDataActiveMonthly')->name('reporttrackingcusbehaviormonthly.getDataActiveMonthly');
+                Route::get('/getDataActivePttbMonthly', 'ReportTrackingCusBehaviorMonthlyController@getDataActivePttbMonthly')->name('reporttrackingcusbehaviormonthly.getDataActivePttbMonthly');
+                Route::get('/paymentMonthly', 'ReportTrackingCusBehaviorMonthlyController@paymentMonthly')->name('reporttrackingcusbehaviormonthly.paymentMonthly');
             });
         });
     }
