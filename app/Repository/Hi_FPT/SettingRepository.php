@@ -104,6 +104,17 @@ class SettingRepository extends SettingInterface
     }
 
     /**
+     * {@inheritDoc}
+     * @throws FileNotFoundException
+     */
+    protected function loadCronJob(): array
+    {
+        $data = Settings::get()->toArray();
+        $check = array_filter($data, fn ($value) => substr($value['name'], 0, 13) == 'hi_admin_cron' ) ;
+        return $this->parseReadData($check);
+    }
+
+    /**
      * Parse data coming from the database.
      *
      * @param Collection|array $data
@@ -129,7 +140,6 @@ class SettingRepository extends SettingInterface
 
             Arr::set($results, $key, $value);
         }
-
         return $results;
     }
 }
