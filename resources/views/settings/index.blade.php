@@ -8,11 +8,11 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+                <div class="row">
                     <div class="col-sm-12">
-                        <ol class="breadcrumb float-sm-left">
+                        <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('home')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a href="{{url()->current()}}">General Settings</a></li>
+                            <li class="breadcrumb-item active"><a href="{{url()->current()}}">Cron Jobs</a></li>
                             </li>
                         </ol>
                     </div><!-- /.col -->
@@ -20,6 +20,7 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
+
         <div class="clearfix"></div>
         {!! Form::open(['route' => ['general_settings.edit']])!!}
         <div class="max-width-1200">
@@ -32,11 +33,9 @@
                         <p class="color-note">Settings email, enabled, time ...</p>
                     </div>
                 </div>
-
                 <div class="flexbox-annotated-section-content">
                     <div class="wrapper-content pd-all-20">
                         <div class="form-group mb-3">
-
                             <label class="text-title-field form-check-label"
                                    for="admin_locale_direction">Bật service payment unpaid
                             </label>
@@ -65,6 +64,23 @@
                                     placeholder="Set time cron jobs, example below!"
                             value="{{ setting('hi_admin_cron_service_check_payment_unpaid_time') }}"/>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flexbox-annotated-section">
+                <div class="flexbox-annotated-section-annotation">
+                    <div class="annotated-section-title pd-all-20">
+                        <h2 style="font-weight: 500; font-size: 20px !important;">Description cron jobs time config</h2>
+                    </div>
+                    <div class="annotated-section-description pd-all-20 p-none-t">
+                        <p class="color-note">The left panel shows the input cron job time attribute ...</p>
+                    </div>
+                </div>
+
+                <div class="flexbox-annotated-section-content">
+                    <div class="wrapper-content pd-all-20">
+
                         <pre tabindex="0"><code class="border-none"># ┌───────────── minute (0 - 59)
 # │ ┌───────────── hour (0 - 23)
 # │ │ ┌───────────── day of the month (1 - 31)
@@ -132,7 +148,11 @@
                         <h2 style="font-weight: 500; font-size: 20px !important;">Add key settings hi-admin-cron</h2>
                     </div>
                     <div class="annotated-section-description pd-all-20 p-none-t">
-                        <p class="color-note">Ex: service_payment, service_auto_send_mail</p>
+                        <p class="color-note">Example: <code>service_payment</code> will render 3 key
+                        </p>
+                        <code>hi_admin_cron_service_payment_enable
+                        hi_admin_cron_service_payment_list_email
+                        hi_admin_cron_service_payment_time</code>
                     </div>
                 </div>
 

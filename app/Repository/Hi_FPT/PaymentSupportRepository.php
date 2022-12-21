@@ -20,7 +20,7 @@ class PaymentSupportRepository extends RepositoryAbstract implements PaymentSupp
 
     public function index($dataTable, $params)
     {
-        $model = DB::table('payment_unpaid');
+        $model = new PaymentUnpaid();
         $type = $params->type ?? null;
         $public_date_start = $params->public_date_start ?? null;
         $public_date_end = $params->public_date_end ?? null;
@@ -38,8 +38,10 @@ class PaymentSupportRepository extends RepositoryAbstract implements PaymentSupp
         if($phone_filter) {
             $model->where('customer_phone', $phone_filter);
         }
+        $db = $model->groupBy('customer_phone', 'created_at');
+
         return $dataTable->with([
-            'data'=> $model->get()
+            'data'=> $db
         ])->render('payment-support.index');
     }
 
@@ -49,7 +51,7 @@ class PaymentSupportRepository extends RepositoryAbstract implements PaymentSupp
         $status = $params->input('status');
         DB::table('payment_unpaid')
             ->where('customer_phone', DB::table('payment_unpaid')->find($id)->customer_phone)
-            ->update(['status'=> $status, 'description_error_code'=>$description_error_code]);
+            ->update(['status'=> $status, 'description'=>$description_error_code]);
 
         return redirect()->back()->with(['success' => 'Thành công', 'html' => 'Update thành công!']);
     }

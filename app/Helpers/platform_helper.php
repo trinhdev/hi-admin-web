@@ -1,8 +1,8 @@
 <?php
 
 use App\Facades\SettingFacade;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\HtmlString;
-use Rap2hpoutre\FastExcel\FastExcel;
 
 use App\Contract\Hi_FPT\SettingInterface;
 
@@ -310,6 +310,24 @@ if (!function_exists('setting')) {
             } catch (Exception $exception) {
                 return $default;
             }
+        }
+        return SettingFacade::getFacadeRoot();
+    }
+}
+
+if (!function_exists('setting_load_cronjob')) {
+    /**
+     * Get the setting instance.
+     *
+     * @param string|null $key
+     * @param mixed $default
+     */
+    function setting_load_cronjob()
+    {
+        try {
+            return app(SettingInterface::class)->getCronJob();
+        } catch (Exception $exception) {
+            return;
         }
         return SettingFacade::getFacadeRoot();
     }

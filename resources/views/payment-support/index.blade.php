@@ -140,8 +140,12 @@
                     dataType: 'json',
                     data: data,
                     cache: false,
-                    success: (data) => {
+                    beforeSend: function(){
                         $('#showDetail_Modal').modal('toggle');
+                        $("#spinner").addClass("show");
+                    },
+                    success: (data) => {
+                        $("#spinner").removeClass("show");
                         showMessage('success',data.data.message);
                         $('#submitAjax').prop('disabled', false);
                         var table = $('#PaymentSupport_manage').DataTable();

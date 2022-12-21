@@ -42,6 +42,11 @@ abstract class SettingInterface
         return Arr::get($this->data, $key, $default);
     }
 
+    public function getCronJob() {
+        $this->loadCron();
+        return Arr::get($this->data, null, null);
+    }
+
     /**
      * Determine if a key exists in the settings data.
      *
@@ -153,12 +158,22 @@ abstract class SettingInterface
         }
     }
 
+    public function loadCron(bool $force = false)
+    {
+        if (!$this->loaded || $force) {
+            $this->data = $this->loadCronJob();
+            $this->loaded = true;
+        }
+    }
+
     /**
      * Read the data from the store.
      *
      * @return array
      */
     abstract protected function read(): array;
+    abstract protected function loadCronJob(): array;
+
 
     /**
      * Write the data into the store.

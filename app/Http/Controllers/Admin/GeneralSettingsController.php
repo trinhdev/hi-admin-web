@@ -41,8 +41,9 @@ class GeneralSettingsController extends MY_Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \JsonException
      */
 
     public function postEdit(Request $request)
@@ -59,8 +60,10 @@ class GeneralSettingsController extends MY_Controller
                 'cc'    => 'trinhhdp@fpt.com.vn',
                 'bcc'   => '',
             ];
+            $listEmail[] = array_filter($email_example);
             setting()->set('hi_admin_cron_'.$add_key.'_enable', '0')->save();
-            setting()->set('hi_admin_cron_'.$add_key.'_list_email', $email_example)->save();
+            setting()->set('hi_admin_cron_'.$add_key.'_list_email', json_encode($listEmail,JSON_THROW_ON_ERROR))->save();
+            setting()->set('hi_admin_cron_'.$add_key.'_time', '* * * * *')->save();
         }
         return redirect()->back()->with(['success'=>'Update thành công', 'html'=>'Update thành công']);
     }
