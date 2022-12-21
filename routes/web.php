@@ -461,6 +461,7 @@ Route::group([
                 Route::get('/getDataActivePttbMonthly', 'ReportTrackingCusBehaviorMonthlyController@getDataActivePttbMonthly')->name('reporttrackingcusbehaviormonthly.getDataActivePttbMonthly');
                 Route::get('/paymentMonthly', 'ReportTrackingCusBehaviorMonthlyController@paymentMonthly')->name('reporttrackingcusbehaviormonthly.paymentMonthly');
                 Route::get('/newServiceRegister', 'ReportTrackingCusBehaviorMonthlyController@newServiceRegister')->name('reporttrackingcusbehaviormonthly.newServiceRegister');
+                Route::get('/upgradeServiceRegister', 'ReportTrackingCusBehaviorMonthlyController@upgradeServiceRegister')->name('reporttrackingcusbehaviormonthly.upgradeServiceRegister');
             });
         });
     }
