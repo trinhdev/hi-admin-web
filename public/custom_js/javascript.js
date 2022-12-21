@@ -101,7 +101,7 @@ function callAPIHelper(url, param, method, callback, passingData = null, isfile 
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
         }
     });
 }
@@ -129,7 +129,7 @@ function uploadFileExternal(file, callBack, passingData) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
         }
     });
 }
@@ -158,7 +158,7 @@ function uploadFileStatic(file,input, calllback) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
         }
     });
 }
@@ -382,6 +382,9 @@ function showMessage(type, message) {
         case 'success':
             messageHeader = 'Thành công!';
             break;
+        default:
+            type = 'error';
+            messageHeader = 'Đã xảy ra lỗi !!!';
     }
     toastr[type](message, messageHeader);
 }

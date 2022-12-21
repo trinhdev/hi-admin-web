@@ -186,7 +186,7 @@
                         errorString = value;
                         return false;
                     });
-                    showError(errorString);
+                    showMessage('error',errorString);
                 }
             } );
             e.preventDefault();

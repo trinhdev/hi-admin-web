@@ -184,16 +184,16 @@ function drawchart2() {
 }
 function formatDate(date) {
     if(date != null && date!= undefined){
-        var day = date.getDate(); 
-        if (day < 10) { 
-            day = "0" + day; 
-        } 
-        var month = date.getMonth() + 1; 
-        if (month < 10) { 
-            month = "0" + month; 
-        } 
+        var day = date.getDate();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        var month = date.getMonth() + 1;
+        if (month < 10) {
+            month = "0" + month;
+        }
         var year = date.getFullYear();
-        return day + "-" + month + "-" + year; 
+        return day + "-" + month + "-" + year;
     }
 }
 
@@ -253,7 +253,7 @@ function drawPaymentErrorTable() {
             $('#error-payment-table').show();
         },
         error: function (xhr, error, code) {
-            
+
         },
         searchDelay: 500
     });
@@ -349,7 +349,7 @@ function drawPaymentErrorDetailEcom(from = null, to = null) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
             console.log(data);
         }
     });
@@ -373,7 +373,7 @@ function drawPaymentErrorDetailFtel(from = null, to = null) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
             console.log(data);
         }
     });
@@ -402,7 +402,7 @@ function drawPaymentErrorDetailChart(type, data) {
             tooltip: {
                 display: true
             },
-            legendCallback: function (chart) {             
+            legendCallback: function (chart) {
                 // Return the HTML string here.
                 var text = [];
                 text.push('<ul style="display: flex; flex-direction: row; margin: 0px; padding: 0px; flex-wrap: wrap;" class="' + chart.id + '-legend">');
@@ -442,7 +442,7 @@ function drawPaymentErrorDetailSystemEcom(from = null, to = null) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
             console.log(data);
         }
     });
@@ -468,7 +468,7 @@ function drawPaymentErrorDetailSystemFtel(from = null, to = null) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
             console.log(data);
         }
     });
@@ -500,7 +500,7 @@ function drawPaymentErrorDetailSystemChart(type, data) {
             tooltip: {
                 display: true
             },
-            legendCallback: function (chart) {             
+            legendCallback: function (chart) {
                 // Return the HTML string here.
                 var text = [];
                 text.push('<ul style="display: flex; flex-direction: row; margin: 0px; padding: 0px; flex-wrap: wrap;" class="' + chart.id + '-legend">');
@@ -525,33 +525,33 @@ function drawPaymentErrorDetailSystemChart(type, data) {
 const getOrCreateLegendList = (chart, id) => {
     const legendContainer = document.getElementById(id);
     let listContainer = legendContainer.querySelector('ul');
-  
+
     if (!listContainer) {
       listContainer = document.createElement('ul');
       listContainer.style.display = 'flex';
       listContainer.style.flexDirection = 'row';
       listContainer.style.margin = 0;
       listContainer.style.padding = 0;
-  
+
       legendContainer.appendChild(listContainer);
     }
-  
+
     return listContainer;
   };
-  
+
   const htmlLegendPlugin = {
     id: 'htmlLegend',
     afterUpdate(chart, args, options) {
       const ul = getOrCreateLegendList(chart, options.containerID);
-  
+
       // Remove old legend items
       while (ul.firstChild) {
         ul.firstChild.remove();
       }
-  
+
       // Reuse the built-in legendItems generator
       const items = chart.options.plugins.legend.labels.generateLabels(chart);
-  
+
       items.forEach(item => {
         const li = document.createElement('li');
         li.style.alignItems = 'center';
@@ -559,7 +559,7 @@ const getOrCreateLegendList = (chart, id) => {
         li.style.display = 'flex';
         li.style.flexDirection = 'row';
         li.style.marginLeft = '10px';
-  
+
         li.onclick = () => {
           const {type} = chart.config;
           if (type === 'pie' || type === 'doughnut') {
@@ -570,7 +570,7 @@ const getOrCreateLegendList = (chart, id) => {
           }
           chart.update();
         };
-  
+
         // Color box
         const boxSpan = document.createElement('span');
         boxSpan.style.background = item.fillStyle;
@@ -580,17 +580,17 @@ const getOrCreateLegendList = (chart, id) => {
         boxSpan.style.height = '20px';
         boxSpan.style.marginRight = '10px';
         boxSpan.style.width = '20px';
-  
+
         // Text
         const textContainer = document.createElement('p');
         textContainer.style.color = item.fontColor;
         textContainer.style.margin = 0;
         textContainer.style.padding = 0;
         textContainer.style.textDecoration = item.hidden ? 'line-through' : '';
-  
+
         const text = document.createTextNode(item.text);
         textContainer.appendChild(text);
-  
+
         li.appendChild(boxSpan);
         li.appendChild(textContainer);
         ul.appendChild(li);

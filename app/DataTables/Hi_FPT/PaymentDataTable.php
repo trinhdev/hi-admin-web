@@ -62,12 +62,12 @@ class PaymentDataTable extends DataTable
                         var to = $('#show_to').val();
                         var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
                         if ($.trim(phone) == '' || $.trim(from) == '' || $.trim(to) == ''){
-                            showError('Hãy chắc chắn nhập đủ các trường');
+                            showMessage('error','Hãy chắc chắn nhập đủ các trường');
                             return false;
                         }
                         if (vnf_regex.test(phone) == false || phone.length!=10)
                         {
-                            showError('Số điện thoại của bạn không đúng định dạng!');
+                            showMessage('error','Số điện thoại của bạn không đúng định dạng!');
                         }
                         table.ajax.reload();
                     });

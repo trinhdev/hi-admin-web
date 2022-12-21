@@ -37,7 +37,7 @@ function readURL(value, url) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
         }
     });
 }
@@ -108,7 +108,7 @@ function readURL(value, url) {
 //                         errorString = value;
 //                         return false;
 //                     });
-//                     showError(errorString);
+//                     showMessage('error',errorString);
 //                 }
 //             });
 //         }
@@ -173,7 +173,7 @@ function deleteButtonTable(from, tableId, productName, url, ul_id) {
                             errorString = value;
                             return false;
                         });
-                        showError(errorString);
+                        showMessage('error',errorString);
                     }
                 });
             }
@@ -241,7 +241,7 @@ function deleteButton(from, form_data, name, url, ul_id) {
                         errorString = value;
                         return false;
                     });
-                    showError(errorString);
+                    showMessage('error',errorString);
                 }
             });
         }
@@ -308,7 +308,7 @@ function deleteButtonApprovedRole(form_data, name, url, ul_id) {
                         errorString = value;
                         return false;
                     });
-                    showError(errorString);
+                    showMessage('error',errorString);
                 }
             });
         }
@@ -327,7 +327,7 @@ function cancelButton(url, withPopup = true) {
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'Đồng ý',
             reverseButtons: true
-    
+
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = url;
@@ -496,7 +496,7 @@ function onsubmitIconForm(e, form, ul_id, withPopup = true) {
                 confirmButtonText: 'Đồng ý',
                 cancelButtonText: 'Hủy',
                 reverseButtons: true
-    
+
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();
@@ -564,7 +564,7 @@ function approve(approved_data) {
                         errorString = value;
                         return false;
                     });
-                    showError(errorString);
+                    showMessage('error',errorString);
                 }
             });
         }

@@ -206,7 +206,7 @@
 
   function hint(ts, cm, c) {
     ts.request(cm, {type: "completions", types: true, docs: true, urls: true}, function(error, data) {
-      if (error) return showError(ts, cm, error);
+      if (error) return showMessage('error',ts, cm, error);
       var completions = [], after = "";
       var from = data.start, to = data.end;
       if (cm.getRange(Pos(from.line, from.ch - 2), from) == "[\"" &&
@@ -253,7 +253,7 @@
 
   function showContextInfo(ts, cm, pos, queryName, c) {
     ts.request(cm, queryName, function(error, data) {
-      if (error) return showError(ts, cm, error);
+      if (error) return showMessage('error',ts, cm, error);
       if (ts.options.typeTip) {
         var tip = ts.options.typeTip(data);
       } else {
@@ -379,7 +379,7 @@
       var req = {type: "definition", variable: varName || null};
       var doc = findDoc(ts, cm.getDoc());
       ts.server.request(buildRequest(ts, doc, req), function(error, data) {
-        if (error) return showError(ts, cm, error);
+        if (error) return showMessage('error',ts, cm, error);
         if (!data.file && data.url) { window.open(data.url); return; }
 
         if (data.file) {
@@ -392,7 +392,7 @@
             return;
           }
         }
-        showError(ts, cm, "Could not find a definition.");
+        showMessage('error',ts, cm, "Could not find a definition.");
       });
     }
 
@@ -457,10 +457,10 @@
 
   function rename(ts, cm) {
     var token = cm.getTokenAt(cm.getCursor());
-    if (!/\w/.test(token.string)) return showError(ts, cm, "Not at a variable");
+    if (!/\w/.test(token.string)) return showMessage('error',ts, cm, "Not at a variable");
     dialog(cm, "New name for " + token.string, function(newName) {
       ts.request(cm, {type: "rename", newName: newName, fullDocs: true}, function(error, data) {
-        if (error) return showError(ts, cm, error);
+        if (error) return showMessage('error',ts, cm, error);
         applyChanges(ts, data.changes);
       });
     });
@@ -469,7 +469,7 @@
   function selectName(ts, cm) {
     var name = findDoc(ts, cm.doc).name;
     ts.request(cm, {type: "refs"}, function(error, data) {
-      if (error) return showError(ts, cm, error);
+      if (error) return showMessage('error',ts, cm, error);
       var ranges = [], cur = 0;
       var curPos = cm.getCursor();
       for (var i = 0; i < data.refs.length; i++) {
@@ -656,9 +656,9 @@
     setTimeout(function() { remove(tooltip); }, 1100);
   }
 
-  function showError(ts, cm, msg) {
+  function showMessage('error',ts, cm, msg) {
     if (ts.options.showError)
-      ts.options.showError(cm, msg);
+      ts.options.showMessage('error',cm, msg);
     else
       tempTooltip(cm, String(msg), ts);
   }

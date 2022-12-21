@@ -68,7 +68,7 @@
 <script src="{{ asset('/base/libraries/pace/pace.min.js')}}"></script>
 <script>
 @if($errors->any())
-    showError('{{$errors->first()}}');
+    showMessage('error','{{$errors->first()}}');
 @endif
 @if (session()->has('success'))
     showMessage('success', `{{ (session()->has('html')) ? session()->get('html') : '' }}`)

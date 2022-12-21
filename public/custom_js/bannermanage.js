@@ -41,7 +41,7 @@ function responseImageStatic(res, input) {
         console.table(input_name + '_name', res.data.uploadedImageFileName)
         document.getElementById(input_name + '_name').value = res.data.uploadedImageFileName;
     } else {
-        showError(res.message);
+        showMessage('error',res.message);
     }
 }
 
@@ -49,7 +49,7 @@ function handleUploadImage(input) {
     const [file] = input.files;
     if (file.size > 2050000) { // handle file
         resetData(input, null);
-        showError('File is too big! Allowed memory size of 2MB');
+        showMessage('error','File is too big! Allowed memory size of 2MB');
         return false;
     };
     uploadFileStatic(file, input, responseImageStatic);
@@ -71,7 +71,7 @@ function getDetailBanner(_this) {
 function callApiUpdateOderSuccess(response){
     console.log(response);
     if(response.statusCode != 0){
-        showError(response.message);
+        showMessage('error',response.message);
     }else{
         showSuccess('Updated!');
     }
@@ -151,7 +151,7 @@ function methodAjaxBanner() {
                     errorString = value;
                     return false;
                 });
-                showError(errorString);
+                showMessage('error', errorString);
                 console.log(data);
             }
         });
@@ -170,12 +170,12 @@ function methodAjaxBanner() {
             success: (data) => {
                 if(data.data.statusCode === 0){
                     $('#showDetailBanner_Modal').modal('toggle');
-                    showSuccess(data.data.message);
+                    showMessage('success', data.data.message);
                     $('#submitAjax').prop('disabled', false);
                     var table = $('#banner_manage').DataTable();
                     table.ajax.reload();
                 }else{
-                    showError(data.data.message);
+                    showMessage('error', data.data.message);
                     $('#submitAjax').prop('disabled', false);
                 }
             },
@@ -186,7 +186,7 @@ function methodAjaxBanner() {
                     errorString = value;
                     return false;
                 });
-                showError(errorString);
+                showMessage(errorString);
             }
         });
     });

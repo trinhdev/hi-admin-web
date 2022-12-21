@@ -584,6 +584,7 @@ function initSettings() {
         "columns": [{
             title: 'No.',
             render: function (data, type, row, meta) {
+                if (row.name == 'hi_admin_cron_service_auto_send_mail_list_email') return false;
                 return meta.row + meta.settings._iDisplayStart + 1;
             },
         },
@@ -609,7 +610,16 @@ function initSettings() {
                     '"': "&quot;",
                     "'": "&apos;"
                 };
-                var value = JSON.parse(String(data).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"'));
+                var value = JSON.parse(String(data)
+                    .replace(/&amp;/g, '&')
+                    .replace(/&lt;/g, '<')
+                    .replace(/&gt;/g, '>')
+                    .replace(/&quot;/g, '"')
+                    .replace(/&quot;/ig,'"')
+                );
+                (typeof value === 'string') ? Array(value) : value;
+                (typeof value === 'int') ? Array(value) : value;
+                console.log(value);
                 var template = badgeArrayView(value);
                 return template;
             },
@@ -1036,7 +1046,7 @@ function initIconmanagement() {
                   <span aria-hidden="true" style="font-size: 14px; color: #6c757d"><i class="fas fa-search"></i></span>
                 </button>
             `).attr('required','required').attr('title','Search');
-      
+
             // Click Event on Clear button
             $(document).on('click', '#'+settings.nTable.id+'_filter .close', function(){
                $('#'+settings.nTable.id).DataTable({
@@ -1371,7 +1381,7 @@ function initIconcategory() {
                   <span aria-hidden="true" style="font-size: 14px; color: #6c757d"><i class="fas fa-search"></i></span>
                 </button>
             `).attr('required','required').attr('title','Search');
-      
+
             // Click Event on Clear button
             $(document).on('click', '#'+settings.nTable.id+'_filter .close', function(){
                $('#'+settings.nTable.id).DataTable({
@@ -1508,7 +1518,7 @@ function initIconconfig() {
                   <span aria-hidden="true" style="font-size: 14px; color: #6c757d"><i class="fas fa-search"></i></span>
                 </button>
             `).attr('required','required').attr('title','Search');
-      
+
             // Click Event on Clear button
             $(document).on('click', '#'+settings.nTable.id+'_filter .close', function(){
                $('#'+settings.nTable.id).DataTable({
@@ -1819,7 +1829,7 @@ function initappinstallreport() {
                             //     errorString = value;
                             //     return false;
                             // });
-                            // showError(errorString);
+                            // showMessage('error',errorString);
                         }
                     });
                 },
@@ -1926,7 +1936,7 @@ function initappinstallreport() {
                             //     errorString = value;
                             //     return false;
                             // });
-                            // showError(errorString);
+                            // showMessage('error',errorString);
                         }
                     });
                 },
@@ -2040,7 +2050,7 @@ function initappinstallreport() {
                             //     errorString = value;
                             //     return false;
                             // });
-                            // showError(errorString);
+                            // showMessage('error',errorString);
                         }
                     });
                 },
@@ -2132,7 +2142,7 @@ function initappinstallreport() {
     //         var min = $("#min").val();
     //         var max = $("#min").val();
     //         var date = new Date( data[1] );
-    
+
     //         if (
     //             ( min === null && max === null ) ||
     //             ( min === null && date <= max ) ||

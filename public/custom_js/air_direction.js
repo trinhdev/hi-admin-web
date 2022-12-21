@@ -19,7 +19,7 @@ function handlePushAirDiretion() {
                     var table = $('#air_direction_table').DataTable();
                     table.ajax.reload();
                 }else{
-                    showError(data.data.message);
+                    showMessage('error',data.data.message);
                     $('#submit').prop('disabled', false);
                 }
             },
@@ -29,7 +29,7 @@ function handlePushAirDiretion() {
                     errorString = value;
                     return false;
                 });
-                showError(errorString);
+                showMessage('error',errorString);
                 $('#submit').prop('disabled', false);
             }
         });
@@ -87,7 +87,7 @@ function deleteAirDirection(data){
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
             console.log(xhr);
         }
     });
