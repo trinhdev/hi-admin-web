@@ -133,7 +133,7 @@
 
         $('#submit').on('click', function() {
             if(!$('#phone_filter').val() || !$('#show_from').val() || !$('#show_to').val()) {
-                showError('Xin vui lòng nhập số điện thoại | từ ngày | đến ngày cần tìm kiếm');
+                showMessage('error','Xin vui lòng nhập số điện thoại | từ ngày | đến ngày cần tìm kiếm');
                 return false;
             }
             table.DataTable().ajax.reload();

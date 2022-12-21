@@ -21,7 +21,7 @@ function successCallGetListLog(response){
     if(response.error != undefined){
         showLogs.innerHTML = '';
         showLogs.classList.remove('card');
-        showError(response.error);
+        showMessage('error',response.error);
     }else{
         // showLogs.classList.add('card');
         var html = '';

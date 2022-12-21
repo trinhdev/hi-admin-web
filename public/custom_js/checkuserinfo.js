@@ -2,7 +2,7 @@ function successCallCheckUserInfo(response){
     if(response.error != undefined){
         showList.classList.remove('card');
         showList.innerHTML = '';
-        showError(response.error);
+        showMessage('error',response.error);
     }else{
         var html ='';
         var arrRemove = ['Id','Contract','FullName','Address','Location','Birthday','Phone','Email']

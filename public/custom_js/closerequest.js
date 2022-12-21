@@ -14,7 +14,7 @@ function successCallGetListReport(response){
     if(response.error != undefined){
         showList.classList.remove('card');
         showList.innerHTML = '';
-        showError(response.error);
+        showMessage('error',response.error);
     }else{
         console.log(response);
         showList.classList.add('card');

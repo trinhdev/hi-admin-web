@@ -1,7 +1,6 @@
 @extends('layouts.default')
 @push('header')
     <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
-
 @endpush
 @section('content')
     <div class="content-wrapper">
@@ -11,9 +10,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a href="{{url()->current()}}">Cron Jobs</a></li>
-                            </li>
+                            {!! breadcrumb() !!}
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->

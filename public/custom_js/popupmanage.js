@@ -127,7 +127,7 @@ function getDetailPersonalMaps(idPersonalMaps) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
         }
     });
     $('#popupModal').modal();
@@ -139,7 +139,7 @@ function validateDataPopup(event, form) {
     if (passed.status) {
         handleSubmit(event, form);
     } else {
-        showError('Missing Field !!')
+        showMessage('error','Missing Field !!')
     }
     handleSubmit(event, form);
 }
@@ -166,7 +166,7 @@ async function handleUploadImagePopup(_this, event) {
     if (file) {
         if (file.size > 2050000) { // handle file
             resetData(_this, img_tag);
-            showError("File is too big! Allowed memory size of 2MB");
+            showMessage('error',"File is too big! Allowed memory size of 2MB");
             return false;
         }
         uploadFileExternal(file, successCallUploadImagePopup, {
@@ -185,7 +185,7 @@ function successCallUploadImagePopup(response, passingdata) {
     } else {
         resetData(passingdata.input_tag, passingdata.img_tag);
         document.getElementById(passingdata.img_tag.id + '_name').value = "";
-        showError(response.message);
+        showMessage('error',response.message);
     }
 }
 
@@ -259,7 +259,7 @@ function pushTemplateAjaxPopup() {
                         $('#popupModal').modal('toggle');
                         showSuccess('Thành công');
                     }else{
-                        showError(data.data.message);
+                        showMessage('error',data.data.message);
                     }
                 },
                 error: function (xhr) {
@@ -268,7 +268,7 @@ function pushTemplateAjaxPopup() {
                         errorString = value;
                         return false;
                     });
-                    showError(errorString);
+                    showMessage('error',errorString);
                     console.log(data);
                 }
             });
@@ -295,7 +295,7 @@ function handlePushPopUpPrivate() {
                     var table = $('#popup_private_table').DataTable();
                     table.ajax.reload(null, false);
                 }else{
-                    showError(data.data.message);
+                    showMessage('error',data.data.message);
                     $('#submit').prop('disabled', false);
                 }
             },
@@ -305,7 +305,7 @@ function handlePushPopUpPrivate() {
                     errorString = value;
                     return false;
                 });
-                showError(errorString);
+                showMessage('error',errorString);
                 $('#submit').prop('disabled', false);
             }
         });
@@ -395,7 +395,7 @@ function methodAjaxPopupPrivate() {
                         }
                     });
                     if(count>0) {
-                        showError(message);
+                        showMessage('error',message);
                     } else {
                         showSuccess(message);
                     }
@@ -407,7 +407,7 @@ function methodAjaxPopupPrivate() {
                         errorString = value;
                         return false;
                     });
-                    showError(errorString);
+                    showMessage("error",errorString);
                     $('#submitPhone').prop('disabled', false);
                 }
             });
@@ -420,7 +420,7 @@ function deletePopUpPrivate(data){
     let check_dateEnd = $(data).data('dateend');
     let id = $(data).data('id');
     if(check_dateEnd < getDate()) {
-        showError('Popup hết hiệu lực, vui lòng cập nhật ngày hết hạn!');
+        showMessage('error','Popup hết hiệu lực, vui lòng cập nhật ngày hết hạn!');
         return false;
     }
     $.ajax({
@@ -440,7 +440,7 @@ function deletePopUpPrivate(data){
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
             console.log(data);
         }
     });
@@ -510,9 +510,9 @@ function changeFileNumberPhone() {
                 $('#importExcel').find('input:text, input:password, input:file, select, textarea').val('');
                 $('#number_phone').val('');
                 if (errorString.length !== 0) {
-                    showError(errorString);
+                    showMessage('error',errorString);
                 } else {
-                    showError('File quá lớn hoặc sai định dạng! Vui lòng kiểm tra lại. ');
+                    showMessage('error','File quá lớn hoặc sai định dạng! Vui lòng kiểm tra lại. ');
                 }
             }
         });

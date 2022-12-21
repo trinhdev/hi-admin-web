@@ -333,6 +333,43 @@ if (!function_exists('setting_load_cronjob')) {
     }
 }
 
+if (!function_exists('breadcrumb')) {
+    /**
+     * Get the setting instance.
+     *
+     * @param $index
+     * @return string
+     */
+    function breadcrumb(): string
+    {
+        $link = request()->segment(1);
+        $replace_link_first = ucwords(str_replace('-', ' ', $link));
+        $value = <<<HTML
+                    <li class="breadcrumb-item"><a href="/home">Home</a></li><li class="breadcrumb-item active"><a href="/$link">$replace_link_first</a></li>
+                HTML;
+
+        $link2 = request()->segment(2);
+        if ($link2) {
+            $replace_link_second = ucwords(str_replace('-', ' ', $link2));
+            $value.= '<li class="breadcrumb-item active"><a href='.$link2.'>'.$replace_link_second.'</a></li>';
+        }
+        return $value;
+    }
+}
+
+if (!function_exists('replace_key')) {
+    /**
+     * Get the setting instance.
+     *
+     * @param $key
+     * @return string
+     */
+    function replace_key($key): string
+    {
+        return ucwords(str_replace('_', ' ', $key));
+    }
+}
+
 
 
 

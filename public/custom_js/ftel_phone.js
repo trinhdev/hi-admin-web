@@ -27,7 +27,7 @@ function changeFileFtelPhone() {
                 });
                 $('#importExcel').find('input:text, input:password, input:file, select, textarea').val('');
                 $('#number_phone').val('');
-                showError(errorString);
+                showMessage('error',errorString);
             }
         } );
         e.preventDefault();

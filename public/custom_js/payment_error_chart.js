@@ -79,7 +79,7 @@ function drawChartUserSystem(type, data) {
     if(chart_name[type]) {
         chart_name[type].destroy();
     }
-    
+
     chart_name[type] = new Chart(document.getElementById('payment-error-user-system-' + type).getContext('2d'), {
         type: 'bar',
         data: data,
@@ -127,7 +127,7 @@ function drawPaymentErrorDetailEcom(from = null, to = null) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
             console.log(data);
         }
     });
@@ -151,7 +151,7 @@ function drawPaymentErrorDetailFtel(from = null, to = null) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
             console.log(data);
         }
     });
@@ -194,7 +194,7 @@ function drawPaymentErrorDetailChart(type, data) {
                     }
                 }
             },
-            legendCallback: function (chart) {             
+            legendCallback: function (chart) {
                 // Return the HTML string here.
                 var text = [];
                 text.push('<ul style="display: flex; flex-direction: row; margin: 0px; padding: 0px; flex-wrap: wrap;" class="' + chart.id + '-legend">');
@@ -234,7 +234,7 @@ function drawPaymentErrorDetailSystemEcom(from = null, to = null) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
             console.log(data);
         }
     });
@@ -260,7 +260,7 @@ function drawPaymentErrorDetailSystemFtel(from = null, to = null) {
                 errorString = value;
                 return false;
             });
-            showError(errorString);
+            showMessage('error',errorString);
             console.log(data);
         }
     });
@@ -303,7 +303,7 @@ function drawPaymentErrorDetailSystemChart(type, data) {
                     }
                 }
             },
-            legendCallback: function (chart) {             
+            legendCallback: function (chart) {
                 // Return the HTML string here.
                 var text = [];
                 text.push('<ul style="display: flex; flex-direction: row; margin: 0px; padding: 0px; flex-wrap: wrap;" class="' + chart.id + '-legend">');

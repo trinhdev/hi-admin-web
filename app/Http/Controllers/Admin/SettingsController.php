@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Hi_FPT\SettingsDataTable;
 use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
@@ -26,10 +27,14 @@ class SettingsController extends MY_Controller
         $this->model = $this->getModel('Settings');
     }
 
-    public function index()
-    {
-        return view('settings.list');
+    public function index(SettingsDataTable $dataTable, Request $request){
+         return $dataTable->render('settings.list2');
     }
+
+//    public function index()
+//    {
+//        return view('settings.list');
+//    }
 
     /**
      * Show the form for creating a new resource.

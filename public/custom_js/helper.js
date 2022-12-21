@@ -20,7 +20,7 @@ function validateDataLogReport(event, form) {
     if (passed.status) {
         handleSubmit(event, form);
     } else {
-        showError('Missing Field !!')
+        showMessage('error','Missing Field !!')
     }
 }
 
