@@ -1,6 +1,9 @@
 <?php
 
 use App\Facades\SettingFacade;
+use Box\Spout\Common\Exception\IOException;
+use Box\Spout\Common\Exception\UnsupportedTypeException;
+use Box\Spout\Reader\Exception\ReaderNotOpenedException;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\HtmlString;
 
@@ -269,22 +272,24 @@ if (!function_exists('isJson')) {
 }
 
 if (!function_exists('rand_color')) {
-    function rand_color() {
+    function rand_color(): string
+    {
         return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
     }
 }
 
 if (!function_exists('changeFormatDateLocal')) {
-    function changeFormatDateLocal($value) {
+    function changeFormatDateLocal($value): string
+    {
         return \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 }
 
 if (!function_exists('excel_import')) {
     /**
-     * @throws \Box\Spout\Common\Exception\UnsupportedTypeException
-     * @throws \Box\Spout\Reader\Exception\ReaderNotOpenedException
-     * @throws \Box\Spout\Common\Exception\IOException
+     * @throws UnsupportedTypeException
+     * @throws ReaderNotOpenedException
+     * @throws IOException
      */
     function excel_import($params): \Illuminate\Support\Collection
     {
