@@ -23,6 +23,9 @@ class SettingsDataTable extends DataTable
             ->editColumn('value',function($row){
                 return '<textarea cols="40">'.$row->value.'</textarea>';
             })
+            ->editColumn('created_by',function($row){
+                return !empty($row->created_by) ? $row->createdBy->email : '';
+            })
             ->editColumn('action',function($row){
                 return '<div style="display:flex; justify-content:center">
                            <a href="'.route('settings.edit', [$row->id]).'" id="detail" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
@@ -31,6 +34,9 @@ class SettingsDataTable extends DataTable
                            </form>
                        </div>
                 ';
+            })
+            ->filter(function ($row) {
+                $row->where('name', 'not like', 'hi_admin_cron_'. "%");
             })
             ->rawColumns(['action', 'value']);
     }
@@ -90,9 +96,7 @@ class SettingsDataTable extends DataTable
             Column::make('name'),
             Column::make('value'),
             Column::make('created_at')->title('Ngày Tạo'),
-            Column::make('created_at')->title('Ngày Tạo'),
-            Column::make('created_at')->title('Ngày Tạo'),
-            Column::make('created_at')->title('Ngày Tạo'),
+            Column::make('created_by')->title('Người Tạo'),
             Column::computed('action')->sortable(false)
                   ->searching(false)
                   ->width(80)

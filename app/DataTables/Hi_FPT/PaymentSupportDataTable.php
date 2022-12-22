@@ -48,7 +48,7 @@ class PaymentSupportDataTable extends DataTable
                 }
 
                 if (request()->filled('public_date_start') && request()->filled('public_date_end')) {
-                    $query->whereBetween('created_at', [request()->has('public_date_start'), request()->has('public_date_end')]);
+                    $query->whereBetween('created_at', [changeFormatDateLocal(request('public_date_start')), changeFormatDateLocal(request('public_date_end'))]);
                 }
             })
             ->rawColumns(['action','status', 'description_error_code', 'order_id'])
@@ -57,12 +57,6 @@ class PaymentSupportDataTable extends DataTable
 
     public function query()
     {
-//        foreach ($this->data as $value) {
-//            $error_des = DB::table('payment_unpaid')->where('customer_phone', $value->customer_phone)->pluck('description_error_code');
-//            $value->description_error_code = $error_des;
-//        }
-
-
         return $this->applyScopes($this->data);
     }
 

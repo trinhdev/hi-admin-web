@@ -24,50 +24,6 @@
             <div class="flexbox-annotated-section">
                 <div class="flexbox-annotated-section-annotation">
                     <div class="annotated-section-title pd-all-20">
-                        <h2 style="font-weight: 500; font-size: 20px !important;">Config Service Payment Unpaid</h2>
-                    </div>
-                    <div class="annotated-section-description pd-all-20 p-none-t">
-                        <p class="color-note">Settings email, enabled, time ...</p>
-                    </div>
-                </div>
-                <div class="flexbox-annotated-section-content">
-                    <div class="wrapper-content pd-all-20">
-                        <div class="form-group mb-3">
-                            <label class="text-title-field form-check-label"
-                                   for="admin_locale_direction">Bật service payment unpaid
-                            </label>
-                            <label class="me-2 form-check-label mt-2">
-                                <input type="radio" name="hi_admin_cron_service_check_payment_unpaid_enable" value="1"
-                                       @if (setting('hi_admin_cron_service_check_payment_unpaid_enable', '0') === '1') checked @endif>{{ __('Bật') }}
-                            </label>
-                            <label class=" form-check-label mt-2">
-                                <input type="radio" name="hi_admin_cron_service_check_payment_unpaid_enable" value="0"
-                                       @if (setting('hi_admin_cron_service_check_payment_unpaid_enable', '0') === '0') checked @endif>{{ __('Tắt') }}
-                            </label>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-title-field form-check-label"
-                                   for="hi_admin_cron_service_check_payment_unpaid_list_email">Email người nhận</label>
-                            <textarea data-counter="120" type="text" class="next-input mt-2"
-                                      name="hi_admin_cron_service_check_payment_unpaid_list_email"
-                                      id="hi_admin_cron_service_check_payment_unpaid_list_email">{{ setting('hi_admin_cron_service_check_payment_unpaid_list_email') }}</textarea>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-title-field form-check-label"
-                                   for="hi_admin_cron_service_check_payment_unpaid_time">{{ __('Cron Job Time') }}</label>
-                            <input type="text" class="next-input mt-2 col-md-6"
-                                   name="hi_admin_cron_service_check_payment_unpaid_time"
-                                   id="hi_admin_cron_service_check_payment_unpaid_time"
-                                    placeholder="Set time cron jobs, example below!"
-                            value="{{ setting('hi_admin_cron_service_check_payment_unpaid_time') }}"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flexbox-annotated-section">
-                <div class="flexbox-annotated-section-annotation">
-                    <div class="annotated-section-title pd-all-20">
                         <h2 style="font-weight: 500; font-size: 20px !important;">Description cron jobs time config</h2>
                     </div>
                     <div class="annotated-section-description pd-all-20 p-none-t">
@@ -138,6 +94,140 @@
                     </div>
                 </div>
             </div>
+
+            {{--Payment Unpaid--}}
+            <div class="flexbox-annotated-section">
+                <div class="flexbox-annotated-section-annotation">
+                    <div class="annotated-section-title pd-all-20">
+                        <h2 style="font-weight: 500; font-size: 20px !important;">Config Service Payment Unpaid</h2>
+                    </div>
+                    <div class="annotated-section-description pd-all-20 p-none-t">
+                        <p class="color-note">Settings email, enabled, time ...</p>
+                    </div>
+                </div>
+                <div class="flexbox-annotated-section-content">
+                    <div class="wrapper-content pd-all-20">
+                        <div class="form-group mb-3">
+                            <label class="text-title-field form-check-label"
+                                   for="admin_locale_direction">Bật service
+                            </label>
+                            <label class="me-2 form-check-label mt-2">
+                                <input type="radio" name="hi_admin_cron_service_check_payment_unpaid_enable" value="1"
+                                       @if (setting('hi_admin_cron_service_check_payment_unpaid_enable', '0') === '1') checked @endif>{{ __('Bật') }}
+                            </label>
+                            <label class=" form-check-label mt-2">
+                                <input type="radio" name="hi_admin_cron_service_check_payment_unpaid_enable" value="0"
+                                       @if (setting('hi_admin_cron_service_check_payment_unpaid_enable', '0') === '0') checked @endif>{{ __('Tắt') }}
+                            </label>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="text-title-field form-check-label"
+                                   for="hi_admin_cron_service_check_payment_unpaid_list_email">Email người nhận</label>
+                            <textarea data-counter="120" type="text" class="next-input mt-2"
+                                      name="hi_admin_cron_service_check_payment_unpaid_list_email"
+                                      id="hi_admin_cron_service_check_payment_unpaid_list_email">{{ setting('hi_admin_cron_service_check_payment_unpaid_list_email') }}</textarea>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="text-title-field form-check-label"
+                                   for="hi_admin_cron_service_check_payment_unpaid_time">{{ __('Cron Job Time') }}</label>
+                            <input type="text" class="next-input mt-2 col-md-6"
+                                   name="hi_admin_cron_service_check_payment_unpaid_time"
+                                   id="hi_admin_cron_service_check_payment_unpaid_time"
+                                    placeholder="Set time cron jobs, example above!"
+                            value="{{ setting('hi_admin_cron_service_check_payment_unpaid_time') }}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{--End Payment Unpaid--}}
+
+
+            {{--VSML--}}
+            <div class="flexbox-annotated-section">
+                <div class="flexbox-annotated-section-annotation">
+                    <div class="annotated-section-title pd-all-20">
+                        <h2 style="font-weight: 500; font-size: 20px !important;">Config Service VSML Report Week</h2>
+                    </div>
+                    <div class="annotated-section-description pd-all-20 p-none-t">
+                        <p class="color-note">Settings email, enabled, time ...</p>
+                    </div>
+                </div>
+                <div class="flexbox-annotated-section-content">
+                    <div class="wrapper-content pd-all-20">
+                        <div class="form-group mb-3">
+                            <label class="text-title-field form-check-label"
+                                   for="admin_locale_direction">Bật service
+                            </label>
+                            <label class="me-2 form-check-label mt-2">
+                                <input type="radio" name="hi_admin_cron_service_air_condition_weekly_enable" value="1"
+                                       @if (setting('hi_admin_cron_service_air_condition_weekly_enable', '0') === '1') checked @endif>{{ __('Bật') }}
+                            </label>
+                            <label class=" form-check-label mt-2">
+                                <input type="radio" name="hi_admin_cron_service_air_condition_weekly_enable" value="0"
+                                       @if (setting('hi_admin_cron_service_air_condition_weekly_enable', '0') === '0') checked @endif>{{ __('Tắt') }}
+                            </label>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="text-title-field form-check-label"
+                                   for="hi_admin_cron_service_air_condition_weekly_list_email">Email người nhận</label>
+                            <textarea data-counter="120" type="text" class="next-input mt-2"
+                                      name="hi_admin_cron_service_air_condition_weekly_list_email"
+                                      id="hi_admin_cron_service_air_condition_weekly_list_email">{{ setting('hi_admin_cron_service_air_condition_weekly_list_email') }}</textarea>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="text-title-field form-check-label"
+                                   for="hi_admin_cron_service_air_condition_weekly_time">{{ __('Cron Job Time') }}</label>
+                            <input type="text" class="next-input mt-2 col-md-6"
+                                   name="hi_admin_cron_service_air_condition_weekly_time"
+                                   id="hi_admin_cron_service_air_condition_weekly_time"
+                                   placeholder="Set time cron jobs, example above!"
+                                   value="{{ setting('hi_admin_cron_service_air_condition_weekly_time') }}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{--End VSML--}}
+
+
+            {{--Health check--}}
+            <div class="flexbox-annotated-section">
+                <div class="flexbox-annotated-section-annotation">
+                    <div class="annotated-section-title pd-all-20">
+                        <h2 style="font-weight: 500; font-size: 20px !important;">Config Service Health Check</h2>
+                    </div>
+                    <div class="annotated-section-description pd-all-20 p-none-t">
+                        <p class="color-note">Settings email, enabled, time ...</p>
+                    </div>
+                </div>
+                <div class="flexbox-annotated-section-content">
+                    <div class="wrapper-content pd-all-20">
+                        <div class="form-group mb-3">
+                            <label class="text-title-field form-check-label"
+                                   for="hi_admin_cron_service_health_check_api_enable">Bật service
+                            </label>
+                            <label class="me-2 form-check-label mt-2">
+                                <input type="radio" name="hi_admin_cron_service_health_check_api_enable" value="1"
+                                       @if (setting('hi_admin_cron_service_health_check_api_enable', '0') === '1') checked @endif>{{ __('Bật') }}
+                            </label>
+                            <label class=" form-check-label mt-2">
+                                <input type="radio" name="hi_admin_cron_service_health_check_api_enable" value="0"
+                                       @if (setting('hi_admin_cron_service_health_check_api_enable', '0') === '0') checked @endif>{{ __('Tắt') }}
+                            </label>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="text-title-field form-check-label"
+                                   for="hi_admin_cron_service_health_check_api_time">{{ __('Cron Job Time') }}</label>
+                            <input type="text" class="next-input mt-2 col-md-6"
+                                   name="hi_admin_cron_service_health_check_api_time"
+                                   id="hi_admin_cron_service_health_check_api_time"
+                                   placeholder="Set time cron jobs, example above!"
+                                   value="{{ setting('hi_admin_cron_service_health_check_api_time') }}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{--End Health check--}}
 
             <div class="flexbox-annotated-section">
                 <div class="flexbox-annotated-section-annotation">

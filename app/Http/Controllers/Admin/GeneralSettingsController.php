@@ -58,7 +58,7 @@ class GeneralSettingsController extends MY_Controller
             $email_example = [
                 'to'    => 'trinhhdp@fpt.com.vn',
                 'cc'    => 'trinhhdp@fpt.com.vn',
-                'bcc'   => '',
+                'bcc'   => ' ',
             ];
             $listEmail[] = array_filter($email_example);
             setting()->set('hi_admin_cron_'.$add_key.'_enable', '0')->save();

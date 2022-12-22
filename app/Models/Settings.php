@@ -18,4 +18,7 @@ class Settings extends MY_Model
     public function icon_approve() {
        return $this->hasMany(Icon_approve::class, 'value->key', 'approved_status');
     }
+    public function createdBy(){
+        return $this->hasOne(User::class,'id','created_by');
+    }
 }
