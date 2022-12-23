@@ -100,6 +100,7 @@ class HelperController extends MY_Controller
     public function update(Request $request, $id)
     {
         $request->merge([
+            'error_type' => implode(',', $request->error_type),
             'updated_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);
         $this->updateById($this->model, $id, $request->all());
@@ -116,6 +117,7 @@ class HelperController extends MY_Controller
 
     public function store(Request $request) {
         $request->merge([
+            'error_type' => implode(',', $request->error_type),
             'created_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);
         $this->createSingleRecord($this->model, $request->all());
