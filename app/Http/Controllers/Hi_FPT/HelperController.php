@@ -93,6 +93,7 @@ class HelperController extends MY_Controller
     public function edit($id) {
         $data = parent::edit1();
         $support_system_error_type = Settings::where('name', 'support_system_error_type')->get()->toArray();
+        $data['data']->error_type = explode(',', $data['data']->error_type);
         $data['support_system_error_type'] = (!empty($support_system_error_type[0]['value'])) ? json_decode($support_system_error_type[0]['value'], true) : [];
         return view('helper.edit')->with($data);
     }
