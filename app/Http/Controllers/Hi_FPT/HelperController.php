@@ -93,6 +93,7 @@ class HelperController extends MY_Controller
     public function edit($id) {
         $data = parent::edit1();
         $support_system_error_type = Settings::where('name', 'support_system_error_type')->get()->toArray();
+        $data['data']->error_type = explode(',', $data['data']->error_type);
         $data['support_system_error_type'] = (!empty($support_system_error_type[0]['value'])) ? json_decode($support_system_error_type[0]['value'], true) : [];
         return view('helper.edit')->with($data);
     }
@@ -100,6 +101,7 @@ class HelperController extends MY_Controller
     public function update(Request $request, $id)
     {
         $request->merge([
+            'error_type' => implode(',', $request->error_type),
             'updated_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);
         $this->updateById($this->model, $id, $request->all());
@@ -116,6 +118,7 @@ class HelperController extends MY_Controller
 
     public function store(Request $request) {
         $request->merge([
+            'error_type' => implode(',', $request->error_type),
             'created_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);
         $this->createSingleRecord($this->model, $request->all());
