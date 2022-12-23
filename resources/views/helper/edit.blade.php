@@ -44,8 +44,8 @@
                                     <input type="text" name="name" class="form-control" value="{{ !empty($data)?$data->name : ''}}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="description" class="required_red_dot">Mô tả report</label>
-                                    <textarea class="form-control" name="description">{{ @$data->description }}</textarea>
+                                    <label for="description" class="required_red_dot">Mô tả lỗi</label>
+                                    <textarea class="form-control" name="description" id="description">{{ @$data->description }}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="solve_way" class="required_red_dot">Phương thức giải quyết</label>
@@ -53,21 +53,25 @@
                                         {{ @$data->solve_way }}
                                     </textarea>
                                 </div>
-                                <div class="form-group">
-                                    <label for="solve_time_avg">Thời gian xử lý trung bình</label>
-                                    <input type="number" name="solve_time_avg" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="from">Kênh tiếp nhận</label>
+                                {{-- <div class="form-group">
+                                    <label for="from">Liên hệ giải quyết</label>
                                     <input type="text" name="from" class="form-control" value="{{ @$data->from }}">
-                                </div>
+                                </div> --}}
                                 <div class="form-group">
-                                    <label for="error_type">Loại lỗi</label>
-                                    <input type="text" name="error_type" class="form-control" value="{{ @$data->error_type }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="reason">Nguyên nhân lỗi</label>
-                                    <textarea class="form-control" name="reason">{{ @$data->reason }}</textarea>
+                                    <label for="error_type">Phân loại lỗi</label>
+                                    <select id="error_type" name="error_type[]" class="form-control" multiple="multiple">
+                                        @foreach ($support_system_error_type as $error_type_row)
+                                            @if(in_array($error_type_row, (!empty($data->error_type)) ? $data->error_type : []))
+                                            <option value="{{ $error_type_row }}" selected>{{ $error_type_row }}</option>
+                                            @else
+                                            <option value="{{ $error_type_row }}">{{ $error_type_row }}</option>
+                                            @endif
+                                            {{-- <option value="{{ $error_type }}">{{ $error_type }}</option> --}}
+                                        @endforeach
+                                    </select>
+
+                                    {{-- <label for="error_type">Tag lỗi</label>
+                                    <input type="text" name="error_type" class="form-control" value="{{ @$data->error_type }}"> --}}
                                 </div>
                             </div>
                             <div class="card-footer" style="text-align: center">
@@ -92,6 +96,12 @@
     <script>
         ClassicEditor
             .create( document.querySelector( '#solve_way' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+
+        ClassicEditor
+            .create( document.querySelector( '#description' ) )
             .catch( error => {
                 console.error( error );
             } );

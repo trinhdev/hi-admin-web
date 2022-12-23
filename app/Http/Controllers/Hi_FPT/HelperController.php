@@ -10,6 +10,7 @@ use App\Services\NewsEventService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Carbon;
+use App\Models\Settings;
 
 class HelperController extends MY_Controller
 {
@@ -91,6 +92,8 @@ class HelperController extends MY_Controller
 
     public function edit($id) {
         $data = parent::edit1();
+        $support_system_error_type = Settings::where('name', 'support_system_error_type')->get()->toArray();
+        $data['support_system_error_type'] = (!empty($support_system_error_type[0]['value'])) ? json_decode($support_system_error_type[0]['value'], true) : [];
         return view('helper.edit')->with($data);
     }
 
@@ -105,7 +108,10 @@ class HelperController extends MY_Controller
     }
 
     public function create(Request $request) {
-        return view('helper.edit');
+        $data = [];
+        $support_system_error_type = Settings::where('name', 'support_system_error_type')->get()->toArray();
+        $data['support_system_error_type'] = (!empty($support_system_error_type[0]['value'])) ? json_decode($support_system_error_type[0]['value'], true) : [];
+        return view('helper.edit')->with($data);
     }
 
     public function store(Request $request) {
