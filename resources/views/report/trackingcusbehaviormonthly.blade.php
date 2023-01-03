@@ -775,7 +775,7 @@
 
                         $('#newServiceRegister tr:last').after(`
                             <tr>
-                                <td>${value['location_zone']}</td>
+                                <td>${(value['location_zone']) ? value['location_zone'] : ''}</td>
                                 <td>${value['service_key']}</td>
                                 <td>${count_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
                                 <td>${count_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
