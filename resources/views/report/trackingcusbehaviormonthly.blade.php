@@ -34,17 +34,17 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Từ: </div>
                             </div>
-                            <input type="date" name="show_from" class="form-control" id="show_from" placeholder="Date From" value="{{ @$from2 }}" />
+                            <input type="text" name="show_from" class="form-control" id="show_from" placeholder="Month" value="{{ @$from2 }}" />
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    {{-- <div class="col-md-3">
                         <div class="input-group input-group-sm mb-4" style="margin-bottom: unset !important;">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Đến: </div>
                             </div>
                             <input type="date" name="show_to" class="form-control" id="show_to" placeholder="Date To" value="{{ @$to2 }}" />
                         </div>
-                    </div>
+                    </div> --}}
 
                     {{-- <div class="col-md-3">
                         <div class="input-group input-group-sm mb-4">
@@ -73,58 +73,13 @@
             <div class="card card-body row filter-section justify-content-md-center" id="report-table">
                 <div class="form-inline" style="align-items: inherit">
                     <div class="col-sm-6">
-                        <h3>Báo cáo tổng hợp tháng 10/2022</h3>
+                        <h3 id="total-active-monthly-label">Báo cáo tổng hợp tháng </h3>
                     </div>
                     <div class="col-sm-6">
-                        <h3>Tổng kích hoạt tháng 10/2022</h3>
+                        <h3 id="activeNet-label">Tổng kích hoạt tháng </h3>
                     </div>
                     <div class="col-sm-6 row-eq-height">
-                        <table style="height: 100%">
-                            <tr class="header">
-                                <th>Vùng</th>
-                                <th>Active HiFPT đến 30/09</th>
-                                <th>Active HiFPT / Active net</th>
-                            </tr>
-                            <tr>
-                                <td>Vung 1</td>
-                                <td>606,769</td>
-                                <td>71.22%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 2</td>
-                                <td>321,565</td>
-                                <td>74.72%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 3</td>
-                                <td>379,944</td>
-                                <td>85.64%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 4</td>
-                                <td>389,093</td>
-                                <td>92.36%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 5</td>
-                                <td>710,865</td>
-                                <td>90.37%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 6</td>
-                                <td>407,347</td>
-                                <td>75.14%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 7</td>
-                                <td>247,403</td>
-                                <td>72.62%</td>
-                            </tr>
-                            <tr class="footer">
-                                <td>Tổng</td>
-                                <td>3,062,986</td>
-                                <td>80.25%</td>
-                            </tr>
+                        <table style="height: 100%" id="activeNet">
                         </table>
                     </div>
     
@@ -143,7 +98,7 @@
                         </table>
     
                         <table>
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th>Phát triển mới</th>
                                 <th>PTTB của FTEL</th>
                                 <th>Tỷ lệ phát triển mới/PTTB của FTEL</th>
@@ -152,6 +107,9 @@
                                 <td>29,644</td>
                                 <td>71,050</td>
                                 <td>42.00%</td>
+                            </tr> --}}
+                            <tr>
+                                <td>ĐANG PHÁT TRIỂN</td>
                             </tr>
                         </table>
                     </div>
@@ -160,143 +118,20 @@
                         <h3>Thanh toán</h3>
                     </div>
                     <div class="col-sm-6 row-eq-height">
-                        <table>
+                        <table id="sl-thanh-toan">
                             <tr class="header">
                                 <th rowspan="2">Vùng</th>
                                 <th colspan="4">SL Thanh toán</th>
                             </tr>
-                            <tr class="header">
-                                <th>T9.2022</th>
-                                <th>T10.2022</th>
-                                <th>Tăng/giảm</th>
-                                <th>Tỷ lệ</th>
-                            </tr>
-                            <tr>
-                                <td>Vung 1</td>
-                                <td>17,222</td>
-                                <td>16,362</td>
-                                <td>(860)</td>
-                                <td>-4.99%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 2</td>
-                                <td>3,329</td>
-                                <td>3,349</td>
-                                <td>20</td>
-                                <td>0.60%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 3</td>
-                                <td>2,620</td>
-                                <td>2,573</td>
-                                <td>(47)</td>
-                                <td>-1.79%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 4</td>
-                                <td>5,295</td>
-                                <td>11,173</td>
-                                <td>(3,047)</td>
-                                <td>-21.43%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 5</td>
-                                <td>24,078</td>
-                                <td>15,325</td>
-                                <td>(8,753)</td>
-                                <td>-36.35%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 6</td>
-                                <td>19,192</td>
-                                <td>12,273</td>
-                                <td>(6,919)</td>
-                                <td>-36.05%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 7</td>
-                                <td>10,698</td>
-                                <td>8,134</td>
-                                <td>(2,564)</td>
-                                <td>-23.97%</td>
-                            </tr>
-                            <tr class="footer">
-                                <td>Tổng</td>
-                                <td>116,955</td>
-                                <td>80,120</td>
-                                <td>(36,835)</td>
-                                <td>-31.50%</td>
-                            </tr>
                         </table>
                     </div>
                     <div class="col-sm-6 row-eq-height">
-                        <table>
+                        <table id="tien-thanh-toan">
                             <tr class="header">
                                 <th rowspan="2">Vùng</th>
                                 <th colspan="4">Tổng tiền thanh toán</th>
                             </tr>
-                            <tr class="header">
-                                <th>T9.2022</th>
-                                <th>T10.2022</th>
-                                <th>Tăng/giảm</th>
-                                <th>Tỷ lệ</th>
-                            </tr>
-                            <tr>
-                                <td>Vung 1</td>
-                                <td>17,222</td>
-                                <td>16,362</td>
-                                <td>(860)</td>
-                                <td>-4.99%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 2</td>
-                                <td>3,329</td>
-                                <td>3,349</td>
-                                <td>20</td>
-                                <td>0.60%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 3</td>
-                                <td>2,620</td>
-                                <td>2,573</td>
-                                <td>(47)</td>
-                                <td>-1.79%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 4</td>
-                                <td>5,295</td>
-                                <td>11,173</td>
-                                <td>(3,047)</td>
-                                <td>-21.43%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 5</td>
-                                <td>24,078</td>
-                                <td>15,325</td>
-                                <td>(8,753)</td>
-                                <td>-36.35%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 6</td>
-                                <td>19,192</td>
-                                <td>12,273</td>
-                                <td>(6,919)</td>
-                                <td>-36.05%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 7</td>
-                                <td>10,698</td>
-                                <td>8,134</td>
-                                <td>(2,564)</td>
-                                <td>-23.97%</td>
-                            </tr>
-                            <tr class="footer">
-                                <td>Tổng</td>
-                                <td>116,955</td>
-                                <td>80,120</td>
-                                <td>(36,835)</td>
-                                <td>-31.50%</td>
-                            </tr>
+                            
                         </table>
                     </div>
 
@@ -304,124 +139,27 @@
                         <h3>Số lượng đăng ký dịch vụ FTEL (Sale platform)</h3>
                     </div>
                     <div class="col-sm-6" style="margin-top: 20px">
-                        <h3>Số lượng thực hiện đổi quà FGold</h3>
-                    </div>
-                    <div class="col-sm-6 row-eq-height">
-                        <table>
-                            <tr class="header">
-                                <th>Dịch vụ</th>
-                                <th>Tháng 9</th>
-                                <th>Tháng 10</th>
-                                <th>Tăng/Giảm</th>
-                                <th>Tỷ lệ</th>
-                            </tr>
-                            <tr>
-                                <td>Internet</td>
-                                <td>108</td>
-                                <td>143</td>
-                                <td>35</td>
-                                <td>32.00%</td>
-                            </tr>
-                            <tr>
-                                <td>Combo</td>
-                                <td>108</td>
-                                <td>143</td>
-                                <td>35</td>
-                                <td>32.00%</td>
-                            </tr>
-                            <tr>
-                                <td>Camera</td>
-                                <td>108</td>
-                                <td>143</td>
-                                <td>35</td>
-                                <td>32.00%</td>
-                            </tr>
-                            <tr class="footer">
-                                <td>Tổng</td>
-                                <td>108</td>
-                                <td>143</td>
-                                <td>35</td>
-                                <td>32.00%</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-sm-6 row-eq-height">
-                        <table style="height: 100%">
-                            <tr class="header">
-                                <th>Vùng</th>
-                                <th>Tháng 9</th>
-                                <th>Tháng 10</th>
-                                <th>Tháng 10</th>
-                                <th>Tỷ lệ</th>
-                            </tr>
-                            <tr>
-                                <td>Vung 1</td>
-                                <td>7,269</td>
-                                <td>7,876</td>
-                                <td>607</td>
-                                <td>8.00%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 2</td>
-                                <td>7,269</td>
-                                <td>7,876</td>
-                                <td>607</td>
-                                <td>8.00%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 3</td>
-                                <td>7,269</td>
-                                <td>7,876</td>
-                                <td>607</td>
-                                <td>8.00%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 4</td>
-                                <td>7,269</td>
-                                <td>7,876</td>
-                                <td>607</td>
-                                <td>8.00%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 5</td>
-                                <td>7,269</td>
-                                <td>7,876</td>
-                                <td>607</td>
-                                <td>8.00%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 6</td>
-                                <td>7,269</td>
-                                <td>7,876</td>
-                                <td>607</td>
-                                <td>8.00%</td>
-                            </tr>
-                            <tr>
-                                <td>Vung 7</td>
-                                <td>7,269</td>
-                                <td>7,876</td>
-                                <td>607</td>
-                                <td>8.00%</td>
-                            </tr>
-                            <tr class="footer">
-                                <td>Tổng</td>
-                                <td>7,269</td>
-                                <td>7,876</td>
-                                <td>607</td>
-                                <td>8.00%</td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div class="col-sm-6" style="margin-top: 20px">
                         <h3>Số lượng nâng cấp gói dịch vụ</h3>
                     </div>
+                    <div class="col-sm-6 row-eq-height">
+                        <table id="newServiceRegister">
+                        </table>
+                    </div>
+                    <div class="col-sm-6 row-eq-height">
+                        <table style="height: 100%" id="upgradeServiceRegister">
+                            
+                        </table>
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 20px">
+                        <h3>Số lượng thực hiện đổi quà FGold</h3>
+                    </div>
+                    
                     <div>
                         <h3 style="margin-top: 20px">Số lượng thực hiện Giới thiệu bạn bè</h3>
                     </div>
                     <div class="col-sm-6 row-eq-height">
                         <table style="height: 100%">
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th>Chức năng</th>
                                 <th>Tháng 9</th>
                                 <th>Tháng 10</th>
@@ -469,12 +207,15 @@
                                 <td>143</td>
                                 <td>35</td>
                                 <td>32.00%</td>
+                            </tr> --}}
+                            <tr>
+                                <td>ĐANG PHÁT TRIỂN</td>
                             </tr>
                         </table>
                     </div>
                     <div class="col-sm-6 row-eq-height">
                         <table>
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th rowspan="2">Vùng</th>
                                 <th colspan="4">Thực hiện giới thiệu thành công</th>
                             </tr>
@@ -539,6 +280,9 @@
                                 <td>80,120</td>
                                 <td>(36,835)</td>
                                 <td>-31.50%</td>
+                            </tr> --}}
+                            <tr>
+                                <td>ĐANG PHÁT TRIỂN</td>
                             </tr>
                         </table>
                     </div>
@@ -552,7 +296,7 @@
                     
                     <div class="col-sm-6 row-eq-height" style="margin-bottom: 20px">
                         <table>
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th rowspan="2">Vùng</th>
                                 <th colspan="4">YCPV</th>
                             </tr>
@@ -617,13 +361,16 @@
                                 <td>80,120</td>
                                 <td>(36,835)</td>
                                 <td>-31.50%</td>
+                            </tr> --}}
+                            <tr>
+                                <td>ĐANG PHÁT TRIỂN</td>
                             </tr>
                         </table>
                     </div>
 
                     <div class="col-sm-6 row-eq-height" style="margin-bottom: 20px">
                         <table style="height: 100%">
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th rowspan="2">Vùng</th>
                                 <th colspan="4">Modem</th>
                             </tr>
@@ -688,12 +435,15 @@
                                 <td>80,120</td>
                                 <td>(36,835)</td>
                                 <td>-31.50%</td>
+                            </tr> --}}
+                            <tr>
+                                <td>ĐANG PHÁT TRIỂN</td>
                             </tr>
                         </table>
                     </div>
                     <div class="col-sm-6 row-eq-height">
                         <table>
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th>Tháng</th>
                                 <th>Đổi tên wifi</th>
                                 <th>Đổi mật khẩu wifi</th>
@@ -732,13 +482,16 @@
                                 <td>63,152</td>
                                 <td>63,152</td>
                                 <td>63,152</td>
+                            </tr> --}}
+                            <tr>
+                                <td>ĐANG PHÁT TRIỂN</td>
                             </tr>
                         </table>
                     </div>
                     <div class="col-sm-6 row-eq-height">
                         <h3>Số lượng chat FTEL được khởi tạo qua kênh chat HiFPT</h3>
                         <table style="line-height: 30px">
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th>Chức năng</th>
                                 <th>Tháng 9</th>
                                 <th>Tháng 10</th>
@@ -751,6 +504,9 @@
                                 <td>12,752</td>
                                 <td>932</td>
                                 <td>8.00%</td>
+                            </tr> --}}
+                            <tr>
+                                <td>ĐANG PHÁT TRIỂN</td>
                             </tr>
                         </table>
                     </div>
@@ -760,7 +516,7 @@
                     </div>
                     <div class="col-sm-6 row-eq-height">
                         <table style="height: 100%">
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th rowspan="2">Vùng</th>
                                 <th colspan="4">Confirm HDDT</th>
                             </tr>
@@ -825,6 +581,9 @@
                                 <td>80,120</td>
                                 <td>(36,835)</td>
                                 <td>-31.50%</td>
+                            </tr> --}}
+                            <tr>
+                                <td>ĐANG PHÁT TRIỂN</td>
                             </tr>
                         </table>
                     </div>
@@ -842,12 +601,76 @@
     <script src="{{ asset('/themes/plugins/xlsx/xlsx.full.min.js')}}" type="text/javascript" charset="utf-8"></script>
     <script>
         $( document ).ready(function() {
+            $('#show_from').datetimepicker({
+                format: "YYYY-MM",
+                useCurrent: false,
+                sideBySide: true,
+                icons: {
+                    time: 'fas fa-clock',
+                    date: 'fas fa-calendar',
+                    up: 'fas fa-arrow-up',
+                    down: 'fas fa-arrow-down',
+                    previous: 'fas fa-arrow-left',
+                    next: 'fas fa-arrow-right',
+                    today: 'fas fa-calendar-day',
+                    clear: 'fas fa-trash',
+                    close: 'fas fa-window-close'
+                }
+            });
+
+            $.ajax({
+                url: 'reporttrackingcusbehaviormonthly/activeNet',
+                data: {
+                    'from_month': $('#show_from').val()
+                },
+                type: 'GET',
+                success: function(data, status) {
+                    var total_active = 0;
+                    var total_active_net = 0;
+                    $('#activeNet-label').append(data['time']['to']);
+                    $('#activeNet').append(`
+                        <tr class="header">
+                            <th>Vùng</th>
+                            <th>Active HiFPT đến ${data['time']['to']}</th>
+                            <th>Active HiFPT / Active net</th>
+                        </tr>
+                    `);
+                    $.each(data['data'], function(key, value) {
+                        var active = parseInt(value['active']);
+                        var active_net = parseInt(value['active_net']);
+                        total_active += active;
+                        total_active_net += active_net;
+
+                        $('#activeNet tr:last').after(`
+                            <tr>
+                                <td>${value['location_zone']}</td>
+                                <td>${active.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${ (active_net != 0) ? ((active / active_net) * 100).toFixed(2) : 0 }</td>
+                            </tr>
+                        `);
+                    });
+                    $('#activeNet tr:last').after(`
+                        <tr class="footer">
+                            <td>Tổng</td>
+                            <td>${total_active.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${ (total_active != 0) ? ((total_active / total_active_net) * 100).toFixed(2) : 0 }</td>
+                        </tr>
+                    `);
+                },
+                async:   true,
+                dataType: 'json'
+            }); 
+
             $.ajax({
                 url: 'reporttrackingcusbehaviormonthly/getDataActiveMonthly',
+                data: {
+                    'from_month': $('#show_from').val()
+                },
+                type: 'GET',
                 success: function(data, status) {
-                    console.log(data);
                     var total_last_month = 0;
                     var total_this_month = 0;
+                    $('#total-active-monthly-label').append(data['time']['to']);
                     $('#total-active-monthly tr:last').after(`
                         <tr class="header">
                             <th>${data['time']['from']}</th>
@@ -856,6 +679,7 @@
                             <th>Tỷ lệ</th>
                         </tr>
                     `);
+
                     $.each(data['data'], function(key, value) {
                         total_last_month += parseInt(value['count_last_month']);
                         total_this_month += parseInt(value['count_this_month']);
@@ -875,6 +699,210 @@
                     $('#total-active-monthly tr:last').after(`
                         <tr class="footer">
                             <td>Tổng</td>
+                            <td>${total_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${total_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${(total_this_month - total_last_month).toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${(total_last_month != 0) ? ((total_this_month - total_last_month) / total_last_month * 100).toFixed(2) : 0}</td>
+                        </tr>
+                    `);
+                },
+                async:   true,
+                dataType: 'json'
+            }); 
+
+            // $.ajax({
+            //     url: 'reporttrackingcusbehaviormonthly/getDataActivePttbMonthly',
+            //     success: function(data, status) {
+            //         console.log(data);
+                    
+            //     },
+            //     async:   true,
+            //     dataType: 'json'
+            // }); 
+
+            $.ajax({
+                url: 'reporttrackingcusbehaviormonthly/newServiceRegister',
+                data: {
+                    'from_month': $('#show_from').val()
+                },
+                type: 'GET',
+                success: function(data, status) {
+                    $('#newServiceRegister').append(`
+                        <tr class="header">
+                            <th>Vùng</th>
+                            <th>Dịch vụ</th>
+                            <th>${data['time']['from']}</th>
+                            <th>${data['time']['to']}</th>
+                            <th>Tăng/giảm</th>
+                            <th>Tỷ lệ</th>
+                        </tr>
+                    `);
+                    total_last_month = 0;
+                    total_this_month = 0;
+
+                    $.each(data['data'], function(key, value) {
+                        total_last_month += parseInt(value['count_last_month']);
+                        total_this_month += parseInt(value['count_this_month']);
+
+                        var count_last_month = parseInt(value['count_last_month']);
+                        var count_this_month = parseInt(value['count_this_month']);
+                        var different = count_this_month - count_last_month;
+
+                        $('#newServiceRegister tr:last').after(`
+                            <tr>
+                                <td>${value['location_zone']}</td>
+                                <td>${value['service_key']}</td>
+                                <td>${count_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${count_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${different.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${(count_last_month != 0) ? ((different / count_last_month) * 100).toFixed(2) : 0 }</td>
+                            </tr>
+                        `);
+                    });
+
+                    $('#newServiceRegister tr:last').after(`
+                        <tr class="footer">
+                            <td colspan="2">Tổng</td>
+                            <td>${total_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${total_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${(total_this_month - total_last_month).toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${(total_last_month != 0) ? ((total_this_month - total_last_month) / total_last_month * 100).toFixed(2) : 0}</td>
+                        </tr>
+                    `);
+                },
+                async:   true,
+                dataType: 'json'
+            }); 
+
+            $.ajax({
+                url: 'reporttrackingcusbehaviormonthly/paymentMonthly',
+                data: {
+                    'from_month': $('#show_from').val()
+                },
+                type: 'GET',
+                success: function(data, status) {
+                    // sl-thanh-toan
+                    var total_last_month = 0;
+                    var total_this_month = 0;
+                    var total_amount_last_month = 0;
+                    var total_amount_this_month = 0;
+                    $('#sl-thanh-toan tr:last').after(`
+                        <tr class="header">
+                            <th>${data['time']['from']}</th>
+                            <th>${data['time']['to']}</th>
+                            <th>Tăng/giảm</th>
+                            <th>Tỷ lệ</th>
+                        </tr>
+                    `);
+
+                    $('#tien-thanh-toan tr:last').after(`
+                        <tr class="header">
+                            <th>${data['time']['from']}</th>
+                            <th>${data['time']['to']}</th>
+                            <th>Tăng/giảm</th>
+                            <th>Tỷ lệ</th>
+                        </tr>
+                    `);
+
+                    $.each(data['data'], function(key, value) {
+                        total_last_month += parseInt(value['count_last_month']);
+                        total_this_month += parseInt(value['count_this_month']);
+                        total_amount_last_month += parseInt(value['amount_last_month']);
+                        total_amount_this_month += parseInt(value['amount_this_month']);
+
+                        var count_last_month = parseInt(value['count_last_month']);
+                        var count_this_month = parseInt(value['count_this_month']);
+                        var different = count_this_month - count_last_month;
+
+                        var amount_last_month = parseInt(value['amount_last_month']);
+                        var amount_this_month = parseInt(value['amount_this_month']);
+                        var amount_different = amount_this_month - amount_last_month;
+
+                        $('#sl-thanh-toan tr:last').after(`
+                            <tr>
+                                <td>${value['location_zone']}</td>
+                                <td>${count_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${count_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${different.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${(count_last_month != 0) ? ((different / count_last_month) * 100).toFixed(2) : 0 }</td>
+                            </tr>
+                        `);
+
+                        $('#tien-thanh-toan tr:last').after(`
+                            <tr>
+                                <td>${value['location_zone']}</td>
+                                <td>${amount_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${amount_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${amount_different.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${(amount_last_month != 0) ? ((amount_different / amount_last_month) * 100).toFixed(2) : 0 }</td>
+                            </tr>
+                        `);
+                    });
+                    $('#sl-thanh-toan tr:last').after(`
+                        <tr class="footer">
+                            <td>Tổng</td>
+                            <td>${total_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${total_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${(total_this_month - total_last_month).toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${(total_last_month != 0) ? ((total_this_month - total_last_month) / total_last_month * 100).toFixed(2) : 0}</td>
+                        </tr>
+                    `);
+                    $('#tien-thanh-toan tr:last').after(`
+                        <tr class="footer">
+                            <td>Tổng</td>
+                            <td>${total_amount_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${total_amount_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${(total_amount_this_month - total_amount_last_month).toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${(total_amount_last_month != 0) ? ((total_amount_this_month - total_amount_last_month) / total_amount_last_month * 100).toFixed(2) : 0}</td>
+                        </tr>
+                    `);
+                },
+                async:   true,
+                dataType: 'json'
+            }); 
+
+            $.ajax({
+                url: 'reporttrackingcusbehaviormonthly/upgradeServiceRegister',
+                data: {
+                    'from_month': $('#show_from').val()
+                },
+                type: 'GET',
+                success: function(data, status) {
+                    $('#upgradeServiceRegister').append(`
+                        <tr class="header">
+                            <th>Vùng</th>
+                            <th>Dịch vụ</th>
+                            <th>${data['time']['from']}</th>
+                            <th>${data['time']['to']}</th>
+                            <th>Tăng/giảm</th>
+                            <th>Tỷ lệ</th>
+                        </tr>
+                    `);
+                    total_last_month = 0;
+                    total_this_month = 0;
+
+                    $.each(data['data'], function(key, value) {
+                        var count_last_month = (value['count_last_month']) ? parseInt(value['count_last_month']) : 0;
+                        var count_this_month = (value['count_this_month']) ? parseInt(value['count_this_month']) : 0;
+                        var different = count_this_month - count_last_month;
+                        total_last_month += count_last_month;
+                        total_this_month += count_this_month;
+
+                        $('#upgradeServiceRegister tr:last').after(`
+                            <tr>
+                                <td>${value['location_zone']}</td>
+                                <td>${value['service_name_new']}</td>
+                                <td>${count_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${count_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${different.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${(count_last_month != 0) ? ((different / count_last_month) * 100).toFixed(2) : 0 }</td>
+                            </tr>
+                        `);
+                    });
+
+                    $('#upgradeServiceRegister tr:last').after(`
+                        <tr class="footer">
+                            <td colspan="2">Tổng</td>
                             <td>${total_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
                             <td>${total_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
                             <td>${(total_this_month - total_last_month).toLocaleString('en-US', {maximumFractionDigits: 2})}</td>

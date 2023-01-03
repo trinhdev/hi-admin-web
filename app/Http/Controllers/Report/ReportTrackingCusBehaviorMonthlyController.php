@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Settings;
 use App\Models\Contracts;
 use App\Models\Customers;
+use App\Models\Insert_Service_Internet;
+use App\Models\Orders;
+use App\Models\Payment_Orders;
+use App\Models\Saleplatform_Shopping_Orders;
+use App\Models\Upgrade_Service_Internet;
+use App\Models\Customer_Locations;
 use Illuminate\Support\Facades\DB;
 
 class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
@@ -64,12 +70,66 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
         ]);
     }
 
-    public function getDataActiveMonthly() {
+    public function activeNet(Request $request) {
+        // dd($request->all());
+        $from_month = $request->from_month;
+        $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
+        $to2 = date('Y-m-t H:i:s', strtotime($from_month . '-01 23:59:59'));
+
+        $from1 = date('Y-m-01 00:00:00', strtotime($from2 . ' last month'));
+        $to1 = date('Y-m-t 23:59:59', strtotime($to2 . ' last day last month'));
+
+        $contracts = Contracts::selectRaw("location_zone, COUNT(contract_no) AS active")
+                            ->whereBetween('date_created', [$from2, $to2])
+                            ->groupBy('location_zone')
+                            ->orderBy('location_zone')
+                            ->get()
+                            ->toArray();
+        $data = array_column($contracts, null, 'location_zone');
+
+        $token = 'hifpt_inside::' . md5('hifpt_inside::xxxxxxhifpt2018'.date('Y-d-m'));
+        $url = 'http://hi-inside.fpt.vn/v1/GetNumberContractActiveLocationIdBranchcodeCount';
+        // $params = [];
+        // $headers = [
+        //     'Content-Type: application/json',
+        //     'Authorization: ' . $token
+        // ];
+        $branches = Customer_Locations::whereNotIn('location_zone', ['CAM', 'PNCHO', 'FTELHO', 'TINHO', 'Vung 8'])->get()->toArray();
+
+        $months = [date('m', strtotime($from1)), date('m', strtotime($from2))];
+        
+        foreach($branches as $branch) {
+            // $paramLastMonth = [
+            //     'LocationID'        => $branch['customer_location_id'],
+            //     'Branchcode'        => 0,
+            //     'BeginFirstAccess'  => $from1,
+            //     'EndFirstAccess'    => $to1
+            // ];
+            // $dataResultLastMonth = json_decode(json_encode(sendRequest($url, $paramLastMonth, $headers)), true);
+
+            $paramThisMonth = [
+                'LocationID'        => $branch['customer_location_id'],
+                'Branchcode'        => 0,
+                'BeginFirstAccess'  => $from2,
+                'EndFirstAccess'    => $to2
+            ];
+            $dataResultThisMonth = json_decode(json_encode(sendRequest($url, $paramThisMonth, $token, null, 'POST')), true);
+            // var_dump(intval($dataResultThisMonth['data'][0]['number']));
+            if(!isset($data[$branch['location_zone']]['active_net'])) {
+                $data[$branch['location_zone']]['active_net'] = 0;
+            }
+            $data[$branch['location_zone']]['active_net'] += (isset($dataResultThisMonth['code']) && $dataResultThisMonth['code'] == 0 && !empty($dataResultThisMonth['data'][0]['number'])) ? intval($dataResultThisMonth['data'][0]['number']) : 0;
+        }
+        return ["data" => $data, "time" => ["from" => 'T' . date('m-Y', strtotime($from1)), "to" => 'T' . date('m-Y', strtotime($to2))]];
+    }
+
+    public function getDataActiveMonthly(Request $request) {
         // $from2 = $request->show_from;
         // $to2 = $request->show_to;
 
-        $from2 = '2022-10-01 00:00:00';
-        $to2 = '2022-10-31 23:59:59';
+        $from_month = $request->from_month;
+        $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
+        $to2 = date('Y-m-t H:i:s', strtotime($from_month . '-01 23:59:59'));
 
         $from1 = date('Y-m-01 00:00:00', strtotime($from2 . ' last month'));
         $to1 = date('Y-m-t 23:59:59', strtotime($to2 . ' last day last month'));
@@ -92,8 +152,38 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
         return ["data" => $data, "data_no_contract" => $data_no_contract, "time" => ["from" => 'T' . date('m-Y', strtotime($from1)), "to" => 'T' . date('m-Y', strtotime($to2))]];
     }
 
-    public function getDataActivePttbMonthly() {
+    public function getDataActivePttbMonthly(Request $request) {
+        $from_month = $request->from_month;
+        $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
+        $to2 = date('Y-m-t H:i:s', strtotime($from_month . '-01 23:59:59'));
 
+        $data_new = Insert_Service_Internet::with('contract')
+                                           ->whereBetween('date_created', [$from2, $to2])
+                                           ->get()
+                                           ->toArray();
+        $ptm = collect($data_new)->whereNotNull('contract.contract_no')->whereBetween('date_created', [$from2, $to2])->count();
+        $pttb = collect($data_new)->whereNull('contract.contract_no')->count();
+        dd($pttb);
+    }
+
+    public function paymentMonthly(Request $request) {
+        $from_month = $request->from_month;
+        $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
+        $to2 = date('Y-m-t H:i:s', strtotime($from_month . '-01 23:59:59'));
+
+        $from1 = date('Y-m-01 00:00:00', strtotime($from2 . ' last month'));
+        $to1 = date('Y-m-t 23:59:59', strtotime($to2 . ' last day last month'));
+
+        $data = Payment_Orders::selectRaw("o.location_zone AS location_zone, SUM(IF(DATE(view_payment_orders.date_created) BETWEEN '$from1' AND '$to1', 1, 0)) AS count_last_month, SUM(IF(DATE(view_payment_orders.date_created) BETWEEN '$from2' AND '$to2', 1, 0)) AS count_this_month, SUM(IF(DATE(view_payment_orders.date_created) BETWEEN '$from1' AND '$to1', view_payment_orders.amount, 0)) AS amount_last_month, SUM(IF(DATE(view_payment_orders.date_created) BETWEEN '$from2' AND '$to2', view_payment_orders.amount, 0)) AS amount_this_month")
+                      ->join('view_orders AS o', DB::raw("CONCAT_WS('_', view_payment_orders.payment_type, view_payment_orders.version, view_payment_orders.order_id)"), "=", "o.order_id_merchant")
+                      ->whereIn('view_payment_orders.payment_type', ['DKOLMB', 'DKOLMN', 'FPTPLAY', 'FSHMB', 'FSHMN', 'FTELMB', 'FTELMN', 'PAYWF', 'UTMB', 'UTMN'])
+                      ->where('payment_provider_status', 'SUCCESS')
+                      ->whereBetween('view_payment_orders.date_created', [$from1, $to2])
+                      ->groupBy('location_zone')
+                      ->orderBy('location_zone')
+                      ->get()
+                      ->toArray();
+        return ["data" => $data, "time" => ["from" => 'T' . date('m-Y', strtotime($from1)), "to" => 'T' . date('m-Y', strtotime($to2))]];
     }
 
     public function log(LogSupportCodeDatatable $dataTable) {
@@ -128,5 +218,67 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
         else {
             return redirect()->back()->withErrors($api_result['message']);
         }
+    }
+
+    public function newServiceRegister(Request $request) {
+        $from_month = $request->from_month;
+        $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
+        $to2 = date('Y-m-t H:i:s', strtotime($from_month . '-01 23:59:59'));
+
+        $from1 = date('Y-m-01 00:00:00', strtotime($from2 . ' last month'));
+        $to1 = date('Y-m-t 23:59:59', strtotime($to2 . ' last day last month'));
+
+        $data = Saleplatform_Shopping_Orders::selectRaw("service_key, location_zone, SUM(IF(DATE(inside_order_create_time) BETWEEN '$from1' AND '$to1', 1, 0)) AS count_last_month, SUM(IF(DATE(inside_order_create_time) BETWEEN '$from2' AND '$to2', 1, 0)) AS count_this_month")
+                                            ->whereIn('order_status', ['ECONTRACT_SIGNED', 'ORDERED_PENDING', 'ORDERED_SUCCESSFUL', 'WAIT_ECONTRACT_SIGNED', 'ORDER_COMPLETED'])
+                                            ->whereBetween('inside_order_create_time', [$from1, $to2])
+                                            ->groupBy(['service_key', 'location_zone'])
+                                            ->orderBy('location_zone')
+                                            ->get()->toArray();
+
+        return ["data" => $data, "time" => ["from" => 'T' . date('m-Y', strtotime($from1)), "to" => 'T' . date('m-Y', strtotime($to2))]];
+    }
+
+    public function upgradeServiceRegister(Request $request) {
+        $from_month = $request->from_month;
+        $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
+        $to2 = date('Y-m-t H:i:s', strtotime($from_month . '-01 23:59:59'));
+
+        $from1 = date('Y-m-01 00:00:00', strtotime($from2 . ' last month'));
+        $to1 = date('Y-m-t 23:59:59', strtotime($to2 . ' last day last month'));
+        $data = [];
+        $raw = Upgrade_Service_Internet::with('contract')
+                                        ->whereBetween('upgrade_service_internet.t_create', [$from1, $to2])
+                                        ->get()
+                                        ->groupBy(['service_name_new', 'contract.location_zone', function($item) {
+                                            return date('m-Y', strtotime($item['t_create']));
+                                        }]);
+                                        // ->orderBy('location_zone')
+                                        // ->select("service_name_new, contract.location_zone, SUM(IF(DATE(upgrade_service_internet.t_create) BETWEEN '$from1' AND '$to1', 1, 0)) AS count_last_month, SUM(IF(DATE(upgrade_service_internet.t_create) BETWEEN '$from2' AND '$to2', 1, 0)) AS count_this_month")
+                                        // ->all();
+                                        // ->toArray();
+        foreach($raw as $key => $value) {
+            foreach($value as $valueKey => $valueValue) {
+                $row = [];
+                $row['location_zone'] = $valueKey;
+                $row['service_name_new'] = $key;
+                foreach($valueValue as $valueKeyMonth => $valueValueMonth) {
+                    if(date('m-Y', strtotime($from1)) == $valueKeyMonth) {
+                        $row['count_last_month'] = count($valueValueMonth);
+                    }
+                    else {
+                        $row['count_this_month'] = count($valueValueMonth);
+                    }  
+                }
+                array_push($data, $row);
+            }
+            
+            // echo($key);
+            // echo '<pre>';
+            // print_r($value->toArray());
+            // echo '</pre>';
+        }
+        $result = collect($data)->sortBy('location_zone');
+        // dd($result);
+        return ["data" => $result->values()->all(), "time" => ["from" => 'T' . date('m-Y', strtotime($from1)), "to" => 'T' . date('m-Y', strtotime($to2))]];
     }
 }
