@@ -27,7 +27,7 @@
         <div class="container-fluid">
             <div class="card-body row form-inline filter-section justify-content-md-center">
                 {{-- <form class="form-inline" action="{{ route('reportsalebydate.index') }}" method="GET"> --}}
-                <form class="form-inline" action="/reporttrackingcusbehaviormonthly" method="GET">
+                <form class="form-inline" method="GET" id="report-filter">
                     @csrf
                     <div class="col-md-3">
                         <div class="input-group input-group-sm mb-4" style="margin-bottom: unset !important;">
@@ -85,10 +85,10 @@
     
                     <div class="col-sm-6 row-eq-height">
                         <table style="margin-bottom: 20px" id="total-active-monthly">
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th rowspan="2">Vùng</th>
                                 <th colspan="4">Active</th>
-                            </tr>
+                            </tr> --}}
                             {{-- <tr class="header">
                                 <th>T9.2022</th>
                                 <th>T10.2022</th>
@@ -123,18 +123,18 @@
                     </div>
                     <div class="col-sm-6 row-eq-height">
                         <table id="sl-thanh-toan">
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th rowspan="2">Vùng</th>
                                 <th colspan="4">SL Thanh toán</th>
-                            </tr>
+                            </tr> --}}
                         </table>
                     </div>
                     <div class="col-sm-6 row-eq-height">
                         <table id="tien-thanh-toan">
-                            <tr class="header">
+                            {{-- <tr class="header">
                                 <th rowspan="2">Vùng</th>
                                 <th colspan="4">Tổng tiền thanh toán</th>
-                            </tr>
+                            </tr> --}}
                             
                         </table>
                     </div>
@@ -622,6 +622,16 @@
                 }
             });
 
+            $( "#report-filter" ).submit(function( event ) {
+                // alert( "Handler for .submit() called." );
+                event.preventDefault();
+                filter();
+            });
+
+            filter();
+        });
+
+        function filter() {
             $.ajax({
                 url: 'reporttrackingcusbehaviormonthly/activeNet',
                 data: {
@@ -631,6 +641,7 @@
                 success: function(data, status) {
                     var total_active = 0;
                     var total_active_net = 0;
+                    $('#activeNet').html('');
                     $('#activeNet-label').append(data['time']['to']);
                     $('#activeNet').append(`
                         <tr class="header">
@@ -676,6 +687,13 @@
                 success: function(data, status) {
                     var total_last_month = 0;
                     var total_this_month = 0;
+                    $('#total-active-monthly').html('');
+                    $('#total-active-monthly').append(`
+                        <tr class="header">
+                            <th rowspan="2">Vùng</th>
+                            <th colspan="4">Active</th>
+                        </tr>
+                    `);
                     $('#total-active-monthly-label').append(data['time']['to']);
                     $('#total-active-monthly tr:last').after(`
                         <tr class="header">
@@ -733,6 +751,7 @@
                 },
                 type: 'GET',
                 success: function(data, status) {
+                    $('#newServiceRegister').html('');
                     $('#newServiceRegister').append(`
                         <tr class="header">
                             <th>Vùng</th>
@@ -794,6 +813,13 @@
                     var total_this_month = 0;
                     var total_amount_last_month = 0;
                     var total_amount_this_month = 0;
+                    $('#sl-thanh-toan').html('');
+                    $('#sl-thanh-toan').append(`
+                        <tr class="header">
+                            <th rowspan="2">Vùng</th>
+                            <th colspan="4">SL Thanh toán</th>
+                        </tr>
+                    `);
                     $('#sl-thanh-toan tr:last').after(`
                         <tr class="header">
                             <th>${data['time']['from']}</th>
@@ -802,7 +828,13 @@
                             <th>Tỷ lệ</th>
                         </tr>
                     `);
-
+                    $('#tien-thanh-toan').html('');
+                    $('#tien-thanh-toan').append(`
+                        <tr class="header">
+                            <th rowspan="2">Vùng</th>
+                            <th colspan="4">Tiền Thanh toán</th>
+                        </tr>
+                    `);
                     $('#tien-thanh-toan tr:last').after(`
                         <tr class="header">
                             <th>${data['time']['from']}</th>
@@ -876,6 +908,7 @@
                 },
                 type: 'GET',
                 success: function(data, status) {
+                    $('#upgradeServiceRegister').html('');
                     $('#upgradeServiceRegister').append(`
                         <tr class="header">
                             <th>Vùng</th>
@@ -921,7 +954,7 @@
                 async:   true,
                 dataType: 'json'
             }); 
-        });
+        }
         
     </script>
 @endpush
