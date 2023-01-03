@@ -73,10 +73,10 @@
             <div class="card card-body row filter-section justify-content-md-center" id="report-table">
                 <div class="form-inline" style="align-items: inherit">
                     <div class="col-sm-6">
-                        <h3 id="total-active-monthly-label">Báo cáo tổng hợp tháng </h3>
+                        <h3 id="total-active-monthly-label"></h3>
                     </div>
                     <div class="col-sm-6">
-                        <h3 id="activeNet-label">Tổng kích hoạt tháng </h3>
+                        <h3 id="activeNet-label"></h3>
                     </div>
                     <div class="col-sm-6 row-eq-height">
                         <table style="height: 100%" id="activeNet">
@@ -642,7 +642,7 @@
                     var total_active = 0;
                     var total_active_net = 0;
                     $('#activeNet').html('');
-                    $('#activeNet-label').append(data['time']['to']);
+                    $('#activeNet-label').html('Tổng kích hoạt tháng ' + data['time']['to']);
                     $('#activeNet').append(`
                         <tr class="header">
                             <th>Vùng</th>
@@ -694,7 +694,7 @@
                             <th colspan="4">Active</th>
                         </tr>
                     `);
-                    $('#total-active-monthly-label').append(data['time']['to']);
+                    $('#total-active-monthly-label').html('Báo cáo tổng hợp tháng ' + data['time']['to']);
                     $('#total-active-monthly tr:last').after(`
                         <tr class="header">
                             <th>${data['time']['from']}</th>
