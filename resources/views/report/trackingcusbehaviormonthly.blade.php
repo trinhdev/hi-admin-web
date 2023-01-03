@@ -27,7 +27,7 @@
         <div class="container-fluid">
             <div class="card-body row form-inline filter-section justify-content-md-center">
                 {{-- <form class="form-inline" action="{{ route('reportsalebydate.index') }}" method="GET"> --}}
-                <form class="form-inline" action="/reportsalebydate" method="GET">
+                <form class="form-inline" action="/reporttrackingcusbehaviormonthly" method="GET">
                     @csrf
                     <div class="col-md-3">
                         <div class="input-group input-group-sm mb-4" style="margin-bottom: unset !important;">
@@ -102,11 +102,15 @@
                                 <th>Phát triển mới</th>
                                 <th>PTTB của FTEL</th>
                                 <th>Tỷ lệ phát triển mới/PTTB của FTEL</th>
-                            </tr>
-                            <tr>
+                            </tr> --}}
+                            {{-- <tr>
                                 <td>29,644</td>
                                 <td>71,050</td>
                                 <td>42.00%</td>
+                            </tr> --}}
+                            {{-- <tr>
+                                <td id="total-new-service"></td>
+                                <td id="total-pttb"></td>
                             </tr> --}}
                             <tr>
                                 <td>ĐANG PHÁT TRIỂN</td>
@@ -656,6 +660,8 @@
                             <td>${ (total_active != 0) ? ((total_active / total_active_net) * 100).toFixed(2) : 0 }</td>
                         </tr>
                     `);
+
+                    // $('#total-pttb').append(total_active_net);
                 },
                 async:   true,
                 dataType: 'json'
@@ -769,6 +775,8 @@
                             <td>${(total_last_month != 0) ? ((total_this_month - total_last_month) / total_last_month * 100).toFixed(2) : 0}</td>
                         </tr>
                     `);
+
+                    // $('#total-new-service').append(count_this_month);
                 },
                 async:   true,
                 dataType: 'json'
