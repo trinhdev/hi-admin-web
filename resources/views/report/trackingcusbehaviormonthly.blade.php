@@ -494,7 +494,7 @@
                     </div>
                     <div class="col-sm-6 row-eq-height">
                         <h3>Số lượng chat FTEL được khởi tạo qua kênh chat HiFPT</h3>
-                        <table style="line-height: 30px">
+                        <table style="line-height: 30px" id="chatData">
                             {{-- <tr class="header">
                                 <th>Chức năng</th>
                                 <th>Tháng 9</th>
@@ -509,9 +509,9 @@
                                 <td>932</td>
                                 <td>8.00%</td>
                             </tr> --}}
-                            <tr>
+                            {{-- <tr>
                                 <td>ĐANG PHÁT TRIỂN</td>
-                            </tr>
+                            </tr> --}}
                         </table>
                     </div>
                     
@@ -948,6 +948,38 @@
                             <td>${total_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
                             <td>${(total_this_month - total_last_month).toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
                             <td>${(total_last_month != 0) ? ((total_this_month - total_last_month) / total_last_month * 100).toFixed(2) : 0}</td>
+                        </tr>
+                    `);
+                },
+                async:   true,
+                dataType: 'json'
+            }); 
+
+            $.ajax({
+                url: 'reporttrackingcusbehaviormonthly/chatData',
+                data: {
+                    'from_month': $('#show_from').val()
+                },
+                success: function(data, status) {
+                    // console.log(data);
+                    // $('#chatData').html('');
+                    var count_last_month = (data['data']['count_last_month']) ? parseInt(data['data']['count_last_month']) : 0;
+                    var count_this_month = (data['data']['count_this_month']) ? parseInt(data['data']['count_this_month']) : 0;
+                    var different = count_this_month - count_last_month;
+                    $('#chatData').html(`
+                        <tr class="header">
+                            <th>Chức năng</th>
+                            <th>${data.data.time.from}</th>
+                            <th>${data.data.time.to}</th>
+                            <th>Tăng/Giảm</th>
+                            <th>Tỷ lệ</th>
+                        </tr>
+                        <tr>
+                            <td>${data.data.function}</td>
+                            <td>${count_last_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${count_this_month.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${different}</td>
+                            <td>${(count_last_month != 0) ? ((different / count_last_month) * 100).toFixed(2) : 0 }</td>
                         </tr>
                     `);
                 },

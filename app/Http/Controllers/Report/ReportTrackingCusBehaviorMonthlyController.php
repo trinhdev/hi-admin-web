@@ -75,6 +75,7 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
         $from_month = $request->from_month;
         $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
         $to2 = date('Y-m-t H:i:s', strtotime($from_month . '-01 23:59:59'));
+        // dd($from2);
 
         $from1 = date('Y-m-01 00:00:00', strtotime($from2 . ' last month'));
         $to1 = date('Y-m-t 23:59:59', strtotime($to2 . ' last day last month'));
@@ -280,5 +281,33 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
         $result = collect($data)->sortBy('location_zone');
         // dd($result);
         return ["data" => $result->values()->all(), "time" => ["from" => 'T' . date('m-Y', strtotime($from1)), "to" => 'T' . date('m-Y', strtotime($to2))]];
+    }
+
+    public function chatData(Request $request) {
+        $from_month = $request->from_month;
+        $from2 = date('Y-m-01', strtotime($from_month . '-01 00:00:00'));
+        $to2 = date('Y-m-t', strtotime($from_month . '-01 23:59:59'));
+        $from1 = date('Y-m-01 00:00:00', strtotime($from2 . ' last month'));
+        $to1 = date('Y-m-t 23:59:59', strtotime($to2 . ' last day last month'));
+
+        $sub_url = 'hichat/hifpt/provider/report/count-conversation';
+        $url = config('configDomain.DOMAIN_HIFPT.' . env('APP_ENV') . '.URL') . $sub_url;
+        $params2 = [
+            'type'      => 'customer',
+            'channel'   => 'ftel',
+            'fromDate'  => $from2,
+            'toDate'    => $to2
+        ];
+
+        $params1 = [
+            'type'      => 'customer',
+            'channel'   => 'ftel',
+            'fromDate'  => $from1,
+            'toDate'    => $to1
+        ];
+
+        $data1 = json_decode(json_encode(sendRequest($url, $params1)), true);
+        $data2 = json_decode(json_encode(sendRequest($url, $params2)), true);
+        return ["data" => ['function' => 'Chat FTEL', 'count_this_month' => (!empty($data2['data'][0]['n'])) ? $data2['data'][0]['n'] : 0, 'count_last_month' => (!empty($data1['data'][0]['n'])) ? $data1['data'][0]['n'] : 0, "time" => ["from" => 'Tháng ' . date('m-Y', strtotime($from1)), "to" => 'Tháng ' . date('m-Y', strtotime($to2))]]];
     }
 }
