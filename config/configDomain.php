@@ -268,6 +268,24 @@ $domainPayment = [
     ],
 ];
 
+$domainHiFPT = [
+    'local'             => [
+        'URL'           => 'https://hi.fpt.vn/',
+        'CLIENT_KEY'    => '',
+        'SECRET_KEY'    => ''
+    ],
+    'staging'           => [
+        'URL'           => 'https://staging-hi.fpt.vn/',
+        'CLIENT_KEY'    => '',
+        'SECRET_KEY'    => ''
+    ],
+    'production'        => [
+        'URL'           => 'https://hi.fpt.vn/',
+        'CLIENT_KEY'    => '',
+        'SECRET_KEY'    => ''
+    ],
+];
+
 return [
     'DOMAIN_REPORT'                 => $domainReportConfig,
     'DOMAIN_INSIDE'                 => $domainInsideConfig,
@@ -283,4 +301,5 @@ return [
     'DOMAIN_UPLOAD'                 => $domainUploadIcon,
     'DOMAIN_AUTH'                   => $domainAuth,
     'DOMAIN_PAYMENT'                => $domainPayment,
+    'DOMAIN_HIFPT'                  => $domainHiFPT,
 ];
