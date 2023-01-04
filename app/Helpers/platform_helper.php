@@ -202,7 +202,7 @@ if (!function_exists('sendRequest')) {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30); //timeout in seconds
 
-        // if(env('APP_ENV') !== 'local'){
+        // if(env('APP_ENV') == 'local'){
         //     curl_setopt($ch, CURLOPT_PROXY, 'proxy.hcm.fpt.vn:80');
         //     curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
         // }
@@ -216,7 +216,7 @@ if (!function_exists('sendRequest')) {
         $timeRun = microtime(true) - $time;
         if (curl_errno($ch)) {
             // dd("lỗi .".curl_error($ch));
-            // my_debug($url.'</br>'.curl_error($ch));
+            my_debug($url.'</br>'.curl_error($ch));
         }
         curl_close($ch);
         // my_debug($output.'</br>'.$url);
