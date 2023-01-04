@@ -182,7 +182,7 @@ if (!function_exists('mb_ucwords')) {
 }
 
 if (!function_exists('sendRequest')) {
-    function sendRequest($url, $params, $token = null, $headerArray = array(),$method = null)
+    function sendRequest($url, $params, $token = null, $headerArray = array(),$method = null, $isProxy = false)
     {
         $headers[] = "Content-Type: application/json";
         $headers[] = (!empty($token)) ? "Authorization: " . $token : null;
@@ -202,6 +202,10 @@ if (!function_exists('sendRequest')) {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30); //timeout in seconds
 
+        if($isProxy) {
+            curl_setopt($ch, CURLOPT_PROXY, 'proxy.hcm.fpt.vn:80');
+            curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
+        }
         // if(env('APP_ENV') == 'local'){
         //     curl_setopt($ch, CURLOPT_PROXY, 'proxy.hcm.fpt.vn:80');
         //     curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);

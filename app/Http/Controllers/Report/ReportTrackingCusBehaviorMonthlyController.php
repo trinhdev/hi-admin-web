@@ -114,7 +114,8 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
                 'BeginFirstAccess'  => $from2,
                 'EndFirstAccess'    => $to2
             ];
-            $dataResultThisMonth = json_decode(json_encode(sendRequest($url, $paramThisMonth, $token, null, 'POST')), true);
+            $dataResultThisMonth = json_decode(json_encode(sendRequest($url, $paramThisMonth, $token, [], 'POST')), true);
+            // dd($dataResultThisMonth);
             // var_dump(intval($dataResultThisMonth['data'][0]['number']));
             if(!isset($data[$branch['location_zone']]['active_net'])) {
                 $data[$branch['location_zone']]['active_net'] = 0;
@@ -306,9 +307,9 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
             'toDate'    => $to1
         ];
 
-        $data1 = json_decode(json_encode(sendRequest($url, $params1)), true);
-        dd($data1);
-        $data2 = json_decode(json_encode(sendRequest($url, $params2)), true);
+        $data1 = json_decode(json_encode(sendRequest($url, $params1, null, [], 'POST', true)), true);
+        // dd($data1);
+        $data2 = json_decode(json_encode(sendRequest($url, $params2, null, [], 'POST', true)), true);
         return ["data" => ['function' => 'Chat FTEL', 'count_this_month' => (!empty($data2['data'][0]['n'])) ? $data2['data'][0]['n'] : 0, 'count_last_month' => (!empty($data1['data'][0]['n'])) ? $data1['data'][0]['n'] : 0, "time" => ["from" => 'Tháng ' . date('m-Y', strtotime($from1)), "to" => 'Tháng ' . date('m-Y', strtotime($to2))]]];
     }
 }
