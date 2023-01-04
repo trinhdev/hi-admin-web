@@ -307,6 +307,7 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
         ];
 
         $data1 = json_decode(json_encode(sendRequest($url, $params1)), true);
+        dd($data1);
         $data2 = json_decode(json_encode(sendRequest($url, $params2)), true);
         return ["data" => ['function' => 'Chat FTEL', 'count_this_month' => (!empty($data2['data'][0]['n'])) ? $data2['data'][0]['n'] : 0, 'count_last_month' => (!empty($data1['data'][0]['n'])) ? $data1['data'][0]['n'] : 0, "time" => ["from" => 'Tháng ' . date('m-Y', strtotime($from1)), "to" => 'Tháng ' . date('m-Y', strtotime($to2))]]];
     }
