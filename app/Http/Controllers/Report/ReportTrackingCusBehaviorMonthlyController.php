@@ -22,6 +22,8 @@ use App\Models\Payment_Orders;
 use App\Models\Saleplatform_Shopping_Orders;
 use App\Models\Upgrade_Service_Internet;
 use App\Models\Customer_Locations;
+use App\Models\Customer_Contract;
+use App\Models\Active_Net;
 use Illuminate\Support\Facades\DB;
 
 class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
@@ -70,57 +72,35 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
         ]);
     }
 
+    // public function activeNet() {
+
+    // }
+
     public function activeNet(Request $request) {
         // dd($request->all());
         $from_month = $request->from_month;
-        $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
+        // $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
+        $from2 = '2016-01-01 00:00:00';
         $to2 = date('Y-m-t H:i:s', strtotime($from_month . '-01 23:59:59'));
-        // dd($from2);
 
         $from1 = date('Y-m-01 00:00:00', strtotime($from2 . ' last month'));
         $to1 = date('Y-m-t 23:59:59', strtotime($to2 . ' last day last month'));
 
         $contracts = Contracts::selectRaw("location_zone, COUNT(contract_no) AS active")
+                            ->whereNotIn('location_zone', ['CAM'])
                             ->whereBetween('date_created', [$from2, $to2])
                             ->groupBy('location_zone')
                             ->orderBy('location_zone')
                             ->get()
                             ->toArray();
+
         $data = array_column($contracts, null, 'location_zone');
 
-        $token = 'hifpt_inside::' . md5('hifpt_inside::xxxxxxhifpt2018'.date('Y-d-m'));
-        $url = 'http://hi-inside.fpt.vn/v1/GetNumberContractActiveLocationIdBranchcodeCount';
-        // $params = [];
-        // $headers = [
-        //     'Content-Type: application/json',
-        //     'Authorization: ' . $token
-        // ];
-        $branches = Customer_Locations::whereNotIn('location_zone', ['CAM', 'PNCHO', 'FTELHO', 'TINHO', 'Vung 8'])->get()->toArray();
+        $active_net_raw = Active_Net::selectRaw('zone, SUM(count) AS active_net')->whereBetween('date_created', [$from2, $to2])->groupBy('zone')->get()->toArray();
+        $active_net = array_column($active_net_raw, 'active_net', 'zone');
 
-        $months = [date('m', strtotime($from1)), date('m', strtotime($from2))];
-        
-        foreach($branches as $branch) {
-            // $paramLastMonth = [
-            //     'LocationID'        => $branch['customer_location_id'],
-            //     'Branchcode'        => 0,
-            //     'BeginFirstAccess'  => $from1,
-            //     'EndFirstAccess'    => $to1
-            // ];
-            // $dataResultLastMonth = json_decode(json_encode(sendRequest($url, $paramLastMonth, $headers)), true);
-
-            $paramThisMonth = [
-                'LocationID'        => $branch['customer_location_id'],
-                'Branchcode'        => 0,
-                'BeginFirstAccess'  => $from2,
-                'EndFirstAccess'    => $to2
-            ];
-            $dataResultThisMonth = json_decode(json_encode(sendRequest($url, $paramThisMonth, $token, [], 'POST')), true);
-            // dd($dataResultThisMonth);
-            // var_dump(intval($dataResultThisMonth['data'][0]['number']));
-            if(!isset($data[$branch['location_zone']]['active_net'])) {
-                $data[$branch['location_zone']]['active_net'] = 0;
-            }
-            $data[$branch['location_zone']]['active_net'] += (isset($dataResultThisMonth['code']) && $dataResultThisMonth['code'] == 0 && !empty($dataResultThisMonth['data'][0]['number'])) ? intval($dataResultThisMonth['data'][0]['number']) : 0;
+        foreach($data as $key => &$value) {
+            $value['active_net'] = (!empty($active_net[$key])) ? $active_net[$key] : 0;
         }
         return ["data" => $data, "time" => ["from" => 'T' . date('m-Y', strtotime($from1)), "to" => 'T' . date('m-Y', strtotime($to2))]];
     }
@@ -158,14 +138,36 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
         $from_month = $request->from_month;
         $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
         $to2 = date('Y-m-t H:i:s', strtotime($from_month . '-01 23:59:59'));
+        $data = [];
 
-        $data_new = Insert_Service_Internet::with('contract')
-                                           ->whereBetween('date_created', [$from2, $to2])
-                                           ->get()
-                                           ->toArray();
-        $ptm = collect($data_new)->whereNotNull('contract.contract_no')->whereBetween('date_created', [$from2, $to2])->count();
-        $pttb = collect($data_new)->whereNull('contract.contract_no')->count();
-        dd($pttb);
+        $data_new_raw = Contracts::selectRaw("location_zone, COUNT(contract_no) AS ptm")
+                            ->whereBetween('date_created', [$from2, $to2])
+                            ->whereBetween('first_access', [$from2, $to2])
+                            ->groupBy('location_zone')
+                            ->orderBy('location_zone')
+                            ->get()
+                            ->toArray();
+        $data = array_column($data_new_raw, null, 'location_zone');
+        
+        $data_bao_tri_raw = Contracts::selectRaw("location_zone, COUNT(contract_no) AS bt")
+                            ->whereBetween('date_created', [$from2, $to2])
+                            ->whereNotBetween('first_access', [$from2, $to2])
+                            ->groupBy('location_zone')
+                            ->orderBy('location_zone')
+                            ->get()
+                            ->toArray();
+
+        $data_bao_tri = array_column($data_bao_tri_raw, 'bt', 'location_zone');
+
+        $active_net_raw = Active_Net::selectRaw('zone, SUM(count) AS active_net')->whereBetween('date_created', [$from2, $to2])->groupBy('zone')->get()->toArray();
+        $active_net = array_column($active_net_raw, 'active_net', 'zone');
+        // dd($active_net_raw);
+
+        foreach($data as $key => &$value) {
+            $value['bt'] = (!empty($data_bao_tri[$key])) ? $data_bao_tri[$key] : 0;
+            $value['active_net'] = (!empty($active_net[$key])) ? $active_net[$key] : 0;
+        }
+        return ["data" => $data, "time" => ["from" => 'T' . date('m-Y', strtotime($from2)), "to" => 'T' . date('m-Y', strtotime($to2))]];
     }
 
     public function paymentMonthly(Request $request) {

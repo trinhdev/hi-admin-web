@@ -85,36 +85,6 @@
     
                     <div class="col-sm-6 row-eq-height">
                         <table style="margin-bottom: 20px" id="total-active-monthly">
-                            {{-- <tr class="header">
-                                <th rowspan="2">Vùng</th>
-                                <th colspan="4">Active</th>
-                            </tr> --}}
-                            {{-- <tr class="header">
-                                <th>T9.2022</th>
-                                <th>T10.2022</th>
-                                <th>Tăng/giảm</th>
-                                <th>Tỷ lệ</th>
-                            </tr> --}}
-                        </table>
-    
-                        <table>
-                            {{-- <tr class="header">
-                                <th>Phát triển mới</th>
-                                <th>PTTB của FTEL</th>
-                                <th>Tỷ lệ phát triển mới/PTTB của FTEL</th>
-                            </tr> --}}
-                            {{-- <tr>
-                                <td>29,644</td>
-                                <td>71,050</td>
-                                <td>42.00%</td>
-                            </tr> --}}
-                            {{-- <tr>
-                                <td id="total-new-service"></td>
-                                <td id="total-pttb"></td>
-                            </tr> --}}
-                            <tr>
-                                <td>ĐANG PHÁT TRIỂN</td>
-                            </tr>
                         </table>
                     </div>
 
@@ -515,8 +485,11 @@
                         </table>
                     </div>
                     
-                    <div class="col-sm-12" style="margin-top: 20px">
+                    <div class="col-sm-6" style="margin-top: 20px">
                         <h3>Confirm HDDT</h3>
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 20px">
+                        <h3>Phát triển mới / PTTB của HiFPT</h3>
                     </div>
                     <div class="col-sm-6 row-eq-height">
                         <table style="height: 100%">
@@ -591,6 +564,10 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="col-sm-6 row-eq-height">
+                        <table style="height: 100%" id="ptm-pttb">
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -647,6 +624,7 @@
                         <tr class="header">
                             <th>Vùng</th>
                             <th>Active HiFPT đến ${data['time']['to']}</th>
+                            <th>Active Net đến ${data['time']['to']}</th>
                             <th>Active HiFPT / Active net</th>
                         </tr>
                     `);
@@ -660,6 +638,7 @@
                             <tr>
                                 <td>${value['location_zone']}</td>
                                 <td>${active.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${active_net.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
                                 <td>${ (active_net != 0) ? ((active / active_net) * 100).toFixed(2) : 0 }</td>
                             </tr>
                         `);
@@ -668,6 +647,7 @@
                         <tr class="footer">
                             <td>Tổng</td>
                             <td>${total_active.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${total_active_net.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
                             <td>${ (total_active != 0) ? ((total_active / total_active_net) * 100).toFixed(2) : 0 }</td>
                         </tr>
                     `);
@@ -694,7 +674,7 @@
                             <th colspan="4">Active</th>
                         </tr>
                     `);
-                    $('#total-active-monthly-label').html('Báo cáo tổng hợp tháng ' + data['time']['to']);
+                    $('#total-active-monthly-label').html('Báo cáo tổng hợp tháng ' + data['time']['to'] + '(Từ 01/01/2016)');
                     $('#total-active-monthly tr:last').after(`
                         <tr class="header">
                             <th>${data['time']['from']}</th>
@@ -734,15 +714,58 @@
                 dataType: 'json'
             }); 
 
-            // $.ajax({
-            //     url: 'reporttrackingcusbehaviormonthly/getDataActivePttbMonthly',
-            //     success: function(data, status) {
-            //         console.log(data);
-                    
-            //     },
-            //     async:   true,
-            //     dataType: 'json'
-            // }); 
+            $.ajax({
+                url: 'reporttrackingcusbehaviormonthly/getDataActivePttbMonthly',
+                data: {
+                    'from_month': $('#show_from').val()
+                },
+                success: function(data, status) {
+                    console.log(data);
+                    $('#ptm-pttb').html('');
+                    // $('#ptm-pttb-label').html('Tổng kích hoạt tháng ' + data['time']['to']);
+                    $('#ptm-pttb').append(`
+                        <tr class="header">
+                            <th>Vùng</th>
+                            <th>Bảo trì</th>
+                            <th>Phát triển mới</th>
+                            <th>PTBB của HiFPT</th>
+                            <th>Phát triển mới / PTBB của HiFPT</th>
+                        </tr>
+                    `);
+                    var total_ptm = 0;
+                    var total_bt = 0;
+                    var total_active_net = 0;
+                    $.each(data['data'], function(key, value) {
+                        var ptm = parseInt(value['ptm']);
+                        var bt = parseInt(value['bt']);
+                        var active_net = parseInt(value['active_net']);
+                        total_ptm += ptm;
+                        total_bt += bt;
+                        total_active_net += active_net;
+
+                        $('#ptm-pttb tr:last').after(`
+                            <tr>
+                                <td>${value['location_zone']}</td>
+                                <td>${bt.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${ptm.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${active_net.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                                <td>${ (active_net != 0) ? ((ptm / active_net) * 100).toFixed(2) : 0 }</td>
+                            </tr>
+                        `);
+                    });
+                    $('#ptm-pttb tr:last').after(`
+                        <tr class="footer">
+                            <td>Tổng</td>
+                            <td>${total_bt.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${total_ptm.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${total_active_net.toLocaleString('en-US', {maximumFractionDigits: 2})}</td>
+                            <td>${ (total_active_net != 0) ? ((total_ptm / total_active_net) * 100).toFixed(2) : 0 }</td>
+                        </tr>
+                    `);
+                },
+                async:   true,
+                dataType: 'json'
+            }); 
 
             $.ajax({
                 url: 'reporttrackingcusbehaviormonthly/newServiceRegister',
