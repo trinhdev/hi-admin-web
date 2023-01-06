@@ -40,9 +40,9 @@ class UnlockDeleteUserLogsDataTable extends DataTable
             ->editColumn('created_at', function($data) { 
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y H:i:s'); return $formatedDate; 
             })
-            ->rawColumns(['created_by_name', 'created_at'])
+            ->rawColumns(['created_by_name', 'created_at']);
             // ->rawColumns()
-            ->skipPaging();
+            // ->skipPaging();
     }
 
     /**
