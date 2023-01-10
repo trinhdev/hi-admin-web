@@ -13,4 +13,5 @@ interface BannerManageInterface
     public function update($params, $id);
 
     public function update_order($params);
+    public function update_banner_fconnect($params);
 }

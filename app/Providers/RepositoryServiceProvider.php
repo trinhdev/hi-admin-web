@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Contract\Hi_FPT\PopupPrivateInterface;
 use App\Contract\Hi_FPT\SettingInterface;
+use App\Contract\Hi_FPT\StatisticInterface;
 use App\Models\Settings;
 use App\Repository\Hi_FPT\PopupPrivateRepository;
 
@@ -41,6 +42,7 @@ use App\Contract\Hi_FPT\PaymentSupportInterface;
 use App\Repository\Hi_FPT\PaymentSupportRepository;
 
 use App\Repository\Hi_FPT\SettingRepository;
+use App\Repository\Hi_FPT\StatisticRepository;
 use App\Repository\RepositoryAbstract;
 use App\Repository\RepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -74,6 +76,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(RenderDeeplinkInterface::class, RenderDeeplinkRepository::class);
         $this->app->bind(PaymentSupportInterface::class, PaymentSupportRepository::class);
         $this->app->bind(SettingInterface::class, SettingRepository::class);
+        $this->app->bind(StatisticInterface::class, StatisticRepository::class);
         $this->app->bind(SettingInterface::class, function () {
             return new SettingRepository(new Settings());
         });

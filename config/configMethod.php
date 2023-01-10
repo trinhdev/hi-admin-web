@@ -32,6 +32,9 @@ $methodNewsEventDomain = [
     'GET_DETAIL_POPUP' => 'provider/tool/popup/detail-template',
     'UPDATE_PERSONAL_MAP' => 'provider/tool/popup/update-template-personal-map',
     'GET_DETAIL_PERSONAL_MAP' => 'provider/tool/popup/detail-template-personal-map',
+
+    //
+    'FCONNECT_UPDATE_BANNER'       => 'customer-provider/cms/fconnect/update-banner',
 ];
 $methodHr = [
     'LOGIN' => 'api/services/hub/Login',
@@ -70,6 +73,10 @@ $methodAirDirection = [
 $methodResetPasswordWrong = [
     'ADD'       => 'provider/cms/customers/reset-wrong-password'
 ];
+$methodAPI = [
+    'STATISTICS_DETAIL'       => '/customer-provider/cms/statistics/ecounter/detail',
+    'STATISTICS_OVERVIEW'       => '/customer-provider/cms/statistics/ecounter/overview',
+];
 return [
     'DOMAIN_INSIDE'         => $methodInsideDomain,
     'DOMAIN_REPORT'         => $methodReportDomain,
@@ -81,4 +88,5 @@ return [
     'DOMAIN_POPUP_PRIVATE'  => $methodPopUpPrivate,
     'DOMAIN_AIR_DIRECTION'  => $methodAirDirection,
     'DOMAIN_RESET_PASSWORD_WRONG'  => $methodResetPasswordWrong,
+    'DOMAIN_API'            => $methodAPI,
 ];
