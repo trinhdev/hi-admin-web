@@ -302,4 +302,5 @@ return [
     'DOMAIN_AUTH'                   => $domainAuth,
     'DOMAIN_PAYMENT'                => $domainPayment,
     'DOMAIN_API'                    => $domainAPI,
+    'DOMAIN_HIFPT'                  => $domainHiFPT,
 ];
