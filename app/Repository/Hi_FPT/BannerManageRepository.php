@@ -157,6 +157,29 @@ class BannerManageRepository implements BannerManageInterface
         }
     }
 
+    public function update_banner_fconnect($params): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $api_config         = config('configDomain.DOMAIN_API.' . env('APP_ENV'));
+            $headers      = [
+                'Authorization' => $api_config['CLIENT_KEY'] . "::" . md5($api_config['CLIENT_KEY'] . "::" .$api_config['SECRET_KEY'] . date("Y-d-m")),
+                'clientKey' => $api_config['CLIENT_KEY']
+            ];
+            $url = 'https://hi-static.fpt.vn/upload/images/event/';
+            $form_params =[
+                'bannerImage' => $url . $params->imageFileName ?? $url . 'avatar.png'
+            ];
+            $client = new Client(['base_uri' => config('configDomain.DOMAIN_API.' . env('APP_ENV'))['URL']]);
+            $response = $client->request('POST', $this->listMethod['FCONNECT_UPDATE_BANNER'], [
+                'headers' => $headers,
+                'form_params' => array_filter($form_params)
+            ])->getBody()->getContents();
+            return response()->json(json_decode($response));
+        } catch (GuzzleException $e) {
+            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
+        }
+    }
+
     /**
      * @param array $form_params
      * @return array

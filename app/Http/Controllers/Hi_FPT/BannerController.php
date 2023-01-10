@@ -44,4 +44,9 @@ class BannerController extends MY_Controller
     {
         return $this->BannerManageRepository->update_order($request);
     }
+
+    public function update_banner_fconnect(Request $request)
+    {
+        return $this->BannerManageRepository->update_banner_fconnect($request);
+    }
 }

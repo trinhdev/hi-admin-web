@@ -16,6 +16,11 @@
                         <i class="fas fa-plus"></i> Thêm Mới
                     </a>
                     @endif
+                    @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
+                        <a href="#" class="btn btn-primary btn-sm text-capitalize" id="updateBannerFconnect">
+                            <i class="fas fa-plus"></i> Update banner Fconnect
+                        </a>
+                    @endif
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -90,6 +95,22 @@
             </div>
             <div class="modal-body" id="showDetailBanner_Modal_body">
                 @include('banners.detail')
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="showFormUpdateFconnect_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-capitalize">Form update banner Fconnect</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body" id="showDetailBanner_Modal_body">
+                @include('banners.update-banner-fconnect')
             </div>
         </div>
     </div>

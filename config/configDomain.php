@@ -303,3 +303,4 @@ return [
     'DOMAIN_PAYMENT'                => $domainPayment,
     'DOMAIN_HIFPT'                  => $domainHiFPT,
 ];
+

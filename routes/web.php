@@ -8,6 +8,7 @@ use App\Http\Controllers\Hi_FPT\ResetPasswordWrongController;
 use App\Http\Controllers\Hi_FPT\ScreenController;
 use App\Http\Controllers\Hi_FPT\DeeplinkController;
 use App\Http\Controllers\Hi_FPT\SectionLogController;
+use App\Http\Controllers\Hi_FPT\StatisticController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -302,6 +303,7 @@ Route::group([
                 Route::post('/store', 'BannerController@store')->name('bannermanage.store');
                 Route::post('/update/{id}', 'BannerController@update')->name('bannermanage.update');
                 Route::post('/updateordering', 'BannerController@update_order')->name('bannermanage.updateOrder');
+                Route::post('/update-banner-fconnect', 'BannerController@update_banner_fconnect')->name('bannermanage.update_banner_fconnect');
                 Route::get('/show/{id}', 'BannerController@show')->name('bannermanage.view');
             });
 
@@ -322,6 +324,10 @@ Route::group([
             Route::prefix('section-log')->group(function () {
                 Route::get('/', [SectionLogController::class, 'index'])->name('sectionLog.index');
                 Route::get('/store', [SectionLogController::class, 'store'])->name('sectionLog.store');
+            });
+
+            Route::prefix('statistics')->group(function () {
+                Route::get('/', [StatisticController::class, 'index'])->name('statistics.index');
             });
 
             Route::prefix('ftel-phone')->group(function () {
