@@ -268,21 +268,21 @@ $domainPayment = [
     ],
 ];
 
-$domainAPI = [
+$domainHiFPT = [
     'local'             => [
-        'URL'           => 'http://hifpt-api-stag.fpt.vn/',
-        'CLIENT_KEY'    => 'CMSHiFPT',
-        'SECRET_KEY'    => 'e5c372e6e0cac0ee79f6eedbf7d05323'
+        'URL'           => 'https://hi.fpt.vn/',
+        'CLIENT_KEY'    => '',
+        'SECRET_KEY'    => ''
     ],
     'staging'           => [
-        'URL'           => 'http://hifpt-api-stag.fpt.vn/',
-        'CLIENT_KEY'    => 'CMSHiFPT',
-        'SECRET_KEY'    => 'e5c372e6e0cac0ee79f6eedbf7d05323'
+        'URL'           => 'https://staging-hi.fpt.vn/',
+        'CLIENT_KEY'    => '',
+        'SECRET_KEY'    => ''
     ],
     'production'        => [
-        'URL'           => 'http://hifpt-api.fpt.vn/',
-        'CLIENT_KEY'    => 'CMSHiFPT',
-        'SECRET_KEY'    => 'e5c372e6e0cac0ee79f6eedbf7d05323'
+        'URL'           => 'https://hi.fpt.vn/',
+        'CLIENT_KEY'    => '',
+        'SECRET_KEY'    => ''
     ],
 ];
 
@@ -301,6 +301,6 @@ return [
     'DOMAIN_UPLOAD'                 => $domainUploadIcon,
     'DOMAIN_AUTH'                   => $domainAuth,
     'DOMAIN_PAYMENT'                => $domainPayment,
-    'DOMAIN_API'                    => $domainAPI,
     'DOMAIN_HIFPT'                  => $domainHiFPT,
 ];
+
