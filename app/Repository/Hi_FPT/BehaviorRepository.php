@@ -117,12 +117,16 @@ class BehaviorRepository implements BehaviorInterface
     public function data($params)
     {
         if (!empty($params->input('show_to')) && !empty($params->input('show_from'))) {
+            $query = DB::connection('mysql4')->table('customers')
+                ->select('phone', 'date_created');
             $from = changeFormatDateLocal($params->input('show_from'));
             $to = changeFormatDateLocal($params->input('show_to'));
-            $collection = DB::connection('mysql4')->table('customers')
-                ->select('phone', 'date_created')
-                ->whereBetween('date_created', [$from, $to])
-                ->get()->toArray();
+            $phone = $params->input('phone_number');
+            if(!empty($phone)) {
+                $query->where('phone', $phone);
+            }
+            $query->whereBetween('date_created', [$from, $to]);
+            $collection = $query->get()->toArray();
         } else {
             $collection = excel_import($params);
         }

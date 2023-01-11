@@ -33,10 +33,18 @@
                             <div class="card-header">
                                 <h3 class="card-title uppercase">Form File</h3>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body container">
                                 {!! Form::open(array('url' => route('behavior.post'),'id' => 'importExcel', 'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
                                 @csrf
                                 <div class="row justify-content-center mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <div class="input-group input-group-sm mb-4">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Phone: </div>
+                                            </div>
+                                            <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="Số điện thoại (Đang phát triển)" />
+                                        </div>
+                                    </div>
                                     <div class="col-md-4">
                                         <div class="input-group input-group-sm mb-4">
                                             <div class="input-group-prepend">
@@ -54,8 +62,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <nav aria-label="breadcrumb">
-                                    <ol class="col-md-8 m-auto mt-2 breadcrumb">
+                                <nav aria-label="breadcrumb" class="mb-5">
+                                    <ol class="col-md-8 m-auto mt-5 breadcrumb">
                                         <ul class="m-auto">
                                             <b>Hoặc </b> lấy dữ liệu bằng excel, tải file mẫu
                                             <a href="https://docs.google.com/spreadsheets/d/1SRdXHP-QdOcPkGpGspGxxBLSNAmcH3TBWwA98w-Q9fY/edit#gid=0"
