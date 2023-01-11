@@ -48,9 +48,9 @@ function responseImageStatic(res, input) {
 
 function handleUploadImage(input) {
     const [file] = input.files;
-    if (file.size > 2050000) { // handle file
+    if (file.size > 700000) { // handle file
         resetData(input, null);
-        showMessage('error','File is too big! Allowed memory size of 2MB');
+        showMessage('error','File is too big! Allowed memory size of 0.7MB');
         return false;
     };
     uploadFileStatic(file, input, responseImageStatic);
