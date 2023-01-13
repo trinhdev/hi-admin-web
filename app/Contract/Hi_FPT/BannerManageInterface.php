@@ -13,5 +13,6 @@ interface BannerManageInterface
     public function update($params, $id);
 
     public function update_order($params);
+    public function export_click_phone($params, $id);
     public function update_banner_fconnect($params);
 }

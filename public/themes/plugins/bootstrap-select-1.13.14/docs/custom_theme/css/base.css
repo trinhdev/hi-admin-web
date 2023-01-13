@@ -37,7 +37,7 @@ div.source-links {
  * sections of docs content.
  */
 
-/* By default it's not affixed in mobile views, so undo that */
+/* By default it's not affixed in mobile table, so undo that */
 .bs-sidebar {
     position: static;
 }

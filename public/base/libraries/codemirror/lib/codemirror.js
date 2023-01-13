@@ -5268,7 +5268,7 @@
         }
     }
 
-// Sub-views need their line numbers shifted when text is added
+// Sub-table need their line numbers shifted when text is added
 // above or below them in the parent document.
     function shiftDoc(doc, distance) {
         if (distance == 0) { return }

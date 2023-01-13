@@ -111,6 +111,16 @@ function methodAjaxBanner() {
         window.urlMethod = '/bannermanage/store';
     });
 
+    $('body').on('click', '#button_form_export', function (e) {
+        e.preventDefault();
+        console.log(123);
+        $('#show_form_export').modal('toggle');
+        document.getElementById('formExport').reset();
+        let id = $(this).data('id');
+        document.getElementById("formExport").action = "/bannermanage/export/" + id;
+        window.urlMethod = '/bannermanage/export/' + id;
+    });
+
     $('body').on('click', '#updateBannerFconnect', function (e) {
         e.preventDefault();
         $('#showFormUpdateFconnect_Modal').modal('toggle');
@@ -236,5 +246,9 @@ function methodAjaxBanner() {
                 $('#submitAjaxUpdate').prop('disabled', false);
             }
         });
+    });
+
+    $('body').on('click', '#submitAjaxExport', function (e){
+        $('#show_form_export').modal('toggle');
     });
 }
