@@ -165,8 +165,8 @@ class BannerManageRepository implements BannerManageInterface
         try {
             $form_params = [
                 'eventId' => $id,
-                'dataStart' => changeFormatDateLocal($params->show_from) ?? '',
-                'dataEnd' => changeFormatDateLocal($params->show_to) ?? '',
+                'dateStart' => changeFormatDateLocal($params->show_from) ?? '',
+                'dateEnd' => changeFormatDateLocal($params->show_to) ?? '',
             ];
             $response = $this->client->request('POST', $this->listMethod['GET_LIST_CLICK_BANNER'], [
                 'headers' => $this->headers,
