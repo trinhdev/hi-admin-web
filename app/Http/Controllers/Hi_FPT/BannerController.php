@@ -41,7 +41,7 @@ class BannerController extends MY_Controller
         return $this->BannerManageRepository->show($id);
     }
 
-    public function export_click_phone(ExportRequest $request, $id)
+    public function export_click_phone(Request $request, $id)
     {
         return $this->BannerManageRepository->export_click_phone($request, $id);
     }

@@ -30,7 +30,8 @@ class BannerManageRepository implements BannerManageInterface
         $this->client = new Client(['base_uri' => $api_config['URL']]);
         $this->headers = [
             'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m")),
-            'clientKey' => $api_config['CLIENT_KEY']
+            'clientKey' => $api_config['CLIENT_KEY'],
+            'Content-Type' => 'application/json'
         ];
         $this->listTypeBanner = json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TYPE_BANNER'], [
             'headers' => $this->headers
@@ -164,12 +165,12 @@ class BannerManageRepository implements BannerManageInterface
         try {
             $form_params = [
                 'eventId' => $id,
-                'dataStart' => $params->show_from ?? '',
-                'dataEnd' => $params->show_to ?? '',
+                'dataStart' => changeFormatDateLocal($params->show_from) ?? '',
+                'dataEnd' => changeFormatDateLocal($params->show_to) ?? '',
             ];
-            $response = $this->client->request('GET', $this->listMethod['GET_LIST_CLICK_BANNER'], [
+            $response = $this->client->request('POST', $this->listMethod['GET_LIST_CLICK_BANNER'], [
                 'headers' => $this->headers,
-                'query' => array_filter($form_params)
+                'json' => $form_params
             ])->getBody()->getContents();
             $data = json_decode(json_decode($response)->data);
             $phone = [];
@@ -192,8 +193,11 @@ class BannerManageRepository implements BannerManageInterface
                 'clientKey' => $api_config['CLIENT_KEY']
             ];
             $url = 'https://hi-static.fpt.vn/upload/images/event/';
+            if(empty($params->imageFileName)) {
+                return response()->json(['statusCode' => '500', 'message' => 'Đã xảy ra lỗi !!']);
+            }
             $form_params = [
-                'bannerImage' => $url . $params->imageFileName ?? $url . 'avatar.png'
+                'bannerImage' => $url . $params->imageFileName
             ];
             $client = new Client(['base_uri' => config('configDomain.DOMAIN_API.' . env('APP_ENV'))['URL']]);
             $response = $client->request('POST', $this->listMethod['FCONNECT_UPDATE_BANNER'], [

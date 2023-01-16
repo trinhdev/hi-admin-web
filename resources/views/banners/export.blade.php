@@ -1,4 +1,4 @@
-<form id="formExport" enctype="multipart/form-data">
+<form id="formExport">
     <input type="hidden" id="event_id" name="id">
     <div class="card-info">
         <div class="card-body">
