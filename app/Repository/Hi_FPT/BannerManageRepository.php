@@ -94,7 +94,9 @@ class BannerManageRepository implements BannerManageInterface
     public function store($params): \Illuminate\Http\JsonResponse
     {
         try {
+            
             $form_params = collect($params->validated())->merge([
+                'thumbImageFileName'    => (!empty($params->thumbImageFileName)) ? $params->thumbImageFileName : $params->imageFileName,
                 'publicDateStart' => Carbon::parse($params->input('show_from'))->format('Y-m-d H:i:s'),
                 'publicDateEnd' => Carbon::parse($params->input('show_to'))->format('Y-m-d H:i:s'),
                 'directionId' => $params->input('has_target_route') == 'checked' ? $params->input('direction_id', '') : '',
@@ -105,11 +107,14 @@ class BannerManageRepository implements BannerManageInterface
                     'modified_by' => null
                 ])
             ])->toArray();
+            // dd($form_params);
             $form_params = $this->getArr($form_params);
             $response = $this->client->request('POST', $this->listMethod['CREATE_BANNER'], [
                 'headers' => $this->headers,
-                'form_params' => array_filter($form_params)
+                // 'form_params' => array_filter($form_params)
+                'body'  => json_encode($form_params)
             ])->getBody()->getContents();
+            // dd($this->listMethod['CREATE_BANNER']);
             return response()->json(['data' => json_decode($response)]);
         } catch (GuzzleException $e) {
             return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
