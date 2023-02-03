@@ -7,7 +7,7 @@
                     <tr>
                         <th>Thời gian/Lượt tương tác</th>
                         <th>0</th>
-                        <th>=<2< /th>
+                        <th>=<2</th>
                         <th>2-4</th>
                         <th>>=5</th>
                     </tr>

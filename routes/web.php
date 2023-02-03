@@ -269,6 +269,7 @@ Route::group([
                 Route::get('/', [PopupManageController::class, 'all'])->name('popupmanage.index');
                 Route::post('/save', [PopupManageController::class, 'store'])->name('popupmanage.save');
                 Route::get('/view/{id?}', [PopupManageController::class, 'show'])->name('popupmanage.view');
+                Route::get('/export/{id}', [PopupManageController::class, 'export_click'])->name('popupmanage.export_click');
                 Route::get('/detail/{id?}', [PopupManageController::class, 'detail'])->name('popupmanage.detail');
                 Route::post('/pushPopupTemplate', [PopupManageController::class, 'push'])->name('popupmanage.pushPopupTemplate');
                 Route::post('/getDetailPersonalMaps', [PopupManageController::class, 'getDetailPersonalMaps'])->name('popupmanage.getDetailPersonalMaps');
@@ -370,6 +371,7 @@ Route::group([
             Route::prefix('behavior')->group(function () {
                 Route::get('/', [BehaviorController::class, 'index'])->name('behavior.index');
                 Route::post('/store', [BehaviorController::class, 'store'])->name('behavior.post');
+                Route::post('/analysis', [BehaviorController::class, 'analysis'])->name('behavior.analysis');
             });
 
             Route::prefix('get-phone-number')->group(function () {

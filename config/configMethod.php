@@ -33,6 +33,7 @@ $methodNewsEventDomain = [
     'GET_DETAIL_POPUP' => 'provider/tool/popup/detail-template',
     'UPDATE_PERSONAL_MAP' => 'provider/tool/popup/update-template-personal-map',
     'GET_DETAIL_PERSONAL_MAP' => 'provider/tool/popup/detail-template-personal-map',
+    'GET_LIST_CLICK_POPUP' => 'provider/tool/popup/get-list-click-popup',
 
     //
     'FCONNECT_UPDATE_BANNER'       => 'customer-provider/cms/fconnect/update-banner',

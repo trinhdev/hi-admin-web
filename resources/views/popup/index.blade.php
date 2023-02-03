@@ -122,11 +122,23 @@
             </div>
         </div>
     </div>
+
+    @include('template.modal', ['id' => 'show_form_export', 'title'=>'Export Data User Click', 'form'=>'popup.export'])
 @endsection
 @push('scripts')
     <script>
         showHide();
         actionAjaxPopup();
+        $('body').on('click', '#exportPopup', function (e) {
+            e.preventDefault();
+            $('#show_form_export').modal('toggle');
+            document.getElementById('formExport').reset();
+            let id = $(this).data('id');
+            document.getElementById("formExport").action = "/popupmanage/export/" + id;
+        });
+        $('body').on('click', '#exportPopup', function (e){
+            $('#show_form_export').modal('toggle');
+        });
     </script>
 @endpush
 

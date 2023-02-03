@@ -17,13 +17,73 @@ class BehaviorRepository implements BehaviorInterface
         return view('behavior.index');
     }
 
+    function checkinDataAnalysis($params): \Illuminate\Http\RedirectResponse
+    {
+        $statistics = [
+            '0_2' => [],
+            '3_5' => [],
+            '6_7' => [],
+        ];
+
+        $today = \Carbon\Carbon::today();
+
+        foreach ($this->data($params) as $checkin) {
+            if (!is_array($checkin)) {
+                $checkin = (array) $checkin;
+            }
+            if (empty($value['phone']) || empty($value['date_created'])) {
+                return back()->withErrors('Sai tiêu đề cột, vui lòng kiểm tra lại (phone & date_created)');
+            }
+            $createdAt = \Carbon\Carbon::parse($checkin['date_created']);
+            $diffInDays = $today->diffInDays($createdAt);
+
+            if ($diffInDays >= 0 && $diffInDays <= 2) {
+                $key = '0_2';
+            } elseif ($diffInDays >= 3 && $diffInDays <= 5) {
+                $key = '3_5';
+            } elseif ($diffInDays >= 6 && $diffInDays <= 7) {
+                $key = '6_7';
+            } else {
+                continue;
+            }
+
+            if (!isset($statistics[$key][$checkin['phone']])) {
+                $statistics[$key][$checkin['phone']] = 0;
+            }
+
+            $statistics[$key][$checkin['phone']]++;
+        }
+
+        $results = [
+            '0_0' => [],
+            '1_2' => [],
+            '3_4' => [],
+            '5_plus' => [],
+        ];
+
+        foreach ($statistics as $key => $phones) {
+            foreach ($phones as $phone => $count) {
+                if ($count == 0) {
+                    $results['0_0'][] = $phone;
+                } elseif ($count >= 1 && $count <= 2) {
+                    $results['1_2'][] = $phone;
+                } elseif ($count >= 3 && $count <= 4) {
+                    $results['3_4'][] = $phone;
+                } else {
+                    $results['5_plus'][] = $phone;
+                }
+            }
+        }
+
+        return $results;
+    }
+
     public function store($params)
     {
         $danhsachSDT = [];
         $phoneQr = [];
         $date_created = [];
         // Lấy data từ hàm data theo input excel hoặc filter day
-        //
         foreach ($this->data($params) as $value) {
             if (!is_array($value)) {
                 $value = (array) $value;
@@ -37,16 +97,15 @@ class BehaviorRepository implements BehaviorInterface
         }
 
         $validator = $this->validator($phoneQr, $date_created);
-        if ($validator->isNotEmpty()) {
-            return back()->withErrors($validator->all());
-        }
+//        if ($validator->isNotEmpty()) {
+//            return back()->withErrors($validator->all());
+//        }
 
         // Retrieve errors message bag
         $dataSql = DB::table('app_log')
             ->select('phone', 'date_action')
             ->whereIn('phone', $phoneQr)
             ->get();
-
         $countDataSQl = $dataSql->count();
         if ($countDataSQl === 0) {
             return back()->withErrors(['Không có dữ liệu']);
@@ -111,6 +170,7 @@ class BehaviorRepository implements BehaviorInterface
 
         //Xử lý lượt check cuối cùng từ SQL:
         $data = $this->extracted_switch($thongke, $total);
+        dd($data);
         return back()->with(['data' => $data ?? [], 'success' => 'Thành công', 'html' => 'Thành công']);
     }
 
