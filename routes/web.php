@@ -301,6 +301,7 @@ Route::group([
             Route::prefix('bannermanage')->group(function () {
                 Route::get('/', 'BannerController@all')->name('bannermanage.index');
                 Route::post('/store', 'BannerController@store')->name('bannermanage.store');
+                Route::get('/export/{id}', 'BannerController@export_click_phone')->name('bannermanage.export');
                 Route::post('/update/{id}', 'BannerController@update')->name('bannermanage.update');
                 Route::post('/updateordering', 'BannerController@update_order')->name('bannermanage.updateOrder');
                 Route::post('/update-banner-fconnect', 'BannerController@update_banner_fconnect')->name('bannermanage.update_banner_fconnect');
@@ -326,6 +327,7 @@ Route::group([
                 Route::get('/store', [SectionLogController::class, 'store'])->name('sectionLog.store');
             });
 
+
             Route::prefix('statistics')->group(function () {
                 Route::get('/', [StatisticController::class, 'index'])->name('statistics.index');
             });
@@ -348,6 +350,12 @@ Route::group([
                 Route::get('/edit/{id}', [ScreenController::class, 'show'])->name('screen.edit');
                 Route::post('/update/{id}', [ScreenController::class, 'update'])->name('screen.update');
                 Route::get('/delete/{id}', [ScreenController::class, 'delete'])->name('screen.delete');
+            });
+
+            Route::prefix('test123')->group(function () {
+                Route::get('/', function () {
+                    dd(json_decode("[\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\"]"));
+                });
             });
 
             Route::prefix('deeplink')->group(function () {

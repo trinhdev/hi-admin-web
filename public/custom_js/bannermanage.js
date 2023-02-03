@@ -48,9 +48,9 @@ function responseImageStatic(res, input) {
 
 function handleUploadImage(input) {
     const [file] = input.files;
-    if (file.size > 2050000) { // handle file
+    if (file.size > 700000) { // handle file
         resetData(input, null);
-        showMessage('error','File is too big! Allowed memory size of 2MB');
+        showMessage('error','File is too big! Allowed memory size of 0.7MB');
         return false;
     };
     uploadFileStatic(file, input, responseImageStatic);
@@ -109,6 +109,16 @@ function methodAjaxBanner() {
         $('#img_path_2').attr('src', '/images/image_holder.png');
         $('#img_path_1').attr('src', '/images/image_holder.png');
         window.urlMethod = '/bannermanage/store';
+    });
+
+    $('body').on('click', '#button_form_export', function (e) {
+        e.preventDefault();
+        console.log(123);
+        $('#show_form_export').modal('toggle');
+        document.getElementById('formExport').reset();
+        let id = $(this).data('id');
+        document.getElementById("formExport").action = "/bannermanage/export/" + id;
+        window.urlMethod = '/bannermanage/export/' + id;
     });
 
     $('body').on('click', '#updateBannerFconnect', function (e) {
@@ -236,5 +246,9 @@ function methodAjaxBanner() {
                 $('#submitAjaxUpdate').prop('disabled', false);
             }
         });
+    });
+
+    $('body').on('click', '#submitAjaxExport', function (e){
+        $('#show_form_export').modal('toggle');
     });
 }

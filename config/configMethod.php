@@ -23,6 +23,7 @@ $methodNewsEventDomain = [
     'UPDATE_ORDERING' => 'provider/tool/banner/update-orderings',
     'GET_LIST_BANNER' => 'provider/tool/banner/get-list-banner',
     'GET_DETAIL_BANNER' => 'provider/tool/banner/get-detail-banner',
+    'GET_LIST_CLICK_BANNER' => 'provider/tool/banner/get-list-click-banner',
 
     // pop up
     'CREATE_TEMPLATE_POPUP' => 'provider/tool/popup/create-template',

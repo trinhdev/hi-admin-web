@@ -77,7 +77,7 @@ class BannerManageDataTable extends DataTable
             ->editColumn('action',function($row){
                 return '<div style="display:flex; justify-content:center">
                    <a type="button" id="detailBanner" data-id="'.$row->event_id.'" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
-                   <a type="button" id="deleteBanner" data-id="'.$row->event_id.'" class="btn btn-sm fas fa-trash-alt btn-icon bg-danger"></a></div>';
+                   <a type="button" id="button_form_export" data-id="'.$row->event_id.'" class="btn btn-sm fas fa-file btn-icon bg-info"></a></div>';
             })
             ->rawColumns(['title_vi','image','status','action','ordering_on_home','event_type', 'is_show_home'])
             ->setTotalRecords($totalRecords)
@@ -103,37 +103,29 @@ class BannerManageDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('banner_manage')
-                    ->columns($this->getColumns())
-                    ->responsive()
-                    ->autoWidth(true)
-                    ->orderBy(0)
-                    ->parameters([
-                        'scroll' => false,
-                        'searching' => false,
-                        'searchDelay' => 500,
-                        'initComplete' => "function () {
-                            var bannerType = $('#show_at');
-                            var filter_condition = $('#filter_condition');
-                            var table = $('#banner_manage').DataTable();
-                            $(bannerType).on('change', function () {
-                                table.ajax.reload();
-                            });
-                            $(filter_condition).on('click', function () {
-                                table.ajax.reload();
-                            });
-                         }"
-                    ])
-                    ->addTableClass('table table-hover table-striped text-center w-100')
-                    ->languageEmptyTable('Không có dữ liệu')
-                    ->languageInfoEmpty('Không có dữ liệu')
-                    ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
-                    ->languageSearch('Tìm kiếm')
-                    ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
-                    ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
-                    ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang
-                    ')
-                    ;
+            ->setTableId('banner_manage')
+            ->columns($this->getColumns())
+            ->responsive()
+            ->autoWidth(true)
+            ->orderBy(0)
+            ->parameters([
+                'scroll' => false,
+                'searching' => false,
+                'searchDelay' => 500,
+                'initComplete' => "function () {
+                    var bannerType = $('#show_at');
+                    var filter_condition = $('#filter_condition');
+                    var table = $('#banner_manage').DataTable();
+                    $(bannerType).on('change', function () {
+                        table.ajax.reload();
+                    });
+                    $(filter_condition).on('click', function () {
+                        table.ajax.reload();
+                    });
+                 }"
+            ])
+            ->addTableClass('table table-hover table-striped text-center w-100')
+            ;
     }
 
     /**
