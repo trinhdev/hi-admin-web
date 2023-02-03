@@ -80,7 +80,7 @@ class ReportTrackingCusBehaviorMonthlyController extends MY_Controller
         // dd($request->all());
         $from_month = $request->from_month;
         // $from2 = date('Y-m-01 H:i:s', strtotime($from_month . '-01 00:00:00'));
-        $from2 = '2016-01-01 00:00:00';
+        $from2 = '2016-09-13 00:00:00';
         $to2 = date('Y-m-t H:i:s', strtotime($from_month . '-01 23:59:59'));
 
         $from1 = date('Y-m-01 00:00:00', strtotime($from2 . ' last month'));
