@@ -96,7 +96,7 @@ class BannerManageRepository implements BannerManageInterface
     public function store($params): \Illuminate\Http\JsonResponse
     {
         try {
-            
+
             $form_params = collect($params->validated())->merge([
                 'thumbImageFileName'    => (!empty($params->thumbImageFileName)) ? $params->thumbImageFileName : $params->imageFileName,
                 'publicDateStart' => Carbon::parse($params->input('show_from'))->format('Y-m-d H:i:s'),
@@ -210,7 +210,7 @@ class BannerManageRepository implements BannerManageInterface
             $client = new Client(['base_uri' => config('configDomain.DOMAIN_API.' . env('APP_ENV'))['URL']]);
             $response = $client->request('POST', $this->listMethod['FCONNECT_UPDATE_BANNER'], [
                 'headers' => $headers,
-                'form_params' => array_filter($form_params)
+                'json' => array_filter($form_params)
             ])->getBody()->getContents();
             return response()->json(json_decode($response));
         } catch (GuzzleException $e) {

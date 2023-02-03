@@ -17,7 +17,7 @@ class BehaviorRepository implements BehaviorInterface
         return view('behavior.index');
     }
 
-    function checkinDataAnalysis($params): \Illuminate\Http\RedirectResponse
+    function checkinDataAnalysis($params)
     {
         $statistics = [
             '0_2' => [],
@@ -31,7 +31,7 @@ class BehaviorRepository implements BehaviorInterface
             if (!is_array($checkin)) {
                 $checkin = (array) $checkin;
             }
-            if (empty($value['phone']) || empty($value['date_created'])) {
+            if (empty($checkin['phone']) || empty($checkin['date_created'])) {
                 return back()->withErrors('Sai tiêu đề cột, vui lòng kiểm tra lại (phone & date_created)');
             }
             $createdAt = \Carbon\Carbon::parse($checkin['date_created']);
@@ -74,7 +74,7 @@ class BehaviorRepository implements BehaviorInterface
                 }
             }
         }
-
+dd($statistics);
         return $results;
     }
 
