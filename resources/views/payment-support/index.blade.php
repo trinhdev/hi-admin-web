@@ -75,7 +75,7 @@
                                             <div class="input-group-text">To</div>
                                         </div>
                                         <input type="datetime-local" name="show_to" class="form-control" id="show_to"
-                                               placeholder="Date To"/>
+                                               placeholder="Date To" value="<?php echo date('Y-m-d\TH:s'); ?>"/>
                                     </div>
                                 </div>
                                 <div class="filter-class" style="width: 100%; text-align: center">
