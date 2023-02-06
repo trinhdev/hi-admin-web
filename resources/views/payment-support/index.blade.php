@@ -110,7 +110,6 @@
     </div>
 
 @endsection
-{{ $dataTable->scripts() }}
 @push('scripts')
     {{ $dataTable->scripts() }}
     <script>
