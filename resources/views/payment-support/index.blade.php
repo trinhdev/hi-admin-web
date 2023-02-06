@@ -66,7 +66,7 @@
                                             <div class="input-group-text">From</div>
                                         </div>
                                         <input type="datetime-local" name="show_from" class="form-control" id="show_from"
-                                               placeholder="Date From"/>
+                                               placeholder="Date From" value="<?php echo date('Y-m-d 00:00'); ?>"/>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -75,7 +75,7 @@
                                             <div class="input-group-text">To</div>
                                         </div>
                                         <input type="datetime-local" name="show_to" class="form-control" id="show_to"
-                                               placeholder="Date To"/>
+                                               placeholder="Date To" value="<?php echo date('Y-m-d\TH:s'); ?>"/>
                                     </div>
                                 </div>
                                 <div class="filter-class" style="width: 100%; text-align: center">
@@ -148,8 +148,7 @@
                         $("#spinner").removeClass("show");
                         showMessage('success',data.data.message);
                         $('#submitAjax').prop('disabled', false);
-                        var table = $('#PaymentSupport_manage').DataTable();
-                        table.ajax.reload();
+                        table.DataTable().ajax.reload();
                     }
                 });
             });

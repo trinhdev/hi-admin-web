@@ -9,6 +9,7 @@ use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\PopupManageRequest\PushRequest;
 use App\Http\Requests\PopupManageRequest\StoreRequest;
 use App\Http\Traits\DataTrait;
+use App\Services\ExportClickService;
 use Illuminate\Http\Request;
 
 class PopupManageController extends MY_Controller
@@ -50,5 +51,10 @@ class PopupManageController extends MY_Controller
     public function getDetailPersonalMaps($id)
     {
         return $this->PopupManageRepository->getDetailPersonalMaps($id);
+    }
+
+    public function export_click(Request $params, $id)
+    {
+        return $this->PopupManageRepository->export_click_phone($params, $id);
     }
 }

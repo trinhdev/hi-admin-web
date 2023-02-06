@@ -15,5 +15,6 @@ interface PopupManageInterface
     public function detail($id);
 
     public function getDetailPersonalMaps($id);
+    public function export_click_phone($params, $id);
 
 }

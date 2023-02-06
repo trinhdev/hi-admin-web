@@ -113,12 +113,10 @@ function methodAjaxBanner() {
 
     $('body').on('click', '#button_form_export', function (e) {
         e.preventDefault();
-        console.log(123);
         $('#show_form_export').modal('toggle');
         document.getElementById('formExport').reset();
         let id = $(this).data('id');
         document.getElementById("formExport").action = "/bannermanage/export/" + id;
-        window.urlMethod = '/bannermanage/export/' + id;
     });
 
     $('body').on('click', '#updateBannerFconnect', function (e) {

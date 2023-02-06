@@ -4,6 +4,7 @@ namespace App\Repository\Hi_FPT;
 
 use App\Contract\Hi_FPT\PopupManageInterface;
 use App\Http\Traits\DataTrait;
+use App\Services\ExportClickService;
 use App\Services\NewsEventService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 class PopupManageRepository implements PopupManageInterface
 {
     use DataTrait;
+    use ExportClickService;
     private $listMethod;
     private $client;
     private $headers;
@@ -145,6 +147,11 @@ class PopupManageRepository implements PopupManageInterface
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    public function export_click_phone($params, $id)
+    {
+        return $this->export_click($this->listMethod['GET_LIST_CLICK_POPUP'],$params, $id);
     }
 
     public function getDetailPersonalMaps($id)

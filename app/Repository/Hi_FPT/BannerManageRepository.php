@@ -4,6 +4,7 @@ namespace App\Repository\Hi_FPT;
 
 use App\Contract\Hi_FPT\BannerManageInterface;
 use App\Http\Traits\DataTrait;
+use App\Services\ExportClickService;
 use App\Services\NewsEventService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -13,6 +14,7 @@ use Illuminate\Support\Carbon;
 class BannerManageRepository implements BannerManageInterface
 {
     use DataTrait;
+    use ExportClickService;
 
     private $listMethod;
     private $client;
@@ -94,7 +96,7 @@ class BannerManageRepository implements BannerManageInterface
     public function store($params): \Illuminate\Http\JsonResponse
     {
         try {
-            
+
             $form_params = collect($params->validated())->merge([
                 'thumbImageFileName'    => (!empty($params->thumbImageFileName)) ? $params->thumbImageFileName : $params->imageFileName,
                 'publicDateStart' => Carbon::parse($params->input('show_from'))->format('Y-m-d H:i:s'),
@@ -167,26 +169,27 @@ class BannerManageRepository implements BannerManageInterface
 
     public function export_click_phone($params, $id)
     {
-        try {
-            $form_params = [
-                'eventId' => $id,
-                'dateStart' => changeFormatDateLocal($params->show_from) ?? '',
-                'dateEnd' => changeFormatDateLocal($params->show_to) ?? '',
-            ];
-            $response = $this->client->request('POST', $this->listMethod['GET_LIST_CLICK_BANNER'], [
-                'headers' => $this->headers,
-                'json' => $form_params
-            ])->getBody()->getContents();
-            $data = json_decode(json_decode($response)->data);
-            $phone = [];
-            foreach ($data as $value) {
-                $phone[] = ['SDT Khách hàng' => $value];
-            }
-            return fastexcel($phone)->download('banner_export_'.date('Y-m-d').'.xlsx');
-
-        } catch (GuzzleException $e) {
-            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
-        }
+        return $this->export_click($this->listMethod['GET_LIST_CLICK_BANNER'],$params, $id);
+//        try {
+//            $form_params = [
+//                'eventId' => $id,
+//                'dateStart' => changeFormatDateLocal($params->show_from) ?? '',
+//                'dateEnd' => changeFormatDateLocal($params->show_to) ?? '',
+//            ];
+//            $response = $this->client->request('POST', $this->listMethod['GET_LIST_CLICK_BANNER'], [
+//                'headers' => $this->headers,
+//                'json' => $form_params
+//            ])->getBody()->getContents();
+//            $data = json_decode(json_decode($response)->data);
+//            $phone = [];
+//            foreach ($data as $value) {
+//                $phone[] = ['SDT Khách hàng' => $value];
+//            }
+//            return fastexcel($phone)->download('banner_export_'.date('Y-m-d').'.xlsx');
+//
+//        } catch (GuzzleException $e) {
+//            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
+//        }
     }
 
     public function update_banner_fconnect($params): \Illuminate\Http\JsonResponse
@@ -207,7 +210,7 @@ class BannerManageRepository implements BannerManageInterface
             $client = new Client(['base_uri' => config('configDomain.DOMAIN_API.' . env('APP_ENV'))['URL']]);
             $response = $client->request('POST', $this->listMethod['FCONNECT_UPDATE_BANNER'], [
                 'headers' => $headers,
-                'form_params' => array_filter($form_params)
+                'json' => array_filter($form_params)
             ])->getBody()->getContents();
             return response()->json(json_decode($response));
         } catch (GuzzleException $e) {

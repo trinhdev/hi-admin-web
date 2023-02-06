@@ -29,18 +29,20 @@ class PaymentSupportDataTable extends DataTable
             })
             ->editColumn('created_at', function($row){
                 return Carbon::parse($row->created_at)->format('Y-m-d');
-
             })
             ->editColumn('action',function($row){
                 if (!$row->status) {
                     return '<div style="display:flex; justify-content:center">
                    <a type="button" id="detail" data-id="'.$row->id.'" class="btn btn-sm bg-primary"><i class="fa fa-lock"></i></a>';
                 }
-
             })
             ->filter(function ($query) {
                 if (request()->filled('type')) {
-                    $query->where('status', 'like', "%" . request('type') . "%");
+                    if (request('type') == "0") {
+                        $query->whereNull('status');
+                    } else {
+                        $query->where('status', 'like', "%" . request('type') . "%");
+                    }
                 }
 
                 if (request()->filled('phone')) {
@@ -52,7 +54,7 @@ class PaymentSupportDataTable extends DataTable
                 }
             })
             ->rawColumns(['action','status', 'description_error_code', 'order_id'])
-            ->make(true);
+            ->make();
     }
 
     public function query()
@@ -70,9 +72,9 @@ class PaymentSupportDataTable extends DataTable
         return $this->builder()
             ->setTableId('PaymentSupport_manage')
             ->columns($this->getColumns())
+            ->orderBy(4)
             ->responsive()
             ->autoWidth(true)
-            ->orderBy(1, 'DESC')
             ->parameters([
                 'scroll' => false,
                 'searching' => true,

@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="card-footer" style="text-align: center">
-            <a href="{{ route('bannermanage.index') }}" type="button" class="btn btn-default">Thoát</a>
+            <a href="{{ route('popupmanage.index') }}" type="button" class="btn btn-default">Thoát</a>
             <button type="submit" class="btn btn-info">Lưu</button>
         </div>
     </div>
