@@ -34,7 +34,7 @@
                                 <h3 class="card-title uppercase">Form File</h3>
                             </div>
                             <div class="card-body container">
-                                {!! Form::open(array('url' => route('behavior.analysis'),'id' => 'importExcel', 'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
+                                {!! Form::open(array('url' => route('behavior.post'),'id' => 'importExcel', 'method'=>'post' ,'enctype' =>'multipart/form-data')) !!}
                                 @csrf
                                 <div class="row justify-content-center mt-2 mb-2">
                                     <div class="col-md-4">

@@ -26,11 +26,6 @@ class BehaviorController extends MY_Controller
         return $this->BehaviorRepository->index();
     }
 
-    public function analysis(StoreRequest $request)
-    {
-        return $this->BehaviorRepository->checkinDataAnalysis($request);
-    }
-
      public function store(StoreRequest $request)
      {
          return $this->BehaviorRepository->store($request);
