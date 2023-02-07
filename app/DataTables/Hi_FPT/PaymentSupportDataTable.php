@@ -43,10 +43,9 @@ class PaymentSupportDataTable extends DataTable
             })
             ->filter(function ($query) {
                 if (request()->filled('type')) {
+                    $query->where('status', 'like', "%" . request('type') . "%");
                     if (request('type') == "0") {
                         $query->orwhereNull('status');
-                    } else {
-                        $query->where('status', 'like', "%" . request('type') . "%");
                     }
                 }
 
