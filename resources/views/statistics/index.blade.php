@@ -73,33 +73,6 @@
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-detail" role="tabpanel"
                                  aria-labelledby="pills-detail-tab">
-                                {{--Start table--}}
-                                {{--<table id="table_overview" class="table table-striped table-hover table-header-color">
-                                    <h4 class="text-center"> {!! $overview->title ?? 'Overview' !!}</h4>
-                                    <thead>
-                                    <tr>
-                                        @if($overview)
-                                            @forelse($overview->column as $column)
-                                                <th>{!! $column !!}</th>
-                                            @empty Error
-                                            @endforelse
-                                            @else <th></th>
-                                        @endif
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    @if($overview)
-                                        @forelse($overview->row as $row)
-                                            <tr>
-                                                <td>{!! $row[0] !!}</td>
-                                                <td>{!! $row[1] !!}</td>
-                                            </tr>
-                                        @empty <tr></tr>
-                                        @endforelse
-                                    @endif
-                                    </tbody>
-                                </table>--}}
                                 <h4 class="text-center text-capitalize"> {!! $overview_title !!}</h4>
                                 {!! $overview->table(['width' => '100%', 'id'=>'table-overview']) !!}
                             </div>

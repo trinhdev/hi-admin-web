@@ -64,7 +64,7 @@ class PaymentSupportDataTable extends DataTable
 
     public function query()
     {
-        return $this->applyScopes($this->data);
+        return $this->applyScopes($this->data_detail);
     }
 
     /**
@@ -75,7 +75,7 @@ class PaymentSupportDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('PaymentSupport_manage')
+            ->ajax(['data' => 'function(d) { d.table = "detail"; }'])
             ->columns($this->getColumns())
             ->orderBy(4)
             ->responsive()
@@ -87,12 +87,15 @@ class PaymentSupportDataTable extends DataTable
                 'initComplete' => "function () {
                     var type = $('#show_at');
                     var filter_condition = $('#filter_condition');
-                    var table = $('#PaymentSupport_manage').DataTable();
+                    var detail = $('#table-detail').DataTable();
+                    var overview = $('#table-overview').DataTable();
                     $(type).on('change', function () {
-                        table.ajax.reload();
+                        detail.ajax.reload();
+                        overview.ajax.reload();
                     });
                     $(filter_condition).on('click', function () {
-                        table.ajax.reload();
+                          detail.ajax.reload();
+                          overview.ajax.reload();
                     });
                  }",
             ])

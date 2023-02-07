@@ -61,14 +61,35 @@
                                         <input class="form-control" id="daterange" type="text" name="daterange" />
                                     </div>
                                 </div>
-                                <div class="filter-class" style="width: 100%; text-align: center">
+                                <div class="float-left col-md-1 filter-class" style="width: 100%; text-align: center">
                                     <button type="button" id="filter_condition" class="btn btn-sm btn-primary mb-4">Search</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <!--begin::Table-->
-                    {!! $dataTable->table() !!}
+                    <div class="tabbable-custom">
+                        <ul class="nav mb-3 nav-tabs" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pills-detail-tab" data-toggle="pill" href="#pills-detail"
+                                   role="tab" aria-controls="pills-detail" aria-selected="true">Table</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-overview-tab" data-toggle="pill" href="#pills-overview"
+                                   role="tab" aria-controls="pills-overview" aria-selected="false">Overview</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-detail" role="tabpanel"
+                                 aria-labelledby="pills-detail-tab">
+                                {!! $detail->table(['width' => '100%', 'id'=>'table-detail']) !!}
+                            </div>
+                            <div class="tab-pane fade" id="pills-overview" role="tabpanel"
+                                 aria-labelledby="pills-overview-tab">
+                                {!! $overview->table(['width' => '100%', 'id'=>'table-overview']) !!}
+                            </div>
+                        </div>
+                    </div>
                     <!--end::Table-->
                 </div>
             </div>
@@ -94,14 +115,20 @@
 
 @endsection
 @push('scripts')
-    {{ $dataTable->scripts() }}
+    {!! $detail->scripts() !!}
+    {!! $overview->scripts() !!}
     <script>
-        const table = $('#PaymentSupport_manage');
-        table.on('preXhr.dt', function(e, settings, data){
+        const detail = $('#table-detail');
+        const overview = $('#table-overview');
+
+        let data = function (e, settings, data) {
             data.type = $('#show_at').val();
             data.phone = $('#phone_filter').val();
             data.daterange = $('#daterange').val();
-        });
+        };
+
+        detail.on('preXhr.dt', data);
+        overview.on('preXhr.dt', data);
 
         $(document).ready(function() {
             $('body').on('click', '#detail', function (event) {
@@ -126,10 +153,11 @@
                         $("#spinner").addClass("show");
                     },
                     success: (data) => {
+                        console.log(data);
                         $("#spinner").removeClass("show");
-                        showMessage('success',data.data.message);
+                        showMessage('success',data.html);
                         $('#submitAjax').prop('disabled', false);
-                        table.DataTable().ajax.reload();
+                        detail.DataTable().ajax.reload();
                     }
                 });
             });
