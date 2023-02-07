@@ -243,15 +243,6 @@
                     <div class="wrapper-content pd-all-20">
                         <div class="form-group mb-3">
                             <label class="text-title-field form-check-label"
-                                   for="hi_admin_cron_service_health_check_api_time">{{ __('Service status (separated by commas)') }}</label>
-                            <input type="text" class="next-input mt-2 col-md-6"
-                                   name="hi_admin_web_service_payment_support_status"
-                                   id="hi_admin_cron_service_health_check_api_time"
-                                   placeholder="Set time cron jobs, example above!"
-                                   value="{{ setting('hi_admin_web_service_payment_support_status') }}"/>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="text-title-field form-check-label"
                                    for="hi_admin_cron_service_health_check_api_time">{{ __('Description error (separated by commas)') }}</label>
                             <textarea data-counter="120" type="text" class="next-input mt-2"
                                       name="hi_admin_web_service_payment_support_description"
