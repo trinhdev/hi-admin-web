@@ -7,7 +7,17 @@
                     <select type="text" name="status" class="form-control" id="event_type">
                         <option value="0">Chưa tiếp nhận</option>
                         <option value="1">Đã xử lí</option>
+                        <option value="3">Đã chuyển tiếp & xử lí</option>
                         <option value="2">Hủy bỏ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description_error_code" class="required_red_dot">Mô tả trạng thái lỗi</label>
+                    <select class="form-control" name="description_error" id="show_at">
+                        <option value="">-- Select --</option>
+                        @foreach(explode(',', setting('hi_admin_web_service_payment_support_description')) as $value)
+                            <option value="{!! $value !!}">{!! $value !!}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group">

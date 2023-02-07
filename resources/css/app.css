@@ -7,10 +7,6 @@
     Update at: 2022/08/04
     Contact: trinhhuynhdp@gmail.com
 */
-
-@import '../../public/custom_css/style.css';
-@import '../../public/custom_css/close_request.css';
-
 @import '../../public/themes/plugins/fontawesome-free/css/all.min.css';
 @import '../../public/themes/plugins/bootstrap/css/bootstrap.min.css';
 @import '../../public/themes/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css';
@@ -31,3 +27,6 @@
 @import '../../public/themes/plugins/toastr/toastr.min.css';
 @import '../../public/base/css/themes/default.css';
 @import '../../public/base/libraries/pace/pace-theme-minimal.css';
+@import '../../public/custom_css/style.css';
+@import '../../public/custom_css/close_request.css';
+

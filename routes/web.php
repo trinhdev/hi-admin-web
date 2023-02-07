@@ -390,6 +390,11 @@ Route::group([
                 Route::post('/', [RenderDeeplinkController::class, 'store'])->name('renderDeeplink.post');
             });
 
+            Route::prefix('tracking')->controller(TrackingController::class)->group(function () {
+                Route::get('/','index')->name('tracking.index');
+                Route::post('/', 'store')->name('tracking.post');
+            });
+
             Route::prefix('employees-updates')->group(function () {
                 Route::get('/', [UpdateEmployeesFromExcelFileController::class, 'index'])->name('employees_updates.index');
                 Route::get('/create', [UpdateEmployeesFromExcelFileController::class, 'create'])->name('employees_updates.create');

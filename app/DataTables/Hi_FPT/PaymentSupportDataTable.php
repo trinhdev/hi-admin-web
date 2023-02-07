@@ -14,10 +14,15 @@ class PaymentSupportDataTable extends DataTable
         return datatables()
             ->eloquent($this->query())
             ->editColumn('status', function($row){
-                if (!$row->status) {
-                    return '<h4 class="badge badge-warning"> Chưa tiếp nhận </h4>';
+                if ($row->status === '3') {
+                    $data = ['Đã chuyển tiếp & xử lí', 'badge badge-success'] ;
+                } elseif  ($row->status === '1') {
+                    $data = [ 'Đã xử lí', 'badge badge-success'] ;
+                } elseif  ($row->status === '2') {
+                    $data = ['Hủy bỏ', 'badge badge-danger'];
+                } else {
+                    $data = ['Chưa tiếp nhận', 'badge badge-warning'] ;
                 }
-                $data = $row->status === '2' ? ['Hủy bỏ', 'badge badge-danger'] : ['Đã xử lí', 'badge badge-success'];
                 return '<h4 class="'.$data[1].'">'.$data[0].'</h4>';
 
             })
@@ -49,8 +54,9 @@ class PaymentSupportDataTable extends DataTable
                     $query->where('customer_phone', 'like', "%" . request('phone') . "%");
                 }
 
-                if (request()->filled('public_date_start') && request()->filled('public_date_end')) {
-                    $query->whereBetween('created_at', [changeFormatDateLocal(request('public_date_start')), changeFormatDateLocal(request('public_date_end'))]);
+                if (request()->filled('daterange')) {
+                    $date = explode('-', request('daterange'));
+                    $query->whereBetween('created_at', [changeFormatDateLocal($date[0]), changeFormatDateLocal($date[1])]);
                 }
             })
             ->rawColumns(['action','status', 'description_error_code', 'order_id'])
@@ -89,9 +95,9 @@ class PaymentSupportDataTable extends DataTable
                     $(filter_condition).on('click', function () {
                         table.ajax.reload();
                     });
-                 }"
+                 }",
             ])
-            ->addTableClass('table table-hover table-striped text-center w-100')
+            ->addTableClass('table table-hover table-striped text-center w-100 table-header-color')
             ->languageEmptyTable('Không có dữ liệu')
             ->languageInfoEmpty('Không có dữ liệu')
             ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
@@ -116,7 +122,8 @@ class PaymentSupportDataTable extends DataTable
             Column::make('payment_type')->title('Payment Type'),
             Column::make('created_at')->title('Created At'),
             Column::make('status')->title('Status'),
-            Column::make('description')->title('Mô tả'),
+            Column::make('description_error')->title('Mô tả trạng thái lỗi'),
+            Column::make('description')->title('Ghi chú'),
             Column::computed('action')->sortable(false)
                 ->searching(false)
                 ->width(80)
