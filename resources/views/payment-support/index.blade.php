@@ -39,9 +39,10 @@
                                         <select class="form-control" name="show_at" id="show_at">
                                             <option value="">-- Select --</option>
                                             <option value="0">Chưa tiếp nhận</option>
-                                            <option value="1">Đã xử lí</option>
-                                            <option value="3">Đã chuyển tiếp & xử lí</option>
-                                            <option value="2">Hủy bỏ</option>
+                                            <option value="1">Đã chuyển tiếp</option>
+                                            <option value="2">Đang xử lí</option>
+                                            <option value="3">Đã xử lí</option>
+                                            <option value="4">Hủy bỏ</option>
                                         </select>
                                     </div>
                                 </div>
