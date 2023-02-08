@@ -229,6 +229,31 @@
 
             {{--End Health check--}}
 
+            {{--Health check--}}
+            <div class="flexbox-annotated-section">
+                <div class="flexbox-annotated-section-annotation">
+                    <div class="annotated-section-title pd-all-20">
+                        <h2 style="font-weight: 500; font-size: 20px !important;">Config Description Payment Error</h2>
+                    </div>
+                    <div class="annotated-section-description pd-all-20 p-none-t">
+                        <p class="color-note">Settings description, status ...</p>
+                    </div>
+                </div>
+                <div class="flexbox-annotated-section-content">
+                    <div class="wrapper-content pd-all-20">
+                        <div class="form-group mb-3">
+                            <label class="text-title-field form-check-label"
+                                   for="hi_admin_cron_service_health_check_api_time">{{ __('Description error (separated by commas)') }}</label>
+                            <textarea data-counter="120" type="text" class="next-input mt-2"
+                                      name="hi_admin_web_service_payment_support_description"
+                                      id="hi_admin_web_service_payment_support_description">{!! setting('hi_admin_web_service_payment_support_description') !!}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{--End Health check--}}
+
             <div class="flexbox-annotated-section">
                 <div class="flexbox-annotated-section-annotation">
                     <div class="annotated-section-title pd-all-20">

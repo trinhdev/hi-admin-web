@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Hi_FPT;
 
 use App\Contract\Hi_FPT\PaymentSupportInterface;
 use App\DataTables\Hi_FPT\PaymentSupportDataTable;
+use App\DataTables\Hi_FPT\PaymentSupportDataTableOverView;
 use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 
@@ -18,9 +19,9 @@ class PaymentSupportController extends MY_Controller
         $this->PaymentSupportRepository = $PaymentSupportRepository;
     }
 
-    public function index(PaymentSupportDataTable $dataTable, Request $request)
+    public function index(PaymentSupportDataTable $dataTable, PaymentSupportDataTableOverView $dataTableOverview, Request $request)
     {
-        return $this->PaymentSupportRepository->index($dataTable, $request);
+        return $this->PaymentSupportRepository->index($dataTable, $dataTableOverview, $request);
     }
 
     public function update(Request $request, $id)

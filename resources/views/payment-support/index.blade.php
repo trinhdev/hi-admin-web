@@ -1,17 +1,8 @@
 @extends('layouts.default')
-
+@push('header')
+    <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
+@endpush
 @section('content')
-    <style>
-        .trinhdev {
-            position: absolute;
-            top: -75px;
-            left: 25%;
-        }
-
-        .trinhdev-2 {
-            margin-bottom: -40px;
-        }
-    </style>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -37,6 +28,7 @@
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
                     <div class="container">
+
                         <div class="card-body row form-inline">
                             <form class="form-inline">
                                 <div class="col-md-3">
@@ -47,8 +39,10 @@
                                         <select class="form-control" name="show_at" id="show_at">
                                             <option value="">-- Select --</option>
                                             <option value="0">Chưa tiếp nhận</option>
-                                            <option value="1">Đã xử lí</option>
-                                            <option value="2">Hủy bỏ</option>
+                                            <option value="1">Đã chuyển tiếp</option>
+                                            <option value="2">Đang xử lí</option>
+                                            <option value="3">Đã xử lí</option>
+                                            <option value="4">Hủy bỏ</option>
                                         </select>
                                     </div>
                                 </div>
@@ -62,30 +56,41 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="input-group mb-4">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">From</div>
+                                        <div class="input-group-prepend ">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i>&nbsp;</div>
                                         </div>
-                                        <input type="datetime-local" name="show_from" class="form-control" id="show_from"
-                                               placeholder="Date From" value="<?php echo date('Y-m-d 00:00'); ?>"/>
+                                        <input class="form-control" id="daterange" type="text" name="daterange" />
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="input-group mb-4">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">To</div>
-                                        </div>
-                                        <input type="datetime-local" name="show_to" class="form-control" id="show_to"
-                                               placeholder="Date To" value="<?php echo date('Y-m-d\TH:s'); ?>"/>
-                                    </div>
-                                </div>
-                                <div class="filter-class" style="width: 100%; text-align: center">
+                                <div class="float-left col-md-1 filter-class" style="width: 100%; text-align: center">
                                     <button type="button" id="filter_condition" class="btn btn-sm btn-primary mb-4">Search</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <!--begin::Table-->
-                    {!! $dataTable->table() !!}
+                    <div class="tabbable-custom">
+                        <ul class="nav mb-3 nav-tabs" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pills-detail-tab" data-toggle="pill" href="#pills-detail"
+                                   role="tab" aria-controls="pills-detail" aria-selected="true">Table</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-overview-tab" data-toggle="pill" href="#pills-overview"
+                                   role="tab" aria-controls="pills-overview" aria-selected="false">Overview</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-detail" role="tabpanel"
+                                 aria-labelledby="pills-detail-tab">
+                                {!! $detail->table(['width' => '100%', 'id'=>'table-detail']) !!}
+                            </div>
+                            <div class="tab-pane fade" id="pills-overview" role="tabpanel"
+                                 aria-labelledby="pills-overview-tab">
+                                {!! $overview->table(['width' => '100%', 'id'=>'table-overview']) !!}
+                            </div>
+                        </div>
+                    </div>
                     <!--end::Table-->
                 </div>
             </div>
@@ -110,17 +115,21 @@
     </div>
 
 @endsection
-{{ $dataTable->scripts() }}
 @push('scripts')
-    {{ $dataTable->scripts() }}
+    {!! $detail->scripts() !!}
+    {!! $overview->scripts() !!}
     <script>
-        const table = $('#PaymentSupport_manage');
-        table.on('preXhr.dt', function(e, settings, data){
+        const detail = $('#table-detail');
+        const overview = $('#table-overview');
+
+        let data = function (e, settings, data) {
             data.type = $('#show_at').val();
             data.phone = $('#phone_filter').val();
-            data.public_date_start = $('#show_from').val();
-            data.public_date_end = $('#show_to').val();
-        });
+            data.daterange = $('#daterange').val();
+        };
+
+        detail.on('preXhr.dt', data);
+        overview.on('preXhr.dt', data);
 
         $(document).ready(function() {
             $('body').on('click', '#detail', function (event) {
@@ -145,10 +154,11 @@
                         $("#spinner").addClass("show");
                     },
                     success: (data) => {
+                        console.log(data);
                         $("#spinner").removeClass("show");
-                        showMessage('success',data.data.message);
+                        showMessage('success',data.html);
                         $('#submitAjax').prop('disabled', false);
-                        table.DataTable().ajax.reload();
+                        detail.DataTable().ajax.reload();
                     }
                 });
             });

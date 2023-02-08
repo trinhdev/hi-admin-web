@@ -135,3 +135,7 @@
 .btn-light{
   border-color: #2e2a2a73;
 }
+
+.daterangepicker .ranges {
+    width: auto;
+}
