@@ -282,6 +282,19 @@ if (!function_exists('rand_color')) {
     }
 }
 
+if (!function_exists('split_date')) {
+    function split_date($value): array
+    {
+        $date = explode('-', $value);
+        if (!$date) {
+            $from = \Carbon\Carbon::parse($date[0])->format('Y-m-d H:i:s');
+            $to = \Carbon\Carbon::parse($date[1])->format('Y-m-d H:i:s');
+            return [$from, $to];
+        }
+        return [];
+    }
+}
+
 if (!function_exists('changeFormatDateLocal')) {
     function changeFormatDateLocal($value): string
     {
