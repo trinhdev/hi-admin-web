@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Hi_FPT\AppController;
-use App\Http\Controllers\Hi_FPT\PaymentSupportController;
 use App\Http\Controllers\Hi_FPT\PopupPrivateController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
 use App\Http\Controllers\Hi_FPT\ResetPasswordWrongController;
@@ -378,10 +377,10 @@ Route::group([
                 Route::post('/store', [GetPhoneNumberController::class, 'store'])->name('getPhoneNumber.store');
             });
 
-            Route::prefix('payment-support')->group(function () {
-                Route::get('/', [PaymentSupportController::class, 'index'])->name('paymentSupport.index');
-                Route::get('/', [PaymentSupportController::class, 'index'])->name('paymentSupport.index');
-                Route::post('/update/{id}', [PaymentSupportController::class, 'update'])->name('paymentSupport.update');
+            Route::prefix('payment-support')->controller(PaymentSupportController::class)->group(function () {
+                Route::get('/','index')->name('paymentSupport.index');
+                Route::post('/update/{id}','update')->name('paymentSupport.update');
+                Route::get('/show/{id}','show')->name('paymentSupport.show');
             });
 
             Route::prefix('render-deeplink')->group(function () {

@@ -6,6 +6,7 @@ use App\Contract\Hi_FPT\PaymentSupportInterface;
 use App\DataTables\Hi_FPT\PaymentSupportDataTable;
 use App\DataTables\Hi_FPT\PaymentSupportDataTableOverView;
 use App\Http\Controllers\MY_Controller;
+use App\Http\Requests\PaymentSupportRequest\StoreRequest;
 use Illuminate\Http\Request;
 
 class PaymentSupportController extends MY_Controller
@@ -24,7 +25,12 @@ class PaymentSupportController extends MY_Controller
         return $this->PaymentSupportRepository->index($dataTable, $dataTableOverview, $request);
     }
 
-    public function update(Request $request, $id)
+    public function show($id)
+    {
+        return $this->PaymentSupportRepository->show($id);
+    }
+
+    public function update(StoreRequest $request, $id)
     {
         return $this->PaymentSupportRepository->update($request, $id);
     }

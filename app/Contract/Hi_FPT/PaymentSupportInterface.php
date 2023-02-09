@@ -10,4 +10,5 @@ interface PaymentSupportInterface extends RepositoryInterface
     public const CANCEL = 2;
     public function index($dataTable, $dataTableOverview, $params);
     public function update($params, $id);
+    public function show($id);
 }

@@ -367,13 +367,14 @@ if (!function_exists('breadcrumb')) {
         $link = request()->segment(1);
         $replace_link_first = ucwords(str_replace('-', ' ', $link));
         $value = <<<HTML
-                    <li class="breadcrumb-item"><a href="/home">Home</a></li><li class="breadcrumb-item active"><a href="/$link">$replace_link_first</a></li>
+                    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="/$link">$replace_link_first</a></li>
                 HTML;
 
         $link2 = request()->segment(2);
         if ($link2) {
             $replace_link_second = ucwords(str_replace('-', ' ', $link2));
-            $value.= '<li class="breadcrumb-item active"><a href='.$link2.'>'.$replace_link_second.'</a></li>';
+            $value.= '<li class="breadcrumb-item"><a href='.$link2.'>'.$replace_link_second.'</a></li>';
         }
         return $value;
     }

@@ -89,7 +89,6 @@
                         <div class="help-ts">
                             <i class="fa fa-info-circle"></i>
                             <span>Kiểm tra biểu thức cronjob <a class="text-primary" target="_blank" href="https://crontab.guru/#*_*_*_*_*">ở đây</a></span>
-                            <span>, liên hệ <a class="text-primary" target="_blank" href="https://zalo.me/0354370175">hỗ trợ </a></span>
                         </div>
 
                     </div>
