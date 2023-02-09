@@ -5,23 +5,7 @@
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase"> Quản lí error payment</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                            <li class="breadcrumb-item active">Phone</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
+        @include('template.breadcrumb', ['name'=>'Quản lí error payment'])
 
         <!-- Main content -->
         <section class="content">
@@ -136,7 +120,23 @@
                 event.preventDefault();
                 let id = $(this).data('id');
                 $('#showDetail_Modal').modal('toggle');
-                window.urlMethod = '/payment-support/update/'+id;
+                let urlMethod = '/payment-support/show/'+id;
+                $.ajax({
+                    url: urlMethod,
+                    type: 'GET',
+                    success: function (response){
+                        console.log(response);
+                        for (const [key, value] of Object.entries(response.data)) {
+                            $('#' + key).val(value);
+                            $('.' + key).val(value);
+                            if(key==='status') {
+                                $('#'+key).trigger('change');
+                            }
+                        }
+                        $('#showDetailBanner_Modal').modal('toggle');
+                        window.urlMethod = '/payment-support/update/'+id;
+                    },
+                });
             });
 
             $('body').on('click', '#submitAjax', function (e){
@@ -159,6 +159,18 @@
                         showMessage('success',data.html);
                         $('#submitAjax').prop('disabled', false);
                         detail.DataTable().ajax.reload();
+                    },
+                    error: function (xhr) {
+                        $("#spinner").removeClass("show");
+                        $('#submitAjax').prop('disabled', false);
+                        var errorString = '';
+                        $.each(xhr.responseJSON.errors, function (key, value) {
+                            errorString = value;
+                            return false;
+                        });
+                        showMessage('error', errorString);
+                        console.log(data);
+
                     }
                 });
             });

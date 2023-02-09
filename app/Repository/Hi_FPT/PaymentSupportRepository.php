@@ -38,13 +38,18 @@ class PaymentSupportRepository extends RepositoryAbstract implements PaymentSupp
 
     public function update($params, $id)
     {
-        $description_error_code = $params->input('description_error_code');
+        $description = $params->input('description');
         $description_error = $params->input('description_error');
         $status = $params->input('status');
         $this->model
             ->where('customer_phone', DB::table('payment_unpaid')->find($id)->customer_phone)
-            ->update(['status'=> $status, 'description_error'=>$description_error, 'description'=>$description_error_code]);
+            ->update(['status'=> $status, 'description_error'=>$description_error, 'description'=>$description]);
         return response()->json(['success' => 'Thành công', 'html' => 'Update thành công!']);
+    }
+
+    public function show($id)
+    {
+        return response()->json(['success' => 'Thành công', 'html' => 'Update thành công!', 'data' => $this->findById($id)]);
     }
 
 }

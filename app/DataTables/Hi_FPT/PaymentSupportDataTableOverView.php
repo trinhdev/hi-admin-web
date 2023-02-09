@@ -12,11 +12,13 @@ class PaymentSupportDataTableOverView extends DataTable
         return datatables()
             ->eloquent($this->query())
             ->editColumn('status', function($row){
-                if ($row->status === '3') {
-                    $data = ['Đã chuyển tiếp & xử lí', 'badge badge-success'] ;
-                } elseif  ($row->status === '1') {
-                    $data = [ 'Đã xử lí', 'badge badge-success'] ;
+                if ($row->status === '1') {
+                    $data = ['Đã chuyển tiếp', 'badge badge-info'] ;
                 } elseif  ($row->status === '2') {
+                    $data = ['Đang xử lí', 'badge badge-info'] ;
+                } elseif  ($row->status === '3') {
+                    $data = ['Đã xử lí', 'badge badge-success'];
+                } elseif  ($row->status === '4') {
                     $data = ['Hủy bỏ', 'badge badge-danger'];
                 } else {
                     $data = ['Chưa tiếp nhận', 'badge badge-warning'] ;

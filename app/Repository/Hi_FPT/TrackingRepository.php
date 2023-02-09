@@ -3,64 +3,70 @@
 namespace App\Repository\Hi_FPT;
 
 use App\Contract\Hi_FPT\TrackingInterface;
-use App\Http\Controllers\MY_Controller;
-use App\Http\Traits\DataTrait;
-use App\Models\Employees;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Carbon;
+use App\Models\SectionLog;
+use App\Repository\RepositoryAbstract;
 use Illuminate\Support\Facades\DB;
 
-class TrackingRepository implements TrackingInterface
+class TrackingRepository extends RepositoryAbstract implements TrackingInterface
 {
-    use DataTrait;
-
-    public function index()
+    protected $model;
+    public function __construct(SectionLog $model)
     {
-        return view('tracking.index');
+        parent::__construct($model);
+        $this->model = $model;
     }
 
-    public function show($id)
+    public function userAnalytics($dataTable, $request)
     {
-        $data = DB::table('Trackings')->find($id);
-        return view('Tracking.edit', ['data'=>$data]);
-    }
-
-    public function create()
-    {
-        return view('Tracking.create');
-    }
-
-    public function store($params)
-    {
-        try {
-            DB::table('Trackings')->insert($params->only(['direction','name','url']));
-            switch ($params->input('action')) {
-                case 'back':
-                    return redirect()->intended('Tracking')->with(['success'=>'Update thành công', 'html'=>'Thêm mới thành công']);;
-                case 'stay':
-                    return redirect()->back();
-            }
-        } catch (\Exception $e) {
-            return back()->with(['error'=>'Lỗi hệ thống', 'html'=>$e->getMessage()]);
+        $table_detail = $dataTable->with([ 'data_detail'=> DB::connection('mysql4')->table('customers')->select('*')]);
+        $total = $this->model->count();
+        $new = $this->model->where('created_at', today())->count();
+        $unique = $this->model->groupBy('phone')->count();
+        $dataChart = $this->model->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as views'))
+            ->groupBy('date');
+        if ($request->date) {
+            $dataChart->whereBetween('created_at', split_date($request->date));
         }
-    }
-
-    public function update($params, $id)
-    {
-        Tracking::find($id)->update($params->only(['direction','name','url']));
-        switch ($params->input('action')) {
-            case 'back':
-                return redirect()->intended('Tracking')->with(['success'=>'Update thành công', 'html'=>'Update thành công']);
-            case 'stay':
-                return redirect()->back()->with(['success'=>'Update thành công', 'html'=>'Update thành công']);
+        if ($request->ajax() && request()->get('table') == 'detail') {
+            return $table_detail->render('tracking.user');
         }
+        return view('tracking.user', [
+            'detail'    => $table_detail->html(),
+            'data'      => ['total_section' => $total, 'new_section'=>$new, 'unique_section'=>$unique],
+            'dataChart' => $dataChart->get()->toArray()
+        ]);
     }
 
-    public function delete($id)
+    public function views()
     {
-        Tracking::destroy($id);
-        return redirect()->intended('Tracking')->with(['success'=>'Delete thành công', 'html'=>'Delete thành công']);
+        return view('tracking.views');
+    }
+
+    public function sessionAnalytics($dataTable, $request)
+    {
+        $table_detail = $dataTable->with([ 'data_detail'=> $this->model->select('*')]);
+        $total = $this->model->count();
+        $new = $this->model->where('created_at', today())->count();
+        $unique = $this->model->groupBy('phone')->count();
+
+        $dataChart = $this->model->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as views'))
+            ->groupBy('date');
+        if ($request->date) {
+            $dataChart->whereBetween('created_at', split_date($request->date));
+        }
+        if ($request->ajax() && request()->get('table') == 'detail') {
+            return $table_detail->render('tracking.session');
+        }
+        return view('tracking.session', [
+            'detail'    => $table_detail->html(),
+            'data'      => ['total_section' => $total, 'new_section'=>$new, 'unique_section'=>$unique],
+            'dataChart' => $dataChart->get()->toArray()
+        ]);
+    }
+
+    public function journeyAnalysis()
+    {
+        return view('tracking.journey-analysis');
     }
 
 }

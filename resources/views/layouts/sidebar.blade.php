@@ -27,7 +27,6 @@
                         @if(isset($group->children) && !empty($group->children))
                            <li class="nav-item menu">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
                                     <p>
                                         {{ $group->group_module_name}}
                                         <i class="right fas fa-angle-left"></i>

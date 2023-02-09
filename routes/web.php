@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Hi_FPT\AppController;
-use App\Http\Controllers\Hi_FPT\PaymentSupportController;
 use App\Http\Controllers\Hi_FPT\PopupPrivateController;
 use App\Http\Controllers\Hi_FPT\PopupManageController;
 use App\Http\Controllers\Hi_FPT\ResetPasswordWrongController;
@@ -9,7 +8,6 @@ use App\Http\Controllers\Hi_FPT\ScreenController;
 use App\Http\Controllers\Hi_FPT\DeeplinkController;
 use App\Http\Controllers\Hi_FPT\SectionLogController;
 use App\Http\Controllers\Hi_FPT\StatisticController;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -379,10 +377,10 @@ Route::group([
                 Route::post('/store', [GetPhoneNumberController::class, 'store'])->name('getPhoneNumber.store');
             });
 
-            Route::prefix('payment-support')->group(function () {
-                Route::get('/', [PaymentSupportController::class, 'index'])->name('paymentSupport.index');
-                Route::get('/', [PaymentSupportController::class, 'index'])->name('paymentSupport.index');
-                Route::post('/update/{id}', [PaymentSupportController::class, 'update'])->name('paymentSupport.update');
+            Route::prefix('payment-support')->controller(PaymentSupportController::class)->group(function () {
+                Route::get('/','index')->name('paymentSupport.index');
+                Route::post('/update/{id}','update')->name('paymentSupport.update');
+                Route::get('/show/{id}','show')->name('paymentSupport.show');
             });
 
             Route::prefix('render-deeplink')->group(function () {
@@ -391,8 +389,10 @@ Route::group([
             });
 
             Route::prefix('tracking')->controller(TrackingController::class)->group(function () {
-                Route::get('/','index')->name('tracking.index');
-                Route::post('/', 'store')->name('tracking.post');
+                Route::get('/views','views')->name('tracking.views');
+                Route::get('/user-analytics','userAnalytics')->name('tracking.userAnalytics');
+                Route::get('/session-analytics','sessionAnalytics')->name('tracking.sessionAnalytics');
+                Route::get('/journey-analysis','journeyAnalysis')->name('tracking.journeyAnalysis');
             });
 
             Route::prefix('employees-updates')->group(function () {
