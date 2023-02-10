@@ -56,7 +56,6 @@ class PopUpDataTable extends DataTable
             ->responsive()
             ->orderBy(8)
             ->autoWidth(true)
-            ->deferRender(true)
             ->parameters([
                 'scroll' => false,
                 'scrollX' => false,
@@ -66,21 +65,18 @@ class PopUpDataTable extends DataTable
                 'buttons' => [
                     [
                         'extend'=> 'collection',
-                        'text' =>'Add pop-up',
+                        'text' =>'<i class="fas fa-plus"></i> Add Pop-up',
                         'autoClose'=> true,
                         'action'    => 'function ( e, dt, node, config ) {}',
                         'attr'      =>  [
                             'id'=>'push_popup_public',
-                            'class' =>'btn btn-secondary action-item'
+                            'class' =>'btn btn-info'
                         ]
                     ],
                     [
                         'extend'=> 'collection',
                         'text' =>'Lọc hiển thị',
                         'autoClose'=> true,
-                        'attr' => [
-                            'class' =>'btn btn-sm btn-primary'
-                        ],
                         'buttons'=> [
                             [
                                 'text'      =>'Center box có button',
@@ -135,27 +131,14 @@ class PopUpDataTable extends DataTable
                     [
                         'text' => 'Copy',
                         'extend' => 'copyHtml5',
-                        'attr' => [
-                            'class' =>'btn btn-sm btn-primary px-4'
-                        ]
                     ],
                     [
                         'text' => 'Excel',
                         'extend' => 'excel',
-                        'attr' => [
-                            'class' =>'btn btn-sm btn-primary px-4'
-                        ]
                     ]
                 ]
             ])
-            ->addTableClass('table table-hover text-center w-100')
-            ->languageEmptyTable('Không có dữ liệu')
-            ->languageInfoEmpty('Không có dữ liệu')
-            ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
-            ->languageSearch('Tìm kiếm')
-            ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
-            ->languageLengthMenu('Hiển thị _MENU_')
-            ->languageInfo('<div class="border border-black wrap-border col-2 p-auto text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
+            ->addTableClass('table table-hover text-center w-100 table-header-color');
     }
 
     /**
@@ -171,11 +154,11 @@ class PopUpDataTable extends DataTable
                 ->width(10)
                 ->sortable(false),
             Column::make('titleVi')->title('Tiêu đề'),
-            Column::make('image')->title('Hình ảnh')->sortable(false),
+            Column::make('image')->title('Image')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
-            Column::make('templateType')->title('Loại template'),
-            Column::make('viewCount')->title('Số lượt view'),
-            Column::make('createdBy')->title('Người tạo'),
+            Column::make('templateType')->title('Loại template')->width(120),
+            Column::make('viewCount')->title('View'),
+            Column::make('createdBy')->title('created By')->width(80),
             Column::make('dateCreated')->title('Ngày tạo'),
             Column::computed('action')
                 ->searching(false)

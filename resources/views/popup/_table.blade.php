@@ -1,5 +1,5 @@
 <!--begin::Table-->
-{{ $dataTable->table([], true) }}
+{{ $dataTable->table([], $footer = false) }}
 <!--end::Table-->
 
 @push('scripts')

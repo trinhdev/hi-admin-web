@@ -52,10 +52,15 @@ class BannerManageRepository implements BannerManageInterface
     {
         $perPage = $params->length ?? null;
         $currentPage = $params->start == 0 ? 1 : ($params->start / $perPage) + 1;
+        $date = explode('-', $params->daterange);
+        if (!empty($date[0])) {
+            $form = changeFormatDateLocal($date[0]);
+            $to = changeFormatDateLocal($date[1]);
+        }
         $form_params = [
             'banner_type' => $params->bannerType ?? null,
-            'public_date_start' => $params->public_date_start ?? null,
-            'public_date_end' => $params->public_date_end ?? null,
+            'public_date_start' => $form ?? null,
+            'public_date_end' => $to ?? null,
             'order_by' => $params->columns[$params->order[0]['column'] ?? 0]['data'] ?? 'event_id',
             'per_page' => $perPage,
             'current_page' => $currentPage,
@@ -116,7 +121,7 @@ class BannerManageRepository implements BannerManageInterface
             $response = $this->client->request('POST', $this->listMethod['CREATE_BANNER'], [
                 'headers' => $this->headers,
                 // 'form_params' => array_filter($form_params)
-                'json'  => json_encode($form_params)
+                'body'  => json_encode($form_params)
             ])->getBody()->getContents();
             // dd($this->listMethod['CREATE_BANNER']);
             return response()->json(['data' => json_decode($response)]);

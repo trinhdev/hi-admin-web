@@ -9,11 +9,9 @@ Contact: trinhhuynhdp@gmail.com
     <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
 @endpush
 @section('content')
-
-        <!-- Content Wrapper. Contains page content -->
+    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         @include('template.breadcrumb', ['name' => 'Quản lí popup định danh'])
-
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">

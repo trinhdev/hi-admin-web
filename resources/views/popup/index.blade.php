@@ -1,7 +1,6 @@
 @extends('layouts.default')
 @push('header')
     <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/table.css">
 @endpush
 @section('content')
         <!-- Content Wrapper. Contains page content -->

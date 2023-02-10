@@ -75,35 +75,23 @@ class PopUpPrivateDataTable extends DataTable
                 'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-8"B><"col-1 mt-2 "><"col-2 mt-2"f>>irtp',
                 'buttons' => [
                     [
-                        'text' => 'Add pop-up',
+                        'text' => '<i class="fas fa-plus"></i> Add',
                         'attr' => [
                             'id' => 'push_popup_private_form',
-                            'class' =>'btn btn-sm btn-primary'
+                            'class' =>'btn btn-info'
                         ]
                     ],
                     [
                         'text' => 'Copy',
                         'extend' => 'copyHtml5',
-                        'attr' => [
-                            'class' =>'btn btn-sm btn-primary px-4'
-                        ]
                     ],
                     [
                         'text' => 'Excel',
                         'extend' => 'excel',
-                        'attr' => [
-                            'class' =>'btn btn-sm btn-primary px-4'
-                        ]
                     ]
                 ]
             ])
-            ->addTableClass('table table-hover text-center w-100')
-            ->languageEmptyTable('Không có dữ liệu')
-            ->languageInfoEmpty('Không có dữ liệu')
-            ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
-            ->languageSearch('Tìm kiếm')
-            ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
-            ->languageLengthMenu('Hiển thị _MENU_')
+            ->addTableClass('table table-hover text-center w-100 table-header-color')
             ->languageInfo('<div class="text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
     }
 

@@ -122,9 +122,30 @@ class BannerManageDataTable extends DataTable
                     $(filter_condition).on('click', function () {
                         table.ajax.reload();
                     });
-                 }"
+                 }",
+                'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-9"B><"col-md-1 float-left mt-2 ">>rtp',
+                'buttons' => [
+                    [
+                        'extend'=> 'collection',
+                        'text' =>'<i class="fas fa-plus"></i> Add',
+                        'autoClose'=> true,
+                        'attr'      =>  [
+                            'id'=>'addBanner',
+                            'class' =>'btn btn-info btn-sm'
+                        ]
+                    ],
+                    [
+                        'extend'=> 'collection',
+                        'text' =>'Update Banner Fconnect',
+                        'autoClose'=> true,
+                        'attr'      =>  [
+                            'id'=>'updateBannerFconnect',
+                            'class' =>'btn btn-info btn-sm'
+                        ]
+                    ],
+                ]
             ])
-            ->addTableClass('table table-hover table-striped text-center w-100')
+            ->addTableClass('table table-hover table-striped text-center w-100 table-header-color')
             ;
     }
 
