@@ -18,15 +18,20 @@ class PopupManageRepository implements PopupManageInterface
     private $listMethod;
     private $client;
     private $headers;
+    private $api_config;
     public function __construct()
     {
-        $api_config         = config('configDomain.DOMAIN_NEWS_EVENT.' . env('APP_ENV'));
-        $this->listMethod   = config('configMethod.DOMAIN_NEWS_EVENT');
-        $this->client       = new Client(['base_uri' => $api_config['URL']]);
-        $this->headers      = [
-            'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m")),
-            'clientKey'     => $api_config['CLIENT_KEY']
-        ];
+        $this->api_config         = config('configDomain.DOMAIN_NEWS_EVENT.'.env('APP_ENV'));
+        $api_config         = config('configDomain.DOMAIN_NEWS_EVENT.'.env('APP_ENV'));
+        if ($api_config) {
+            $this->listMethod   = config('configMethod.DOMAIN_NEWS_EVENT');
+            $this->client       = new Client(['base_uri' => $api_config['URL']]);
+            $this->headers      = [
+                'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m")),
+                'clientKey'     => $api_config['CLIENT_KEY']
+            ];
+        }
+
     }
 
     public function all($dataTable, $params)

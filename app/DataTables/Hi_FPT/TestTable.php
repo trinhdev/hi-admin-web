@@ -3,11 +3,12 @@
 namespace App\DataTables\Hi_FPT;
 
 use App\Contract\Hi_FPT\DeeplinkInterface;
-use App\DataTables\BuilderDatatables;
 use App\Models\Deeplink;
-use Illuminate\Support\Facades\Auth;
+
+use App\DataTables\BuilderDatatables;
+
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
 class TestTable extends BuilderDatatables
@@ -20,24 +21,24 @@ class TestTable extends BuilderDatatables
     /**
      * @var bool
      */
+    protected $useDefaultSorting = false;
+
+    /**
+     * @var bool
+     */
     protected $hasFilter = true;
 
     /**
-     * @var string
-     */
-//    protected $exportClass = ContactExport::class;
-
-    /**
-     * ContactTable constructor.
+     * DeeplinkTable constructor.
      * @param DataTables $table
      * @param UrlGenerator $urlGenerator
-     * @param DeeplinkInterface $contactRepository
+     * @param DeeplinkInterface $DeeplinkRepository
      */
-    public function __construct(DataTables $table, UrlGenerator $urlGenerator, DeeplinkInterface $contactRepository)
+    public function __construct(DataTables $table, UrlGenerator $urlGenerator, DeeplinkInterface $DeeplinkRepository)
     {
-        parent::__construct($table, $urlGenerator);
+        parent::__construct($table, $urlGenerator, $DeeplinkRepository);
 
-        $this->repository = $contactRepository;
+        $this->repository = $DeeplinkRepository;
     }
 
     /**
@@ -46,12 +47,25 @@ class TestTable extends BuilderDatatables
     public function ajax()
     {
         $data = $this->table
-            ->eloquent($this->query())
+            ->of($this->query())
+            ->editColumn('name', function ($item) {
+                if (!Auth::user()->hasPermission('categories.edit')) {
+                    return BaseHelper::clean($item->name);
+                }
+
+                return Html::link(route('categories.edit', $item->id), $item->indent_text . ' ' . BaseHelper::clean($item->name));
+            })
             ->editColumn('checkbox', function ($item) {
                 return $this->getCheckbox($item->id);
             })
+            ->editColumn('created_at', function ($item) {
+                return changeFormatDateLocal($item->created_at);
+            })
+            ->editColumn('updated_at', function ($item) {
+                return changeFormatDateLocal($item->updated_at);
+            })
             ->addColumn('operations', function ($item) {
-                return $this->getOperations('contacts.edit', 'contacts.destroy', $item);
+                return view('table.actions', compact('item'))->render();
             });
         return $this->toJson($data);
     }
@@ -59,16 +73,10 @@ class TestTable extends BuilderDatatables
     /**
      * {@inheritDoc}
      */
-    public function query()
+    public function query(Deeplink $model)
     {
-        $query = Deeplink::select([
-            'id',
-            'name',
-            'direction',
-            'url',
-            'created_at'
-        ]);
-        return $this->applyScopes($query);
+
+        return collect($model->select('*'));
     }
 
     /**
@@ -76,24 +84,18 @@ class TestTable extends BuilderDatatables
      */
     public function columns(): array
     {
+
         return [
             'id' => [
-                'title' => trans('id'),
+                'title' => 'id',
                 'width' => '20px',
             ],
             'name' => [
-                'title' => trans('name'),
+                'title' => 'name',
                 'class' => 'text-start',
-            ],
-            'email' => [
-                'title' => trans('email'),
-                'class' => 'text-start',
-            ],
-            'phone' => [
-                'title' => trans('phone'),
             ],
             'created_at' => [
-                'title' => trans('created_at'),
+                'title' => 'created_at',
                 'width' => '100px',
             ]
         ];
@@ -102,11 +104,41 @@ class TestTable extends BuilderDatatables
     /**
      * {@inheritDoc}
      */
-    public function getDefaultButtons(): array
+    public function buttons(): array
     {
-        return [
-            'export',
-            'reload',
-        ];
+
+        return $this->addCreateButton(route('deeplink.create'), (array)'deeplink.create');
     }
+
+    /**
+     * {@inheritDoc}
+     */
+//    public function bulkActions(): array
+//    {
+//        return $this->addDeleteAction(route('deeplink.delete'), 'deeplink.destroy', parent::bulkActions());
+//    }
+
+    /**
+     * {@inheritDoc}
+     */
+//    public function getBulkChanges(): array
+//    {
+//        return [
+//            'name' => [
+//                'title' => trans('core/base::tables.name'),
+//                'type' => 'text',
+//                'validate' => 'required|max:120',
+//            ],
+//            'status' => [
+//                'title' => trans('core/base::tables.status'),
+//                'type' => 'customSelect',
+//                'choices' => BaseStatusEnum::labels(),
+//                'validate' => 'required|in:' . implode(',', BaseStatusEnum::values()),
+//            ],
+//            'created_at' => [
+//                'title' => trans('core/base::tables.created_at'),
+//                'type' => 'date',
+//            ],
+//        ];
+//    }
 }

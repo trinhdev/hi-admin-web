@@ -115,7 +115,7 @@ class PopUpPrivateDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::make('id')->title('ID'),
+            Column::make('temPerId')->title('ID'),
             Column::make('iconUrl')->title('Hình ảnh')->sortable(false),
             Column::make('iconButtonUrl')->title('Ảnh button'),
             Column::make('dataAction')->title('Nơi điều hướng'),

@@ -29,18 +29,20 @@ class BannerManageRepository implements BannerManageInterface
     {
         $api_config = config('configDomain.DOMAIN_NEWS_EVENT.' . env('APP_ENV'));
         $this->listMethod = config('configMethod.DOMAIN_NEWS_EVENT');
-        $this->client = new Client(['base_uri' => $api_config['URL']]);
-        $this->headers = [
-            'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m")),
-            'clientKey' => $api_config['CLIENT_KEY'],
-            'Content-Type' => 'application/json'
-        ];
-        $this->listTypeBanner = json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TYPE_BANNER'], [
-            'headers' => $this->headers
-        ])->getBody()->getContents())->data;
-        $this->listTargetRoute = json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TARGET_ROUTE'], [
-            'headers' => $this->headers
-        ])->getBody()->getContents())->data;
+        if ($api_config) {
+            $this->client = new Client(['base_uri' => $api_config['URL']]);
+            $this->headers = [
+                'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m")),
+                'clientKey' => $api_config['CLIENT_KEY'],
+                'Content-Type' => 'application/json'
+            ];
+            $this->listTypeBanner = json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TYPE_BANNER'], [
+                'headers' => $this->headers
+            ])->getBody()->getContents())->data;
+            $this->listTargetRoute = json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TARGET_ROUTE'], [
+                'headers' => $this->headers
+            ])->getBody()->getContents())->data;
+        }
     }
 
     /**

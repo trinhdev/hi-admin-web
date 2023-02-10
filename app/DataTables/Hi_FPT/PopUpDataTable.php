@@ -2,9 +2,7 @@
 
 namespace App\DataTables\Hi_FPT;
 
-use App\Contract\Hi_FPT\PopupManageInterface;
 use Yajra\DataTables\Html\Column;
-use App\Services\NewsEventService;
 use Yajra\DataTables\Services\DataTable;
 
 class PopUpDataTable extends DataTable
@@ -58,6 +56,7 @@ class PopUpDataTable extends DataTable
             ->responsive()
             ->orderBy(8)
             ->autoWidth(true)
+            ->deferRender(true)
             ->parameters([
                 'scroll' => false,
                 'scrollX' => false,
@@ -72,7 +71,7 @@ class PopUpDataTable extends DataTable
                         'action'    => 'function ( e, dt, node, config ) {}',
                         'attr'      =>  [
                             'id'=>'push_popup_public',
-                            'class' =>'btn btn-sm btn-primary'
+                            'class' =>'btn btn-secondary action-item'
                         ]
                     ],
                     [

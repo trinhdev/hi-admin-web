@@ -1,12 +1,8 @@
 <!-- Main content -->
-<style>
-    .Edit {
-    }
-</style>
 <section class="content">
     <div class="container-fluid">
         <div class="card card-body col-sm-12 mt-2">
-            <table id="phoneExport" class="table table-striped" style="width:100%">
+            <table id="phoneExport" class="table table-hover table-striped text-center w-100 table-header-color" style="width:100%">
                 <thead>
                 <tr>
                     <th>STT</th>
@@ -25,7 +21,7 @@
                     <th>Code</th>
                     <th>Branch Code</th>
                     <th>Branch Name</th>
-                    
+
                     <th>Đang hoạt động</th>
                     <th>Cập nhật</th>
                     <th>dept_id</th>
@@ -62,7 +58,7 @@
                             <td>{{ $value['branch_code'] ?? null }}</td>
                             <td>{{ $value['branch_name'] ?? null }}</td>
                             <td>{{ $value['area_code'] ?? null }}</td>
-                            
+
                             <td>{{ $value['isActive'] ?? null }}</td>
                             <td>{{ $value['checkUpdate'] ?? null }}</td>
                             <td>{{ $value['dept_id'] ?? null }}</td>
@@ -71,23 +67,9 @@
                             <td>{{ $value['created_at'] ?? null }}</td>
                             <td>{{ $value['updated_at'] ?? null }}</td>
                             <td>{{ $value['updated_from'] ?? null }}</td>
-                            {{--<td>
-                                @if(!empty($value['check']))
-                                    @if($value['check']==='TRUE')
-                                        <div class="text-success text-bold">TRUE</div>
-                                    @elseif($value['check']==='FALSE')
-                                        <div class="text-danger text-bold">FALSE</div>
-                                    @else
-                                        <i>null</i>
-                                    @endif
-                                @else
-                                    null
-                                @endif
-                            </td>--}}
                             @if(isset($value['id']) && Auth::user()->role_id == ADMIN || Auth::user()->role_id == DOISOAT)
                                 <td>
-                                    <a href="{{ route('ftel_phone.edit', [$value['id']]) }}" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-edit"></i> Edit
+                                    <a href="{{ route('ftel_phone.edit', [$value['id']]) }}" class="btn btn-primary btn-sm">Edit
                                     </a>
                                 </td>
                             @else

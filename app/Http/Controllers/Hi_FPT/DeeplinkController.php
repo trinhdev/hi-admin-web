@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Hi_FPT;
 
 use App\Contract\Hi_FPT\DeeplinkInterface;
 use App\DataTables\Hi_FPT\DeeplinkDataTable;
+use App\DataTables\Hi_FPT\TestTable;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\DeeplinkRequest\StoreRequest;
 use App\Http\Requests\DeeplinkRequest\UpdateRequest;

@@ -4,19 +4,9 @@ namespace App\Repository\Hi_FPT;
 
 use App\Contract\Hi_FPT\PopupPrivateInterface;
 use App\Http\Traits\DataTrait;
-use App\Imports\FtelPhoneImport;
-use App\Rules\NumberPhoneRule;
 use App\Services\NewsEventService;
-use App\Services\PopupPrivateService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
-use GuzzleHttp\Promise\Utils;
-use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Exception\RequestException;
 
 class PopupPrivateRepository implements PopupPrivateInterface
 {
@@ -28,12 +18,14 @@ class PopupPrivateRepository implements PopupPrivateInterface
     public function __construct()
     {
         $api_config         = config('configDomain.DOMAIN_CUSTOMER.' . env('APP_ENV'));
-        $this->url          = $api_config['URL'];
-        $this->listMethod   = config('configMethod.DOMAIN_POPUP_PRIVATE');
-        $this->client       = new Client(['base_uri' => $this->url]);
-        $this->headers      = [
-            'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m"))
-        ];
+        if ($api_config) {
+            $this->listMethod   = config('configMethod.DOMAIN_POPUP_PRIVATE');
+            $this->url          = $api_config['URL'];
+            $this->client       = new Client(['base_uri' => $this->url]);
+            $this->headers      = [
+                'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m"))
+            ];
+        }
     }
     public function all($dataTable, $params)
     {

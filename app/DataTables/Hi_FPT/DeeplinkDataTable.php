@@ -2,6 +2,7 @@
 
 namespace App\DataTables\Hi_FPT;
 
+use App\DataTables\BuilderDatatables;
 use App\Models\Deeplink;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,7 +33,10 @@ class DeeplinkDataTable extends DataTable
                        </div>
                 ';
             })
-            ->rawColumns(['action']);
+            ->addColumn('operations', function ($item) {
+                return ;
+            })
+            ->rawColumns(['action','operations']);
     }
 
     /**
@@ -88,20 +92,6 @@ class DeeplinkDataTable extends DataTable
      *
      * @return array
      */
-    protected function getColumns()
-    {
-        return [
-            Column::make('id')->title('ID'),
-            Column::make('name')->title('Tên deeplink'),
-            Column::make('direction')->title('Điều hướng'),
-            Column::make('url')->title('URL'),
-            Column::make('created_at')->title('Ngày Tạo'),
-            Column::computed('action')->sortable(false)
-                  ->searching(false)
-                  ->width(80)
-                  ->addClass('text-center')
-        ];
-    }
 
     /**
      * Get filename for export.
@@ -111,5 +101,20 @@ class DeeplinkDataTable extends DataTable
     protected function filename()
     {
         return 'Deeplink_' . date('YmdHis');
+    }
+
+    public function getColumns()
+    {
+        return [
+            Column::make('id')->title('ID'),
+            Column::make('name')->title('Tên deeplink'),
+            Column::make('direction')->title('Điều hướng'),
+            Column::make('url')->title('URL'),
+            Column::make('created_at')->title('Ngày Tạo'),
+            Column::computed('action')->sortable(false)
+                ->searching(false)
+                ->width(80)
+                ->addClass('text-center')
+        ];
     }
 }

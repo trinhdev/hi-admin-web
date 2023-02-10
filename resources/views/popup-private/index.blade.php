@@ -5,28 +5,14 @@ Contact: trinhhuynhdp@gmail.com
 -->
 
 @extends('layouts.default')
-
+@push('header')
+    <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
+@endpush
 @section('content')
 
         <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Popup Định Danh</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                            <li class="breadcrumb-item active">Quản lý Popup Định Danh</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
+        @include('template.breadcrumb', ['name' => 'Quản lí popup định danh'])
 
         <!-- Main content -->
         <section class="content">
@@ -40,15 +26,26 @@ Contact: trinhhuynhdp@gmail.com
     </div>
     <!-- /.content-wrapper -->
     @include('popup-private._modal_add_update')
+    @include('template.modal', ['id' => 'show_form_export', 'title'=>'Export Data User Click', 'form'=>'popup.export'])
 @endsection
 @push('scripts')
     <script>
         $(document).ready(function() {
             showHide();
-            changeFileNumberPhone();
+            postPhone('/popup-private/importPrivate');
             methodAjaxPopupPrivate();
             handlePushPopUpPrivate();
             checkStatusPopUpPrivate();
+            $('body').on('click', '#exportPopup', function (e) {
+                e.preventDefault();
+                $('#show_form_export').modal('toggle');
+                document.getElementById('formExport').reset();
+                let id = $(this).data('id');
+                document.getElementById("formExport").action = "/popupmanage/export/" + id;
+            });
+            $('body').on('click', '#exportPopup', function (e){
+                $('#show_form_export').modal('toggle');
+            });
         });
     </script>
 @endpush
