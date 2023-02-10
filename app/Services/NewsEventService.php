@@ -13,12 +13,15 @@ class NewsEventService
     private $listMethod;
     public function __construct()
     {
-        $api_config         = config('configDomain.DOMAIN_NEWS_EVENT.' . env('APP_ENV'));
-        $this->baseUrl      = $api_config['URL'];
-        $this->clientKey    = $api_config['CLIENT_KEY'];
-        $this->secretKey    = $api_config['SECRET_KEY'];
-        $this->token        = md5($this->clientKey . "::" . $this->secretKey . date("Y-d-m"));
         $this->listMethod = config('configMethod.DOMAIN_NEWS_EVENT');
+        $api_config         = config('configDomain.DOMAIN_NEWS_EVENT.' . env('APP_ENV'));
+        if ($api_config) {
+            $this->baseUrl      = $api_config['URL'];
+            $this->clientKey    = $api_config['CLIENT_KEY'];
+            $this->secretKey    = $api_config['SECRET_KEY'];
+            $this->token        = md5($this->clientKey . "::" . $this->secretKey . date("Y-d-m"));
+        }
+
     }
 
     public function getListTargetRoute()

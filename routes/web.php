@@ -11,7 +11,6 @@ use App\Http\Controllers\Hi_FPT\StatisticController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Hi_FPT\FtelPhoneController;
 use App\Http\Controllers\Hi_FPT\EmployeesController;
 use App\Http\Controllers\Hi_FPT\PaymentController;
 use App\Http\Controllers\Hi_FPT\AirDirectionController;
@@ -45,8 +44,9 @@ Route::group([
             Route::get('/getDataChart', 'HomeController@getDataChart')->name('home.getDataChart');
             Route::get('/getPaymentErrorTableData', 'HomeController@getPaymentErrorTableData')->name('home.getPaymentErrorTableData');
         });
-        Route::prefix('file')->group(function () {
-            Route::any('/uploadImageExternal', 'FileController@uploadImageExternal')->name('uploadImageExternalB');
+        Route::prefix('file')->controller(FileController::class)->group(function () {
+            Route::any('/uploadImageExternal', 'uploadImageExternal')->name('uploadImageExternalB');
+            Route::post('/importPhone','importPhone')->name('file.importPhone');
 
         });
         Route::namespace('Admin')->group(function () {
@@ -331,15 +331,15 @@ Route::group([
                 Route::get('/', [StatisticController::class, 'index'])->name('statistics.index');
             });
 
-            Route::prefix('ftel-phone')->group(function () {
-                Route::get('/', [FtelPhoneController::class, 'index'])->name('ftel_phone.index');
-                Route::get('/create', [FtelPhoneController::class, 'create'])->name('ftel_phone.create');
-                Route::post('/store', [FtelPhoneController::class, 'stores'])->name('ftel_phone.store');
-                Route::get('/edit/{id}', [FtelPhoneController::class, 'edit'])->name('ftel_phone.edit');
-                Route::post('/update/{id}', [FtelPhoneController::class, 'update'])->name('ftel_phone.update');
-                Route::post('/check', [FtelPhoneController::class, 'check'])->name('ftel_phone.check');
-                Route::post('/import', [FtelPhoneController::class, 'import'])->name('ftel_phone.import');
-                Route::get('/initDatatable', [FtelPhoneController::class, 'initDatatable'])->name('ftel_phone.initDatatable');
+            Route::prefix('ftel-phone')->controller(FtelPhoneController::class)->group(function () {
+                Route::get('/', 'index')->name('ftel_phone.index');
+                Route::get('/create','create')->name('ftel_phone.create');
+                Route::post('/store','stores')->name('ftel_phone.store');
+                Route::get('/edit/{id}','edit')->name('ftel_phone.edit');
+                Route::post('/update/{id}','update')->name('ftel_phone.update');
+                Route::post('/check','check')->name('ftel_phone.check');
+                Route::post('/import','import')->name('ftel_phone.import');
+                Route::get('/initDatatable','initDatatable')->name('ftel_phone.initDatatable');
             });
 
             Route::prefix('screen')->group(function () {

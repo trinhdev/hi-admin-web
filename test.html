@@ -1,17 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
 <style>
-    p img {
-        width: 20%;
-        height: 150px;
-        margin: 10px;
-        border-radius: 10px;
-        border: 20px solid yellow;
-        box-shadow: 0px 0px 0px 3px rgba(50, 51, 52, 0.4);
+    .product-page-container {
+        display: flex;
+        flex-wrap: wrap;
     }
-</style>
-<p>
-    <img src="./public/images/camera_icon.jpg" alt="">
-    <img src="./public/images/camera_icon.jpg" alt="">
 
-    <img src="./public/images/camera_icon.jpg" alt="">
-    <img src="./public/images/camera_icon.jpg" alt="">
-</p>
+    .product-image {
+        width: 50%;
+        text-align: center;
+    }
+
+    .product-image img {
+        width: 100%;
+    }
+
+    .product-details {
+        width: 50%;
+        padding: 20px;
+    }
+
+    .product-price,
+    .product-quantity,
+    .product-note {
+        margin-bottom: 20px;
+    }
+
+    .price-label,
+    .quantity-label,
+    .note-label {
+        font-weight: bold;
+    }
+
+    .submit-button {
+        background-color: green;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+</style>
+<body>
+<div class="product-page-container">
+    <div class="product-image">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjBbSnL-KdjDpjHuHcpHxTMorvVmNVZtDFLkikEzfUZbMUikh4olicRDrIF0nH9rTPvV0&usqp=CAU" alt="Pizza">
+    </div>
+    <div class="product-details">
+        <h2 class="product-name">Pizza</h2>
+        <div class="product-price">
+            <span class="price-label">Price:</span>
+            <span class="price-value">$10</span>
+        </div>
+        <div class="product-quantity">
+            <span class="quantity-label">Quantity:</span>
+            <input type="number" min="1" value="1">
+        </div>
+        <div class="product-note">
+            <span class="note-label">Note:</span>
+            <textarea></textarea>
+        </div>
+        <button class="submit-button">Submit</button>
+    </div>
+</div>
+
+</body>
+</html>

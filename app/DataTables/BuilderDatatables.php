@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use App\Contract\Hi_FPT\DeeplinkInterface;
 use App\Repository\RepositoryInterface;
 use Closure;
 use Exception;
@@ -120,8 +121,9 @@ abstract class BuilderDatatables extends DataTable
      * @param DataTables $table
      * @param UrlGenerator $urlGenerator
      */
-    public function __construct(Datatables $table, UrlGenerator $urlGenerator)
+    public function __construct(Datatables $table, UrlGenerator $urlGenerator, DeeplinkInterface $repository)
     {
+        $this->repository = $repository;
         $this->table = $table;
         $this->ajaxUrl = $urlGenerator->current();
 
@@ -275,7 +277,7 @@ abstract class BuilderDatatables extends DataTable
                     array_values(array_unique(array_merge(Arr::sortRecursive([10, 30, 50, 100, 500, $this->pageLength]), [-1]))),
                     array_values(array_unique(array_merge(
                         Arr::sortRecursive([10, 30, 50, 100, 500, $this->pageLength]),
-                        [trans('core/base::tables.all')]
+                        ['Text all']
                     ))),
                 ],
                 'pageLength' => $this->pageLength,
@@ -289,23 +291,23 @@ abstract class BuilderDatatables extends DataTable
                         'sortAscending' => 'orderby asc',
                         'sortDescending' => 'orderby desc',
                         'paginate' => [
-                            'next' => trans('pagination.next'),
-                            'previous' => trans('pagination.previous'),
+                            'next' => 'Trước',
+                            'previous' => 'Sau',
                         ],
                     ],
-                    'emptyTable' => trans('core/base::tables.no_data'),
+                    'emptyTable' => 'Không có dữ liệu',
                     'info' => '',
-                    'infoEmpty' => trans('core/base::tables.no_record'),
+                    'infoEmpty' => 'Không có dữ liệu',
                     'lengthMenu' => Html::tag('span', '_MENU_', ['class' => 'dt-length-style'])->toHtml(),
                     'search' => '',
-                    'searchPlaceholder' => trans('table.table.search'),
-                    'zeroRecords' => trans('core/base::tables.no_record'),
-                    'processing' => Html::image('vendor/core/core/base/images/loading-spinner-blue.gif'),
+                    'searchPlaceholder' => 'Tìm kiếm',
+                    'zeroRecords' => 'Không có dữ liệu',
+                    'processing' => Html::image('base/images/loading-spinner-blue.gif'),
                     'paginate' => [
-                        'next' => trans('pagination.next'),
-                        'previous' => trans('pagination.previous'),
+                        'next' => 'Trước',
+                        'previous' => 'Sau',
                     ],
-                    'infoFiltered' => trans('table.table.filtered'),
+                    'infoFiltered' => 'Lọc dữ liệu',
                 ],
                 'aaSorting' => $this->useDefaultSorting ? [
                     [
@@ -326,24 +328,16 @@ abstract class BuilderDatatables extends DataTable
     {
         $columns = $this->columns();
 
-        if ($this->type == self::TABLE_TYPE_SIMPLE) {
-            return $this->repository->getModel();
-        }
+
 
         foreach ($columns as $key => &$column) {
             $column['class'] = Arr::get($column, 'class') . ' column-key-' . $key;
         }
 
-//        if ($this->repository) {
-//            $columns = $this->apply_filters('table_headings', $columns, $this->repository->getModel());
-//        }
+
 
         if ($this->hasOperations) {
             $columns = array_merge($columns, $this->getOperationsHeading());
-        }
-
-        if ($this->hasCheckbox) {
-            $columns = array_merge($this->getCheckboxColumnHeading(), $columns);
         }
 
         return $columns;
@@ -358,6 +352,15 @@ abstract class BuilderDatatables extends DataTable
         }
 
         return $this->listeners;
+    }
+
+    protected function addCreateButton(string $url, array $buttons = []): array
+    {
+        $buttons['create'] = [
+            'link' => $url,
+            'text' => view('table.create')->render(),
+        ];
+        return $buttons;
     }
 
     protected function getFunction($callback)
@@ -375,7 +378,6 @@ abstract class BuilderDatatables extends DataTable
         } elseif (is_array($callback)) {
             return $callback;
         }
-
         return false;
     }
 
@@ -424,7 +426,7 @@ abstract class BuilderDatatables extends DataTable
     {
         return [
             'operations' => [
-                'title' => trans('core/base::tables.operations'),
+                'title' => 'title operations',
                 'width' => '134px',
                 'class' => 'text-center',
                 'orderable' => false,

@@ -34,11 +34,11 @@ END ADD FIELD
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item" aria-current="page">
                             <p>*** LƯU Ý ***<br>
-                                    - Trong một phút chỉ được thêm tối đa 5 popup <br>
-                                    - Các trường có kí hiệu <span class="text-bold text-danger">(*)</span> là những
-                                    trường bắt buộc phải nhập <br>
-                                    - Các trường hợp xảy ra lỗi ngoại lệ vui lòng liên hệ
-                                    <a href="https://zalo.me/0354370175" target="_blank"><b> hỗ trợ</b></a>
+                                - Trong một phút chỉ được thêm tối đa 5 popup <br>
+                                - Các trường có kí hiệu <span class="text-bold text-danger">(*)</span> là những
+                                trường bắt buộc phải nhập <br>
+                                - Các trường hợp xảy ra lỗi ngoại lệ vui lòng liên hệ
+                                <a href="https://zalo.me/0354370175" target="_blank"><b> hỗ trợ</b></a>
                             </p> <br>
                         </li>
                     </ol>
@@ -149,52 +149,7 @@ END ADD FIELD
         </div>
     </div>
 </div>
-
-<div id="push_phone_number_private" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5>Import số điện thoại</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">X</span></button>
-            </div>
-            <div class="modal-body" id="modal-detail-popup">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item" aria-current="page">
-                            <p>*** LƯU Ý ***<br>
-                                - Tải file mẫu <a
-                                    href="https://docs.google.com/spreadsheets/d/1ifAR0UwfdV03Sidcshjvwl1pn1YmYBD9/edit?usp=sharing&ouid=113322866597815571901&rtpof=true&sd=true"
-                                    target="_blank"> <b> tại đây</b><a/><br>
-                                    - Tải lên tối đa 5 file, mỗi file chỉ được chứa tối đa <b>100.000</b> số điện thoại <br>
-                                    - Các trường hợp xảy ra lỗi ngoại lệ vui lòng liên hệ
-                                    <a href="https://zalo.me/0354370175" target="_blank"><b> hỗ trợ</b></a>
-                            </p> <br>
-                        </li>
-                    </ol>
-                </nav>
-                <div class="col-12">
-                    <form id="importExcel" enctype="multipart/form-data">
-                        <input type="hidden" id="id_popup_phone" name="id">
-                        <div class="form-group">
-                            <label for="number_phone"><span
-                                    class="required_red_dot">Nhập vào danh sách số điện thoại</span> <br>
-                                <p class="fa-xs">hoặc tải file excel lên tại đây
-                                    <input type="file" id="number_phone_import" name="excel[]"
-                                           accept=".xlsx, .csv" multiple></p>
-                            </label>
-                            <div class="form-group">
-                            <textarea rows="10" type="text" id="number_phone" name="number_phone" class="form-control"
-                                      placeholder="Có thể thêm nhiều số điện thoại cách nhau bằng dấu phẩy ','"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-info float-right" id="submitPhone">Lưu</button>
-            </div>
-        </div>
-    </div>
-</div>
+@include('template.modal', ['title'=> 'Import số điện thoại', 'id'=>'push_phone_number_private', 'form'=> 'template.form-import-phone','action'=>'', 'button'=>'
+            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Thoát</button>
+            <button type="submit" class="btn btn-info ml-2" id="submitPhone">Lưu</button>'])
 

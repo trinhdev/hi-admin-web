@@ -53,7 +53,18 @@ class FtelPhoneDatatable extends DataTable
                         'searching' => true,
                         'searchDelay' => 500,
                         'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-8"B><"col-md-2 mt-2 "l><"col-md-1 mt-2"f>>irtp',
-                        'buttons' => [ 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdf' ]
+                        'buttons' => [[
+                        'extend'=> 'collection',
+                            'text' =>'<i class="fas fa-plus"></i> Add New',
+                            'autoClose'=> true,
+                            'action'    => 'function ( e, dt, node, config ) {
+                                window.location.assign("/ftel-phone/create");
+                            }',
+                            'attr'      =>  [
+                                'id'=>'push_popup_public',
+                                'class' =>'btn btn-sm btn-info action-item p-2'
+                            ]
+                        ], 'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdf']
                     ])
                     ->addTableClass('table table-hover table-striped text-center w-100')
                     ->languageEmptyTable('Không có dữ liệu')

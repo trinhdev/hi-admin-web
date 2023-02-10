@@ -1,37 +1,13 @@
 @extends('layouts.default')
-
+@push('header')
+    <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
+@endpush
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <?php
     ?>
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý Banner</h1>
-                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                            <a href="#" class="btn btn-primary btn-sm" id="addBanner">
-                                <i class="fas fa-plus"></i> Thêm Mới
-                            </a>
-                        @endif
-                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                            <a href="#" class="btn btn-primary btn-sm text-capitalize" id="updateBannerFconnect">
-                                <i class="fas fa-plus"></i> Update banner Fconnect
-                            </a>
-                        @endif
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            {!! breadcrumb() !!}
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
+        @include('template.breadcrumb', ['name' => 'Quản lí banner'])
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -56,20 +32,10 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="input-group input-group-sm mb-4">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Từ:</div>
+                                    <div class="input-group-prepend ">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i>&nbsp;</div>
                                     </div>
-                                    <input type="datetime-local" name="show_from" class="form-control" id="show_from"
-                                           placeholder="Date From"/>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="input-group input-group-sm mb-4">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Đến:</div>
-                                    </div>
-                                    <input type="datetime-local" name="show_to" class="form-control" id="show_to"
-                                           placeholder="Date To"/>
+                                    <input class="form-control" id="daterange" type="text" name="daterange" />
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -80,7 +46,7 @@
                         </div>
                     </div>
                     {{--Start table--}}
-                    {{ $dataTable->table([], true) }}
+                    {{ $dataTable->table([], $footer = false) }}
                     {{--End table--}}
                 </div>
             </div>
@@ -99,8 +65,7 @@
         const table = $('#banner_manage');
         table.on('preXhr.dt', function (e, settings, data) {
             data.bannerType = $('#show_at').val();
-            data.public_date_start = $('#show_from').val();
-            data.public_date_end = $('#show_to').val();
+            data.daterange = $('#daterange').val();
         });
 
         function showHideTitle(_this) {

@@ -286,7 +286,7 @@ if (!function_exists('split_date')) {
     function split_date($value): array
     {
         $date = explode('-', $value);
-        if (!$date) {
+        if (!empty($date[0])) {
             $from = \Carbon\Carbon::parse($date[0])->format('Y-m-d H:i:s');
             $to = \Carbon\Carbon::parse($date[1])->format('Y-m-d H:i:s');
             return [$from, $to];
@@ -368,13 +368,14 @@ if (!function_exists('breadcrumb')) {
         $replace_link_first = ucwords(str_replace('-', ' ', $link));
         $value = <<<HTML
                     <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="/$link">$replace_link_first</a></li>
+                    <li style="line-height: 25px;" class="breadcrumb-item active"><a href="/$link">$replace_link_first</a></li>
                 HTML;
 
         $link2 = request()->segment(2);
         if ($link2) {
             $replace_link_second = ucwords(str_replace('-', ' ', $link2));
-            $value.= '<li class="breadcrumb-item"><a href='.$link2.'>'.$replace_link_second.'</a></li>';
+            $value.= '<li style="
+    line-height: 25px;" class="breadcrumb-item"><a href='.$link2.'>'.$replace_link_second.'</a></li>';
         }
         return $value;
     }

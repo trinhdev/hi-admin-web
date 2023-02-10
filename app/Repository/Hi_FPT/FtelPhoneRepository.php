@@ -4,15 +4,21 @@ namespace App\Repository\Hi_FPT;
 
 use App\Contract\Hi_FPT\FtelPhoneInterface;
 use App\Http\Traits\DataTrait;
+use App\Imports\FtelPhoneImport;
 use App\Models\Employees;
 use App\Models\FtelPhone;
 use App\Services\HrService;
+use App\Services\ImportPhoneService;
 use App\Services\NewsEventService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class FtelPhoneRepository implements FtelPhoneInterface
 {
@@ -49,31 +55,6 @@ class FtelPhoneRepository implements FtelPhoneInterface
     public function all($dataTable, $params)
     {
         return $dataTable->render('ftel-phone.index');
-    }
-
-    public function show($id)
-    {
-        try {
-            $response = json_decode($this->client->request('GET', $this->listMethod['GET_DETAIL_BANNER'], [
-                'headers' => $this->headers,
-                'query' => ['bannerId' => $id]
-            ])->getBody()->getContents())->data;
-            $data = [
-                'list_target_route' => $this->listTargetRoute,
-                'list_type_banner'  => $this->listTypeBanner
-            ];
-            if(empty($response)) {
-                return response()->json(['status_code' => '500', 'message' => 'System maintain!']);
-            }
-
-            $data['banner'] = collect($response)->only([
-                "event_id","event_type","public_date_start","public_date_end","title_vi",
-                "title_en","direction_id","event_url","image","thumb_image","view_count",
-                "date_created","created_by","cms_note","is_show_home"]);
-            return $data;
-        } catch (GuzzleException $e) {
-            return $e->getMessage();
-        }
     }
 
     public function store($params): \Illuminate\Http\RedirectResponse

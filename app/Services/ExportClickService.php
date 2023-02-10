@@ -10,10 +10,15 @@ trait ExportClickService
     public function export_click($method, $params, $id)
     {
         try {
+            $date = split_date($params->daterange);
+            if (!empty($date)) {
+                $from = $date[0];
+                $to = $date[1];
+            }
             $form_params = [
                 $method == 'provider/tool/banner/get-list-click-banner' ? 'eventId' : 'templateId' => $id,
-                'dateStart' => changeFormatDateLocal($params->show_from) ?? '',
-                'dateEnd' => changeFormatDateLocal($params->show_to) ?? '',
+                'dateStart' => $from ?? null,
+                'dateEnd' => $to ?? null,
             ];
             $api_config = config('configDomain.DOMAIN_NEWS_EVENT.' . env('APP_ENV'));
             $client = new Client(['base_uri' => $api_config['URL']]);
@@ -27,11 +32,14 @@ trait ExportClickService
                 'json' => $form_params
             ])->getBody()->getContents();
             $data = json_decode(json_decode($response)->data);
-            $phone = [];
-            foreach ($data as $value) {
-                $phone[] = ['SDT Khách hàng' => $value];
+            if (!empty($data)) {
+                $phone = [];
+                foreach ($data as $value) {
+                    $phone[] = ['SDT Khách hàng' => $value];
+                }
+                return fastexcel($phone)->download('banner_export_'.date('Y-m-d').'.xlsx');
             }
-            return fastexcel($phone)->download('banner_export_'.date('Y-m-d').'.xlsx');
+            return redirect()->back()->with(['error' => 'error', 'html'=>'Không có dữ liệu']);
 
         } catch (GuzzleException $e) {
             return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);

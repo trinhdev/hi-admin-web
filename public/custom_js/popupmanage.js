@@ -369,49 +369,6 @@ function methodAjaxPopupPrivate() {
         console.log(id);
         $('#id_popup_phone').val(id);
         $('#push_phone_number_private').modal('toggle');
-        $('#submitPhone').on('click', function (event){
-            $(this).attr('disabled','disabled');
-            event.preventDefault();
-            let data = $('#importExcel').serialize();
-            $.ajax({
-                url: '/popup-private/importPrivate',
-                type: 'POST',
-                dataType: 'json',
-                data: data,
-                cache: false,
-                beforeSend: function(){
-                    $("#spinner").addClass("show");
-                },
-                success: (data) => {
-                    $("#spinner").removeClass("show");
-                    $('#push_phone_number_private').modal('toggle');
-                    $('#submitPhone').prop('disabled', false);
-                    var message = '';
-                    var count =0;
-                    $.each(data.data, function (key, value) {
-                        message += (key+1) + '. ' + value.message + '<br>';
-                        if(value.statusCode !== 0){
-                            count++;
-                        }
-                    });
-                    if(count>0) {
-                        showMessage('error',message);
-                    } else {
-                        showSuccess(message);
-                    }
-                },
-                error: function (xhr) {
-                    var errorString = '';
-                    $("#spinner").removeClass("show");
-                    $.each(xhr.responseJSON.errors, function (key, value) {
-                        errorString = value;
-                        return false;
-                    });
-                    showMessage("error",errorString);
-                    $('#submitPhone').prop('disabled', false);
-                }
-            });
-        });
     });
 }
 
@@ -462,61 +419,6 @@ function checkStatusPopUpPrivate(){
             });
             console.log(errorString);
         }
-    });
-}
-
-
-function changeFileNumberPhone() {
-    $('#number_phone_import').change(function(e) {
-        let data = new FormData($('#importExcel')[0]);
-        $.ajax( {
-            url: '/popup-private/importFilePrivate',
-            type: 'POST',
-            data: data,
-            processData: false,
-            contentType: false,
-            beforeSend: function(){
-                $("#spinner").addClass("show");
-            },
-            success: function(response) {
-                $("#spinner").removeClass("show");
-                let res = [];
-                let err = [];
-                let pattern = /^(03|05|07|08|09)[\d, ]*$/;
-                response.data.forEach((data) => {
-                    data.forEach((item) => {
-                        if(pattern.test(item) && item.length === 10) {
-                            res.push(item);
-                        }else {
-                            err.push(item);
-                        }
-                    });
-                });
-                console.log(res.length);
-                $('#number_phone').val(res.join(','));
-                if (err.length > 0) {
-                    showSuccess('Thành công! Các số sai định dạng bị bỏ qua gồm: <br>' + err.join('<br>'));
-                    return true;
-                }
-                showSuccess('Nhập thành công!');
-            },
-            error: function (xhr) {
-                var errorString = '';
-                $("#spinner").removeClass("show");
-                $.each(xhr.responseJSON.errors, function (key, value) {
-                    errorString = value;
-                    return false;
-                });
-                $('#importExcel').find('input:text, input:password, input:file, select, textarea').val('');
-                $('#number_phone').val('');
-                if (errorString.length !== 0) {
-                    showMessage('error',errorString);
-                } else {
-                    showMessage('error','File quá lớn hoặc sai định dạng! Vui lòng kiểm tra lại. ');
-                }
-            }
-        });
-        e.preventDefault();
     });
 }
 

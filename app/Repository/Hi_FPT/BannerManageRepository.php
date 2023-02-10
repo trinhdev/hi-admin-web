@@ -29,18 +29,20 @@ class BannerManageRepository implements BannerManageInterface
     {
         $api_config = config('configDomain.DOMAIN_NEWS_EVENT.' . env('APP_ENV'));
         $this->listMethod = config('configMethod.DOMAIN_NEWS_EVENT');
-        $this->client = new Client(['base_uri' => $api_config['URL']]);
-        $this->headers = [
-            'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m")),
-            'clientKey' => $api_config['CLIENT_KEY'],
-            'Content-Type' => 'application/json'
-        ];
-        $this->listTypeBanner = json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TYPE_BANNER'], [
-            'headers' => $this->headers
-        ])->getBody()->getContents())->data;
-        $this->listTargetRoute = json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TARGET_ROUTE'], [
-            'headers' => $this->headers
-        ])->getBody()->getContents())->data;
+        if ($api_config) {
+            $this->client = new Client(['base_uri' => $api_config['URL']]);
+            $this->headers = [
+                'Authorization' => md5($api_config['CLIENT_KEY'] . "::" . $api_config['SECRET_KEY'] . date("Y-d-m")),
+                'clientKey' => $api_config['CLIENT_KEY'],
+                'Content-Type' => 'application/json'
+            ];
+            $this->listTypeBanner = json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TYPE_BANNER'], [
+                'headers' => $this->headers
+            ])->getBody()->getContents())->data;
+            $this->listTargetRoute = json_decode($this->client->request('GET', $this->listMethod['GET_LIST_TARGET_ROUTE'], [
+                'headers' => $this->headers
+            ])->getBody()->getContents())->data;
+        }
     }
 
     /**
@@ -50,10 +52,15 @@ class BannerManageRepository implements BannerManageInterface
     {
         $perPage = $params->length ?? null;
         $currentPage = $params->start == 0 ? 1 : ($params->start / $perPage) + 1;
+        $date = explode('-', $params->daterange);
+        if (!empty($date[0])) {
+            $form = changeFormatDateLocal($date[0]);
+            $to = changeFormatDateLocal($date[1]);
+        }
         $form_params = [
             'banner_type' => $params->bannerType ?? null,
-            'public_date_start' => $params->public_date_start ?? null,
-            'public_date_end' => $params->public_date_end ?? null,
+            'public_date_start' => $form ?? null,
+            'public_date_end' => $to ?? null,
             'order_by' => $params->columns[$params->order[0]['column'] ?? 0]['data'] ?? 'event_id',
             'per_page' => $perPage,
             'current_page' => $currentPage,
@@ -141,7 +148,7 @@ class BannerManageRepository implements BannerManageInterface
             $form_params = $this->getArr($form_params);
             $response = $this->client->request('POST', $this->listMethod['UPDATE_BANNER'], [
                 'headers' => $this->headers,
-                'form_params' => array_filter($form_params)
+                'json' => array_filter($form_params)
             ])->getBody()->getContents();
             return response()->json(['data' => json_decode($response)]);
         } catch (GuzzleException $e) {
@@ -159,7 +166,7 @@ class BannerManageRepository implements BannerManageInterface
             ];
             $response = $this->client->request('POST', $this->listMethod['UPDATE_ORDERING'], [
                 'headers' => $this->headers,
-                'form_params' => array_filter($form_params)
+                'body' => array_filter($form_params)
             ])->getBody()->getContents();
             return response()->json(json_decode($response));
         } catch (GuzzleException $e) {
@@ -170,26 +177,6 @@ class BannerManageRepository implements BannerManageInterface
     public function export_click_phone($params, $id)
     {
         return $this->export_click($this->listMethod['GET_LIST_CLICK_BANNER'],$params, $id);
-//        try {
-//            $form_params = [
-//                'eventId' => $id,
-//                'dateStart' => changeFormatDateLocal($params->show_from) ?? '',
-//                'dateEnd' => changeFormatDateLocal($params->show_to) ?? '',
-//            ];
-//            $response = $this->client->request('POST', $this->listMethod['GET_LIST_CLICK_BANNER'], [
-//                'headers' => $this->headers,
-//                'json' => $form_params
-//            ])->getBody()->getContents();
-//            $data = json_decode(json_decode($response)->data);
-//            $phone = [];
-//            foreach ($data as $value) {
-//                $phone[] = ['SDT Khách hàng' => $value];
-//            }
-//            return fastexcel($phone)->download('banner_export_'.date('Y-m-d').'.xlsx');
-//
-//        } catch (GuzzleException $e) {
-//            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
-//        }
     }
 
     public function update_banner_fconnect($params): \Illuminate\Http\JsonResponse
