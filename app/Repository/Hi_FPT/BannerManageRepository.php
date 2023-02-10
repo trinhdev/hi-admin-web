@@ -116,7 +116,7 @@ class BannerManageRepository implements BannerManageInterface
             $response = $this->client->request('POST', $this->listMethod['CREATE_BANNER'], [
                 'headers' => $this->headers,
                 // 'form_params' => array_filter($form_params)
-                'body'  => json_encode($form_params)
+                'json'  => json_encode($form_params)
             ])->getBody()->getContents();
             // dd($this->listMethod['CREATE_BANNER']);
             return response()->json(['data' => json_decode($response)]);
@@ -143,7 +143,7 @@ class BannerManageRepository implements BannerManageInterface
             $form_params = $this->getArr($form_params);
             $response = $this->client->request('POST', $this->listMethod['UPDATE_BANNER'], [
                 'headers' => $this->headers,
-                'form_params' => array_filter($form_params)
+                'json' => array_filter($form_params)
             ])->getBody()->getContents();
             return response()->json(['data' => json_decode($response)]);
         } catch (GuzzleException $e) {
@@ -161,7 +161,7 @@ class BannerManageRepository implements BannerManageInterface
             ];
             $response = $this->client->request('POST', $this->listMethod['UPDATE_ORDERING'], [
                 'headers' => $this->headers,
-                'form_params' => array_filter($form_params)
+                'body' => array_filter($form_params)
             ])->getBody()->getContents();
             return response()->json(json_decode($response));
         } catch (GuzzleException $e) {
@@ -172,26 +172,6 @@ class BannerManageRepository implements BannerManageInterface
     public function export_click_phone($params, $id)
     {
         return $this->export_click($this->listMethod['GET_LIST_CLICK_BANNER'],$params, $id);
-//        try {
-//            $form_params = [
-//                'eventId' => $id,
-//                'dateStart' => changeFormatDateLocal($params->show_from) ?? '',
-//                'dateEnd' => changeFormatDateLocal($params->show_to) ?? '',
-//            ];
-//            $response = $this->client->request('POST', $this->listMethod['GET_LIST_CLICK_BANNER'], [
-//                'headers' => $this->headers,
-//                'json' => $form_params
-//            ])->getBody()->getContents();
-//            $data = json_decode(json_decode($response)->data);
-//            $phone = [];
-//            foreach ($data as $value) {
-//                $phone[] = ['SDT Khách hàng' => $value];
-//            }
-//            return fastexcel($phone)->download('banner_export_'.date('Y-m-d').'.xlsx');
-//
-//        } catch (GuzzleException $e) {
-//            return response()->json(['status_code' => '500', 'message' => $e->getMessage()]);
-//        }
     }
 
     public function update_banner_fconnect($params): \Illuminate\Http\JsonResponse
