@@ -3,6 +3,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
 @endpush
 @section('content')
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">

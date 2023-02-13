@@ -335,8 +335,8 @@ function showMessage(type, message) {
 })(jQuery, jQuery.fn.dataTable);
 
 $(function () {
-    var start = moment().subtract(30, 'days');
-    var end = moment();
+    var start = moment().startOf('month');
+    var end = moment().endOf('month');
 
     function cb(start, end) {
         $('#daterange').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
