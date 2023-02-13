@@ -1,5 +1,4 @@
 @extends('layouts.default')
-
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -30,7 +29,6 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
-
                     {!! $dataTable->table() !!}
                 </div>
             </div>
@@ -41,5 +39,6 @@
 
 @endsection
 @push('scripts')
+
     {{ $dataTable->scripts() }}
 @endpush
