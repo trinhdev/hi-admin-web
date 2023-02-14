@@ -6,8 +6,8 @@
         </li>
         @if(!empty($groupModule))
             @foreach($groupModule as $group)
-                @if(isset($group->children) && !empty($group->children))
-                    <li class="menu-item-FILE_SHARING {{ request()->is("/".$module->uri) ? 'active' : '' }}">
+                @if(!empty($group->children))
+                    <li class="menu-item-FILE_SHARING">
                         <a href="#" aria-expanded="false">
                             <i class="fa fa-folder menu-icon"></i>
                             <span class="menu-text">{{ $group->group_module_name}}</span>
@@ -26,7 +26,7 @@
                             @endforeach
                         </ul>
                     </li>
-                @elseif(!isset($group->children))
+                @else
                     <li class="menu-item-FILE_SHARING">
                         <a href="/{{$group->uri}}" aria-expanded="false">
                             <i class="fa {{ $group->icon}} menu-icon"></i>
