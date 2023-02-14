@@ -2,14 +2,23 @@
     <ul class="nav metis-menu" id="side-menu">
         <li class="tw-mt-[63px] sm:tw-mt-0 -tw-mx-2 tw-overflow-hidden sm:tw-bg-neutral-900/50">
             <div id="logo" class="tw-py-2 tw-px-2 tw-h-[63px] tw-flex tw-items-center">
-                <a href="{{ url('/testv2') }}" class="!tw-mt-0 logo logo-text">HiFPT</a></div>
+                <a href="{{ url('/testv2') }}" class="!tw-mt-0 logo logo-text">
+                    <img src="{{ asset('themes/images/logo-hifpt1.png') }}" alt="Logo"
+                         class="img img-responsive staff-profile-image-small tw-ring-offset-2 tw-ring-primary-500 tw-mx-1 tw-mt-2.5">
+                    HiFPT
+                </a>
+            </div>
         </li>
+        @php
+            $icon = ['fa-user', 'fa-cog', 'fa-repeat', 'fa-life-ring', 'fa-chart-bar', 'fa-cogs', 'fa-cogs', 'fa-cogs'];
+            $key = 0;
+        @endphp
         @if(!empty($groupModule))
             @foreach($groupModule as $group)
                 @if(!empty($group->children))
                     <li class="menu-item-FILE_SHARING">
                         <a href="#" aria-expanded="false">
-                            <i class="fa fa-folder menu-icon"></i>
+                            <i class="fa {{ $icon[$key] ?? null }} menu-icon"></i>
                             <span class="menu-text">{{ $group->group_module_name}}</span>
                             <span class="fa arrow pleft5"></span>
                         </a>
@@ -17,10 +26,10 @@
                             @foreach($group->children as $module)
                                 <li class="sub-menu-item-file_sharing_management">
                                     @if(request()->is("/") || $module->uri == "")
-                                    <a href="/{{ $module->uri }}">
-                                        <i class="fa {{ $module->icon}} menu-icon"></i>
-                                        <span class="sub-menu-text">{{ $module->module_name}}</span>
-                                    </a>
+                                        <a href="/{{ $module->uri }}">
+                                            <i class="fa {{ $module->icon}} menu-icon"></i>
+                                            <span class="sub-menu-text">{{ $module->module_name}}</span>
+                                        </a>
                                     @endif
                                 </li>
                             @endforeach
@@ -29,21 +38,21 @@
                 @else
                     <li class="menu-item-FILE_SHARING">
                         <a href="/{{$group->uri}}" aria-expanded="false">
-                            <i class="fa {{ $group->icon}} menu-icon"></i>
+                            <i class="fa fa-folder menu-icon"></i>
                             <span class="menu-text">{{ $group->group_module_name}}</span>
                             <span class="fa arrow pleft5"></span>
                         </a>
                     </li>
                 @endif
+                @php
+                    $key ++;
+                @endphp
             @endforeach
         @endif
-        <li class="menu-item-customers"
-        >
-            <a href="{{ url('/testv2') }}clients" aria-expanded="false"
-            >
+        <li class="menu-item-customers">
+            <a href="{{ url('/testv2') }}clients" aria-expanded="false">
                 <i class="fa-regular fa-user menu-icon"></i>
-                <span class="menu-text">
-                    Khách hàng                </span>
+                <span class="menu-text">Khách hàng</span>
             </a>
         </li>
         <li class="menu-item-FILE_SHARING">

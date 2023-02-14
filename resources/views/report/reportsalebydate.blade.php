@@ -1,27 +1,13 @@
 @extends('layouts.default')
-
+@push('header')
+    <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
+@endpush
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <?php
 ?>
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 style="float: left; margin-right: 20px" class="uppercase">Báo cáo data sale theo ngày</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Báo cáo data sale theo ngày</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+    @include('template.breadcrumb', ['name' =>'Báo cáo data sale theo ngày'])
 
     <!-- Main content -->
     <section class="content">
@@ -92,9 +78,16 @@
                         <button class="btn btn-sm btn-primary" onClick="exportMultiTable(event)">Xuất hết</button>
                     </div>
                 </form>
-                
+
             </div>
-            <div id="report-table">
+        </div>
+    </section>
+    <!-- /.content -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class=" card-body filter-section justify-content-md-center">
                 @include('report.reportsalebydatetable')
             </div>
         </div>
