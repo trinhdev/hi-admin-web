@@ -240,7 +240,6 @@
                             </div>
                         </div>
                         <div class="col-md-2 pb-3" style="text-align: center">
-                            {{-- <button id="filter_condition" class="btn btn-sm btn-primary" onclick="filter()">Tìm kiếm</button> --}}
                             <input type="submit" class="btn btn-sm btn-primary" name="filter" value="Tìm kiếm"/>
                             <button class="btn btn-sm btn-secondary" onClick="exportMultiTable(event)">Xuất hết</button>
                         </div>
@@ -269,11 +268,8 @@
     <script>
         var reportdatabyproduct = {!! str_replace("'", "\'", json_encode($productByService)) !!};
         dataChartProduct(reportdatabyproduct, 'doanh thu', 'hãng sản xuất');
-
         var reportdatabycategory = {!! str_replace("'", "\'", json_encode($productByCategory)) !!};
         dataChartCategory(reportdatabycategory, 'doanh thu', 'loại sản phẩm');
-
-
     </script>
 @endpush
 

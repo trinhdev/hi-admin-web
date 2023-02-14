@@ -9,7 +9,7 @@
 @include('layoutv2.layout.aside')
 @yield('content')
 @include('layoutv2.layout.scripts')
-@stack('scripts')
+@stack('script')
 </body>
 
 </html>
