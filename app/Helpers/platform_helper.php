@@ -70,6 +70,19 @@ if (!function_exists('vite_assets')) {
     }
 }
 
+if (!function_exists('asset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param string $path
+     * @param bool|null $secure
+     * @return string
+     */
+    function asset(string $path, bool $secure = null): string
+    {
+        return app('url')->asset($path, $secure);
+    }
+}
 
 if (!function_exists('get_data_api')) {
     function get_data_api( $response ) {

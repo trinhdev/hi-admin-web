@@ -4,6 +4,7 @@ namespace App\DataTables\Hi_FPT;
 
 use App\Models\PaymentUnpaid;
 use Carbon\Carbon;
+use Illuminate\Support\HtmlString;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
@@ -34,6 +35,13 @@ class PaymentSupportDataTable extends DataTable
                 return implode('<br>', json_decode($error_des));
 
             })
+            ->editColumn('description', function($row){
+                $data =  <<<HTML
+                        <div>$row->description</div>
+                    HTML;
+                 return new HtmlString($data);
+
+            })
             ->editColumn('created_at', function($row){
                 return Carbon::parse($row->created_at)->format('Y-m-d');
             })
@@ -60,7 +68,7 @@ class PaymentSupportDataTable extends DataTable
                     $query->whereBetween('created_at', [changeFormatDateLocal($date[0]), changeFormatDateLocal($date[1])]);
                 }
             })
-            ->rawColumns(['action','status', 'description_error_code', 'order_id'])
+            ->rawColumns(['action','status', 'description_error_code', 'order_id', 'description'])
             ->make();
     }
 

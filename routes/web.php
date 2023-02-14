@@ -395,6 +395,17 @@ Route::group([
                 Route::get('/journey-analysis','journeyAnalysis')->name('tracking.journeyAnalysis');
             });
 
+            Route::prefix('testv2')->controller(Test::class)->group(function () {
+                Route::get('/','index')->name('test.index');
+            });
+
+            Route::prefix('tracking')->controller(TrackingController::class)->group(function () {
+                Route::get('/views','views')->name('tracking.views');
+                Route::get('/user-analytics','userAnalytics')->name('tracking.userAnalytics');
+                Route::get('/session-analytics','sessionAnalytics')->name('tracking.sessionAnalytics');
+                Route::get('/journey-analysis','journeyAnalysis')->name('tracking.journeyAnalysis');
+            });
+
             Route::prefix('employees-updates')->group(function () {
                 Route::get('/', [UpdateEmployeesFromExcelFileController::class, 'index'])->name('employees_updates.index');
                 Route::get('/create', [UpdateEmployeesFromExcelFileController::class, 'create'])->name('employees_updates.create');
