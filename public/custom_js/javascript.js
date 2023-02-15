@@ -339,10 +339,10 @@ $(function () {
     var end = moment().endOf('month');
 
     function cb(start, end) {
-        $('#daterange').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        $('input[name*="daterange"]').html(start.format('MMMM D, YYYY') + '-' + end.format('MMMM D, YYYY'));
     }
 
-    $('#daterange').daterangepicker({
+    $('input[name*="daterange"]').daterangepicker({
         startDate: start,
         endDate: end,
         ranges: {

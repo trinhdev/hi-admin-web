@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class DeeplinkDataTable extends DataTable
+class DeeplinkDataTable extends BuilderDatatables
 {
     /**
      * Build DataTable class.
@@ -33,10 +33,14 @@ class DeeplinkDataTable extends DataTable
                        </div>
                 ';
             })
+            ->editColumn('checkbox', function ($row) {
+                return '<div class="checkbox"><input type="checkbox" value="2"><label></label></div>
+                ';
+            })
             ->addColumn('operations', function ($item) {
                 return ;
             })
-            ->rawColumns(['action','operations']);
+            ->rawColumns(['action','checkbox','operations']);
     }
 
     /**
@@ -103,7 +107,7 @@ class DeeplinkDataTable extends DataTable
         return 'Deeplink_' . date('YmdHis');
     }
 
-    public function getColumns()
+    public function columns()
     {
         return [
             Column::make('id')->title('ID'),

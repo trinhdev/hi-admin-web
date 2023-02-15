@@ -18,7 +18,7 @@ class TrackingRepository extends RepositoryAbstract implements TrackingInterface
 
     public function userAnalytics($dataTable, $request)
     {
-        $table_detail = $dataTable->with([ 'data_detail'=> DB::connection('mysql4')->table('customers')->select('*')]);
+        $table_detail = $dataTable->with([ 'data_detail'=> DB::connection('mysql4')->table('customers')->select('*')->get()]);
         $total = $this->model->count();
         $new = $this->model->where('created_at', today())->count();
         $unique = $this->model->groupBy('phone')->count();
@@ -32,7 +32,7 @@ class TrackingRepository extends RepositoryAbstract implements TrackingInterface
         }
         return view('tracking.user', [
             'detail'    => $table_detail->html(),
-            'data'      => ['total_section' => $total, 'new_section'=>$new, 'unique_section'=>$unique],
+            'data'      => ['total_user' => $total, 'new_user'=>$new, 'unique_user'=>$unique],
             'dataChart' => $dataChart->get()->toArray()
         ]);
     }

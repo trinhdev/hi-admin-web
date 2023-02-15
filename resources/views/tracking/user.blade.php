@@ -5,7 +5,7 @@
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        @include('template.breadcrumb', ['name' => 'session analytics'])
+        @include('template.breadcrumb', ['name' => 'User analytics'])
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -13,21 +13,9 @@
                     <div class="col-md-3">
                         <div class="input-group mb-4">
                             <div class="input-group-prepend">
-                                <label class="input-group-text" for="show_at">Start point</label>
+                                <label class="input-group-text" for="show_at">Phone</label>
                             </div>
-                            <select class="form-control" name="show_at" id="start_point">
-                                <option value="">-- Select --</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="input-group mb-4">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="show_at">End point</label>
-                            </div>
-                            <select class="form-control" name="show_at" id="end_point">
-                                <option value="">-- Select --</option>
-                            </select>
+                            <input class="form-control" name="phone" placeholder="Filter by phone">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -74,7 +62,31 @@
             <div class="container-fluid">
                 <div class="card card-body col-sm-12">
                     <!--begin::Table-->
-                    {!! $detail->table(['width' => '100%', 'id'=>'table-detail']) !!}
+                    <div class="tabbable-custom">
+                        <ul class="nav mb-3 nav-tabs" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pills-detail-tab" data-toggle="pill" href="#pills-detail"
+                                   role="tab" aria-controls="pills-detail" aria-selected="true">Detail</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-overview-tab" data-toggle="pill" href="#pills-overview"
+                                   role="tab" aria-controls="pills-overview" aria-selected="false">Overview</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-detail" role="tabpanel"
+                                 aria-labelledby="pills-detail-tab">
+
+                                <h3>User Detail Table</h3>
+                                {!! $detail->table(['width' => '100%', 'id'=>'table-detail']) !!}
+                            </div>
+                            <div class="tab-pane fade" id="pills-overview" role="tabpanel"
+                                 aria-labelledby="pills-overview-tab">
+                                <h3>User Overview Table</h3>
+                                {!! $detail->table(['width' => '100%', 'id'=>'table-detail']) !!}
+                            </div>
+                        </div>
+                    </div>
                     <!--end::Table-->
                 </div>
             </div>
@@ -107,17 +119,17 @@
                 datasets: [
                     {
                     data: [{{$views}}],
-                    label: "Test 1",
+                    label: "User 1",
                     borderColor: "#3e95cd",
                     fill: false
                 }, {
                     data: [{{$views1}}],
-                    label: "Test 2",
+                    label: "User 2",
                     borderColor: "#8e5ea2",
                     fill: false
                 }, {
                     data: [{{$views2}}],
-                    label: "Test 3",
+                    label: "User 3",
                     borderColor: "#3cba9f",
                     fill: false
                 }
@@ -126,7 +138,7 @@
             options: {
                 title: {
                     display: true,
-                    text: 'Section Analytics'
+                    text: 'User Analytics'
                 }
             }
         });

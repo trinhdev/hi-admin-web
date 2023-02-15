@@ -2,19 +2,11 @@
 
 namespace App\DataTables\Hi_FPT;
 
-use App\Models\Banner;
-use App\Models\Hi_FPT;
-use App\Services\NewsEventService;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use App\DataTables\BuilderDatatables;
 use Illuminate\Support\Collection;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Services\DataTable;
-use Yajra\DataTables\Html\Editor\Fields;
-use Yajra\DataTables\Html\Editor\Editor;
 
-class BannerManageDataTable extends DataTable
+class BannerManageDataTable extends BuilderDatatables
 {
     /**
      * Build DataTable class.
@@ -31,13 +23,11 @@ class BannerManageDataTable extends DataTable
         return datatables()
             ->collection($query)
             ->editColumn('title_vi', function($row) {
-                if (strlen($row->title_vi)>60) {
-                    $text = mb_substr($row->title_vi, 0, 50, "UTF-8").'<div class="text-bold" onclick="showHideTitle('.$row->event_id.')">...Xem thêm</div>';
-                } else {
-                    $text = $row->title_vi;
-                }
-                return '<div class="hide'.$row->event_id.' text-left" style="display: none;">'.$row->title_vi.'</div>
-                        <div class="show'.$row->event_id.'">'.$text.'</div>';
+                return '<a href="">'.$row->title_vi.'</a>
+                    <div class="row-options">
+                        <a data-id="'.$row->event_id .'" id="detailBanner" href="">View</a> |
+                        <a data-id="'.$row->event_id .'" id="button_form_export" href="" class="text-info">Export</a>
+                    </div>';
             })
             ->editColumn('event_type', function($row) {
                 return '<span class="infoRow" data-id="'.$row->event_id.'">'.$row->event_type.'</span>';
@@ -46,8 +36,8 @@ class BannerManageDataTable extends DataTable
                return '<img src="'.$row->image.'" style="width:150px" onerror="this.onerror=null;this.src='."'/images/img_404.svg'". '"  onclick="window.open(`'.$row->image.'`)" />';
             })
             ->editColumn('status', function($row){
-                $data = $row->public_date_end <= now() ? ['Hết hạn', 'badge badge-danger'] : ['Còn hạn', 'badge badge-success'];
-                return '<h4 class="'.$data[1].'">'.$data[0].'</h4>';
+                $data = $row->public_date_end <= now() ? ['Hết hạn', 'badge bg-danger'] : ['Còn hạn', 'badge bg-success'];
+                return '<span class="'.$data[1].'">'.$data[0].'</span>';
 
             })
             ->editColumn('created_by',function($row){
@@ -74,12 +64,10 @@ class BannerManageDataTable extends DataTable
                 $res = $row->is_show_home ? 'fa-check' : 'fa-times';
                 return '<span><i class="fas '.$res.'"></i></span>';
             })
-            ->editColumn('action',function($row){
-                return '<div style="display:flex; justify-content:center">
-                   <a type="button" id="detailBanner" data-id="'.$row->event_id.'" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
-                   <a type="button" id="button_form_export" data-id="'.$row->event_id.'" class="btn btn-sm fas fa-file btn-icon bg-info"></a></div>';
+            ->editColumn('checkbox',function($row){
+                return '<div class="checkbox"><input type="checkbox" value="'.$row->event_id.'"><label></label></div>';
             })
-            ->rawColumns(['title_vi','image','status','action','ordering_on_home','event_type', 'is_show_home'])
+            ->rawColumns(['title_vi','image','status','checkbox','ordering_on_home','event_type', 'is_show_home'])
             ->setTotalRecords($totalRecords)
             ->skipPaging();
     }
@@ -96,65 +84,11 @@ class BannerManageDataTable extends DataTable
     }
 
     /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
-    public function html()
-    {
-        return $this->builder()
-            ->setTableId('banner_manage')
-            ->columns($this->getColumns())
-            ->responsive()
-            ->autoWidth(true)
-            ->orderBy(0)
-            ->parameters([
-                'scroll' => false,
-                'searching' => false,
-                'searchDelay' => 500,
-                'initComplete' => "function () {
-                    var bannerType = $('#show_at');
-                    var filter_condition = $('#filter_condition');
-                    var table = $('#banner_manage').DataTable();
-                    $(bannerType).on('change', function () {
-                        table.ajax.reload();
-                    });
-                    $(filter_condition).on('click', function () {
-                        table.ajax.reload();
-                    });
-                 }",
-                'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-9"B><"col-md-1 float-left mt-2 ">>rtp',
-                'buttons' => [
-                    [
-                        'extend'=> 'collection',
-                        'text' =>'<i class="fas fa-plus"></i> Add',
-                        'autoClose'=> true,
-                        'attr'      =>  [
-                            'id'=>'addBanner',
-                            'class' =>'btn btn-info btn-sm'
-                        ]
-                    ],
-                    [
-                        'extend'=> 'collection',
-                        'text' =>'Update Banner Fconnect',
-                        'autoClose'=> true,
-                        'attr'      =>  [
-                            'id'=>'updateBannerFconnect',
-                            'class' =>'btn btn-info btn-sm'
-                        ]
-                    ],
-                ]
-            ])
-            ->addTableClass('table table-hover table-striped text-center w-100 table-header-color')
-            ;
-    }
-
-    /**
      * Get columns.
      *
      * @return array
      */
-    protected function getColumns()
+    public function columns()
     {
         return [
             Column::make('event_id')->title('ID'),
@@ -167,12 +101,8 @@ class BannerManageDataTable extends DataTable
             Column::make('view_count')->title('Số Lượt Click'),
             Column::make('date_created')->title('Ngày Tạo'),
             Column::make('created_by')->title('Người Tạo')->sortable(false),
-            Column::make('is_show_home')->title('Có hiện ở home'),
-            Column::make('status')->title('Trạng Thái')->sortable(false),
-            Column::computed('action')->sortable(false)
-                  ->searching(false)
-                  ->width(80)
-                  ->addClass('text-center')
+            Column::make('is_show_home')->title('Hiện ở home'),
+            Column::make('status')->title('Trạng Thái')->sortable(false)
 
         ];
     }
@@ -182,8 +112,18 @@ class BannerManageDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    public function htmlInitCompleteFunctionCustom(): ?string
     {
-        return 'Banner_' . date('YmdHis');
+        return "
+            var dateRange = $('#daterange');
+            var bannerType = $('.show_at');
+            var table = $('#banner_manage').DataTable();
+            $(bannerType).on('click', function () {
+                table.ajax.reload();
+            });
+            $(dateRange).on('change', function () {
+                table.ajax.reload();
+            });
+        ";
     }
 }

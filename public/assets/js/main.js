@@ -6402,7 +6402,7 @@ function system_popup(data) {
   $("body").addClass("system-popup");
   $popupHTML.find(".system-popup-close").on("click", function () {
     var that = this;
-    requestGet("misc/clear_system_popup").done(function (response) {
+    requestGet("/").done(function (response) {
       setTimeout(function () {
         $("body").removeClass("system-popup");
         $popupHTML.fadeOut(400, function () {

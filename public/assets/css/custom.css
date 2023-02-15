@@ -1,0 +1,6 @@
+.daterangepicker {
+    z-index: 11000 !important;
+}
+.show-calendar {
+    right: -1px !important;
+}

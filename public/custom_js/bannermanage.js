@@ -42,7 +42,7 @@ function responseImageStatic(res, input) {
         console.table(input_name + '_name', res.data.uploadedImageFileName)
         document.getElementById(input_name + '_name').value = res.data.uploadedImageFileName;
     } else {
-        showMessage('error',res.message);
+        alert_float('error',res.message);
     }
 }
 
@@ -50,7 +50,7 @@ function handleUploadImage(input) {
     const [file] = input.files;
     if (file.size > 700000) { // handle file
         resetData(input, null);
-        showMessage('error','File is too big! Allowed memory size of 0.7MB');
+        alert_float('error','File is too big! Allowed memory size of 0.7MB');
         return false;
     };
     uploadFileStatic(file, input, responseImageStatic);
@@ -72,7 +72,7 @@ function getDetailBanner(_this) {
 function callApiUpdateOderSuccess(response){
     console.log(response);
     if(response.statusCode != 0){
-        showMessage('error',response.message);
+        alert_float('error',response.message);
     }else{
         showSuccess('Updated!');
     }
@@ -170,7 +170,7 @@ function methodAjaxBanner() {
                     errorString = value;
                     return false;
                 });
-                showMessage('error', errorString);
+                alert_float('error', errorString);
                 console.log(data);
             }
         });
@@ -189,12 +189,12 @@ function methodAjaxBanner() {
             success: (data) => {
                 if(data.data.statusCode === 0){
                     $('#showDetailBanner_Modal').modal('toggle');
-                    showMessage('success', data.data.message);
+                    alert_float('success', data.data.message);
                     $('#submitAjax').prop('disabled', false);
                     var table = $('#banner_manage').DataTable();
                     table.ajax.reload();
                 }else{
-                    showMessage('error', data.data.message);
+                    alert_float("error", data.data.message);
                     $('#submitAjax').prop('disabled', false);
                 }
             },
@@ -205,7 +205,7 @@ function methodAjaxBanner() {
                     errorString = value;
                     return false;
                 });
-                showMessage(errorString);
+                alert_float(errorString);
                 $('#submitAjax').prop('disabled', false);
             }
         });
@@ -224,12 +224,12 @@ function methodAjaxBanner() {
                 console.log(data);
                 if(data.statusCode === 0){
                     $('#showFormUpdateFconnect_Modal').modal('toggle');
-                    showMessage('success', data.message);
+                    alert_float('success', data.message);
                     $('#submitAjaxUpdate').prop('disabled', false);
                     var table = $('#banner_manage').DataTable();
                     table.ajax.reload();
                 }else{
-                    showMessage('error', data.message);
+                    alert_float('error', data.message);
                     $('#submitAjaxUpdate').prop('disabled', false);
                 }
             },
@@ -240,7 +240,7 @@ function methodAjaxBanner() {
                     errorString = value;
                     return false;
                 });
-                showMessage(errorString);
+                alert_float(errorString);
                 $('#submitAjaxUpdate').prop('disabled', false);
             }
         });
