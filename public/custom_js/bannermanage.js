@@ -42,7 +42,7 @@ function responseImageStatic(res, input) {
         console.table(input_name + '_name', res.data.uploadedImageFileName)
         document.getElementById(input_name + '_name').value = res.data.uploadedImageFileName;
     } else {
-        alert_float('error',res.message);
+        alert_float('danger',res.message);
     }
 }
 
@@ -50,7 +50,7 @@ function handleUploadImage(input) {
     const [file] = input.files;
     if (file.size > 700000) { // handle file
         resetData(input, null);
-        alert_float('error','File is too big! Allowed memory size of 0.7MB');
+        alert_float('danger','File is too big! Allowed memory size of 0.7MB');
         return false;
     };
     uploadFileStatic(file, input, responseImageStatic);
@@ -72,7 +72,7 @@ function getDetailBanner(_this) {
 function callApiUpdateOderSuccess(response){
     console.log(response);
     if(response.statusCode != 0){
-        alert_float('error',response.message);
+        alert_float('danger',response.message);
     }else{
         alert_float('success', 'Updated!');
     }
@@ -176,7 +176,7 @@ function methodAjaxBanner() {
                     errorString = value;
                     return false;
                 });
-                alert_float('error', errorString);
+                alert_float('danger', errorString);
                 console.log(data);
             }
         });
@@ -211,7 +211,7 @@ function methodAjaxBanner() {
                     errorString = value;
                     return false;
                 });
-                alert_float('error', errorString);
+                alert_float('danger', errorString);
                 $('#submitAjax').prop('disabled', false);
             }
         });
@@ -235,7 +235,7 @@ function methodAjaxBanner() {
                     var table = $('#banner_manage').DataTable();
                     table.ajax.reload();
                 }else{
-                    alert_float('error', data.message);
+                    alert_float('danger', data.message);
                     $('#submitAjaxUpdate').prop('disabled', false);
                 }
             },
@@ -246,7 +246,7 @@ function methodAjaxBanner() {
                     errorString = value;
                     return false;
                 });
-                alert_float(errorString);
+                alert_float('danger', errorString);
                 $('#submitAjaxUpdate').prop('disabled', false);
             }
         });

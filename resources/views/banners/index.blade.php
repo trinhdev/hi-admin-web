@@ -30,8 +30,7 @@
                                 <li class="divider"></li>
                                 <li class="dropdown-submenu pull-left responsible_admin">
                                     <a href="#" tabindex="-1">
-                                        <input id="daterange" type="text" name="daterange"
-                                               placeholder="Nhập ngày hiển thị"/>
+                                        Filter 1
                                     </a>
                                 </li>
                                 <div class="clearfix"></div>
@@ -39,20 +38,11 @@
                                 <li class="dropdown-submenu pull-left responsible_admin">
                                     <a href="#" tabindex="-1">Vị trí hiển thị</a>
                                     <ul class="dropdown-menu dropdown-menu-left">
-                                        @forelse($list_type_banner as $type)
-                                            <li>
-                                                <a onclick="filter(this)" class="show_at text-capitalize" href="#"
-                                                   data-cview="{{$type->key}}">
-                                                    {{$type->key .' - '.$type->name}}
-                                                </a>
-                                            </li>
-                                        @empty
-                                            <li>
-                                                <a href="#" data-cview="">
-                                                    None data
-                                                </a>
-                                            </li>
-                                        @endforelse
+                                        <li>
+                                            <a href="#" data-cview="">
+                                                None data
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -101,7 +91,7 @@
             </div>
         </div>
     </div>
-    @include('template.modal', ['id' => 'showDetailBanner_Modal', 'title'=>'Thông tin banner', 'form'=>'banners.detail'])
+    @include('template.modal', ['id' => 'showDetailBanner_Modal', 'title'=>'Form banner', 'form'=>'banners.detail'])
     @include('banners.update-banner-fconnect')
     @include('template.modal', ['id' => 'show_form_export', 'title'=>'Export Data User Click', 'form'=>'banners.export'])
 @endsection
@@ -110,7 +100,7 @@
     <script>
         let table = $('#banner_manage');
         table.on('preXhr.dt', function (e, settings, data) {
-            data.daterange = $('.daterange').val();
+            data.daterange = $('#daterange').val();
             data.bannerType = $('#select_filter').val();
         });
 

@@ -1,17 +1,15 @@
 <form id="formExport">
     @csrf
-    <input type="hidden" id="event_id" name="id">
-    <div class="card-info">
-        <div class="card-body">
-            <div class="card-body">
-                <div class="form-row">
-                    <input class="form-control" id="daterange" type="text" name="daterange" autocomplete="off"/>
-                </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="hidden" id="event_id" name="id">
+            <div class="form-row">
+                <input class="form-control daterange" type="text" name="daterange" autocomplete="off"/>
             </div>
-        </div>
-        <div class="modal-footer" style="text-align: center">
-            <a href="{{ route('bannermanage.index') }}" type="button" class="btn btn-default">Thoát</a>
-            <button type="submit" class="btn btn-info">Lưu</button>
+            <div class="modal-footer" style="float: right">
+                <button type="button" class="btn btn-default close_btn" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-info">Download</button>
+            </div>
         </div>
     </div>
 </form>

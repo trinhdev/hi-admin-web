@@ -121,7 +121,7 @@ class BannerManageDataTable extends BuilderDatatables
     public function htmlInitCompleteFunctionCustom(): ?string
     {
         return "
-            var dateRange = $('.daterange');
+            var dateRange = $('#daterange');
             var bannerType = $('#select_filter');
             var table = $('#banner_manage').DataTable();
             $(bannerType).on('change', function () {
