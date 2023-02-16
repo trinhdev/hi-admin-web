@@ -13,7 +13,9 @@
                 </div>
                 <div class="form-group">
                     <label for="bannerType" class="required_red_dot">Vị trí hiển thị</label>
-                    <select type="text" name="bannerType" class="form-control" id="event_type" onchange="onchangeTypeBanner(this)">
+                    <select type="text" name="bannerType" class="form-control selectpicker" id="event_type" onchange="onchangeTypeBanner(this)" data-actions-box="1" data-width="100%"
+                            data-none-selected-text="Không có mục nào được chọn"
+                            data-live-search="true" tabindex="-98">
                         @forelse($list_type_banner as $type)
                             <option value="{{$type->key}}">{{ $type->name }}</option>
                         @empty
@@ -36,7 +38,9 @@
                 </div>
                 <div class="form-group">
                     <label for="objectType" class="required_red_dot">Loại Đối tượng</label>
-                    <select type="text" name="objectType" class="form-control">
+                    <select type="text" name="objectType" class="form-control selectpicker" data-actions-box="1" data-width="100%"
+                            data-none-selected-text="Không có mục nào được chọn"
+                            data-live-search="true" tabindex="-98">
                         <option value="topic" selected>Nhóm được đăng ký sẵn</option>
                         <option value="location">Vùng miền</option>
                         <option value="contract_phone">Số điện thoại</option>
@@ -46,7 +50,9 @@
                 </div>
                 <div class="form-group">
                     <label for="objects" class="required_red_dot">Đối tượng</label>
-                    <select type="text" name="objects" class="form-control">
+                    <select type="text" name="objects" class="form-control selectpicker" data-actions-box="1" data-width="100%"
+                            data-none-selected-text="Không có mục nào được chọn"
+                            data-live-search="true" tabindex="-98">
                         <option value="all" selected>Tất cả KH cài Hi FPT (bao gồm guest)</option>
                         <option value="all_hifpt">Tất cả KH có dùng dịch vụ (không bao gồm guest)</option>
                         <option value="guest">Tất cả KH không dùng dịch vụ (guest)</option>
@@ -55,11 +61,11 @@
                 <div class="form-row">
                     <div class="col">
                         <label for="show_from" class="required_red_dot">Ngày hiển thị </label>
-                        <input type="datetime-local" name="show_from" value="{{ old('show_from') }}" id="public_date_start" class="form-control" onchange="changePublicDateTime(this)" />
+                        <input type="text" name="show_from" value="{{ old('show_from') }}" id="public_date_start" class="form-control datetimepicker" onchange="changePublicDateTime(this)" />
                     </div>
                     <div class="col">
                         <label for="show_to" class="required_red_dot"> Ngày kết thúc </label>
-                        <input type="datetime-local" name="show_to" value="{{ old('show_to') }}" id="public_date_end" class="form-control" onchange="changePublicDateTime(this)" />
+                        <input type="text" name="show_to" value="{{ old('show_to') }}" id="public_date_end" class="form-control datetimepicker" onchange="changePublicDateTime(this)" />
                     </div>
                 </div>
                 <div class="form-group" id="show_target_route">
@@ -71,7 +77,9 @@
                         <label for="target_route">Điều hướng đến</label>
                         <div id="collapseOne" style="transition: height 0.01s;">
                             {{-- <label for="target_route">Target Id</label> --}}
-                            <select type="file" name="direction_id" class="form-control p" id="direction_id" onchange="onchangeTargetRoute()" data-live-search="true" data-size="10">
+                            <select data-actions-box="1" data-width="100%"
+                                    data-none-selected-text="Không có mục nào được chọn"
+                                    data-live-search="true" tabindex="-98" type="file" name="direction_id" class="form-control p selectpicker" id="direction_id" onchange="onchangeTargetRoute()" data-live-search="true" data-size="10">
                                 @forelse($list_target_route as $target)
                                     <option value="{{$target->id}}">{{ $target->name }}</option>
                                 @empty

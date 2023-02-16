@@ -74,7 +74,7 @@ function callApiUpdateOderSuccess(response){
     if(response.statusCode != 0){
         alert_float('error',response.message);
     }else{
-        showSuccess('Updated!');
+        alert_float('success', 'Updated!');
     }
 }
 
@@ -89,13 +89,19 @@ function updateOrdering(_thisInputTag){
     callAPIHelper("/bannermanage/updateordering", updateParams, 'POST', callApiUpdateOderSuccess);
 }
 
-function changePublicDateTime(dateTimeInput){
-    var form = $(dateTimeInput).closest('form');
-    var show_from = $(form).find('input[name="show_from"]');
-    var show_to = $(form).find('input[name="show_to"]');
-
-    show_from.attr("max",show_to.val());
-    show_to.attr("min",show_from.val());
+function changePublicDateTime(){
+    $('input[name="show_from"]').datetimepicker({
+        showTodayButton: true,
+        format: 'Y-m-d H:i:s',
+        sideBySide: true,
+        minDate: moment().format('Y-m-d H:i:s')
+    });
+    $('input[name="show_to"]').datetimepicker({
+        showTodayButton: true,
+        format: 'Y-m-d H:i:s',
+        sideBySide: true,
+        minDate: $('input[name="show_from"]').val()
+    });
 }
 
 function methodAjaxBanner() {
@@ -205,7 +211,7 @@ function methodAjaxBanner() {
                     errorString = value;
                     return false;
                 });
-                alert_float(errorString);
+                alert_float('error', errorString);
                 $('#submitAjax').prop('disabled', false);
             }
         });

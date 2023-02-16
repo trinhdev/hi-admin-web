@@ -9,7 +9,7 @@
                     <input type="search" id="search_input"
                            class="tw-px-4 tw-ml-1 tw-mt-2.5 focus:!tw-ring-0 tw-w-full !tw-placeholder-neutral-400 !tw-shadow-none tw-text-neutral-800 focus:!tw-placeholder-neutral-600 hover:!tw-placeholder-neutral-600 sm:tw-w-[400px] tw-h-[40px] tw-bg-neutral-300/30 hover:tw-bg-neutral-300/50 !tw-border-0"
                            placeholder="Tìm kiếm" autocomplete="off">
-                    <div id="top_search_button" class="tw-absolute rtl:tw-left-0 -tw-mt-2 tw-top-1.5 ltr:tw-right-1">
+                    <div id="top_search_button" class="tw-absolute rtl:tw-left-0 -tw-mt-2 tw-top-1.5 tw-right-1">
                         <button class="tw-outline-none tw-border-0 tw-text-neutral-600">
                             <i class="fa fa-search"></i>
                         </button>
@@ -21,7 +21,7 @@
 
                 </div>
                 <ul class="nav navbar-nav visible-md visible-lg">
-                    <li class="icon tw-relative ltr:tw-mr-1.5 rtl:tw-ml-1.5" title="quick_create"
+                    <li class="icon tw-relative ltr:tw-mr-1.5 rtl:tw-ml-1.5" title="Tạo mới nhanh"
                         data-toggle="tooltip" data-placement="bottom">
                         <a href="#" class="!tw-px-0 tw-group !tw-text-white" data-toggle="dropdown">
                             <span
@@ -31,15 +31,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right animated fadeIn tw-text-base">
                             <li class="dropdown-header tw-mb-1">
-                                quick_create
-                            </li>
-                            <li>
-                                <a href="$url" $href_attributes
-                                   class="tw-group tw-inline-flex tw-space-x-0.5 tw-text-neutral-700">
-                                    icon
-                                    <i class="icon tw-text-neutral-400 group-hover:tw-text-neutral-600 tw-h-5 tw-w-5"></i>
-                                    <span>name</span>
-                                </a>
+                                <a href="/bannermanage">Chức năng chưa hỗ trợ</a>
                             </li>
                         </ul>
                     </li>

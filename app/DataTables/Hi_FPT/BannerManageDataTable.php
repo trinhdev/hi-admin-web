@@ -23,10 +23,16 @@ class BannerManageDataTable extends BuilderDatatables
         return datatables()
             ->collection($query)
             ->editColumn('title_vi', function($row) {
-                return '<a href="">'.$row->title_vi.'</a>
+                if (strlen($row->title_vi)>60) {
+                    $text = mb_substr($row->title_vi, 0, 50, "UTF-8").'<div class="text-bold">...Xem thêm</div>';
+                } else {
+                    $text = $row->title_vi;
+                }
+
+                return '<a data-id="'.$row->event_id .'" id="detailBanner" href="#">'.$text.'</a>
                     <div class="row-options">
-                        <a data-id="'.$row->event_id .'" id="detailBanner" href="">View</a> |
-                        <a data-id="'.$row->event_id .'" id="button_form_export" href="" class="text-info">Export</a>
+                        <a data-id="'.$row->event_id .'" id="detailBanner" href="#">View</a> |
+                        <a data-id="'.$row->event_id .'" id="button_form_export" href="#" class="text-info">Export</a>
                     </div>';
             })
             ->editColumn('event_type', function($row) {
@@ -115,10 +121,10 @@ class BannerManageDataTable extends BuilderDatatables
     public function htmlInitCompleteFunctionCustom(): ?string
     {
         return "
-            var dateRange = $('#daterange');
-            var bannerType = $('.show_at');
+            var dateRange = $('.daterange');
+            var bannerType = $('#select_filter');
             var table = $('#banner_manage').DataTable();
-            $(bannerType).on('click', function () {
+            $(bannerType).on('change', function () {
                 table.ajax.reload();
             });
             $(dateRange).on('change', function () {
