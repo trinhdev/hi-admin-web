@@ -1,0 +1,6 @@
+.daterangepicker {
+    z-index: 11000 !important;
+}
+#alert_float_1.alert-error {
+    z-index: 99999 !important;
+}

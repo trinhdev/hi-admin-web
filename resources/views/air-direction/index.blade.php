@@ -1,59 +1,42 @@
 {{--
 Create by: trinhdev
 Update at: 2022/06/22
-Contact: trinhhuynhdp@gmail.com
-
-INDEX PAGE
-    * import TABLE, import modal_add_update
-    * show, filter and search data form api (done)
-END INDEX PAGE
-
+Contact: trinhhuynhdp@gmail.co
 --}}
-
-@extends('layouts.default')
-
+@extends('layoutv2.layout.app')
 @section('content')
-
-        <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">Quản lý điều hướng</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                            <li class="breadcrumb-item active">Quản lý điều hướng</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card card-body col-sm-12">
-                    @include('air-direction._table')
+    <div id="wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="_buttons">
+                        <a id="push_air_direction_form" href="#" class="btn btn-primary mright5 test pull-left display-block">
+                            <i class="fa-regular fa-plus tw-mr-1"></i>
+                            Thêm mới điều hướng</a>
+                        <a href="#" onclick="alert('Liên hệ zalo 0354370175 nếu xảy ra lỗi không mong muốn!')" class="btn btn-default pull-left display-block mright5">
+                            <i class="fa-regular fa-user tw-mr-1"></i>Liên hệ
+                        </a>
+                        <div class="visible-xs">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="panel_s tw-mt-2 sm:tw-mt-4">
+                        <div class="panel-body">
+                            <div class="panel-table-full">
+                                {{ $dataTable->table(['id' => 'air_direction_table'], $footer = false) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-        <!-- /.content -->
+        </div>
     </div>
-    <!-- /.content-wrapper -->
-    @include('air-direction._modal_add_update')
+    @include('template.modal', ['id' => 'push_air_direction', 'title'=>'Thông tin điều hướng', 'form'=>'air-direction._modal_add_update'])
 @endsection
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            handlePushAirDiretion();
-            methodAjaxAirDirection();
-        });
-    </script>
+@push('script')
+    {!! $dataTable->scripts() !!}
+    <script src="{{ asset('/custom_js/air_direction.js')}}"></script>
 @endpush
 
 

@@ -11,7 +11,7 @@ class UserAnalyticsDataTable extends DataTable
     public function ajax()
     {
         return datatables()
-            ->eloquent($this->query())
+            ->collection($this->query())
             ->editColumn('action',function(){
                 return '<div style="display:flex; justify-content:center">
                            <a href="" id="detail" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
@@ -27,7 +27,7 @@ class UserAnalyticsDataTable extends DataTable
 
     public function query()
     {
-        return $this->applyScopes($this->data_detail);
+        return collect($this->data_detail);
     }
 
     /**
@@ -79,14 +79,10 @@ class UserAnalyticsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('id'),
+            Column::make('customer_id'),
             Column::make('phone'),
-            Column::make('start_point'),
-            Column::make('end_point'),
-            Column::make('time_start'),
-            Column::make('time_end'),
-            Column::make('list_applog_id'),
-            Column::make('created_at'),
+            Column::make('date_created'),
+            Column::make('app_version'),
             Column::computed('action')->sortable(false)
                 ->searching(false)
                 ->width(80)

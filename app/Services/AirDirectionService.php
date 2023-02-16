@@ -31,7 +31,8 @@ class AirDirectionService
         $param = [
             'name'              =>$params['0'],
             'decription'        =>$params['1'],
-            'value'             =>$params['2']
+            'value'             =>$params['2'],
+            'key'             =>$params['3'],
         ];
         return sendRequest($url, $param, $this->token,$headerArray=['clientKey'=>$this->clientKey]);
     }
@@ -43,7 +44,8 @@ class AirDirectionService
             'id'                =>$params['0'],
             'name'              =>$params['1'],
             'decription'       =>$params['2'],
-            'value'             =>$params['3']
+            'value'             =>$params['3'],
+            'key'             =>$params['4'],
         ];
         return sendRequest($url, $param, $this->token,$headerArray=['clientKey'=>$this->clientKey]);
     }

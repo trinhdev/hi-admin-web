@@ -162,7 +162,7 @@
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        @include('template.breadcrumb', ['name' =>'Báo cáo data sale theo ngày'])
+        @include('template.breadcrumb', ['name' =>'Báo cáo doanh thu'])
 
         <!-- Main content -->
         <section class="content">

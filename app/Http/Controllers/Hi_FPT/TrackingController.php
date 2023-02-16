@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\Contract\Hi_FPT\TrackingInterface;
+use App\DataTables\Hi_FPT\SessionAnalyticsDataTable;
 use App\DataTables\Hi_FPT\UserAnalyticsDataTable;
 use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;

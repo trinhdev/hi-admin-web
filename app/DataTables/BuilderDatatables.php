@@ -121,22 +121,12 @@ abstract class BuilderDatatables extends DataTable
      * @param DataTables $table
      * @param UrlGenerator $urlGenerator
      */
-    public function __construct(Datatables $table, UrlGenerator $urlGenerator, DeeplinkInterface $repository)
+    public function __construct(Datatables $table)
     {
-        $this->repository = $repository;
         $this->table = $table;
-        $this->ajaxUrl = $urlGenerator->current();
 
         if ($this->type == self::TABLE_TYPE_SIMPLE) {
             $this->pageLength = -1;
-        }
-
-        if (!$this->getOption('id')) {
-            $this->setOption('id', strtolower(Str::slug(Str::snake(get_class($this)))));
-        }
-
-        if (!$this->getOption('class')) {
-            $this->setOption('class', 'table table-striped table-hover vertical-middle');
         }
 
         $this->bulkChangeUrl = '';
@@ -210,25 +200,6 @@ abstract class BuilderDatatables extends DataTable
     }
 
     /**
-     * @return string
-     */
-    public function getView(): string
-    {
-        return $this->view;
-    }
-
-    /**
-     * @param string $view
-     * @return $this
-     */
-    public function setView(string $view): self
-    {
-        $this->view = $view;
-
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function getOptions(): array
@@ -254,69 +225,58 @@ abstract class BuilderDatatables extends DataTable
      *
      * @since 2.1
      */
+
+
     public function html()
     {
-        if ($this->request->has('filter_table_id')) {
-            $this->bStateSave = false;
-        }
-
         return $this->builder()
             ->columns($this->getColumns())
-            ->ajax(['url' => $this->getAjaxUrl(), 'method' => 'POST'])
+            ->responsive()
+            ->orderBy(1, 'DESC')
             ->parameters([
-                'dom' => $this->getDom(),
-                'buttons' => $this->getBuilderParameters(),
+                'scroll' => false,
+                'searching' => true,
+                'searchDelay' => 350,
+                'bDeferRender' => true,
+                'bDestroy' => true,
+                'autoWidth' => false,
+                'serverSide' => true,
+                'retrieve' => false,
                 'initComplete' => $this->htmlInitComplete(),
                 'drawCallback' => $this->htmlDrawCallback(),
-                'paging' => true,
-                'searching' => true,
-                'info' => true,
-                'searchDelay' => 350,
-                'bStateSave' => $this->bStateSave,
-                'lengthMenu' => [
-                    array_values(array_unique(array_merge(Arr::sortRecursive([10, 30, 50, 100, 500, $this->pageLength]), [-1]))),
-                    array_values(array_unique(array_merge(
-                        Arr::sortRecursive([10, 30, 50, 100, 500, $this->pageLength]),
-                        ['Text all']
-                    ))),
-                ],
-                'pageLength' => $this->pageLength,
-                'processing' => true,
-                'serverSide' => true,
-                'bServerSide' => true,
-                'bDeferRender' => true,
-                'bProcessing' => true,
-                'language' => [
-                    'aria' => [
-                        'sortAscending' => 'orderby asc',
-                        'sortDescending' => 'orderby desc',
-                        'paginate' => [
-                            'next' => 'Trước',
-                            'previous' => 'Sau',
-                        ],
-                    ],
-                    'emptyTable' => 'Không có dữ liệu',
-                    'info' => '',
-                    'infoEmpty' => 'Không có dữ liệu',
-                    'lengthMenu' => Html::tag('span', '_MENU_', ['class' => 'dt-length-style'])->toHtml(),
-                    'search' => '',
-                    'searchPlaceholder' => 'Tìm kiếm',
-                    'zeroRecords' => 'Không có dữ liệu',
-                    'processing' => Html::image('base/images/loading-spinner-blue.gif'),
-                    'paginate' => [
-                        'next' => 'Trước',
-                        'previous' => 'Sau',
-                    ],
-                    'infoFiltered' => 'Lọc dữ liệu',
-                ],
-                'aaSorting' => $this->useDefaultSorting ? [
+                'dom' => $this->getDom(),
+                'buttons' => $this->getBuilderParameters(),
+                'columnDefs' => [
+                    ['searchable' => false,
+                        'targets' => 'notsearchable'],
                     [
-                        ($this->hasCheckbox ? $this->defaultSortColumn : 0),
-                        'desc',
+                        'sortable' => false,
+                        'targets' => 'notsortable'
                     ],
-                ] : [],
-                'responsive' => true,
-                'autoWidth' => false,
+                ],
+            ])
+            ->addTableClass('table-responsive')
+            ->language([
+                'emptyTable' => preg_replace("/{(\d+)}/", ('dt_entries'), ('Không có dữ liệu')),
+                'info' => preg_replace("/{(\d+)}/", ('dt_entries'), 'Hiển thị trang _PAGE_ của _PAGES_ trang'),
+                'infoEmpty' => preg_replace("/{(\d+)}/", ('dt_entries'), ('Không có dữ liệu')),
+                'infoFiltered' => preg_replace("/{(\d+)}/", ('dt_entries'), ('dt_info_filtered')),
+                'lengthMenu' => '_MENU_',
+                'loadingRecords' => ('Đang tải'),
+                'processing' => '<div class="dt-loader"></div>',
+                'search' => '<div class="input-group"><span class="input-group-addon"><span class="fa fa-search"></span></span>',
+                'searchPlaceholder' => ('Tìm kiếm'),
+                'zeroRecords' => '<p class="text-center">Không có dữ liệu</p>',
+                'paginate' => [
+                    'first' => 'Trước',
+                    'last' => ('Cuối'),
+                    'next' => ('Tiếp'),
+                    'previous' => ('Sau'),
+                ],
+                'aria' => [
+                    'sortAscending' => (''),
+                    'sortDescending' => ('Sắp sếp giảm dần'),
+                ],
             ]);
     }
 
@@ -327,38 +287,38 @@ abstract class BuilderDatatables extends DataTable
     public function getColumns(): array
     {
         $columns = $this->columns();
-
-
-
         foreach ($columns as $key => &$column) {
             $column['class'] = Arr::get($column, 'class') . ' column-key-' . $key;
         }
 
-
-
-        if ($this->hasOperations) {
-            $columns = array_merge($columns, $this->getOperationsHeading());
+        if ($this->hasCheckbox) {
+            $columns = array_merge($this->getCheckboxColumnHeading(), $columns);
         }
+
 
         return $columns;
     }
 
-    public function getListeners(): array
+    public function getCheckboxColumnHeading()
     {
-        foreach ($this->listeners as $listeners) {
-            uksort($listeners, function ($param1, $param2) {
-                return strnatcmp($param1, $param2);
-            });
-        }
-
-        return $this->listeners;
+        return [
+            'checkbox' => [
+                'orderable' => false,
+                'searchable' => false,
+                'exportable' => false,
+                'printable' => false,
+                'width' => '10px',
+                'class' => 'text-center',
+                'title' => '<div class="checkbox mass_select_all_wrap"><input type="checkbox" id="mass_select_all" data-to-table="responsive"><label></label></div>',
+            ]
+        ];
     }
 
     protected function addCreateButton(string $url, array $buttons = []): array
     {
         $buttons['create'] = [
             'link' => $url,
-            'text' => view('table.create')->render(),
+            'title' => 'Tạo mới',
         ];
         return $buttons;
     }
@@ -381,94 +341,11 @@ abstract class BuilderDatatables extends DataTable
         return false;
     }
 
-    public function fire(string $action, array $args)
-    {
-        $value = $args[0] ?? ''; // get the value, the first argument is always the value
-        if (!$this->getListeners()) {
-            return $value;
-        }
-
-        foreach ($this->getListeners() as $hook => $listeners) { // go through each of the priorities
-            ksort($listeners);
-            foreach ($listeners as $arguments) { // loop all hooks
-                if ($hook === $action) { // if the hook responds to the current filter
-                    $parameters = [$value];
-                    for ($index = 1; $index < $arguments['arguments']; $index++) {
-                        if (isset($args[$index])) {
-                            $parameters[] = $args[$index]; // add arguments if it is there
-                        }
-                    }
-                    // filter the value
-                    $value = call_user_func_array($this->getFunction($arguments['callback']), $parameters);
-                }
-            }
-        }
-
-        return $value;
-    }
-    function apply_filters()
-    {
-        $args = func_get_args();
-
-        return $this->fire(array_shift($args), $args);
-    }
-
     /**
      * @return array
      * @since 2.1
      */
     abstract public function columns();
-
-    /**
-     * @return array
-     */
-    public function getOperationsHeading()
-    {
-        return [
-            'operations' => [
-                'title' => 'title operations',
-                'width' => '134px',
-                'class' => 'text-center',
-                'orderable' => false,
-                'searchable' => false,
-                'exportable' => false,
-                'printable' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @param string|null $edit
-     * @param string|null $delete
-     * @param mixed $item
-     * @param string|null $extra
-     * @return string
-     */
-    protected function getOperations(?string $edit, ?string $delete, $item, ?string $extra = null): string
-    {
-        return apply_filters('table_operation_buttons', table_actions($edit, $delete, $item, $extra), $item, $edit, $delete, $extra);
-    }
-
-    /**
-     * @return array
-     */
-    public function getCheckboxColumnHeading()
-    {
-        return [
-            'checkbox' => [
-                'width' => '10px',
-                'class' => 'text-start no-sort',
-                'title' => Form::input('checkbox', null, null, [
-                    'class' => 'table-check-all',
-                    'data-set' => '.dataTable .checkboxes',
-                ])->toHtml(),
-                'orderable' => false,
-                'searchable' => false,
-                'exportable' => false,
-                'printable' => false,
-            ],
-        ];
-    }
 
     /**
      * @return string
@@ -494,20 +371,7 @@ abstract class BuilderDatatables extends DataTable
      */
     protected function getDom(): ?string
     {
-        $dom = null;
-
-        switch ($this->type) {
-            case self::TABLE_TYPE_ADVANCED:
-                $dom = "fBrt<'datatables__info_wrap'pli<'clearfix'>>";
-
-                break;
-            case self::TABLE_TYPE_SIMPLE:
-                $dom = "t<'datatables__info_wrap'<'clearfix'>>";
-
-                break;
-        }
-
-        return $dom;
+        return "<'row'><'row'<'col-md-7'lB><'col-md-5'f>>rt<'row'<'col-md-4'i><'col-md-8 dataTables_paging'<'#colvis'><'.dt-page-jump'>p>>";
     }
 
     /**
@@ -520,17 +384,10 @@ abstract class BuilderDatatables extends DataTable
             'stateSave' => true,
         ];
 
-        if ($this->type == self::TABLE_TYPE_SIMPLE) {
-            return $params;
-        }
-
-        $buttons = array_merge($this->getButtons(), $this->getActionsButton());
-
-        $buttons = array_merge($buttons, $this->getDefaultButtons());
+        $buttons = array_merge($this->getButtons(), $this->getDefaultButtons());
         if (!$buttons) {
             return $params;
         }
-
         return $params + compact('buttons');
     }
 
@@ -540,8 +397,7 @@ abstract class BuilderDatatables extends DataTable
      */
     public function getButtons(): array
     {
-//        $buttons = $this->apply_filters('base_filter_table_buttons', $this->buttons(), get_class($this->repository->getModel()));
-        $buttons = null;
+        $buttons = $this->buttons();
         if (!$buttons) {
             return [];
         }
@@ -553,7 +409,7 @@ abstract class BuilderDatatables extends DataTable
                 $data[] = $button;
             } else {
                 $data[] = [
-                    'className' => 'action-item',
+                    'className' => 'btn btn-default btn-sm btn-default-dt-options',
                     'text' => Html::tag('span', $button['text'], [
                         'data-action' => $key,
                         'data-href' => Arr::get($button, 'link'),
@@ -569,10 +425,7 @@ abstract class BuilderDatatables extends DataTable
      * @return array
      * @since 2.1
      */
-    public function buttons()
-    {
-        return [];
-    }
+    public function buttons(){}
 
     /**
      * @return array
@@ -629,7 +482,48 @@ abstract class BuilderDatatables extends DataTable
     public function getDefaultButtons(): array
     {
         return [
-            'reload',
+            [
+                'extend' => 'collection',
+                'text' => 'Xuất ra',
+                'autoClose' => true,
+                'attr' => [
+                    'class' => 'btn btn-default buttons-collection btn-sm btn-default-dt-options'
+                ],
+                'buttons' => [
+                    [
+                        'text' => 'Excel',
+                        'extend' => 'excel'
+                    ],
+                    [
+                        'text' => 'CSV',
+                        'extend' => 'csv'
+                    ],
+                    [
+                        'text' => 'PDF',
+                        'extend' => 'pdf'
+                    ],[
+                        'text' => 'Print',
+                        'extend' => 'print'
+                    ]
+                ]
+            ],
+            [
+                'extend' => 'colvis',
+                'text' => '<i class="fa fa-cog"></i>',
+                'autoClose' => true,
+                'attr' => [
+                    'class' => 'btn btn-default btn-sm btn-default-dt-options btn-dt-colvis'
+                ],
+            ],
+            [
+                'extend' => 'collection',
+                'text' => '<i class="fa fa-refresh"></i>',
+                'autoClose' => true,
+                'attr' => [
+                    'class' => 'btn btn-default btn-sm btn-default-dt-options btn-dt-reload'
+                ],
+                'action'    => 'function ( e, dt, node, config ) {dt.ajax.reload();}',
+            ]
         ];
     }
 
@@ -641,27 +535,31 @@ abstract class BuilderDatatables extends DataTable
         return 'function () {' . $this->htmlInitCompleteFunction() . '}';
     }
 
+    abstract public function htmlInitCompleteFunctionCustom();
+
     /**
      * @return string
      */
     public function htmlInitCompleteFunction(): ?string
     {
-        return '
-            if (jQuery().select2) {
-                $(document).find(".select-multiple").select2({
-                    width: "100%",
-                    allowClear: true,
-                    placeholder: $(this).data("placeholder")
-                });
-                $(document).find(".select-search-full").select2({
-                    width: "100%"
-                });
-                $(document).find(".select-full").select2({
-                    width: "100%",
-                    minimumResultsForSearch: -1
-                });
-            }
-        ';
+        return $this->htmlInitCompleteFunctionCustom() . $this->htmlInitCompleteFunctionDefault();
+    }
+
+    public function htmlInitCompleteFunctionDefault(): ?string
+    {
+        return "
+            var t = this;
+            t.parents('.table-loading').removeClass('table-loading');
+            t.removeClass('dt-table-loading');
+            var btnReload = $('.btn-dt-reload');
+            btnReload.attr('data-toggle', 'tooltip');
+            btnReload.attr('title', 'Tải lại');
+
+            if (is_mobile() && $(window).width() < 400  && t.find('tbody td:first-child input[type=`checkbox`]').length > 0) {
+                t.DataTable().column(0).visible(false, false).columns.adjust();
+                $('a[data-target*=`bulk_actions`]').addClass('hide');
+              }
+        ";
     }
 
     /**
@@ -682,155 +580,10 @@ abstract class BuilderDatatables extends DataTable
     public function htmlDrawCallbackFunction(): ?string
     {
         return '
-            var pagination = $(this).closest(".dataTables_wrapper").find(".dataTables_paginate");
-            pagination.toggle(this.api().page.info().pages > 1);
 
-            var data_count = this.api().data().count();
-
-            var length_select = $(this).closest(".dataTables_wrapper").find(".dataTables_length");
-            var length_info = $(this).closest(".dataTables_wrapper").find(".dataTables_info");
-            length_select.toggle(data_count >= 10);
-            length_info.toggle(data_count > 0);
-
-            if (jQuery().select2) {
-                $(document).find(".select-multiple").select2({
-                    width: "100%",
-                    allowClear: true,
-                    placeholder: $(this).data("placeholder")
-                });
-                $(document).find(".select-search-full").select2({
-                    width: "100%"
-                });
-                $(document).find(".select-full").select2({
-                    width: "100%",
-                    minimumResultsForSearch: -1
-                });
-            }
-
-            $("[data-bs-toggle=tooltip]").tooltip({
-                placement: "top"
-            });
         ';
     }
 
-    /**
-     * @param array $data
-     * @param array $mergeData
-     * @return JsonResponse|View
-     * @since 2.4
-     */
-    public function renderTable(array $data = [], array $mergeData = [])
-    {
-        return $this->render($this->view, $data, $mergeData);
-    }
-
-    /**
-     * @param string $view
-     * @param array $data
-     * @param array $mergeData
-     * @return mixed
-     */
-    public function render($view, $data = [], $mergeData = [])
-    {
-        $data['id'] = Arr::get($data, 'id', $this->getOption('id'));
-        $data['class'] = Arr::get($data, 'class', $this->getOption('class'));
-
-        $this->setAjaxUrl($this->ajaxUrl . '?' . http_build_query(request()->input()));
-
-        $this->setOptions($data);
-
-        $data['table'] = $this;
-        return parent::render($view, $data, $mergeData);
-    }
-
-    /**
-     * @param EloquentBuilder|Builder $query
-     * @return mixed
-     */
-    public function applyScopes($query)
-    {
-        return parent::applyScopes($query);
-    }
-
-
-    /**
-     * @param string|null $title
-     * @param string|null $value
-     * @param string| null $type
-     * @param array $data
-     * @return array
-     */
-    public function getValueInput(?string $title, ?string $value, ?string $type, array $data = []): array
-    {
-        $inputName = 'value';
-
-        if (empty($title)) {
-            $inputName = 'filter_values[]';
-        }
-        $attributes = [
-            'class' => 'form-control input-value filter-column-value',
-            'placeholder' => trans('table.table.value'),
-            'autocomplete' => 'off',
-        ];
-
-        switch ($type) {
-            case 'select':
-            case 'customSelect':
-                $attributes['class'] = $attributes['class'] . ' select';
-                $attributes['placeholder'] = trans('table.table.select_option');
-                $html = Form::customSelect($inputName, $data, $value, $attributes)->toHtml();
-
-                break;
-
-            case 'select-search':
-                $attributes['class'] = $attributes['class'] . ' select-search-full';
-                $attributes['placeholder'] = trans('table.table.select_option');
-                $html = Form::customSelect($inputName, $data, $value, $attributes)->toHtml();
-
-                break;
-
-            case 'select-ajax':
-                $attributes = [
-                    'class' => $attributes['class'] . ' select-search-ajax',
-                    'data-url' => Arr::get($data, 'url'),
-                    'data-minimum-input' => Arr::get($data, 'minimum-input', 2),
-                    'multiple' => Arr::get($data, 'multiple', false),
-                    'data-placeholder' => Arr::get($data, 'placeholder', $attributes['placeholder']),
-                ];
-                $html = Form::customSelect($inputName, Arr::get($data, 'selected', []), $value, $attributes)->toHtml();
-
-                break;
-
-            case 'number':
-                $html = Form::number($inputName, $value, $attributes)->toHtml();
-
-                break;
-
-            case 'date':
-                $attributes['class'] = $attributes['class'] . ' datepicker';
-                $attributes['data-date-format'] = config('core.base.general.date_format.js.date');
-                $content = Form::text($inputName, $value, $attributes)->toHtml();
-                $html = view('table.partials.date-field', compact('content'))->render();
-
-                break;
-
-            default:
-                $html = Form::text($inputName, $value, $attributes)->toHtml();
-
-                break;
-        }
-
-        return compact('html', 'data');
-    }
-
-
-    /**
-     * @param QueryDataTable | CollectionDataTable $data
-     * @param array $escapeColumn
-     * @param bool $mDataSupport
-     * @return mixed
-     * @throws Exception
-     */
     public function toJson($data, array $escapeColumn = [], bool $mDataSupport = true)
     {
 //        if ($this->repository && $this->repository->getModel()) {

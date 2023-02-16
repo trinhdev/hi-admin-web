@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Hi_FPT;
 
+use App\DataTables\Hi_FPT\TestDataTable;
 use App\Http\Controllers\MY_Controller;
 
 class Test extends MY_Controller
@@ -13,8 +14,13 @@ class Test extends MY_Controller
         $this->title = 'Test Manage';
     }
 
-    public function index()
+    public function index(TestDataTable $dataTable)
     {
-        return view('layoutv2.layout.test-layout');
+        return $dataTable->render('layoutv2.layout.test-data.index');
+    }
+
+    public function create()
+    {
+        return view('layoutv2.layout.test-data.create');
     }
 }

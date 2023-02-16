@@ -1,77 +1,50 @@
-@extends('layouts.default')
-@push('header')
-    <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
-@endpush
+@extends('layoutv2.layout.app')
+
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <?php
-    ?>
-    <div class="content-wrapper">
-        @include('template.breadcrumb', ['name' => 'Quản lí banner'])
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card card-body col-sm-12">
-                    <div class="container">
-                        <div class="card-body row form-inline">
-                            <div class="col-md-3">
-                                <div class="input-group input-group-sm mb-4">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Vị Trí Hiển Thị:</div>
-                                    </div>
-                                    <select class="form-control" name="position" id="show_at" placeholder="Show at">
-                                        <option value=''>Tất Cả</option>
-                                        @forelse($list_type_banner as $type)
-                                            <option value="{{$type->key}}">&#8920; {{ $type->key}}
-                                                &#x22D9;: {{$type->name}}</option>
-                                        @empty
-                                            <option>API Error</option>
-                                        @endforelse
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="input-group input-group-sm mb-4">
-                                    <div class="input-group-prepend ">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i>&nbsp;</div>
-                                    </div>
-                                    <input class="form-control" id="daterange" type="text" name="daterange" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="input-group input-group-sm mb-4">
-                                    <button id="filter_condition" class="btn btn-sm btn-primary">Time filter</button>
-                                </div>
+    <div id="wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="_buttons">
+                        <a id="addBanner" href="#" class="btn btn-primary mright5 test pull-left display-block">
+                            <i class="fa-regular fa-plus tw-mr-1"></i>
+                            Thêm mới</a>
+                        <a href="#" class="btn btn-primary pull-left display-block mright5 hidden-xs"
+                           id="updateBannerFconnect">
+                            <i class="fa-solid fa-upload tw-mr-1"></i>Update banner fconnect
+                        </a>
+                        <a href="#" onclick="alert('Liên hệ zalo 0354370175 nếu xảy ra lỗi không mong muốn!')" class="btn btn-default pull-left display-block mright5">
+                            <i class="fa-regular fa-user tw-mr-1"></i>Liên hệ
+                        </a>
+                        <div class="visible-xs">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="panel_s tw-mt-2 sm:tw-mt-4">
+                        @include('banners.filter')
+                        <div class="panel-body">
+                            <div class="panel-table-full">
+                                {{ $dataTable->table(['id' => 'banner_manage'], $footer = false) }}
                             </div>
                         </div>
                     </div>
-                    {{--Start table--}}
-                    {{ $dataTable->table([], $footer = false) }}
-                    {{--End table--}}
                 </div>
             </div>
-        </section>
-        <!-- /.content -->
+        </div>
     </div>
-    @include('template.modal', ['id' => 'showDetailBanner_Modal', 'title'=>'Thông tin banner', 'form'=>'banners.detail'])
-    @include('template.modal', ['id' => 'showFormUpdateFconnect_Modal', 'title'=>'Update banner fconnect', 'form'=>'banners.update-banner-fconnect'])
+    @include('template.modal', ['id' => 'showDetailBanner_Modal', 'title'=>'Form banner', 'form'=>'banners.detail'])
+    @include('banners.update-banner-fconnect')
     @include('template.modal', ['id' => 'show_form_export', 'title'=>'Export Data User Click', 'form'=>'banners.export'])
-    <!-- /.content-wrapper -->
 @endsection
-<!--end::Table-->
-@push('scripts')
+@push('script')
     {{ $dataTable->scripts() }}
     <script>
-        const table = $('#banner_manage');
+        let table = $('#banner_manage');
         table.on('preXhr.dt', function (e, settings, data) {
-            data.bannerType = $('#show_at').val();
             data.daterange = $('#daterange').val();
+            data.bannerType = $('#select_filter').val();
         });
-
-        function showHideTitle(_this) {
-            $('.hide' + _this).show();
-            $('.show' + _this).hide();
-        }
 
         $(document).ready(function () {
             methodAjaxBanner();

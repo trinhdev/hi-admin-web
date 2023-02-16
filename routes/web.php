@@ -397,6 +397,7 @@ Route::group([
 
             Route::prefix('testv2')->controller(Test::class)->group(function () {
                 Route::get('/','index')->name('test.index');
+                Route::get('/create','create')->name('test.create');
             });
 
             Route::prefix('tracking')->controller(TrackingController::class)->group(function () {
