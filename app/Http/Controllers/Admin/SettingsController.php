@@ -31,10 +31,10 @@ class SettingsController extends MY_Controller
          return $dataTable->render('settings.list2');
     }
 
-//    public function index()
-//    {
-//        return view('settings.list');
-//    }
+    public function index2()
+    {
+        return view('settings.list');
+    }
 
     /**
      * Show the form for creating a new resource.

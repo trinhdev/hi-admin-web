@@ -546,13 +546,11 @@ $(function () {
     e.stopImmediatePropagation();
     e.preventDefault();
     var index = $(this).parents("li").index();
-    requestGet("misc/remove_recent_search/" + index).done(function (history) {
       var $searchHistory = $("#search-history");
       $searchHistory.find("li:eq(" + index + ")").remove();
       if ($searchHistory.find("li").length == 0) {
-        $searchHistory.removeClass("display-block");
+          $searchHistory.removeClass("display-block");
       }
-    });
   });
 
   $("#search_input").on("click focus", function () {
@@ -595,34 +593,6 @@ $(function () {
         $searchHistory.addClass("display-block");
         return;
       }
-
-      if (
-        q.length < 2 &&
-        app.user_language.indexOf("chinese") === -1 &&
-        app.user_language.indexOf("japanese") === -1
-      ) {
-        return;
-      }
-
-      top_search_button
-        .html('<i class="fa fa-remove"></i>')
-        .addClass("search_remove");
-
-      delay(function () {
-        if (q == original_top_search_val) {
-          return;
-        }
-        $.post(admin_url + "misc/search", {
-          q: q,
-        }).done(function (data) {
-          data = JSON.parse(data);
-          content_wrapper.unhighlight();
-          search_results.html(data.results);
-          content_wrapper.highlight(q);
-          original_top_search_val = q;
-          set_search_history(data.history);
-        });
-      }, 700);
     }
   );
 
@@ -668,61 +638,6 @@ $(function () {
     }
     val = val == "00:00" ? "" : val;
     that.val(val);
-  });
-
-  // Switching timesheet enter type
-  $("body").on("click", ".timesheet-toggle-enter-type", function (e) {
-    e.preventDefault();
-    var $switch_to = $(this)
-      .find("span.switch-to")
-      .removeClass("switch-to")
-      .addClass("hide");
-    $(this)
-      .find("span")
-      .not($switch_to)
-      .removeClass("hide")
-      .addClass("switch-to");
-    $(".timesheet-start-end-time, .timesheet-duration").toggleClass("hide");
-    $(".timesheet-start-end-time input").val("");
-    $(".timesheet-duration input").val("");
-  });
-
-  // On hidden modal reminder set all values to empty and set the form action to ADD in case edit was clicked
-  $("body").on("hidden.bs.modal", ".modal-reminder", function (e) {
-    var $this = $(this);
-    var rel_id = $this.find('input[name="rel_id"]').val();
-    var rel_type = $this.find('input[name="rel_type"]').val();
-    $this
-      .find("form")
-      .attr(
-        "action",
-        admin_url + "misc/add_reminder/" + rel_id + "/" + rel_type
-      );
-    $this.find("form").removeAttr("data-edit");
-    $this.find(":input:not([type=hidden]), textarea").val("");
-    $this.find('input[type="checkbox"]').prop("checked", false);
-    $this.find("select").selectpicker("val", "");
-  });
-
-  // Focus the date field on reminder modal shown
-  $("body").on("shown.bs.modal", ".modal-reminder", function (e) {
-    if ($(this).find('form[data-edit="true"]').length == 0) {
-      $(this).find("#date").focus();
-    }
-  });
-
-  // On delete reminder reload the tables
-  $("body").on("click", ".delete-reminder", function () {
-    if (confirm_delete()) {
-      requestGetJSON($(this).attr("href")).done(function (response) {
-        alert_float(response.alert_type, response.message);
-        if ($("#task-modal").is(":visible")) {
-          _task_append_html(response.taskHtml);
-        }
-        reload_reminders_tables();
-      });
-    }
-    return false;
   });
 
   /* Insert new checklist items on enter press */
