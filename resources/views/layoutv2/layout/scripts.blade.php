@@ -94,11 +94,11 @@
 </script>-->
 <script>
     @if($errors->any())
-        alert_float('error','{{$errors->first()}}');
+        alert_float('danger','{{$errors->first()}}');
     @elseif (session()->has('success'))
         alert_float('success', `{{ (session()->has('html')) ? session()->get('html') : '' }}`)
     @elseif (session()->has('error'))
-        alert_float('error', `{{ (session()->has('html')) ? session()->get('html') : '' }}`)
+        alert_float('danger', `{{ (session()->has('html')) ? session()->get('html') : '' }}`)
     @endif
 
     function csrf_jquery_ajax_setup() {

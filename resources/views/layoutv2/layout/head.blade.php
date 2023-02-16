@@ -79,9 +79,6 @@
         var totalUnreadNotifications = 0,
             proposalsTemplates = [],
             contractsTemplates = [],
-            billingAndShippingFields = ['billing_street', 'billing_city', 'billing_state', 'billing_zip', 'billing_country',
-                'shipping_street', 'shipping_city', 'shipping_state', 'shipping_zip', 'shipping_country'
-            ],
             isRTL = 'false',
             taskid, taskTrackingStatsData, taskAttachmentDropzone, taskCommentAttachmentDropzone, newsFeedDropzone,
             expensePreviewDropzone, taskTrackingChart, cfh_popover_templates = {},
