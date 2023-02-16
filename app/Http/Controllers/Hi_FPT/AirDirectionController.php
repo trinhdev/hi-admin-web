@@ -30,18 +30,21 @@ class AirDirectionController extends MY_Controller
             'name'              =>'required',
             'decription'        =>'required',
             'value'             =>'required|url',
+            'key'             =>'required',
         ];
         $message = [
             'name.required'             => 'Tên điều hướng không được bỏ trống!',
             'decription.required'       => 'Mô tả điều hướng không được bỏ trống!',
             'value.required'            => 'Giá trị điều hướng không được bỏ trống!',
             'value.url'                 => 'Giá trị điều hướng phải là một đường link url!',
+            'key.required'              => 'Khóa điều hướng không được bỏ trống!',
         ];
         $this->validate($request, $rules, $message);
         $paramsStatic = [
             $request->name,
             $request->decription,
-            $request->value
+            $request->value,
+            $request->key
         ];
 
         $air_direction = new AirDirectionService();
@@ -61,6 +64,7 @@ class AirDirectionController extends MY_Controller
             'name'              =>'required',
             'decription'        =>'required',
             'value'             =>'required|url',
+            'key'             =>'required',
         ];
         $message = [
             'id.required'           => 'ID điều hướng không được bỏ trống!',
@@ -68,6 +72,7 @@ class AirDirectionController extends MY_Controller
             'decription.required'   => 'Mô tả điều hướng không được bỏ trống!',
             'value.required'        => 'Giá trị điều hướng không được bỏ trống!',
             'value.url'             => 'Giá trị điều hướng phải là một đường link url! Ví dụ: https://fpt.workplace.com/',
+            'key.required'              => 'Khóa điều hướng không được bỏ trống!',
         ];
         $this->validate($request, $rules, $message);
         $this->addToLog($request);
@@ -75,7 +80,8 @@ class AirDirectionController extends MY_Controller
             $request->id,
             $request->name,
             $request->decription,
-            $request->value
+            $request->value,
+            $request->key,
         ];
 
         $air_direction = new AirDirectionService();
@@ -101,11 +107,7 @@ class AirDirectionController extends MY_Controller
             $this->addToLog($request);
             $air_direction = new AirDirectionService();
             $response = $air_direction->delete([$request->id]);
-            $res = check_status_code_api($response);
-            if(empty($res)) {
-                return response()->json($res, 500);
-            }
-            return response()->json(['data' => $res], 200);
+            return response()->json(['data' => $response], 200);
         }
     }
 

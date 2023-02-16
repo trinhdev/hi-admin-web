@@ -3,7 +3,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>{{empty($title) ? 'Title' : $title}}</title>
 
     <link rel="stylesheet" type="text/css" id="reset-css" href="{{ asset('assets/css/reset.min.css')}}">
@@ -28,7 +28,7 @@
         var app = {};
         app.available_tags = [];
         app.available_tags_ids = [];
-        app.user_recent_searches = ["dsf", "date", "das", "dat", "te"];
+        app.user_recent_searches = [""];
         app.months_json = ["Th\u00e1ng 1", "Th\u00e1ng 2", "Th\u00e1ng 3", "Th\u00e1ng 4", "Th\u00e1ng 5", "Th\u00e1ng 6", "Th\u00e1ng 7", "Th\u00e1ng 8", "Th\u00e1ng 9", "Th\u00e1ng 10", "Th\u00e1ng 11", "Th\u00e1ng 12"];
         app.tinymce_lang = "vi";
         app.locale = "vi";
@@ -41,7 +41,7 @@
         app.calendarIDs = "";
         app.options = {};
         app.lang = {};
-        app.options.date_format = "Y-m-d";
+        app.options.date_format = "Y-m-d H:i:s";
         app.options.decimal_places = "2";
         app.options.company_is_required = "1";
         app.options.default_view_calendar = "dayGridMonth";
