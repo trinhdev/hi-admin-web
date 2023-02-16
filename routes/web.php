@@ -52,6 +52,7 @@ Route::group([
         Route::namespace('Admin')->group(function () {
             Route::prefix('settings')->group(function () {
                 Route::get('/', 'SettingsController@index')->name('settings.index');
+                Route::get('/2', 'SettingsController@index2')->name('settings.index2');
                 Route::get('/edit/{id}', 'SettingsController@edit')->name('settings.edit');
                 Route::get('/create', 'SettingsController@create')->name('settings.create');
                 Route::post('/store', 'SettingsController@store')->name('settings.store');

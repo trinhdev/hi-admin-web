@@ -26,14 +26,14 @@ Contact: trinhhuynhdp@gmail.com
                     <div class="col-md-12">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="name_air_direction" class="required_red_dot">Tên điều hướng</label>
+                                <label for="name_air_direction" class="required_red_dot"><small class="req text-danger">* </small>Tên điều hướng</label>
                                 <input type="text" class="form-control" id="name_air_direction"
                                        name="name" placeholder="Tên điều hướng">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="key_air_direction" class="required_red_dot">Khóa điều hướng</label>
+                                <label for="key_air_direction" class="required_red_dot"><small class="req text-danger">* </small>Khóa điều hướng</label>
                                 <select class="form-control selectpicker" id="key_air_direction"
                                         name="key" placeholder="Khóa điều hướng">
                                     <option value="0" selected>In app</option>
@@ -47,14 +47,14 @@ Contact: trinhhuynhdp@gmail.com
                     <div class="col-md-12">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="decription_air_direction" class="required_red_dot">Mô tả điều hướng</label>
+                                <label for="decription_air_direction" class="required_red_dot"><small class="req text-danger">* </small>Mô tả điều hướng</label>
                                 <textarea name="decription" cols="10" rows="5" class="form-control"
                                           id="decription_air_direction"></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="value_air_direction" class="required_red_dot">Giá trị điều hướng</label>
+                                <label for="value_air_direction" class="required_red_dot"><small class="req text-danger">* </small>Giá trị điều hướng</label>
                                 <textarea class="form-control" name="value"
                                           id="value_air_direction"
                                           scols="10" rows="5" class="form-control"></textarea>

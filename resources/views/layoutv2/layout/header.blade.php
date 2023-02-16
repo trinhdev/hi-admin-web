@@ -65,20 +65,6 @@
                 </div>
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li class="icon header-todo">
-                    <a href="todo" data-toggle="tooltip"
-                       title="nav_todo_items" data-placement="bottom" class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="tw-w-5 tw-h-5 tw-shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
-                        </svg>
-                        <span
-                            class="tw-leading-none tw-px-1 tw-py-0.5 tw-text-xs bg-warning tw-z-10 tw-absolute tw-rounded-full tw-right-1 tw-top-2.5 tw-min-w-[18px] tw-min-h-[18px] tw-inline-flex tw-items-center tw-justify-center nav-total-todos hide">
-                            total_unfinished_todos
-                        </span>
-                    </a>
-                </li>
-
                 <li class="icon header-user-profile" data-toggle="tooltip" title="{{ Auth::user()->name}}"
                     data-placement="bottom">
                     <a href="#" class="dropdown-toggle profile tw-block rtl:!tw-px-0.5 !tw-py-1" data-toggle="dropdown"
@@ -102,29 +88,8 @@
                     </ul>
                 </li>
 
-                <li class="icon header-timers timer-button tw-relative ltr:tw-mr-1.5 rtl:tw-ml-1.5"
-                    data-placement="bottom" data-toggle="tooltip" data-title="my_timesheets">
-                    <a href="#" id="top-timers" class="top-timers !tw-px-0 tw-group" data-toggle="dropdown">
-                        <span
-                            class="tw-rounded-md tw-border tw-border-solid tw-border-neutral-200/60 tw-inline-flex tw-items-center tw-justify-center tw-h-8 tw-w-9 -tw-mt-1.5 group-hover:!tw-bg-neutral-100/60">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor"
-                                 class="tw-w-5 tw-h-5 tw-text-neutral-900 tw-shrink-0 tw-animate-spin-slow">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </span>
-                        <span
-                            class="tw-leading-none tw-px-1 tw-py-0.5 tw-text-xs bg-success tw-z-10 tw-absolute tw-rounded-full -tw-right-1.5 tw-top-2 tw-min-w-[18px] tw-min-h-[18px] tw-inline-flex tw-items-center tw-justify-center icon-started-timers hide">
-                            $startedTimers
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu animated fadeIn started-timers-top width300" id="started-timers-top">
-                    </ul>
-                </li>
-
                 <li class="icon dropdown tw-relative tw-block notifications-wrapper header-notifications rtl:tw-ml-3"
-                    data-toggle="tooltip" title="nav_notifications" data-placement="bottom">
+                    data-toggle="tooltip" title="Thông báo" data-placement="bottom">
                     <a href="#" class="dropdown-toggle notifications-icon !tw-px-0 tw-group" data-toggle="dropdown"
                        aria-expanded="false">
     <span
@@ -135,9 +100,44 @@
                   d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
         </svg>
         <span
-            class="tw-leading-none tw-px-1 tw-py-0.5 tw-text-xs bg-warning tw-z-10 tw-absolute tw-rounded-full -tw-right-1.5 -tw-top-2 sm:tw-top-2 tw-min-w-[18px] tw-min-h-[18px] tw-inline-flex tw-items-center tw-justify-center icon-notifications">4</span>
+            class="tw-leading-none tw-px-1 tw-py-0.5 tw-text-xs bg-success tw-z-10 tw-absolute tw-rounded-full -tw-right-1.5 -tw-top-2 sm:tw-top-2 tw-min-w-[18px] tw-min-h-[18px] tw-inline-flex tw-items-center tw-justify-center icon-notifications">1</span>
     </span>
                     </a>
+                    <ul class="dropdown-menu notifications animated fadeIn width400" data-total-unread="0">
+                        <div class="tw-py-1 tw-px-3 tw-mb-1.5 tw-text-right">
+                            <a href="#" class="tw-text-right tw-inline"
+                               onclick="event.stopPropagation(); mark_all_notifications_as_read_inline(this); return false;">
+                                Đánh dấu tất cả là đã đọc </a>
+                        </div>
+                        <li class="relative notification-wrapper" data-notification-id="0">
+                            <a href="#"
+                               class="notification-handler !tw-p-0 unread-notification tw-cursor-pointer notification-link">
+                                <div class="tw-p-3 notification-box">
+                                    <span >Administrator</span>
+                                    <img src="{{ asset('assets/images/user-placeholder.jpg') }}"
+                                         class="client-profile-image-small img-circle pull-left notification-image"
+                                         alt=""/>
+
+                                    <div class="media-body">
+                                        <br/><span class="label inline-block mtop5 label-info">Thông báo từ admin</span>
+                                        <br/> <span class="notification-title">Vui lòng ấn tổ hợp phím Ctrl+F5 để tải giao diện mới</span>
+                                        <span class="tw-text-sm text-muted">
+                                            <span class="text-has-action" data-placement="right" data-toggle="tooltip"
+                                                  data-title="3 giờ trước">
+                                                3 giờ trước
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <div class="tw-text-center tw-p-4 tw-bg-neutral-50">
+                            <a class="btn btn-default" href="#">
+                                Xem tất cả thông báo
+                            </a>
+                        </div>
+
+                    </ul>
                 </li>
             </ul>
         </div>

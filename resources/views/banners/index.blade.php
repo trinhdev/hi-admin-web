@@ -8,7 +8,7 @@
                     <div class="_buttons">
                         <a id="addBanner" href="#" class="btn btn-primary mright5 test pull-left display-block">
                             <i class="fa-regular fa-plus tw-mr-1"></i>
-                            Thêm mới</a>
+                            Thêm mới banner</a>
                         <a href="#" class="btn btn-primary pull-left display-block mright5 hidden-xs"
                            id="updateBannerFconnect">
                             <i class="fa-solid fa-upload tw-mr-1"></i>Update banner fconnect
@@ -22,8 +22,8 @@
                     </div>
                     <div class="clearfix"></div>
                     <div class="panel_s tw-mt-2 sm:tw-mt-4">
-                        @include('banners.filter')
                         <div class="panel-body">
+                            @include('banners.filter')
                             <div class="panel-table-full">
                                 {{ $dataTable->table(['id' => 'banner_manage'], $footer = false) }}
                             </div>

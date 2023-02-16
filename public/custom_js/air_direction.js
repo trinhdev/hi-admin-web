@@ -1,5 +1,5 @@
 'use strict';
-
+var table = $('#air_direction_table').DataTable();
 $('body').on('click', '#submit', function (event){
     $(this).attr('disabled','disabled');
     event.preventDefault();
@@ -69,6 +69,8 @@ function deleteAirDirection(data){
     $.post('/air-direction/delete', dataPost).done(function(response) {
         const status = (response.data.statusCode === 0) ? 'success' : 'danger';
         alert_float(status, response.data.message);
+        var table = $('#air_direction_table').DataTable();
+        table.ajax.reload(null,false);
     }).fail(function(xhr) {
         var errorString = '';
         $.each(xhr.responseJSON.errors, function (key, value) {

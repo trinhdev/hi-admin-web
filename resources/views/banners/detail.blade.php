@@ -7,19 +7,19 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="title" class="required_red_dot">Tiêu đề tiếng Việt</label>
+                                <label for="title" class="control-label"><small class="req text-danger">* </small>Tiêu đề tiếng Việt</label>
                                 <input type="text" name="titleVi" class="form-control" id="title_vi" value="{{ old('titleVi') }}">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="title" class="required_red_dot">Tiêu đề tiếng Anh</label>
+                                <label for="title" class="control-label"><small class="req text-danger">* </small>Tiêu đề tiếng Anh</label>
                                 <input type="text" name="titleEn" class="form-control" id="title_en" value="{{ old('titleEn') }}">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="bannerType" class="required_red_dot">Vị trí hiển thị</label>
+                        <label for="bannerType" class="control-label"><small class="req text-danger">* </small>Vị trí hiển thị</label>
                         <select type="text" name="bannerType" class="form-control selectpicker" id="event_type"
                                 onchange="onchangeTypeBanner(this)" data-actions-box="1" data-width="100%"
                                 data-none-selected-text="Không có mục nào được chọn"
@@ -32,7 +32,7 @@
                         </select>
                     </div>
                     <div class="form-group" id="path_1">
-                        <label class="required_red_dot">Ảnh</label>
+                        <label class="control-label"><small class="req text-danger">* </small>Ảnh</label>
                         <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this)"/>
                         <img id="img_path_1" src="{{ asset('/images/image_holder.png') }}" alt="your image"
                              class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px"/>
@@ -50,7 +50,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="objectType" class="required_red_dot">Loại Đối tượng</label>
+                                <label for="objectType" class="control-label"><small class="req text-danger">* </small>Loại Đối tượng</label>
                                 <select type="text" name="objectType" class="form-control selectpicker" data-actions-box="1" data-width="100%"
                                         data-none-selected-text="Không có mục nào được chọn"
                                         data-live-search="true" tabindex="-98">
@@ -64,7 +64,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="objects" class="required_red_dot">Đối tượng</label>
+                                <label for="objects" class="control-label"><small class="req text-danger">* </small>Đối tượng</label>
                                 <select type="text" name="objects" class="form-control selectpicker" data-actions-box="1" data-width="100%"
                                         data-none-selected-text="Không có mục nào được chọn"
                                         data-live-search="true" tabindex="-98">
@@ -79,14 +79,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="show_from" class="required_red_dot">Ngày hiển thị </label>
+                                <label for="show_from" class="control-label"><small class="req text-danger">* </small>Ngày hiển thị </label>
                                 <input type="text" name="show_from" value="{{ old('show_from') }}" id="public_date_start"
                                        class="form-control datetimepicker" onchange="changePublicDateTime(this)" autocomplete="off"/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="show_to" class="required_red_dot"> Ngày kết thúc </label>
+                                <label for="show_to" class="control-label"><small class="req text-danger">* </small> Ngày kết thúc </label>
                                 <input type="text" name="show_to" value="{{ old('show_to') }}" id="public_date_end"
                                        class="form-control datetimepicker" onchange="changePublicDateTime(this)" autocomplete="off"/>
                             </div>
