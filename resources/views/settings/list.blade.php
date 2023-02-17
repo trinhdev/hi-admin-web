@@ -1,5 +1,5 @@
 @extends('layoutv2.layout.app')
-
+@livewireStyles
 @section('content')
     <div id="wrapper">
         <div class="content">
@@ -70,5 +70,6 @@
     </div>
     <div id="new_version"></div>
 @endsection
+@livewireScripts
 @push('script')
 @endpush
