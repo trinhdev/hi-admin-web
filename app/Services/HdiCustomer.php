@@ -38,8 +38,11 @@ class HdiCustomer
     }
 
     public function findLikeCode($params = ['supportCode' => '', 'page' => 1]) {
-        $url = $this->baseUrl . 'provider/cms/customers/find-like-code';
+        $url = $this->baseUrl . 'provider/cms/customers/find-like-code'; 
+        // $url = 'http://hi-authapi.fpt.vn/' . 'provider/cms/customers/find-like-code';
         $result = json_decode($this->sendRequest($url, $params, $this->token), true);
+        var_dump($result);
+        // dd($result);
         return $result;
     }
 

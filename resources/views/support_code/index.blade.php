@@ -91,7 +91,7 @@
     <script src="{{ asset('/custom_js/supportcode.js')}}"></script>
     {{ $dataTable->scripts() }}
     <script>
-        const table = $('#support-code-table');
+        table = $('#support-code-table');
         table.on('preXhr.dt', function(e, settings, data) {
             console.log($('#support-code').val());
             data.supportCode = $('#support-code').val();

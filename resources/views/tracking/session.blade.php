@@ -90,12 +90,14 @@
     $views = '';
     $views1 = '';
     $views2 = '';
+
     foreach ($dataChart as $value) {
         $label.= '"'.$value['date'].'",';
         $views.= $value['views'].',';
         $views1.= ($value['views']+500).',';
         $views2.= ($value['views']+135).',';
     }
+    dd($label);
 @endphp
 @push('scripts')
     {!! $detail->scripts() !!}

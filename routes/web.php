@@ -364,7 +364,7 @@ Route::group([
                 Route::post('/store', [DeeplinkController::class, 'store'])->name('deeplink.store');
                 Route::get('/edit/{id}', [DeeplinkController::class, 'show'])->name('deeplink.edit');
                 Route::post('/update/{id}', [DeeplinkController::class, 'update'])->name('deeplink.update');
-                Route::get('/delete/{id}', [DeeplinkController::class, 'delete'])->name('deeplink.delete');
+                Route::post('/delete/{id}', [DeeplinkController::class, 'delete'])->name('deeplink.delete');
             });
 
             Route::prefix('behavior')->group(function () {

@@ -2,35 +2,17 @@
 
 namespace App\DataTables;
 
-use App\Contract\Hi_FPT\DeeplinkInterface;
 use App\Repository\RepositoryInterface;
 use Closure;
-use Exception;
-use Collective\Html\FormFacade as Form;
 use Collective\Html\HtmlFacade as Html;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request as Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Yajra\DataTables\CollectionDataTable;
 use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
-use Yajra\DataTables\QueryDataTable;
 use Yajra\DataTables\Services\DataTable;
 
 abstract class BuilderDatatables extends DataTable
 {
-    public const TABLE_TYPE_ADVANCED = 'advanced';
-
-    public const TABLE_TYPE_SIMPLE = 'simple';
-
     /**
      * @var bool
      */
@@ -41,14 +23,6 @@ abstract class BuilderDatatables extends DataTable
      */
     protected $table;
 
-    /**
-     * @var string
-     */
-    protected $type = self::TABLE_TYPE_ADVANCED;
-
-    /**
-     * @var string
-     */
     protected $ajaxUrl;
 
     /**
@@ -62,11 +36,6 @@ abstract class BuilderDatatables extends DataTable
     protected $view = 'table.table';
 
     /**
-     * @var string
-     */
-    protected $filterTemplate = 'table.filter';
-
-    /**
      * @var array
      */
     protected $options = [];
@@ -75,11 +44,6 @@ abstract class BuilderDatatables extends DataTable
      * @var bool
      */
     protected $hasCheckbox = true;
-
-    /**
-     * @var bool
-     */
-    protected $hasOperations = true;
 
     /**
      * @var bool
@@ -124,11 +88,7 @@ abstract class BuilderDatatables extends DataTable
     public function __construct(Datatables $table)
     {
         $this->table = $table;
-
-        if ($this->type == self::TABLE_TYPE_SIMPLE) {
-            $this->pageLength = -1;
-        }
-
+        $this->pageLength = -1;
         $this->bulkChangeUrl = '';
     }
 
@@ -181,25 +141,6 @@ abstract class BuilderDatatables extends DataTable
     }
 
     /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     * @return $this
-     */
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function getOptions(): array
@@ -231,13 +172,12 @@ abstract class BuilderDatatables extends DataTable
     {
         return $this->builder()
             ->columns($this->getColumns())
-            ->responsive()
+            ->ajax($this->getAjax())
             ->orderBy(1, 'DESC')
             ->parameters([
                 'scroll' => false,
                 'searching' => true,
                 'searchDelay' => 350,
-                'bDeferRender' => true,
                 'bDestroy' => true,
                 'autoWidth' => false,
                 'serverSide' => true,
@@ -347,19 +287,16 @@ abstract class BuilderDatatables extends DataTable
      */
     abstract public function columns();
 
-    /**
-     * @return string
-     */
-    public function getAjaxUrl(): string
+    public function getAjax()
     {
         return $this->ajaxUrl;
     }
 
     /**
-     * @param string $ajaxUrl
+     * @param array $ajaxUrl
      * @return $this
      */
-    public function setAjaxUrl(string $ajaxUrl): self
+    public function setAjax(array $ajaxUrl): self
     {
         $this->ajaxUrl = $ajaxUrl;
 
@@ -451,7 +388,7 @@ abstract class BuilderDatatables extends DataTable
      */
     public function getActions(): array
     {
-        if ($this->type == self::TABLE_TYPE_SIMPLE || !$this->actions()) {
+        if (!$this->actions()) {
             return [];
         }
 
@@ -567,10 +504,6 @@ abstract class BuilderDatatables extends DataTable
      */
     public function htmlDrawCallback(): ?string
     {
-        if ($this->type == self::TABLE_TYPE_SIMPLE) {
-            return null;
-        }
-
         return 'function () {' . $this->htmlDrawCallbackFunction() . '}';
     }
 

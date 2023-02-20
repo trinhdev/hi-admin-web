@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Awobaz\Compoships\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,9 @@ use stdClass;
 
 class Customers extends Model
 {
+    use Cacheable;
+
+    protected $cacheTime = 5;
     protected $connection = 'mysql4';
     protected $table = 'customers';
     protected $primaryKey = 'customer_id';

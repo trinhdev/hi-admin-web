@@ -8,6 +8,7 @@ use Yajra\DataTables\Html\Column;
 
 class BannerManageDataTable extends BuilderDatatables
 {
+    protected $ajaxUrl = '';
     public function dataTable($query)
     {
         $paginate = $query['pagination'];
