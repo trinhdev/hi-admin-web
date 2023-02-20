@@ -1,81 +1,84 @@
-@extends('layouts.default')
+
+@extends('layoutv2.layout.app')
 
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Chỉnh sửa deeplink {{ $data->name }}</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Deeplink</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
+    <div id="wrapper">
+        <div class="content">
+            <form action="{{ route('deeplink.update', [$data->id]) }}" method="POST">
+                @method('POST')
+                @csrf
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <!-- begin::title -->
+                        <div class="tw-flex tw-justify-between tw-mb-2">
+                            <h4 class="tw-mt-0 tw-font-semibold tw-text-neutral-700">
+                                <span class="tw-text-lg">Thêm mới deeplink</span>
+                            </h4>
+                        </div>
+                        <!-- end::title -->
+                        <div class="panel_s">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="id">ID màn hình</label>
+                                    <input type="text" id="id" value="{{ $data->id }}" name="id" class="form-control"
+                                           placeholder="Id của màn hình" readonly/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="control-label">
+                                        <i class="fa-regular fa-circle-question" data-toggle="tooltip"
+                                           data-title="Tên deeplink, e.q. Gói SOC 1Gbps, F-Share ."
+                                           data-original-title="" title=""></i>
+                                        Tên deeplink
+                                    </label>
+                                    <input type="text" id="name" name="name" class="form-control"
+                                           placeholder="Tên deeplink" value="{{ $data->name }}"/>
+                                </div>
 
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row justify-content-md-center">
-                    <div class="col-sm-12">
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <h3 class="card-title uppercase">Form thêm mới màn hình</h3>
-                            </div>
-                            <div class="card-body">
-                                <form action="{{ route('deeplink.update', [$data->id]) }}" method="POST">
-                                @csrf
-                                    <div class="form-group">
-                                        <label for="id">ID màn hình</label>
-                                        <input type="text" id="id" value="{{ $data->id }}" name="id" class="form-control"
-                                                  placeholder="Id của màn hình" readonly/>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="name" class="control-label">
+                                        <i class="fa-regular fa-circle-question" data-toggle="tooltip"
+                                           data-title="Điều hướng, e.q. Sản phẩm -> Gói SOC 1Gbps , Sản phẩm -> FPT iHome ."
+                                           data-original-title="" title=""></i>
+                                        Điều hướng
+                                    </label>
+                                    <input type="text" id="direction" name="direction" class="form-control"
+                                           placeholder="Điều hướng" value="{{ $data->direction }}"/>
+                                </div>
 
-                                    <div class="form-group">
-                                        <label for="name">Tên deeplink</label>
-                                        <input type="text" id="name" value="{{ $data->name }}" name="name" class="form-control"
-                                               placeholder="Tên deeplink" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="direction">Điều hướng</label>
-                                        <input type="text" id="direction" value="{{ $data->direction }}" name="direction" class="form-control"
-                                               placeholder="Điều hướng" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="url">URL</label>
-                                        <input type="text" id="url" value="{{ $data->url }}" name="url" class="form-control"
-                                               placeholder="URL" />
-                                    </div>
-
-                                    <div class="card-footer" style="text-align: center">
-                                        <button name="action" value="back" type="submit" class="btn btn-info">Lưu
+                                <div class="form-group">
+                                    <label for="name" class="control-label">
+                                        <i class="fa-regular fa-circle-question" data-toggle="tooltip"
+                                           data-title="URL, e.q. https://hi.fpt.vn/dr/Sqsw , https://hi.fpt.vn/dr/Sqsw ."
+                                           data-original-title="" title=""></i>
+                                        URL
+                                    </label>
+                                    <input type="text" id="url" name="url" class="form-control"
+                                           placeholder="URL" value="{{ $data->url }}"/>
+                                </div>
+                                <!-- begin::tabContent -->
+                                <div
+                                    class="btn-bottom-toolbar bottom-transaction text-right sm:tw-flex sm:tw-items-center sm:tw-justify-between">
+                                    <p class="no-mbot pull-left mtop5 btn-toolbar-notice tw-hidden sm:tw-block">
+                                        <b>Vui lòng kiểm tra kỹ các thông tin trước khi gửi!</b>
+                                    </p>
+                                    <div>
+                                        <button type="submit" name="action" value="stay"
+                                                class="btn btn-default mleft10 proposal-form-submit save-and-send transaction-submit">
+                                            Save and edit
                                         </button>
-                                        <button name="action" value="stay" type="submit" class="btn btn-info">Lưu và chỉnh sửa
+                                        <button
+                                            class="btn btn-primary mleft5 proposal-form-submit transaction-submit"
+                                            type="submit" name="action" value="back"> Save
                                         </button>
-                                        <a href="/deeplink" type="button" class="btn btn-default">Cancel</a>
                                     </div>
-                                </form>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
-        </section>
-        <!-- /.content -->
+            </form>
+        </div>
     </div>
-    <!-- /.content-wrapper -->
-    <style>
-        select {
-            font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
-        }
-    </style>
 @endsection
+

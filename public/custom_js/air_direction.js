@@ -80,5 +80,4 @@ function deleteAirDirection(data){
         alert_float('danger', errorString);
         console.log(xhr);
     });
-
 }
