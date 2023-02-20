@@ -38,9 +38,9 @@ class DeeplinkRepository implements DeeplinkInterface
             DB::table('deeplinks')->insert($params->only(['direction','name','url']));
             switch ($params->input('action')) {
                 case 'back':
-                    return redirect()->intended('deeplink')->with(['success'=>'Update thành công', 'html'=>'Thêm mới thành công']);;
+                    return redirect()->intended('deeplink')->with(['success'=>'Update thành công', 'html'=>'Thêm mới thành công']);
                 case 'stay':
-                    return redirect()->back();
+                    return redirect()->back()->with(['success'=>'Update thành công', 'html'=>'Thêm mới thành công']);
             }
         } catch (\Exception $e) {
             return back()->with(['error'=>'Lỗi hệ thống', 'html'=>$e->getMessage()]);
@@ -61,7 +61,12 @@ class DeeplinkRepository implements DeeplinkInterface
     public function delete($id)
     {
         Deeplink::destroy($id);
-        return redirect()->intended('deeplink')->with(['success'=>'Delete thành công', 'html'=>'Delete thành công']);
+        return response()->json([
+            'data' => [
+                'statusCode'=> 0,
+                'message'=>'Delete thành công id '.$id
+            ]
+        ]);
     }
 
 }

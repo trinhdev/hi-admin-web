@@ -1,44 +1,61 @@
-@extends('layouts.default')
+<!-- Create by: trinhdev || Update at: 2022/06/22 || Contact: trinhhuynhdp@gmail.com -->
+@extends('layoutv2.layout.app')
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase"> Quản lí deeplink</h1>
-                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                        <a href="{{ route('deeplink.create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Thêm mới deeplink
+    <div id="wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="_buttons">
+                        <a id="push_air_direction_form" href="/deeplink/create" class="btn btn-primary mright5 test pull-left display-block">
+                            <i class="fa-regular fa-plus tw-mr-1"></i>
+                            Thêm mới deeplink</a>
+                        <a href="#" onclick="alert('Liên hệ zalo 0354370175 nếu xảy ra lỗi không mong muốn!')" class="btn btn-default pull-left display-block mright5">
+                            <i class="fa-regular fa-user tw-mr-1"></i>Liên hệ
                         </a>
-                        @endif
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                            <li class="breadcrumb-item active">Phone</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card card-body col-sm-12">
-                    {!! $dataTable->table() !!}
+                        <div class="visible-xs">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="panel_s tw-mt-2 sm:tw-mt-4">
+                        <div class="panel-body">
+                            <div class="panel-table-full">
+                                {{ $dataTable->table(['id' => 'Deeplink_manage'], $footer = false) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-        <!-- /.content -->
+        </div>
     </div>
-    <!-- /.content-wrapper -->
-
 @endsection
-@push('scripts')
+@push('script')
+    {!! $dataTable->scripts() !!}
 
-    {{ $dataTable->scripts() }}
+    <script>
+        function deleteItem(data){
+            Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let dataPost = {};
+                    dataPost.id = $(data).data('id');
+                    let url = '/deeplink/delete/' + dataPost.id;
+                    $.post(url, dataPost).done(function(response) {
+                        const status = (response.data.statusCode === 0) ? 'success' : 'danger';
+                        alert_float(status, response.data.message);
+                        var table = $('#Deeplink_manage').DataTable();
+                        table.ajax.reload(null,false);
+                    });
+                }
+            });
+
+        }
+    </script>
 @endpush
+
+
+

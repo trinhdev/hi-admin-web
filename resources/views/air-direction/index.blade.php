@@ -1,8 +1,4 @@
-{{--
-Create by: trinhdev
-Update at: 2022/06/22
-Contact: trinhhuynhdp@gmail.co
---}}
+<!-- Create by: trinhdev || Update at: 2022/06/22 || Contact: trinhhuynhdp@gmail.com -->
 @extends('layoutv2.layout.app')
 @section('content')
     <div id="wrapper">

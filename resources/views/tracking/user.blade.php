@@ -50,7 +50,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <!--begin::Chart-->
                             <livewire:chart />
+                            <!--end::Chart-->
                         </div>
                     </div>
                     <div class="clearfix"></div>
