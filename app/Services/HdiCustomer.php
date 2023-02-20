@@ -41,6 +41,7 @@ class HdiCustomer
         $url = $this->baseUrl . 'provider/cms/customers/find-like-code'; 
         // $url = 'http://hi-authapi.fpt.vn/' . 'provider/cms/customers/find-like-code';
         $result = json_decode($this->sendRequest($url, $params, $this->token), true);
+        var_dump(json_encode($params));
         var_dump($result);
         // dd($result);
         return $result;
