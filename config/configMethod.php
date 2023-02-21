@@ -79,6 +79,10 @@ $methodAPI = [
     'STATISTICS_DETAIL'       => '/customer-provider/cms/statistics/ecounter/detail',
     'STATISTICS_OVERVIEW'       => '/customer-provider/cms/statistics/ecounter/overview',
 ];
+
+$methodTracking = [
+    'CUSTOMERS_ACTIVITIES'       => 'hi-tracking/o/customers-activities/',
+];
 return [
     'DOMAIN_INSIDE'         => $methodInsideDomain,
     'DOMAIN_REPORT'         => $methodReportDomain,
@@ -91,4 +95,5 @@ return [
     'DOMAIN_AIR_DIRECTION'  => $methodAirDirection,
     'DOMAIN_RESET_PASSWORD_WRONG'  => $methodResetPasswordWrong,
     'DOMAIN_API'            => $methodAPI,
+    'DOMAIN_TRACKING'            => $methodTracking,
 ];

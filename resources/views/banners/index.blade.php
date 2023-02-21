@@ -49,6 +49,7 @@
         $(document).ready(function () {
             methodAjaxBanner();
         });
+        window.onbeforeunload = null;
     </script>
     <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 @endpush

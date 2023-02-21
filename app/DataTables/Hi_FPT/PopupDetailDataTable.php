@@ -2,14 +2,13 @@
 
 namespace App\DataTables\Hi_FPT;
 
+use App\DataTables\BuilderDatatables;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class PopupDetailDataTable extends DataTable
+class PopupDetailDataTable extends BuilderDatatables
 {
-    /**
-     * Build DataTable class.
-     */
+    protected $hasCheckbox = false;
     public function dataTable($query)
     {
         return datatables()
@@ -38,48 +37,7 @@ class PopupDetailDataTable extends DataTable
         return collect($this->data->data->templatePersonalMaps) ?? [];
     }
 
-    public function html()
-    {
-        return $this->builder()
-            ->setTableId('popup_detail_table')
-            ->columns($this->getColumns())
-            ->responsive()
-            ->autoWidth(true)
-            ->lengthMenu([10,25,50])
-            ->pageLength(10)
-            ->orderBy(4)
-            ->parameters([
-                'scroll' => false,
-                'searching' => true,
-                'searchDelay' => 500,
-                'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-9"B><"col-md-1 float-left mt-2 "l><"col-md-1 mt-2"f>>irtp',
-                'buttons' => [
-                    [
-                        'extend'=> 'collection',
-                        'text' =>'Push popup',
-                        'autoClose'=> true,
-                        'action'    => 'function ( e, dt, node, config ) {}',
-                        'attr'      =>  [
-                            'id'=>'push_popup_public'
-                        ]
-                    ],
-                    'copyHtml5',
-                    'excel'
-                ]
-            ])
-            ->addTableClass('table table-hover text-center w-100')
-            ->languageEmptyTable('Không có dữ liệu')
-            ->languageInfoEmpty('Không có dữ liệu')
-            ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
-            ->languageSearchPlaceholder('Tìm kiếm')
-            ->languageSearch('Tìm kiếm')
-            ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
-            ->languageLengthMenu('Hiển thị _MENU_')
-            ->languageInfo('TỔNG DÒNG: _TOTAL_')
-            ;
-    }
-
-    protected function getColumns()
+    public function columns()
     {
         return [
             Column::make('templatePersonalMapId')->title('ID'),

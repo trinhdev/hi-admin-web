@@ -2,14 +2,10 @@
 
 namespace App\DataTables\Hi_FPT;
 
-use App\Services\PopupPrivateService;
-use App\Services\NewsEventService;
-use Carbon\Carbon;
+use App\DataTables\BuilderDatatables;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Services\DataTable;
-use Illuminate\Support\Facades\Http;
 
-class PopUpPrivateDataTable extends DataTable
+class PopUpPrivateDataTable extends BuilderDatatables
 {
     /**
      * Build DataTable class.
@@ -17,6 +13,8 @@ class PopUpPrivateDataTable extends DataTable
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
+    protected $orderBy = 7;
+    protected $hasCheckbox = false;
 
     public function dataTable($query)
     {
@@ -26,18 +24,36 @@ class PopUpPrivateDataTable extends DataTable
             ->editColumn('type', function ($query) use ($list_template) {
                 return !empty($list_template[$query->type]) ? $list_template[$query->type] : $query->type;
             })
+            ->editColumn('titleVi', function ($row) {
+                if ($row->isActive == 1) {
+                    $action = 'class="text-danger">Stop</a>';
+                } else {
+                    $action = 'data-dateend="{{ $model->dateEnd }}" >Continue</a>';
+                }
+                return '<a id="detailPopup" data-id="' . $row->id . '" href="#">' . $row->titleVi . '</a>
+                    <div class="row-options">
+                        <a onclick="dialogConfirmWithAjax(deletePopUpPrivate, this)"
+                                id="deletePopup" href="#"
+                                data-check-delete="' . $row->isActive . '"
+                                data-id="' . $row->id . '"' . $action . ' |
+                        <a id="detailPopup" data-id="' . $row->id . '" href="#" class="text-warning">Edit</a> |
+                        <a id="exportPopup" href="#" data-id="' . $row->id . '" class="text-info">Export</a> |
+                        <a id="updatePhoneNumber" href="#" data-id="' . $row->id . '" class="text-info">Import</a>
+                    </div>';
+
+            })
             ->editColumn('iconUrl', function ($query) {
                 return '
                         <img src="' . env('URL_STATIC') . '/upload/images/event/' . $query->iconUrl . '" width="100" height="100"/>
                 ';
             })
             ->editColumn('iconButtonUrl', function ($query) {
-                if(!empty($query->iconButtonUrl)) {
-                    $image = env("URL_STATIC").'/upload/images/event/'.$query->iconButtonUrl;
-                }else {
+                if (!empty($query->iconButtonUrl)) {
+                    $image = env("URL_STATIC") . '/upload/images/event/' . $query->iconButtonUrl;
+                } else {
                     $image = '/images/image_holder.png';
                 }
-                return '<img src="'.$image.'" window.open(`'.$image.'`) width="100" height="100"/>';
+                return '<img src="' . $image . '" window.open(`' . $image . '`) width="100" height="100"/>';
             })
             ->editColumn('isActive', function ($query) {
                 if ($query->isActive === 1) {
@@ -46,8 +62,7 @@ class PopUpPrivateDataTable extends DataTable
                     return '<span style="color: #9f3535" class="badge border border-blue" >Stop <i class="fas fa-circle"></i></span>';
                 }
             })
-            ->addColumn('action', 'popup-private._action-menu')
-            ->rawColumns(['iconUrl', 'iconButtonUrl', 'action', 'isActive', 'type', 'popupType']);
+            ->rawColumns(['iconUrl', 'iconButtonUrl', 'titleVi', 'isActive', 'type', 'popupType']);
     }
 
     public function query()
@@ -55,71 +70,22 @@ class PopUpPrivateDataTable extends DataTable
         return collect($this->data->data) ?? [];
     }
 
-    /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
-    public function html()
-    {
-        return $this->builder()
-            ->setTableId('popup_private_table')
-            ->columns($this->getColumns())
-            ->responsive()
-            ->autoWidth(true)
-            ->parameters([
-                'scroll' => false,
-                'scrollX' => false,
-                'searching' => true,
-                'searchDelay' => 500,
-                'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-8"B><"col-1 mt-2 "><"col-2 mt-2"f>>irtp',
-                'buttons' => [
-                    [
-                        'text' => '<i class="fas fa-plus"></i> Add',
-                        'attr' => [
-                            'id' => 'push_popup_private_form',
-                            'class' =>'btn btn-info'
-                        ]
-                    ],
-                    [
-                        'text' => 'Copy',
-                        'extend' => 'copyHtml5',
-                    ],
-                    [
-                        'text' => 'Excel',
-                        'extend' => 'excel',
-                    ]
-                ]
-            ])
-            ->addTableClass('table table-hover text-center w-100 table-header-color')
-            ->languageInfo('<div class="text-bold">TỔNG SỐ DÒNG: _TOTAL_</div>');
-    }
-
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
-    protected function getColumns(): array
+    public function columns(): array
     {
         return [
-            Column::make('temPerId')->title('ID'),
-            Column::make('iconUrl')->title('Hình ảnh')->sortable(false),
-            Column::make('iconButtonUrl')->title('Ảnh button'),
-            Column::make('dataAction')->title('Nơi điều hướng'),
-            Column::make('type')->title('Loại template'),
-            Column::make('quantity')->title('Tổng SDT'),
-            Column::make('quantityDistinct')->title('SDT không bị trùng'),
-            Column::make('viewCount')->title('Lượt click'),
-            Column::make('dateBegin')->title('Ngày bắt đầu'),
-            Column::make('dateEnd')->title('Ngày kết thúc'),
-            Column::make('dateCreated')->title('Ngày tạo'),
-            Column::make('isActive')->title('Trạng thái'),
-            Column::computed('action')
-                ->searching(false)
-                ->width(80)
-                ->addClass('text-center')
-
+            'temPerId'          => ['title'=> 'ID'],
+            'titleVi'           => ['title'=> 'Tiêu đề'],
+            'iconUrl'           => ['title'=> 'Ảnh', 'sortable' => false],
+            'iconButtonUrl'     => ['title'=> 'Ảnh button', 'sortable' => false],
+            'dataAction'        => ['title'=> 'Nơi điều hướng'],
+            'type'              => ['title'=> 'Loại template'],
+            'quantity'          => ['title'=> 'Tổng SDT'],
+            'quantityDistinct'  => ['title'=> 'Unique SDT'],
+            'viewCount'         => ['title'=> 'Click'],
+            'dateBegin'         => ['title'=> 'Ngày bắt đầu'],
+            'dateEnd'           => ['title'=> 'Ngày kết thúc'],
+            'dateCreated'       => ['title'=> 'Ngày tạo'],
+            'isActive'          => ['title'=> 'Trạng thái']
         ];
     }
 

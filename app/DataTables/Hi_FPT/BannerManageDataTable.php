@@ -33,7 +33,7 @@ class BannerManageDataTable extends BuilderDatatables
                 return '<span class="infoRow" data-id="'.$row->event_id.'">'.$row->event_type.'</span>';
             })
             ->editColumn('image', function ($row) {
-               return '<img src="'.$row->image.'" style="width:150px" onerror="this.onerror=null;this.src='."'/images/img_404.svg'". '"  onclick="window.open(`'.$row->image.'`)" />';
+               return '<img src="'.$row->image.'" style="width:100px" onerror="this.onerror=null;this.src='."'/images/img_404.svg'". '"  onclick="window.open(`'.$row->image.'`)" />';
             })
             ->editColumn('status', function($row){
                 $data = $row->public_date_end <= now() ? ['Hết hạn', 'badge bg-danger'] : ['Còn hạn', 'badge bg-success'];
@@ -112,7 +112,7 @@ class BannerManageDataTable extends BuilderDatatables
      *
      * @return string
      */
-    public function htmlInitCompleteFunctionCustom(): ?string
+    public function htmlInitCompleteFunction(): ?string
     {
         return "
             var dateRange = $('#daterange');

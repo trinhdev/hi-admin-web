@@ -304,6 +304,24 @@ $domainHiFPT = [
     ],
 ];
 
+$domainTracking = [
+    'local'             => [
+        'URL'           => 'https://ansoft.com.vn/',
+        'CLIENT_KEY'    => '55bbbd24-b198-11ed-89b3-2811a830db8a',
+        'SECRET_KEY'    => 'xkfa2dA!SD901ND!@@x91dak'
+    ],
+    'staging'           => [
+        'URL'           => 'https://ansoft.com.vn/',
+        'CLIENT_KEY'    => '55bbbd24-b198-11ed-89b3-2811a830db8a',
+        'SECRET_KEY'    => 'xkfa2dA!SD901ND!@@x91dak'
+    ],
+    'production'        => [
+        'URL'           => 'https://ansoft.com.vn/',
+        'CLIENT_KEY'    => '55bbbd24-b198-11ed-89b3-2811a830db8a',
+        'SECRET_KEY'    => 'xkfa2dA!SD901ND!@@x91dak'
+    ],
+];
+
 return [
     'DOMAIN_REPORT'                 => $domainReportConfig,
     'DOMAIN_INSIDE'                 => $domainInsideConfig,
@@ -321,4 +339,5 @@ return [
     'DOMAIN_PAYMENT'                => $domainPayment,
     'DOMAIN_API'                    => $domainAPI,
     'DOMAIN_HIFPT'                  => $domainHiFPT,
+    'DOMAIN_TRACKING'               => $domainTracking,
 ];

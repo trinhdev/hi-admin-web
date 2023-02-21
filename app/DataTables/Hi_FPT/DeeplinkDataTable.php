@@ -53,9 +53,4 @@ class DeeplinkDataTable extends BuilderDatatables
             Column::make('created_at')->title('Ngày Tạo')
         ];
     }
-
-    public function htmlInitCompleteFunctionCustom()
-    {
-        // TODO: Implement htmlInitCompleteFunctionCustom() method.
-    }
 }

@@ -20,84 +20,40 @@ ADD FIELD
 END ADD FIELD
 
 --}}
-
-<div id="push_popup_private" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Thông tin pop up</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">X</span></button>
-            </div>
-            <div class="modal-body" id="modal-detail-popup">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item" aria-current="page">
-                            <p>*** LƯU Ý ***<br>
-                                - Trong một phút chỉ được thêm tối đa 5 popup <br>
-                                - Các trường có kí hiệu <span class="text-bold text-danger">(*)</span> là những
-                                trường bắt buộc phải nhập <br>
-                                - Các trường hợp xảy ra lỗi ngoại lệ vui lòng liên hệ
-                                <a href="https://zalo.me/0354370175" target="_blank"><b> hỗ trợ</b></a>
-                            </p> <br>
-                        </li>
-                    </ol>
-                </nav>
-                <form id="formActionPrivate" enctype="multipart/form-data">
+<div class="row">
+    <div class="col-md-12">
+        <form id="formActionPrivate" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-warning">
+                        <p>*** LƯU Ý ***<br>
+                            - Trong một phút chỉ được thêm tối đa 5 popup <br>
+                            - Các trường có kí hiệu <span class="text-bold text-danger">(*)</span> là những
+                            trường bắt buộc phải nhập
+                        </p></div>
                     <input type="hidden" id="id_popup" name="id">
                     <input type="hidden" id="temPerId_popup" name="temPerId">
                     <input type="hidden" id="popupGroupId_popup" name="popupGroupId">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label class="required_red_dot">Thời gian hiển thị:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="far fa-clock"></i></span>
-                                </div>
-                                <input type="text" class="form-control float-right" id="timeline"
-                                       name="timeline">
-                            </div>
-                            <!-- /.input group -->
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="col-12 d-flex">
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="titleVi_popup">Tiêu đề tiếng việt</label>
                                 <input type="text" class="form-control" id="titleVi_popup"
                                        name="titleVi" placeholder="Tiêu đề tiếng việt (Nếu có)">
                             </div>
-
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="titleEn_popup">Tiêu đề tiếng anh</label>
                                 <input type="input" class="form-control" id="titleEn_popup"
                                        name="titleEn" placeholder="Tiêu đề tiếng anh (Nếu có)">
                             </div>
-
-                            <div class="form-group">
-                                <label for="desVi_popup">Mô tả tiếng việt</label>
-                                <textarea name="desVi" id="desVi_popup" class="form-control"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="desEn_popup">Mô tả tiếng anh</label>
-                                <textarea name="desEn" id="desEn_popup" class="form-control"></textarea>
-                            </div>
-
-                            <div class="form-group" id="iconUrl">
-                                <label class="required_red_dot">Ảnh</label>
-                                <input type="file" accept="image/*" name="iconUrl" class="form-control"
-                                       onchange="handleUploadImagePopup(this,event)"/>
-                                <img id="iconUrl_popup" src=""
-                                     alt="Ảnh Popup" class="img-thumbnail img_viewable"
-                                     style="max-width: 150px;padding:10px;margin-top:10px"/>
-                                <input name="iconUrl" id="iconUrl_popup_name" value="" hidden/>
-                            </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="required_red_dot">Loại popup</label>
+                                <label class="control-label"><small class="req text-danger">* </small>Loại popup</label>
                                 <select class="form-control" name="type"
                                         id="type_popup"
                                         style="width: 100%;">
@@ -107,9 +63,10 @@ END ADD FIELD
                                     @endforeach
                                 </select>
                             </div>
-
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group" id="dieuhuong">
-                                <label for="actionType_popup" class="required_red_dot">Điều hướng</label>
+                                <label for="actionType_popup" class="control-label"><small class="req text-danger">* </small>Điều hướng</label>
                                 <select class="form-control" name="actionType"
                                         id="actionType_popup"
                                         style="width: 100%;">
@@ -121,13 +78,22 @@ END ADD FIELD
                                     @endif
                                 </select>
                             </div>
-
-                            <div class="form-group" id="form_directionUrl">
-                                <label class="required_red_dot" for="dataAction_popup"> URL điều hướng </label>
-
-                                <input type="input" class="form-control" id="dataAction_popup"
-                                       name="dataAction" placeholder="URL điều hướng">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" id="iconUrl">
+                                <label class="control-label"><small class="req text-danger">* </small>Ảnh</label>
+                                <input type="file" accept="image/*" name="iconUrl" class="form-control"
+                                       onchange="handleUploadImagePopup(this,event)"/>
+                                <img id="iconUrl_popup" src=""
+                                     alt="Ảnh Popup" class="img-thumbnail img_viewable"
+                                     style="max-width: 150px;padding:10px;margin-top:10px"/>
+                                <input name="iconUrl" id="iconUrl_popup_name" value="" hidden/>
                             </div>
+                        </div>
+                        <div class="col-md-6">
+
                             <div class="form-group" id="iconButtonUrl">
                                 <label>Nút điều hướng</label>
                                 <input type="file" accept="image/*" name="iconButtonUrl" class="form-control"
@@ -140,16 +106,34 @@ END ADD FIELD
                             </div>
                         </div>
                     </div>
-
-                </form>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label"><small class="req text-danger">* </small>Thời gian hiển thị</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control float-right daterange" id="timeline"
+                                           name="timeline">
+                                    <div class="input-group-addon">
+                                        <i class="fa-regular fa-calendar calendar-icon"></i>
+                                    </div>
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" id="form_directionUrl">
+                                <label class="control-label" for="dataAction_popup"><small class="req text-danger">* </small> URL điều hướng </label>
+                                <input type="input" class="form-control" id="dataAction_popup"
+                                       name="dataAction" placeholder="URL điều hướng">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-info float-right" id="submit">Lưu</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
-@include('template.modal', ['title'=> 'Import số điện thoại', 'id'=>'push_phone_number_private', 'form'=> 'template.form-import-phone','action'=>'', 'button'=>'
-            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Thoát</button>
-            <button type="submit" class="btn btn-info ml-2" id="submitPhone">Lưu</button>'])
 

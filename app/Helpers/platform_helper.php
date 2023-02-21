@@ -298,14 +298,10 @@ if (!function_exists('rand_color')) {
 if (!function_exists('split_date')) {
     function split_date($value): array
     {
-        $date = explode('-', $value);
+        $date = explode(' - ', $value);
         if (!empty($date[0])) {
-            $from = Carbon\Carbon::createFromFormat('d/m/Y', trim($date[0]))->format('Y-m-d H:i:s');
-            $to = Carbon\Carbon::createFromFormat('d/m/Y', trim($date[1]))->format('Y-m-d H:i:s');
-            if (empty($from)) {
-                $from = Carbon\Carbon::parse(trim($date[0]))->format('Y-m-d H:i:s');
-                $to = Carbon\Carbon::parse(trim($date[1]))->format('Y-m-d H:i:s');
-            }
+            $from = Carbon\Carbon::parse(trim($date[0]))->format('Y-m-d H:i:s');
+            $to = Carbon\Carbon::parse(trim($date[1]))->format('Y-m-d H:i:s');
             return [$from, $to];
         }
         return [];

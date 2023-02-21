@@ -1,5 +1,5 @@
 'use strict';
-var table = $('#air_direction_table').DataTable();
+
 $('body').on('click', '#submit', function (event){
     $(this).attr('disabled','disabled');
     event.preventDefault();

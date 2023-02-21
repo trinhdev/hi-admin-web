@@ -23,7 +23,9 @@
     <link rel="stylesheet" type="text/css" id="fullcalendar-css"
           href="{{ asset('assets/plugins/fullcalendar/lib/main.min.css')}}">
     <link rel="stylesheet" type="text/css" id="custom-css" href="{{ asset('assets/css/custom.css')}}">
-    <script>var site_url = "{{ url('') }}";
+    <script>
+        const URL_STATIC = "{{env('URL_STATIC')}}";
+        var site_url = "{{ url('') }}";
         var admin_url = "{{ url('') }}";
         var app = {};
         app.available_tags = [];
