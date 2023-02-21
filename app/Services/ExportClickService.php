@@ -37,7 +37,7 @@ trait ExportClickService
                 foreach ($data as $value) {
                     $phone[] = ['SDT Khách hàng' => $value];
                 }
-                return fastexcel($phone)->download('banner_export_'.date('Y-m-d').'.xlsx');
+                return fastexcel($phone)->download('Export_user_'.date('Y-m-d').'.xlsx');
             }
             return redirect()->back()->with(['error' => 'error', 'html'=>'Không có dữ liệu']);
 

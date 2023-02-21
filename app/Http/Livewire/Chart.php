@@ -4,11 +4,9 @@ namespace App\Http\Livewire;
 
 use App\Charts\UserAnalyticChart;
 use App\Models\Customers;
-use App\Models\SectionLog;
 use App\Services\Livewire\ChartComponent;
 use App\Services\Livewire\ChartComponentData;
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
+use App\Services\TrackingService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -19,6 +17,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Chart extends ChartComponent
 {
+    public $daterange;
 
     /**
      * @return string
@@ -37,10 +36,35 @@ class Chart extends ChartComponent
     }
 
     /**
-     * @return \App\Services\Livewire\ChartComponentData
+     * @return ChartComponentData
      */
     protected function chartData(): ChartComponentData
     {
+        if (split_date($this->daterange)) {
+            $from = split_date($this->daterange)[0];
+            $to = split_date($this->daterange)[1];
+        }
+        $service = new TrackingService();
+        try {
+            $data = $service->get_active_customers('active-customers', $from ?? '2023-02-17', $to ??'2023-02-20');
+           if ($data->status == 1) {
+               $lables = collect($data->detail)['labels'];
+               $datasets = collect($data->detail)['values'];
+               return (new ChartComponentData(collect($lables), collect($datasets)));
+           } else {
+               return (new ChartComponentData(collect($data->message), collect([[0]])));
+           }
+
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+
+    public function filter() {
+        dd(123);
+    }
+
+    public function getData() {
         if (!Cache::has('chart')) {
             $filter_date = ['2023-02-10 00:00:20', '2023-02-17 00:00:20'];
             $data = Customers::
@@ -75,7 +99,6 @@ class Chart extends ChartComponent
         for ($i=0;$i<count($labels);$i++) {
             $datasets[] = $dataSet[$labels[$i]];
         }
-        return (new ChartComponentData($labels, collect($datasets)));
     }
 
 }

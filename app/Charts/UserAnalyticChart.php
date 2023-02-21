@@ -50,19 +50,18 @@ class UserAnalyticChart extends Chart
                 ]
             ]
         ]);
-
         $this->labels($data->labels());
-        for ($i=0;$i<count($data->labels());$i++) {
+        foreach ($data->datasets() as $key => $value) {
             $color = rand_color();
-            $this->dataset("Vung ".$i, "line", $data->datasets()[$i])->options([
+            $this->dataset($key, "line", $value)->options([
                 'backgroundColor' => $color,
                 'borderColor' => $color,
                 'pointBackgroundColor' => $color,
                 'pointBorderColor' => $color,
                 'pointHoverBackgroundColor' => $color,
                 'pointHoverBorderColor' => $color,
-                'borderWidth' => 1,
-                'pointRadius' => 3,
+                'borderWidth' => 5,
+                'pointRadius' => 10,
             ]);
         }
     }

@@ -24,7 +24,7 @@ class PushRequest extends FormRequest
     public function rules()
     {
         return [
-            'timeline' => 'required',
+            'daterange' => 'required',
             'objecttype' => 'required',
             'repeatTime' => 'required',
             'templateId' => 'required'

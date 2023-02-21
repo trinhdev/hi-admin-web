@@ -30,6 +30,9 @@ abstract class BuilderDatatables extends DataTable
      */
     protected $pageLength = 10;
 
+
+    protected $orderBy = 1;
+
     /**
      * @var string
      */
@@ -76,11 +79,6 @@ abstract class BuilderDatatables extends DataTable
     protected $defaultSortColumn = 1;
 
     /**
-     * @var string
-     */
-//    protected $exportClass = TableExportHandler::class;
-
-    /**
      * TableAbstract constructor.
      * @param DataTables $table
      * @param UrlGenerator $urlGenerator
@@ -109,25 +107,6 @@ abstract class BuilderDatatables extends DataTable
     public function setOption(string $key, $value): self
     {
         $this->options[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isHasFilter(): bool
-    {
-        return $this->hasFilter;
-    }
-
-    /**
-     * @param bool $hasFilter
-     * @return $this
-     */
-    public function setHasFilter(bool $hasFilter): self
-    {
-        $this->hasFilter = $hasFilter;
 
         return $this;
     }
@@ -173,7 +152,7 @@ abstract class BuilderDatatables extends DataTable
         return $this->builder()
             ->columns($this->getColumns())
             ->ajax($this->getAjax())
-            ->orderBy(1, 'DESC')
+            ->orderBy($this->orderBy, 'desc')
             ->parameters([
                 'scroll' => false,
                 'searching' => true,
@@ -208,10 +187,10 @@ abstract class BuilderDatatables extends DataTable
                 'searchPlaceholder' => ('Tìm kiếm'),
                 'zeroRecords' => '<p class="text-center">Không có dữ liệu</p>',
                 'paginate' => [
-                    'first' => 'Trước',
-                    'last' => ('Cuối'),
+                    'first' => 'Trang đầu',
+                    'last' => 'Trang cuối',
                     'next' => ('Tiếp'),
-                    'previous' => ('Sau'),
+                    'previous' => ('Trước'),
                 ],
                 'aria' => [
                     'sortAscending' => (''),
@@ -289,7 +268,10 @@ abstract class BuilderDatatables extends DataTable
 
     public function getAjax()
     {
-        return $this->ajaxUrl;
+        if ($this->ajaxUrl) {
+            return $this->ajaxUrl;
+        }
+        return '';
     }
 
     /**
@@ -469,18 +451,13 @@ abstract class BuilderDatatables extends DataTable
      */
     public function htmlInitComplete(): ?string
     {
-        return 'function () {' . $this->htmlInitCompleteFunction() . '}';
+        return 'function () {' . $this->htmlInitCompleteFunction(). $this->htmlInitCompleteFunctionDefault() . '}';
     }
-
-    abstract public function htmlInitCompleteFunctionCustom();
 
     /**
      * @return string
      */
-    public function htmlInitCompleteFunction(): ?string
-    {
-        return $this->htmlInitCompleteFunctionCustom() . $this->htmlInitCompleteFunctionDefault();
-    }
+    public function htmlInitCompleteFunction(){}
 
     public function htmlInitCompleteFunctionDefault(): ?string
     {

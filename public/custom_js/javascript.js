@@ -103,7 +103,7 @@ function callAPIHelper(url, param, method, callback, passingData = null, isfile 
                 errorString = value;
                 return false;
             });
-            showMessage('error', errorString);
+            alert_float('danger', errorString);
         }
     });
 }
@@ -132,7 +132,7 @@ function uploadFileExternal(file, callBack, passingData) {
                 errorString = value;
                 return false;
             });
-            showMessage('error', errorString);
+            alert_float('danger', errorString);
         }
     });
 }
@@ -161,7 +161,7 @@ function uploadFileStatic(file, input, calllback) {
                 errorString = value;
                 return false;
             });
-            showMessage('error', errorString);
+            alert_float('danger', errorString);
         }
     });
 }
@@ -272,6 +272,130 @@ function randomColor() {
     return Math.floor(Math.random() * 16777215).toString(16);
 }
 
+$(function () {
+    $('.daterange').daterangepicker({
+        ranges: {
+            'Hôm nay': [moment(), moment()],
+            'Hôm qua': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '7 ngày qua': [moment().subtract(6, 'days'), moment()],
+            '30 ngày qua': [moment().subtract(29, 'days'), moment()],
+            '60 ngày qua': [moment().subtract(59, 'days'), moment()],
+            'Trong tháng này': [moment().startOf('month'), moment().endOf('month')],
+            'Trong tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        autoUpdateInput: true,
+        locale: {
+            cancelLabel: 'Clear',
+            format: 'YYYY-MM-DD HH:mm:ss'
+        }
+    });
+    $('.daterange').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD HH:mm:ss') + ' - ' + picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
+    });
+
+    $('.daterange').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+});
+
+function postPhone(urlPost) {
+    $('#number_phone_import').change(function(e) {
+        let data = new FormData($('#importExcel')[0]);
+        $.ajax( {
+            url: '/file/importPhone',
+            type: 'POST',
+            data: data,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                $("#spinner").addClass("show");
+            },
+            success: function(response) {
+                $("#spinner").removeClass("show");
+                let res = [];
+                let err = [];
+                let pattern = /^(03|05|07|08|09)[\d, ]*$/;
+                response.data.forEach((data) => {
+                    data.forEach((item) => {
+                        if(pattern.test(item) && item.length === 10) {
+                            res.push(item);
+                        }else {
+                            err.push(item);
+                        }
+                    });
+                });
+                console.log(res.length);
+                $('#number_phone').val(res.join(','));
+                let successMessage = 'Nhập thành công <b>' + res.length + '</b> số điện thoại, ';
+                if (err.length > 0) {
+                    alert_float('warning',successMessage + 'các số sai định dạng bị bỏ qua gồm: ' + err.join(','));
+                    return true;
+                }
+                alert_float('success',successMessage);
+            },
+            error: function (xhr) {
+                var errorString = '';
+                $("#spinner").removeClass("show");
+                $.each(xhr.responseJSON.errors, function (key, value) {
+                    errorString = value;
+                    return false;
+                });
+                $('#importExcel').find('input:text, input:password, input:file, select, textarea').val('');
+                $('#number_phone').val('');
+                if (errorString.length !== 0) {
+                    alert_float('danger',errorString);
+                } else {
+                    alert_float('danger','File quá lớn hoặc sai định dạng! Vui lòng kiểm tra lại. ');
+                }
+            }
+        });
+        e.preventDefault();
+    });
+    $('#submitPhone').on('click', function (event){
+        $(this).attr('disabled','disabled');
+        event.preventDefault();
+        let data = $('#importExcel').serialize();
+        $.ajax({
+            url: urlPost,
+            type: 'POST',
+            dataType: 'json',
+            data: data,
+            cache: false,
+            beforeSend: function(){
+                $("#spinner").addClass("show");
+            },
+            success: (data) => {
+                $("#spinner").removeClass("show");
+                $('#push_phone_number_private').modal('toggle');
+                $('#submitPhone').prop('disabled', false);
+                var message = '';
+                var count =0;
+                $.each(data.data, function (key, value) {
+                    message += (key+1) + '. ' + value.message + '<br>';
+                    if(value.statusCode !== 0){
+                        count++;
+                    }
+                });
+                if(count>0) {
+                    alert_float('danger',message);
+                } else {
+                    alert_float('success',message);
+                }
+            },
+            error: function (xhr) {
+                var errorString = '';
+                $("#spinner").removeClass("show");
+                $.each(xhr.responseJSON.errors, function (key, value) {
+                    errorString = value;
+                    return false;
+                });
+                alert_float("danger",errorString);
+                $('#submitPhone').prop('disabled', false);
+            }
+        });
+    });
+}
+
 function showMessage(type, message) {
     toastr.options = {
         closeButton: true,
@@ -307,150 +431,4 @@ function showMessage(type, message) {
     toastr[type](message, messageHeader);
 }
 
-(function ($, DataTable) {
 
-    // Datatable global configuration
-    // //cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Vietnamese.json
-    /*jshint quotmark: double */
-    $.extend(true, DataTable.defaults, {
-        language: {
-            "sProcessing": "Đang xử lý...",
-            "sLengthMenu": "Hiển thị _MENU_ mục",
-            "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
-            "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
-            "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
-            "sInfoFiltered": "(được lọc từ _MAX_ mục)",
-            "sInfoPostFix": "",
-            "sSearch": "Tìm:",
-            "sUrl": "",
-            "oPaginate": {
-                "sFirst": "Đầu",
-                "sPrevious": "Trước",
-                "sNext": "Tiếp",
-                "sLast": "Cuối"
-            }
-        }
-    });
-
-})(jQuery, jQuery.fn.dataTable);
-
-$(function () {
-    var start = moment().startOf('month');
-    var end = moment().endOf('month');
-
-    function cb(start, end) {
-        $('input[name*="daterange"]').html(start.format('MMMM D, YYYY') + '-' + end.format('MMMM D, YYYY'));
-    }
-
-    $('input[name*="daterange"]').daterangepicker({
-        startDate: start,
-        endDate: end,
-        ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
-    cb(start, end);
-});
-
-function postPhone(urlPost) {
-    $('#number_phone_import').change(function(e) {
-        let data = new FormData($('#importExcel')[0]);
-        $.ajax( {
-            url: '/file/importPhone',
-            type: 'POST',
-            data: data,
-            processData: false,
-            contentType: false,
-            beforeSend: function(){
-                $("#spinner").addClass("show");
-            },
-            success: function(response) {
-                $("#spinner").removeClass("show");
-                let res = [];
-                let err = [];
-                let pattern = /^(03|05|07|08|09)[\d, ]*$/;
-                response.data.forEach((data) => {
-                    data.forEach((item) => {
-                        if(pattern.test(item) && item.length === 10) {
-                            res.push(item);
-                        }else {
-                            err.push(item);
-                        }
-                    });
-                });
-                console.log(res.length);
-                $('#number_phone').val(res.join(','));
-                let successMessage = 'Nhập thành công <b>' + res.length + '</b> số điện thoại, ';
-                if (err.length > 0) {
-                    showMessage('warning',successMessage + 'các số sai định dạng bị bỏ qua gồm: ' + err.join(','));
-                    return true;
-                }
-                showMessage('success',successMessage);
-            },
-            error: function (xhr) {
-                var errorString = '';
-                $("#spinner").removeClass("show");
-                $.each(xhr.responseJSON.errors, function (key, value) {
-                    errorString = value;
-                    return false;
-                });
-                $('#importExcel').find('input:text, input:password, input:file, select, textarea').val('');
-                $('#number_phone').val('');
-                if (errorString.length !== 0) {
-                    showMessage('error',errorString);
-                } else {
-                    showMessage('error','File quá lớn hoặc sai định dạng! Vui lòng kiểm tra lại. ');
-                }
-            }
-        });
-        e.preventDefault();
-    });
-    $('#submitPhone').on('click', function (event){
-        $(this).attr('disabled','disabled');
-        event.preventDefault();
-        let data = $('#importExcel').serialize();
-        $.ajax({
-            url: urlPost,
-            type: 'POST',
-            dataType: 'json',
-            data: data,
-            cache: false,
-            beforeSend: function(){
-                $("#spinner").addClass("show");
-            },
-            success: (data) => {
-                $("#spinner").removeClass("show");
-                $('#push_phone_number_private').modal('toggle');
-                $('#submitPhone').prop('disabled', false);
-                var message = '';
-                var count =0;
-                $.each(data.data, function (key, value) {
-                    message += (key+1) + '. ' + value.message + '<br>';
-                    if(value.statusCode !== 0){
-                        count++;
-                    }
-                });
-                if(count>0) {
-                    showMessage('error',message);
-                } else {
-                    showSuccess(message);
-                }
-            },
-            error: function (xhr) {
-                var errorString = '';
-                $("#spinner").removeClass("show");
-                $.each(xhr.responseJSON.errors, function (key, value) {
-                    errorString = value;
-                    return false;
-                });
-                showMessage("error",errorString);
-                $('#submitPhone').prop('disabled', false);
-            }
-        });
-    });
-}

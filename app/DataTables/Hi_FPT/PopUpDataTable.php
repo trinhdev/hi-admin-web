@@ -2,26 +2,30 @@
 
 namespace App\DataTables\Hi_FPT;
 
+use App\DataTables\BuilderDatatables;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Services\DataTable;
 
-class PopUpDataTable extends DataTable
+class PopUpDataTable extends BuilderDatatables
 {
-    /**
-     * Build DataTable class.
-     *
-     * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
-     */
-
+    protected $orderBy = 7;
     public function dataTable($query)
     {
-        $list_template_popup = config('platform_config.type_popup_service');
-        $data           = $query['data'];
-        $totalRecords   = $query['pagination']->totalPage * $query['pagination']->perPage;
+        $list_template_popup = config('platform_config.type_popup_service', '');
         return datatables()
-            ->collection($data)
-            ->addIndexColumn()
+            ->collection($query['data'])
+            ->editColumn('titleVi',function($row){
+                return '<a onclick="detailPopup(this)" data-id="'.$row->id.'" href="#">'.$row->titleVi.'</a>
+                    <div class="row-options">
+                        <a href="'.route('popupmanage.view', [$row->id ]).'">Push</a> |
+                        <a onclick="detailPopup(this)" data-id="'.$row->id.'" href="#" class="text-info">Edit</a> |
+                        <a id="exportPopup" href="#" data-id="'.$row->id.'" class="text-danger">Export</a>
+                    </div>';
+
+            })
+            ->editColumn('checkbox', function ($row) {
+                return '<div class="checkbox"><input type="checkbox" value="'.$row->id.'"><label></label></div>
+                ';
+            })
             ->editColumn('templateType', function ($query) use ($list_template_popup) {
                 return $list_template_popup[$query->templateType] ?? $query;
             })
@@ -32,9 +36,8 @@ class PopUpDataTable extends DataTable
                             width="100" height="100"
                         />';
             })
-            ->addColumn('action', 'popup._action-menu')
-            ->rawColumns(['buttonActionValue', 'image', 'action','buttonImage'])
-            ->setTotalRecords($totalRecords)
+            ->rawColumns(['buttonActionValue', 'image', 'action','buttonImage', 'titleVi', 'checkbox'])
+            ->setTotalRecords($query['pagination']->totalPage * $query['pagination']->perPage)
             ->skipPaging();
     }
 
@@ -44,129 +47,55 @@ class PopUpDataTable extends DataTable
     }
 
     /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
-    public function html()
-    {
-        return $this->builder()
-            ->setTableId('popup_manage_table')
-            ->columns($this->getColumns())
-            ->responsive()
-            ->orderBy(8)
-            ->autoWidth(true)
-            ->parameters([
-                'scroll' => false,
-                'scrollX' => false,
-                'searching' => true,
-                'searchDelay' => 500,
-                'dom' => '<"row container-fluid mx-auto mt-2 mb-4"<"col-md-9"B><"col-md-1 float-left mt-2 "l><"col-md-1 mt-2"f>>irtp',
-                'buttons' => [
-                    [
-                        'extend'=> 'collection',
-                        'text' =>'<i class="fas fa-plus"></i> Add Pop-up',
-                        'autoClose'=> true,
-                        'action'    => 'function ( e, dt, node, config ) {}',
-                        'attr'      =>  [
-                            'id'=>'push_popup_public',
-                            'class' =>'btn btn-info'
-                        ]
-                    ],
-                    [
-                        'extend'=> 'collection',
-                        'text' =>'Lọc hiển thị',
-                        'autoClose'=> true,
-                        'buttons'=> [
-                            [
-                                'text'      =>'Center box có button',
-                                'action'    => 'function ( e, dt, node, config ) {
-                                    dt.on("preXhr.dt", function(e, settings, data){
-                                        data.templateType = "popup_custom_image_transparent";
-                                    });
-                                    dt.ajax.reload();
-                                }',
-                                'attr'      =>  [
-                                    'id'=>'popup_custom_image_transparent'
-                                ]
-                            ],
-                            [
-                                'text' => 'Center box không có button',
-                                'action'    => 'function ( e, dt, node, config ) {
-                                    dt.on("preXhr.dt", function(e, settings, data){
-                                        data.templateType = "popup_image_transparent";
-                                    });
-                                    dt.ajax.reload();
-                                }',
-                                'attr'      =>  [
-                                    'id'    => 'popup_image_transparent'
-                                ]
-                            ],
-                            [
-                                'text' => 'Full screen có button',
-                                'action'    => 'function ( e, dt, node, config ) {
-                                    dt.on("preXhr.dt", function(e, settings, data){
-                                        data.templateType = "popup_full_screen";
-                                    });
-                                    dt.ajax.reload();
-                                }',
-                                'attr'      =>  [
-                                    'id'    => 'popup_full_screen'
-                                ]
-                            ],
-                            [
-                                'text' => 'Full screen không có button',
-                                'action'    => 'function ( e, dt, node, config ) {
-                                    dt.on("preXhr.dt", function(e, settings, data){
-                                        data.templateType = "popup_image_full_screen";
-                                    });
-                                    dt.ajax.reload();
-                                }',
-                                'attr'      =>  [
-                                    'id'    => 'popup_image_full_screen'
-                                ]
-                            ]
-                        ]
-                    ],
-                    [
-                        'text' => 'Copy',
-                        'extend' => 'copyHtml5',
-                    ],
-                    [
-                        'text' => 'Excel',
-                        'extend' => 'excel',
-                    ]
-                ]
-            ])
-            ->addTableClass('table table-hover text-center w-100 table-header-color');
-    }
-
-    /**
      * Get columns.
      *
      * @return array
      */
-    protected function getColumns(): array
+    public function columns(): array
     {
         return [
-            Column::make('DT_RowIndex')
-                ->title('STT')
-                ->width(10)
-                ->sortable(false),
             Column::make('titleVi')->title('Tiêu đề'),
             Column::make('image')->title('Image')->sortable(false),
             Column::make('buttonActionValue')->title('Nơi điều hướng'),
             Column::make('templateType')->title('Loại template')->width(120),
             Column::make('viewCount')->title('View'),
-            Column::make('createdBy')->title('created By')->width(80),
-            Column::make('dateCreated')->title('Ngày tạo'),
-            Column::computed('action')
-                ->searching(false)
-                ->width(80)
-                ->addClass('text-center')
-
+            Column::make('createdBy')->title('Người tạo')->width(80),
+            Column::make('dateCreated')->title('Ngày tạo')
         ];
     }
+
+    public function buttons()
+    {
+        parent::buttons(); // TODO: Change the autogenerated stub
+        $button = [[
+            'text'      => 'Tất cả',
+            'action'    => "function ( e, dt, node, config ) {
+                                    dt.on('preXhr.dt', function(e, settings, data){ data.templateType = ''; });
+                                    dt.ajax.reload();
+                                }",
+            'attr'      =>  [ 'id'=>'']
+        ]];
+        foreach (config('platform_config.type_popup_service') as $key => $value) {
+            $button[] = [
+                'text'      => $value,
+                'action'    => "function ( e, dt, node, config ) {
+                                    dt.on('preXhr.dt', function(e, settings, data){ data.templateType = '$key'; });
+                                    dt.ajax.reload();
+                                }",
+                'attr'      =>  [ 'id'=>$key ]
+            ];
+        }
+        return [
+            [
+                'extend'=> 'collection',
+                'text' =>'Lọc hiển thị',
+                'autoClose'=> true,
+                'className' => 'btn btn-default btn-sm btn-default-dt-options',
+                'buttons'=> $button
+            ]
+        ];
+    }
+
 
     /**
      * Get filename for export.

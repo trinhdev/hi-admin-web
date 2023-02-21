@@ -105,10 +105,7 @@ class PopupManageRepository implements PopupManageInterface
                 'headers' => $this->headers,
                 'form_params' => $form_params
             ])->getBody()->getContents();
-            if(check_status_code_api(json_decode($response))) {
-                return redirect()->route('popupmanage.index')->withSuccess(json_decode($response)->message);
-            }
-            return redirect()->route('popupmanage.index')->withErrors(json_decode($response)->message);
+            return response()->json(['data' => json_decode($response)]);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -117,7 +114,7 @@ class PopupManageRepository implements PopupManageInterface
     public function push(array $params)
     {
         try {
-            $timeline_array = explode(" - ", $params['timeline']);
+            $timeline_array = explode(" - ", $params['daterange']);
             $form_params = [
                 'popupTemplateId' => $params['templateId'],
                 'repeatTime' => $params['repeatTime'],

@@ -55,6 +55,4 @@ class AirDirectionDataTable extends BuilderDatatables
 
         ];
     }
-
-    public function htmlInitCompleteFunctionCustom(){}
 }

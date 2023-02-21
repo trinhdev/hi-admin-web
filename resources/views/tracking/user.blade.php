@@ -19,39 +19,9 @@
                     <div class="clearfix"></div>
                     <div class="panel_s tw-mt-2 sm:tw-mt-4">
                         <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group" app-field-wrapper="member_filter">
-                                        <label for="member_filter" class="control-label">Vị trí hiển thị</label>
-                                        <div class="dropdown bootstrap-select show-tick bs3" style="width: 100%;">
-                                            <select id="select_filter" class="selectpicker" data-actions-box="1" data-width="100%"
-                                                    data-none-selected-text="Không có mục nào được chọn"
-                                                    data-live-search="true" tabindex="-98">
-                                                <option data-subtext="Không có mục nào được chọn"></option>
-                                                @forelse([1,2,3,4,5,6,7] as $type)
-                                                    <option class="text-capitalize" value="{{$type}}">Vung {{$type}}</option>
-                                                @empty
-                                                    <option value="1" data-subtext="Trình">Huỳnh</option>
-                                                @endforelse
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group" app-field-wrapper="from_date">
-                                        <label for="daterange" class="control-label">Từ ngày</label>
-                                        <div class="input-group date">
-                                            <input id="daterange"  class="form-control daterange" type="text" name="daterange"
-                                                   placeholder="Nhập ngày hiển thị" autocomplete="off"/>
-                                            <div class="input-group-addon">
-                                                <i class="fa-regular fa-calendar calendar-icon"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <livewire:filter />
                             <!--begin::Chart-->
-                            <livewire:chart />
+                            <livewire:chart-filter/>
                             <!--end::Chart-->
                         </div>
                     </div>
@@ -114,6 +84,6 @@
 @endsection
 
 @push('script')
-    {!! $dataTable->scripts() !!}
+{{--    {!! $dataTable->scripts() !!}--}}
 @endpush
 
