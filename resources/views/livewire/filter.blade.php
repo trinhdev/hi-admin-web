@@ -8,7 +8,7 @@
     </script>
 @endpush
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="form-group">
             <label for="daterange" class="control-label">Lọc ngày</label>
             <div class="input-group date">

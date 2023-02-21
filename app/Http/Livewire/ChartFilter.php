@@ -23,37 +23,31 @@ class ChartFilter extends Component
         $service = new TrackingService();
         try {
             $data = $service->get_active_customers('active-customers', $from ?? '', $to ?? '');
+            $datasets = collect($data->detail)['values'];
+
+            foreach ($datasets as $key => $value) {
+                $color = rand_color();
+                $dataset[] = [
+                    'label' => $key,
+                    'backgroundColor' => $color,
+                    'borderColor' => $color,
+                    'borderWidth' => 2,
+                    'pointRadius' => 3,
+                    'data' => $value
+                ];
+            }
+            $labels = collect($data->detail)['labels'];
+            $this->emit('updateChart', [
+                'datasets' => $dataset,
+                'labels' => $labels,
+            ]);
         } catch (\Exception $e) {
-            dd($e);
+            return redirect()->with('danger', $e->getMessage());
         }
-        $datasets = collect($data->detail)['values'];
-
-        foreach ($datasets as $key => $value) {
-            $color = rand_color();
-            $dataset[] = [
-                'label' => $key,
-                'backgroundColor' => $color,
-                'borderColor' => $color,
-                'borderWidth' => 2,
-                'pointRadius' => 3,
-                'data' => $value
-            ];
-        }
-
-        $labels = collect($data->detail)['labels'];
-        $this->emit('updateChart', [
-            'datasets' => $dataset,
-            'labels' => $labels,
-        ]);
     }
 
     public function mount()
     {
-
-//        if (split_date($this->daterange)) {
-//            $from = split_date($this->daterange)[0];
-//            $to = split_date($this->daterange)[1];
-//        }
         $service = new TrackingService();
         try {
             $data = $service->get_active_customers('active-customers', '2023-02-17', '2023-02-20');

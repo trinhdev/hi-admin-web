@@ -43,7 +43,7 @@
         <header>
             <h2>DAU <small>Analytics</small></h2>
         </header>
-        <canvas id="chart"></canvas>
+        <canvas id="chart" width="800" height="200"></canvas>
     </div>
 </div>
 <!--end::Chart-->
