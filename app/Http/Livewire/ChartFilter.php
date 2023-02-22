@@ -9,6 +9,7 @@ class ChartFilter extends Component
 {
     public array $dataset = [];
     public array $labels = [];
+    public string $type = 'bar';
 
     protected $listeners = [
         'date-selected' => 'dateSelected',
@@ -22,7 +23,7 @@ class ChartFilter extends Component
         }
         $service = new TrackingService();
         try {
-            $data = $service->get_active_customers('active-customers', $from ?? '', $to ?? '');
+            $data = $service->get_active_customers($from ?? '', $to ?? '');
             $datasets = collect($data->detail)['values'];
 
             foreach ($datasets as $key => $value) {

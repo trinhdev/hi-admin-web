@@ -48,8 +48,11 @@
 
         $(document).ready(function () {
             methodAjaxBanner();
+            $('.daterange').on('load.daterangepicker', function(ev, picker) {
+                //do something, like clearing an input
+                $('.daterange').val('');
+            });
         });
-        window.onbeforeunload = null;
     </script>
     <script src="{{ asset('/custom_js/bannermanage.js')}}"></script>
 @endpush

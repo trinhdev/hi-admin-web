@@ -283,19 +283,17 @@ $(function () {
             'Trong tháng này': [moment().startOf('month'), moment().endOf('month')],
             'Trong tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
-        autoUpdateInput: true,
+        autoUpdateInput: false,
+        timePicker: true,
+        timePicker24Hour: true,
         locale: {
             cancelLabel: 'Clear',
             format: 'YYYY-MM-DD HH:mm:ss'
         }
-    });
-    $('.daterange').on('apply.daterangepicker', function(ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD HH:mm:ss') + ' - ' + picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
+    }).on('show.daterangepicker', function(ev, picker) {
+        picker.autoUpdateInput = true;
     });
 
-    $('.daterange').on('cancel.daterangepicker', function(ev, picker) {
-        $(this).val('');
-    });
 });
 
 function postPhone(urlPost) {

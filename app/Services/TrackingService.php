@@ -30,13 +30,15 @@ class TrackingService
         }
     }
 
-    public function get_active_customers($event, $from, $to)
+    public function get_active_customers($from, $to)
     {
         $form_params = [
-            'query_event'=>$event,
+            'query_event'=> 'DAU',
             'data'=> [
                 'from_date' => $from,
                 'to_date' => $to,
+                'limit'     => 10,
+                'above_duration' => 0
             ]
         ];
         $response = $this->client->request('POST', $this->listMethod['CUSTOMERS_ACTIVITIES'], [

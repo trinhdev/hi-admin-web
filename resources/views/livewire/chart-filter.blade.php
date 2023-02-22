@@ -8,7 +8,7 @@
     <script>
         const chart = new Chart(
             document.getElementById('chart'), {
-                type: 'line',
+                type: @json($type),
                 data: {
                     labels: @json($labels),
                     datasets: @json($dataset)
