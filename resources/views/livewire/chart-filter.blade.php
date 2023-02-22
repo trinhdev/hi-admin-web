@@ -8,7 +8,7 @@
     <script>
         const chart = new Chart(
             document.getElementById('chart'), {
-                type: @json($type),
+                type: 'line',
                 data: {
                     labels: @json($labels),
                     datasets: @json($dataset)
@@ -33,17 +33,21 @@
         );
         Livewire.on('updateChart', data => {
             chart.data = data;
+            $('#name').html(data.chart);
+            console.log(data);
+            chart.config.type = data.type;
             chart.update();
         });
     </script>
 @endpush
+
 <!--start::Chart-->
 <div class="row">
     <div class="col-md-12">
         <header>
-            <h2>DAU <small>Analytics</small></h2>
+            <h2 id="name">DAU <small>Analytics</small></h2>
         </header>
-        <canvas id="chart" width="800" height="200"></canvas>
+        <canvas id="chart" width="800" height="250"></canvas>
     </div>
 </div>
 <!--end::Chart-->

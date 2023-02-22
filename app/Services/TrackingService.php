@@ -30,23 +30,27 @@ class TrackingService
         }
     }
 
-    public function get_active_customers($from, $to)
+    public function get_active_customers($event, $from, $to, int $limit = 10, int $above_duration = 0)
     {
-        $form_params = [
-            'query_event'=> 'DAU',
-            'data'=> [
-                'from_date' => $from,
-                'to_date' => $to,
-                'limit'     => 10,
-                'above_duration' => 0
-            ]
-        ];
-        $response = $this->client->request('POST', $this->listMethod['CUSTOMERS_ACTIVITIES'], [
-            'headers' => $this->headers,
-            "proxy" => "http://proxy.hcm.fpt.vn:80",
-            'json' => $form_params
-        ])->getBody()->getContents();
-        return json_decode($response);
+        try {
+            $form_params = [
+                'query_event'=>$event,
+                'data'=> [
+                    'from_date' => $from,
+                    'to_date' => $to,
+                    'limit'     => $limit,
+                    'above_duration' => $above_duration
+                ]
+            ];
+            $response = $this->client->request('POST', $this->listMethod['CUSTOMERS_ACTIVITIES'], [
+                'headers' => $this->headers,
+                "proxy" => "http://proxy.hcm.fpt.vn:80",
+                'json' => $form_params
+            ])->getBody()->getContents();
+            return json_decode($response);
+        } catch (\Exception $exception) {
+            return abort(403);
+        }
     }
 
 }

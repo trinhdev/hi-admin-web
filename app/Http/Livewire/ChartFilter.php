@@ -9,13 +9,13 @@ class ChartFilter extends Component
 {
     public array $dataset = [];
     public array $labels = [];
-    public string $type = 'bar';
+    public string $type = 'line';
 
     protected $listeners = [
         'date-selected' => 'dateSelected',
     ];
 
-    public function dateSelected(string $date)
+    public function dateSelected(string $chart, string $date, string $typ, int $limit, int $duration)
     {
         if (split_date($date)) {
             $from = \Carbon\Carbon::parse(split_date($date)[0])->format('Y-m-d');
@@ -23,7 +23,7 @@ class ChartFilter extends Component
         }
         $service = new TrackingService();
         try {
-            $data = $service->get_active_customers($from ?? '', $to ?? '');
+            $data = $service->get_active_customers($chart,$from ?? '', $to ?? '', $limit??10, $duration??0);
             $datasets = collect($data->detail)['values'];
 
             foreach ($datasets as $key => $value) {
@@ -41,6 +41,8 @@ class ChartFilter extends Component
             $this->emit('updateChart', [
                 'datasets' => $dataset,
                 'labels' => $labels,
+                'type' => $typ,
+                'chart' => $chart
             ]);
         } catch (\Exception $e) {
             return redirect()->with('danger', $e->getMessage());
@@ -51,7 +53,7 @@ class ChartFilter extends Component
     {
         $service = new TrackingService();
         try {
-            $data = $service->get_active_customers('active-customers', '2023-02-17', '2023-02-20');
+            $data = $service->get_active_customers('DAU', '2023-02-17', '2023-02-20');
         } catch (\Exception $e) {
             dd($e);
         }
@@ -70,27 +72,5 @@ class ChartFilter extends Component
                 'data' => $value
             ];
         }
-    }
-
-    private function getLabels()
-    {
-        $labels = [];
-        for ($i = 0; $i < 12; $i++) {
-            $labels[] = now()->subMonths($i)->format('M');
-        }
-        return $labels;
-    }
-
-    private function getRandomData()
-    {
-        $data = [];
-        for ($i = 0; $i < count($this->getLabels()); $i++) {
-            $data[] = rand(10, 100);
-        }
-        return $data;
-    }
-    public function render()
-    {
-        return view('livewire.chart-filter');
     }
 }
