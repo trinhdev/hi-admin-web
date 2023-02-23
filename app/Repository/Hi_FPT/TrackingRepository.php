@@ -18,11 +18,7 @@ class TrackingRepository extends RepositoryAbstract implements TrackingInterface
 
     public function userAnalytics($dataTable, $request)
     {
-        $total = $this->model->count();
-        $new = $this->model->where('created_at', today())->count();
-        $unique = $this->model->groupBy('phone')->count();
-
-        return $dataTable->render('tracking.user', ['data'=>['total_user' => $total, 'new_user'=>$new, 'unique_user'=>$unique]]);
+        return view('tracking.user');
     }
 
     public function views()
