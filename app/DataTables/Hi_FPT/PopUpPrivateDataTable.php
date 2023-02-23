@@ -30,7 +30,11 @@ class PopUpPrivateDataTable extends BuilderDatatables
                 } else {
                     $action = 'data-dateend="{{ $model->dateEnd }}" >Continue</a>';
                 }
-                return '<a id="detailPopup" data-id="' . $row->id . '" href="#">' . $row->titleVi . '</a>
+
+                $check = auth()->user()->role_id;
+
+                if ($check == 1 || $check == 5) {
+                    return '<a id="detailPopup" data-id="' . $row->id . '" href="#">' . $row->titleVi . '</a>
                     <div class="row-options">
                         <a onclick="dialogConfirmWithAjax(deletePopUpPrivate, this)"
                                 id="deletePopup" href="#"
@@ -40,7 +44,11 @@ class PopUpPrivateDataTable extends BuilderDatatables
                         <a id="exportPopup" href="#" data-id="' . $row->id . '" class="text-info">Export</a> |
                         <a id="updatePhoneNumber" href="#" data-id="' . $row->id . '" class="text-info">Import</a>
                     </div>';
-
+                }
+                return '<a href="#">' . $row->titleVi . '</a>
+                    <div class="row-options">
+                        <a id="exportPopup" href="#" data-id="' . $row->id . '" class="text-info">Export</a>
+                    </div>';
             })
             ->editColumn('iconUrl', function ($query) {
                 return '

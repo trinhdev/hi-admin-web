@@ -14,12 +14,21 @@ class PopUpDataTable extends BuilderDatatables
         return datatables()
             ->collection($query['data'])
             ->editColumn('titleVi',function($row){
+
+                $check = auth()->user()->role_id;
+                if ($check == 1 || $check == 5) {
                 return '<a onclick="detailPopup(this)" data-id="'.$row->id.'" href="#">'.$row->titleVi.'</a>
                     <div class="row-options">
                         <a href="'.route('popupmanage.view', [$row->id ]).'">Push</a> |
                         <a onclick="detailPopup(this)" data-id="'.$row->id.'" href="#" class="text-info">Edit</a> |
                         <a id="exportPopup" href="#" data-id="'.$row->id.'" class="text-danger">Export</a>
                     </div>';
+                }
+                    return '<a href="#">'.$row->titleVi.'</a>
+                    <div class="row-options">
+                        <a id="exportPopup" href="#" data-id="'.$row->id.'" class="text-danger">Export</a>
+                    </div>';
+
 
             })
             ->editColumn('checkbox', function ($row) {
