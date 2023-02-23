@@ -17,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        
+
     ];
 
     /**
@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('role-permission', [RolePermissionPolicy::class, 'rolePermissionPolicy']);
-        
+
         // Check auth hidepayment
         Gate::define('hide-payment', function ($user) {
             $list_allow_user = Settings::where('name', 'allow_hide_payment_user')->get();
@@ -41,7 +41,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         // Check id Icon check data
-        Settings::where('name', 'icon_management_check_role')->get();
+        // Settings::where('name', 'icon_management_check_role')->get();
         Gate::define('icon-check-data-permission', function($user) {
             $icon_check_roles = Settings::where('name', 'icon_management_check_role')->get();
             $role = Auth::user()->role_id;

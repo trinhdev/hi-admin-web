@@ -93,8 +93,7 @@ function changePublicDateTime(){
     $('input[name="show_from"]').datetimepicker({
         showTodayButton: true,
         format: 'Y-m-d H:i:s',
-        sideBySide: true,
-        minDate: moment().format('Y-m-d H:i:s')
+        sideBySide: true
     });
     $('input[name="show_to"]').datetimepicker({
         showTodayButton: true,

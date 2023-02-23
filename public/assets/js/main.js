@@ -415,7 +415,6 @@ $(function () {
   });
 
   /* Custom fields hyperlink */
-  custom_fields_hyperlink();
   // Init lightboxes if found
   init_lightbox();
   // Init progress bars

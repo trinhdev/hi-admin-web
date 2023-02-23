@@ -12,4 +12,10 @@ return [
     |
     */
     'default_library' => 'Chartjs',
+    'charts' => [
+        'DSD' => 'daily screen duration',
+        'MSD' => 'monthly screen duration',
+        'DAU' => 'daily active user',
+        'MAU'=> 'monthly active user',
+    ],
 ];
