@@ -23,11 +23,20 @@ class BannerManageDataTable extends BuilderDatatables
                     $text = $row->title_vi;
                 }
 
-                return '<a data-id="'.$row->event_id .'" id="detailBanner" href="#">'.$text.'</a>
+                $check = auth()->user()->role_id;
+                if ($check == 1 || $check == 5) {
+                    return '<a data-id="'.$row->event_id .'" id="detailBanner" href="#">'.$text.'</a>
                     <div class="row-options">
                         <a data-id="'.$row->event_id .'" id="detailBanner" href="#">View</a> |
                         <a data-id="'.$row->event_id .'" id="button_form_export" href="#" class="text-info">Export</a>
                     </div>';
+                }
+                return '<a href="#">'.$text.'</a>
+                <div class="row-options">
+                    <a data-id="'.$row->event_id .'" id="button_form_export" href="#" class="text-info">Export</a>
+                </div>';
+
+
             })
             ->editColumn('event_type', function($row) {
                 return '<span class="infoRow" data-id="'.$row->event_id.'">'.$row->event_type.'</span>';
