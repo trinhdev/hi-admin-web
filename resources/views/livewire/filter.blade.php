@@ -40,6 +40,7 @@
         <div class="form-group">
             <label for="select_chart" class="control-label">Loại biểu đồ</label>
             <select wire:change="showDiv" id="select_chart" class="form-control">
+                <option value="" >Chọn loại biểu đồ</option>
                 @foreach(config('charts.charts') as $key => $value)
                     <option value="{{ $key }}" data-subtext="{{ $value }}" >{{ $key }} - {{ $value }}</option>
                 @endforeach
@@ -73,7 +74,7 @@
     <div class="col-md-2">
         <div class="form-group">
             <label for="limit" class="control-label">Top Screen Limit</label>
-            <input wire:model="selectedLimit" id="limit"
+            <input wire:model="selectedLimit" id="limit" min="0" max="500"
                    class="form-control" type="number" name="limit"
                    placeholder="Số giới hạn top màn hình" autocomplete="off"/>
         </div>
@@ -82,7 +83,7 @@
     <div class="col-md-2">
         <div class="form-group">
             <label for="duration" class="control-label">Screen Duration </label>
-            <input wire:model="selectedDuration" id="duration"
+            <input wire:model="selectedDuration" id="duration" min="0" max="500000"
                    class="form-control" type="number" name="duration"
                    placeholder="Duration lớn hơn bao nhiêu (s)" autocomplete="off"/>
         </div>

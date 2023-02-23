@@ -8,8 +8,8 @@ class Filter extends Component
 {
     public $showDiv = true;
     public string $selectedDate = '';
-    public ?int $selectedLimit = 10;
-    public ?int $selectedDuration = 0;
+    public $selectedLimit = 10;
+    public $selectedDuration = 0;
     public string $selectedType = 'line';
     public string $selectedChart = '';
 

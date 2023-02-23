@@ -32,8 +32,9 @@
             }
         );
         Livewire.on('updateChart', data => {
+            let nameElement = document.getElementById('name123');
             chart.data = data;
-            $('#name').html(data.chart);
+            nameElement.textContent = data.chart;
             console.log(data);
             chart.config.type = data.type;
             chart.update();
@@ -45,7 +46,7 @@
 <div class="row">
     <div class="col-md-12">
         <header>
-            <h2 id="name">DAU <small>Analytics</small></h2>
+            <h2><span id="name123">DAU</span> <small>Analytics</small></h2>
         </header>
         <canvas id="chart" width="800" height="250"></canvas>
     </div>
