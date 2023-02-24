@@ -14,14 +14,14 @@ class Constraint extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('role_id')->references('id')->on('roles_old');
         });
         Schema::table('user_groups', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('group_id')->references('id')->on('groups');
         });
         Schema::table('acl_roles', function (Blueprint $table) {
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('role_id')->references('id')->on('roles_old');
             $table->foreign('module_id')->references('id')->on('modules');
         });
     }
@@ -50,6 +50,6 @@ class Constraint extends Migration
         Schema::dropIfExists('user_groups');
         Schema::dropIfExists('groups');
         Schema::dropIfExists('users');
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('roles_old');
     }
 }

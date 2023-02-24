@@ -182,6 +182,7 @@ return [
         App\Providers\MinIOServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
 
     ],

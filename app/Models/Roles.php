@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Roles extends MY_Model
 {
     use SoftDeletes;
-    protected $table = 'roles';
+    protected $table = 'roles_old';
     protected $primaryKey = 'id';
     protected $fillable = ['role_name','deleted_at','updated_by','created_by'];
 

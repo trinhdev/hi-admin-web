@@ -53,5 +53,10 @@ class AuthServiceProvider extends ServiceProvider
             // return $role === 7;
             return in_array(Auth::user()->id, json_decode(@$icon_approved_roles[0]['value']));
         });
+
+        // Implicitly grant "Super-Admin" role all permission checks using can()
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('Super-Admin') ? true : null;
+        });
     }
 }
