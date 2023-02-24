@@ -22,7 +22,7 @@ use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use App\Models\ImportLogReportCustomerInfoMarketingDetail;
 use App\Models\ImportLogReportCustomerInfoMarketing;
 
-class ReportCustomerImport implements ToCollection, WithBatchInserts, WithChunkReading, WithEvents, WithHeadingRow, SkipsOnFailure, WithValidation
+class ReportCustomerImport implements ToCollection, WithBatchInserts, WithChunkReading, WithEvents, WithHeadingRow, WithValidation
 {
     use Importable, RegistersEventListeners;
     protected $limit_rows = 0;
@@ -53,6 +53,11 @@ class ReportCustomerImport implements ToCollection, WithBatchInserts, WithChunkR
         }
     }
 
+    public function onFailure(Failure ...$failures) {
+        // Handle the failures how you'd like.
+        dd($failures);
+    }
+
     public function batchSize(): int
     {
         return $this->limit_rows;
@@ -75,7 +80,7 @@ class ReportCustomerImport implements ToCollection, WithBatchInserts, WithChunkR
                 //     throw ValidationException::withMessages(['Limit rows: ' . $this->limit_rows]);
                 // }
 
-                $this->import_id = ImportLogReportCustomerInfoMarketing::insertGetId(['file_name' => $this->file_name, 'total_row' => $this->total_rows, 'is_runned' => 0]);
+                $this->import_id = ImportLogReportCustomerInfoMarketing::insertGetId(['file_name' => $this->file_name, 'total_row' => $this->total_rows - 1, 'is_runned' => 0]);
             },
 		   
             // // Using a class with an __invoke method.
