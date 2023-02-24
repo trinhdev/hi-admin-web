@@ -40,11 +40,11 @@ class RoleController extends Controller
                 $permission[$sub[0]][$value->id]=$sub[1];
             }
         }
-        Permission::create(['name' => 'checklistmanage-view']);
-        Permission::create(['name' => 'checklistmanage-create']);
-        Permission::create(['name' => 'checklistmanage-edit']);
-        Permission::create(['name' => 'checklistmanage-import']);
-        Permission::create(['name' => 'checklistmanage-export']);
+//        Permission::create(['name' => 'checklistmanage-view']);
+//        Permission::create(['name' => 'checklistmanage-create']);
+//        Permission::create(['name' => 'checklistmanage-edit']);
+//        Permission::create(['name' => 'checklistmanage-import']);
+//        Permission::create(['name' => 'checklistmanage-export']);
         return view('roles.create',compact('permission'));
     }
 

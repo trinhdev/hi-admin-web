@@ -20,17 +20,22 @@ class TrackingRepository extends RepositoryAbstract implements TrackingInterface
 
     public function userAnalytics($dataTable, $request)
     {
-        $service = new TrackingService();
 
         $date = split_date($request->daterange);
         if (!empty($date[0])) {
             $from = $date[0];
             $to = $date[1];
         }
-
-        $service->get_detail_customers($request->customer_id, $from ?? null, $to ?? null);
+        $customer_id = $request->input('cusId', '2002815');
+        $limit = (int) $request->length ?? 10;
+        $currentPage = $request->start == 0 ? 0 : ($request->start / $limit);
+        //$offset = (int) ($currentPage-1)*$limit;
+        if (!empty($customer_id) && $date) {
+            $service = new TrackingService();
+            $data = $service->get_detail_customers($customer_id, $from??'2023-02-17 00:00:00',$to??'2024-02-17 23:59:59', $limit??10, $currentPage??0);
+        }
         return $dataTable->with([
-            'data' => json_decode(123)
+            'data' => $data->detail ?? []
         ])->render('tracking.user');
     }
 

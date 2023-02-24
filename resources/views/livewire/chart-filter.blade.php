@@ -28,9 +28,7 @@
                             position: 'bottom'
                         },
                         tooltip: {
-                            mode: 'index',
-                            bodyFontSize: 10,
-                            intersect: false,
+                            mode: 'point',
                             position: 'nearest',
                             callbacks: {
                                 footer: footer,
@@ -70,6 +68,11 @@
             nameElement.textContent = data.chart;
             console.log(data);
             chart.config.type = data.type;
+            if(data.chart === 'DSD' || data.chart === 'MSD') {
+                chart.options.plugins.tooltip.mode = 'point';
+            } else {
+                chart.options.plugins.tooltip.mode = 'index';
+            }
             chart.update();
         });
     </script>

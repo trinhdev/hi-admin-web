@@ -24,6 +24,7 @@
                                     <table class="table table-bordered roles no-margin">
                                         <thead>
                                             <tr>
+                                                <th style="width: 5px;"></th>
                                                 <th>Tính năng</th>
                                                 <th>Quyền hạn</th>
                                             </tr>
@@ -32,14 +33,19 @@
                                         @foreach($permission as $key => $value)
                                             <tr data-name="{{ $key }}">
                                                 <td>
+                                                    <div class="checkbox tw-ml-2">
+                                                        <input onclick="check_value(this)" id="{{ $key }}" type="checkbox" class="capability"><label></label>
+                                                    </div>
+                                                </td>
+                                                <td>
                                                     <b>{{ $key }}</b>
                                                 </td>
                                                 <td>
                                                     @foreach($value as $k => $val)
-                                                        <div class="checkbox">
-                                                            <input type="checkbox" class="capability" name="permissions[]"
+                                                        <div class="checkbox tw-ml-2">
+                                                            <input id="{{$key.'_'.$val}}" type="checkbox" class="capability" name="permissions[]"
                                                                    value="{{(int) $k}}">
-                                                            <label> {!! $val !!} </label>
+                                                            <label for="{{$key.'_'.$val}}"> {!! $val !!} </label>
                                                         </div>
                                                     @endforeach
                                                 </td>
@@ -57,3 +63,13 @@
             </div>
         </div>
 @endsection
+@push('script')
+    <script>
+        function check_value(element){
+            let id1 = element.id;
+            console.log(id1);
+            console.log($("input[id*='articles_]").val());
+            $("div[id^='articles_]").not(this).prop('checked', this.checked);
+        }
+    </script>
+@endpush

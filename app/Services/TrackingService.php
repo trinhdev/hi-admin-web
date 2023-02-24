@@ -53,14 +53,17 @@ class TrackingService
         }
     }
 
-    public function get_detail_customers(?string $customer_id, ?string $from, ?string $to)
+    public function get_detail_customers(?int $customer_id, ?string $from, ?string $to, int $limit = 10, int $offset = 0)
     {
         try {
             $form_params = [
-                'customer_id'=>$customer_id,
+                'query_event'=> 'CUSTOMER-HISTORIES',
                 'data'=> [
                     'from_date' => $from,
                     'to_date' => $to,
+                    'customer_id' => $customer_id,
+                    'limit' => $limit,
+                    'page' => $offset,
                 ]
             ];
             $response = $this->client->request('POST', $this->listMethod['CUSTOMERS_ACTIVITIES'], [
