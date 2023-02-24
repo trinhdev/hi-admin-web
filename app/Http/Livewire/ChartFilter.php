@@ -45,10 +45,6 @@ class ChartFilter extends Component
                 'type' => $typ,
                 'chart' => $chart
             ]);
-            if ($this->offline()) {
-                session()->flash('message', 'Action completed successfully!');
-                session()->flash('success', 'Action completed successfully!');
-            }
         } catch (\Exception $e) {
             return redirect()->with('danger', $e->getMessage());
         }

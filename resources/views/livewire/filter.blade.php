@@ -12,7 +12,7 @@
         @this.set('selectedChart', e.target.value)
         });
         $(document).ready(function() {
-            $('.daterange').daterangepicker({
+            $('.daterange-filter').daterangepicker({
                 showDropdowns: true,
                 ranges: {
                     'Hôm nay': [moment(), moment()],
@@ -53,7 +53,7 @@
             <label for="daterange" class="control-label">Lọc ngày</label>
             <div class="input-group date">
                 <input id="daterange"
-                       class="form-control daterange" type="text" name="daterange"
+                       class="form-control daterange-filter" type="text" name="daterange"
                        placeholder="Nhập ngày hiển thị" autocomplete="off"/>
                 <div class="input-group-addon">
                     <i class="fa-regular fa-calendar calendar-icon"></i>

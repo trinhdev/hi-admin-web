@@ -49,4 +49,5 @@ return array(
     '0956408cbb3b629c2aedbc429d54f919' => $vendorDir . '/openzipkin/zipkin/src/Zipkin/SpanName.php',
     'ec07570ca5a812141189b1fa81503674' => $vendorDir . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
     'c379e2a4ec3735f6c4915556c8c81813' => $vendorDir . '/rap2hpoutre/fast-excel/src/functions/fastexcel.php',
+    '377b22b161c09ed6e5152de788ca020a' => $vendorDir . '/spatie/laravel-permission/src/helpers.php',
 );

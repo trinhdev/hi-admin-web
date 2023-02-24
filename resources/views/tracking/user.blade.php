@@ -17,19 +17,20 @@
                     <div class="panel_s tw-mt-2 sm:tw-mt-4">
                         <div class="panel-body">
                             <livewire:filter/>
-
+                            <livewire:chart-filter/>
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel_s">
-                                <div class="panel-body padding-10">
-                                    <!--begin::Chart-->
-                                    <livewire:chart-filter/>
-                                    <!--end::Chart-->
-                                </div>
-                            </div>
+                    <div class="panel_s tw-mt-2 sm:tw-mt-4">
+                        <div class="panel-body">
+
+                            <!--begin::Overview-->
+                            <livewire:filter-overview/>
+                            <!--end::Overview-->
+                            <hr class="hr-panel-separator">
+                            <!--begin::Table-->
+                            {!! $dataTable->table(['id'=>'user_detail'], $footer = false) !!}
+                            <!--end::Table-->
                         </div>
                     </div>
                 </div>
@@ -39,3 +40,14 @@
     @livewireScripts
 @endsection
 
+@push('script')
+    {!! $dataTable->scripts() !!}
+
+    <script>
+        let table = $('#user_detail');
+        table.on('preXhr.dt', function (e, settings, data) {
+            data.daterange = $('#filter_date_datatable').val();
+            data.cusId = $('#customer_id').val();
+        });
+    </script>
+@endpush
