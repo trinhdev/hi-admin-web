@@ -20,7 +20,7 @@ class UserAnalyticsDataTable extends BuilderDatatables
         return datatables()
             ->collection($query)
             ->editColumn('screen_id', function($row) {
-                return (!empty($row->previous_screen_id) ?$row->previous_screen_id: 'NULL').'->'.$row->screen_id;
+                return (!empty($row->previous_screen_id) ?$row->previous_screen_id: 'NULL').' -> '.$row->screen_id;
             })
             ->setTotalRecords($this->total)
             ->skipPaging();
