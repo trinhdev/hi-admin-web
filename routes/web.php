@@ -441,6 +441,12 @@ Route::group(['middleware' => ['auth', 'can:role-permission']], function () {
             Route::get('/edit/{id}', [EmployeesController::class, 'edit'])->name('employees.edit');
             Route::put('/update/{id}', [EmployeesController::class, 'update'])->name('employees.update');
         });
+
+        Route::prefix('import-log-report-customer-info-marketing')->group(function () {
+            Route::get('/', 'ReportCustomerMarketingController@index')->name('importlogreportcustomerinfomarketing.index');
+            Route::post('/upload-file', 'ReportCustomerMarketingController@uploadFile')->name('importlogreportcustomerinfomarketing.uploadFile');
+            Route::get('/export-result', 'ReportCustomerMarketingController@exportResult')->name('importlogreportcustomerinfomarketing.exportResult');
+        });
     });
     Route::prefix('profile')->group(function () {
         Route::post('/changePassword', 'ProfileController@changePassword')->name('profile.changePassword');
