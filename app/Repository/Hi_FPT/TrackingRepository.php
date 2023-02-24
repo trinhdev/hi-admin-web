@@ -3,8 +3,10 @@
 namespace App\Repository\Hi_FPT;
 
 use App\Contract\Hi_FPT\TrackingInterface;
+use App\Models\Customers;
 use App\Models\SectionLog;
 use App\Repository\RepositoryAbstract;
+use App\Services\TrackingService;
 use Illuminate\Support\Facades\DB;
 
 class TrackingRepository extends RepositoryAbstract implements TrackingInterface
@@ -18,12 +20,34 @@ class TrackingRepository extends RepositoryAbstract implements TrackingInterface
 
     public function userAnalytics($dataTable, $request)
     {
-        return view('tracking.user');
+        $service = new TrackingService();
+
+        $date = split_date($request->daterange);
+        if (!empty($date[0])) {
+            $from = $date[0];
+            $to = $date[1];
+        }
+
+        $service->get_detail_customers($request->customer_id, $from ?? null, $to ?? null);
+        return $dataTable->with([
+            'data' => json_decode(123)
+        ])->render('tracking.user');
     }
 
-    public function views()
+    public function views($dataTable, $request)
     {
-        return view('tracking.views');
+        $service = new TrackingService();
+
+        $date = split_date($request->daterange);
+        if (!empty($date[0])) {
+            $from = $date[0];
+            $to = $date[1];
+        }
+
+        $service->get_detail_customers($request->customer_id, $from ?? null, $to ?? null);
+        return $dataTable->with([
+            'data' => json_decode(123)
+        ])->render('tracking.user');
     }
 
     public function sessionAnalytics($dataTable, $request)

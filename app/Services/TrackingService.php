@@ -53,4 +53,25 @@ class TrackingService
         }
     }
 
+    public function get_detail_customers(?string $customer_id, ?string $from, ?string $to)
+    {
+        try {
+            $form_params = [
+                'customer_id'=>$customer_id,
+                'data'=> [
+                    'from_date' => $from,
+                    'to_date' => $to,
+                ]
+            ];
+            $response = $this->client->request('POST', $this->listMethod['CUSTOMERS_ACTIVITIES'], [
+                'headers' => $this->headers,
+                "proxy" => "http://proxy.hcm.fpt.vn:80",
+                'json' => $form_params
+            ])->getBody()->getContents();
+            return json_decode($response);
+        } catch (\Exception $exception) {
+            return abort(403);
+        }
+    }
+
 }

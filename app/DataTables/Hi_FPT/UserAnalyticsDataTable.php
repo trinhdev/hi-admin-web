@@ -10,7 +10,6 @@ use Yajra\DataTables\Html\Column;
 class UserAnalyticsDataTable extends BuilderDatatables
 {
     protected $hasCheckbox = false;
-    protected $ajaxUrl = ['data' => 'function(d) { d.table = "detail"; }'];
     public function dataTable($query)
     {
         return datatables()
@@ -31,9 +30,19 @@ class UserAnalyticsDataTable extends BuilderDatatables
         ];
     }
 
-    public function htmlInitCompleteFunctionCustom()
+    public function htmlInitCompleteFunction(): ?string
     {
-        // TODO: Implement htmlInitCompleteFunctionCustom() method.
+        return "
+            var cusId = $('#select_filter');
+            var table = $('#user_detail').DataTable();
+            $(cusId).on('change', function () {
+                table.ajax.reload();
+            });
+            var filter_date = $('#filter_date');
+            $(filter_date).on('change', function () {
+                table.ajax.reload();
+            });
+        ";
     }
 }
 

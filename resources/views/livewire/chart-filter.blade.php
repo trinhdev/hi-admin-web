@@ -6,6 +6,14 @@
 
 @push('script')
     <script>
+        const footer = (tooltipItems) => {
+            let sum = 0;
+
+            tooltipItems.forEach(function(tooltipItem) {
+                sum += tooltipItem.parsed.y;
+            });
+            return 'Sum: ' + Number((sum).toFixed(1)).toLocaleString();
+        };
         const chart = new Chart(
             document.getElementById('chart'), {
                 type: 'line',
@@ -15,22 +23,47 @@
                 },
                 options: {
                     plugins: {
+                        display: true,
                         legend: {
                             position: 'bottom'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            bodyFontSize: 10,
+                            intersect: false,
+                            position: 'nearest',
+                            callbacks: {
+                                footer: footer,
+                            }
                         }
                     },
-                    responsive: true,
                     scales: {
                         x: {
-                            stacked: true,
+                            display: true,
+                            ticks: {
+                                autoSkip: false,
+                            },
+                            stacked: true
+
                         },
                         y: {
-                            stacked: true
+                            display: true,
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Value',
+                                color: '#000',
+                            },
+                            ticks: {
+                                autoSkip: false,
+                                min: 0
+                            },
                         }
                     }
                 }
             }
         );
+
         Livewire.on('updateChart', data => {
             let nameElement = document.getElementById('name123');
             chart.data = data;
@@ -46,9 +79,9 @@
 <div class="row">
     <div class="col-md-12">
         <header>
-            <h2><span id="name123">DAU</span> <small>Analytics</small></h2>
+            <h2><span id="name123">Không có dữ liệu</span> <small> Analytics</small></h2>
         </header>
-        <canvas id="chart" width="800" height="250"></canvas>
+        <canvas id="chart" height="50"></canvas>
     </div>
 </div>
 <!--end::Chart-->
