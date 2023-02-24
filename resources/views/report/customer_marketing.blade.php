@@ -17,6 +17,7 @@
                             @if(session('error'))
                                 <label style="float: left; color: red">{{ session('error') }}</label>
                             @endif
+                            <a href="http://upload-static.fpt.net/sys/hifpt/report/helper/test_import_customer_report.xlsx">File import mẫu</a>
                         </div>
                     @endif
                 </div><!-- /.col -->
@@ -145,4 +146,10 @@
 
 @push('scripts')
     {{ $dataTable->scripts() }}
+    <script>
+        setInterval(function () {
+            var table = $('#customer_marketing').DataTable();
+            table.ajax.reload();
+        }, 10000);
+    </script>
 @endpush

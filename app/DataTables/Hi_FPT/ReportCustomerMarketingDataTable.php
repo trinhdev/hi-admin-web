@@ -44,7 +44,7 @@ class ReportCustomerMarketingDataTable extends DataTable
                                 '.method_field("DELETE").'
                                 <button type="submit" class="btn btn-sm fas fa-trash-alt btn-icon bg-red"></button>
                             </form>' . 
-                            (($row['is_runned'] == 1) ? '<a class="btn btn-sm icon-cloud-download btn-icon bg-green" href="/import-log-report-customer-info-marketing/export-result"></a>' : '') . 
+                            (($row['is_runned'] == 1) ? '<a class="btn btn-sm icon-cloud-download btn-icon bg-green" href="/import-log-report-customer-info-marketing/export-result/' . $row->id . '"></a>' : '') . 
                         '</div>';
             })
             ->escapeColumns([])

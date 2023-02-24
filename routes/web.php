@@ -445,7 +445,7 @@ Route::group(['middleware' => ['auth', 'can:role-permission']], function () {
         Route::prefix('import-log-report-customer-info-marketing')->group(function () {
             Route::get('/', 'ReportCustomerMarketingController@index')->name('importlogreportcustomerinfomarketing.index');
             Route::post('/upload-file', 'ReportCustomerMarketingController@uploadFile')->name('importlogreportcustomerinfomarketing.uploadFile');
-            Route::get('/export-result', 'ReportCustomerMarketingController@exportResult')->name('importlogreportcustomerinfomarketing.exportResult');
+            Route::get('/export-result/{id}', 'ReportCustomerMarketingController@exportResult')->name('importlogreportcustomerinfomarketing.exportResult');
         });
     });
     Route::prefix('profile')->group(function () {
