@@ -74,7 +74,7 @@ class ReportCustomerImport implements ToCollection, WithBatchInserts, WithChunkR
             // Handle by a closure.
             BeforeImport::class => function(BeforeImport $event) {
                 $totalRows = $event->getReader()->getTotalRows();
-                $this->total_rows = intval($totalRows['Sheet 1']);
+                $this->total_rows = intval(array_values($totalRows)[0]);
 
                 // if($this->total_rows > $this->limit_rows) {
                 //     throw ValidationException::withMessages(['Limit rows: ' . $this->limit_rows]);
