@@ -37,18 +37,19 @@ class ContractController extends Controller
      */
     public function show(Request $request)
     {
-        if (!empty($request->id)) {
+        if (!empty($request->customer_id)) {
             $contracts = Contracts::select('contracts.location', 'contracts.location_id', 'contracts.location_code', 'contracts.location_name', 'contracts.location_zone', 'contracts.branch_code', 'contracts.branch_name')
                 ->join('customer_contract', 'contracts.contract_id', '=', 'customer_contract.contract_id')
                 ->join('customers', 'customer_contract.customer_id', '=', 'customers.customer_id')
-                ->where('customers.customer_id', $request->id)
-                ->get();
+                ->where('customers.customer_id', $request->customer_id)
+                ->get()->toArray();
+        } else {
+            return printJson([], buildStatusObject('INVALID_INPUT'), 'vi');
         }
-
         if (!empty($contracts)) {
             return printJson($contracts, buildStatusObject('HTTP_OK'), 'vi');
         }
-        return printJson([], buildStatusObject('HTTP_OK'), 'vi');
+        return printJson([], buildStatusObject('INTERNAL_SERVER_ERROR'), 'vi');
     }
 
     /**
