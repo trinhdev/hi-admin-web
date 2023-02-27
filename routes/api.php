@@ -19,5 +19,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::namespace('Api')->group(function () {
     Route::post('/log-report', 'LogReportController@saveReport');
+    Route::post('/products', 'Api\ProductController@store')->name('products.store');
+});
+
+Route::namespace('Api')->group(function () {
+    Route::post('/contract/get-info-by-customer-id', 'ContractController@show')->name('contract.show');
 });
 
