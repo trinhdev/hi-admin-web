@@ -511,6 +511,9 @@ Route::group(['middleware' => ['auth', 'can:role-permission']], function () {
             Route::get('/activeNet', 'ReportTrackingCusBehaviorMonthlyController@activeNet')->name('reporttrackingcusbehaviormonthly.activeNet');
             Route::get('/chatData', 'ReportTrackingCusBehaviorMonthlyController@chatData')->name('reporttrackingcusbehaviormonthly.chatData');
         });
+        Route::prefix('dau-wau-mau-report')->group(function () {
+            Route::get('/', 'DauWauMauReportController@index')->name('dauwaumaureport.index');
+        });
     });
 }
 );
