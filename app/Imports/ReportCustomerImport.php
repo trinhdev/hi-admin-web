@@ -30,7 +30,7 @@ class ReportCustomerImport implements ToCollection, WithBatchInserts, WithChunkR
     protected $total_rows = 0;
     protected $import_id = null;
 
-    public function __construct($limit_rows = 1000, $file_name) {
+    public function __construct($limit_rows, $file_name) {
         $this->limit_rows = $limit_rows;
         $this->file_name = $file_name;
     }
@@ -76,9 +76,9 @@ class ReportCustomerImport implements ToCollection, WithBatchInserts, WithChunkR
                 $totalRows = $event->getReader()->getTotalRows();
                 $this->total_rows = intval(array_values($totalRows)[0]);
 
-                // if($this->total_rows > $this->limit_rows) {
-                //     throw ValidationException::withMessages(['Limit rows: ' . $this->limit_rows]);
-                // }
+                if($this->total_rows > $this->limit_rows) {
+                    throw ValidationException::withMessages(['Limit rows: ' . $this->limit_rows]);
+                }
 
                 $this->import_id = ImportLogReportCustomerInfoMarketing::insertGetId(['file_name' => $this->file_name, 'total_row' => $this->total_rows - 1, 'is_runned' => 0]);
             },

@@ -26,17 +26,17 @@ class DauWauMauReport extends Component
         return view('livewire.dau-wau-mau-report');
     }
 
-    public function filteringChart($selectedDate, $type) {
-        $data = $this->readDatabase($selectedDate, $type);
+    public function filteringChart($selectedDate) {
+        $data = $this->readDatabase($selectedDate);
         $this->emit('updateChart', [
-            'datasets'  => $data['dataset'],
-            'labels'    => $data['labels'],
-            'type'      => $type,
+            'datasets'      => $data['dataset'],
+            'labels'        => $data['labels'],
+            'report_date'   => $selectedDate
             // 'chart'     => $chart
         ]);
     }
 
-    public function readDatabase($selectedDate, $type) {
+    public function readDatabase($selectedDate) {
         try {
             $data = DAU_Report::where('to_date', $selectedDate)->where('location_zone', '!=', '')->selectRaw('dau_report.type, location_zone, SUM(count_login) AS count_login')->groupBy(['location_zone', 'type'])->orderBy('location_zone')->orderBy('dau_report.type')->get()->toArray();
             $list_zone = array_values(array_unique(array_column($data, 'location_zone')));
@@ -55,10 +55,10 @@ class DauWauMauReport extends Component
                         'pointRadius'       => 3,
                         'data'              => []
                     ];
-                    $dataset[$value['type']]['data'][$value['location_zone']] = $value['count_login'];
+                    $dataset[$value['type']]['data'][] = $value['count_login'];
                 }
                 else {
-                    $dataset[$value['type']]['data'][$value['location_zone']] = $value['count_login'];
+                    $dataset[$value['type']]['data'][] = $value['count_login'];
                 }
 
                 // $data_miss = array_diff_key($dataset[$value['type']]['data'], $list_default_value_zone);
