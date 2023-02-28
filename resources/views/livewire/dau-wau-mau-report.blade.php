@@ -113,15 +113,6 @@
             </div>
         </div>
     </div>
-    <div class="col-md-2">
-        <div class="form-group">
-            <label for="select_type" class="control-label">Kiểu hiển thị</label>
-            <select wire:model="selectedType" id="select_type" class="form-control">
-                <option value="line" data-subtext="Biểu đồ đường" >Line</option>
-                <option value="bar" data-subtext="Biểu đồ cột">Bar</option>
-            </select>
-        </div>
-    </div>
 </div>
 
 <!--start::Chart-->
