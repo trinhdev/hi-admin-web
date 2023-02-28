@@ -60,7 +60,7 @@ class ReportCustomerMarketingController extends MY_Controller
         // dd($file_import->getClientOriginalName());
         // $data = Excel::import(new ReportCustomerImport(1000, $file_import->getClientOriginalName()), $file_import);
         try {
-            $data = Excel::import(new ReportCustomerImport(1000, $file_import->getClientOriginalName()), $file_import);
+            $data = Excel::import(new ReportCustomerImport(20000, $file_import->getClientOriginalName()), $file_import);
         }
         catch(Exception $e) {
             return back()->withError($e->getMessage());
