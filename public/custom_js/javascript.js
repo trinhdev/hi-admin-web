@@ -275,11 +275,10 @@ function randomColor() {
 $(function () {
     $('.daterange').daterangepicker({
         ranges: {
-            'Hôm nay': [moment(), moment()],
-            'Hôm qua': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            '7 ngày qua': [moment().subtract(6, 'days'), moment()],
-            '30 ngày qua': [moment().subtract(29, 'days'), moment()],
-            '60 ngày qua': [moment().subtract(59, 'days'), moment()],
+            'Trong hôm nay': [moment(), moment()],
+            'Trong hôm qua': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Trong 7 ngày': [moment().subtract(6, 'days'), moment()],
+            'Trong 30 ngày': [moment().subtract(29, 'days'), moment()],
             'Trong tháng này': [moment().startOf('month'), moment().endOf('month')],
             'Trong tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },

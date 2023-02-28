@@ -29,7 +29,7 @@
                             <!--end::Overview-->
                             <hr class="hr-panel-separator">
                             <!--begin::Table-->
-                            {!! $dataTable->table(['id'=>'user_detail'], $footer = false) !!}
+                            {!! $dataTable->table(['id'=>'user_detail', 'width'=> '100'], $footer = false) !!}
                             <!--end::Table-->
                         </div>
                     </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contracts;
+use App\Models\Customers;
+use App\Services\HrService;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller
@@ -37,17 +39,36 @@ class ContractController extends Controller
      */
     public function show(Request $request)
     {
+        $data = [];
         if (!empty($request->customer_id)) {
-            $contracts = Contracts::select('contracts.location', 'contracts.location_id', 'contracts.location_code', 'contracts.location_name', 'contracts.location_zone', 'contracts.branch_code', 'contracts.branch_name')
+            $customer = Customers::select('phone', 'gender', 'birthday')
+                ->where('customer_id', $request->customer_id)
+                ->first()->toArray();
+            $locations = Contracts::select('contracts.location', 'contracts.location_id', 'contracts.location_code', 'contracts.location_name', 'contracts.location_zone', 'contracts.branch_code', 'contracts.branch_name')
                 ->join('customer_contract', 'contracts.contract_id', '=', 'customer_contract.contract_id')
                 ->join('customers', 'customer_contract.customer_id', '=', 'customers.customer_id')
                 ->where('customers.customer_id', $request->customer_id)
-                ->get()->toArray();
+                ->first()->toArray();
+            $data['personal_info']['gender'] = $customer['gender'];
+            $data['personal_info']['birthday'] = $customer['birthday'];
+
+            //get info Employee
+
+            $hrService = new HrService();
+            $token = $hrService->loginHr()->authorization;
+            $check_employee = $hrService->getListInfoEmployee([$customer['phone']], $token);
+            !empty($check_employee) ? $data['personal_info']['is_employee'] = 1 : $data['personal_info']['is_employee'] = 0;
+            if (!empty($data['locations'])) {
+                $data['personal_info']['has_contract'] = 1;
+            } else {
+                $data['personal_info']['has_contract'] = 0;
+            }
+            $data['locations'] = $locations;
         } else {
             return printJson([], buildStatusObject('INVALID_INPUT'), 'vi');
         }
-        if (!empty($contracts)) {
-            return printJson($contracts, buildStatusObject('HTTP_OK'), 'vi');
+        if (!empty($data)) {
+            return printJson($data, buildStatusObject('HTTP_OK'), 'vi');
         }
         return printJson([], buildStatusObject('INTERNAL_SERVER_ERROR'), 'vi');
     }
