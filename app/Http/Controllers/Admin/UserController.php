@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Admin\UserDataTable;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Traits\DataTrait;
 use App\Models\Roles;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Hash;
+use Yajra\DataTables\DataTables;
 
 class UserController extends MY_Controller
 {
@@ -24,9 +25,9 @@ class UserController extends MY_Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(UserDataTable $dataTable, Request $request)
     {
-        return view('user.list');
+        return $dataTable->render('user.index');
     }
 
     /**
@@ -113,16 +114,16 @@ class UserController extends MY_Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $this->deleteById($this->model, $id);
+        $this->deleteById($this->model, $request->id);
         $this->addToLog(request());
-        return redirect()->route('user.index')->withSuccess('Success!');
+        return response()->json(['message' => 'Delete Successfully!']);
     }
     public function initDatatable(Request $request)
-    {    
+    {
         if ($request->ajax()) {
 
             $data = $this->model::query()->with('role');

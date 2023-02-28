@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Admin\LogDataTable;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use Illuminate\Http\Request;
@@ -18,34 +19,9 @@ class LogactivitiesController extends MY_Controller
         $this->title = 'Log Activites';
         $this->model = $this->getModel('Log_activities');
     }
-    public function index()
+    public function index(LogDataTable $dataTable, Request $request)
     {
-        return view('log.list');
-    }
-    public function initDatatable(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = $this->model::query()->with('user', 'User.role');
-            $json =   DataTables::of($data)
-                ->editColumn('method', function ($row) {
-                    return view('log.label')->with(['row' => $row]);
-                })
-                ->editColumn('url', function ($row) {
-                    return '<span class="text-success font-weight-bolder">' . $row->url . '</span>';
-                })
-                ->editColumn('ip', function ($row) {
-                    return '<span class="text-danger font-weight-bolder">' . $row->ip . '</span>';
-                })
-                // ->addColumn('email', function ($row) {
-                //     return !empty($row->user) ? $row->user->email : '';
-                // })
-                // ->addColumn('user_role', function ($row) {
-                //     return (!empty($row->user) && !empty($row->user->role)) ? $row->user->role->role_name : '';
-                // })
-                ->rawColumns(['method', 'url', 'ip'])
-                ->make(true);
-            return $json;
-        }
+        return $dataTable->render('log.index');
     }
 
     public function destroy($id)
@@ -62,6 +38,6 @@ class LogactivitiesController extends MY_Controller
         DB::transaction(function () use ($request) {
             $this->model->clearLog($request->clear_log_option);
         });
-        return redirect()->back()->withSuccess('success');
+        return redirect()->back()->with(['success' => 'Success', 'html' =>'Delete Successfully!']);
     }
 }

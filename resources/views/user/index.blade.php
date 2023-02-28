@@ -31,4 +31,14 @@
 @endsection
 @push('script')
     {{ $dataTable->scripts() }}
+    <script>
+        function deleteUser(data){
+            let dataPost = {};
+            dataPost.id = $(data).data('id');
+            $.post('/user/destroy', dataPost).done(function(response) {
+                alert_float('success', response.message);
+                $('#user_manage').DataTable().ajax.reload(null,false);
+            });
+        }
+    </script>
 @endpush

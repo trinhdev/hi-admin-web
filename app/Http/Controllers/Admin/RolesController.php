@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Admin\RoleDataTable;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use App\Models\Acl_Roles;
@@ -24,16 +25,11 @@ class RolesController extends MY_Controller
         parent::__construct();
         $this->model = $this->getModel('Roles');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(RoleDataTable $dataTable, Request $request)
     {
-        //get view list
         $data = $this->list1();
-        return view('roles.list')->with($data);
+        return $dataTable->render('roles.index', ['data' => $this->list1()]);
     }
 
     public function edit()
@@ -95,12 +91,11 @@ class RolesController extends MY_Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
-        $this->deleteById($this->model, $id);
+        $this->deleteById($this->model, $request->id);
         $this->addToLog(request());
-        return redirect()->route('roles.index');
+        return response()->json(['message' => 'Delete Successfully!']);
     }
     public function getList(Request $request)
     {

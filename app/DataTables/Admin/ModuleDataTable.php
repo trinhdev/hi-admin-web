@@ -1,0 +1,65 @@
+<?php
+
+namespace App\DataTables\Admin;
+
+use App\DataTables\BuilderDatatables;
+use App\Models\Modules;
+use App\Models\User;
+
+class ModuleDataTable extends BuilderDatatables
+{
+    public function dataTable($query)
+    {
+        return datatables()
+            ->eloquent($query)
+            ->editColumn('module_name', function ($row) {
+                return '
+                    <a href="'.route('modules.edit', $row->id).'">'.$row->module_name.'</a>
+                    <div class="row-options">
+                        <a href="'.route('modules.edit', $row->id).'">View</a> |
+                        <a href="#" data-id="'.$row->id.'" onclick="dialogConfirmWithAjax(deleteModules, this)" class="text-danger">Remove</a>
+                    </div>
+                ';
+            })
+            ->editColumn('checkbox',function($row){
+                return '<div class="checkbox"><input type="checkbox" value="'.$row->event_id.'"><label></label></div>';
+            })
+            ->editColumn('created_by',function($row){
+                return $row->createdBy->email ?? $row->created_by;
+            })
+            ->rawColumns(['module_name', 'checkbox']);
+    }
+
+    public function query(Modules $model)
+    {
+        return $model->newQuery();
+    }
+
+    public function columns(): array
+    {
+        return [
+            'id' => [
+                'title' => 'ID',
+                'width' => '20px',
+            ],
+            'module_name' => [
+                'title' => 'Tên',
+            ],
+            'uri' => [
+                'title' => 'URL',
+            ],
+            'icon' => [
+                'title' => 'Tên',
+            ],
+            'group_module_id' => [
+                'title' => 'Group Module',
+            ],
+            'created_by' => [
+                'title' => 'Người tạo',
+            ],
+            'created_at' => [
+                'title' => 'Ngày tạo',
+            ]
+        ];
+    }
+}

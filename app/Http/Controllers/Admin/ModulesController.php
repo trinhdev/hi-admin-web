@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Admin\ModuleDataTable;
 use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
@@ -23,9 +24,9 @@ class ModulesController extends MY_Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ModuleDataTable $dataTable, Request $request)
     {
-        return view('modules.list');
+        return $dataTable->render('modules.index');
     }
 
     /**
@@ -106,7 +107,7 @@ class ModulesController extends MY_Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
+    {
         $validated = $request->validate([
             'module_name' => 'required|max:255',
             'uri' => 'required',
@@ -119,19 +120,13 @@ class ModulesController extends MY_Controller
         return redirect()->route('modules.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $this->deleteById($this->model, $id);
+        $this->deleteById($this->model, $request->id);
         $this->addToLog(request());
-        return redirect()->route('modules.index');
+        return response()->json(['message' => 'Delete Successfully!']);
     }
-    
+
     public function initDatatable(Request $request){
         if($request->ajax()){
             $data = $this->model::query()->with('parent','createdBy','updatedBy');
