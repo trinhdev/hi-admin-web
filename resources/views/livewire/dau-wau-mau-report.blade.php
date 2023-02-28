@@ -5,10 +5,6 @@
             @this.set('selectedDate', e.target.value)
         });
 
-        $('#select_type').on('change', function(e){
-        @this.set('selectedType', e.target.value)
-        });
-
         $(document).ready(function() {
             $('.daterange-filter').daterangepicker({
                 singleDatePicker: true,
@@ -43,8 +39,8 @@
             document.getElementById('chart'), {
                 type: 'bar',
                 data: {
-                    labels: JSON.parse('@json(@$labels)'),
-                    datasets: JSON.parse('@json(@$dataset)')
+                    labels: @json($labels),
+                    datasets: @json($dataset)
                 },
                 options: {
                     plugins: {
@@ -83,14 +79,6 @@
                             },
                         }
                     }
-                    // barValueSpacing: 20,
-                    // scales: {
-                    //     yAxes: [{
-                    //         ticks: {
-                    //             min: 0,
-                    //         }
-                    //     }]
-                    // }
                 }
             }
         );
@@ -99,15 +87,14 @@
             console.log(data);
             let nameElement = document.getElementById('name123');
             chart.data = data;
-            nameElement.textContent = data.chart;
-            console.log(data);
-            chart.config.type = data.type;
-            console.log(chart.data);
+            console.log($('#daterange').val());
+            nameElement.textContent = 'Báo cáo ngày ' + data.report_date;
+
             chart.update();
         });
 
         $('.daterange-filter').on('apply.daterangepicker', function(ev, picker) {
-            Livewire.emit('date-selected', @this.get('selectedDate'), @this.get('selectedType'))
+            Livewire.emit('date-selected', $('#daterange').val())
         });
         // End chart part
     </script>
@@ -141,7 +128,7 @@
 <div class="row">
     <div class="col-md-12">
         <header>
-            <h2><span id="name123">Không có dữ liệu</span> <small> Analytics</small></h2>
+            <h3><span id="name123">Báo cáo ngày {{ date('Y-m-d', strtotime('today')) }}</span></h3>
         </header>
         <canvas id="chart" height="50"></canvas>
     </div>

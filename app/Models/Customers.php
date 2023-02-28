@@ -39,4 +39,9 @@ class Customers extends Model
             WHERE customer_contract.contract_id IS NULL AND customers.date_created BETWEEN '$from1' AND '$to2'
         ");
     }
+
+    public function contracts()
+    {
+        return $this->hasManyThrough(Contracts::class, Customer_Contract::class, 'customer_id', 'contract_id');
+    }
 }

@@ -27,8 +27,9 @@
                     <div class="panel_s tw-mt-2 sm:tw-mt-4">
                         <div class="panel-body">
                             @include('banners.filter')
+                            <div class="clearfix mtop20"></div>
                             <div class="panel-table-full">
-                                {{ $dataTable->table(['id' => 'banner_manage'], $footer = false) }}
+                                {{ $dataTable->table(['id' => 'banner_manage']) }}
                             </div>
                         </div>
                     </div>

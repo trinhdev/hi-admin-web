@@ -174,7 +174,6 @@ abstract class BuilderDatatables extends DataTable
                     ],
                 ],
             ])
-            ->addTableClass('table-responsive')
             ->language([
                 'emptyTable' => preg_replace("/{(\d+)}/", ('dt_entries'), ('Không có dữ liệu')),
                 'info' => preg_replace("/{(\d+)}/", ('dt_entries'), 'Hiển thị trang _PAGE_ của _PAGES_ trang'),
@@ -462,9 +461,9 @@ abstract class BuilderDatatables extends DataTable
     public function htmlInitCompleteFunctionDefault(): ?string
     {
         return "
-            var t = this;
-            t.parents('.table-loading').removeClass('table-loading');
-            t.removeClass('dt-table-loading');
+            this.wrap(`<div class='table-responsive'></div>`);
+            this.parents('.table-loading').removeClass('table-loading');
+            this.removeClass('dt-table-loading');
             var btnReload = $('.btn-dt-reload');
             btnReload.attr('data-toggle', 'tooltip');
             btnReload.attr('title', 'Tải lại');
