@@ -38,7 +38,7 @@ class DauWauMauReport extends Component
 
     public function readDatabase($selectedDate, $type) {
         try {
-            $data = DAU_Report::where('to_date', $selectedDate)->selectRaw('dau_report.type, location_zone, SUM(count_login) AS count_login')->groupBy(['location_zone', 'type'])->get()->toArray();
+            $data = DAU_Report::where('to_date', $selectedDate)->selectRaw('dau_report.type, location_zone, SUM(count_login) AS count_login')->groupBy(['location_zone', 'type'])->orderBy('location_zone')->orderBy('dau_report.type')->get()->toArray();
             foreach ($data as $key => $value) {
                 if(empty($color[$value['type']])) {
                     $color[$value['type']] = rand_color();
