@@ -36,7 +36,7 @@ class DauWauMauReportDataTable extends BuilderDataTables
     public function query()
     {
         $report = DAU_Report::query();
-        $report->where('to_date', $this->to_date);
+        $report->where('to_date', $this->to_date)->where('location_zone', '!=', '');
         return $this->applyScopes($report);
     }
 
