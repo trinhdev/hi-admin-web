@@ -28,7 +28,7 @@ class statusCodeObject{
 
     const PAGE_NOT_FOUND = [
         'code' => 404,
-        'message' => 'Trang không tồn tại',
+        'message' => 'Không tìm thấy',
         'message_en' => 'Page not found',
     ];
 
@@ -37,7 +37,7 @@ class statusCodeObject{
         'message' => 'xác thực không thành công',
         'message_en' => 'Unauthorized',
     ];
-    
+
     const FORBIDDEN = [
         'code'  => 403,
         'message'  => 'Không có quyền truy cập',
@@ -67,6 +67,6 @@ class statusCodeObject{
             return (object)constant("self::".$status);
        }else{
             return (object)constant("self::INTERNAL_SERVER_ERROR");
-       }   
+       }
     }
 }

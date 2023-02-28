@@ -40,37 +40,36 @@ class ContractController extends Controller
     public function show(Request $request)
     {
         $data = [];
-        if (!empty($request->customer_id)) {
-            $customer = Customers::select('phone', 'gender', 'birthday')
-                ->where('customer_id', $request->customer_id)
-                ->first()->toArray();
-            $locations = Contracts::select('contracts.location', 'contracts.location_id', 'contracts.location_code', 'contracts.location_name', 'contracts.location_zone', 'contracts.branch_code', 'contracts.branch_name')
-                ->join('customer_contract', 'contracts.contract_id', '=', 'customer_contract.contract_id')
-                ->join('customers', 'customer_contract.customer_id', '=', 'customers.customer_id')
-                ->where('customers.customer_id', $request->customer_id)
-                ->first()->toArray();
-            $data['personal_info']['gender'] = $customer['gender'];
-            $data['personal_info']['birthday'] = $customer['birthday'];
-
-            //get info Employee
-
-            $hrService = new HrService();
-            $token = $hrService->loginHr()->authorization;
-            $check_employee = $hrService->getListInfoEmployee([$customer['phone']], $token);
-            !empty($check_employee) ? $data['personal_info']['is_employee'] = 1 : $data['personal_info']['is_employee'] = 0;
-            if (!empty($locations)) {
-                $data['personal_info']['has_contract'] = 1;
-            } else {
-                $data['personal_info']['has_contract'] = 0;
-            }
-            $data['locations'] = $locations;
-        } else {
+        $customerId = $request->customer_id;
+        if (empty($customerId)) {
             return printJson([], buildStatusObject('INVALID_INPUT'), 'vi');
         }
-        if (!empty($data)) {
-            return printJson($data, buildStatusObject('HTTP_OK'), 'vi');
+
+        $customer = Customers::select('phone', 'gender', 'birthday')->findOrFail($customerId)->toArray();
+        $locations = Contracts::select('location', 'location_id', 'location_code', 'location_name', 'location_zone', 'branch_code', 'branch_name')
+            ->whereIn('contract_id', function ($query) use ($customerId) {
+                $query->select('contract_id')
+                    ->from('customer_contract')
+                    ->where('customer_id', $customerId);
+            })
+            ->first();
+
+        $data['personal_info'] = [
+            'gender' => $customer['gender'],
+            'birthday' => $customer['birthday'],
+            'is_employee' => 0,
+            'has_contract' => !empty($locations) ? 1 : 0,
+        ];
+        $hrService = new HrService();
+        $token = $hrService->loginHr()->authorization;
+        $check_employee = $hrService->getListInfoEmployee([$customer['phone']], $token);
+        if (!empty($check_employee)) {
+            $data['personal_info']['is_employee'] = 1;
         }
-        return printJson([], buildStatusObject('INTERNAL_SERVER_ERROR'), 'vi');
+
+        $data['locations'] = $locations ? $locations->toArray() : [];
+
+        return printJson($data, buildStatusObject('HTTP_OK'), 'vi');
     }
 
     /**
