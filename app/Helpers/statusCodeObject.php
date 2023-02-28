@@ -62,6 +62,12 @@ class statusCodeObject{
         'message_en' => 'Gateway timeout',
     ];
 
+    const DATA_EMPTY =[
+        'code' => 204,
+        'message' => 'Không có dữ liệu',
+        'message_en' => 'Data empty',
+    ];
+
     public static function getObject($status){
        if(defined('self::'.$status)){
             return (object)constant("self::".$status);

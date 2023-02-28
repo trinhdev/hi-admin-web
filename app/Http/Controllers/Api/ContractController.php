@@ -52,7 +52,7 @@ class ContractController extends Controller
                     ->from('customer_contract')
                     ->where('customer_id', $customerId);
             })
-            ->first();
+            ->get();
 
         $data['personal_info'] = [
             'gender' => $customer['gender'],
