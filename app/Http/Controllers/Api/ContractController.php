@@ -58,7 +58,7 @@ class ContractController extends Controller
             $token = $hrService->loginHr()->authorization;
             $check_employee = $hrService->getListInfoEmployee([$customer['phone']], $token);
             !empty($check_employee) ? $data['personal_info']['is_employee'] = 1 : $data['personal_info']['is_employee'] = 0;
-            if (!empty($data['locations'])) {
+            if (!empty($locations)) {
                 $data['personal_info']['has_contract'] = 1;
             } else {
                 $data['personal_info']['has_contract'] = 0;
