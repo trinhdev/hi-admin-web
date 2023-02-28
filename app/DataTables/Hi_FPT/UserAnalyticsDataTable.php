@@ -59,6 +59,7 @@ class UserAnalyticsDataTable extends BuilderDatatables
             ],
             'meta_data' => [
                 'title' => 'META DATA',
+                'width' => '100',
             ],
             'identity_id' => [
                 'title' => 'IDENTITY ID',
