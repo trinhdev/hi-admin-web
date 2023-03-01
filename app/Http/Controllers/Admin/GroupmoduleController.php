@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Admin\GroupModuleDataTable;
 use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
@@ -24,9 +25,10 @@ class GroupmoduleController extends MY_Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    public function index(GroupModuleDataTable $dataTable, Request $request)
     {
-        return view('groupmodule.index');
+        return $dataTable->render('groupmodule.index');
     }
 
     /**
@@ -95,17 +97,11 @@ class GroupmoduleController extends MY_Controller
         return redirect()->route('groupmodule.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $this->deleteById($this->model, $id);
+        $this->deleteById($this->model, $request->id);
         $this->addToLog(request());
-        return redirect()->route('groupmodule.index');
+        return response()->json(['message' => 'Delete Successfully!']);
     }
 
     public function initDatatable(Request $request){

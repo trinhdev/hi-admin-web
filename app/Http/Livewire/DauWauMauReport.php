@@ -12,10 +12,11 @@ class DauWauMauReport extends Component
     public $selectedLimit = 10;
     public $selectedDuration = 0;
     public string $selectedType = 'bar';
-    public string $selectedChart = '';
+    public $selectedZones = [];
 
     public $dataset = [];
     public $lables = [];
+    public $zones = [];
 
     protected $listeners = [
         'date-selected' => 'filteringChart',
@@ -26,8 +27,8 @@ class DauWauMauReport extends Component
         return view('livewire.dau-wau-mau-report');
     }
 
-    public function filteringChart($selectedDate) {
-        $data = $this->readDatabase($selectedDate);
+    public function filteringChart($selectedDate, $selectedZones) {
+        $data = $this->readDatabase($selectedDate, $selectedZones);
         $this->emit('updateChart', [
             'datasets'      => $data['dataset'],
             'labels'        => $data['labels'],
@@ -36,9 +37,13 @@ class DauWauMauReport extends Component
         ]);
     }
 
-    public function readDatabase($selectedDate) {
+    public function readDatabase($selectedDate, $selectedZones) {
         try {
-            $data = DAU_Report::where('to_date', $selectedDate)->where('location_zone', '!=', '')->selectRaw('dau_report.type, location_zone, SUM(count_login) AS count_login')->groupBy(['location_zone', 'type'])->orderBy('location_zone')->orderBy('dau_report.type')->get()->toArray();
+            $query = DAU_Report::where('to_date', $selectedDate)->where('location_zone', '!=', '')->selectRaw('dau_report.type, location_zone, SUM(count_login) AS count_login');
+            if(!empty($selectedZones)) {
+                $selectedZones = $query->whereIn('location_zone', $selectedZones);
+            }
+            $data = $query->groupBy(['location_zone', 'type'])->orderBy('location_zone')->orderBy('dau_report.type')->get()->toArray();
             $list_zone = array_values(array_unique(array_column($data, 'location_zone')));
             $list_default_value_zone = array_fill_keys($list_zone, 0);
             foreach ($data as $key => $value) {
@@ -71,9 +76,11 @@ class DauWauMauReport extends Component
     }
 
     public function mount() {
+        $zones = DAU_Report::where('location_zone', '!=', '')->select('location_zone')->groupBy(['location_zone'])->orderBy('location_zone')->get()->toArray();
         $selectedDate = date('Y-m-d', strtotime('today midnight'));
-        $data = $this->readDatabase($selectedDate, 'bar');
+        $data = $this->readDatabase($selectedDate, []);
         $this->dataset = $data['dataset'];
         $this->labels = $data['labels'];
+        $this->zones = array_column($zones, 'location_zone');
     }
 }

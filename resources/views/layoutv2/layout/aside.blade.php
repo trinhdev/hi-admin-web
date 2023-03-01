@@ -35,14 +35,6 @@
                             @endforeach
                         </ul>
                     </li>
-                @else
-                    <li class="menu-item-{{ $group->group_module_name}}">
-                        <a href="/{{$group->uri}}" aria-expanded="false">
-                            <i class="fa fa-folder menu-icon"></i>
-                            <span class="menu-text">{{ $group->group_module_name}}</span>
-                            <span class="fa arrow pleft5"></span>
-                        </a>
-                    </li>
                 @endif
                 @php
                     $key ++;

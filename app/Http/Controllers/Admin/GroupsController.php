@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Admin\GroupDataTable;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use Illuminate\Http\Request;
@@ -19,16 +20,10 @@ class GroupsController extends MY_Controller
         $this->title = 'List Group';
         $this->model = $this->getModel('Groups');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(GroupDataTable $dataTable, Request $request)
     {
-        //get view list
-        $data = $this->list1();
-        return view('groups.list')->with($data);
+        return $dataTable->render('groups.index', ['data' => $this->list1()]);
     }
 
 
@@ -51,18 +46,12 @@ class GroupsController extends MY_Controller
         }
         return redirect()->route('groups.index');
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function destroy(Request $request)
     {
-        //
-        $this->deleteById($this->model, $id);
+        $this->deleteById($this->model, $request->id);
         $this->addToLog(request());
-        return redirect()->route('groups.index');
+        return response()->json(['message' => 'Delete Successfully!']);
     }
     public function getList(Request $request){
         if ($request->ajax()) {

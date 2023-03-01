@@ -72,7 +72,7 @@ Route::group(['middleware' => ['auth', 'can:role-permission']], function () {
             Route::get('/create', 'UserController@create')->name('user.create');
             Route::post('/store', 'UserController@store')->name('user.store');
             Route::put('/update/{id}', 'UserController@update')->name('user.update');
-            Route::delete('/destroy/{id}', 'UserController@destroy')->name('user.destroy');
+            Route::post('/destroy', 'UserController@destroy')->name('user.destroy');
             Route::get('/initDatatable', 'UserController@initDatatable')->name('user.initDatatable');
         });
         Route::prefix('groups')->group(function () {
@@ -80,7 +80,7 @@ Route::group(['middleware' => ['auth', 'can:role-permission']], function () {
             Route::get('/edit/{id?}', 'GroupsController@edit')->name('groups.edit');
             Route::get('/create', 'GroupsController@create')->name('groups.create');
             Route::post('/save', 'GroupsController@save')->name('groups.store');
-            Route::delete('/destroy/{id}', 'GroupsController@destroy')->name('groups.destroy');
+            Route::post('/destroy', 'GroupsController@destroy')->name('groups.destroy');
             Route::get('/getList', 'GroupsController@getList')->name('groups.getList');
         });
         Route::prefix('modules')->group(function () {
@@ -89,7 +89,7 @@ Route::group(['middleware' => ['auth', 'can:role-permission']], function () {
             Route::get('/create', 'ModulesController@create')->name('modules.create');
             Route::post('/store', 'ModulesController@store')->name('modules.store');
             Route::put('/update/{id}', 'ModulesController@update')->name('modules.update');
-            Route::delete('/destroy/{id}', 'ModulesController@destroy')->name('modules.destroy');
+            Route::post('/destroy', 'ModulesController@destroy')->name('modules.destroy');
             Route::get('/initDatatable', 'ModulesController@initDatatable')->name('modules.initDatatable');
         });
 
@@ -99,7 +99,7 @@ Route::group(['middleware' => ['auth', 'can:role-permission']], function () {
             Route::get('/create', 'GroupmoduleController@create')->name('groupmodule.create');
             Route::post('/store', 'GroupmoduleController@store')->name('groupmodule.store');
             Route::put('/update/{id}', 'GroupmoduleController@update')->name('groupmodule.update');
-            Route::delete('/destroy/{id}', 'GroupmoduleController@destroy')->name('groupmodule.destroy');
+            Route::post('/destroy', 'GroupmoduleController@destroy')->name('groupmodule.destroy');
             Route::get('/initDatatable', 'GroupmoduleController@initDatatable')->name('groupmodule.initDatatable');
         });
         Route::prefix('roles')->group(function () {
@@ -107,7 +107,7 @@ Route::group(['middleware' => ['auth', 'can:role-permission']], function () {
             Route::get('/edit/{id?}', 'RolesController@edit')->name('roles.edit');
             Route::get('/create', 'RolesController@create')->name('roles.create');
             Route::post('/save', 'RolesController@save')->name('roles.save');
-            Route::delete('/destroy/{id}', 'RolesController@destroy')->name('roles.destroy');
+            Route::post('/destroy', 'RolesController@destroy')->name('roles.destroy');
             Route::get('/getList', 'RolesController@getList')->name('roles.getList');
 
         });

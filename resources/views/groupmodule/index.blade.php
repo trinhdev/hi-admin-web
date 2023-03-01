@@ -1,41 +1,44 @@
-@extends('layouts.default')
+@extends('layoutv2.layout.app')
 
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">Group Module</h1>
-                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                        <a href="{{ route('groupmodule.create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Add new group module
+    <div id="wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="_buttons">
+                        <a href="{{ route('groupmodule.create') }}" class="btn btn-primary mright5 test pull-left display-block">
+                            <i class="fa-regular fa-plus tw-mr-1"></i>
+                            Thêm mới</a>
+                        <a href="#" onclick="alert('Liên hệ zalo 0354370175 nếu xảy ra lỗi không mong muốn!')" class="btn btn-default pull-left display-block mright5">
+                            <i class="fa-regular fa-user tw-mr-1"></i>Liên hệ
                         </a>
-                        @endif
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                            <li class="breadcrumb-item active">Group module</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card card-body col-sm-12">
-                    <table id="group-module" class="table table-hover table-striped" style="width:100%">
-                    </table>
+                        <div class="visible-xs">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="panel_s tw-mt-2 sm:tw-mt-4">
+                        <div class="panel-body">
+                            <div class="panel-table-full">
+                                {{ $dataTable->table(['id' => 'group_module_manage'], $footer = false) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-        <!-- /.content -->
+        </div>
     </div>
-    <!-- /.content-wrapper -->
 @endsection
+@push('script')
+    {{ $dataTable->scripts() }}
+    <script>
+        function deleteGroupModule(data){
+            let dataPost = {};
+            dataPost.id = $(data).data('id');
+            $.post('/groupmodule/destroy', dataPost).done(function(response) {
+                alert_float('success', response.message);
+                $('#group_module_manage').DataTable().ajax.reload(null,false);
+            });
+        }
+    </script>
+@endpush
