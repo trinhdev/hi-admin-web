@@ -33,9 +33,56 @@ class GeneralSettingsController extends MY_Controller
         $this->settingRepository = $settingRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('settings.index');
+        // Get key hi_admin_cron_
+        $settings_name = Settings::where('name', 'like', 'hi_admin_cron_'. "%")
+            ->where('name', 'like', "%".'_enable')
+            ->get()->pluck('name');
+        $key = [];
+        foreach ($settings_name as $value) {
+            $startIndex = strpos($value, 'hi_admin_cron_');
+            $service = substr($value, $startIndex);
+            $key[] = substr($service, strlen('hi_admin_cron_'), strlen($service) - strlen('hi_admin_cron_') - strlen('_enable'));
+        }
+
+        $settings = Settings::where('name', 'not like', 'hi_admin_cron_'. "%")->get()->pluck('value', 'name');
+
+        $group = $request->input('group', '');
+        switch ($group) {
+            case 'general':
+                $title = 'Tổng quan';
+                $view = 'settings.includes.general';
+                $data = [
+                    'setting' => $settings
+                ];
+                break;
+            case 'cronjob':
+                $title = 'Email chu kì/Cron Job';
+                $view = 'settings.includes.cronjob';
+                $data = [
+                    'key' => $key
+                ];
+                break;
+            case 'info':
+                $title = 'System/Server Info';
+                $view = 'settings.includes.information';
+                $data = [];
+                break;
+            case 'misc':
+                $title = 'Cài đặt khác';
+                $view = 'settings.includes.misc';
+                $data = [];
+                break;
+            default:
+                $title = 'Tổng quan';
+                $view = 'settings.includes.general';
+                $data = [
+                    'setting' => $settings
+                ];
+
+        }
+        return view('settings.list', compact('title', 'view', 'data'));
     }
 
     /**
@@ -74,55 +121,7 @@ class GeneralSettingsController extends MY_Controller
      */
     protected function saveSettings(array $data)
     {
-        // Define the keys to be searched for
-        $keys_to_find = ['_email_bcc', '_email_cc', '_email_to'];
-
-// Initialize arrays for storing found keys and email addresses
-        $found_keys = [];
-        $list_email = [];
-
-// Loop through the input data
-        foreach ($data as $key => $value) {
-            // Check if the key contains one of the keys to be searched for
-            foreach ($keys_to_find as $search_key) {
-                if (strpos($key, $search_key) !== false) {
-                    // Store the key and its value in the found keys array
-                    $found_keys[$key] = $value;
-                }
-            }
-        }
-
-// Initialize an array for storing the new keys
-        $new_keys = [];
-
-// Loop through the found keys and create new keys with "_list_email" instead of "_email_to", "_email_cc", or "_email_bcc"
-        foreach ($found_keys as $k => $v) {
-            $new_key = str_replace("_email_to", "_list_email", $k);
-            $new_key = str_replace("_email_cc", "_list_email", $new_key);
-            $new_key = str_replace("_email_bcc", "_list_email", $new_key);
-
-            // Add the value to the new keys array
-            $new_keys[$new_key][] = $v;
-        }
-
-// Initialize an array for storing the email addresses in JSON format
-        $email_list = [];
-
-// Loop through the new keys and create an email object for each one
-        foreach ($new_keys as $k => $v) {
-            $email = [
-                'to' => $v[0] ?? null, // If to address is not set, set null
-                'cc' => $v[1] ?? null, // If cc address is not set, set null
-                'bcc' => $v[2] ?? null, // If bcc address is not set, set null
-            ];
-
-            // Add the email object to the email list array in JSON format
-            $email_list[$k] = json_encode([$email]);
-        }
-
-// Merge the original data array with the new keys array and email list array
-        $data = array_merge(array_diff($data, $found_keys), $email_list);
-dd($data);
+        $data = convert_email_setting($data);
         foreach ($data as $settingKey => $settingValue) {
             if (is_array($settingValue)) {
                 $settingValue = json_encode(array_filter($settingValue), JSON_THROW_ON_ERROR);
