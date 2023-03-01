@@ -33,9 +33,56 @@ class GeneralSettingsController extends MY_Controller
         $this->settingRepository = $settingRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('settings.index');
+        // Get key hi_admin_cron_
+        $settings_name = Settings::where('name', 'like', 'hi_admin_cron_'. "%")
+            ->where('name', 'like', "%".'_enable')
+            ->get()->pluck('name');
+        $key = [];
+        foreach ($settings_name as $value) {
+            $startIndex = strpos($value, 'hi_admin_cron_');
+            $service = substr($value, $startIndex);
+            $key[] = substr($service, strlen('hi_admin_cron_'), strlen($service) - strlen('hi_admin_cron_') - strlen('_enable'));
+        }
+
+        $settings = Settings::where('name', 'not like', 'hi_admin_cron_'. "%")->get()->pluck('value', 'name');
+
+        $group = $request->input('group', '');
+        switch ($group) {
+            case 'general':
+                $title = 'Tổng quan';
+                $view = 'settings.includes.general';
+                $data = [
+                    'setting' => $settings
+                ];
+                break;
+            case 'cronjob':
+                $title = 'Email chu kì/Cron Job';
+                $view = 'settings.includes.cronjob';
+                $data = [
+                    'key' => $key
+                ];
+                break;
+            case 'info':
+                $title = 'System/Server Info';
+                $view = 'settings.includes.information';
+                $data = [];
+                break;
+            case 'misc':
+                $title = 'Cài đặt khác';
+                $view = 'settings.includes.misc';
+                $data = [];
+                break;
+            default:
+                $title = 'Tổng quan';
+                $view = 'settings.includes.general';
+                $data = [
+                    'setting' => $settings
+                ];
+
+        }
+        return view('settings.list', compact('title', 'view', 'data'));
     }
 
     /**
@@ -74,13 +121,7 @@ class GeneralSettingsController extends MY_Controller
      */
     protected function saveSettings(array $data)
     {
-        $key = [];
-        foreach ($data as $value) {
-            $startIndex = strpos($value, 'hi_admin_cron_');
-            $service = substr($value, $startIndex);
-            $key[] = substr($service, strlen('hi_admin_cron_'), strlen($service) - strlen('hi_admin_cron_') - strlen('_email_to'));
-        }
-        dd($data);
+        $data = convert_email_setting($data);
         foreach ($data as $settingKey => $settingValue) {
             if (is_array($settingValue)) {
                 $settingValue = json_encode(array_filter($settingValue), JSON_THROW_ON_ERROR);

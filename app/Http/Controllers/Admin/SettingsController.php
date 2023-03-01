@@ -45,12 +45,16 @@ class SettingsController extends MY_Controller
             $key[] = substr($service, strlen('hi_admin_cron_'), strlen($service) - strlen('hi_admin_cron_') - strlen('_enable'));
         }
 
+        $settings = Settings::where('name', 'not like', 'hi_admin_cron_'. "%")->get()->pluck('value', 'name');
+
         $group = $request->input('group', '');
         switch ($group) {
             case 'general':
                 $title = 'Tổng quan';
                 $view = 'settings.includes.general';
-                $data = [];
+                $data = [
+                    'setting' => $settings
+                ];
                 break;
             case 'cronjob':
                 $title = 'Email chu kì/Cron Job';

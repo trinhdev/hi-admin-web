@@ -432,6 +432,44 @@ if (!function_exists('bytesToSize')) {
     }
 }
 
+if (!function_exists('convert_email_setting')) {
+    function convert_email_setting(array $data): array
+    {
+        $keys_to_find = ['_email_bcc', '_email_cc', '_email_to'];
+        $found_keys = [];
+        foreach ($data as $key => $value) {
+            // Check if the key contains one of the keys to be searched for
+            foreach ($keys_to_find as $search_key) {
+                if (strpos($key, $search_key) !== false) {
+                    // Store the key and its value in the found keys array
+                    $found_keys[$key] = $value;
+                }
+            }
+        }
+        $new_keys = [];
+        foreach ($found_keys as $k => $v) {
+            $new_key = str_replace("_email_to", "_list_email", $k);
+            $new_key = str_replace("_email_cc", "_list_email", $new_key);
+            $new_key = str_replace("_email_bcc", "_list_email", $new_key);
+
+            // Add the value to the new keys array
+            $new_keys[$new_key][] = $v;
+        }
+        $email_list = [];
+        foreach ($new_keys as $k => $v) {
+            $email = [
+                'to' => $v[0] ?? null, // If to address is not set, set null
+                'cc' => $v[1] ?? null, // If cc address is not set, set null
+                'bcc' => $v[2] ?? null, // If bcc address is not set, set null
+            ];
+
+            // Add the email object to the email list array in JSON format
+            $email_list[$k] = json_encode([$email]);
+        }
+        return array_merge(array_diff($data, $found_keys), $email_list);
+    }
+}
+
 
 
 

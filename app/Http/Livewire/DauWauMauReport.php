@@ -17,6 +17,7 @@ class DauWauMauReport extends Component
     public $dataset = [];
     public $lables = [];
     public $zones = [];
+    public $total = [];
 
     protected $listeners = [
         'date-selected' => 'filteringChart',
@@ -32,13 +33,20 @@ class DauWauMauReport extends Component
         $this->emit('updateChart', [
             'datasets'      => $data['dataset'],
             'labels'        => $data['labels'],
-            'report_date'   => $selectedDate
+            'report_date'   => $selectedDate,
+            'total'         => $data['total']
             // 'chart'     => $chart
         ]);
     }
 
     public function readDatabase($selectedDate, $selectedZones) {
         try {
+            $total = [
+                'DAU'   => 0,
+                'WAU'   => 0,
+                'MAU'   => 0
+            ];
+
             $query = DAU_Report::where('to_date', $selectedDate)->where('location_zone', '!=', '')->selectRaw('dau_report.type, location_zone, SUM(count_login) AS count_login');
             if(!empty($selectedZones)) {
                 $selectedZones = $query->whereIn('location_zone', $selectedZones);
@@ -60,16 +68,12 @@ class DauWauMauReport extends Component
                         'pointRadius'       => 3,
                         'data'              => []
                     ];
-                    $dataset[$value['type']]['data'][] = $value['count_login'];
+                    
                 }
-                else {
-                    $dataset[$value['type']]['data'][] = $value['count_login'];
-                }
-
-                // $data_miss = array_diff_key($dataset[$value['type']]['data'], $list_default_value_zone);
-                // print_r($data_miss);
+                $dataset[$value['type']]['data'][] = $value['count_login'];
+                $total[$value['type']] += $value['count_login'];
             }
-            return ['dataset' => array_values($dataset), 'labels' => array_values(array_unique(array_column($data, 'location_zone')))];
+            return ['dataset' => array_values($dataset), 'labels' => array_values(array_unique(array_column($data, 'location_zone'))), 'total' => $total];
         } catch (\Exception $e) {
             return redirect()->with('danger', $e->getMessage());
         }
@@ -82,5 +86,6 @@ class DauWauMauReport extends Component
         $this->dataset = $data['dataset'];
         $this->labels = $data['labels'];
         $this->zones = array_column($zones, 'location_zone');
+        $this->total = $data['total'];
     }
 }

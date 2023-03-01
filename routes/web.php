@@ -54,11 +54,11 @@ Route::group(['middleware' => ['auth', 'can:role-permission']], function () {
             Route::get('/create', 'SettingsController@create')->name('settings.create');
             Route::post('/store', 'SettingsController@store')->name('settings.store');
             Route::put('/update/{id}', 'SettingsController@update')->name('settings.update');
-            Route::delete('/destroy/{id}', 'SettingsController@destroy')->name('settings.destroy');
+            Route::post('/destroy', 'SettingsController@destroy')->name('settings.destroy');
             Route::get('/initDatatable', 'SettingsController@initDatatable')->name('settings.initDatatable');
         });
 
-        Route::prefix('cron-job')->group(function () {
+        Route::prefix('setting')->group(function () {
             Route::get('/', 'GeneralSettingsController@index')->name('general_settings.index');
             Route::post('/edit', 'GeneralSettingsController@postEdit')->name('general_settings.edit');
         });
