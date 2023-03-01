@@ -37,6 +37,9 @@ class DauWauMauReportDataTable extends BuilderDataTables
     {
         $report = DAU_Report::query();
         $report->where('to_date', $this->to_date)->where('location_zone', '!=', '');
+        if(is_array($this->selectedZones) && count($this->selectedZones) > 0) {
+            $report->whereIn('location_zone', $this->selectedZones);
+        }
         return $this->applyScopes($report);
     }
 
@@ -65,6 +68,11 @@ class DauWauMauReportDataTable extends BuilderDataTables
             var table = $('#dau-report').DataTable();
             var dateRange = $('#daterange');
             $(dateRange).on('change', function () {
+                table.ajax.reload();
+            });
+
+            var location_zone = $('#zones');
+            $(location_zone).on('change', function () {
                 table.ajax.reload();
             });
         ";

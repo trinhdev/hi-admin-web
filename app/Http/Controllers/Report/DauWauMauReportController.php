@@ -23,11 +23,14 @@ class DauWauMauReportController extends MY_Controller
     }
     public function index(DauWauMauReportDataTable $dataTable, Request $request) {
         $to_date = (!empty($request->daterange)) ? $request->daterange : date('Y-m-d', strtotime('today midnight'));
+        $selectedZones = $request->selectedZones;
+        // dd($selectedZones);
         $limit = (int) $request->length ?? 10;
         $currentPage = $request->start == 0 ? 0 : ($request->start / $limit);
         $selectedDate = date('Y-m-d', strtotime('today midnight'));
         return $dataTable->with([
-            'to_date'   => $to_date
+            'to_date'       => $to_date,
+            'selectedZones' => $selectedZones
         ])->render('report.dauwaumaureport');
     }
 }
