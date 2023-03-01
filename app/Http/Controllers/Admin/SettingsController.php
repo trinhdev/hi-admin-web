@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use Yajra\DataTables\DataTables;
 use \stdClass;
+use Illuminate\Support\Str;
 
 use App\Models\Settings;
 
@@ -31,9 +32,50 @@ class SettingsController extends MY_Controller
          return $dataTable->render('settings.list2');
     }
 
-    public function index2()
+    public function index2(Request $request)
     {
-        return view('settings.list');
+        // Get key hi_admin_cron_
+        $settings_name = Settings::where('name', 'like', 'hi_admin_cron_'. "%")
+            ->where('name', 'like', "%".'_enable')
+            ->get()->pluck('name');
+        $key = [];
+        foreach ($settings_name as $value) {
+            $startIndex = strpos($value, 'hi_admin_cron_');
+            $service = substr($value, $startIndex);
+            $key[] = substr($service, strlen('hi_admin_cron_'), strlen($service) - strlen('hi_admin_cron_') - strlen('_enable'));
+        }
+
+        $group = $request->input('group', '');
+        switch ($group) {
+            case 'general':
+                $title = 'Tổng quan';
+                $view = 'settings.includes.general';
+                $data = [];
+                break;
+            case 'cronjob':
+                $title = 'Email chu kì/Cron Job';
+                $view = 'settings.includes.cronjob';
+                $data = [
+                    'key' => $key
+                ];
+                break;
+            case 'info':
+                $title = 'System/Server Info';
+                $view = 'settings.includes.information';
+                $data = [];
+                break;
+            case 'misc':
+                $title = 'Cài đặt khác';
+                $view = 'settings.includes.misc';
+                $data = [];
+                break;
+            default:
+                $title = 'Tổng quan';
+                $view = 'settings.includes.general';
+                $data = [];
+
+        }
+        return view('settings.list', compact('title', 'view', 'data'));
     }
 
     /**

@@ -74,6 +74,13 @@ class GeneralSettingsController extends MY_Controller
      */
     protected function saveSettings(array $data)
     {
+        $key = [];
+        foreach ($data as $value) {
+            $startIndex = strpos($value, 'hi_admin_cron_');
+            $service = substr($value, $startIndex);
+            $key[] = substr($service, strlen('hi_admin_cron_'), strlen($service) - strlen('hi_admin_cron_') - strlen('_email_to'));
+        }
+        dd($data);
         foreach ($data as $settingKey => $settingValue) {
             if (is_array($settingValue)) {
                 $settingValue = json_encode(array_filter($settingValue), JSON_THROW_ON_ERROR);

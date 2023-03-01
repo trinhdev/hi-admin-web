@@ -52,7 +52,7 @@ class ContractController extends Controller
                     ->from('customer_contract')
                     ->where('customer_id', $customerId);
             })
-            ->get();
+            ->get()->toArray();
 
         $data['personal_info'] = [
             'gender' => $customer['gender'],
@@ -67,7 +67,7 @@ class ContractController extends Controller
             $data['personal_info']['is_employee'] = 1;
         }
 
-        $data['locations'] = $locations ? $locations->toArray() : [];
+        $data['locations'] = $locations ?? [];
 
         return printJson($data, buildStatusObject('HTTP_OK'), 'vi');
     }
