@@ -17,7 +17,7 @@ Contact: trinhhuynhdp@gmail.com
                                 Thêm mới popup định danh</a>
                         @endif
 
-                        <a href="#" onclick="alert('Liên hệ zalo 0354370175 nếu xảy ra lỗi không mong muốn!')"
+                        <a href="#" onclick="alert('Liên hệ trinhhdp@fpt.com.vn nếu xảy ra lỗi không mong muốn!')"
                            class="btn btn-default pull-left display-block mright5">
                             <i class="fa-regular fa-user tw-mr-1"></i>Liên hệ
                         </a>
