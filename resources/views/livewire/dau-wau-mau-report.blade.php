@@ -9,7 +9,7 @@
 
         $(document).ready(function() {
             $('.daterange-filter').daterangepicker({
-                singleDatePicker: true,
+                // singleDatePicker: true,
                 showDropdowns: true,
                 // ranges: {
                 //     'Hôm nay': [moment(), moment()],
@@ -33,11 +33,11 @@
                 allowClear: true,
             });
 
-            $('#type').select2({
-                placeholder: "Chọn loại báo cáo",
-                multiple: true,
-                allowClear: true,
-            });
+            // $('#type').select2({
+            //     placeholder: "Chọn loại báo cáo",
+            //     multiple: true,
+            //     allowClear: true,
+            // });
 
             $('#zones').on('change', function (e) {
                 var data = $('#zones').select2("val");
@@ -53,19 +53,22 @@
                 @this.set('selectedZones', data);
             });
 
-            $('#type').on('change', function (e) {
-                var data = $('#type').select2("val");
-                let closeButton = $('.select2-selection__clear')[0];
-                if(typeof(closeButton)!='undefined'){
-                    if(data.length<=0)
-                    {
-                        $('.select2-selection__clear')[0].children[0].innerHTML = '';
-                    } else{
-                        $('.select2-selection__clear')[0].children[0].innerHTML = 'x';
-                    }
-                }
+            $('#type').on('change', function(e){
                 @this.set('selectedType', data);
             });
+            // $('#type').on('change', function (e) {
+            //     var data = $('#type').select2("val");
+            //     let closeButton = $('.select2-selection__clear')[0];
+            //     if(typeof(closeButton)!='undefined'){
+            //         if(data.length<=0)
+            //         {
+            //             $('.select2-selection__clear')[0].children[0].innerHTML = '';
+            //         } else{
+            //             $('.select2-selection__clear')[0].children[0].innerHTML = 'x';
+            //         }
+            //     }
+            //     @this.set('selectedType', data);
+            // });
         });
 
         // Chart part
@@ -104,7 +107,7 @@
                             ticks: {
                                 autoSkip: false,
                             },
-                            // stacked: true
+                            stacked: true
 
                         },
                         y: {
@@ -162,26 +165,26 @@
             chart.data = data;
             nameElement.textContent = 'Báo cáo ngày ' + data.report_date;
 
-            let dau_total = document.getElementById('dau-total');
-            let wau_total = document.getElementById('wau-total');
-            let mau_total = document.getElementById('mau-total');
-            dau_total.textContent = Number((data.total.DAU).toFixed(1)).toLocaleString();
-            wau_total.textContent = Number((data.total.WAU).toFixed(1)).toLocaleString();
-            mau_total.textContent = Number((data.total.MAU).toFixed(1)).toLocaleString();
+            // let dau_total = document.getElementById('dau-total');
+            // let wau_total = document.getElementById('wau-total');
+            // let mau_total = document.getElementById('mau-total');
+            // dau_total.textContent = Number((data.total.DAU).toFixed(1)).toLocaleString();
+            // wau_total.textContent = Number((data.total.WAU).toFixed(1)).toLocaleString();
+            // mau_total.textContent = Number((data.total.MAU).toFixed(1)).toLocaleString();
 
             chart.update();
         });
 
         function search() {
             var data = $('#zones').select2("val");
-            var type = $('#type').select2("val");
+            var type = $('#type').val();
+            console.log(type);
             Livewire.emit('date-selected', $('#daterange').val(), data, type);
-
             var table = $('#dau-report').DataTable();
             table.on('preXhr.dt', function (e, settings, data) {
                 data.daterange = $('#daterange').val();
                 data.selectedZones = $('#zones').select2("val");
-                data.selectedType = $('#type').select2("val");
+                data.selectedType = $('#type').val();
             });
             table.ajax.reload();
         }
@@ -192,6 +195,13 @@
         // End chart part
     </script>
 @endpush
+<div class="row" style="margin-bottom: 20px;">
+    <div class="col-sm-3"><h3>Tổng quan</h3></div>
+    <div class="col-sm-3"><h2>DAU <span id="dau-total" style="background-color: #28A745; color: white; font-size: 17px" class="badge badge-secondary">{{ number_format($total['DAU']) }}</span></h2></div>
+    <div class="col-sm-3"><h2>WAU <span id="wau-total" style="background-color: #007BFF; color: white; font-size: 17px" class="badge badge-secondary">{{ number_format($total['WAU']) }}</span></h2></div>
+    <div class="col-sm-3"><h2>MAU <span id="mau-total" style="background-color: #17A2B8; color: white; font-size: 17px" class="badge badge-secondary">{{ number_format($total['MAU']) }}</span></h2></div>
+</div>
+
 <div class="row">
     <div class="col-md-3">
         <div class="form-group">
@@ -223,7 +233,7 @@
     <div class="col-md-2">
         <div class="form-group">
             <label for="type" class="control-label">Loại</label>
-            <select id="type" class="form-control" name="selectedType[]" multiple>
+            <select id="type" class="form-control" name="selectedType">
                 {{-- <option value="line" data-subtext="Biểu đồ đường" >Line</option>
                 <option value="bar" data-subtext="Biểu đồ cột">Bar</option> --}}
                 <option value="DAU">DAU</option>
@@ -241,20 +251,6 @@
             </div>
             
         </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <header>
-            <h3>Tổng quan</h3>
-        </header>
-        <div class="col-sm-12">
-            <div class="col-sm-4"><h2>DAU <span id="dau-total" style="background-color: #28A745; color: white; font-size: 17px" class="badge badge-secondary">{{ number_format($total['DAU']) }}</span></h2></div>
-            <div class="col-sm-4"><h2>WAU <span id="wau-total" style="background-color: #007BFF; color: white; font-size: 17px" class="badge badge-secondary">{{ number_format($total['WAU']) }}</span></h2></div>
-            <div class="col-sm-4"><h2>MAU <span id="mau-total" style="background-color: #17A2B8; color: white; font-size: 17px" class="badge badge-secondary">{{ number_format($total['MAU']) }}</span></h2></div>
-        </div>
-        
     </div>
 </div>
 

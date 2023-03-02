@@ -36,13 +36,15 @@ class DauWauMauReportDataTable extends BuilderDataTables
     public function query()
     {
         $report = DAU_Report::query();
-        $report->where('to_date', $this->to_date)->where('location_zone', '!=', '');
+        $date_range = explode(' - ', $this->to_date);
+        $report->whereBetween('to_date', $date_range)->where('location_zone', '!=', '');
         if(is_array($this->selectedZones) && count($this->selectedZones) > 0) {
             $report->whereIn('location_zone', $this->selectedZones);
         }
-        if(is_array($this->selectedType) && count($this->selectedType) > 0) {
-            $report->whereIn('type', $this->selectedType);
+        if($this->selectedType == '') {
+            $this->selectedType = 'DAU';
         }
+        $report->where('type', $this->selectedType);
         return $this->applyScopes($report);
     }
 

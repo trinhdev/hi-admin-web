@@ -28,7 +28,7 @@ class DauWauMauReport extends Component
         return view('livewire.dau-wau-mau-report');
     }
 
-    public function filteringChart($selectedDate, $selectedZones, $selectedType) {
+    public function filteringChart($selectedDate, $selectedZones, $selectedType = 'DAU') {
         $data = $this->readDatabase($selectedDate, $selectedZones, $selectedType);
         $this->emit('updateChart', [
             'datasets'      => $data['dataset'],
@@ -46,14 +46,14 @@ class DauWauMauReport extends Component
                 'WAU'   => 0,
                 'MAU'   => 0
             ];
-
-            $query = DAU_Report::where('to_date', $selectedDate)->where('location_zone', '!=', '')->selectRaw('dau_report.type, location_zone, SUM(count_login) AS count_login');
+            $date_range = explode(' - ', $selectedDate);
+            $query = DAU_Report::whereBetween('to_date', $date_range)->where('type', $selectedType)->where('location_zone', '!=', '')->selectRaw('dau_report.type, location_zone, SUM(count_login) AS count_login');
             if(!empty($selectedZones)) {
                 $query->whereIn('location_zone', $selectedZones);
             }
-            if(!empty($selectedType)) {
-                $query->whereIn('type', $selectedType);
-            }
+            // if(!empty($selectedType)) {
+            //     $query->where('type', $selectedType);
+            // }
             $data = $query->groupBy(['location_zone', 'type'])->orderBy('location_zone')->orderBy('dau_report.type')->get()->toArray();
             $list_zone = array_values(array_unique(array_column($data, 'location_zone')));
             $list_default_value_zone = array_fill_keys($list_zone, 0);
@@ -84,11 +84,12 @@ class DauWauMauReport extends Component
 
     public function mount() {
         $zones = DAU_Report::where('location_zone', '!=', '')->select('location_zone')->groupBy(['location_zone'])->orderBy('location_zone')->get()->toArray();
-        $selectedDate = date('Y-m-d', strtotime('today midnight'));
-        $data = $this->readDatabase($selectedDate, [], []);
+        $selectedDate = date('Y-m-d', strtotime('today midnight')) . ' - ' . date('Y-m-d', strtotime('today midnight'));
+        $data = $this->readDatabase($selectedDate, [], 'DAU');
+        $total = DAU_Report::where('location_zone', '!=', '')->where('to_date', date('Y-m-d', strtotime('today midnight')))->selectRaw('type, SUM(count_login) AS count_login')->groupBy(['type'])->orderBy('type')->get()->toArray();
         $this->dataset = $data['dataset'];
         $this->labels = $data['labels'];
         $this->zones = array_column($zones, 'location_zone');
-        $this->total = $data['total'];
+        $this->total = array_column($total, 'count_login', 'type');
     }
 }
