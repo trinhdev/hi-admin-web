@@ -181,6 +181,7 @@
             table.on('preXhr.dt', function (e, settings, data) {
                 data.daterange = $('#daterange').val();
                 data.selectedZones = $('#zones').select2("val");
+                data.selectedType = $('#type').select2("val");
             });
             table.ajax.reload();
         }
