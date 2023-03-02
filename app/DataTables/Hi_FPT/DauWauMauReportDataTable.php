@@ -40,6 +40,9 @@ class DauWauMauReportDataTable extends BuilderDataTables
         if(is_array($this->selectedZones) && count($this->selectedZones) > 0) {
             $report->whereIn('location_zone', $this->selectedZones);
         }
+        if(is_array($this->selectedType) && count($this->selectedType) > 0) {
+            $report->whereIn('type', $this->selectedType);
+        }
         return $this->applyScopes($report);
     }
 
@@ -73,6 +76,11 @@ class DauWauMauReportDataTable extends BuilderDataTables
 
             var location_zone = $('#zones');
             $(location_zone).on('change', function () {
+                table.ajax.reload();
+            });
+
+            var type = $('#type');
+            $(type).on('change', function () {
                 table.ajax.reload();
             });
         ";
