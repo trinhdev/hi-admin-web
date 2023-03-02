@@ -41,7 +41,7 @@ class DauWauMauReportDataTable extends BuilderDataTables
         if(is_array($this->selectedZones) && count($this->selectedZones) > 0) {
             $report->whereIn('location_zone', $this->selectedZones);
         }
-        if($this->selectedType != '') {
+        if($this->selectedType == '') {
             $this->selectedType = 'DAU';
         }
         $report->where('type', $this->selectedType);
