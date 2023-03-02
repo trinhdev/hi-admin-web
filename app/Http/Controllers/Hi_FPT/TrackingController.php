@@ -6,18 +6,17 @@ use App\Contract\Hi_FPT\TrackingInterface;
 use App\DataTables\Hi_FPT\SessionAnalyticsDataTable;
 use App\DataTables\Hi_FPT\UserAnalyticsDataTable;
 use App\DataTables\Hi_FPT\ViewAnalyticsDataTable;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 
-class TrackingController extends MY_Controller
+class TrackingController extends Controller
 {
     private $TrackingRepository;
 
     public function __construct(TrackingInterface $TrackingRepository)
     {
-        parent::__construct();
         $this->title = 'Tracking Manage';
-        $this->model = $this->getModel('Tracking');
         $this->TrackingRepository = $TrackingRepository;
     }
 
