@@ -201,7 +201,7 @@
                 {{-- <option value="line" data-subtext="Biểu đồ đường" >Line</option>
                 <option value="bar" data-subtext="Biểu đồ cột">Bar</option> --}}
                 @foreach ($zones as $zone)
-                <option value="{{ $zone }}">{{ $zone }}</option>
+                <option value="{{ $zone }}" {{ (in_array($zone, ['Quest', 'Ftel'])) ? 'selected="selected"' : '' }}>{{ $zone }}</option>
                 @endforeach
             </select>
         </div>
