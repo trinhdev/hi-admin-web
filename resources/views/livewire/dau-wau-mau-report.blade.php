@@ -33,6 +33,12 @@
                 allowClear: true,
             });
 
+            $('#type').select2({
+                placeholder: "Chọn loại báo cáo",
+                multiple: true,
+                allowClear: true,
+            });
+
             $('#zones').on('change', function (e) {
                 var data = $('#zones').select2("val");
                 let closeButton = $('.select2-selection__clear')[0];
@@ -45,8 +51,20 @@
                     }
                 }
                 @this.set('selectedZones', data);
-                // console.log(data);
-                // Livewire.emit('date-selected', $('#daterange').val(), data);
+            });
+
+            $('#type').on('change', function (e) {
+                var data = $('#type').select2("val");
+                let closeButton = $('.select2-selection__clear')[0];
+                if(typeof(closeButton)!='undefined'){
+                    if(data.length<=0)
+                    {
+                        $('.select2-selection__clear')[0].children[0].innerHTML = '';
+                    } else{
+                        $('.select2-selection__clear')[0].children[0].innerHTML = 'x';
+                    }
+                }
+                @this.set('selectedType', data);
             });
         });
 
@@ -68,10 +86,10 @@
                 },
                 options: {
                     plugins: {
-                        // display: true,
-                        // legend: {
-                        //     position: 'bottom'
-                        // },
+                        display: true,
+                        legend: {
+                            position: 'bottom'
+                        },
                         tooltip: {
                             mode: 'point',
                             position: 'nearest',
@@ -142,7 +160,6 @@
             console.log(data);
             let nameElement = document.getElementById('name123');
             chart.data = data;
-            console.log($('#daterange').val());
             nameElement.textContent = 'Báo cáo ngày ' + data.report_date;
 
             let dau_total = document.getElementById('dau-total');
@@ -157,13 +174,13 @@
 
         function search() {
             var data = $('#zones').select2("val");
-            Livewire.emit('date-selected', $('#daterange').val(), data);
+            var type = $('#type').select2("val");
+            Livewire.emit('date-selected', $('#daterange').val(), data, type);
 
             var table = $('#dau-report').DataTable();
             table.on('preXhr.dt', function (e, settings, data) {
                 data.daterange = $('#daterange').val();
                 data.selectedZones = $('#zones').select2("val");
-                console.log(data.selectedZones);
             });
             table.ajax.reload();
         }
@@ -198,6 +215,19 @@
                 @foreach ($zones as $zone)
                 <option value="{{ $zone }}">{{ $zone }}</option>
                 @endforeach
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="type" class="control-label">Loại</label>
+            <select id="type" class="form-control" name="selectedType[]" multiple>
+                {{-- <option value="line" data-subtext="Biểu đồ đường" >Line</option>
+                <option value="bar" data-subtext="Biểu đồ cột">Bar</option> --}}
+                <option value="DAU">DAU</option>
+                <option value="WAU">WAU</option>
+                <option value="MAU">MAU</option>
             </select>
         </div>
     </div>

@@ -38,7 +38,6 @@
         table.on('preXhr.dt', function (e, settings, data) {
             data.daterange = $('#daterange').val();
             data.location_zone = $('#zones').select2("val");
-            console.log(data.location_zone);
         });
     </script>
 @endpush
