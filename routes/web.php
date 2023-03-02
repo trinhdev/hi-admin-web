@@ -61,6 +61,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('setting')->group(function () {
             Route::get('/', 'GeneralSettingsController@index')->name('general_settings.index');
             Route::post('/edit', 'GeneralSettingsController@postEdit')->name('general_settings.edit');
+            Route::post('/saveUriSetting', 'GeneralSettingsController@saveUriSetting')->name('general_settings.saveUriSetting');
         });
 
         Route::prefix('user')->group(function () {

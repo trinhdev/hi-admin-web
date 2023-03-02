@@ -1,5 +1,4 @@
 @extends('layoutv2.layout.app')
-@livewireStyles
 @section('content')
     <div id="wrapper">
         <div class="content">
@@ -15,6 +14,12 @@
                                     <i class="fa fa-cog menu-icon"></i>
                                     Tổng quan
 
+                                </a>
+                            </li>
+                            <li class="settings-group-site_url">
+                                <a href="/setting?group=site_url" data-group="site_url">
+                                    <i class="fa fa-link menu-icon"></i>
+                                    Site URL
                                 </a>
                             </li>
                             <li class="settings-group-cronjob">
@@ -56,6 +61,5 @@
         </div>
     </div>
 @endsection
-@livewireScripts
 @push('script')
 @endpush

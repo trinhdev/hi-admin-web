@@ -1,27 +1,37 @@
-@extends('layouts.default')
-@push('header')
-    <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
-@endpush
+@extends('layoutv2.layout.app')
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        @include('template.breadcrumb', ['name'=>'Quản lí error payment'])
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card card-body col-sm-12">
-                    <div class="container">
-
-                        <div class="card-body row form-inline">
-                            <form class="form-inline">
-                                <div class="col-md-3">
-                                    <div class="input-group mb-4">
-                                        <div class="input-group-prepend">
-                                            <label class="input-group-text" for="show_at">Type</label>
-                                        </div>
-                                        <select class="form-control" name="show_at" id="show_at">
-                                            <option value="">-- Select --</option>
+    <div id="wrapper">
+        <div class="content">
+            <div class="panel_s user-data">
+                <div class="panel-body">
+                    <div class="horizontal-scrollable-tabs panel-full-width-tabs">
+                        <div class="scroller scroller-left arrow-left"><i class="fa fa-angle-left"></i></div>
+                        <div class="scroller scroller-right arrow-right"><i class="fa fa-angle-right"></i></div>
+                        <div class="horizontal-tabs">
+                            <ul class="nav nav-tabs nav-tabs-horizontal" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#table_detail" aria-controls="table_detail" role="tab" data-toggle="tab">
+                                        <i class="fa fa-tasks menu-icon"></i> Detail
+                                    </a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#table_overview"
+                                       aria-controls="table_overview" role="tab" data-toggle="tab">
+                                        <i class="fa-solid fa-chart-gantt menu-icon"></i> Overview
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content tw-mt-5">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="member_filter" class="control-label">Trạng thái</label>
+                                    <div class="dropdown bootstrap-select show-tick bs3" style="width: 100%;">
+                                        <select name="show_at" id="show_at" class="selectpicker" data-actions-box="1" data-width="100%"
+                                                data-none-selected-text="Không có mục nào được chọn" tabindex="-98">
+                                            <option data-subtext="--Select--"></option>
                                             <option value="0">Chưa tiếp nhận</option>
                                             <option value="1">Đã chuyển tiếp</option>
                                             <option value="2">Đang xử lí</option>
@@ -30,61 +40,50 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="input-group mb-4">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">Phone</div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="phone_filter" class="control-label">Số điện thoại</label>
+                                    <input id="phone_filter"  class="form-control" type="text" name="phone_filter"
+                                           placeholder="Phone Filter" autocomplete="off"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="daterange" class="control-label">Chọn ngày</label>
+                                    <div class="input-group date">
+                                        <input id="daterange"  class="form-control daterange" type="text" name="daterange"
+                                               placeholder="Nhập ngày hiển thị" autocomplete="off"/>
+                                        <div class="input-group-addon">
+                                            <i class="fa-regular fa-calendar calendar-icon"></i>
                                         </div>
-                                        <input class="form-control" id="phone_filter" placeholder="Phone Filter" />
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="input-group mb-4">
-                                        <div class="input-group-prepend ">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i>&nbsp;</div>
-                                        </div>
-                                        <input class="form-control" id="daterange" type="text" name="daterange" />
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="submit" class="control-label"></label>
+                                    <div class="input-group">
+                                        <button type="button"  class="tw-mt-1 btn btn-info"
+                                                id="filter_condition">Submit</button>
                                     </div>
                                 </div>
-                                <div class="float-left col-md-1 filter-class" style="width: 100%; text-align: center">
-                                    <button type="button" id="filter_condition" class="btn btn-sm btn-primary mb-4">Search</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <!--begin::Table-->
-                    <div class="tabbable-custom">
-                        <ul class="nav mb-3 nav-tabs" id="pills-tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="pills-detail-tab" data-toggle="pill" href="#pills-detail"
-                                   role="tab" aria-controls="pills-detail" aria-selected="true">Table</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-overview-tab" data-toggle="pill" href="#pills-overview"
-                                   role="tab" aria-controls="pills-overview" aria-selected="false">Overview</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="pills-detail" role="tabpanel"
-                                 aria-labelledby="pills-detail-tab">
-                                {!! $detail->table(['width' => '100%', 'id'=>'table-detail']) !!}
-                            </div>
-                            <div class="tab-pane fade" id="pills-overview" role="tabpanel"
-                                 aria-labelledby="pills-overview-tab">
-                                {!! $overview->table(['width' => '100%', 'id'=>'table-overview']) !!}
                             </div>
                         </div>
+
+                        <div role="tabpanel" class="tab-pane active" id="table_detail">
+                            {!! $detail->table(['width' => '100%', 'id'=>'table-detail']) !!}
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="table_overview">
+                            {!! $overview->table(['width' => '100%', 'id'=>'table-overview']) !!}
+                        </div>
                     </div>
-                    <!--end::Table-->
                 </div>
             </div>
-
-        </section>
-        <!-- /.content -->
+        </div>
     </div>
-    <!-- /.content-wrapper -->
     <div id="showDetail_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -97,9 +96,8 @@
             </div>
         </div>
     </div>
-
 @endsection
-@push('scripts')
+@push('script')
     {!! $detail->scripts() !!}
     {!! $overview->scripts() !!}
     <script>
@@ -119,7 +117,6 @@
             $('body').on('click', '#detail', function (event) {
                 event.preventDefault();
                 let id = $(this).data('id');
-                $('#showDetail_Modal').modal('toggle');
                 let urlMethod = '/payment-support/show/'+id;
                 $.ajax({
                     url: urlMethod,
@@ -156,7 +153,7 @@
                     success: (data) => {
                         console.log(data);
                         $("#spinner").removeClass("show");
-                        showMessage('success',data.html);
+                        alert_float('success',data.html);
                         $('#submitAjax').prop('disabled', false);
                         detail.DataTable().ajax.reload();
                     },
@@ -168,9 +165,7 @@
                             errorString = value;
                             return false;
                         });
-                        showMessage('error', errorString);
-                        console.log(data);
-
+                        alert_float('danger', errorString);
                     }
                 });
             });

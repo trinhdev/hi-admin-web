@@ -177,7 +177,6 @@ abstract class BuilderDatatables extends DataTable
             ->language([
                 'emptyTable' => preg_replace("/{(\d+)}/", ('dt_entries'), ('Không có dữ liệu')),
                 'info' => preg_replace("/{(\d+)}/", ('dt_entries'), 'Hiển thị trang _PAGE_ của _PAGES_ trang'),
-                'infoEmpty' => preg_replace("/{(\d+)}/", ('dt_entries'), ('Không có dữ liệu')),
                 'infoFiltered' => preg_replace("/{(\d+)}/", ('dt_entries'), ('dt_info_filtered')),
                 'lengthMenu' => '_MENU_',
                 'loadingRecords' => ('Đang tải'),

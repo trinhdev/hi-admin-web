@@ -2,33 +2,47 @@
 
 namespace App\DataTables\Hi_FPT;
 
+use App\DataTables\BuilderDatatables;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class PaymentSupportDataTableOverView extends DataTable
+class PaymentSupportDataTableOverView extends BuilderDatatables
 {
+    protected $ajaxUrl = ['data' => 'function(d) { d.table = "overview"; }'];
+    protected $hasCheckbox = false;
     public function ajax()
     {
         return datatables()
             ->eloquent($this->query())
             ->editColumn('status', function($row){
-                if ($row->status === '1') {
-                    $data = ['Đã chuyển tiếp', 'badge badge-info'] ;
-                } elseif  ($row->status === '2') {
-                    $data = ['Đang xử lí', 'badge badge-info'] ;
-                } elseif  ($row->status === '3') {
-                    $data = ['Đã xử lí', 'badge badge-success'];
-                } elseif  ($row->status === '4') {
-                    $data = ['Hủy bỏ', 'badge badge-danger'];
+                if ($row->status == '1') {
+                    $data = ['Đã chuyển tiếp', '#c3dafe'];
+                } elseif ($row->status == '2') {
+                    $data = ['Đang xử lí', '#c3dafe'];
+                } elseif ($row->status == '3') {
+                    $data = ['Đã xử lí', '#c6f6d5'];
+                } elseif ($row->status == '4') {
+                    $data = ['Hủy bỏ', '#fed7d7'];
                 } else {
-                    $data = ['Chưa tiếp nhận', 'badge badge-warning'] ;
+                    $data = ['Chưa tiếp nhận', '#fefcbf'];
                 }
-                return '<h4 class="'.$data[1].'">'.$data[0].'</h4>';
+                return '<h4 class="badge bg-gray-200 text-gray-800" style="color: #1f1d1d;background: ' . $data[1] . '">' . $data[0] . '</h4>';
 
             })
             ->filter(function ($query) {
+                if (request()->filled('type')) {
+                    $query->where('status', 'like', "%" . request('type') . "%");
+                    if (request('type') == "0") {
+                        $query->orwhereNull('status');
+                    }
+                }
+
+                if (request()->filled('phone')) {
+                    $query->where('customer_phone', 'like', "%" . request('phone') . "%");
+                }
+
                 if (request()->filled('daterange')) {
-                    $date = explode('-', request('daterange'));
+                    $date = explode(' - ', request('daterange'));
                     $query->whereBetween('created_at', [changeFormatDateLocal($date[0]), changeFormatDateLocal($date[1])]);
                 }
             })
@@ -41,42 +55,7 @@ class PaymentSupportDataTableOverView extends DataTable
         return $this->applyScopes($this->data);
     }
 
-    /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
-    public function html()
-    {
-        return $this->builder()
-            ->ajax(['data' => 'function(d) { d.table = "overview"; }'])
-            ->columns($this->getColumns())
-            ->orderBy(1)
-            ->responsive()
-            ->autoWidth(true)
-            ->parameters([
-                'scroll' => false,
-                'searching' => false,
-                'searchDelay' => 500,
-                'dom' => ''
-            ])
-            ->addTableClass('table table-hover table-striped text-center w-100 table-header-color')
-            ->languageEmptyTable('Không có dữ liệu')
-            ->languageInfoEmpty('Không có dữ liệu')
-            ->languageProcessing('<img width="20px" src="/images/input-spinner.gif" />')
-            ->languageSearch('Tìm kiếm')
-            ->languagePaginateFirst('Đầu')->languagePaginateLast('Cuối')->languagePaginateNext('Sau')->languagePaginatePrevious('Trước')
-            ->languageLengthMenu('Hiển thị _MENU_ dòng mỗi trang')
-            ->languageInfo('Hiển thị trang _PAGE_ của _PAGES_ trang
-                    ');
-    }
-
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
-    protected function getColumns()
+    public function columns()
     {
         return [
             Column::make('status')->title('Status'),
@@ -84,14 +63,5 @@ class PaymentSupportDataTableOverView extends DataTable
         ];
     }
 
-    /**
-     * Get filename for export.
-     *
-     * @return string
-     */
-    protected function filename()
-    {
-        return 'PaymentSupportOverview_' . date('YmdHis');
-    }
 }
 

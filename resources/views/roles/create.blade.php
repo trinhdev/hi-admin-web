@@ -8,6 +8,7 @@
                     <div class="tw-flex tw-justify-between tw-items-center tw-mb-2">
                         <h4 class="tw-my-0 tw-font-semibold tw-text-lg tw-text-neutral-700">
                             Thêm vị trí mới </h4>
+                        <a href="http://perfex.local/admin/roles/role" class="btn btn-success btn-sm">Vị trí mới                    </a>
                     </div>
                     <div class="panel_s">
                         <div class="panel-body">

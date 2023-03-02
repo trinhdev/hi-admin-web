@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Contract\Hi_FPT\SettingInterface;
+use App\DataTables\Admin\UrlSettingDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\SettingRequest;
@@ -33,7 +34,7 @@ class GeneralSettingsController extends MY_Controller
         $this->settingRepository = $settingRepository;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, UrlSettingDataTable $settingDataTable)
     {
         // Get key hi_admin_cron_
         $settings_name = Settings::where('name', 'like', 'hi_admin_cron_'. "%")
@@ -46,8 +47,9 @@ class GeneralSettingsController extends MY_Controller
             $key[] = substr($service, strlen('hi_admin_cron_'), strlen($service) - strlen('hi_admin_cron_') - strlen('_enable'));
         }
 
-        $settings = Settings::where('name', 'not like', 'hi_admin_cron_'. "%")->get()->pluck('value', 'name');
-
+        $settings = Settings::where('name', 'not like', 'hi_admin_cron_'. "%")
+            ->where('name', 'not like', 'uri_config')
+            ->get()->pluck('value', 'name');
         $group = $request->input('group', '');
         switch ($group) {
             case 'general':
@@ -55,6 +57,16 @@ class GeneralSettingsController extends MY_Controller
                 $view = 'settings.includes.general';
                 $data = [
                     'setting' => $settings
+                ];
+                break;
+            case 'site_url':
+                $title = 'Config site URl';
+                $view = 'settings.includes.site-url';
+                if ($request->ajax() && request()->get('table') == 'detail') {
+                    return $settingDataTable->render('setting.includes.site-url');
+                }
+                $data = [
+                    'setting' => $settingDataTable->html(),
                 ];
                 break;
             case 'cronjob':
@@ -129,5 +141,20 @@ class GeneralSettingsController extends MY_Controller
             setting()->set($settingKey, (string)$settingValue);
         }
         setting()->save();
+    }
+
+    protected function saveUriSetting(Request $request)
+    {
+        $form = (object)[
+          'name' => $request->name_uri,
+          'uri' => $request->uri,
+          'status' => "1"
+        ];
+        $model = Settings::where('name', 'uri_config')->get()->pluck('value', 'name');
+        $data = json_decode($model['uri_config'], false);
+        $data[] = $form;
+        setting()->set('uri_config', json_encode($data));
+        setting()->save();
+        return response()->json(['success'=>'Thành công', 'html'=> 'Thêm mới thành công!']);
     }
 }

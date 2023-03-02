@@ -13,7 +13,7 @@ class PopUpPrivateDataTable extends BuilderDatatables
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
-    protected $orderBy = 7;
+    protected $orderBy = 0;
     protected $hasCheckbox = false;
 
     public function dataTable($query)
