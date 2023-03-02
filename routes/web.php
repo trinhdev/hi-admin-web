@@ -34,7 +34,7 @@ use Illuminate\Http\Request;
 
 
 Auth::routes();
-Route::group(['middleware' => ['auth', 'can:role-permission']], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::prefix('home')->group(function () {
         Route::get('/', 'HomeController@index')->name('home');
