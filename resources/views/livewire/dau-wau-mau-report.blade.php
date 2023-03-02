@@ -219,9 +219,9 @@
             <h3>Tổng quan</h3>
         </header>
         <div class="col-sm-12">
-            <div class="col-sm-4"><h2>DAU <span id="dau-total" style="background-color: #28A745; color: white" class="badge">{{ number_format($total['DAU']) }}</span></h2></div>
-            <div class="col-sm-4"><h2>WAU <span id="wau-total" style="background-color: #007BFF; color: white" class="badge">{{ number_format($total['WAU']) }}</span></h2></div>
-            <div class="col-sm-4"><h2>MAU <span id="mau-total" style="background-color: #17A2B8; color: white" class="badge">{{ number_format($total['MAU']) }}</span></h2></div>
+            <div class="col-sm-4"><h2>DAU <span id="dau-total" style="background-color: #28A745; color: white; font-size: 17px" class="badge badge-secondary">{{ number_format($total['DAU']) }}</span></h2></div>
+            <div class="col-sm-4"><h2>WAU <span id="wau-total" style="background-color: #007BFF; color: white; font-size: 17px" class="badge badge-secondary">{{ number_format($total['WAU']) }}</span></h2></div>
+            <div class="col-sm-4"><h2>MAU <span id="mau-total" style="background-color: #17A2B8; color: white; font-size: 17px" class="badge badge-secondary">{{ number_format($total['MAU']) }}</span></h2></div>
         </div>
         
     </div>
