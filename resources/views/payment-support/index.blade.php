@@ -156,6 +156,7 @@
                         alert_float('success',data.html);
                         $('#submitAjax').prop('disabled', false);
                         detail.DataTable().ajax.reload();
+                        overview.DataTable().ajax.reload();
                     },
                     error: function (xhr) {
                         $("#spinner").removeClass("show");
