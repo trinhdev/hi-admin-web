@@ -81,7 +81,7 @@ $methodAPI = [
 ];
 
 $methodTracking = [
-    'CUSTOMERS_ACTIVITIES'       => 'hi-tracking/o/customers-activities/',
+    'CUSTOMERS_ACTIVITIES'       => 'o/customers-activities/',
 ];
 return [
     'DOMAIN_INSIDE'         => $methodInsideDomain,
