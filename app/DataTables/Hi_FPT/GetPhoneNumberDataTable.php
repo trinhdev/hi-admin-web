@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\DataTables\Hi_FPT;
@@ -31,7 +30,6 @@ class GetPhoneNumberDataTable extends DataTable
      */
     public function query()
     {
-        dd($this);
         return collect($this->data) ?? [];
     }
 

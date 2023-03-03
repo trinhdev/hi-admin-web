@@ -1,42 +1,51 @@
-@extends('layouts.default')
-
-@section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 style="float: left; margin-right: 20px" class="uppercase">List Module</h1>
-                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                        <a href="/modules/create" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Add new module
-                        </a>
-                        @endif
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                            <li class="breadcrumb-item active">Modules</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card card-body col-sm-12">
-                    <table id="modules" class="table table-hover table-striped" style="width:100%">
-                        </thead>
-                    </table>
+<div class="row">
+    <div class="col-md-12">
+        <form id="form" novalidate="novalidate" autocomplete="off">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="module_name">Module name</label>
+                        <input type="text" id="module_name" name="module_name" class="form-control" placeholder="Module name">
+                    </div>
+                    <div class="form-group">
+                        <label for="uri">Uri</label>
+                        <select name="uri" id="uri" class="form-control selectpicker" data-live-search="true" data-size="10">
+                            <option value="">Please choose uri</option>
+                            @foreach (json_decode(setting('uri_config', [])) as $uri)
+                                <option value="{{ $uri->uri }}">{{ $uri->uri }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="uri">Group module</label>
+                        <select name="group_module_id" id="group_module_id" class="form-control selectpicker" data-live-search="true" data-size="10">
+                            <option value="">Please choose group module</option>
+                            @foreach ($list_group_module as $group_module)
+                                <option value="{{ $group_module->id }}">{{ $group_module->group_module_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="uri">Icon</label>
+                        <select name="icon" id="icon" class="form-control selectpicker" data-live-search="true" data-size="10">
+                            <option value="">Please choose icon</option>
+                            @foreach ($list_icon as $icon)
+                                <option value="fas fa-{{ $icon }}" data-icon="fas fa-{{ $icon }}">fas fa-{{ $icon }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input id="status" name="status" class="form-check-input" type="checkbox" value="true">
+                            <label>Status</label>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-        <!-- /.content -->
+        </form>
+        <div class="model-footer" style="float: right">
+            <button type="button" class="btn btn-default close_btn" data-dismiss="modal">Close</button>
+            <button type="submit" onclick="pushModules()" class="btn btn-info">Submit</button>
+        </div>
     </div>
-    <!-- /.content-wrapper -->
-@endsection
+</div>

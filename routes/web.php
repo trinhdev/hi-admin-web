@@ -84,9 +84,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('modules')->group(function () {
             Route::get('/', 'ModulesController@index')->name('modules.index');
             Route::get('/edit/{id}', 'ModulesController@edit')->name('modules.edit');
+            Route::post('/show', 'ModulesController@show')->name('modules.show');
             Route::get('/create', 'ModulesController@create')->name('modules.create');
             Route::post('/store', 'ModulesController@store')->name('modules.store');
-            Route::put('/update/{id}', 'ModulesController@update')->name('modules.update');
+            Route::post('/update/{id}', 'ModulesController@update')->name('modules.update');
             Route::post('/destroy', 'ModulesController@destroy')->name('modules.destroy');
             Route::get('/initDatatable', 'ModulesController@initDatatable')->name('modules.initDatatable');
         });
@@ -392,7 +393,7 @@ Route::group(['middleware' => ['auth']], function () {
         });
 
         Route::prefix('testv2')->controller(Test::class)->group(function () {
-            Route::get('/', 'index')->name('test.index');
+            Route::get('/admin', 'index')->name('test.index');
             Route::get('/create', 'create')->name('test.create');
         });
 

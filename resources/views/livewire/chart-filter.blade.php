@@ -70,8 +70,10 @@
             chart.config.type = data.type;
             if(data.chart === 'DSD' || data.chart === 'MSD') {
                 chart.options.plugins.tooltip.mode = 'point';
+                chart.options.plugins.tooltip.mode = 'Millisecond';
             } else {
                 chart.options.plugins.tooltip.mode = 'index';
+                chart.options.plugins.tooltip.mode = 'Click';
             }
             chart.update();
         });
@@ -84,7 +86,7 @@
         <header>
             <h2><span id="name123">Không có dữ liệu</span> <small> Analytics</small></h2>
         </header>
-        <canvas id="chart" height="50"></canvas>
+        <canvas id="chart" height="110"></canvas>
     </div>
 </div>
 <!--end::Chart-->

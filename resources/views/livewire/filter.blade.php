@@ -48,32 +48,27 @@
             </select>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
             <label for="daterange" class="control-label">Lọc ngày</label>
-            <div class="input-group date">
-                <input id="daterange"
-                       class="form-control daterange-filter" type="text" name="daterange"
-                       placeholder="Nhập ngày hiển thị" autocomplete="off"/>
-                <div class="input-group-addon">
-                    <i class="fa-regular fa-calendar calendar-icon"></i>
-                </div>
-            </div>
+            <input id="daterange"
+                   class="form-control daterange-filter" type="text" name="daterange"
+                   placeholder="Nhập ngày hiển thị" autocomplete="off"/>
         </div>
     </div>
     <div class="col-md-2">
         <div class="form-group">
             <label for="select_type" class="control-label">Kiểu hiển thị</label>
             <select wire:model="selectedType" id="select_type" class="form-control">
-                <option value="line" data-subtext="Biểu đồ đường" >Line</option>
-                <option value="bar" data-subtext="Biểu đồ cột">Bar</option>
+                <option value="line">Biểu đồ đường</option>
+                <option value="bar">Biểu đồ cột</option>
             </select>
         </div>
     </div>
     @if (!empty($showDiv))
     <div class="col-md-2">
         <div class="form-group">
-            <label for="limit" class="control-label">Top Screen Limit</label>
+            <label for="limit" class="control-label">Giới hạn màn hình</label>
             <input wire:model="selectedLimit" id="limit" min="0" max="500"
                    class="form-control" type="number" name="limit"
                    placeholder="Số giới hạn top màn hình" autocomplete="off"/>
@@ -82,7 +77,7 @@
 
     <div class="col-md-2">
         <div class="form-group">
-            <label for="duration" class="control-label">Screen Duration </label>
+            <label for="duration" class="control-label">Lọc khoảng thời gian </label>
             <input wire:model="selectedDuration" id="duration" min="0" max="500000"
                    class="form-control" type="number" name="duration"
                    placeholder="Duration lớn hơn bao nhiêu (s)" autocomplete="off"/>

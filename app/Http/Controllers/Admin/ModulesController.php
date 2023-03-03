@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\Admin\ModuleDataTable;
 use App\Http\Controllers\MY_Controller;
+use App\Models\Modules;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use App\Models\Group_Module;
@@ -26,7 +27,9 @@ class ModulesController extends MY_Controller
      */
     public function index(ModuleDataTable $dataTable, Request $request)
     {
-        return $dataTable->render('modules.index');
+        $list_icon = explode(",", file_get_contents(public_path('fontawsome.txt')));
+        $list_group_module = $this->getAll(new Group_Module);
+        return $dataTable->render('modules.index', ['list_icon' => $list_icon, 'list_group_module' => $list_group_module]);
     }
 
     /**
@@ -60,7 +63,7 @@ class ModulesController extends MY_Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'module_name' => 'required|unique:modules|max:255',
             'uri' => 'required',
         ]);
@@ -69,43 +72,15 @@ class ModulesController extends MY_Controller
         ]);
         $module = $this->createSingleRecord($this->model, $request->all());
         $this->addToLog(request());
-        return redirect()->route('modules.index');
+        return response(['success' => 'success', 'message'=> 'Add new successfully!']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $module = Modules::findOrFail($request->id);
+        return response(['data' => $module]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $list_group_module = $this->getAll(new Group_Module);
-        $list_icon = explode(",", file_get_contents(public_path('fontawsome.txt')));
-        $module = $this->getSigleRecord($this->model, $id);
-        $module->list_group_module = $list_group_module;
-        $module->list_icon = $list_icon;
-        return view('modules.edit')->with('module', $module);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -117,7 +92,7 @@ class ModulesController extends MY_Controller
         ]);
         $module = $this->updateById($this->model, $id, $request->all());
         $this->addToLog($request);
-        return redirect()->route('modules.index');
+        return response(['success' => 'success', 'message'=> 'Update successfully!']);
     }
 
     public function destroy(Request $request)
@@ -125,27 +100,5 @@ class ModulesController extends MY_Controller
         $this->deleteById($this->model, $request->id);
         $this->addToLog(request());
         return response()->json(['message' => 'Delete Successfully!']);
-    }
-
-    public function initDatatable(Request $request){
-        if($request->ajax()){
-            $data = $this->model::query()->with('parent','createdBy','updatedBy');
-            return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function($row){
-                return view('layouts.button.action')->with(['row'=>$row,'module'=>'modules']);
-            })
-            ->editColumn('group_module_id',function($row){
-                return !empty($row->group_module_id) ? $row->parent->group_module_name : '';
-            })
-            ->editColumn('created_by',function($row){
-                return !empty($row->createdBy) ? $row->createdBy->email : '';
-            })
-            ->editColumn('updated_by',function($row){
-                return !empty($row->updatedBy) ? $row->updatedBy->email : '';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-        }
     }
 }

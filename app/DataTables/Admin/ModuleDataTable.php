@@ -14,9 +14,9 @@ class ModuleDataTable extends BuilderDatatables
             ->eloquent($query)
             ->editColumn('module_name', function ($row) {
                 return '
-                    <a href="'.route('modules.edit', $row->id).'">'.$row->module_name.'</a>
+                    <a href="#" data-id="'.$row->id.'" onclick="detailModules(this)">'.$row->module_name.'</a>
                     <div class="row-options">
-                        <a href="'.route('modules.edit', $row->id).'">View</a> |
+                        <a href="#" data-id="'.$row->id.'" onclick="detailModules(this)">View</a> |
                         <a href="#" data-id="'.$row->id.'" onclick="dialogConfirmWithAjax(deleteModules, this)" class="text-danger">Remove</a>
                     </div>
                 ';

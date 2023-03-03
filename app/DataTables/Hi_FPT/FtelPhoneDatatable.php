@@ -25,7 +25,7 @@ class FtelPhoneDatatable extends BuilderDatatables
     {
         return [
             Column::make('id'),
-            Column::make('number_phone'),
+            Column::make('phoneNumber'),
             Column::make('code'),
             Column::make('emailAddress'),
             Column::make('fullName'),
