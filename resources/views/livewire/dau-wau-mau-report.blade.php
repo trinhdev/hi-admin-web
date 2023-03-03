@@ -54,7 +54,7 @@
             });
 
             $('#type').on('change', function(e){
-                @this.set('selectedType', data);
+                @this.set('selectedType', $("#type").val());
             });
             // $('#type').on('change', function (e) {
             //     var data = $('#type').select2("val");
@@ -107,7 +107,7 @@
                             ticks: {
                                 autoSkip: false,
                             },
-                            stacked: true
+                            // stacked: true
 
                         },
                         y: {
@@ -127,24 +127,6 @@
                     legend: {
                         display: false
                     },
-                    // legendCallback: function (chart) {
-                    //     console.log(chart);
-                    //     return false;
-                    //     // Return the HTML string here.
-                    //     var text = [];
-                    //     text.push('<ul style="display: flex; flex-direction: row; margin: 0px; padding: 0px; flex-wrap: wrap;" class="' + chart.id + '-legend">');
-                    //     for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
-                    //         text.push('<li style="align-items: center; cursor: pointer; display: flex; flex-direction: row; margin-left: 10px; margin-bottom: 10px"><span id="legend-' + i + '-item" style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '; border-width: 3px; display: inline-block; height: 20px; margin-right: 10px; width: 20px;" onclick="updateDataset(event, ' + '\'' + i + '\'' + ')"></span><p style="color: rgb(102, 102, 102); margin: 0px; padding: 0px;">');
-                    //         if (chart.data.labels[i]) {
-                    //             text.push(chart.data.labels[i]);
-                    //             text.push(' (' + chart.data.datasets[0]['data'][i] + ')');
-                    //         }
-                    //         text.push('</p></li>');
-                    //     }
-                    //     text.push('</ul>');
-                    //     console.log(text)
-                    //     $('#legend-container').html(text.join(""));
-                    // },
                     plugins: {
                         datalabels: {
                             formatter: function(value, context) {
@@ -152,15 +134,11 @@
                             }
                         }
                     }
-                },
-                // plugins: [ChartDataLabels]
+                }
             }
         );
 
-        // chart.generateLegend();
-
         Livewire.on('updateChart', data => {
-            console.log(data);
             let nameElement = document.getElementById('name123');
             chart.data = data;
             nameElement.textContent = 'Báo cáo ngày ' + data.report_date;
@@ -178,7 +156,6 @@
         function search() {
             var data = $('#zones').select2("val");
             var type = $('#type').val();
-            console.log(type);
             Livewire.emit('date-selected', $('#daterange').val(), data, type);
             var table = $('#dau-report').DataTable();
             table.on('preXhr.dt', function (e, settings, data) {
@@ -224,7 +201,7 @@
                 {{-- <option value="line" data-subtext="Biểu đồ đường" >Line</option>
                 <option value="bar" data-subtext="Biểu đồ cột">Bar</option> --}}
                 @foreach ($zones as $zone)
-                <option value="{{ $zone }}">{{ $zone }}</option>
+                <option value="{{ $zone }}" {{ (in_array($zone, ['Quest', 'Ftel'])) ? 'selected="selected"' : '' }}>{{ $zone }}</option>
                 @endforeach
             </select>
         </div>
