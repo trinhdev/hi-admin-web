@@ -10,13 +10,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 
-class TrackingController extends MY_Controller
+class TrackingController extends Controller
 {
     private $TrackingRepository;
 
     public function __construct(TrackingInterface $TrackingRepository)
     {
-        parent::__construct();
+//        parent::__construct();
         $this->title = 'Tracking Manage';
         $this->TrackingRepository = $TrackingRepository;
     }

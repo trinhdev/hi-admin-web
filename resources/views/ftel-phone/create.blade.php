@@ -6,9 +6,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="_buttons">
-                        <a href="{{ route('screen.create') }}" class="btn btn-primary mright5 test pull-left display-block">
-                            <i class="fa-regular fa-plus tw-mr-1"></i>
-                            Thêm mới</a>
                         <a href="#" onclick="alert('Liên hệ trinhhdp nếu xảy ra lỗi không mong muốn!')" class="btn btn-default pull-left display-block mright5">
                             <i class="fa-regular fa-user tw-mr-1"></i>Liên hệ
                         </a>
