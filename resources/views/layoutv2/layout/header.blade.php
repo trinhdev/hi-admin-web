@@ -113,7 +113,7 @@
                             <a href="#"
                                class="notification-handler !tw-p-0 unread-notification tw-cursor-pointer notification-link">
                                 <div class="tw-p-3 notification-box">
-                                    <span >Administrator</span>
+                                    <span>Administrator</span>
                                     <img src="{{ asset('assets/images/user-placeholder.jpg') }}"
                                          class="client-profile-image-small img-circle pull-left notification-image"
                                          alt=""/>
@@ -163,22 +163,17 @@
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group"><label for="name">Full Name</label> <input type="text"
-                                                                                                   class="form-control"
-                                                                                                   id="name" name="name"
-                                                                                                   value="{{Auth::user()->name}}">
+                                <div class="form-group"><label for="name">Full Name</label>
+                                    <input type="text" class="form-control" name="name" value="{{Auth::user()->name}}">
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group"><label for="eMail">Email</label> <input class="form-control"
-                                                                                                value="{{Auth::user()->email}}"
-                                                                                                disabled></div>
+                                <div class="form-group"><label for="eMail">Email</label>
+                                    <input class="form-control" value="{{Auth::user()->email}}" disabled></div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group"><label for="phone">Phone</label> <input type="text"
-                                                                                                class="form-control"
-                                                                                                id="phone"
-                                                                                                placeholder="Enter phone number">
+                                <div class="form-group"><label for="phone">Phone</label>
+                                    <input type="text" class="form-control" placeholder="Enter phone number">
                                 </div>
                             </div>
                         </div>

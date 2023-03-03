@@ -316,9 +316,9 @@ $domainTracking = [
         'SECRET_KEY'    => 'xkfa2dA!SD901ND!@@x91dak'
     ],
     'production'        => [
-        'URL'           => 'https://ansoft.com.vn/',
-        'CLIENT_KEY'    => '55bbbd24-b198-11ed-89b3-2811a830db8a',
-        'SECRET_KEY'    => 'xkfa2dA!SD901ND!@@x91dak'
+        'URL'           => 'https://analysis.fconnect.com.vn/',
+        'CLIENT_KEY'    => '55asdd24-b198-43ed-82b3-2111a830asx8a',
+        'SECRET_KEY'    => 'xx!@2dA!lD1331Na!98pr91dak'
     ],
 ];
 

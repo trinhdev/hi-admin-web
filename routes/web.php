@@ -339,12 +339,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('ftel-phone')->controller(FtelPhoneController::class)->group(function () {
             Route::get('/', 'index')->name('ftel_phone.index');
             Route::get('/create', 'create')->name('ftel_phone.create');
-            Route::post('/store', 'stores')->name('ftel_phone.store');
-            Route::get('/edit/{id}', 'edit')->name('ftel_phone.edit');
+            Route::post('/create', 'create')->name('ftel_phone.store');
+            Route::post('/show', 'show')->name('ftel_phone.show');
             Route::post('/update/{id}', 'update')->name('ftel_phone.update');
-            Route::post('/check', 'check')->name('ftel_phone.check');
-            Route::post('/import', 'import')->name('ftel_phone.import');
-            Route::get('/initDatatable', 'initDatatable')->name('ftel_phone.initDatatable');
         });
 
         Route::prefix('screen')->group(function () {
@@ -353,13 +350,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/store', [ScreenController::class, 'store'])->name('screen.store');
             Route::get('/edit/{id}', [ScreenController::class, 'show'])->name('screen.edit');
             Route::post('/update/{id}', [ScreenController::class, 'update'])->name('screen.update');
-            Route::get('/delete/{id}', [ScreenController::class, 'delete'])->name('screen.delete');
-        });
-
-        Route::prefix('test123')->group(function () {
-            Route::get('/', function () {
-                dd(json_decode("[\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0762827872\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\",\"0377735506\"]"));
-            });
+            Route::post('/delete/', [ScreenController::class, 'delete'])->name('screen.delete');
         });
 
         Route::prefix('deeplink')->group(function () {

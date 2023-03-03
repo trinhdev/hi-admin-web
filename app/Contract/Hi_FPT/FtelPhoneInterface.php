@@ -6,7 +6,7 @@ interface FtelPhoneInterface
 {
     public function all($dataTable, $params);
 
-    public function store($params);
+    public function create($dataTable, $params);
 
     public function update($params, $id);
 }

@@ -23,12 +23,15 @@ class ScreenDataTable extends BuilderDatatables
                 return '<h4 class="'.$data[1].'">'.$data[0].'</h4>';
             })
             ->editColumn('action',function($row){
-                return '<div style="display:flex; justify-content:center">
-                           <a href="'.route('screen.edit', [$row->id]).'" id="detail" class="btn btn-sm fas fa-edit btn-icon bg-olive"></a>
-                           <form action="'.route('screen.delete', [$row->id]).'" onsubmit="handleSubmit(event,this)">
-                                <button type="submit" id="delete" class="btn btn-sm fas fa-trash-alt btn-icon bg-danger"></button>
-                           </form>
-                       </div>
+                return '
+                    <div class="tw-flex tw-items-center tw-space-x-3">
+                        <a href="'.route('screen.edit', [$row->id]).'" id="detail" class="tw-text-neutral-500 hover:tw-text-neutral-700 focus:tw-text-neutral-700">
+                                            <i class="fa-regular fa-pen-to-square fa-lg"></i>
+                        </a>
+                        <a href="#" onclick="dialogConfirmWithAjax(deleteScreen, this)" data-id="' . $row->id . '"class="tw-text-neutral-500 hover:tw-text-neutral-700 focus:tw-text-neutral-700" >
+                                            <i class="fa-regular fa-trash-can fa-lg"></i>
+                        </a>
+                    </div>
                 ';
             })
             ->rawColumns(['status','action']);

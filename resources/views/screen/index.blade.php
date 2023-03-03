@@ -32,6 +32,16 @@
 @endsection
 @push('script')
     {!! $dataTable->scripts() !!}
+    <script>
+        function deleteScreen(data){
+            let dataPost = {};
+            dataPost.id = $(data).data('id');
+            $.post('/screen/delete', dataPost).done(function(response) {
+                alert_float('success', response.message);
+                $('#screen_manage').DataTable().ajax.reload(null,false);
+            });
+        }
+    </script>
 @endpush
 
 

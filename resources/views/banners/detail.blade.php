@@ -31,20 +31,25 @@
                             @endforelse
                         </select>
                     </div>
-                    <div class="form-group" id="path_1">
-                        <label class="control-label"><small class="req text-danger">* </small>Ảnh</label>
-                        <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this)"/>
-                        <img id="img_path_1" src="{{ asset('/images/image_holder.png') }}" alt="your image"
-                             class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px"/>
-                        <input name="imageFileName" id="img_path_1_name" value="" hidden/>
-                    </div>
-                    <div class="form-group" id="path_2" style="display: none">
-                        <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this)"/>
-                        <img id="img_path_2" src="{{ $banner['thumb_image'] ?? asset('/images/image_holder.png') }}" alt="your image"
-                             class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px"/>
-                        <span><i>&nbsp; &nbsp;&nbsp;(* đây là ảnh hiển thị ở Home)</i></span>
-                        <span class="warning-alert" id="path_2_required_alert" hidden>Dữ liệu này bắt buộc!</span>
-                        <input name="thumbImageFileName" id="img_path_2_name" value="" hidden/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" id="path_1">
+                                <label class="control-label"><small class="req text-danger">* </small>Ảnh</label>
+                                <input type="file" accept="image/*" name="path_1" class="form-control" onchange="handleUploadImage(this)"/>
+                                <img id="img_path_1" src="{{ asset('/images/image_holder.png') }}" alt="your image"
+                                     class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px"/>
+                                <input name="imageFileName" id="img_path_1_name" value="" hidden/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" id="path_2" style="display: none">
+                                <label class="control-label"><small class="req text-danger">* </small>Ảnh hiển thị ở home</label>
+                                <input type="file" accept="image/*" name="path_2" class="form-control" onchange="handleUploadImage(this)"/>
+                                <img id="img_path_2" src="{{ $banner['thumb_image'] ?? asset('/images/image_holder.png') }}" alt="your image"
+                                     class="img-thumbnail img_viewable" style="max-width: 150px;padding:10px;margin-top:10px"/>
+                                <input name="thumbImageFileName" id="img_path_2_name" value="" hidden/>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">

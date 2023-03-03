@@ -160,6 +160,7 @@ abstract class BuilderDatatables extends DataTable
                 'bDestroy' => true,
                 'autoWidth' => false,
                 'serverSide' => true,
+                'destroy' => true,
                 'retrieve' => false,
                 'initComplete' => $this->htmlInitComplete(),
                 'drawCallback' => $this->htmlDrawCallback(),

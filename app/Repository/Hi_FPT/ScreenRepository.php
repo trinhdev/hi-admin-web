@@ -9,6 +9,7 @@ use App\Models\Employees;
 use App\Models\Screen;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use http\Env\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -61,10 +62,10 @@ class ScreenRepository implements ScreenInterface
         }
     }
 
-    public function delete($id)
+    public function delete($request)
     {
-        Screen::destroy($id);
-        return redirect()->intended('screen')->with(['success'=>'Delete thành công', 'html'=>'Delete thành công']);
+        Screen::destroy($request['id']);
+        return response()->json(['success'=>'Delete thành công', 'message'=>'Delete thành công']);
     }
 
 }

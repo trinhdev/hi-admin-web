@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hi_FPT;
 use App\Contract\Hi_FPT\FtelPhoneInterface;
 use App\DataTables\Hi_FPT\FtelPhoneDatatable;
+use App\DataTables\Hi_FPT\FtelPhoneDetailDatatable;
 use Excel;
 use Illuminate\Http\Request;
 use App\Imports\FtelPhoneImport;
@@ -26,25 +27,19 @@ class FtelPhoneController extends MY_Controller
         return $this->FtelPhoneRepository->all($dataTable, $request);
     }
 
-    public function create()
+    public function create(FtelPhoneDetailDatatable $dataTable,FtelPhoneRequest $request)
     {
-        return view('ftel-phone.create');
+        return $this->FtelPhoneRepository->create($dataTable, $request);
     }
 
-    public function edit($id)
+    public function show(Request $request)
     {
-        $data = DB::table('employees')->find($id);
-        return view('ftel-phone.edit', compact('data'));
+        $data = DB::table('employees')->where('phone', $request->phone)->first();
+        return response(['data' => $data]);
     }
 
     public function update(Request $request,$id) {
         $this->addToLog($request);
         return $this->FtelPhoneRepository->update($request, $id);
-    }
-
-    public function stores(FtelPhoneRequest $request)
-    {
-        $this->addToLog($request);
-        return $this->FtelPhoneRepository->store($request);
     }
 }

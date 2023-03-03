@@ -14,5 +14,5 @@ interface ScreenInterface
 
     public function update($params, $id);
 
-    public function delete($params);
+    public function delete($request);
 }

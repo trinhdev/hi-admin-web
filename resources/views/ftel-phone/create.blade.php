@@ -1,46 +1,74 @@
-@extends('layouts.default')
-@push('header')
-    <link media="all" type="text/css" rel="stylesheet" href="{{url('/')}}/base/css/core.css">
-@endpush
-@section('content')
-    @php
-        $data = session()->get( 'data' );
-    @endphp
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        @include('template.breadcrumb', ['name'=>'Create/Check Phone'])
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row justify-content-md-center">
-                    <div class="col-sm-12">
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <h3 class="card-title uppercase">Form Phone Number </h3>
-                            </div>
-                            <div class="card-body">
-                                @include('template.form-import-phone', [
+@extends('layoutv2.layout.app')
+@section('content')
+    <div id="wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="_buttons">
+                        <a href="{{ route('screen.create') }}" class="btn btn-primary mright5 test pull-left display-block">
+                            <i class="fa-regular fa-plus tw-mr-1"></i>
+                            Thêm mới</a>
+                        <a href="#" onclick="alert('Liên hệ trinhhdp nếu xảy ra lỗi không mong muốn!')" class="btn btn-default pull-left display-block mright5">
+                            <i class="fa-regular fa-user tw-mr-1"></i>Liên hệ
+                        </a>
+                        <div class="visible-xs">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="panel_s tw-mt-2 sm:tw-mt-4">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @include('template.form-import-phone', [
                                     'form'=> 'template.form-import-phone',
-                                    'action'=>route('ftel_phone.store'),
+                                    'action'=>'',
                                     'button'=>'
-                                        <button name="action" type="submit" value="data" class="btn btn-info">Submit API</button>
-                                        <button name="action" type="submit" value="db" class="btn btn-info ml-2">Submit Database </button>'
+                                        <button id="btn-data" type="button" class="action btn btn-info">Submit API</button>
+                                        <button id="btn-db" type="button" class="action btn btn-info ml-2">Submit Database </button>'
                                 ])
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="panel_s tw-mt-2 sm:tw-mt-4">
+                        <div class="panel-body">
+                            <div class="panel-table-full">
+                                {{ $dataTable->table(['id' => 'table_manage'], $footer = false) }}
                             </div>
                         </div>
                     </div>
                 </div>
-        </section>
-        <!-- /.content -->
-        @include('ftel-phone.export')
+            </div>
+        </div>
     </div>
+    @include('template.modal', ['id' => 'showDetail_Modal', 'title'=>'Form nhân viên', 'form'=>'ftel-phone.edit'])
 @endsection
-@push('scripts')
+@push('script')
+    {!! $dataTable->scripts() !!}
     <script>
         $(document).ready(function () {
             postPhone('');
-            datatableFtelPhoneExport();
         });
+        function detailFtelPhone(_this){
+            let dataPost = {};
+            dataPost.phone = $(_this).data('phone');
+            $.post('/ftel-phone/show', dataPost).done(function(response) {
+                console.log(response.data);
+                for (let [key, value] of Object.entries(response.data)) {
+                    let air_direction = $('#'+key);
+                    air_direction.val(value);
+                }
+                $('#showDetail_Modal').modal('toggle');
+                $('body').on('click', '#submitAjax', alert('Chức năng đang bảo trì!'));
+                window.urlMethod = '/ftel-phone/update';
+            });
+        }
     </script>
 @endpush
+
+
+
+

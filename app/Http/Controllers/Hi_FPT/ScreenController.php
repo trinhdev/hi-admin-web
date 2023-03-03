@@ -49,8 +49,8 @@ class ScreenController extends MY_Controller
     }
 
 
-    public function delete($id)
+    public function delete(Request $request)
     {
-        return $this->ScreenRepository->delete($id);
+        return $this->ScreenRepository->delete($request->only('id'));
     }
 }
