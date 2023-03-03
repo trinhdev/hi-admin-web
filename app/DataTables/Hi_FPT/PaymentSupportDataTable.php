@@ -12,6 +12,7 @@ use Yajra\DataTables\Services\DataTable;
 class PaymentSupportDataTable extends BuilderDatatables
 {
     protected $ajaxUrl = ['data' => 'function(d) { console.log(d);d.table = "detail"; }'];
+    protected $orderBy = 5;
 
     public function ajax()
     {
@@ -56,7 +57,7 @@ class PaymentSupportDataTable extends BuilderDatatables
             ->filter(function ($query) {
                 if (request()->filled('type')) {
                     $query->where('status', 'like', "%" . request('type') . "%");
-                    if (request('type') == "0") {
+                    if (request('type') == "0" || empty(request('type'))) {
                         $query->orwhereNull('status');
                     }
                 }
