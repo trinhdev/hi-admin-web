@@ -114,9 +114,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('role')->group(function () {
             Route::get('/', 'RoleController@index')->name('role.index');
             Route::get('/edit/{id?}', 'RoleController@edit')->name('role.edit');
+            Route::post('/update/{id?}', 'RoleController@update')->name('role.update');
             Route::get('/create', 'RoleController@create')->name('role.create');
             Route::post('/store', 'RoleController@store')->name('role.store');
-            Route::delete('/destroy/{id}', 'RoleController@destroy')->name('role.destroy');
+            Route::post('/destroy', 'RoleController@destroy')->name('role.destroy');
         });
 
         Route::prefix('logactivities')->group(function () {

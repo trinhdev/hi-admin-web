@@ -5,16 +5,20 @@
         <div class="content">
             <div class="row">
                 <div class="col-md-7">
+                    <div class="tw-flex tw-justify-between tw-items-center tw-mb-2">
+                        <h4 class="tw-my-0 tw-font-semibold tw-text-lg tw-text-neutral-700">
+                            Thêm vị trí mới </h4>
+                        <a href="/role/create" class="btn btn-success btn-sm">Vị trí mới                    </a>
+                    </div>
                     <div class="panel_s">
                         <div class="panel-body">
-                            <form action="{{ route('role.store') }}" method="post" accept-charset="utf-8"
-                                  novalidate="novalidate">
+                            <form action="{{ route('role.update', [$role->id]) }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label for="name" class="control-label">
                                         <small class="req text-danger">* </small>Tên vị trí
                                     </label>
-                                    <input type="text" id="name" name="name" class="form-control" autofocus="1" >
+                                    <input type="text" id="name" name="name" class="form-control" autofocus="1" value="{{ $role->name }}">
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-bordered roles no-margin">
@@ -35,11 +39,11 @@
                                                 </td>
                                                 <td>
                                                     @foreach($value as $k => $val)
-                                                        <div class="checkbox tw-ml-2">
-                                                            <input id="{{$key.'_'.$val}}" type="checkbox" class="{{$key}} capability" name="permissions[]"
-                                                                   value="{{(int) $k}}">
-                                                            <label for="{{$key.'_'.$val}}"> {!! $val !!} </label>
-                                                        </div>
+                                                            <div class="checkbox tw-ml-2">
+                                                                <input id="{{$key.'_'.$val}}" type="checkbox" class="{{$key}} capability" name="permissions[]"
+                                                                       value="{{(int) $k}}" @if(in_array($k, $rolePermissions)) checked @endif>
+                                                                <label for="{{$key.'_'.$val}}"> {!! $val !!} </label>
+                                                            </div>
                                                     @endforeach
                                                 </td>
                                             </tr>

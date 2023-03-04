@@ -28,8 +28,7 @@ class RolesController extends MY_Controller
 
     public function index(RoleDataTable $dataTable, Request $request)
     {
-        $data = $this->list1();
-        return $dataTable->render('roles.index', ['data' => $this->list1()]);
+        return $dataTable->render('roles.index');
     }
 
     public function edit()

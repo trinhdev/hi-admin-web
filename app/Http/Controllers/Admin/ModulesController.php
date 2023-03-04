@@ -8,6 +8,8 @@ use App\Models\Modules;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use App\Models\Group_Module;
+use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
 use \stdClass;
 
@@ -32,35 +34,6 @@ class ModulesController extends MY_Controller
         return $dataTable->render('modules.index', ['list_icon' => $list_icon, 'list_group_module' => $list_group_module]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $module_list = $this->getAll($this->model);
-        $list_group_module = $this->getAll(new Group_Module);
-        $list_icon = explode(",", file_get_contents(public_path('fontawsome.txt')));
-        $module = new stdClass();
-        $module->id = '';
-        $module->module_name = '';
-        $module->uri = '';
-        $module->group_module_id = '';
-        $module->icon = '';
-        $module->status = True;
-        $module->list_modules = $module_list;
-        $module->list_group_module = $list_group_module;
-        $module->list_icon = $list_icon;
-        return view('modules.edit')->with('module', $module);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -68,8 +41,17 @@ class ModulesController extends MY_Controller
             'uri' => 'required',
         ]);
         $request->merge([
-            'status' => (!isset($request->status)) ? false : true
+            'status' => !!isset($request->status)
         ]);
+
+        $permission = str_replace('-', '', ucwords($request->uri, '-'));
+        Permission::create(['name' => $permission.'-view'])
+            ->create(['name' => $permission.'-create'])
+            ->create(['name' => $permission.'-edit'])
+            ->create(['name' => $permission.'-import'])
+            ->create(['name' => $permission.'-export'])
+            ->create(['name' => $permission.'-delete']);
+
         $module = $this->createSingleRecord($this->model, $request->all());
         $this->addToLog(request());
         return response(['success' => 'success', 'message'=> 'Add new successfully!']);
@@ -88,16 +70,29 @@ class ModulesController extends MY_Controller
             'uri' => 'required',
         ]);
         $request->merge([
-            'status' => (!isset($request->status)) ? false : true
+            'status' => !!isset($request->status)
         ]);
-        $module = $this->updateById($this->model, $id, $request->all());
+
+        $module = Modules::findOrFail($request->id);
+        $permission_old = str_replace('-', '', ucwords($module->uri, '-'));
+        $permission_new = str_replace('-', '', ucwords($request->uri, '-'));
+        Permission::where('name', 'like', $permission_old . "-view")->updateOrCreate([],["name" => $permission_new."-view"]);
+        Permission::where('name', 'like', $permission_old . "-create")->updateOrCreate([],["name" => $permission_new."-create"]);
+        Permission::where('name', 'like', $permission_old . "-edit")->updateOrCreate([],["name" => $permission_new."-edit"]);
+        Permission::where('name', 'like', $permission_old . "-import")->updateOrCreate([],["name" => $permission_new."-import"]);
+        Permission::where('name', 'like', $permission_old . "-export")->updateOrCreate([],["name" => $permission_new."-export"]);
+        Permission::where('name', 'like', $permission_old . "-delete")->updateOrCreate([],["name" => $permission_new."-delete"]);
+        $module->update($request->all());
         $this->addToLog($request);
         return response(['success' => 'success', 'message'=> 'Update successfully!']);
     }
 
     public function destroy(Request $request)
     {
-        $this->deleteById($this->model, $request->id);
+        $module = Modules::findOrFail($request->id);
+        $permission_id = Permission::where('name', 'like', str_replace('-', '', ucwords($module->uri, '-')) . "-%")->pluck('id');
+        Permission::destroy($permission_id);
+        $module->delete();
         $this->addToLog(request());
         return response()->json(['message' => 'Delete Successfully!']);
     }

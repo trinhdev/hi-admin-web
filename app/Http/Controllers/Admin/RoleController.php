@@ -3,29 +3,32 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\DataTables\Admin\RolesDataTable;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class RoleController extends Controller
+class RoleController extends BaseController
 {
 
     function __construct()
     {
-//        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
-//        $this->middleware('permission:role-create', ['only' => ['create','store']]);
-//        $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
-//        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        parent::__construct();
+        $this->title = 'Quản lí phân quyền';
+        $this->middleware('permission:Role-view|Role-create|Role-edit|Role-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:Role-create', ['only' => ['create','store']]);
+        $this->middleware('permission:Role-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:Role-delete', ['only' => ['destroy']]);
     }
 
-    public function index(Request $request)
+    public function index(RolesDataTable $dataTable, Request $request)
     {
-        $roles = Role::orderBy('id','DESC')->paginate(5);
-        return view('roles.index',compact('roles'));
+        return $dataTable->render('roles.index2');
     }
 
     public function create()
@@ -34,17 +37,11 @@ class RoleController extends Controller
         $abc = '';
         $per = Permission::get();
         foreach ($per as $value) {
-            //$sub = substr($value->name, 0, strpos($value->name, "-"));
             $sub = explode('-', $value->name);
             if ($abc != $sub[0] && !empty($sub[1])) {
                 $permission[$sub[0]][$value->id]=$sub[1];
             }
         }
-//        Permission::create(['name' => 'checklistmanage-view']);
-//        Permission::create(['name' => 'checklistmanage-create']);
-//        Permission::create(['name' => 'checklistmanage-edit']);
-//        Permission::create(['name' => 'checklistmanage-import']);
-//        Permission::create(['name' => 'checklistmanage-export']);
         return view('roles.create',compact('permission'));
     }
 
@@ -69,21 +66,28 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
-        if($role->name == 'Super-Admin'){
+        if($role->name == 'super-admin'){
             $notification = array(
-                'message' => "You have no permission for edit this role",
-                'alert-type' => 'error'
+                'danger' => 'danger',
+                'message' => "You have no permission for edit this role"
             );
-            return redirect()->route('roles.index')
-                ->with($notification);
+            return redirect()->route('role.index')->with($notification);
         }
 
-        $permission = Permission::get();
-        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
-            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
-            ->all();
-
-        return view('roles.edit',compact('role','permission','rolePermissions'));
+        $permission = [];
+        $abc = '';
+        $per = Permission::get();
+        foreach ($per as $value) {
+            $sub = explode('-', $value->name);
+            if ($abc != $sub[0] && !empty($sub[1])) {
+                $permission[$sub[0]][$value->id]=$sub[1];
+            }
+        }
+        $rolePermissions = DB::table("role_has_permissions")
+            ->where("role_id",$id)
+            ->pluck('permission_id')
+            ->toArray();
+        return view('roles.edit2',compact('role','permission','rolePermissions'));
     }
 
     public function update(Request $request, $id)
@@ -93,45 +97,24 @@ class RoleController extends Controller
                 'required',
                 Rule::unique('roles','name')->ignore($id)
             ],
-            'permission' => 'required'
+            'permissions' => 'required'
         ]);
         $role = Role::find($id);
         $role->name = $request->input('name');
         $role->save();
 
-        $role->syncPermissions($request->input('permission'));
+        $role->syncPermissions($request->input('permissions'));
 
-        return redirect()->route('roles.index')
-            ->with('success','Role updated successfully');
+        return redirect()->route('role.index')
+            ->withSuccess(['message','Role updated successfully']);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $role = Role::find($id);
-
-        if (auth()->user()->roles->find($id)) {
-            $notification = array(
-                'message' => 'You have no permission for delete this role',
-                'alert-type' => 'error'
-            );
-            return redirect()->route('roles.index')
-                ->with($notification);
-        }
-        if ($role->name == "Super-Admin"){
-            $notification = array(
-                'message' => 'You have no permission for delete Super-Admin role',
-                'alert-type' => 'error'
-            );
-            return redirect()->route('roles.index')
-                ->with($notification);
-        }
-        $role->delete();
-
-        $notification = array(
-            'message' => 'The role deleted successfully',
-            'alert-type' => 'success'
-        );
-        return redirect()->route('roles.index')
-            ->with($notification);
+//        $users_role = User::role($request->role_name)->get();
+//        foreach ($users_role as $user) {
+//            $user->removeRole($request->role_name);
+//        }
+//        return response(['success'=>'Success']);
     }
 }
