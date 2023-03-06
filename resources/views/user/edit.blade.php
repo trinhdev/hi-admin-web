@@ -100,38 +100,6 @@
         <script>
             $(function () {
                 $('#role').trigger('change');
-                $('select[name="role"]').on('change', function () {
-                    var roleid = $(this).val();
-                    init_roles_permissions(roleid, true);
-                });
-
-                $('input[name="administrator"]').on('change', function () {
-                    var checked = $(this).prop('checked');
-                    var isNotStaffMember = $('.is-not-staff');
-                    if (checked == true) {
-                        isNotStaffMember.addClass('hide');
-                        $('.roles').find('input').prop('disabled', true).prop('checked', false);
-                    } else {
-                        isNotStaffMember.removeClass('hide');
-                        isNotStaffMember.find('input').prop('checked', false);
-                        $('.roles').find('.capability').not('[data-not-applicable="true"]').prop('disabled',
-                            false)
-                    }
-                });
-
-                $('#is_not_staff').on('change', function () {
-                    var checked = $(this).prop('checked');
-                    var row_permission_leads = $('tr[data-name="leads"]');
-                    if (checked == true) {
-                        row_permission_leads.addClass('hide');
-                        row_permission_leads.find('input').prop('checked', false);
-                    } else {
-                        row_permission_leads.removeClass('hide');
-                    }
-                });
-
-                init_roles_permissions();
-
                 appValidateForm($('.staff-form'), {
                     firstname: 'required',
                     lastname: 'required',

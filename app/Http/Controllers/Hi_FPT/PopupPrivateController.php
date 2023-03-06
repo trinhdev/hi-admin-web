@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Hi_FPT;
 
 use App\Contract\Hi_FPT\PopupPrivateInterface;
 use App\DataTables\Hi_FPT\PopUpPrivateDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\PopupPrivateRequest\ImportRequest;
 use App\Http\Requests\PopupPrivateRequest\StoreRequest;
@@ -12,7 +13,7 @@ use App\Rules\NumberPhoneRule;
 use Illuminate\Http\Request;
 
 
-class PopupPrivateController extends MY_Controller
+class PopupPrivateController extends BaseController
 {
     private $PopupPrivateRepository;
 

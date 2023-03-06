@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Hi_FPT;
 use App\Contract\Hi_FPT\PopupManageInterface;
 use App\DataTables\Hi_FPT\PopUpDataTable;
 use App\DataTables\Hi_FPT\PopupDetailDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\PopupManageRequest\PushRequest;
 use App\Http\Requests\PopupManageRequest\StoreRequest;
@@ -12,7 +13,7 @@ use App\Http\Traits\DataTrait;
 use App\Services\ExportClickService;
 use Illuminate\Http\Request;
 
-class PopupManageController extends MY_Controller
+class PopupManageController extends BaseController
 {
     private $PopupManageRepository;
 

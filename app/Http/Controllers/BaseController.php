@@ -95,7 +95,7 @@ class BaseController extends Controller
             // Store the menu in cache for 60 minutes
             Cache::put('menu-aside', $groupModules, 5);
         }
-        View::share(['groupModule' => $groupModules]);
+        View::share(['groupModule' => $groupModules, 'title'=>$this->title]);
     }
 
     public function addToLog(Request $request)

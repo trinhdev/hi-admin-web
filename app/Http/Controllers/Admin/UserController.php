@@ -79,7 +79,6 @@ class UserController extends BaseController
         $request->validate([
             'password' => 'nullable|min:1',
             'password_confirmation' => 'nullable|same:password',
-            'role' => 'nullable',
         ]);
         $request->request->remove('password_confirmation');
         if($request->password != null){
