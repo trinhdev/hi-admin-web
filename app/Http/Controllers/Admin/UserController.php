@@ -3,22 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\Admin\UserDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Traits\DataTrait;
+use App\Models\Modules;
 use App\Models\Roles;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
-class UserController extends MY_Controller
+class UserController extends BaseController
 {
     use DataTrait;
     public function __construct()
     {
         parent::__construct();
         $this->title = 'List User';
-        $this->model = $this->getModel('User');
     }
     /**
      * Display a listing of the resource.
@@ -30,32 +34,26 @@ class UserController extends MY_Controller
         return $dataTable->render('user.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $roleList = Roles::get();
-        return view('user.edit')->with(['roleList'=>$roleList]);
+        $role = Role::get();
+        return view('user.create')->with(['role'=>$role]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(UserStoreRequest $request)
     {
-        //
         $request->merge([
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'created_by' => auth()->user()->id
         ]);
-        $this->createSingleRecord($this->model, $request->all());
+        $user = User::create($request->only(['name', 'email', 'password', 'created_by']));
+        if ($request->administrator == 'on') {
+            $user->assignRole('Admin');
+        } else {
+            $user->assignRole($request->role);
+        }
         $this->addToLog(request());
-        return redirect()->route('user.index')->withSuccess('Success!');
+        return redirect()->route('user.index')->with(['status'=>'Success!', 'html' => 'Thành công']);
     }
 
     /**
@@ -69,78 +67,46 @@ class UserController extends MY_Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
-        $roleList = Roles::get();
-        $user = $this->getSigleRecord($this->model, $id);
-        return view('user.edit', compact('user'))->with(['roleList'=>$roleList]);
+        $role = Role::get();
+        $user = User::find($id);
+        return view('user.edit')->with(['user'=>$user, 'role'=>$role]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
             'password' => 'nullable|min:1',
-            'password_confirmation' => 'nullable|same:password'
+            'password_confirmation' => 'nullable|same:password',
+            'role' => 'nullable',
         ]);
         $request->request->remove('password_confirmation');
         if($request->password != null){
             $request->merge([
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
+                'created_by' => auth()->user()->id
             ]);
         }else{
             $request->request->remove('password');
             $request->request->remove('password_confirmation');
         }
-        $this->updateById($this->model,$id,$request->all());
+        $user = User::find($id);
+        $user->update($request->only(['name', 'email', 'password', 'created_by']));
+        if (!empty($request->administrator)) {
+            $role = Role::firstOrCreate(['name' => 'Admin']);
+        } else {
+            $role = Role::firstOrCreate(['name' => $request->role]);
+        }
+        $user->syncRoles($role);
         $this->addToLog($request);
-        return redirect()->route('user.index')->withSuccess('Success!');
+        return redirect()->route('user.index')->with(['status'=>'Success!', 'html' => 'Thành công']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function destroy(Request $request)
     {
         $this->deleteById($this->model, $request->id);
         $this->addToLog(request());
         return response()->json(['message' => 'Delete Successfully!']);
-    }
-    public function initDatatable(Request $request)
-    {
-        if ($request->ajax()) {
-
-            $data = $this->model::query()->with('role');
-            $json =   DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    if($row->role_id == ADMIN){
-                        return "";
-                    }
-                    return view('layouts.button.action')->with(['row' => $row, 'module' => 'user']);
-                })
-                ->editColumn('role_id', function ($row) {
-                    return !empty($row->role) ? $row->role->role_name : '';
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-            return $json;
-        }
     }
 }

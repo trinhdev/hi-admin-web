@@ -305,7 +305,7 @@ Route::group(['middleware' => ['auth']], function () {
         });
 
         Route::prefix('bannermanage')->group(function () {
-            Route::get('/', 'BannerController@all')->name('bannermanage.index');
+            Route::get('/', 'BannerController@index')->name('bannermanage.index');
             Route::post('/store', 'BannerController@store')->name('bannermanage.store');
             Route::get('/export/{id}', 'BannerController@export_click_phone')->name('bannermanage.export');
             Route::post('/update/{id}', 'BannerController@update')->name('bannermanage.update');

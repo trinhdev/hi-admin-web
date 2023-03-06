@@ -20,6 +20,10 @@ class UserDataTable extends BuilderDatatables
                     </div>
                 ';
             })
+            ->editColumn('role_id', function ($row) {
+                $user = User::find($row->id);
+                return $user->getRoleNames()->first();
+            })
             ->editColumn('checkbox',function($row){
                 return '<div class="checkbox"><input type="checkbox" value="'.$row->event_id.'"><label></label></div>';
             })

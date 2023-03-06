@@ -3,24 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\Admin\ModuleDataTable;
-use App\Http\Controllers\MY_Controller;
+use App\Http\Controllers\BaseController;
 use App\Models\Modules;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
 use App\Models\Group_Module;
-use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
-use Yajra\DataTables\DataTables;
-use \stdClass;
 
-class ModulesController extends MY_Controller
+class ModulesController extends BaseController
 {
     use DataTrait;
     public function __construct()
     {
         parent::__construct();
         $this->title = 'List Module';
-        $this->model = $this->getModel('Modules');
     }
     /**
      * Display a listing of the resource.

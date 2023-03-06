@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\DataTables\Hi_FPT\AirDirectionDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use App\Services\AirDirectionService;
 use Illuminate\Http\Request;
 use Matrix\Exception;
 
-class AirDirectionController extends MY_Controller
+class AirDirectionController extends BaseController
 {
     use DataTrait;
 

@@ -1,9 +1,8 @@
 /*!
  * Internal Google Drive Picker Plugin.
  *
- * https://perfexcrm.com/
  *
- * Copyright (c) 2019 Marjan Stojanov
+ * Copyright (c) 2021 TrinhDev
  */
 
 (function($) {

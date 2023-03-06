@@ -6,15 +6,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="_buttons">
-                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                            <a id="addBanner" href="#" class="btn btn-primary mright5 test pull-left display-block">
-                                <i class="fa-regular fa-plus tw-mr-1"></i>
-                                Thêm mới banner</a>
-                            <a href="#" class="btn btn-primary pull-left display-block mright5 hidden-xs"
-                               id="updateBannerFconnect">
-                                <i class="fa-solid fa-upload tw-mr-1"></i>Update banner fconnect
-                            </a>
-                        @endif
+                        <a id="addBanner" href="#" class="btn btn-primary mright5 test pull-left display-block">
+                            <i class="fa-regular fa-plus tw-mr-1"></i>
+                            Thêm mới banner</a>
+                        <a href="#" class="btn btn-primary pull-left display-block mright5 hidden-xs"
+                           id="updateBannerFconnect">
+                            <i class="fa-solid fa-upload tw-mr-1"></i>Update banner fconnect
+                        </a>
 
                         <a href="#" onclick="alert('Liên hệ trinhhdp@fpt.com.vn nếu xảy ra lỗi không mong muốn!')" class="btn btn-default pull-left display-block mright5">
                             <i class="fa-regular fa-user tw-mr-1"></i>Liên hệ

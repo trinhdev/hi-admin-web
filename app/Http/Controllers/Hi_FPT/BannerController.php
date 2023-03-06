@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Hi_FPT;
 
 use App\Contract\Hi_FPT\BannerManageInterface;
 use App\DataTables\Hi_FPT\BannerManageDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\BannerManageRequest\ExportRequest;
 use App\Http\Requests\BannerManageRequest\StoreRequest;
 use App\Http\Requests\BannerManageRequest\UpdateRequest;
 use Illuminate\Http\Request;
 
-class BannerController extends MY_Controller
+class BannerController extends BaseController
 {
     private $BannerManageRepository;
 
@@ -21,7 +22,7 @@ class BannerController extends MY_Controller
         $this->BannerManageRepository = $BannerManageRepository;
     }
 
-    public function all(BannerManageDataTable $dataTable, Request $request)
+    public function index(BannerManageDataTable $dataTable, Request $request)
     {
         return $this->BannerManageRepository->all($dataTable, $request);
     }

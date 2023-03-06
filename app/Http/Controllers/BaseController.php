@@ -5,98 +5,47 @@ namespace App\Http\Controllers;
 use App\Models\Group_Module;
 use App\Models\Log_activities;
 use App\Models\Modules;
-use App\Models\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
-use Spatie\Permission\Models\Permission;
 
 class BaseController extends Controller
 {
     protected $user;
-    protected $module_name;
-    protected $model;
-    protected $redis;
-    protected $aclCurrentModule;
-    /**
-     * model of module
-     * @var $model_name
-     */
-    protected $model_name;
-    /**
-     * current controller name
-     * @var $controller_name
-     */
-    protected $controller_name;
-
-    /**
-     * current action name
-     * @var $action_name
-     */
-
-    /**
-     * @var string
-     */
-    protected $action_list = 'view';
-    /**
-     * @var string
-     */
-    protected $action_detail = 'detail';
-    /**
-     * @var string
-     */
-    protected $action_edit = 'edit';
-    /**
-     * @var string
-     */
-    protected $action_delete = 'delete';
-
     protected $title = 'Title';
 
-
-    /**
-     * @var null
-     */
-    protected $link_detail = null;
-    /**
-     * @var null
-     */
-    protected $link_action = null;
-
-    protected $action_name;
     public function __construct()
     {
-        $this->beforeExecuteRoute();
-        $this->middleware('permission:Role-view|Role-create|Role-edit|Role-delete|Role-import|Role-export', ['only' => ['index','store']]);
-        $this->middleware('permission:Role-create', ['only' => ['create','store']]);
-        $this->middleware('permission:Role-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:Role-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:Role-import', ['only' => ['import']]);
-        $this->middleware('permission:Role-export', ['only' => ['export']]);
+        $permission = str_replace('-', '', ucwords(request()->segment(1), '-'));
+        $this->middleware('permission:'.$permission.'-view|'.$permission.'-create|'.$permission.'-edit|'.$permission.'-delete|'.$permission.'-import|'.$permission.'-export', ['only' => ['index','store']]);
+        $this->middleware('permission:'.$permission.'-create', ['only' => ['create','store']]);
+        $this->middleware('permission:'.$permission.'-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:'.$permission.'-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:'.$permission.'-import', ['only' => ['import']]);
+        $this->middleware('permission:'.$permission.'-export', ['only' => ['export']]);
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             $this->getListModule();
             return $next($request);
         });
-
     }
 
     public function getListModule()
     {
         //checking redis
 //        $moduleModel = $this->getModel("Modules");
-//        $keyName = config('constants.REDIS_KEY.MODULE_BY_ROLE_ID').$this->user->role->id; // redis key: acl role module
+//        $keyName = config('constants.REDIS_KEY.MODULE_BY_'.$permission.'_ID').$this->user->'.$permission.'->id; // redis key: acl '.$permission.' module
 //        $data = Redis::get($keyName);
 //        if(!is_null($data)) {
 //            // dd(now()->format('h:i:s'));
 //            $getModuleData = unserialize($data);
 //        }else{
-//            $getModuleData = $moduleModel->getModulesGroupByParent($this->user->role_id);
+//            $getModuleData = $moduleModel->getModulesGroupByParent($this->user->'.$permission.'_id);
 //            Redis::set($keyName, serialize($getModuleData));
 //        }
 //        $data = [];
-//        $getModuleData = $moduleModel->getModulesGroupByParent($this->user->role_id);
+//        $getModuleData = $moduleModel->getModulesGroupByParent($this->user->'.$permission.'_id);
 //        if (!empty($getModuleData->listModule)) {
 //            $moduleUri = request()->segment(1);
 //            $key =  array_search($moduleUri, array_column(json_decode(json_encode($getModuleData->listModule), TRUE), 'uri'));
@@ -108,114 +57,47 @@ class BaseController extends Controller
 //            $data = [];
 //        }
 //        $this->aclCurrentModule = $data;
-
-        $menu = new \stdClass();
+//        $menu = new \stdClass();
 
         $user_permission = $this->user->getPermissionsViaRoles()->pluck('name');
         $arr_module = [];
         foreach ($user_permission as $permisstion) {
             $string = explode('-', $permisstion);
-            $arr_module[] = strtolower($string[0]);
+            $arr_module[] = strtolower(preg_replace('/(?<!^)([A-Z])/', '-$1', $string[0]));
         }
-        $modules = Modules::whereIn('uri', array_unique($arr_module))->get();
-        $group = Group_Module::all();
-        $group->children = $modules;
-        $menu->group = $group;
-        dd($menu);
-        View::share(['groupModule' => $menu]);
-    }
-    public function beforeExecuteRoute()
-    {
-        $this->controller_name = request()->segment(1);
-        $this->action_name = request()->segment(2);
-        $this->action_name = ($this->action_name == '') ? 'list' : $this->action_name;
-    }
-    protected function getModel($model_name = null)
-    {
-        $model_focus = $this->model_name;
-        if ($model_name) {
-            $model_focus = $model_name;
+        $groupModules = Cache::get('menu-aside');
+        // If the menu is not available in cache, generate it and store in cache
+        if ($groupModules === null) {
+            if ($this->user->hasRole('Super Admin') || $this->user->hasRole('Admin')) {
+                $modules = Modules::get();
+            } else {
+                $modules = Modules::whereIn('uri', array_unique($arr_module))->get();
+            }
+            $groupModules = [];
+
+            // Loop through group modules to create an array with group module ids as keys
+
+            foreach (Group_Module::all() as $groupModule) {
+                $groupModules[$groupModule->id] = (object) [
+                    'group_module_name' => $groupModule->group_module_name,
+                    'children' => []
+                ];
+            }
+            foreach ($modules as $module) {
+                $groupModuleId = $module->group_module_id;
+                if (isset($groupModules[$groupModuleId])) {
+                    $groupModules[$groupModuleId]->children[] = $module;
+                }
+            }
+            $groupModules = array_filter($groupModules, function ($item) {
+                return !empty($item->children);
+            });
+            // Store the menu in cache for 60 minutes
+            Cache::put('menu-aside', $groupModules, 5);
         }
-
-        if ($model_focus) {
-            $model_path = 'App\\Models\\' . ucfirst($model_focus);
-            $model = new $model_path();
-            /**
-             * @var ModelBase $model
-             */
-            return $model;
-        } else {
-            return null;
-        }
-    }
-    public function list1()
-    {
-        $data = null;
-        $title = 'List ' . $this->model_name;
-
-        $data['title'] = $title;
-
-        $controller = strtolower($this->controller_name);
-        $action = strtolower($this->action_name);
-
-        $data['model_name'] = strtolower($this->model_name);
-        $data['module_mane'] = strtolower($this->module_name);
-
-        $data['controller'] = $controller;
-        $data['action'] = $action;
-        $data['action_list'] = $this->action_list;
-        $data['action_detail'] = $this->action_detail;
-        $data['action_edit'] = $this->action_edit;
-        $data['action_delete'] = $this->action_delete;
-
-        $data['link_action'] = $this->link_action;
-        return $data;
-    }
-    public function edit1()
-    {
-        $data = func_get_args();
-        if (!is_array($data)) {
-            $data = array();
-        }
-        $id = request()->segment(3);
-        // get model
-        $model = $this->getModel();
-        $result = null;
-
-        if ($id) {
-            $result = $model::find($id);
-            $view_title = !empty($model->edit_view['title']) ? $model->edit_view['title'] : 'name';
-            $title = 'Edit ' . $this->model_name . ': ' . $result->$view_title;
-        } else {
-            $title = 'Create ' . $this->model_name;
-        }
-        $data['title'] = $title;
-        $data['edit_view'] = $model->edit_view;
-        $data['model'] = $model;
-        if (isset(session()->all()['data'])) {
-            $result = (object)session()->all()['data'];
-        }
-        $data['data'] = $result;
-
-        $controller = strtolower($this->controller_name);
-        $action = strtolower($this->action_name);
-
-        $data['model_name'] = $this->model_name;
-        $data['controller'] = $controller;
-        $data['action'] = $action;
-        $data['menu'] = $model->menu;
-        $data['action_detail'] = $this->action_detail;
-        return $data;
+        View::share(['groupModule' => $groupModules]);
     }
 
-    public function redirect($url = null)
-    {
-        return redirect('/' . $url);
-    }
-    private function getSetting(){
-        $setting_data = Settings::get();
-        View::share(['Settings'=>$setting_data]);
-    }
     public function addToLog(Request $request)
     {
         $tmpStr = '******';

@@ -1,7 +1,7 @@
 <div class="row">
 
     <div class="tw-ml-3 tw-mb-2 sm:tw-mb-4">
-        <a href="http://perfex.local/admin/roles/role" class="btn btn-info" data-toggle="modal" data-target="#showDetail_Modal">
+        <a href="#" class="btn btn-info" data-toggle="modal" data-target="#showDetail_Modal">
             <i class="fa-regular fa-plus tw-mr-1"></i>
             Thêm mới URI                    </a>
     </div>
@@ -53,14 +53,8 @@
                 $('#name_uri').val($(this).data('name'));
                 $('#status').val($(this).data('status')).trigger('change');
             });
-            $("#status").keyup(function() {
-                console.log()
-                Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
-                $("#Restaurant_Slug").val(Text);
-            });
 
             $('body').on('click', '#submitAjax', function (e){
-                $(this).attr('disabled','disabled');
                 e.preventDefault();
                 let data = {};
                 data.uri = $('#uri').val();
@@ -74,7 +68,7 @@
                     success: (data) => {
                         console.log(data);
                         $("#spinner").removeClass("show");
-                        alert_float('success',data.html);
+                        alert_float(data.status,data.html);
                         $('#uri_manage').DataTable().ajax.reload();
                         $('#showDetail_Modal').modal('toggle');
                     },

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\DataTables\Admin\RolesDataTable;
+use App\Models\Modules;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -35,10 +36,14 @@ class RoleController extends BaseController
         foreach ($per as $value) {
             $sub = explode('-', $value->name);
             if ($abc != $sub[0] && !empty($sub[1])) {
-                $permission[$sub[0]][$value->id]=$sub[1];
+                $modules = Modules::select('module_name')
+                    ->where('uri', strtolower(preg_replace('/(?<!^)([A-Z])/', '-$1',$sub[0])))
+                    ->first();
+                $permission[$sub[0]]['name'] = !empty($modules) ? $modules->module_name : $sub[0];
+                $permission[$sub[0]]['permission'][$value->id] = $sub[1];
             }
         }
-        return view('roles.create',compact('permission'));
+        return view('roles.create', compact('permission'));
     }
 
     public function store(Request $request)
@@ -51,7 +56,7 @@ class RoleController extends BaseController
         $role->syncPermissions($request->input('permissions'));
 
         return redirect()->back()
-            ->with('success','Role created successfully');
+            ->with('success', 'Role created successfully');
     }
 
     public function show($id)
@@ -62,7 +67,7 @@ class RoleController extends BaseController
     public function edit($id)
     {
         $role = Role::find($id);
-        if($role->name == 'super-admin'){
+        if ($role->name == 'super-admin') {
             $notification = array(
                 'danger' => 'danger',
                 'message' => "You have no permission for edit this role"
@@ -76,14 +81,14 @@ class RoleController extends BaseController
         foreach ($per as $value) {
             $sub = explode('-', $value->name);
             if ($abc != $sub[0] && !empty($sub[1])) {
-                $permission[$sub[0]][$value->id]=$sub[1];
+                $permission[$sub[0]][$value->id] = $sub[1];
             }
         }
         $rolePermissions = DB::table("role_has_permissions")
-            ->where("role_id",$id)
+            ->where("role_id", $id)
             ->pluck('permission_id')
             ->toArray();
-        return view('roles.edit2',compact('role','permission','rolePermissions'));
+        return view('roles.edit2', compact('role', 'permission', 'rolePermissions'));
     }
 
     public function update(Request $request, $id)
@@ -91,7 +96,7 @@ class RoleController extends BaseController
         $this->validate($request, [
             'name' => [
                 'required',
-                Rule::unique('roles','name')->ignore($id)
+                Rule::unique('roles', 'name')->ignore($id)
             ],
             'permissions' => 'required'
         ]);
@@ -102,7 +107,7 @@ class RoleController extends BaseController
         $role->syncPermissions($request->input('permissions'));
 
         return redirect()->route('role.index')
-            ->withSuccess(['message','Role updated successfully']);
+            ->withSuccess(['message', 'Role updated successfully']);
     }
 
     public function destroy(Request $request)

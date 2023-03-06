@@ -4,18 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Contract\Hi_FPT\SettingInterface;
 use App\DataTables\Admin\UrlSettingDataTable;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\MY_Controller;
-use App\Http\Requests\SettingRequest;
-use App\Http\Response\HttpResponse;
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
-use App\Http\Traits\DataTrait;
-use Yajra\DataTables\DataTables;
-use \stdClass;
 
 use App\Models\Settings;
 
-class GeneralSettingsController extends MY_Controller
+class GeneralSettingsController extends BaseController
 {
     /**
      * @var SettingInterface
@@ -30,7 +24,6 @@ class GeneralSettingsController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Settings';
-        $this->model = $this->getModel('Settings');
         $this->settingRepository = $settingRepository;
     }
 
@@ -145,6 +138,13 @@ class GeneralSettingsController extends MY_Controller
 
     protected function saveUriSetting(Request $request)
     {
+        $request->validate([
+            'uri' => [
+                'required',
+                'string',
+                'regex:/^[a-zA-Z0-9\-]+$/',
+            ],
+        ]);
         $form = (object)[
           'name' => $request->name_uri,
           'uri' => $request->uri,
@@ -152,9 +152,14 @@ class GeneralSettingsController extends MY_Controller
         ];
         $model = Settings::where('name', 'uri_config')->get()->pluck('value', 'name');
         $data = json_decode($model['uri_config'], false);
+        foreach ($data as $value) {
+            if ($value->uri == $request->uri) {
+                return response(['status'=>'danger', 'html'=> 'Uri đã tồn tại!']);
+            }
+        }
         $data[] = $form;
         setting()->set('uri_config', json_encode($data));
         setting()->save();
-        return response()->json(['success'=>'Thành công', 'html'=> 'Thêm mới thành công!']);
+        return response()->json(['status'=>'success', 'html'=> 'Thêm mới thành công!']);
     }
 }

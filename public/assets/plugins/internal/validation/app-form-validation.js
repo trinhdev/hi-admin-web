@@ -1,9 +1,8 @@
 /*!
  * Internal App Plugin for validation that extends jQuery Validation plugin.
  *
- * https://perfexcrm.com/
  *
- * Copyright (c) 2019 Marjan Stojanov
+ * Copyright (c) 2021 TrinhDev
  */
 
 if (typeof $.validator == "undefined") {

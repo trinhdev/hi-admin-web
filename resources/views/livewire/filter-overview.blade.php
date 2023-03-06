@@ -5,11 +5,7 @@
         });
         Livewire.on('overview', data => {
             let action = document.getElementById('total_action');
-            let session = document.getElementById('total_session');
-            let duration = document.getElementById('total_duration');
             action.textContent = data.count_data;
-            session.textContent = data.count_session_id;
-            duration.textContent = data.total_time_duration;
         });
     </script>
 @endpush

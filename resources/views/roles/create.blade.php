@@ -30,11 +30,11 @@
                                                 <td>
                                                     <div class="checkbox tw-ml-2">
                                                         <input onclick="check_value(this)" id="{{ $key }}" type="checkbox" class="capability">
-                                                        <label for="{{ $key }}"><b>{{ $key }}</b></label>
+                                                        <label for="{{ $key }}"><b>{{ $value['name'] }}</b></label>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    @foreach($value as $k => $val)
+                                                    @foreach($value['permission'] as $k => $val)
                                                         <div class="checkbox tw-ml-2">
                                                             <input id="{{$key.'_'.$val}}" type="checkbox" class="{{$key}} capability" name="permissions[]"
                                                                    value="{{(int) $k}}">

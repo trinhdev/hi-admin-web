@@ -2,7 +2,7 @@
     <ul class="nav metis-menu" id="side-menu">
         <li class="tw-mt-[63px] sm:tw-mt-0 -tw-mx-2 tw-overflow-hidden sm:tw-bg-neutral-900/50">
             <div id="logo" class="tw-py-2 tw-px-2 tw-h-[63px] tw-flex tw-items-center">
-                <a href="{{ url('/testv2') }}" class="!tw-mt-0 logo logo-text">
+                <a href="{{ url('/') }}" class="!tw-mt-0 logo logo-text">
                     <img
                         style="max-width: 100%; height: auto;line-height: .8;margin: -3px 0.5rem 0px 0.8rem;max-height: 33px;"
                         src="{{ asset('themes/images/logo-hifpt1.png') }}" alt="Logo"
