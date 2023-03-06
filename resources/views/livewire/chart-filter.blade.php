@@ -70,10 +70,8 @@
             chart.config.type = data.type;
             if(data.chart === 'DSD' || data.chart === 'MSD') {
                 chart.options.plugins.tooltip.mode = 'point';
-                chart.options.plugins.tooltip.mode = 'Millisecond';
             } else {
                 chart.options.plugins.tooltip.mode = 'index';
-                chart.options.plugins.tooltip.mode = 'Click';
             }
             chart.update();
         });
