@@ -18,12 +18,13 @@ class ReportCustomerMarketingExport implements FromQuery, WithHeadings
 
     public function query()
     {
-        return ReportCustomerMarketing::query()->select(['phone', 'contract_no', 'full_name', 'email', 'address', 'location_zone', 'branch_name', 'foxpay_status', 'is_fpt_employee', 'local_type', 'first_date_login', 'date_login'])->where('import_id', $this->import_id);
+        return ReportCustomerMarketing::query()->select(['customer_id', 'phone', 'contract_no', 'full_name', 'email', 'address', 'location_zone', 'branch_name', 'foxpay_status', 'is_fpt_employee', 'local_type', 'first_date_login', 'date_login'])->where('import_id', $this->import_id);
     }
 
     public function headings(): array
     {
         return [
+            'Mã khách hàng',
             'Số điện thoại',
             'Mã hợp đồng',
             'Tên',

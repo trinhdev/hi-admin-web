@@ -12,6 +12,7 @@ class Report_Customer_Marketing extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'id',
+        'customer_id',
         'phone',
         'contract_no',
         'full_name',
