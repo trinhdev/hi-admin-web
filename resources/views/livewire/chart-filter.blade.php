@@ -70,8 +70,10 @@
             chart.config.type = data.type;
             if(data.chart === 'DSD' || data.chart === 'MSD') {
                 chart.options.plugins.tooltip.mode = 'point';
+                chart.options.scales.y.title.text = 'Milliseconds';
             } else {
                 chart.options.plugins.tooltip.mode = 'index';
+                chart.options.scales.y.title.text = 'User active';
             }
             chart.update();
         });
