@@ -20,10 +20,6 @@ class RoleController extends BaseController
     {
         parent::__construct();
         $this->title = 'Quản lí phân quyền';
-        $this->middleware('permission:Role-view|Role-create|Role-edit|Role-delete', ['only' => ['index','store']]);
-        $this->middleware('permission:Role-create', ['only' => ['create','store']]);
-        $this->middleware('permission:Role-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:Role-delete', ['only' => ['destroy']]);
     }
 
     public function index(RolesDataTable $dataTable, Request $request)

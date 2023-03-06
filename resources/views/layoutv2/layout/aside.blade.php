@@ -17,13 +17,13 @@
         @endphp
         @if(!empty($groupModule))
             @foreach($groupModule as $group)
-                @if(!empty($group->children))
-                    <li class="menu-item-{{ $group->group_module_name}}">
-                        <a href="#" aria-expanded="false">
-                            <i class="fa {{ $icon[$key] ?? null }} menu-icon"></i>
-                            <span class="menu-text">{{ $group->group_module_name}}</span>
-                            <span class="fa arrow pleft5"></span>
-                        </a>
+                <li class="menu-item">
+                    <a href="#" aria-expanded="false">
+                        <i class="fa {{ $icon[$key] ?? null }} menu-icon"></i>
+                        <span class="menu-text">{{ $group->group_module_name}}</span>
+                        <span class="fa arrow pleft5"></span>
+                    </a>
+                    @if(!empty($group->children))
                         <ul class="nav nav-second-level collapse" aria-expanded="false">
                             @foreach($group->children as $module)
                                 <li class="sub-menu-item-{{ $module->module_name}}">
@@ -34,8 +34,8 @@
                                 </li>
                             @endforeach
                         </ul>
-                    </li>
-                @endif
+                    @endif
+                </li>
                 @php
                     $key ++;
                 @endphp

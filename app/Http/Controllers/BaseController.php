@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group_Module;
 use App\Models\Log_activities;
 use App\Models\Modules;
 use App\Models\Settings;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\View;
+use Spatie\Permission\Models\Permission;
 
 class BaseController extends Controller
 {
@@ -66,44 +68,61 @@ class BaseController extends Controller
     public function __construct()
     {
         $this->beforeExecuteRoute();
-        $this->middleware('auth');
+        $this->middleware('permission:Role-view|Role-create|Role-edit|Role-delete|Role-import|Role-export', ['only' => ['index','store']]);
+        $this->middleware('permission:Role-create', ['only' => ['create','store']]);
+        $this->middleware('permission:Role-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:Role-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:Role-import', ['only' => ['import']]);
+        $this->middleware('permission:Role-export', ['only' => ['export']]);
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
-            if(!empty($this->user->role)){
-                $this->getListModule();
-            }
-            $this->getSetting();
+            $this->getListModule();
             return $next($request);
         });
+
     }
 
     public function getListModule()
     {
         //checking redis
-        $moduleModel = $this->getModel("Modules");
-        $keyName = config('constants.REDIS_KEY.MODULE_BY_ROLE_ID').$this->user->role->id; // redis key: acl role module
-        $data = Redis::get($keyName);
-        if(!is_null($data)) {
-            // dd(now()->format('h:i:s'));
-            $getModuleData = unserialize($data);
-        }else{
-            $getModuleData = $moduleModel->getModulesGroupByParent($this->user->role_id);
-            Redis::set($keyName, serialize($getModuleData));
+//        $moduleModel = $this->getModel("Modules");
+//        $keyName = config('constants.REDIS_KEY.MODULE_BY_ROLE_ID').$this->user->role->id; // redis key: acl role module
+//        $data = Redis::get($keyName);
+//        if(!is_null($data)) {
+//            // dd(now()->format('h:i:s'));
+//            $getModuleData = unserialize($data);
+//        }else{
+//            $getModuleData = $moduleModel->getModulesGroupByParent($this->user->role_id);
+//            Redis::set($keyName, serialize($getModuleData));
+//        }
+//        $data = [];
+//        $getModuleData = $moduleModel->getModulesGroupByParent($this->user->role_id);
+//        if (!empty($getModuleData->listModule)) {
+//            $moduleUri = request()->segment(1);
+//            $key =  array_search($moduleUri, array_column(json_decode(json_encode($getModuleData->listModule), TRUE), 'uri'));
+//            if (!isset($getModuleData->listModule[$key])) {
+//                abort(403);
+//            }
+//            $data = $getModuleData->listModule[$key];
+//        } else {
+//            $data = [];
+//        }
+//        $this->aclCurrentModule = $data;
+
+        $menu = new \stdClass();
+
+        $user_permission = $this->user->getPermissionsViaRoles()->pluck('name');
+        $arr_module = [];
+        foreach ($user_permission as $permisstion) {
+            $string = explode('-', $permisstion);
+            $arr_module[] = strtolower($string[0]);
         }
-        $data = [];
-        $getModuleData = $moduleModel->getModulesGroupByParent($this->user->role_id);
-        if (!empty($getModuleData->listModule)) {
-            $moduleUri = request()->segment(1);
-            $key =  array_search($moduleUri, array_column(json_decode(json_encode($getModuleData->listModule), TRUE), 'uri'));
-            if (!isset($getModuleData->listModule[$key])) {
-                abort(403);
-            }
-            $data = $getModuleData->listModule[$key];
-        } else {
-            $data = [];
-        }
-        $this->aclCurrentModule = $data;
-        View::share(['groupModule' => $getModuleData->arrayGroupkey, 'aclCurrentModule' => $data,'title'=>$this->title]);
+        $modules = Modules::whereIn('uri', array_unique($arr_module))->get();
+        $group = Group_Module::all();
+        $group->children = $modules;
+        $menu->group = $group;
+        dd($menu);
+        View::share(['groupModule' => $menu]);
     }
     public function beforeExecuteRoute()
     {
