@@ -27,7 +27,11 @@ class ModulesController extends BaseController
     {
         $list_icon = explode(",", file_get_contents(public_path('fontawsome.txt')));
         $list_group_module = $this->getAll(new Group_Module);
-        return $dataTable->render('modules.index', ['list_icon' => $list_icon, 'list_group_module' => $list_group_module]);
+        $data = [
+            'list_icon' => $list_icon,
+            'list_group_module' => $list_group_module
+        ];
+        return $dataTable->render('modules.index', ['data' => $data]);
     }
 
     public function store(Request $request)
@@ -68,6 +72,8 @@ class ModulesController extends BaseController
         $request->merge([
             'status' => !!isset($request->status)
         ]);
+
+
 
         $module = Modules::findOrFail($request->id);
         $permission_old = str_replace('-', '', ucwords($module->uri, '-'));

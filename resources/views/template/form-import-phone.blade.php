@@ -6,7 +6,7 @@
                 điện thoại <br>
                 - Nếu như tải lên file exel, lưu SDT theo 1 cột duy nhất, Tải file mẫu
                 <a href="https://docs.google.com/spreadsheets/d/1ifAR0UwfdV03Sidcshjvwl1pn1YmYBD9/edit?usp=sharing&ouid=113322866597815571901&rtpof=true&sd=true"
-                   target="_blank"> <b> tại đây</b> <a/>
+                   target="_blank"> <b> tại đây</b> </a>
             </p>
         </div>
         <form id="importExcel" enctype="multipart/form-data" action="{{ $action }}" method="POST">

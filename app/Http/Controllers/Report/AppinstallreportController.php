@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ use App\Exports\ExcelExport;
 use Excel;
 use File;
 
-class AppinstallreportController extends MY_Controller
+class AppinstallreportController extends BaseController
 {
     //
     use DataTrait;
@@ -27,7 +28,7 @@ class AppinstallreportController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Count Install app';
-        $this->model = $this->getModel('App_install_logs');
+        $this->model = new App_install_logs();
     }
 
     public function index(Request $request)
@@ -93,7 +94,7 @@ class AppinstallreportController extends MY_Controller
                 'file'      => null
             ];
         }
-        
+
         return response()->json($response);
     }
 }

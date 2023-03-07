@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="_buttons">
-                        <a href="{{ route('groups.create') }}" class="btn btn-primary mright5 test pull-left display-block">
+                        <a href="#" class="btn btn-primary mright5 test pull-left display-block">
                             <i class="fa-regular fa-plus tw-mr-1"></i>
                             Thêm mới</a>
                         <a href="#" onclick="alert('Liên hệ trinhhdp@fpt.com.vn nếu xảy ra lỗi không mong muốn!')" class="btn btn-default pull-left display-block mright5">

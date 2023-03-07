@@ -76,7 +76,7 @@
 
         function pushModules() {
             $(this).attr('disabled', 'disabled');
-            let data = $('#form').serialize();
+            let data = $('#formModules').serialize();
             $.ajax({
                 url: urlMethod,
                 type: 'POST',

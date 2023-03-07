@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Hi_FPT;
 
 use App\Contract\Hi_FPT\RenderDeeplinkInterface;
 use App\DataTables\Hi_FPT\RenderDeeplinkDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\RenderDeeplinkRequest\StoreRequest;
 use App\Http\Requests\RenderDeeplinkRequest\UpdateRequest;
 use Illuminate\Http\Request;
 
-class RenderDeeplinkController extends MY_Controller
+class RenderDeeplinkController extends BaseController
 {
     private $RenderDeeplinkRepository;
 

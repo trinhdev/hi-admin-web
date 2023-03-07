@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Report;
 
 use App\DataTables\Hi_FPT\SaleReportByDateDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
@@ -24,7 +25,7 @@ use DateTime;
 use DatePeriod;
 use DateInterval;
 
-class SalereportbydateController extends MY_Controller
+class SalereportbydateController extends BaseController
 {
     //
     use DataTrait;
@@ -86,9 +87,9 @@ class SalereportbydateController extends MY_Controller
         $query1 = Sale_Report_By_Range::selectRaw("service,
                                                 zone,
                                                 NULL AS branch_name,
-                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time',
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
-                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time',
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time',
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', list_emp_phone, null)) AS 'count_employees_last_time',
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', list_emp_phone, null)) AS 'count_employees_this_time'")
@@ -101,9 +102,9 @@ class SalereportbydateController extends MY_Controller
         $data = Sale_Report_By_Range::selectRaw("service,
                                                 zone,
                                                 branch_name,
-                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time',
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
-                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time',
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time',
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', list_emp_phone, null)) AS 'count_employees_last_time',
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', list_emp_phone, null)) AS 'count_employees_this_time'")
@@ -117,14 +118,14 @@ class SalereportbydateController extends MY_Controller
                                     ->orderBy('branch_name')
                                     ->get()
                                     ->groupBy(['service'])
-                                    ->toArray();    
+                                    ->toArray();
 
         $total = Sale_Report_By_Range::selectRaw("service,
                                                 'Total' AS zone,
                                                 NULL AS branch_name,
-                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time',
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
-                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time',
                                                 SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time',
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', list_emp_phone, null)) AS 'count_employees_last_time',
                                                 GROUP_CONCAT(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', list_emp_phone, null)) AS 'count_employees_this_time'")
@@ -148,7 +149,7 @@ class SalereportbydateController extends MY_Controller
 
         // count by product type
         $data_product = Sale_Report_By_Range::selectRaw("service,
-                                                    SUM(count) AS 'count_this_time', 
+                                                    SUM(count) AS 'count_this_time',
                                                     SUM(amount) AS 'amount_this_time'")
                                             ->whereIn('service', $services_filter)
                                             ->whereIn('zone', $zone)
@@ -157,22 +158,22 @@ class SalereportbydateController extends MY_Controller
                                             ->get()
                                             ->groupBy(['service'])
                                             ->toArray();
-            
-        
+
+
 
         if(in_array('vietlott', $services_filter)) {
             $data_vietlott_total = Vietlott_Orders::selectRaw("'Total' AS product_name,
-                        SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', quantity, 0)) AS 'count_last_time', 
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', quantity, 0)) AS 'count_last_time',
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', product_price * quantity - discount_price, 0)) AS 'amount_last_time',
-                        SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time', 
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time',
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', product_price * quantity - discount_price, 0)) AS 'amount_this_time'")
                 ->where('order_status', 'SUCCESS')
                 ->whereBetween('t_create', [$from1, $to2]);
 
             $data_vietlott = Vietlott_Orders::selectRaw("product_name,
-                        SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', quantity, 0)) AS 'count_last_time', 
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', quantity, 0)) AS 'count_last_time',
                         SUM(IF(DATE(t_create) BETWEEN '" . $from1 . "' AND '" . $to1 . "', product_price * quantity - discount_price, 0)) AS 'amount_last_time',
-                        SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time', 
+                        SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', quantity, 0)) AS 'count_this_time',
                         SUM(IF(DATE(t_create) BETWEEN '" . $from2 . "' AND '" . $to2 . "', product_price * quantity - discount_price, 0)) AS 'amount_this_time'")
             ->where('order_status', 'SUCCESS')
             ->whereBetween('t_create', [$from1, $to2])
@@ -184,12 +185,12 @@ class SalereportbydateController extends MY_Controller
         else {
             $data_vietlott = [];
         }
-        
-        $productByService = Sale_Report_By_Range_Product::selectRaw("product_type, 
-                                                                    SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+
+        $productByService = Sale_Report_By_Range_Product::selectRaw("product_type,
+                                                                    SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time',
                                                                     SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
-                                                                    SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
-                                                                    SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time', 
+                                                                    SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time',
+                                                                    SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time',
                                                                     service")
                                                         ->whereIn('service', $services_filter)
                                                         ->whereIn('zone', $zone)
@@ -199,13 +200,13 @@ class SalereportbydateController extends MY_Controller
                                                         // ->sortBy('count')
                                                         ->get()
                                                         ->groupBy(['service'])
-                                                        
+
                                                         ->toArray();
-                                        
-        $productByCategory = Sale_Report_By_Range_Product_Category::selectRaw("product_category, 
-                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+
+        $productByCategory = Sale_Report_By_Range_Product_Category::selectRaw("product_category,
+                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time',
                                                                                 SUM(IF(DATE(created_at) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
-                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                                                                                SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time',
                                                                                 SUM(IF(DATE(created_at) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time',
                                                                                 service")
                                                         ->whereIn('service', $services_filter)
@@ -219,7 +220,7 @@ class SalereportbydateController extends MY_Controller
                                                         // ->sortBy('count')
                                                         ->groupBy(['service'])
                                                         ->toArray();
-        
+
         // if(!empty($request->filter)) {
         //     return back()->withInput();
         //     // return redirect()->route('reportsalebydate.index', ['data' => $data, 'productByService' => $productByService, 'productByCategory' => $productByCategory, 'services' => $services, 'last_time' => date('d/m/Y', strtotime($from1)) . ' - ' . date('d/m/Y', strtotime($to1)), 'this_time' => date('d/m/Y', strtotime($from2)) . ' - ' . date('d/m/Y', strtotime($to2)), 'data_product' => $data_product, 'data_vietlott' => @$data_vietlott]);
@@ -241,7 +242,7 @@ class SalereportbydateController extends MY_Controller
                                                                 ->toArray();
         $productByDateRaw = array_column($productByDateRaw, null, 'date_created');
         // dd($productByDateRaw);
-        
+
         $vietlottByDateRaw = Vietlott_Orders::selectRaw('COUNT(trans_id) AS count, SUM(product_price * quantity - discount_price) AS amount, DATE_FORMAT(t_create, "%Y-%m-%d") AS created_at')
                                                                 ->where('order_status', 'SUCCESS')
                                                                 ->whereBetween('t_create', [$from2, $to2])
@@ -301,7 +302,7 @@ class SalereportbydateController extends MY_Controller
             $productByDateChartLabel[] = strval($periodValue->format('Y-m-d'));
             $productByDateChart[0]['data'][] = strval((!empty($productByDateRaw[strval($periodValue->format('Y-m-d'))]['amount']) ? $productByDateRaw[strval($periodValue->format('Y-m-d'))]['amount'] : 0) + (!empty($vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['amount']) ? $vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['amount'] : 0));
             $productByDateChart[1]['data'][] = strval((!empty($productByDateRaw[strval($periodValue->format('Y-m-d'))]['count']) ? $productByDateRaw[strval($periodValue->format('Y-m-d'))]['count'] : 0) + (!empty($vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['count']) ? $vietlottByDateRaw[strval($periodValue->format('Y-m-d'))]['count'] : 0));
-            // var_dump($value->format('Y-m-d'));       
+            // var_dump($value->format('Y-m-d'));
         }
 
         $productByProductTypeChartLabel = [];
@@ -341,7 +342,7 @@ class SalereportbydateController extends MY_Controller
         $totalThisMonth = Sale_Report_By_Range::selectRaw("service,
                                                 'Total' AS zone,
                                                 NULL AS branch_name,
-                                                SUM(count) AS 'count_this_time', 
+                                                SUM(count) AS 'count_this_time',
                                                 SUM(amount) AS 'amount_this_time'")
                                         ->whereBetween('date_created', [$from2, $to2])
                                         ->whereIn('service', $services_filter)
@@ -359,7 +360,7 @@ class SalereportbydateController extends MY_Controller
 
         if(in_array('vietlott', $services_filter)) {
             $data_vietlott_total_this_month = Vietlott_Orders::selectRaw("'Total' AS product_name,
-                                                                        SUM(quantity) AS 'count_this_time', 
+                                                                        SUM(quantity) AS 'count_this_time',
                                                                         SUM(product_price * quantity - discount_price) AS 'amount_this_time'")
                                                                 ->where('order_status', 'SUCCESS')
                                                                 ->whereBetween('t_create', [$from2, $to2])
@@ -448,9 +449,9 @@ class SalereportbydateController extends MY_Controller
         }
 
         $data_between_to_time = Sale_Report_By_Range::selectRaw("zone,
-                    SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time', 
+                    SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', count, 0)) AS 'count_last_time',
                     SUM(IF(DATE(date_created) BETWEEN '" . $from1 . "' AND '" . $to1 . "', amount, 0)) AS 'amount_last_time',
-                    SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time', 
+                    SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', count, 0)) AS 'count_this_time',
                     SUM(IF(DATE(date_created) BETWEEN '" . $from2 . "' AND '" . $to2 . "', amount, 0)) AS 'amount_this_time'")
             ->whereIn('zone', $zone)
             ->whereIn('service', $services_filter)

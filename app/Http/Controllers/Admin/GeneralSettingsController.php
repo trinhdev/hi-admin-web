@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Contract\Hi_FPT\SettingInterface;
+use App\DataTables\Admin\ModuleDataTable;
 use App\DataTables\Admin\UrlSettingDataTable;
 use App\Http\Controllers\BaseController;
+use App\Http\Traits\DataTrait;
+use App\Models\Group_Module;
 use Illuminate\Http\Request;
 
 use App\Models\Settings;
 
 class GeneralSettingsController extends BaseController
 {
+    use DataTrait;
     /**
      * @var SettingInterface
      */
@@ -27,7 +31,7 @@ class GeneralSettingsController extends BaseController
         $this->settingRepository = $settingRepository;
     }
 
-    public function index(Request $request, UrlSettingDataTable $settingDataTable)
+    public function index(Request $request, UrlSettingDataTable $settingDataTable, ModuleDataTable $moduleDataTable)
     {
         // Get key hi_admin_cron_
         $settings_name = Settings::where('name', 'like', 'hi_admin_cron_'. "%")
@@ -60,6 +64,21 @@ class GeneralSettingsController extends BaseController
                 }
                 $data = [
                     'setting' => $settingDataTable->html(),
+                ];
+                break;
+
+            case 'modules':
+                $title = 'Config modules';
+                $view = 'settings.includes.module';
+                $list_icon = explode(",", file_get_contents(public_path('fontawsome.txt')));
+                $list_group_module = $this->getAll(new Group_Module);
+                if ($request->ajax() && request()->get('table') == 'detail') {
+                    return $moduleDataTable->render('setting.includes.site-url');
+                }
+                $data = [
+                    'setting' => $moduleDataTable->html(),
+                    'list_icon' => $list_icon,
+                    'list_group_module' => $list_group_module
                 ];
                 break;
             case 'cronjob':

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Hi_FPT;
 use App\Contract\Hi_FPT\FtelPhoneInterface;
 use App\DataTables\Hi_FPT\FtelPhoneDatatable;
 use App\DataTables\Hi_FPT\FtelPhoneDetailDatatable;
+use App\Http\Controllers\BaseController;
 use Excel;
 use Illuminate\Http\Request;
 use App\Imports\FtelPhoneImport;
@@ -12,14 +13,13 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\FtelPhoneRequest;
 
-class FtelPhoneController extends MY_Controller
+class FtelPhoneController extends BaseController
 {
     private $FtelPhoneRepository;
     public function __construct(FtelPhoneInterface $FtelPhoneRepository)
     {
         parent::__construct();
         $this->title = 'FPT Telecom Phone Number';
-        $this->model = $this->getModel('FtelPhone');
         $this->FtelPhoneRepository = $FtelPhoneRepository;
     }
 

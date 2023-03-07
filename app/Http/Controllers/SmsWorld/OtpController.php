@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\SmsWorld;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Services\SmsWorldService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
-class OtpController extends MY_Controller
+class OtpController extends BaseController
 {
     //
     public function __construct()

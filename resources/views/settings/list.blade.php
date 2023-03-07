@@ -22,6 +22,12 @@
                                     Site URL
                                 </a>
                             </li>
+{{--                            <li class="settings-group-modules">--}}
+{{--                                <a href="/setting?group=modules" data-group="modules">--}}
+{{--                                    <i class="fa fa-list-alt menu-icon"></i>--}}
+{{--                                    Modules--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
                             <li class="settings-group-cronjob">
                                 <a href="/setting?group=cronjob" data-group="cronjob">
                                     <i class="fa-solid fa-microchip menu-icon"></i>
@@ -61,5 +67,3 @@
         </div>
     </div>
 @endsection
-@push('script')
-@endpush

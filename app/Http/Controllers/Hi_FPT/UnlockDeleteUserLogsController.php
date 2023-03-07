@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Hi_FPT;
 use App\DataTables\Hi_FPT\UnlockDeleteUserLogsDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
+use App\Models\Unlock_Delete_User_Logs;
 use Illuminate\Http\Request;
 use App\Services\AuthApiService;
 use Illuminate\Support\Facades\RateLimiter;
 
-class UnlockDeleteUserLogsController extends MY_Controller
+class UnlockDeleteUserLogsController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +19,7 @@ class UnlockDeleteUserLogsController extends MY_Controller
     public function __construct()
     {
         $this->title = 'Unlock delete user logs';
-        $this->model = $this->getModel('Unlock_Delete_User_Logs');
+        $this->model = new Unlock_Delete_User_Logs();
         parent::__construct();
     }
     public function index(UnlockDeleteUserLogsDataTable $dataTable, Request $request)
@@ -35,10 +37,10 @@ class UnlockDeleteUserLogsController extends MY_Controller
             'request-otp-with-phone' . $request['phone'],
             $perMinute = 2,
             function() {
-                
+
             }
         );
-        
+
         if (! $executed) {
             abort(429);
         }
@@ -69,7 +71,7 @@ class UnlockDeleteUserLogsController extends MY_Controller
             $request->session()->flash('error', 'error');
             $request->session()->flash('html', $data['message']);
         }
-        
+
         $result['phone'] = $request['phone'];
         $log_data = [
             'phone'         => $request['phone'],

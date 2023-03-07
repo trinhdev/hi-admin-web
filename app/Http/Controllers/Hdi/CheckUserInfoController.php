@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Hdi;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Services\ContractService;
 use Illuminate\Http\Request;
 use SebastianBergmann\Environment\Console;
 
-class CheckUserInfoController extends MY_Controller
+class CheckUserInfoController extends BaseController
 {
     //
     public function __construct()

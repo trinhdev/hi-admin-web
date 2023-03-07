@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\DataTables\Hi_FPT\FtelBranchDataTable;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\MY_Controller;
+use App\Http\Controllers\BaseController;
 use App\Http\Traits\DataTrait;
-use App\Services\NewsEventService;
+use App\Models\Ftel_Branch;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Carbon;
 
-class FtelBranchController extends MY_Controller
+class FtelBranchController extends BaseController
 {
     //
     use DataTrait;
@@ -21,7 +18,7 @@ class FtelBranchController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Customer Locations Manage';
-        $this->model = $this->getModel('Ftel_Branch');
+        $this->model = new Ftel_Branch();
     }
     public function index(FtelBranchDataTable $dataTable, Request $request) {
         return $dataTable->with([

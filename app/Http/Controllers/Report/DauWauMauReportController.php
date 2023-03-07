@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Report;
 
 use App\DataTables\Hi_FPT\DauWauMauReportDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
@@ -12,7 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Carbon;
 use \App\Models\DAU_Report;
 
-class DauWauMauReportController extends MY_Controller
+class DauWauMauReportController extends BaseController
 {
     //
     use DataTrait;

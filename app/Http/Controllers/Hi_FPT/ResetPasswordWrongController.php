@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\Contract\Hi_FPT\ResetPasswordWrongInterface;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\ResetPasswordWrongRequest\StoreRequest;
 
 
-class ResetPasswordWrongController extends MY_Controller
+class ResetPasswordWrongController extends BaseController
 {
     private $ResetPasswordWrongRepository;
 

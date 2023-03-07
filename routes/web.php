@@ -69,9 +69,9 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/edit/{id}', 'UserController@edit')->name('user.edit');
             Route::get('/create', 'UserController@create')->name('user.create');
             Route::post('/store', 'UserController@store')->name('user.store');
+            Route::post('/login', 'UserController@login')->name('user.login');
             Route::put('/update/{id}', 'UserController@update')->name('user.update');
             Route::post('/destroy', 'UserController@destroy')->name('user.destroy');
-            Route::get('/initDatatable', 'UserController@initDatatable')->name('user.initDatatable');
         });
         Route::prefix('groups')->group(function () {
             Route::get('/', 'GroupsController@index')->name('groups.index');
@@ -366,6 +366,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::prefix('behavior')->group(function () {
             Route::get('/', [BehaviorController::class, 'index'])->name('behavior.index');
+            Route::post('/', [BehaviorController::class, 'index'])->name('behavior.index');
             Route::post('/store', [BehaviorController::class, 'store'])->name('behavior.post');
             Route::post('/analysis', [BehaviorController::class, 'analysis'])->name('behavior.analysis');
         });

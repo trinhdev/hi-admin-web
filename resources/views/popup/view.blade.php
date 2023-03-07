@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="_buttons">
-                        <a id="push_popup_public" href="#" class="btn btn-primary mright5 test pull-left display-block">
+                        <a data-toggle="modal" data-target="#popupModal" href="#" class="btn btn-primary mright5 test pull-left display-block">
                             <i class="fa-regular fa-plus tw-mr-1"></i>
                             Push popup</a>
                         <a href="#" onclick="alert('Liên hệ trinhhdp@fpt.com.vn nếu xảy ra lỗi không mong muốn!')" class="btn btn-default pull-left display-block mright5">
@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="popupModal" style="display: none;" aria-hidden="true">
+    <div class="modal fade" id="popupModal" aria-hidden="true">
         <form id="formPopup" data-action="{{ route('popupmanage.pushPopupTemplate') }}">
             <input type="hidden" name="templateId" id="templateId" value="{{ $id }}">
             <div class="modal-dialog modal-md">
@@ -93,12 +93,39 @@
 @push('script')
     {{ $dataTable->scripts() }}
     <script>
-        $(document).ready(function() {
-            showHide();
-            pushTemplateAjaxPopup();
+        $('#formPopup').on('click', '#submitButton', function (e){
+            e.preventDefault();
+            const form = document.querySelector('#formPopup');
+            const data = Object.fromEntries(new FormData(form).entries());
+            let url = $(form).data('action');
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                cache: false,
+                success: (data) => {
+                    if(data.data.statusCode === 0){
+                        var table = $('#popup_detail_table').DataTable();
+                        table.ajax.reload(null, false);
+                        $('#popupModal').modal('toggle');
+                        alert_float('success','Thành công');
+                    }else{
+                        alert_float('danger',data.data.message);
+                    }
+                },
+                error: function (xhr) {
+                    var errorString = '';
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        errorString = value;
+                        return false;
+                    });
+                    $('#popupModal').modal('toggle');
+                    alert_float('danger',errorString);
+                }
+            });
         });
     </script>
-    <script src="{{ asset('/custom_js/popupmanage.js')}}"></script>
+
 @endpush
 
 

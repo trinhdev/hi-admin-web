@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\Admin\GroupModuleDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 use App\Http\Traits\DataTrait;
@@ -11,14 +12,13 @@ use \stdClass;
 
 use App\Models\Group_Module;
 
-class GroupmoduleController extends MY_Controller
+class GroupmoduleController extends BaseController
 {
     use DataTrait;
     public function __construct()
     {
         parent::__construct();
         $this->title = 'Group Module';
-        $this->model = $this->getModel('Group_Module');
     }
     /**
      * Display a listing of the resource.
@@ -55,7 +55,7 @@ class GroupmoduleController extends MY_Controller
         $validated = $request->validate([
             'group_module_name' => 'required|unique:group_module|max:255',
         ]);
-        $group_module = $this->createSingleRecord($this->model, $request->all());
+        $group_module = $this->createSingleRecord(Group_Module::class, $request->all());
         $this->addToLog(request());
         return redirect()->route('groupmodule.index');
     }
@@ -79,7 +79,7 @@ class GroupmoduleController extends MY_Controller
      */
     public function edit($id)
     {
-        $group_module = $this->getSigleRecord($this->model, $id);
+        $group_module = $this->getSigleRecord(Group_Module::class, $id);
         return view('groupmodule.edit')->with('groupmodule', $group_module);
     }
 
@@ -92,21 +92,21 @@ class GroupmoduleController extends MY_Controller
      */
     public function update(Request $request, $id)
     {
-        $group_module = $this->updateById($this->model, $id, $request->all());
+        $group_module = $this->updateById(Group_Module::class, $id, $request->all());
         $this->addToLog($request);
         return redirect()->route('groupmodule.index');
     }
 
     public function destroy(Request $request)
     {
-        $this->deleteById($this->model, $request->id);
+        $this->deleteById(Group_Module::class, $request->id);
         $this->addToLog(request());
         return response()->json(['message' => 'Delete Successfully!']);
     }
 
     public function initDatatable(Request $request){
         if($request->ajax()){
-            $data = $this->model::query()->with('createdBy','updatedBy');
+            $data = Group_Module::class::query()->with('createdBy','updatedBy');
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){

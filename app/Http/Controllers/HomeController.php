@@ -14,7 +14,7 @@ use Yajra\DataTables\DataTables;
 
 use function PHPSTORM_META\map;
 
-class HomeController extends MY_Controller
+class HomeController extends BaseController
 {
     /**
      * Create a new controller instance.
@@ -61,7 +61,7 @@ class HomeController extends MY_Controller
                 $ttl = Redis::ttl($keyName);
                 Redis::setex($keyName,($ttl <= 1) ? 86400 : $ttl, serialize($result));
             }
-            
+
         } else {
             $data = $charService->getDataChart30DaysAgo();
             foreach($data as $doanhthu){

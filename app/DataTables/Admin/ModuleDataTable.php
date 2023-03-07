@@ -8,6 +8,9 @@ use App\Models\User;
 
 class ModuleDataTable extends BuilderDatatables
 {
+    protected $ajaxUrl = ['data' => 'function(d) { console.log(d);d.table = "detail"; }'];
+    protected $hasCheckbox = false;
+    protected $orderBy = 0;
     public function dataTable($query)
     {
         return datatables()
@@ -21,13 +24,10 @@ class ModuleDataTable extends BuilderDatatables
                     </div>
                 ';
             })
-            ->editColumn('checkbox',function($row){
-                return '<div class="checkbox"><input type="checkbox" value="'.$row->event_id.'"><label></label></div>';
-            })
             ->editColumn('created_by',function($row){
                 return $row->createdBy->email ?? $row->created_by;
             })
-            ->rawColumns(['module_name', 'checkbox']);
+            ->rawColumns(['module_name']);
     }
 
     public function query(Modules $model)

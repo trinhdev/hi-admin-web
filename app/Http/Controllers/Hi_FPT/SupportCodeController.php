@@ -4,16 +4,18 @@ namespace App\Http\Controllers\Hi_FPT;
 
 use App\DataTables\Hi_FPT\LogSupportCodeDatatable;
 use App\DataTables\Hi_FPT\SuportCodeDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
+use App\Models\Support_code_reset_logs;
 use App\Services\HdiCustomer;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class SupportCodeController extends MY_Controller
+class SupportCodeController extends BaseController
 {
     //
     use DataTrait;
@@ -21,7 +23,7 @@ class SupportCodeController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Support Code Manager';
-        $this->model = $this->getModel('Support_code_reset_logs');
+        $this->model = new Support_code_reset_logs();
     }
 
     public function index(suportCodeDataTable $dataTable, Request $request) {

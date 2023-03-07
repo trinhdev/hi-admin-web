@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Hdi;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Services\ContractService;
 use App\Services\HelpRequestService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;;
 
-class ChecklistmanageController extends MY_Controller
+class ChecklistmanageController extends BaseController
 {
     //
     public function __construct()

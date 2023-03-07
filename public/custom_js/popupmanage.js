@@ -174,43 +174,6 @@ function storePopup() {
     });
 }
 
-function pushTemplateAjaxPopup() {
-    $('body').on('click', '#push_popup_public', function (e) {
-        e.preventDefault();
-        $('#popupModal').modal('toggle');
-        $('#formPopup').on('click', '#submitButton', function (e){
-            e.preventDefault();
-            const form = document.querySelector('#formPopup');
-            const data = Object.fromEntries(new FormData(form).entries());
-            let url = $(form).data('action');
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: data,
-                cache: false,
-                success: (data) => {
-                    if(data.data.statusCode === 0){
-                        $('#popupModal').modal('toggle');
-                        alert_float('success','Thành công');
-                        var table = $('#popup_detail_table').DataTable();
-                        table.ajax.reload(null, false);
-                    }else{
-                        alert_float('danger',data.data.message);
-                    }
-                },
-                error: function (xhr) {
-                    var errorString = '';
-                    $.each(xhr.responseJSON.errors, function (key, value) {
-                        errorString = value;
-                        return false;
-                    });
-                    alert_float('danger',errorString);
-                }
-            });
-        });
-    });
-}
-
 function handlePushPopUpPrivate() {
     $('body').on('click', '#submit', function (event){
         $(this).attr('disabled','disabled');

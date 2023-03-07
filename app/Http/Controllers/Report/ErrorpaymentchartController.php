@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Report;
 
 use App\DataTables\Hi_FPT\SaleReportByDateDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
@@ -19,7 +20,7 @@ use App\Models\Payment_Orders;
 
 use DateTime;
 
-class ErrorpaymentchartController extends MY_Controller
+class ErrorpaymentchartController extends BaseController
 {
     //
     use DataTrait;
@@ -41,7 +42,7 @@ class ErrorpaymentchartController extends MY_Controller
         $from = $request->from;
         $to = $request->to;
         $type = $request->type;
-        
+
         $user_error_color = rand_color();
         $system_error_color = rand_color();
         $result = [];
@@ -86,7 +87,7 @@ class ErrorpaymentchartController extends MY_Controller
                                   ->groupBy('err_code.is_system')
                                   ->orderBy('err_code.is_system')
                                   ->get()->toArray();
-                                
+
         $data_last = Payment_Orders::selectRaw('err_code.is_system AS error_type, COUNT(payment_provider_status) AS count')
                                   ->join('payment_product', DB::raw('BINARY view_payment_orders.payment_type'), '=', DB::raw('BINARY payment_product.code'))
                                   ->join('payment_error_code AS err_code', DB::raw('BINARY view_payment_orders.payment_provider_status'), '=', DB::raw('BINARY err_code.code_error'))
@@ -97,7 +98,7 @@ class ErrorpaymentchartController extends MY_Controller
                                   ->groupBy('err_code.is_system')
                                   ->orderBy('err_code.is_system')
                                   ->get()->toArray();
-        
+
         $result = [
             [
                 'label'             => 'Lỗi người dùng',
@@ -111,8 +112,8 @@ class ErrorpaymentchartController extends MY_Controller
                 'borderColor'       => $system_error_color,
                 'backgroundColor'   => $system_error_color,
             ]
-        ];   
-        
+        ];
+
         return ['labels' => [date('d/m/Y', strtotime($from_before)) . ' - ' . date('d/m/Y', strtotime($to_before)), date('d/m/Y', strtotime($from)) . ' - ' . date('d/m/Y', strtotime($to))], 'datasets' => $result];
     }
 

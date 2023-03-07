@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Hi_FPT;
 
+use App\Http\Controllers\BaseController;
 use App\Models\AppLog;
 use App\Models\Screen;
 use Carbon\Carbon;
@@ -19,10 +20,10 @@ use App\Imports\ReportCustomerImport;
 use App\Exports\ReportCustomerMarketingExport;
 use \Exception;
 
-class ReportCustomerMarketingController extends MY_Controller
+class ReportCustomerMarketingController extends BaseController
 {
     use DataTrait;
-    
+
     public function __construct()
     {
         parent::__construct();

@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Hi_FPT;
 
 use App\DataTables\Hi_FPT\CustomerLocationsDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
+use App\Models\Customer_Locations;
 use App\Services\NewsEventService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Carbon;
 
-class CustomerLocationsController extends MY_Controller
+class CustomerLocationsController extends BaseController
 {
     //
     use DataTrait;
@@ -21,7 +23,7 @@ class CustomerLocationsController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Customer Locations Manage';
-        $this->model = $this->getModel('Customer_Locations');
+        $this->model = new Customer_Locations();;
     }
     public function index(CustomerLocationsDataTable $dataTable, Request $request) {
         return $dataTable->with([

@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Hi_FPT;
 use App\Contract\Hi_FPT\BannerManageInterface;
 use App\Contract\Hi_FPT\ScreenInterface;
 use App\DataTables\Hi_FPT\ScreenDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Requests\ScreenRequest\StoreRequest;
 use App\Http\Requests\ScreenRequest\UpdateRequest;
 use Illuminate\Http\Request;
 
-class ScreenController extends MY_Controller
+class ScreenController extends BaseController
 {
     private $ScreenRepository;
 
@@ -19,7 +20,6 @@ class ScreenController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Screen Manage';
-        $this->model = $this->getModel('screen');
         $this->ScreenRepository = $ScreenRepository;
     }
 

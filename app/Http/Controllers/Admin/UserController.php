@@ -102,10 +102,16 @@ class UserController extends BaseController
         return redirect()->route('user.index')->with(['status'=>'success', 'html' => 'Thành công']);
     }
 
-    public function destroy(Request $request)
+    public function login(Request $request)
     {
-        $this->deleteById($this->model, $request->id);
-        $this->addToLog(request());
-        return response()->json(['message' => 'Delete Successfully!']);
+        auth()->loginUsingId($request->id);
+        return redirect()->intended('/');
     }
+
+//    public function destroy(Request $request)
+//    {
+//        $this->deleteById($this->model, $request->id);
+//        $this->addToLog(request());
+//        return response()->json(['message' => 'Delete Successfully!']);
+//    }
 }

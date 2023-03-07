@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Report;
 use App\DataTables\Hi_FPT\ReportLaptopOrdersByProductDataTable;
 use App\DataTables\Hi_FPT\ReportLaptopOrdersByProductNCCDataTable;
 use App\DataTables\Hi_FPT\ReportLaptopOrdersByProductMerchantDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\DB;
 use App\Exports\ExportArray;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ReportLaptopOrdersByProductController extends MY_Controller
+class ReportLaptopOrdersByProductController extends BaseController
 {
     //
     use DataTrait;
@@ -48,8 +49,8 @@ class ReportLaptopOrdersByProductController extends MY_Controller
 
         return view('report.laptop_orders_product.main')->with([
             'filter'                        => [
-                'customer_phone'            => @$request->customer_phone, 
-                'show_from'                 => @$request->show_from, 
+                'customer_phone'            => @$request->customer_phone,
+                'show_from'                 => @$request->show_from,
                 'show_to'                   => @$request->show_to,
                 'merchants_id_filter'       => !empty($request->merchant_id) ? $request->merchant_id : [],
                 'agent_id_filter'           => !empty($request->agent_id) ? $request->agent_id : [],

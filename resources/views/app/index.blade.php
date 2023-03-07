@@ -2,7 +2,7 @@
 @extends('layoutv2.layout.app')
 @push('style')
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="{{url(Theme::find(config('platform_config.current_theme'))->themesPath)}}/plugins/chart.js/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endpush
 @section('content')
     <div id="wrapper">
@@ -15,6 +15,26 @@
                         </a>
                         <div class="visible-xs">
                             <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="panel_s tw-mt-2 sm:tw-mt-4">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div id="columnchart_day"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="columnchart_month"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="columnchart_month_current"></div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div id="columnchart_total"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="clearfix"></div>

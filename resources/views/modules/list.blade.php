@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <form id="form" novalidate="novalidate" autocomplete="off">
+        <form id="formModules" novalidate="novalidate" autocomplete="off">
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -20,7 +20,7 @@
                         <label for="uri">Group module</label>
                         <select name="group_module_id" id="group_module_id" class="form-control selectpicker" data-live-search="true" data-size="10">
                             <option value="">Please choose group module</option>
-                            @foreach ($list_group_module as $group_module)
+                            @foreach ($data['list_group_module'] as $group_module)
                                 <option value="{{ $group_module->id }}">{{ $group_module->group_module_name }}</option>
                             @endforeach
                         </select>
@@ -29,7 +29,7 @@
                         <label for="uri">Icon</label>
                         <select name="icon" id="icon" class="form-control selectpicker" data-live-search="true" data-size="10">
                             <option value="">Please choose icon</option>
-                            @foreach ($list_icon as $icon)
+                            @foreach ($data['list_icon'] as $icon)
                                 <option value="fas fa-{{ $icon }}" data-icon="fas fa-{{ $icon }}">fas fa-{{ $icon }}</option>
                             @endforeach
                         </select>
@@ -45,7 +45,7 @@
         </form>
         <div class="model-footer" style="float: right">
             <button type="button" class="btn btn-default close_btn" data-dismiss="modal">Close</button>
-            <button type="submit" onclick="pushModules()" class="btn btn-info">Submit</button>
+            <button type="button" onclick="pushModules()" class="btn btn-info">Submit</button>
         </div>
     </div>
 </div>

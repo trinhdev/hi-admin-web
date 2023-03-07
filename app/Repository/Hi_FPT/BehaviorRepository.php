@@ -139,7 +139,7 @@ class BehaviorRepository implements BehaviorInterface
             'phone' => $phoneQr,
             'date_created' => $date_created
         ], [
-            'phone' => [new NumberPhoneRule()],
+            'phone' => 'required',
             'date_created.*' => 'required|date_format:Y-m-d H:i:s'
         ])->errors();
     }

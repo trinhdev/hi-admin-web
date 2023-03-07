@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\Admin\RoleDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MY_Controller;
 use App\Http\Traits\DataTrait;
 use App\Models\Acl_Roles;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use stdClass;
 
-class RolesController extends MY_Controller
+class RolesController extends BaseController
 {
     use DataTrait;
     protected $module_name = 'Roles';
@@ -23,7 +24,7 @@ class RolesController extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->model = $this->getModel('Roles');
+        $this->model = new Roles();
     }
 
     public function index(RoleDataTable $dataTable, Request $request)
