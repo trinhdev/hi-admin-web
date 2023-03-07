@@ -8,6 +8,7 @@
                       enctype="multipart/form-data" method="post" accept-charset="utf-8" novalidate="novalidate">
                     @csrf
                     @method('PUT')
+                    <input type="text" name="role_id" class="hide" value="{{ $user->role_id }}">
                     <div class="col-md-8 col-md-offset-2" id="small-table">
                         <div class="panel_s">
                             <div class="panel-body">

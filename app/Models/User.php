@@ -43,15 +43,6 @@ class User extends Authenticatable
 
     protected $guard_name = 'web';
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    public function role(){
-        return $this->hasOne(Roles::class,'id','role_id');
-    }
-
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('H:i:s d-m-Y');

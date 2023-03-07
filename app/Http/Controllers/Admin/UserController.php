@@ -47,13 +47,13 @@ class UserController extends BaseController
             'created_by' => auth()->user()->id
         ]);
         $user = User::create($request->only(['name', 'email', 'password', 'created_by']));
-        if ($request->administrator == 'on') {
-            $user->assignRole('Admin');
+        if (!empty($request->administrator)) {
+            $role = Role::firstOrCreate(['name' => 'Admin']);
         } else {
-            $user->assignRole($request->role);
+            $role = Role::firstOrCreate(['name' => $request->role]);
         }
-        $this->addToLog(request());
-        return redirect()->route('user.index')->with(['status'=>'Success!', 'html' => 'Thành công']);
+        $user->syncRoles($role);
+        return redirect()->route('user.index')->with(['status'=>'success', 'html' => 'Thành công']);
     }
 
     /**
@@ -91,7 +91,7 @@ class UserController extends BaseController
             $request->request->remove('password_confirmation');
         }
         $user = User::find($id);
-        $user->update($request->only(['name', 'email', 'password', 'created_by']));
+        $user->update($request->only(['name', 'email', 'password','role_id', 'created_by']));
         if (!empty($request->administrator)) {
             $role = Role::firstOrCreate(['name' => 'Admin']);
         } else {
@@ -99,7 +99,7 @@ class UserController extends BaseController
         }
         $user->syncRoles($role);
         $this->addToLog($request);
-        return redirect()->route('user.index')->with(['status'=>'Success!', 'html' => 'Thành công']);
+        return redirect()->route('user.index')->with(['status'=>'success', 'html' => 'Thành công']);
     }
 
     public function destroy(Request $request)

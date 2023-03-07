@@ -33,6 +33,8 @@
         alert_float('success', `{{ (session()->has('html')) ? session()->get('html') : '' }}`)
     @elseif (session()->has('error') || session()->has('danger'))
         alert_float('danger', `{{ (session()->has('html')) ? session()->get('html') : '' }}`)
+    @elseif (session()->has('status'))
+        alert_float(`{{session()->get('status')}}`, `{{ (session()->has('html')) ? session()->get('html') : '' }}`)
     @endif
 
     function csrf_jquery_ajax_setup() {
@@ -51,7 +53,9 @@
 
     {{ session()->forget('error') }}
     {{ session()->forget('success') }}
+    {{ session()->forget('danger') }}
     {{ session()->forget('html') }}
+    {{ session()->forget('status') }}
 
 </script>
 

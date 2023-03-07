@@ -11,6 +11,7 @@
                     <div class="col-md-8 col-md-offset-2" id="small-table">
                         <div class="panel_s">
                             <div class="panel-body">
+                                <input type="text" name="role_id" class="hide" value="10">
                                 <div class="form-group" app-field-wrapper="username">
                                     <label for="username" class="control-label">
                                         <small class="req text-danger">* </small>Username</label>

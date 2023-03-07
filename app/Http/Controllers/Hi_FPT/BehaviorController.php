@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\Hi_FPT;
 
-use App\Contract\Hi_FPT\BannerManageInterface;
-use App\Contract\Hi_FPT\BehaviorInterface;
-use App\DataTables\Hi_FPT\BehaviorDataTable;
-use App\Http\Controllers\MY_Controller;
-use App\Http\Requests\BehaviorRequest\StoreRequest;
-use App\Http\Requests\BehaviorRequest\UpdateRequest;
-use Illuminate\Http\Request;
 
-class BehaviorController extends MY_Controller
+use App\Contract\Hi_FPT\BehaviorInterface;
+use App\Http\Controllers\BaseController;
+use App\Http\Requests\BehaviorRequest\StoreRequest;
+
+class BehaviorController extends BaseController
 {
     private $BehaviorRepository;
 

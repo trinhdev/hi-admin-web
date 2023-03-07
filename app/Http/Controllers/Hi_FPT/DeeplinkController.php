@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Hi_FPT;
 
 use App\Contract\Hi_FPT\DeeplinkInterface;
 use App\DataTables\Hi_FPT\DeeplinkDataTable;
-use App\DataTables\Hi_FPT\TestTable;
-use App\Http\Controllers\MY_Controller;
+use App\Http\Controllers\BaseController;
 use App\Http\Requests\DeeplinkRequest\StoreRequest;
 use App\Http\Requests\DeeplinkRequest\UpdateRequest;
 use Illuminate\Http\Request;
 
-class DeeplinkController extends MY_Controller
+class DeeplinkController extends BaseController
 {
     private $DeeplinkRepository;
 
@@ -18,7 +17,6 @@ class DeeplinkController extends MY_Controller
     {
         parent::__construct();
         $this->title = 'Deeplink Manage';
-        $this->model = $this->getModel('deeplink');
         $this->DeeplinkRepository = $DeeplinkRepository;
     }
 
