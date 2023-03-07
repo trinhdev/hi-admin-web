@@ -11,11 +11,9 @@ Contact: trinhhuynhdp@gmail.com
             <div class="row">
                 <div class="col-md-12">
                     <div class="_buttons">
-                        @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                            <a id="push_popup_private_form" href="#" class="btn btn-primary mright5 test pull-left display-block">
-                                <i class="fa-regular fa-plus tw-mr-1"></i>
-                                Thêm mới popup định danh</a>
-                        @endif
+                        <a id="push_popup_private_form" href="#" class="btn btn-primary mright5 test pull-left display-block">
+                            <i class="fa-regular fa-plus tw-mr-1"></i>
+                            Thêm mới popup định danh</a>
 
                         <a href="#" onclick="alert('Liên hệ trinhhdp@fpt.com.vn nếu xảy ra lỗi không mong muốn!')"
                            class="btn btn-default pull-left display-block mright5">

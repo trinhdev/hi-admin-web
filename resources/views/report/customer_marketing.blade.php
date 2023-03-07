@@ -8,18 +8,16 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 style="float: left; margin-right: 20px" class="uppercase">Báo cáo thông tin khách hàng</h1>
-                    @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                        <div style="float: left; width: 300px">
-                            <form style="float: left; margin-right: 20px" action="{{ route('importlogreportcustomerinfomarketing.uploadFile') }}" method="post" enctype="multipart/form-data">
-                                @csrf
-                                <label class="btn btn-primary btn-sm" id="upload-label" for="apply"><input type="file" name="excel" id="apply" accept=".xlsx, .xls" onchange="form.submit()">Upload file</label>
-                            </form> 
-                            @if(session('error'))
-                                <label style="float: left; color: red">{{ session('error') }}</label>
-                            @endif
-                            <a href="http://upload-static.fpt.net/sys/hifpt/report/helper/test_import_customer_report.xlsx">File import mẫu</a>
-                        </div>
-                    @endif
+                    <div style="float: left; width: 300px">
+                        <form style="float: left; margin-right: 20px" action="{{ route('importlogreportcustomerinfomarketing.uploadFile') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <label class="btn btn-primary btn-sm" id="upload-label" for="apply"><input type="file" name="excel" id="apply" accept=".xlsx, .xls" onchange="form.submit()">Upload file</label>
+                        </form>
+                        @if(session('error'))
+                            <label style="float: left; color: red">{{ session('error') }}</label>
+                        @endif
+                        <a href="http://upload-static.fpt.net/sys/hifpt/report/helper/test_import_customer_report.xlsx">File import mẫu</a>
+                    </div>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -37,7 +35,7 @@
         <div class="container-fluid">
             <div class="card card-body col-sm-12">
                 {{-- <div class="container">
-                    
+
                 </div> --}}
                 {{-- <div class="card-body row form-inline filter-section">
                     <div class="col-md-3">
@@ -134,7 +132,7 @@
     input {
         border: 0;
         clip: rect(1px, 1px, 1px, 1px);
-        height: 1px; 
+        height: 1px;
         margin: -1px;
         overflow: hidden;
         padding: 0;

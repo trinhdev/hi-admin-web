@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class FtelPhone extends MY_Model
 {
-    use SoftDeletes,HasFactory;
+    use HasFactory;
     protected $table = 'ftel_phone';
     protected $primaryKey = 'id';
     protected $guarded = [];

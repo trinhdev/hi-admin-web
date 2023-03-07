@@ -10,12 +10,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý customer locations</h1>
-                    {{-- @if(Auth::user()->role_id == ADMIN || $aclCurrentModule->create == 1)
-                    <a href="{{ route('customer_locations.create') }}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus"></i> Thêm Mới
-                    </a>
-                    @endif --}}
+                    <h1 style="float: left; margin-right: 20px" class="uppercase">Quản Lý ftel branch</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
