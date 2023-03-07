@@ -103,23 +103,4 @@ class GroupmoduleController extends BaseController
         $this->addToLog(request());
         return response()->json(['message' => 'Delete Successfully!']);
     }
-
-    public function initDatatable(Request $request){
-        if($request->ajax()){
-            $data = Group_Module::class::query()->with('createdBy','updatedBy');
-            return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function($row){
-                return view('layouts.button.action')->with(['row'=>$row,'module'=>'groupmodule']);
-            })
-            ->editColumn('created_by',function($row){
-                return !empty($row->createdBy) ? $row->createdBy->email : '';
-            })
-            ->editColumn('updated_by',function($row){
-                return !empty($row->updatedBy) ? $row->updatedBy->email : '';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-        }
-    }
 }
