@@ -17,23 +17,13 @@ use function PHPSTORM_META\map;
 class HomeController extends BaseController
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-        return view('home');
+        return view('homev2');
     }
     public function getDataChart()
     {
