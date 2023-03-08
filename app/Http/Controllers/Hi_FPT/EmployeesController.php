@@ -41,6 +41,7 @@ class EmployeesController extends BaseController
 
     public function update(Request $request, $id)
     {
+        $this->addToLog($request);
         $request->merge([
             'updated_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);
@@ -54,6 +55,7 @@ class EmployeesController extends BaseController
     }
 
     public function store(Request $request) {
+        $this->addToLog($request);
         $request->merge([
             'created_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);

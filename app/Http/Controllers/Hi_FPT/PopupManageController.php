@@ -24,18 +24,20 @@ class PopupManageController extends BaseController
         $this->PopupManageRepository = $PopupManageRepository;
     }
 
-    public function all(PopUpDataTable $dataTable, Request $request)
+    public function index(PopUpDataTable $dataTable, Request $request)
     {
         return $this->PopupManageRepository->all($dataTable, $request);
     }
 
     public function store(StoreRequest $request)
     {
+        $this->addToLog($request);
         return $this->PopupManageRepository->store($request->all());
     }
 
     public function push(PushRequest $request)
     {
+        $this->addToLog($request);
         return $this->PopupManageRepository->push($request->all());
     }
 
@@ -54,8 +56,9 @@ class PopupManageController extends BaseController
         return $this->PopupManageRepository->getDetailPersonalMaps($id);
     }
 
-    public function export_click(Request $params, $id)
+    public function export_click(Request $request, $id)
     {
-        return $this->PopupManageRepository->export_click_phone($params, $id);
+        $this->addToLog($request);
+        return $this->PopupManageRepository->export_click_phone($request, $id);
     }
 }

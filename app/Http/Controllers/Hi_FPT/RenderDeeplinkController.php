@@ -29,6 +29,7 @@ class RenderDeeplinkController extends BaseController
 
     public function store(StoreRequest $request)
     {
+        $this->addToLog($request);
         return $this->RenderDeeplinkRepository->store($request);
     }
 }

@@ -271,7 +271,7 @@ Route::group(['middleware' => ['auth']], function () {
          * Create by trinhhdp
         */
         Route::prefix('popupmanage')->group(function () {
-            Route::get('/', [PopupManageController::class, 'all'])->name('popupmanage.index');
+            Route::get('/', [PopupManageController::class, 'index'])->name('popupmanage.index');
             Route::post('/save', [PopupManageController::class, 'store'])->name('popupmanage.save');
             Route::get('/view/{id?}', [PopupManageController::class, 'show'])->name('popupmanage.view');
             Route::get('/export/{id}', [PopupManageController::class, 'export_click'])->name('popupmanage.export_click');
@@ -281,7 +281,7 @@ Route::group(['middleware' => ['auth']], function () {
         });
 
         Route::prefix('popup-private')->group(function () {
-            Route::get('/', [PopupPrivateController::class, 'all'])->name('popupmanage.getPrivate');
+            Route::get('/', [PopupPrivateController::class, 'index'])->name('popupmanage.getPrivate');
             Route::get('/getPaginatePrivate', [PopupPrivateController::class, 'paginate'])->name('popupmanage.getPaginatePrivate');
             Route::get('/getByIdPrivate', [PopupPrivateController::class, 'show'])->name('popupmanage.getByIdPrivate');
             Route::post('/addPrivate', [PopupPrivateController::class, 'store'])->name('popupmanage.addPrivate');
@@ -387,23 +387,13 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/', [RenderDeeplinkController::class, 'store'])->name('renderDeeplink.post');
         });
 
-        Route::prefix('tracking')->controller(TrackingController::class)->group(function () {
-            Route::get('/views', 'views')->name('tracking.views');
-            Route::get('/user-analytics', 'userAnalytics')->name('tracking.userAnalytics');
-            Route::get('/session-analytics', 'sessionAnalytics')->name('tracking.sessionAnalytics');
-            Route::get('/journey-analysis', 'journeyAnalysis')->name('tracking.journeyAnalysis');
-        });
-
         Route::prefix('testv2')->controller(Test::class)->group(function () {
             Route::get('/admin', 'index')->name('test.index');
             Route::get('/create', 'create')->name('test.create');
         });
 
-        Route::prefix('tracking')->controller(TrackingController::class)->group(function () {
-            Route::get('/views', 'views')->name('tracking.views');
-            Route::get('/user-analytics', 'userAnalytics')->name('tracking.userAnalytics');
-            Route::get('/session-analytics', 'sessionAnalytics')->name('tracking.sessionAnalytics');
-            Route::get('/journey-analysis', 'journeyAnalysis')->name('tracking.journeyAnalysis');
+        Route::prefix('user-analytics')->controller(TrackingController::class)->group(function () {
+            Route::get('/', 'index')->name('tracking.userAnalytics');
         });
 
         Route::prefix('employees-updates')->group(function () {

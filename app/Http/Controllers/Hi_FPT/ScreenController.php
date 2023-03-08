@@ -35,6 +35,7 @@ class ScreenController extends BaseController
 
     public function store(StoreRequest $request)
     {
+        $this->addToLog($request);
         return $this->ScreenRepository->store($request);
     }
 
@@ -45,12 +46,14 @@ class ScreenController extends BaseController
 
     public function update(UpdateRequest $request, $id)
     {
+        $this->addToLog($request);
         return $this->ScreenRepository->update($request, $id);
     }
 
 
     public function delete(Request $request)
     {
+        $this->addToLog($request);
         return $this->ScreenRepository->delete($request->only('id'));
     }
 }

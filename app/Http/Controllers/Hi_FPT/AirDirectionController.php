@@ -27,6 +27,7 @@ class AirDirectionController extends BaseController
 
     public function add(Request $request)
     {
+        $this->addToLog($request);
         $rules = [
             'name'              =>'required',
             'decription'        =>'required',
@@ -60,6 +61,7 @@ class AirDirectionController extends BaseController
 
     public function update(Request $request)
     {
+        $this->addToLog($request);
         $rules = [
             'id'                =>'required',
             'name'              =>'required',
@@ -96,6 +98,7 @@ class AirDirectionController extends BaseController
 
     public function delete(Request $request) //  author: trinhhuynhdp@gmail.com
     {
+        $this->addToLog($request);
         if(request()->ajax()) {
             $request->validate(['id' => 'required', 'key' => 'required']);
             if ($request->key == 'go_to_screen') {
@@ -114,6 +117,7 @@ class AirDirectionController extends BaseController
 
     public function getById(Request $request)
     {
+        $this->addToLog($request);
         if(request()->ajax()) {
             $request->validate(['id' => 'required']);
             $this->addToLog($request);

@@ -81,7 +81,7 @@ class HelperController extends MY_Controller
     //     $bannerObj->public_date_start = !empty($dataResponse->public_date_start) ? Carbon::parse($dataResponse->public_date_start)->format('Y-m-d\TH:i') : null;
     //     $bannerObj->public_date_end = !empty($dataResponse->public_date_end) ? Carbon::parse($dataResponse->public_date_end)->format('Y-m-d\TH:i') : null;
     //     $bannerObj->is_show_home = (boolean) $dataResponse->is_show_home;
-        
+
     //     $result = [
     //         'list_target_route'=>$listTargetRoute,
     //         'list_type_banner' => $listTypeBanner,

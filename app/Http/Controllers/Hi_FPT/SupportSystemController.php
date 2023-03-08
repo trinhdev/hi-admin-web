@@ -17,7 +17,7 @@ class SupportSystemController extends MY_Controller
 {
     //
     use DataTrait;
-    
+
     protected $module_name = 'SupportSystem';
     protected $model_name = "SupportSystem";
     public function __construct()
@@ -27,7 +27,6 @@ class SupportSystemController extends MY_Controller
         $this->model = $this->getModel('SupportSystem');
     }
     public function index(SupportSystemDataTable $dataTable, Request $request) {
-        
         return $dataTable->with([
             'start'=>$request->start,
             'length' => $request->length,
@@ -94,7 +93,7 @@ class SupportSystemController extends MY_Controller
     }
 
     public function show($id) {
-        
+
     }
 
     public function upload(Request $request) {

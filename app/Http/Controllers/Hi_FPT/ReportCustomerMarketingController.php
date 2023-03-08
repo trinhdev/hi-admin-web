@@ -42,6 +42,7 @@ class ReportCustomerMarketingController extends BaseController
     }
 
     public function store(Request $request) {
+        $this->addToLog($request);
         $request->merge([
             'created_by' => (!isset($this->user->id)) ? $this->user->id : ''
         ]);
@@ -51,8 +52,7 @@ class ReportCustomerMarketingController extends BaseController
     }
 
     public function uploadFile(Request $request) {
-        // dd($request->customer_phone);
-        // $row_limit = 1000;
+        $this->addToLog($request);
         $request->validate([
             'excel' => 'required|mimes:xls,xlsx'
         ]);

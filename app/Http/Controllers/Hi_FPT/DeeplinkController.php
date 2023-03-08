@@ -32,6 +32,7 @@ class DeeplinkController extends BaseController
 
     public function store(StoreRequest $request)
     {
+        $this->addToLog($request);
         return $this->DeeplinkRepository->store($request);
     }
 
@@ -42,6 +43,7 @@ class DeeplinkController extends BaseController
 
     public function update(UpdateRequest $request, $id)
     {
+        $this->addToLog($request);
         return $this->DeeplinkRepository->update($request, $id);
     }
 

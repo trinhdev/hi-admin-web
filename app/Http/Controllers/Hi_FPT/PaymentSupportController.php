@@ -33,6 +33,7 @@ class PaymentSupportController extends BaseController
 
     public function update(StoreRequest $request, $id)
     {
+        $this->addToLog($request);
         return $this->PaymentSupportRepository->update($request, $id);
     }
 }

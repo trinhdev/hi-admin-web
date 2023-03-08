@@ -27,6 +27,7 @@ class BehaviorController extends BaseController
 
      public function store(StoreRequest $request)
      {
+         $this->addToLog($request);
          return $this->BehaviorRepository->store($request);
      }
 }

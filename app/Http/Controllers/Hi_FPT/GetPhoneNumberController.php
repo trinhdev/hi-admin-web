@@ -28,6 +28,7 @@ class GetPhoneNumberController extends BaseController
 
     public function store(StoreRequest $request)
     {
+        $this->addToLog($request);
         return $this->GetPhoneNumberRepository->store($request);
     }
 }

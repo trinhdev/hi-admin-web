@@ -27,6 +27,7 @@ class StatisticController extends BaseController
 
     public function detail(StatisticDataTable $dataTable, StoreRequest $request)
     {
+        $this->addToLog($request);
         return $this->StatisticRepository->detail($dataTable, $request);
 
     }

@@ -24,43 +24,50 @@ class PopupPrivateController extends BaseController
         $this->PopupPrivateRepository = $PopupPrivateRepository;
     }
 
-    public function all(PopUpPrivateDataTable $dataTable, Request $request)
+    public function index(PopUpPrivateDataTable $dataTable, Request $request)
     {
         return $this->PopupPrivateRepository->all($dataTable,$request);
     }
 
     public function paginate(Request $request)
     {
+        $this->addToLog($request);
         return $this->PopupPrivateRepository->paginate($request->only(['size','page']));
     }
 
     public function store(StoreRequest $request)
     {
+        $this->addToLog($request);
         return $this->PopupPrivateRepository->store($request->all());
     }
 
     public function update(UpdateRequest $request)
     {
+        $this->addToLog($request);
         return $this->PopupPrivateRepository->update($request->all());
     }
 
     public function show(Request $request)
     {
+        $this->addToLog($request);
         return $this->PopupPrivateRepository->show($request->only(['id']));
     }
 
     public function destroy(Request $request)
     {
+        $this->addToLog($request);
         return $this->PopupPrivateRepository->destroy($request->only(['id', 'check']));
     }
 
     public function importFile(Request $request)
     {
+        $this->addToLog($request);
         return $this->PopupPrivateRepository->importFile($request);
     }
 
     public function import(ImportRequest $request)
     {
+        $this->addToLog($request);
         return $this->PopupPrivateRepository->import($request->all());
     }
 }

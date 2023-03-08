@@ -41,6 +41,7 @@ class SupportCodeController extends BaseController
     }
 
     public function openSupportCode(Request $request) {
+        $this->addToLog($request);
         $log_data = [];
         $hdiCustomer = new HdiCustomer();
         $api_result = $hdiCustomer->resetDeviceLockByCode(['supportCode' => $request->supportCode]);

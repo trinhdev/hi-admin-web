@@ -27,7 +27,7 @@ class TrackingController extends BaseController
         return $this->TrackingRepository->views($dataTable, $request);
     }
 
-    public function userAnalytics(UserAnalyticsDataTable $dataTable, Request $request)
+    public function index(UserAnalyticsDataTable $dataTable, Request $request)
     {
         return $this->TrackingRepository->userAnalytics($dataTable, $request);
     }

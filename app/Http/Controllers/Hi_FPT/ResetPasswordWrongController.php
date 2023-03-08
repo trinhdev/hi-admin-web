@@ -26,6 +26,7 @@ class ResetPasswordWrongController extends BaseController
 
     public function store(StoreRequest $request)
     {
+        $this->addToLog($request);
         return $this->ResetPasswordWrongRepository->store($request->all());
     }
 }

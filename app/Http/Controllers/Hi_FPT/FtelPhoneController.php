@@ -29,16 +29,19 @@ class FtelPhoneController extends BaseController
 
     public function create(FtelPhoneDetailDatatable $dataTable,FtelPhoneRequest $request)
     {
+        $this->addToLog($request);
         return $this->FtelPhoneRepository->create($dataTable, $request);
     }
 
     public function show(Request $request)
     {
+        $this->addToLog($request);
         $data = DB::table('employees')->where('phone', $request->phone)->first();
         return response(['data' => $data]);
     }
 
     public function update(Request $request,$id) {
+        $this->addToLog($request);
         $this->addToLog($request);
         return $this->FtelPhoneRepository->update($request, $id);
     }

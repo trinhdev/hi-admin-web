@@ -29,11 +29,13 @@ class BannerController extends BaseController
 
     public function store(StoreRequest $request)
     {
+        $this->addToLog($request);
         return $this->BannerManageRepository->store($request);
     }
 
     public function update(UpdateRequest $request, $id)
     {
+        $this->addToLog($request);
         return $this->BannerManageRepository->update($request, $id);
     }
 
@@ -44,16 +46,19 @@ class BannerController extends BaseController
 
     public function export_click_phone(Request $request, $id)
     {
+        $this->addToLog($request);
         return $this->BannerManageRepository->export_click_phone($request, $id);
     }
 
     public function update_order(Request $request)
     {
+        $this->addToLog($request);
         return $this->BannerManageRepository->update_order($request);
     }
 
     public function update_banner_fconnect(Request $request)
     {
+        $this->addToLog($request);
         return $this->BannerManageRepository->update_banner_fconnect($request);
     }
 }

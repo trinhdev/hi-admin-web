@@ -67,10 +67,10 @@ class RoleController extends BaseController
     public function edit($id)
     {
         $role = Role::find($id);
-        if ($role->name == 'super-admin') {
+        if ($role->name == 'Super Admin') {
             $notification = array(
-                'danger' => 'danger',
-                'message' => "You have no permission for edit this role"
+                'status' => 'danger',
+                'html' => "You have no permission for edit this role"
             );
             return redirect()->route('role.index')->with($notification);
         }

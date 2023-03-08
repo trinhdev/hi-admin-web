@@ -43,6 +43,7 @@ class AppController extends BaseController
 
     public function postChart(Request $request)
     {
+        $this->addToLog($request);
         $data_day = Cache::remember('data_day', 60, function () {
             return DB::table('app_log')
                 ->where('date_action', '>=', now()->startOfDay())
@@ -109,6 +110,7 @@ class AppController extends BaseController
 
     public function export(Request $request)
     {
+        $this->addToLog($request);
         $fileName = 'data-' . now() . '.csv';
         $start = $request->start ? \Carbon\Carbon::parse($request->start)->format('Y-m-d H:i:s') : null;
         $end = $request->end ? \Carbon\Carbon::parse($request->end)->format('Y-m-d H:i:s') : null;
