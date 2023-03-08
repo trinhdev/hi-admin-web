@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use stdClass;
 
-class RolesController extends BaseController
+class RolesController extends MY_Controller
 {
     use DataTrait;
     protected $module_name = 'Roles';

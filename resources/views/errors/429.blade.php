@@ -1,47 +1,67 @@
-@extends('layouts.default')
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans|Nova+Mono');
+    :root {
+        --font-header: 'Nova Mono', monospace;
+        --font-text: 'Open Sans', sans-serif;
+        --color-theme: #F1EEDB;
+        --color-bg: #282B24;
 
-@section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">419 Error Page</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Modules v1</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
+        --animation-sentence: 'You know you\'re supposed to leave, right?';
+        --animation-duration: 40s;
+    }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        width: 100%;
+        font-family: var(--font-text);
+        color: var(--color-theme);
+        background: var(--color-bg);
+        overflow: hidden;
+    }
+    .container {
+        text-align: center;
+        margin: 20rem auto;
+    }
+    .container h1 {
+        font-family: var(--font-header);
+        font-size: calc(4rem + 2vw);
+        text-transform: uppercase;
+    }
+    .container p {
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        font-size: 2rem;
+        margin: 1.5rem 0 3rem;
+    }
+    .container a {
+        text-decoration: none;
+        color: black;
+        background-color: white;
+        padding: 0.5rem;
+        border-radius: 0.2rem;
+    }
+</style>
 
-        <!-- Main content -->
-        <section class="content">
-            <div class="error-page">
-                <h2 class="headline text-danger">429</h2>
-                <div class="error-content">
-                    <h3>
-                        <i class="fas fa-exclamation-triangle text-danger"></i>
-                        Oops! Too many request.
-                    </h3>
-                    <p>
-                        You just send too many request in 1 minute. Please wait for few minutes and retry again or try another page.
-                    </p>
-                </div>
-            </div>
-        </section>
-        <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-    <style>
-        select {
-            font-family: 'Lato', 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
-        }
-    </style>
-@endsection
+<!-- include in a container a heading, paragraph and svg for the keyhole -->
+<div class="container">
+    <h1>429</h1>
+    <p>Opp! Too many requests.</p>
+    <a href="#"  onclick="goBack()">Go back</a>
+    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+        {{ __('Logout') }}<i class="fas fa-sign-out-alt"></i>
+    </a>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+</div>
+<script>
+    function goBack()
+    {
+        window.history.back()
+    }
+</script>

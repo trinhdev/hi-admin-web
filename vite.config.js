@@ -1,4 +1,6 @@
-/*jshint esversion: 6 */
+/**
+ * jshint esversion: 6
+ */
 /*
     Create by: trinhdev
     Update at: 2022/08/04

@@ -121,6 +121,7 @@
                                     <div class="media-body">
                                         <br/><span class="label inline-block mtop5 label-info">Thông báo từ admin</span>
                                         <br/> <span class="notification-title">Vui lòng ấn tổ hợp phím Ctrl+F5 để tải giao diện mới</span>
+                                        <br><br> <span class="notification-title">Update hệ thống phân quyền mới, nếu xảy ra lỗi vui lòng liên hệ trinhhdp@fpt.com.vn</span>
                                         <span class="tw-text-sm text-muted">
                                             <span class="text-has-action" data-placement="right" data-toggle="tooltip"
                                                   data-title="3 giờ trước">
