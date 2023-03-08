@@ -55,8 +55,8 @@ class RoleController extends BaseController
         $role = Role::create(['name' => $request->input('name')]);
         $role->syncPermissions($request->input('permissions'));
 
-        return redirect()->back()
-            ->with('success', 'Role created successfully');
+        return redirect()->intended('/role')
+            ->with(['status'=>'success', 'html'=>'Role created successfully']);
     }
 
     public function show($id)
@@ -81,7 +81,11 @@ class RoleController extends BaseController
         foreach ($per as $value) {
             $sub = explode('-', $value->name);
             if ($abc != $sub[0] && !empty($sub[1])) {
-                $permission[$sub[0]][$value->id] = $sub[1];
+                $modules = Modules::select('module_name')
+                    ->where('uri', strtolower(preg_replace('/(?<!^)([A-Z])/', '-$1',$sub[0])))
+                    ->first();
+                $permission[$sub[0]]['name'] = !empty($modules) ? $modules->module_name : $sub[0];
+                $permission[$sub[0]]['permission'][$value->id] = $sub[1];
             }
         }
         $rolePermissions = DB::table("role_has_permissions")
@@ -106,8 +110,8 @@ class RoleController extends BaseController
 
         $role->syncPermissions($request->input('permissions'));
 
-        return redirect()->route('role.index')
-            ->withSuccess(['message', 'Role updated successfully']);
+        return redirect()->intended('/role')
+            ->with(['status'=>'success', 'html'=>'Role updated successfully']);
     }
 
     public function destroy(Request $request)

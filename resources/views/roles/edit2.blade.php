@@ -3,7 +3,7 @@
 @section('content')
     <div id="wrapper" style="min-height: 3494px;">
         <div class="content">
-            <div class="row">
+            <div class="row tw-flex tw-justify-between tw-items-center">
                 <div class="col-md-7">
                     <div class="tw-flex tw-justify-between tw-items-center tw-mb-2">
                         <h4 class="tw-my-0 tw-font-semibold tw-text-lg tw-text-neutral-700">
@@ -34,16 +34,16 @@
                                                 <td>
                                                     <div class="checkbox tw-ml-2">
                                                         <input onclick="check_value(this)" id="{{ $key }}" type="checkbox" class="capability">
-                                                        <label for="{{ $key }}"><b>{{ $key }}</b></label>
+                                                        <label for="{{ $key }}"><b>{{ $value['name'] }}</b></label>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    @foreach($value as $k => $val)
-                                                            <div class="checkbox tw-ml-2">
-                                                                <input id="{{$key.'_'.$val}}" type="checkbox" class="{{$key}} capability" name="permissions[]"
-                                                                       value="{{(int) $k}}" @if(in_array($k, $rolePermissions)) checked @endif>
-                                                                <label for="{{$key.'_'.$val}}"> {!! $val !!} </label>
-                                                            </div>
+                                                <td class="tw-flex tw-justify-between tw-items-center" >
+                                                    @foreach($value['permission'] as $k => $val)
+                                                        <div class="checkbox tw-ml-2" >
+                                                            <input id="{{$key.'_'.$val}}" type="checkbox" class="{{$key}} capability" name="permissions[]"
+                                                                   value="{{(int) $k}}" @if(in_array($k, $rolePermissions)) checked @endif>
+                                                            <label for="{{$key.'_'.$val}}"> {!! $val !!} </label>
+                                                        </div>
                                                     @endforeach
                                                 </td>
                                             </tr>
@@ -51,8 +51,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <hr>
-                                <button type="submit" class="btn btn-primary pull-right">Lưu lại</button>
+                                <div class="btn-bottom-toolbar text-right">
+                                    <button type="submit" class="btn btn-primary">
+                                        Lưu lại cài đặt
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>

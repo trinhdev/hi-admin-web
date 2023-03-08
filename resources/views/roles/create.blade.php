@@ -3,7 +3,7 @@
 @section('content')
     <div id="wrapper" style="min-height: 3494px;">
         <div class="content">
-            <div class="row">
+            <div class="row tw-flex tw-justify-between tw-items-center">
                 <div class="col-md-7">
                     <div class="panel_s">
                         <div class="panel-body">
@@ -33,7 +33,7 @@
                                                         <label for="{{ $key }}"><b>{{ $value['name'] }}</b></label>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td class="tw-flex tw-justify-between tw-items-center" >
                                                     @foreach($value['permission'] as $k => $val)
                                                         <div class="checkbox tw-ml-2">
                                                             <input id="{{$key.'_'.$val}}" type="checkbox" class="{{$key}} capability" name="permissions[]"
@@ -47,8 +47,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <hr>
-                                <button type="submit" class="btn btn-primary pull-right">Lưu lại</button>
+                                <div class="btn-bottom-toolbar text-right">
+                                    <button type="submit" class="btn btn-primary">
+                                        Lưu
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
