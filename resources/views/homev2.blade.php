@@ -69,4 +69,8 @@
         </div>
     </div>
 @endsection
+@push('script')
+    <script src="{{ asset('custom_js/initTable.js')}}"></script>
+    <script type="text/javascript" id="dashboard3-js" src="{{ asset('assets/js/dashboard3.js')}}"></script>
+@endpush
 

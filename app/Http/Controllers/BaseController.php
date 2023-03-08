@@ -18,12 +18,14 @@ class BaseController extends Controller
     public function __construct()
     {
         $permission = str_replace('-', '', ucwords(request()->segment(1), '-'));
-        $this->middleware('permission:'.$permission.'-view|'.$permission.'-create|'.$permission.'-edit|'.$permission.'-delete|'.$permission.'-import|'.$permission.'-export', ['only' => ['index','store']]);
-        $this->middleware('permission:'.$permission.'-create', ['only' => ['create','store']]);
-        $this->middleware('permission:'.$permission.'-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:'.$permission.'-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:'.$permission.'-import', ['only' => ['import']]);
-        $this->middleware('permission:'.$permission.'-export', ['only' => ['export']]);
+        if ($permission) {
+            $this->middleware('permission:'.$permission.'-view|'.$permission.'-create|'.$permission.'-edit|'.$permission.'-delete|'.$permission.'-import|'.$permission.'-export', ['only' => ['index','store']]);
+            $this->middleware('permission:'.$permission.'-create', ['only' => ['create','store']]);
+            $this->middleware('permission:'.$permission.'-edit', ['only' => ['edit','update']]);
+            $this->middleware('permission:'.$permission.'-delete', ['only' => ['destroy']]);
+            $this->middleware('permission:'.$permission.'-import', ['only' => ['import']]);
+            $this->middleware('permission:'.$permission.'-export', ['only' => ['export']]);
+        }
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             $this->getListModule();
