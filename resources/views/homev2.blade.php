@@ -69,8 +69,11 @@
         </div>
     </div>
 @endsection
+
 @push('script')
-    <script src="{{ asset('custom_js/initTable.js')}}"></script>
-    <script type="text/javascript" id="dashboard3-js" src="{{ asset('assets/js/dashboard3.js')}}"></script>
+    @hasanyrole('Super Admin|Admin')
+        <script type="text/javascript" id="initTable-js" src="{{ asset('custom_js/initTable.js')}}"></script>
+        <script type="text/javascript" id="dashboard3-js" src="{{ asset('assets/js/dashboard3.js')}}"></script>
+    @endhasanyrole
 @endpush
 
