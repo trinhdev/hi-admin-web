@@ -49,7 +49,7 @@ class TrackingService
             ])->getBody()->getContents();
             return json_decode($response);
         } catch (\Exception $exception) {
-            return abort(403);
+            return $exception->getMessage();
         }
     }
 
@@ -73,7 +73,7 @@ class TrackingService
             ])->getBody()->getContents();
             return json_decode($response);
         } catch (\Exception $exception) {
-            return abort(403);
+            return $exception->getMessage();
         }
     }
 
