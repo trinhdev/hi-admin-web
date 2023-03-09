@@ -36,7 +36,7 @@
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <input id="status" name="status" class="form-check-input" type="checkbox" value="true">
+                            <input id="status" name="status" class="form-check-input" type="checkbox" value="true" checked>
                             <label>Status</label>
                         </div>
                     </div>

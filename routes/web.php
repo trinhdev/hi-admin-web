@@ -392,8 +392,9 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/create', 'create')->name('test.create');
         });
 
-        Route::prefix('user-analytics')->controller(TrackingController::class)->group(function () {
+        Route::prefix('user-analytics')->controller(UserAnalyticController::class)->group(function () {
             Route::get('/', 'index')->name('tracking.userAnalytics');
+            Route::post('/', 'index')->name('tracking.userAnalytics');
         });
 
         Route::prefix('employees-updates')->group(function () {

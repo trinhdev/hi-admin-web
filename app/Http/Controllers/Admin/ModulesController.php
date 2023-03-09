@@ -52,7 +52,7 @@ class ModulesController extends BaseController
             ->create(['name' => $permission.'-export'])
             ->create(['name' => $permission.'-delete']);
 
-        $module = $this->createSingleRecord($this->model, $request->all());
+        Modules::create($request->all());
         $this->addToLog(request());
         return response(['success' => 'success', 'message'=> 'Add new successfully!']);
     }

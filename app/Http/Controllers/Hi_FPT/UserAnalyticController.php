@@ -11,34 +11,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\MY_Controller;
 use Illuminate\Http\Request;
 
-class TrackingController extends BaseController
+class UserAnalyticController extends BaseController
 {
     private $TrackingRepository;
 
     public function __construct(TrackingInterface $TrackingRepository)
     {
         parent::__construct();
-        $this->title = 'Tracking Manage';
+        $this->title = 'User Analytics';
         $this->TrackingRepository = $TrackingRepository;
-    }
-
-    public function views(ViewAnalyticsDataTable $dataTable, Request $request)
-    {
-        return $this->TrackingRepository->views($dataTable, $request);
     }
 
     public function index(UserAnalyticsDataTable $dataTable, Request $request)
     {
         return $this->TrackingRepository->userAnalytics($dataTable, $request);
-    }
-
-    public function sessionAnalytics(SessionAnalyticsDataTable $dataTable, Request $request)
-    {
-        return $this->TrackingRepository->sessionAnalytics($dataTable, $request);
-    }
-
-    public function journeyAnalysis()
-    {
-        return $this->TrackingRepository->journeyAnalysis();
     }
 }

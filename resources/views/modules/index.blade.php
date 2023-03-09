@@ -47,7 +47,7 @@
         function addModules(e) {
             e.preventDefault();
             $('#showDetail_Modal').modal('toggle');
-            document.getElementById('form').reset();
+            document.getElementById('formModules').reset();
             $('#group_module_id').val('').change();
             $('#uri').val('').change();
             $('#icon').val('').change();
@@ -95,7 +95,7 @@
                         $('#submit').prop('disabled', false);
                     }
                 }, error: function (xhr) {
-                    let errorString = '';
+                    let errorString = xhr.responseJSON.message ?? '';
                     $.each(xhr.responseJSON.errors, function (key, value) {
                         errorString = value;
                         return false;

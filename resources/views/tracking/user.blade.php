@@ -42,12 +42,4 @@
 
 @push('script')
     {!! $dataTable->scripts() !!}
-
-    <script>
-        let table = $('#user_detail');
-        table.on('preXhr.dt', function (e, settings, data) {
-            data.daterange = $('#filter_date_datatable').val();
-            data.cusId = $('#customer_id').val();
-        });
-    </script>
 @endpush

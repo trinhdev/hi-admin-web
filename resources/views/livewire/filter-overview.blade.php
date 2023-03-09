@@ -14,7 +14,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <label for="member_filter" class="control-label">Phone hoặc CustomerID</label>
-            <input wire:model.debounce.1000ms="customer_id" id="customer_id" class="form-control" type="number" name="customer_id"
+            <input wire:model.debounce.2000ms="customer_id" id="customer_id" class="form-control" type="number" name="customer_id"
                    placeholder="Nhập SDT hoặc ID khách hàng" autocomplete="off"/>
         </div>
     </div>

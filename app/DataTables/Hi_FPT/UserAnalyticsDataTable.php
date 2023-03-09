@@ -12,6 +12,10 @@ class UserAnalyticsDataTable extends BuilderDatatables
 {
     protected $hasCheckbox = false;
     protected $total = 0;
+    protected $ajaxUrl = [
+        'type'=>"POST",
+        'data' => "function(d) {d.daterange = $('#filter_date_datatable').val();d.cusId = $('#customer_id').val(); }"
+    ];
     public function dataTable($query)
     {
         if (count($query)) {
