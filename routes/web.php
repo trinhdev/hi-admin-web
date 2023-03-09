@@ -321,6 +321,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::prefix('app')->group(function () {
             Route::get('/', [AppController::class, 'index'])->name('app.index');
+            Route::post('/', [AppController::class, 'index'])->name('app.index');
             Route::post('/chart', [AppController::class, 'postChart'])->name('app.post.chart');
             Route::get('/export', [AppController::class, 'export'])->name('app.export');
             Route::get('download/{filename}', function ($filename) {

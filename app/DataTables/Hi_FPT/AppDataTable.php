@@ -9,6 +9,15 @@ use Carbon\Carbon;
 class AppDataTable extends BuilderDatatables
 {
     protected $hasCheckbox = false;
+    protected $ajaxUrl = [
+        'type'=>"POST",
+        'data' => "function(d) {
+        d.type = $('#show_at').val();
+        d.phone = $('#phone_filter').val();
+        d.public_date_start = $('#show_from').val();
+        d.public_date_end = $('#show_to').val();
+        d.filter_duplicate = $('#filter_duplicate').val() }"
+    ];
     public function dataTable($query)
     {
         return datatables()

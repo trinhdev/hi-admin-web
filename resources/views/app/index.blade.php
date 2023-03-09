@@ -2,7 +2,6 @@
 @extends('layoutv2.layout.app')
 @push('style')
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endpush
 @section('content')
     <div id="wrapper">
@@ -56,10 +55,8 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <div class="input-group-prepend">
-                                            <div class="control-label">Phone</div>
-                                        </div>
-                                        <input class="form-control" id="phone_filter" placeholder="Phone Filter" />
+                                        <div class="control-label">Phone</div>
+                                        <input type="number" class="form-control" id="phone_filter" placeholder="Phone Filter" />
                                     </div>
                                 </div>
                                 <div class="col-md-2">
@@ -109,15 +106,6 @@
 @push('script')
     {{ $dataTable->scripts() }}
     <script>
-        const table = $('#app_table');
-        table.on('preXhr.dt', function (e, settings, data) {
-            data.type = $('#show_at').val();
-            data.phone = $('#phone_filter').val();
-            data.public_date_start = $('#show_from').val();
-            data.public_date_end = $('#show_to').val();
-            data.filter_duplicate = $('#filter_duplicate').val();
-        });
-
         function exportApp() {
             let type = $('#show_at').val();
             let phone = $('#phone_filter').val();
