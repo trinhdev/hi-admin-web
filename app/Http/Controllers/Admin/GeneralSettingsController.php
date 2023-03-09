@@ -190,7 +190,7 @@ class GeneralSettingsController extends BaseController
             'daterange' => 'required',
         ]);
         SendMailManualJob::dispatch($request->key, $request->daterange);
-        exec('nohup php artisan queue:work > /dev/null 2>&1 &');
+        exec('nohup php artisan queue:work > /dev/null 2>&1');
         return response()->json(['status'=>'success', 'html'=> 'Gửi mail thành công! Vui lòng đợi 2 phút để nhận được mail']);
     }
 }
