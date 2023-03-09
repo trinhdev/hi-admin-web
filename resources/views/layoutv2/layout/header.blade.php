@@ -160,7 +160,7 @@
                         <div class="col-sm-12">
                             <div class="ol-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="form-group"><label
-                                        for="name">Role: </label><b>&nbsp;{{ !empty(Auth::user()->role) ? Auth::user()->role->role_name: ''}}</b>
+                                        for="name">Role: </label><b>&nbsp;{{ !empty(Auth::user()->roles) ? Auth::user()->roles[0]->name: ''}}</b>
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">

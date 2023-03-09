@@ -306,12 +306,12 @@ $domainHiFPT = [
 
 $domainTracking = [
     'local'             => [
-        'URL'           => 'https://ansoft.com.vn/hi-tracking/',
+        'URL'           => 'https://tracking-stg.fconnect.com.vn/',
         'CLIENT_KEY'    => '55bbbd24-b198-11ed-89b3-2811a830db8a',
         'SECRET_KEY'    => 'xkfa2dA!SD901ND!@@x91dak'
     ],
     'staging'           => [
-        'URL'           => 'https://ansoft.com.vn/hi-tracking/',
+        'URL'           => 'https://tracking-stg.fconnect.com.vn/',
         'CLIENT_KEY'    => '55bbbd24-b198-11ed-89b3-2811a830db8a',
         'SECRET_KEY'    => 'xkfa2dA!SD901ND!@@x91dak'
     ],
