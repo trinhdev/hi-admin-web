@@ -26,7 +26,7 @@ class SendMailManualJob implements ShouldQueue
     public function handle()
     {
         $originalDataTime = setting('hi_admin_cron_'.$this->key.'_time');
-        Cache::put($this->key, $originalDataTime, 0.2);
+        Cache::put($this->key, $originalDataTime, 1);
         setting()->set('manually_email_'.$this->key.'_time', $this->time);
         setting()->set('hi_admin_cron_'.$this->key.'_time', '*/1 * * * *');
         setting()->save();
