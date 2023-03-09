@@ -98,7 +98,7 @@ function callAPIHelper(url, param, method, callback, passingData = null, isfile 
             callback(data, passingData);
         },
         error: function (xhr) {
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
@@ -127,7 +127,7 @@ function uploadFileExternal(file, callBack, passingData) {
             callBack(data, passingData);
         },
         error: function (xhr) {
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
@@ -156,7 +156,7 @@ function uploadFileStatic(file, input, calllback) {
             calllback(data, input);
         },
         error: function (xhr) {
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
@@ -331,7 +331,7 @@ function postPhone(urlPost) {
                 alert_float('success',successMessage);
             },
             error: function (xhr) {
-                var errorString = '';
+                var errorString = xhr.responseJSON.message;
                 $("#spinner").removeClass("show");
                 $.each(xhr.responseJSON.errors, function (key, value) {
                     errorString = value;
@@ -380,7 +380,7 @@ function postPhone(urlPost) {
                 }
             },
             error: function (xhr) {
-                var errorString = '';
+                var errorString = xhr.responseJSON.message;
                 $("#spinner").removeClass("show");
                 $.each(xhr.responseJSON.errors, function (key, value) {
                     errorString = value;

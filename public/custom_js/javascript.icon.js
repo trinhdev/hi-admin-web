@@ -32,7 +32,7 @@ function readURL(value, url) {
         },
         error: function (xhr) {
             $("#spinner").removeClass("show");
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
@@ -103,7 +103,7 @@ function readURL(value, url) {
 //                     }
 //                 },
 //                 error: function (xhr) {
-//                     var errorString = '';
+//                     var errorString = xhr.responseJSON.message;
 //                     $.each(xhr.responseJSON.errors, function (key, value) {
 //                         errorString = value;
 //                         return false;
@@ -168,7 +168,7 @@ function deleteButtonTable(from, tableId, productName, url, ul_id) {
                     },
                     error: function (xhr) {
                         $("#spinner").removeClass("show");
-                        var errorString = '';
+                        var errorString = xhr.responseJSON.message;
                         $.each(xhr.responseJSON.errors, function (key, value) {
                             errorString = value;
                             return false;
@@ -236,7 +236,7 @@ function deleteButton(from, form_data, name, url, ul_id) {
                 },
                 error: function (xhr) {
                     $("#spinner").removeClass("show");
-                    var errorString = '';
+                    var errorString = xhr.responseJSON.message;
                     $.each(xhr.responseJSON.errors, function (key, value) {
                         errorString = value;
                         return false;
@@ -303,7 +303,7 @@ function deleteButtonApprovedRole(form_data, name, url, ul_id) {
                     }
                 },
                 error: function (xhr) {
-                    var errorString = '';
+                    var errorString = xhr.responseJSON.message;
                     $.each(xhr.responseJSON.errors, function (key, value) {
                         errorString = value;
                         return false;
@@ -559,7 +559,7 @@ function approve(approved_data) {
                     }
                 },
                 error: function (xhr) {
-                    var errorString = '';
+                    var errorString = xhr.responseJSON.message;
                     $.each(xhr.responseJSON.errors, function (key, value) {
                         errorString = value;
                         return false;

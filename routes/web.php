@@ -62,7 +62,14 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/', 'GeneralSettingsController@index')->name('general_settings.index');
             Route::post('/edit', 'GeneralSettingsController@postEdit')->name('general_settings.edit');
             Route::post('/saveUriSetting', 'GeneralSettingsController@saveUriSetting')->name('general_settings.saveUriSetting');
+            Route::post('/sendMailManually', 'GeneralSettingsController@sendMailManually')->name('general_settings.sendMailManually');
         });
+
+        Route::get('/start-queue-worker', function () {
+            // Use exec() to start the queue worker in the background
+            exec('nohup php artisan queue:work > /dev/null 2>&1 &');
+            return 'Gửi mail thành công! Vui lòng đợi 2 phút để nhận được mail';
+        })->name('runQueue');
 
         Route::prefix('user')->group(function () {
             Route::get('/', 'UserController@index')->name('user.index');

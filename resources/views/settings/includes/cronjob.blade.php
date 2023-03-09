@@ -140,30 +140,32 @@
                            value="{{ setting($key.'_time') }}">
                 </div>
                 <hr>
-                <div class="form-group">
-                    <div class="form-group no-mbot">
-                        <label for="email_to" class="control-label"><i class="fa fa-envelope" aria-hidden="true"></i>
-                            Email to</label>
-                        <input type="text" class="tagsinput" id="{{$key}}_email_to" name="{{$key}}_email_to"
-                               value="{{ $to }}"
-                               data-role="tagsinput">
+                @if($value != 'service_health_check_api')
+                    <div class="form-group">
+                        <div class="form-group no-mbot">
+                            <label for="email_to" class="control-label"><i class="fa fa-envelope" aria-hidden="true"></i>
+                                Email to</label>
+                            <input type="text" class="tagsinput" id="{{$key}}_email_to" name="{{$key}}_email_to"
+                                   value="{{ $to }}"
+                                   data-role="tagsinput">
+                        </div>
+                        <div class="form-group no-mbot">
+                            <label for="email_cc" class="control-label"><i class="fa fa-envelope" aria-hidden="true"></i>
+                                Email cc</label>
+                            <input type="text" class="tagsinput" id="{{$key}}_email_cc" name="{{$key}}_email_cc"
+                                   value="{{ $cc }}"
+                                   data-role="tagsinput">
+                        </div>
+                        <div class="form-group no-mbot">
+                            <label for="email_bcc" class="control-label"><i class="fa fa-envelope" aria-hidden="true"></i>
+                                Email bcc</label>
+                            <input type="text" class="tagsinput" id="{{$key}}_email_bcc" name="{{$key}}_email_bcc"
+                                   value="{{ $bcc }}"
+                                   data-role="tagsinput">
+                        </div>
                     </div>
-                    <div class="form-group no-mbot">
-                        <label for="email_cc" class="control-label"><i class="fa fa-envelope" aria-hidden="true"></i>
-                            Email cc</label>
-                        <input type="text" class="tagsinput" id="{{$key}}_email_cc" name="{{$key}}_email_cc"
-                               value="{{ $cc }}"
-                               data-role="tagsinput">
-                    </div>
-                    <div class="form-group no-mbot">
-                        <label for="email_bcc" class="control-label"><i class="fa fa-envelope" aria-hidden="true"></i>
-                            Email bcc</label>
-                        <input type="text" class="tagsinput" id="{{$key}}_email_bcc" name="{{$key}}_email_bcc"
-                               value="{{ $bcc }}"
-                               data-role="tagsinput">
-                    </div>
-                </div>
-                <hr>
+                    <hr>
+                @endif
                 <div class="form-group">
                     <label class="control-label clearfix">
                         <i class="fa-regular fa-circle-question" data-toggle="tooltip"
@@ -186,6 +188,35 @@
                             Không </label>
                     </div>
                 </div>
+                @if($value == 'service_air_condition_weekly')
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="{{ $key }}_button" class="control-label">
+                                        Lấy dữ liệu thủ công
+                                    </label>
+                                    <div class="input-group date">
+                                        <input type="text" id="manually_email_daterange" class="form-control daterange" autocomplete="off">
+                                        <div class="input-group-addon">
+                                            <i class="fa-regular fa-calendar calendar-icon"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label"> </label>
+                                <div class="input-group">
+                                    <button onclick="sendMailManually(this)" data-key="{{$value}}" type="button"  class="tw-mt-1 btn btn-info">Send mail</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         @endforeach
     @endif
@@ -193,4 +224,21 @@
 
 @push('script')
     <script type="text/javascript" id="cron-js" src="{{ asset('assets/js/cron.js')}}"></script>
+    <script>
+        function sendMailManually(_this){
+            let data = {};
+            data.daterange = $('#manually_email_daterange').val();
+            data.key = $(_this).data('key');
+            $.post('/setting/sendMailManually', data).done(function(response) {
+                alert_float('success', response.html);
+            }).fail(function(xhr) {
+                var errorString = xhr.responseJSON.message;
+                $.each(xhr.responseJSON.errors, function (key, value) {
+                    errorString = value;
+                    return false;
+                });
+                alert_float('danger', errorString);
+            });
+        }
+    </script>
 @endpush

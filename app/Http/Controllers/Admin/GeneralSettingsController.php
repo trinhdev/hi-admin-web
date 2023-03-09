@@ -7,10 +7,12 @@ use App\DataTables\Admin\ModuleDataTable;
 use App\DataTables\Admin\UrlSettingDataTable;
 use App\Http\Controllers\BaseController;
 use App\Http\Traits\DataTrait;
+use App\Jobs\SendMailManualJob;
 use App\Models\Group_Module;
 use Illuminate\Http\Request;
 
 use App\Models\Settings;
+use Illuminate\Support\Facades\Cache;
 
 class GeneralSettingsController extends BaseController
 {
@@ -180,5 +182,15 @@ class GeneralSettingsController extends BaseController
         setting()->set('uri_config', json_encode($data));
         setting()->save();
         return response()->json(['status'=>'success', 'html'=> 'Thêm mới thành công!']);
+    }
+
+    protected function sendMailManually(Request $request)
+    {
+        $request->validate([
+            'daterange' => 'required',
+        ]);
+        SendMailManualJob::dispatch($request->key, $request->daterange);
+        exec('nohup php artisan queue:work > /dev/null 2>&1 &');
+        return response()->json(['status'=>'success', 'html'=> 'Gửi mail thành công! Vui lòng đợi 2 phút để nhận được mail']);
     }
 }

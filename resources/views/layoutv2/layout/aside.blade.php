@@ -12,7 +12,7 @@
             </div>
         </li>
         @php
-            $icon = ['fa-user', 'fa-cog', 'fa-repeat', 'fa-life-ring', 'fa-chart-bar', 'fa-cogs', 'fa-cogs', 'fa-cogs'];
+            $icon = ['fa-user', 'fa-repeat', 'fa-life-ring', 'fa-cog', 'fa-chart-bar', 'fa-cogs', 'fa-cogs', 'fa-cogs'];
             $key = 0;
         @endphp
         @if(!empty($groupModule))

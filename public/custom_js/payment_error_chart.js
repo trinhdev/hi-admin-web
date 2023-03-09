@@ -122,7 +122,7 @@ function drawPaymentErrorDetailEcom(from = null, to = null) {
             drawPaymentErrorDetailChart('ecom', response);
         },
         error: function (xhr) {
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
@@ -146,7 +146,7 @@ function drawPaymentErrorDetailFtel(from = null, to = null) {
             drawPaymentErrorDetailChart('ftel', response);
         },
         error: function (xhr) {
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
@@ -229,7 +229,7 @@ function drawPaymentErrorDetailSystemEcom(from = null, to = null) {
             drawPaymentErrorDetailSystemChart('ecom', response);
         },
         error: function (xhr) {
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
@@ -255,7 +255,7 @@ function drawPaymentErrorDetailSystemFtel(from = null, to = null) {
             $("#spinner").removeClass("show");
         },
         error: function (xhr) {
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;

@@ -163,7 +163,7 @@ function storePopup() {
             }
         },
         error: function (xhr) {
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
@@ -198,7 +198,7 @@ function handlePushPopUpPrivate() {
                 }
             },
             error: function (xhr) {
-                var errorString = '';
+                var errorString = xhr.responseJSON.message;
                 $.each(xhr.responseJSON.errors, function (key, value) {
                     errorString = value;
                     return false;
@@ -290,7 +290,7 @@ function deletePopUpPrivate(data){
             table.ajax.reload(null, false);
         },
         error: function (xhr) {
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;

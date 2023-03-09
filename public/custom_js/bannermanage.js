@@ -170,7 +170,7 @@ function methodAjaxBanner() {
                 window.urlMethod = '/bannermanage/update/'+id;
             },
             error: function (xhr) {
-                var errorString = '';
+                var errorString = xhr.responseJSON.message;
                 $.each(xhr.responseJSON.errors, function (key, value) {
                     errorString = value;
                     return false;
@@ -204,7 +204,7 @@ function methodAjaxBanner() {
                 }
             },
             error: function (xhr) {
-                var errorString = '';
+                var errorString = xhr.responseJSON.message;
                 $('#submitAjax').prop('disabled', false);
                 $.each(xhr.responseJSON.errors, function (key, value) {
                     errorString = value;
@@ -239,7 +239,7 @@ function methodAjaxBanner() {
                 }
             },
             error: function (xhr) {
-                var errorString = '';
+                var errorString = xhr.responseJSON.message;
                 $('#submitAjaxUpdate').prop('disabled', false);
                 $.each(xhr.responseJSON.errors, function (key, value) {
                     errorString = value;

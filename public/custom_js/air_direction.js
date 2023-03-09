@@ -23,7 +23,7 @@ $('body').on('click', '#submit', function (event){
             }
         },
         error: function (xhr) {
-            var errorString = '';
+            var errorString = xhr.responseJSON.message;
             $.each(xhr.responseJSON.errors, function (key, value) {
                 errorString = value;
                 return false;
@@ -72,7 +72,7 @@ function deleteAirDirection(data){
         var table = $('#air_direction_table').DataTable();
         table.ajax.reload(null,false);
     }).fail(function(xhr) {
-        var errorString = '';
+        var errorString = xhr.responseJSON.message;
         $.each(xhr.responseJSON.errors, function (key, value) {
             errorString = value;
             return false;
