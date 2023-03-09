@@ -12,12 +12,7 @@ class Minio
             $result = Storage::disk('minio')->put($url, $content);
             return $result;
         }
-        catch(Exception $e) {
-            Cronlogtest::create([
-                'cron_name' => 'check create folder',
-                'value'     => 'uploadMinio',
-                'note'      => $e->getMessage(),
-            ]);
+        catch(\Exception $e) {
             return false;
         }
     }
@@ -26,12 +21,7 @@ class Minio
         try {
             Storage::disk('minio')->deleteDirectory($url);
         }
-        catch(Exception $e) {
-            Cronlogtest::create([
-                'cron_name' => 'check delete folder',
-                'value'     => 'deleteFolderMinio',
-                'note'      => $e->getMessage(),
-            ]);
+        catch(\Exception $e) {
             return false;
         }
     }
@@ -40,12 +30,8 @@ class Minio
         try {
             Storage::disk('minio')->makeDirectory($url);
         }
-        catch(Exception $e) {
-            Cronlogtest::create([
-                'cron_name' => 'check delete folder',
-                'value'     => 'deleteFolderMinio',
-                'note'      => $e->getMessage(),
-            ]);
+        catch(\Exception $e) {
+
             return false;
         }
     }

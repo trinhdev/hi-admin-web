@@ -12,6 +12,7 @@ use App\Models\Group_Module;
 use Illuminate\Http\Request;
 
 use App\Models\Settings;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 
 class GeneralSettingsController extends BaseController
@@ -189,8 +190,9 @@ class GeneralSettingsController extends BaseController
         $request->validate([
             'daterange' => 'required',
         ]);
-        SendMailManualJob::dispatch($request->key, $request->daterange);
-        exec('php artisan queue:work --verbose > /dev/null 2>&1');
-        return response()->json(['status'=>'success', 'html'=> 'Gửi mail thành công! Vui lòng đợi 2 phút để nhận được mail']);
+        $date_ = split_date($request->daterange);
+        $date = [$date_[0], $date_[1]];
+        Artisan::call('reportAirConditionWeekly', ['date' => $date]);
+        return response()->json(['status'=>'success', 'html'=> 'Gửi mail thành công! Vui lòng kiểm tra email']);
     }
 }

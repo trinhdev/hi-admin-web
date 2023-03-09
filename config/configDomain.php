@@ -321,6 +321,21 @@ $domainTracking = [
         'SECRET_KEY'    => 'xx!@2dA!lD1331Na!98pr91dak'
     ],
 ];
+$domainMailCron = [
+    'local'             => [
+        'domain'        => 'http://systemmailapi.fpt.vn',
+        'sub_url'       => '/api/SendMailSMTP/InsertInfoSendMailSMTP'
+    ],
+    'staging'           => [
+        'domain'        => 'http://systemmailapi.fpt.vn',
+        'sub_url'       => '/api/SendMailSMTP/InsertInfoSendMailSMTP'
+    ],
+    'production'        => [
+        'domain'        => 'http://systemmailapi.fpt.vn',
+        'sub_url'       => '/api/SendMailSMTP/InsertInfoSendMailSMTP'
+    ],
+];
+
 
 return [
     'DOMAIN_REPORT'                 => $domainReportConfig,
@@ -340,4 +355,5 @@ return [
     'DOMAIN_API'                    => $domainAPI,
     'DOMAIN_HIFPT'                  => $domainHiFPT,
     'DOMAIN_TRACKING'               => $domainTracking,
+    'DOMAIN_MAIL_CRON'               => $domainMailCron,
 ];

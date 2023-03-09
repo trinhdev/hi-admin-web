@@ -18,7 +18,7 @@ class BaseController extends Controller
     public function __construct()
     {
         $permission = str_replace('-', '', ucwords(request()->segment(1), '-'));
-        if ($permission) {
+        if (!empty($permission)) {
             $this->middleware('permission:'.$permission.'-view|'.$permission.'-create|'.$permission.'-edit|'.$permission.'-delete|'.$permission.'-import|'.$permission.'-export', ['only' => ['index','store']]);
             $this->middleware('permission:'.$permission.'-create', ['only' => ['create','store']]);
             $this->middleware('permission:'.$permission.'-edit', ['only' => ['edit','update']]);
