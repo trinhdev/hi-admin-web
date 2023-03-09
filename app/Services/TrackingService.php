@@ -9,7 +9,6 @@ class TrackingService
 {
     private $clientKey;
     private $secretKey;
-    private $baseUrl;
     private $listMethod;
     private $client;
     private $headers;
@@ -19,10 +18,10 @@ class TrackingService
         $api_config         = config('configDomain.DOMAIN_TRACKING.' . env('APP_ENV'));
         $this->listMethod = config('configMethod.DOMAIN_TRACKING');
         if ($api_config) {
-            $this->baseUrl      = $api_config['URL'];
+            $baseUrl      = $api_config['URL'];
             $this->clientKey    = $api_config['CLIENT_KEY'];
             $this->secretKey    = $api_config['SECRET_KEY'];
-            $this->client = new Client(['base_uri' => $api_config['URL']]);
+            $this->client = new Client(['base_uri' => $baseUrl]);
             $this->headers = [
                 'Authorization' => 'Bearer '.md5($this->clientKey."::".$this->secretKey.date("Y-d-m")),
                 'Content-Type' => 'application/json'

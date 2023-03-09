@@ -26,13 +26,17 @@ class TrackingRepository extends RepositoryAbstract implements TrackingInterface
             $from = $date[0];
             $to = $date[1];
         }
-        $customer_id = $request->input('cusId', '2002815');
+        $customer_id = $request->cusId;
+        $customer = Customers::where('phone', $customer_id)->first('customer_id');
+        if (!empty($customer)) {
+            $customer_id = $customer->customer_id;
+        }
         $limit = (int) $request->length ?? 10;
         $currentPage = $request->start == 0 ? 0 : ($request->start / $limit);
         //$offset = (int) ($currentPage-1)*$limit;
         if (!empty($customer_id) && $date) {
             $service = new TrackingService();
-            $data = $service->get_detail_customers($customer_id, $from??'2023-02-17 00:00:00',$to??'2024-02-17 23:59:59', $limit??10, $currentPage??0);
+            $data = $service->get_detail_customers((int)$customer_id, $from??'2023-02-17 00:00:00',$to??'2024-02-17 23:59:59', $limit??10, $currentPage??0);
         }
         return $dataTable->with([
             'data' => $data->detail ?? []
